@@ -3,6 +3,8 @@
     {!! SEO::generate(true) !!}
 @endsection
 
+
+
 @section('json-ld')
     <?php echo $localBusiness->toScript()  ?>
 @endsection
