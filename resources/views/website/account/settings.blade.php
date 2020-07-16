@@ -1,0 +1,150 @@
+@extends('website.layouts.app')
+@section('title')
+    <title> Portfolio : Property Management Software By propertymanagement.com</title>
+@endsection
+@section('css_library')
+    <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
+@endsection
+
+@section('content')
+    <!-- Top header start -->
+    <div class="sub-banner">
+        <div class="container">
+            <div class="page-name">
+                <h1>My Account &amp; Profiles</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class=" mt-3 float-right">
+                        <a href="{{route('home')}}">Home Page</a> |
+                        <a href="{{route('accounts.logout')}}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Property start -->
+    <div class="submit-property content-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    @include('website.includes.tabs')
+
+                    <div class="tab-content" id="portfolioTabContent">
+                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                            <div class="my-4">
+                                Dashboard
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
+                            <div class="my-4">
+                                Property Management
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
+                            <div class="my-4">
+                                Message Center
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show active" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
+                            <div class="row my-4">
+                                <div class="col-md-3">
+                                    @include('website.account.sidebar')
+                                </div>
+                                <div class="col-md-9">
+                                    @include('website.layouts.flash-message')
+                                    {{ Form::open(['route' => ['settings.update', $account], 'method' => 'put', 'role' => 'form']) }}
+                                    <div class="card">
+                                        <div class="card-header bg-success text-white text-uppercase">User Settings</div>
+                                        <div class="card-body">
+                                            {{ Form::bsTextArea('message_signature', isset($account->message_signature)?$account->message_signature:null) }}
+                                            {{ Form::bsRadio('email_notification', isset($account->email_notification)?$account->email_notification:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
+                                            {{ Form::bsRadio('newsletter', isset($account->newsletter)?$account->newsletter:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
+                                            {{ Form::bsRadio('automated_reports', isset($account->automated_reports)?$account->automated_reports:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
+                                            {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}
+                                        </div>
+
+                                        <div class="card-header bg-success text-white text-uppercase">General Settings</div>
+                                        <div class="card-body">
+                                            {{ Form::bsSelect2('default_currency', ['Brazil (BRL)' => 'Brazil (BRL)', 'Canada (CAD)' => 'Canada (CAD)', 'EU (EUR)' => 'EU (EUR)', 'Kuwait (KWD)' => 'Kuwait (KWD)', 'Pakistan (PKR)' => 'Pakistan (PKR)', 'Qatar (QAR)' => 'Qatar (QAR)', 'Saudi Arabia (SAR)' => 'Saudi Arabia (SAR)', 'Turkey (TRY)' => 'Turkey (TRY)', 'United Arab Emirates (AED)' => 'United Arab Emirates (AED)', 'United Kingdom (GBP)' => 'United Kingdom (GBP)', 'United States of America (USD)' => 'United States of America (USD)'],
+                                                isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)', ['required' => true]) }}
+                                            {{ Form::bsSelect2('default_area_unit', ['Marla' => 'Marla', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards'],
+                                            isset($account->default_area_unit)?$account->default_area_unit:'Square Feet', ['required' => true]) }}
+                                            {{ Form::bsSelect2('default_language', ['English' => 'English'], ['English' => 'English'], ['required' => true]) }}
+                                        </div>
+
+                                        <div class="card-header bg-success text-white text-uppercase">SMS Settings</div>
+                                        <div class="card-body">
+                                            {{ Form::bsRadio('sms_notification', isset($account->sms_notification)?$account->sms_notification:'On', ['required' => true, 'list' => ['On', 'Off']]) }}
+                                        </div>
+                                        <div class="card-footer">
+                                            {{ Form::submit('Update', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
+                                        </div>
+                                    </div>
+                                    {{ Form::close() }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
+                            <div class="my-4">
+                                Reports
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="agency_staff" role="tabpanel" aria-labelledby="agency_staff-tab">
+                            <div class="my-4">
+                                Agency Staff
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
+                            <div class="my-4">
+                                Clients &amp; Leads
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="agency_website" role="tabpanel" aria-labelledby="agency_website-tab">
+                            <div class="my-4">
+                                Agency Website
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
+                            <div class="my-4">
+                                Advertise
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer start -->
+    @include('website.includes.footer')
+@endsection
+
+@section('script')
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                // Initialize Select2 Elements
+                $('.select2').select2({
+                    language: '{{app()->getLocale()}}',
+                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
+                });
+                $('.select2bs4').select2({
+                    language: '{{app()->getLocale()}}',
+                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
+                    theme: 'bootstrap4',
+                });
+            });
+        })(jQuery);
+    </script>
+@endsection

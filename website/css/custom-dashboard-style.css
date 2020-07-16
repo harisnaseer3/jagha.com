@@ -1,0 +1,126 @@
+body {
+    font-size: .75rem;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+.form-control.form-control-sm {
+    font-size: .75rem;
+}
+
+.custom-control-label.custom-control-label-sm {
+    font-size: 1rem;
+}
+
+.custom-select-sm,
+.col-form-label-sm {
+    font-size: inherit;
+}
+
+/* Select2 start */
+.select2-container--default .select2-selection--single {
+    display: inline-block;
+    width: 100%;
+    height: calc(1.8125rem + 2px);
+    padding: .375rem 1.75rem .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    vertical-align: middle;
+    background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center;
+    background-size: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: inherit;
+    line-height: inherit;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    display: none;
+}
+
+.select2-container--default .select2-selection--multiple,
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #ced4da;
+}
+
+[lang=ar] .select2-results {
+    text-align: right;
+    direction: rtl;
+}
+
+/* Select2 end */
+
+#sidebar-property-management .card-header + .list-group .list-group-item:first-child,
+#sidebar-property-management .card-header + .list-group .list-group-item:last-child,
+#accordionListings .card,
+#accordionListings .card-header:first-child {
+    border-radius: 0;
+}
+
+#property_management .card-header a,
+#property_management .list-group-item a,
+#sidebar-property-management .card-header a,
+#sidebar-property-management .list-group-item a {
+    display: block;
+}
+
+#listings-tab.nav-pills .nav-link {
+    border-radius: 0;
+}
+
+.option-bar .float-left {
+    display: none;
+}
+
+@media screen and (min-width: 380px) {
+    .option-bar .float-left {
+        display: block;
+    }
+}
+
+.foot-menu {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(220, 220, 220);
+}
+
+.foot-copy {
+    float: left;
+    padding: 10px 0;
+    font-size: .7rem;
+    color: #555 !important;
+}
+
+.footer-menu-inline-list {
+    padding: 10px 0;
+    cursor: pointer;
+    float: right;
+}
+
+.footer-inline-ul li {
+    text-decoration: none;
+    color: #555 !important;
+    margin-right: 15px;
+}
+
+.footer-inline-ul li a {
+    text-decoration: none;
+    color: #555 !important;
+    font-size: .7rem !important;
+}
+
+.footer-logo {
+    line-height: 0;
+    margin-bottom: 20px;
+    width: 100%;
+}

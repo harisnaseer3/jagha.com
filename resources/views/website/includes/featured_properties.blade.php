@@ -1,0 +1,116 @@
+<div class="featured-properties content-area-12">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title">
+            <h2>Popular Properties</h2>
+        </div>
+        <div class="slick-slider-area" aria-label="popular properties">
+            <div class="row slick-carousel"
+                 data-slick='{"slidesToShow": 4, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+                @foreach($featured_properties as $feature_property)
+                    <div class="slick-slide-item">
+                        <div class="property-box-3" aria-label="listing link">
+                            <a href="{{$feature_property->property_detail_path()}}" class="property-img"
+                               title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}">
+                                <div class="property-thumbnail">
+                                    @if($feature_property->premium_listing === 1)
+                                        <div class="tag feature-tag">Premium</div>
+                                    @elseif($feature_property->hot_listing === 1)
+                                        <div class="tag feature-tag">HOT</div>
+                                    @elseif($feature_property->super_hot_listing === 1)
+                                        <div class="tag feature-tag">SUPER HOT</div>
+                                    @endif
+                                    @if($feature_property->image != null)
+                                        <img class="d-block w-100" src="{{asset('storage/properties/'.$feature_property->image)}}"
+                                             alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
+                                             title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
+                                             onerror="this.src='{{asset('storage/properties/default-image.png')}}'"/>
+                                    @else
+                                        <img class="d-block w-100" src="{{asset('storage/properties/default-image.png')}}" alt="properties"
+                                             onerror="this.src='{{asset('storage/properties/default-image.png')}}'"/>
+                                    @endif
+                                </div>
+                            </a>
+                            <div class="details m-0" style="width: 100%">
+                                <div class="top">
+                                    <h2 class="title">
+                                        <!-- method to convert price in number into price in words -->
+                                        <a href="{{$feature_property->property_detail_path()}}" title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}">
+                                            PKR {{ \Illuminate\Support\Str::limit(explode(',',Helper::getPriceInWords($feature_property->price))[0], 10, $end='...') }}
+                                        </a>
+                                    </h2>
+                                    <div class="location">
+                                        <a href="javascript:void(0)" tabindex="0">
+                                            <i class="fas fa-map-marker-alt"></i> {{\Illuminate\Support\Str::limit($feature_property->location, 10, $end='...')}}
+                                            <span class="grid-area">, {{\Illuminate\Support\Str::limit($feature_property->city, 10, $end='...')}}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <ul class="facilities-list clearfix">
+                                    @if($feature_property->bedrooms > 0)
+                                        <li style="width: 25%">
+                                            <i class="flaticon-furniture"></i>
+                                            <p>{{ number_format($feature_property->bedrooms) }} Beds</p>
+                                        </li>
+                                    @endif
+                                    @if($feature_property->bathrooms > 0)
+                                        <li style="width: 25%; text-align: right">
+                                            <i class="flaticon-holidays"></i>
+                                            <p>{{ number_format($feature_property->bathrooms) }} Bath</p>
+                                        </li>
+                                    @endif
+                                    <li style="width: 50%; margin-top: 3px">
+                                        <i class="fal fa-ruler-combined"></i>
+                                        <p>{{ number_format($feature_property->land_area) }} @if($feature_property->area_unit === 'Square Meters')
+                                                Sq.M. @elseif($feature_property->area_unit === 'Square Feet') Sq.F. @elseif ($feature_property->area_unit === 'Square Yards')
+                                                Sq.Yd. @else {{$feature_property->area_unit}} @endif</p>
+                                    </li>
+                                </ul>
+                                <div class="footer clearfix">
+                                    <div class="float-left days">
+                                        <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans() }}</p>
+                                    </div>
+                                    <ul class="float-right">
+                                        @if(\Illuminate\Support\Facades\Auth::check())
+                                            <li>
+                                                <div class="favorite-property" style="font-size: 20px;">
+                                                    <a href="javascript:void(0);" title="Add to favorite"
+                                                       style="display: {{$feature_property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()? 'none':'block' }}"
+                                                       class="favorite" data-id="{{$feature_property->id}}">
+                                                        <i class="fal fa-heart empty-heart color-black"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0);" title="Add to favorite"
+                                                       style="display : {{$feature_property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier() ? 'block':'none'}}"
+                                                       class="remove-favorite color-black" data-id="{{$feature_property->id}}">
+                                                        <i class="fas fa-heart filled-heart color-red"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <div class="favorite-property font-20">
+                                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">
+                                                        <i class="fal fa-heart empty-heart"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="slick-btn">
+                <div class="slick-prev slick-arrow-buton">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="slick-next slick-arrow-buton">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+
+---Downloaded files---
+The import files for: Flex Mag Demo Import were successfully downloaded!
+Initial max execution time = 300
+Files info:
+Site URL = https://www.aboutpakistan.com/blog
+Data file = C:\inetpub\wwwroot\blog/wp-content/themes/flex-mag/import/flexmag.xml
+Widget file = C:\inetpub\wwwroot\blog/wp-content/themes/flex-mag/import/flexmag.wie
+Customizer file = C:\inetpub\wwwroot\blog/wp-content/themes/flex-mag/import/flexmag.dat
+Redux files:
+not defined!
+
+---Importing widgets---
+Homepage Widget Area : 
+
+Flex Mag: Tag Row Widget - No Title - Widget already exists
+Flex Mag: Category List Widget - Entertainment - Imported
+Flex Mag: Tag Featured Widget - No Title - Imported
+Flex Mag: Tag List Widget - What&#039;s Hot - Widget already exists
+Flex Mag: Gallery Widget - Featured Gallery - Imported
+
+Sidebar Widget Area : 
+
+Flex Mag: Ad Widget - No Title - Imported
+Flex Mag: Facebook Widget - Facebook - Imported
+Flex Mag: Category List Widget - Latest News - Imported
+
+Home Left Sidebar Widget Area : 
+
+Flex Mag: Category List Widget - Title - Imported
+
+Home Right Sidebar Widget Area : 
+
+Flex Mag: Ad Widget - No Title - Imported
+Flex Mag: Facebook Widget - Facebook - Imported
+Flex Mag: Category List Widget - Latest News - Imported
+
+Post/Page Sidebar Widget Area : 
+
+Flex Mag: Ad Widget - No Title - Imported
+Flex Mag: Category List Widget - Latest News - Imported
+
+Footer Widget Area : 
+
+Flex Mag: Category List Widget - Latest News - Imported
+Flex Mag: Tag Cloud Widget - Popular Tags - Imported
+
+WooCommerce Sidebar Widget Area : 
+
+woocommerce_widget_cart - Cart - Site does not support widget
+woocommerce_product_categories - Categories - Site does not support widget
+woocommerce_price_filter - Filter by price - Site does not support widget
+woocommerce_top_rated_products - Top Rated Products - Site does not support widget
+
+
+
+---Importing customizer settings---
+Customizer settings import finished!
+
+---pt-ocdi/after_import---
+
