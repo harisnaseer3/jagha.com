@@ -1,24 +1,16 @@
 <!-- External JavaScript libraries -->
 <script src="{{asset('website/js/jquery-2.2.0.min.js')}}"></script>
-<script src="{{asset('website/js/popper.min.js')}}"></script>
 <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('website/js/bootstrap-submenu.js')}}"></script>
-<script src="{{asset('website/js/rangeslider.js')}}"></script>
 <script src="{{asset('website/js/jquery.mb.YTPlayer.js')}}"></script>
 <script src="{{asset('website/js/wow.min.js')}}"></script>
 <script src="{{asset('website/js/bootstrap-select.min.js')}}"></script>
-<script src="{{asset('website/js/jquery.easing.1.3.js')}}"></script>
 <script src="{{asset('website/js/jquery.scrollUp.js')}}"></script>
 <script src="{{asset('website/js/jquery.mCustomScrollbar.concat.min.js')}}"></script>
-<script src="{{asset('website/js/leaflet.js')}}"></script>
-<script src="{{asset('website/js/leaflet-providers.js')}}"></script>
-<script src="{{asset('website/js/leaflet.markercluster.js')}}"></script>
 <script src="{{asset('website/js/dropzone.js')}}"></script>
 <script src="{{asset('website/js/slick.min.js')}}"></script>
-<script src="{{asset('website/js/jquery.filterizr.js')}}"></script>
 <script src="{{asset('website/js/jquery.magnific-popup.min.js')}}"></script>
 <script src="{{asset('website/js/jquery.countdown.js')}}"></script>
-<script src="{{asset('website/js/maps.js')}}"></script>
 <script src="{{asset('website/js/app.js')}}"></script>
 {{--<script src="{{ asset('js/app.js') }}" defer></script>--}}
 

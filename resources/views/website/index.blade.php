@@ -72,38 +72,6 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
-                // $.validator.addMethod("regx", function (value, element, regexpr) {
-                //     return regexpr.test(value);
-                // }, "Invalid value");
-                // $('#property-id').validate({
-                //     rules: {
-                //         property_id: {
-                //             required: true,
-                //             regx: /^id-2020-\d{3,8}$/i,
-                //         },
-                //     },
-                //     messages: {},
-                //     errorElement: 'small',
-                //     errorClass: 'help-block text-red',
-                //     submitHandler: function (form) {
-                //         form.preventDefault();
-                //     },
-                //     invalidHandler: function (event, validator) {
-                //         // 'this' refers to the form
-                //         const errors = validator.numberOfInvalids();
-                //         if (errors) {
-                //             let error_tag = $('div.error.text-red');
-                //             error_tag.hide();
-                //             const message = errors === 1
-                //                 ? 'You missed 1 field. It has been highlighted'
-                //                 : 'You missed ' + errors + ' fields. They have been highlighted';
-                //             $('div.error.text-red span').html(message);
-                //             error_tag.show();
-                //         } else {
-                //             $('div.error.text-red').hide();
-                //         }
-                //     }
-                // });
             });
         })(jQuery);
     </script>
