@@ -18,9 +18,10 @@
 @endsection
 
 @section('content')
-    <!-- Main header start -->
-    @include('website.includes.top_header2')
+
+    @include('website.includes.nav')
     <!-- Banner start -->
+    <div class="fly">
     @include('website.includes.index-page-banner')
     <!-- Search Section start -->
     @include('website.includes.search2')
@@ -35,6 +36,7 @@
     <div class="clearfix"></div>
     <!-- Blog start -->
     @include('website.includes.recent_blogs')
+</div>
     <!-- Footer start -->
     @include('website.includes.footer')
 @endsection

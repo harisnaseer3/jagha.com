@@ -1,22 +1,20 @@
-$(function () {
+$(function() {
     'use strict';
 
     // Showing page loader
-    $(window).load(function () {
+    $(window).load(function() {
         // populateColorPlates();
-        setTimeout(function () {
+        setTimeout(function() {
             $(".page_loader").fadeOut("fast");
         }, 100);
 
         if ($('body .filter-portfolio').length > 0) {
-            $(function () {
-                $('.filter-portfolio').filterizr(
-                    {
-                        delay: 0
-                    }
-                );
+            $(function() {
+                $('.filter-portfolio').filterizr({
+                    delay: 0
+                });
             });
-            $('.filteriz-navigation li').on('click', function () {
+            $('.filteriz-navigation li').on('click', function() {
                 $('.filteriz-navigation .filtr').removeClass('active');
                 $(this).addClass('active');
             });
@@ -40,30 +38,28 @@ $(function () {
     $('.portfolio-item').magnificPopup({
         delegate: 'a',
         type: 'image',
-        gallery: {enabled: true}
+        gallery: { enabled: true }
     });
 
 
     // WOW animation library initialization
-    var wow = new WOW(
-        {
-            animateClass: 'animated',
-            offset: 100,
-            mobile: false
-        }
-    );
+    var wow = new WOW({
+        animateClass: 'animated',
+        offset: 100,
+        mobile: false
+    });
     wow.init();
 
     // Banner slider
-    (function ($) {
+    (function($) {
         //Function to animate slider captions
         function doAnimations(elems) {
             //Cache the animationend event in a variable
             var animEndEv = 'webkitAnimationEnd animationend';
-            elems.each(function () {
+            elems.each(function() {
                 var $this = $(this),
                     $animationType = $this.data('animation');
-                $this.addClass($animationType).one(animEndEv, function () {
+                $this.addClass($animationType).one(animEndEv, function() {
                     $this.removeClass($animationType);
                 });
             });
@@ -80,7 +76,7 @@ $(function () {
         //Pause carousel
         $myCarousel.carousel('pause');
         //Other slides to be animated on carousel slide event
-        $myCarousel.on('slide.bs.carousel', function (e) {
+        $myCarousel.on('slide.bs.carousel', function(e) {
             var $animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
             doAnimations($animatingElems);
         });
@@ -117,8 +113,8 @@ $(function () {
         return ((BotElement <= BotView) && (TopElement >= TopView));
     }
 
-    $(window).scroll(function () {
-        $(".counter").each(function () {
+    $(window).scroll(function() {
+        $(".counter").each(function() {
             var isOnView = isCounterElementVisible($(this));
             if (isOnView && !$(this).hasClass('Starting')) {
                 $(this).addClass('Starting');
@@ -127,7 +123,7 @@ $(function () {
                 }, {
                     duration: 3000,
                     easing: 'swing',
-                    step: function (now) {
+                    step: function(now) {
                         $(this).text(Math.ceil(now));
                     }
                 });
@@ -137,32 +133,32 @@ $(function () {
 
 
     // Countdown activation
-    $(function () {
+    $(function() {
         // Add background image
         //$.backstretch('../img/nature.jpg');
         var endDate = "December  27, 2020 15:03:25";
-        $('.countdown.simple').countdown({date: endDate});
+        $('.countdown.simple').countdown({ date: endDate });
         $('.countdown.styled').countdown({
             date: endDate,
-            render: function (data) {
+            render: function(data) {
                 $(this.el).html("<div>" + this.leadingZeros(data.days, 3) + " <span>Days</span></div><div>" + this.leadingZeros(data.hours, 2) + " <span>Hours</span></div><div>" + this.leadingZeros(data.min, 2) + " <span>Minutes</span></div><div>" + this.leadingZeros(data.sec, 2) + " <span>Seconds</span></div>");
             }
         });
         $('.countdown.callback').countdown({
             date: +(new Date) + 10000,
-            render: function (data) {
+            render: function(data) {
                 $(this.el).text(this.leadingZeros(data.sec, 2) + " sec");
             },
-            onEnd: function () {
+            onEnd: function() {
                 $(this.el).addClass('ended');
             }
-        }).on("click", function () {
+        }).on("click", function() {
             $(this).removeClass('ended').data('countdown').update(+(new Date) + 10000).start();
         });
 
     });
 
-    $(".range-slider-ui").each(function () {
+    $(".range-slider-ui").each(function() {
         var minRangeValue = $(this).attr('data-min');
         var maxRangeValue = $(this).attr('data-max');
         var minName = $(this).attr('data-min-name');
@@ -184,7 +180,7 @@ $(function () {
             min: minRangeValue,
             max: maxRangeValue,
             values: [minRangeValue, maxRangeValue],
-            slide: function (event, ui) {
+            slide: function(event, ui) {
                 event = event;
                 var currentMin = parseInt(ui.values[0]);
                 var currentMax = parseFloat(ui.values[1]);
@@ -211,18 +207,18 @@ $(function () {
     //     $('.search-section').toggleClass('show-search-area');
     //     $('.search-options-btn .fa').toggleClass('fa-chevron-down');
     // });
-    $(document).on('click', '.search-options-btn', function () {
+    $(document).on('click', '.search-options-btn', function() {
         $('.advance-search-options').toggle('show');
         $('.search-options-btn .fa').toggleClass('fa-chevron-up');
     });
 
     // Carousel with partner initialization
-    (function () {
-        $('#ourPartners').carousel({interval: 3600});
+    (function() {
+        $('#ourPartners').carousel({ interval: 3600 });
     }());
 
-    (function () {
-        $('.our-partners .item').each(function () {
+    (function() {
+        $('.our-partners .item').each(function() {
             var itemToClone = $(this);
             for (var i = 1; i < 4; i++) {
                 itemToClone = itemToClone.next();
@@ -236,18 +232,15 @@ $(function () {
         });
     }());
 
-    // Background video playing script
-    $(".player").mb_YTPlayer();
-
     // Multilevel menuus
 
     // Megamenu activation
-    $(".megamenu").on("click", function (e) {
+    $(".megamenu").on("click", function(e) {
         e.stopPropagation();
     });
 
     // Dropdown activation
-    $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+    $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
         if (!$(this).next().hasClass('show')) {
             $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
         }
@@ -255,7 +248,7 @@ $(function () {
         $subMenu.toggleClass('show');
 
 
-        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
             $('.dropdown-submenu .show').removeClass("show");
         });
 
@@ -264,7 +257,7 @@ $(function () {
 
 
     // Expending/Collapsing advance search content
-    $(document).on('click', '.show-more-options', function () {
+    $(document).on('click', '.show-more-options', function() {
         if ($(this).find('.fa').hasClass('fa-minus-circle')) {
             $(this).find('.fa').removeClass('fa-minus-circle');
             $(this).find('.fa').addClass('fa-plus-circle');
@@ -280,14 +273,14 @@ $(function () {
 
 
     // Full  Page Search Activation
-    $(function () {
-        $('a[href="#full-page-search"]').on('click', function (event) {
+    $(function() {
+        $('a[href="#full-page-search"]').on('click', function(event) {
             event.preventDefault();
             $('#full-page-search').addClass('open');
             $('#full-page-search > form > input[type="search"]').focus();
         });
 
-        $('#full-page-search, #full-page-search button.close').on('click keyup', function (event) {
+        $('#full-page-search, #full-page-search button.close').on('click keyup', function(event) {
             if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
                 $(this).removeClass('open');
             }
@@ -296,7 +289,7 @@ $(function () {
 
 
     // Slick Sliders
-    $('.slick-carousel').each(function () {
+    $('.slick-carousel').each(function() {
         var slider = $(this);
         $(this).slick({
             infinite: true,
@@ -306,17 +299,17 @@ $(function () {
             centerPadding: '0'
         });
 
-        $(this).closest('.slick-slider-area').find('.slick-prev').on("click", function () {
+        $(this).closest('.slick-slider-area').find('.slick-prev').on("click", function() {
             slider.slick('slickPrev');
         });
-        $(this).closest('.slick-slider-area').find('.slick-next').on("click", function () {
+        $(this).closest('.slick-slider-area').find('.slick-next').on("click", function() {
             slider.slick('slickNext');
         });
     });
 
     // Dropzone initialization
     Dropzone.autoDiscover = false;
-    $(function () {
+    $(function() {
         $("div#myDropZone").dropzone({
             url: "/file-upload"
         });
@@ -356,13 +349,13 @@ $(function () {
         $('body').append(plateStings);
     }
 
-    $(document).on('click', '.color-plate', function () {
+    $(document).on('click', '.color-plate', function() {
         var name = $(this).attr('data-color');
         $('link[id="style_sheet"]').attr('href', 'css/skins/' + name + '.css');
         $('.logo img').attr('src', 'img/logos/' + name + '-logo.png');
     });
 
-    $(document).on('click', '.setting-button', function () {
+    $(document).on('click', '.setting-button', function() {
         $('.option-panel').toggleClass('option-panel-collapsed');
     });
 
@@ -373,29 +366,28 @@ $(function () {
             center: new google.maps.LatLng(defaultLat, defaultLng),
             zoom: 15,
             scrollwheel: false,
-            styles: [
-                {
+            styles: [{
                     featureType: "administrative",
                     elementType: "labels",
                     stylers: [
-                        {visibility: "off"}
+                        { visibility: "off" }
                     ]
                 },
                 {
                     featureType: "water",
                     elementType: "labels",
                     stylers: [
-                        {visibility: "off"}
+                        { visibility: "off" }
                     ]
                 },
                 {
                     featureType: 'poi.business',
-                    stylers: [{visibility: 'off'}]
+                    stylers: [{ visibility: 'off' }]
                 },
                 {
                     featureType: 'transit',
                     elementType: 'labels.icon',
-                    stylers: [{visibility: 'off'}]
+                    stylers: [{ visibility: 'off' }]
                 },
             ]
         };
@@ -407,8 +399,8 @@ $(function () {
             position: myLatlng,
             map: map
         });
-        (function (marker) {
-            google.maps.event.addListener(marker, "click", function (e) {
+        (function(marker) {
+            google.maps.event.addListener(marker, "click", function(e) {
                 infoWindow.setContent("" +
                     // "<div class='map-properties contact-map-content'>" +
                     // "<div class='map-content'>" +
@@ -427,13 +419,11 @@ $(function () {
 });
 
 // mCustomScrollbar initialization
-(function ($) {
-    $(window).resize(function () {
+(function($) {
+    $(window).resize(function() {
         $('#map').css('height', $(this).height() - 110);
         if ($(this).width() > 768) {
-            $(".map-content-sidebar").mCustomScrollbar(
-                {theme: "minimal-dark"}
-            );
+            $(".map-content-sidebar").mCustomScrollbar({ theme: "minimal-dark" });
             $('.map-content-sidebar').css('height', $(this).height() - 110);
         } else {
             $('.map-content-sidebar').mCustomScrollbar("destroy"); //destroy scrollbar
