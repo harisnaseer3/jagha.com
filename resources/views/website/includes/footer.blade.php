@@ -112,7 +112,7 @@
                             <div id="foot-widget-wrap" class="left relative">
                                                                     <div class="foot-widget left relative">
                                                                                     <div class="foot-logo left realtive">
-                                                <img src="/news/wp-content/uploads/2020/05/logo-with-text.png" alt="About Pakistan" data-rjs="2" />
+                                                <img src="{{asset('img/logo/logo-with-text.png')}}" alt="About Pakistan" data-rjs="2" />
                                             </div><!--foot-logo-->
                                                                                 <div class="foot-info-text left relative">
                                             <p>Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.</p> </div><!--footer-info-text-->
