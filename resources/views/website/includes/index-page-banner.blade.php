@@ -6,9 +6,9 @@
                 <div class="carousel-caption banner-slider-inner d-flex h-100 text-center">
                     <div class="carousel-content container">
                         <div class="text-center">
-                            <h1 class="main-page-banner-heading">Search Properties of Pakistan</h1>
+                            <h1 class="main-page-banner-heading">Search Properties in Pakistan</h1>
                             <h6 class="none-mb-992-0">
-                                A real estate website.
+                                
                             </h6>
                             <div class="inline-search-area none-992">
                                 {{ Form::open(['route' => ['properties.search'], 'method' => 'get', 'role' => 'form', 'class' => 'index-form']) }}
