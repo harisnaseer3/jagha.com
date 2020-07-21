@@ -32,6 +32,6 @@ class UserSeeder extends Seeder
         ]);
         $admin->roles()->attach($adminRole);
 
-        factory(User::class, 100)->create();
+//        factory(User::class, 100)->create();
     }
 }

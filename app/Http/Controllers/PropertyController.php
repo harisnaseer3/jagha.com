@@ -261,7 +261,7 @@ class PropertyController extends Controller
         $property->views = $views + 1;
         $property->save();
 
-        $agency = (new Agency)->where('user_id', '=', $property->user_id)->first();
+        $agency = (new Agency)->where('id', '=', $property->agency_id)->first();
 
         $images = (new Image)->select('images.name')->where('images.property_id', '=', $property->id)->pluck('name')->toArray();
         $video = (new Video)->select('name', 'host')->where('property_id', '=', $property->id)->whereNull('deleted_at')->get()->toArray();

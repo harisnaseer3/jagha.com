@@ -54,7 +54,7 @@
                             <div class="ratings grid-stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>
-                        <img class="d-block w-100" src="{{ isset($property->image)? asset("storage/properties/".$property->image): asset("storage/properties/default-image.png")}}"
+                        <img class="d-block w-100" src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("storage/properties/default-image.png")}}"
                              alt="{{$property->sub_type}} for {{$property->purpose}}"
                              title="{{$property->sub_type}} for {{$property->purpose}}">
                     </a>

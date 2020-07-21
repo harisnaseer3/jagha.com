@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
-                    <img src="{{ isset($property->image)? asset("storage/properties/".$property->image): asset("storage/properties/default-image.png")}}"
+                    <img src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("storage/properties/default-image.png")}}"
                          alt="{{$property->sub_type}} for {{$property->purpose}}"
                          title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo">
                     @if($property->premium_listing === 1)
