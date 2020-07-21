@@ -18,8 +18,8 @@
 @endsection
 
 @section('content')
-    <!-- Main header start -->
-    @include('website.includes.top_header2')
+
+    @include('website.includes.nav')
     <!-- Banner start -->
     @include('website.includes.index-page-banner')
     <!-- Search Section start -->
