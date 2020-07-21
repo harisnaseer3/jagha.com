@@ -133,9 +133,9 @@
                                         <span></span>
                                     </div><!--fly-but-wrap-->
                                     <div class="nav-logo left">
-                                        <a itemprop="url" href="/blog/"><img
+                                        <a itemprop="url" href="/property"><img
                                                     itemprop="logo"
-                                                    src="/images/logo-with-text.png"
+                                                    src="{{asset('img/logo/logo-with-text.png')}}"
                                                     alt="About Pakistan" data-rjs="2"/></a>
                                         <h1 class="mvp-logo-title">All About Smart Pakistan</h1>
                                     </div><!--nav-logo-->
