@@ -135,7 +135,7 @@
                                     <div class="nav-logo left">
                                         <a itemprop="url" href="/blog/"><img
                                                     itemprop="logo"
-                                                    src="/news/wp-content/uploads/2020/05/logo-with-text.png"
+                                                    src="/images/logo-with-text.png"
                                                     alt="About Pakistan" data-rjs="2"/></a>
                                         <h1 class="mvp-logo-title">All About Smart Pakistan</h1>
                                     </div><!--nav-logo-->

@@ -7,7 +7,7 @@
         <div class="row wow" aria-label="popular locations">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="row">
-                    <div class="col-sm-12"><h4 class="font-16 color-555">Popular Cities to Buy Properties</h4>
+                    <div class="col-sm-12"><h4 class="font-16 color-555">Popular Properties to Buy/Rent Across Pakistan</h4>
                         <hr>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6 p-3">
