@@ -10,7 +10,7 @@
                 @foreach($key_agencies as $key=>$agency)
                     <div class="slick-slide-item" style="width: auto !important;" aria-label="key agency">
                         @if($agency->logo !== null)
-                            <img src="{{asset('storage/agency_logos/'.$agency->logo)}}" alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid featured-agency-image"
+                            <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid featured-agency-image"
                                  style="height:100px; width: 100px ;">
                         @else
                             <img src="{{asset('storage/agency_logos/'.'img256by256_1588397752.jpg')}}" alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid featured-agency-image"

@@ -58,8 +58,9 @@
                                 <div class="carousel-inner">
                                     @foreach($images as $key => $value)
                                         <div class="{{ $key===0 ? 'active' : '' }} item carousel-item" data-slide-number="{{$key}}">
-                                            <img src="{{asset('storage/properties/'.$value)}}" class="img-fluid" alt="{{$property->title}}" title="{{$property->title}}"
-                                                 onerror="this.src='{{asset('storage/properties/default-image.png')}}'"/>
+                                            <img src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-750x600.webp')}}" class="img-fluid" alt="{{$property->title}}"
+                                                 title="{{$property->title}}"
+                                            />
                                             <div class="price-ratings-box">
                                                 @if(\Illuminate\Support\Facades\Auth::guest())
                                                     <div class="favorite-property ratings" style="font-size: 20px;">
@@ -86,13 +87,12 @@
 
                                 <!-- main slider carousel nav controls -->
                                 <ul class="carousel-indicators smail-properties list-inline nav nav-justified">
-
                                     @foreach($images as $key => $value)
                                         <li class="list-inline-item {{$key===0?'active':''}}">
                                             <a id="{{'carousel-selector-'.strval((intval($key)+1))}}" class="{{$key===0?'selected':'' }}" data-slide-to="{{$key}}"
                                                data-target="#propertiesDetailsSlider">
-                                                <img src="{{asset('storage/properties/'.$value)}}" class="img-fluid" alt="properties-small"
-                                                     onerror="this.src='{{asset('storage/properties/default-image.png')}}'"/>
+                                                <img src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-200x200.webp')}}" class="img-fluid" alt="properties-small"
+                                                />
                                             </a>
                                         </li>
                                     @endforeach
@@ -115,7 +115,8 @@
                                                         <i class="fal fa-heart empty-heart"></i>
                                                     </a>
                                                     <a href="javascript:void(0);"
-                                                       style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="remove-favorite" data-id="{{$property->id}}" aria-label="add to favourite">
+                                                       style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="remove-favorite" data-id="{{$property->id}}"
+                                                       aria-label="add to favourite">
                                                         <i class="fas fa-heart filled-heart" style="color: red;"></i>
                                                     </a>
                                                 </div>
@@ -307,7 +308,7 @@
                                 <div class="row">
                                     @if($agency->logo !==null)
                                         <div class="col-sm-6 text-center">
-                                            <img src="{{asset('storage/agency_logos/'.$agency->logo)}}" alt="brand" style="max-width: 40%">
+                                            <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 40%">
                                         </div>
                                     @else
                                         <div class="col-sm-6 text-center">
@@ -327,7 +328,9 @@
                                                 </span>
                                                 </div>
                                             @endif
-                                            <div class="mt-1" style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>Company CEO </span></div>
+                                            @if($agency->ceo_name !== null)
+                                                <div class="mt-1" style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$agency->ceo_name}} </span></div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

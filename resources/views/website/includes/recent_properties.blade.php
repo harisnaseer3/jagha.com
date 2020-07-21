@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Main title -->
         <div class="main-title">
-            <h1>Recently Properties</h1>
+            <h1>Recent Properties</h1>
         </div>
         <div class="slick-slider-area">
             <div class="row slick-carousel"
@@ -11,8 +11,8 @@
                     <div class="slick-slide-item">
                         <div class="property-box-5">
                             <div class="property-photo">
-                                <img class="img-fluid" src="{{asset('storage/img/properties/default-image.png')}}" alt="properties"
-                                     onerror="this.src='{{asset('storage/img/properties/default-image.png')}}'"/>
+                                <img class="img-fluid" src="{{asset('thumbnails/properties/'.explode('.',$recent_property->image)[0].'-450x350.webp')}}" alt="recent-properties"
+                                     title=""/>
                                 <div class="date-box">{{$recent_property->purpose}}</div>
                             </div>
                             <div class="detail">
@@ -21,7 +21,7 @@
                                         <a href="{{route('properties.show',$recent_property->id)}}">{{ \Illuminate\Support\Str::limit($recent_property->title, 15, $end='...') }}</a>
                                     </h3>
                                     <div class="location">
-                                        <a href="properties-details.html">
+                                        <a href="">
                                             <i class="fas fa-map-marker-alt"></i>{{\Illuminate\Support\Str::limit($recent_property->location, 10, $end='...')}}, {{ $recent_property->city }}
                                         </a>
                                     </div>
