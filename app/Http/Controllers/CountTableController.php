@@ -15,32 +15,48 @@ class CountTableController extends Controller
             ->where('property_sub_type', '=', 'House')
             ->orWhere('property_sub_type', '=', 'Flat')
             ->where('property_purpose', '=', 'sale')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+            ->limit(10)->get();
 
         $popular_cities_plots_on_sale = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
             ->where('property_type', '=', 'Plots')
-            ->where('property_purpose', '=', 'sale')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
+            ->where('property_purpose', '=', 'sale')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
             ->limit(10)->get();
 
         $popular_cities_commercial_on_sale = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->where('property_type', '=', 'commercial')
             ->where('property_purpose', '=', 'sale')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+            ->limit(10)->get();
 
         $popular_cities_property_on_rent = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->where('property_purpose', '=', 'rent')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+            ->limit(10)->get();
 
-
-        $lahore_homes = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+        $lahore_homes = DB::table('property_count_by_locations')
+            ->select(DB::raw('MAX(property_count_by_locations.property_count) AS property_count'),
+                'city_id', 'city_name', 'property_count_by_locations location_id' ,'property_count_by_property_purposes.property_purpose',
+                'property_count_by_property_purposes.property_type', 'location_id', 'property_count_by_property_purposes.location_name')
             ->where('property_type', '=', 'Homes')
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'lahore')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->limit(6)->get();
+
+//        SELECT `property_count_by_locations`.`city_name`, `property_count_by_locations`.`location_id` ,
+// MAX(`property_count_by_locations`.`property_count`) AS 'max', `property_count_by_property_purposes`.`property_type`
+//FROM `property_count_by_locations`
+//LEFT JOIN `property_count_by_property_purposes`
+//ON `property_count_by_locations`.`location_id` = `property_count_by_property_purposes`.`location_id`
+//WHERE `property_count_by_locations`.`city_name` = 'islamabad'
+
+
+
+
 
         $lahore_plots = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')

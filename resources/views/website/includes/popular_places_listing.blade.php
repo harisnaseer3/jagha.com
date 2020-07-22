@@ -25,6 +25,7 @@
                                     </h6>
                                 </li>
                             @endforeach
+
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -40,8 +41,8 @@
                                             <span>({{$property_data->property_count}})</span>
                                         </a>
                                     </h6>
-                                </li>
                             @endforeach
+                                </li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -61,6 +62,7 @@
                                     </h6>
                                 </li>
                             @endforeach
+{{--                            <a href="javascript:void(0)" title="View all Cities" class="">View all Cities</a>--}}
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -80,6 +82,7 @@
                                     </h6>
                                 </li>
                             @endforeach
+
                         </ul>
                     </div>
                 </div>
