@@ -147,7 +147,8 @@ h6 {
     color: rgb(85, 85, 85) !important;
     font-size: 11px;
     text-align: left;
-    padding-left: 12px
+    padding-left: 12px;
+	padding-top: 6px;
 }
 
 .search2-input-label {
