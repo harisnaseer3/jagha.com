@@ -64,16 +64,19 @@ class PropertyController extends Controller
             'popular_cities_homes_on_sale' => (new CountTableController())->popularLocations()['popular_cities_homes_on_sale'],
             'popular_cities_plots_on_sale' => (new CountTableController())->popularLocations()['popular_cities_plots_on_sale'],
             'city_wise_homes_data' => [
-                'lahore' => (new CountTableController())->popularLocations()['city_wise_homes_data']['lahore'],
                 'karachi' => (new CountTableController())->popularLocations()['city_wise_homes_data']['karachi'],
+                'peshawar' => (new CountTableController())->popularLocations()['city_wise_homes_data']['peshawar'],
+                'lahore' => (new CountTableController())->popularLocations()['city_wise_homes_data']['lahore'],
                 'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_homes_data']['rawalpindi/Islamabad']
             ],
             'city_wise_plots_data' => [
-                'lahore' => (new CountTableController())->popularLocations()['city_wise_plots_data']['lahore'],
                 'karachi' => (new CountTableController())->popularLocations()['city_wise_plots_data']['karachi'],
+                'peshawar' => (new CountTableController())->popularLocations()['city_wise_plots_data']['peshawar'],
+                'lahore' => (new CountTableController())->popularLocations()['city_wise_plots_data']['lahore'],
                 'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_plots_data']['rawalpindi/Islamabad']
             ],
-            'popular_cities_flats_on_sale' => (new CountTableController())->popularLocations()['popular_cities_flats_on_sale'],
+            'popular_cities_commercial_on_sale' => (new CountTableController())->popularLocations()['popular_cities_commercial_on_sale'],
+            'popular_cities_property_on_rent' => (new CountTableController())->popularLocations()['popular_cities_property_on_rent'],
             'property_types' => $property_types,
             'blogs' => (new BlogController)->recentBlogsOnMainPage(),
             'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
@@ -707,6 +710,7 @@ class PropertyController extends Controller
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
+
         if (count($request->all()) > 1) {
             str_replace('-', ' ', $sub_type);
             $city = str_replace('-', ' ', $city);
@@ -753,12 +757,14 @@ class PropertyController extends Controller
 
         } else {
 
-            if (!in_array($sub_type, ['houses', 'flats', 'plots'])) {
+            if (!in_array($sub_type, ['houses', 'flats', 'plots','office', 'shop', 'warehouse', 'factory', 'building', 'other'])) {
                 return redirect('/');
             }
             $type = '';
             if (in_array($sub_type, ['houses', 'flats'])) $type = 'homes';
-            elseif ($sub_type === 'plots') $type = 'plots';
+            if ($sub_type === 'plots') $type = 'plots';
+            if(in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
+                $type = 'commercial';
 
             if ($sub_type === 'houses') $sub_type = 'house';
             elseif ($sub_type === 'flats') $sub_type = 'flat';
@@ -898,24 +904,23 @@ class PropertyController extends Controller
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
-
         $properties = (new Property)
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'locations.id as location_id', 'locations.name AS location',
-                'cities.name AS city', 'p.name', 'properties.favorites', 'agencies.title as agency')
+                'cities.name AS city', 'p.name AS image', 'properties.favorites', 'agencies.title as agency')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('images as p', function ($q) {
                 $q->on('properties.id', '=', 'p.property_id')
                     ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
             })
-            ->leftJoin('agencies', 'properties.user_id', '=', 'agencies.user_id')
+//            check if agency is active
+            ->leftJoin('agencies', 'properties.agency_id', '=', 'agencies.id')
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
         if ($location !== null) $properties->where('location_id', '=', $location->id);
-
         $properties->where('properties.purpose', '=', $data['purpose']);
 
         if ($data['type'] !== '' && $data['type'] !== null) $properties->where('properties.type', '=', $data['type']);

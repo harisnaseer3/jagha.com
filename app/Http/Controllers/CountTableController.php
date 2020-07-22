@@ -13,14 +13,9 @@ class CountTableController extends Controller
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->where('property_type', '=', 'Homes')
             ->where('property_sub_type', '=', 'House')
+            ->orWhere('property_sub_type', '=', 'Flat')
             ->where('property_purpose', '=', 'sale')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
-
-        $popular_cities_flats_on_sale = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
-            ->where('property_type', '=', 'Homes')
-            ->where('property_sub_type', '=', 'Flat')
-            ->where('property_purpose', '=', 'sale')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
 
         $popular_cities_plots_on_sale = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
@@ -28,33 +23,59 @@ class CountTableController extends Controller
             ->where('property_purpose', '=', 'sale')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
             ->limit(10)->get();
 
+        $popular_cities_commercial_on_sale = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+            ->where('property_type', '=', 'commercial')
+            ->where('property_purpose', '=', 'sale')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
+
+        $popular_cities_property_on_rent = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+            ->where('property_purpose', '=', 'rent')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')->limit(10)->get();
+
+
         $lahore_homes = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->where('property_type', '=', 'Homes')
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'lahore')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->inRandomOrder()->limit(10)->get();
+            ->limit(6)->get();
 
         $lahore_plots = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->where('property_type', '=', 'Plots')
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'lahore')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->inRandomOrder()->limit(10)->get();
+            ->limit(6)->get();
 
         $karachi_homes = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->where('property_type', '=', 'Homes')
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'karachi')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->inRandomOrder()->limit(10)->get();
+            ->limit(6)->get();
+
+        $peshawar_plots = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->where('property_type', '=', 'Plots')
+            ->where('property_purpose', '=', 'sale')
+            ->where('city_name', '=', 'peshawar')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->limit(6)->get();
+
+        $peshawar_homes = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->where('property_type', '=', 'Homes')
+            ->where('property_purpose', '=', 'sale')
+            ->where('city_name', '=', 'peshawar')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->limit(6)->get();
 
         $karachi_plots = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->where('property_type', '=', 'Plots')
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'karachi')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->inRandomOrder()->limit(10)->get();
+            ->limit(6)->get();
 
         $isb_homes = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
@@ -62,7 +83,7 @@ class CountTableController extends Controller
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'islamabad')
             ->orWhere('city_name', '=', 'rawalpindi')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->inRandomOrder()->limit(10)->get();
+            ->limit(6)->get();
 
         $isb_plots = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
@@ -70,22 +91,25 @@ class CountTableController extends Controller
             ->where('property_purpose', '=', 'sale')
             ->where('city_name', '=', 'islamabad')
             ->orWhere('city_name', '=', 'rawalpindi')->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->inRandomOrder()->limit(10)->get();
+            ->limit(6)->get();
 
         $popular_locations = [
             'popular_cities_homes_on_sale' => $popular_cities_houses_on_sale,
             'popular_cities_plots_on_sale' => $popular_cities_plots_on_sale,
             'city_wise_homes_data' => [
-                'lahore' => $lahore_homes,
                 'karachi' => $karachi_homes,
+                'peshawar' => $peshawar_homes,
+                'lahore' => $lahore_homes,
                 'rawalpindi/Islamabad' => $isb_homes
             ],
             'city_wise_plots_data' => [
-                'lahore' => $lahore_plots,
                 'karachi' => $karachi_plots,
+                'peshawar' => $peshawar_plots,
+                'lahore' => $lahore_plots,
                 'rawalpindi/Islamabad' => $isb_plots
             ],
-            'popular_cities_flats_on_sale' => $popular_cities_flats_on_sale
+            'popular_cities_commercial_on_sale' => $popular_cities_commercial_on_sale,
+            'popular_cities_property_on_rent' => $popular_cities_property_on_rent
         ];
         return $popular_locations;
     }

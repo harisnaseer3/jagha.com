@@ -4,9 +4,9 @@
         //TODO: change base url when upload to server
 
         // let baseurl = 'http://127.0.0.1/propertymanagement/public';
-        let baseurl = window.location.origin+'/property';
+        let baseurl = window.location.origin + '/property';
 
-        let page_link='',  purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
+        let page_link = '', purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
 
         purpose = $('[name = property_purpose]').val();
         type = $('[name = property_type]').val();
@@ -15,9 +15,9 @@
         max_price = $('[name = max_price]').val();
         min_area = $('[name = min_area]').val();
         max_area = $('[name = max_area]').val();
-        area_unit = $('[name = unit]').val();
+        area_unit = $('[name = property_area_unit]').val();
         beds = $('[name = bedrooms]').val();
-        subtype = $('[name^= property_subtype-'+type+']').val();
+        subtype = $('[name^= property_subtype-' + type + ']').val();
         location = $('#location').val();
         // console.log(purpose, type, city, beds, min_price, max_price, min_area, max_area, area_unit,subtype);
 
@@ -45,7 +45,7 @@
     function search2Withparams() {
         //TODO: change base url when upload to server
         // let baseurl = 'http://127.0.0.1/propertymanagement/public';
-        let baseurl = window.location.origin+'/property';
+        let baseurl = window.location.origin + '/property';
 
         let purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
 
@@ -56,7 +56,7 @@
         max_price = $('#search2-select-max-price').val();
         min_area = $('#search2-select-min-area').val();
         max_area = $('#search2-select-max-area').val();
-        area_unit = $('[name = unit]').val();
+        area_unit = $('[name = search2-unit]').val();
         beds = $('#search2-beds').val();
         subtype = $('[id^= search2-subtype-' + type + ']').val()
         location = $('#search2-location').val();
@@ -77,6 +77,7 @@
         if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
         page_link += '&area_unit=' + area_unit.replace(' ', '-').toLowerCase();
         page_link += '&sort=newest';
+        // console.log(area_unit, page_link);
         window.location.href = page_link;
     }
 
@@ -91,7 +92,7 @@
         jQuery.ajax({
             type: 'post',
             // url: 'http://127.0.0.1/propertymanagement/public/searchWithID',
-            url: window.location.origin+'/property/searchWithID',
+            url: window.location.origin + '/property/searchWithID',
             data: {id: id},
             // dataType: 'json',
             success: function (data) {
@@ -119,7 +120,7 @@
         jQuery.ajax({
             type: 'get',
             // url: task === 'add' ? 'http://127.0.0.1/propertymanagement/public/dashboard/properties/' + id + '/favorites' : 'http://127.0.0.1/propertymanagement/public/dashboard/properties/' + id + '/favorites/1',
-            url: task === 'add' ? window.location.origin+'/property/dashboard/properties/' + id + '/favorites' : window.location.origin+'/property/dashboard/properties/' + id + '/favorites/1',
+            url: task === 'add' ? window.location.origin + '/property/dashboard/properties/' + id + '/favorites' : window.location.origin + '/property/dashboard/properties/' + id + '/favorites/1',
             dataType: 'json',
             success: function (data) {
                 // console.log(data);
@@ -141,7 +142,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: window.location.origin+'/property/locations',
+            url: window.location.origin + '/property/locations',
             data: {city: city},
             dataType: 'json',
             success: function (data) {
@@ -166,33 +167,33 @@
     }
 
     function search2AreaUnitOption(area_options, area_short_form, min_options, max_options) {
-        let search2_html = '<div class="row">' +
-            '                   <div class="col-sm-6">' +
+        let search2_min_html =
             '                       <div class="form-group">' +
             '                           <div class="index-page-select" style="padding: 0;">' +
-            '                               <label class="search2-input-label min-area-label" for="search2-select-min-area"> MIN AREA (' + area_short_form + ')</label>' +
-            '                               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-min-area" style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min-area">';
-        if (sessionStorage.getItem('min_area') === '0') search2_html += '   <option value="0" selected>0</option>';
-        else search2_html += '  <option value="0">0</option>';
-        search2_html += min_options;
-        search2_html += '                    </select>' +
+            '                               <label class="search2-input-label min-area-label" for="search2-select-min-area"> MIN AREA</label>' +
+            '                               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-min-area" style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_area">';
+
+        if (sessionStorage.getItem('min_area') === '0') search2_min_html  += '   <option value="0" selected>0</option>';
+        else search2_min_html  += '  <option value="0">0</option>';
+        search2_min_html  += min_options;
+        search2_min_html  += '                    </select>' +
             '                           </div>' +
-            '                       </div>' +
-            '                   </div>' +
-            '                   <div class="col-sm-6 input-select-on-small-screen">' +
-            '                       <div class="form-group">' +
+            '                       </div>' ;
+
+        let search2_max_html = '    <div class="form-group">' +
             '                           <div class="index-page-select" style="padding: 0">' +
-            '                               <label class="search2-input-label max-area-label" for="search2-select-max-area">MAX AREA (' + area_short_form + ')</label>' +
-            '                               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-max-area" style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_area">';
-        if (sessionStorage.getItem('max_area') === 'any') search2_html += '   <option value="Any" selected>Any</option>';
-        else search2_html += '   <option value="Any" >Any</option>';
-        search2_html += max_options;
-        search2_html += '                   </select>' +
+            '                               <label class="search2-input-label max-area-label" for="search2-select-max-area">MAX AREA</label>' +
+            '                               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" ' +
+            'id="search2-select-max-area" style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_area">';
+        if (sessionStorage.getItem('max_area') === 'any') search2_max_html += '   <option value="Any" selected>Any</option>';
+        else search2_max_html += '   <option value="Any" >Any</option>';
+        search2_max_html += max_options;
+        search2_max_html += '                   </select>' +
             '                             </div>' +
-            '                           </div>' +
-            '                       </div>' +
-            '                 </div>';
-        $('#search2-area-container').html(search2_html);
+            '                           </div>';
+
+        $('#search2-min-area').html(search2_min_html);
+        $('#search2-max-area').html(search2_max_html);
         $('#search2-select-max-area').select2();
         $('#search2-select-min-area').select2();
 
@@ -254,7 +255,7 @@
         html =
             '<div class="row">' +
             '       <div class="col-sm-6" style="padding-right:0; border-right:1px solid #ced4da">' +
-            '           <div class="label-container"><label class="input-label min-area-label" for="select-min-area">MIN AREA (' + area_short_form + ')</label></div>' +
+            '           <div class="label-container"><label class="input-label min-area-label" for="select-min-area">MIN AREA</label></div>' +
             '           <div class="index-page-select">' +
             '               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="select-min-area"' +
             '                       style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_area">';
@@ -265,7 +266,7 @@
             '               </div>' +
             '           </div>' +
             '        <div class="col-sm-6" style="padding-left: 0;">' +
-            '           <div class="label-container"><label class="input-label max-area-label" for="select-max-area">MAX AREA (' + area_short_form + ')</label></div>' +
+            '           <div class="label-container"><label class="input-label max-area-label" for="select-max-area">MAX AREA</label></div>' +
             '           <div class="index-page-select">' +
             '               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="select-max-area" ' +
             'style="width: 100%; border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_area">';
@@ -389,8 +390,8 @@
         $('.reset-search-option').on('click', function () {
             $('#location').val('');
             $('input[name=area_unit]').val('Marla');
-            $('.min-area-label').text('MIN AREA (Marla)');
-            $('.max-area-label').text('MAX AREA (Marla)');
+            // $('.min-area-label').text('MIN AREA');
+            // $('.max-area-label').text('MAX AREA (Marla)');
 
             $('.index-form').trigger('reset');
             $('.custom-select').data('index', '0').trigger('change');
@@ -403,8 +404,7 @@
 
         // call rest form from banner lg view
         $('.reset-search-banner2, #reset-search-banner2lg').on('click', function () {
-            $('.min-area-label').text('MIN AREA (Marla)');
-            $('.max-area-label').text('MAX AREA (Marla)');
+
             $.each($('.custom-select'), function (index, value) {
                 if (!!~(value.id).indexOf("purpose"))
                     $(this).val('Buy').trigger('change');
@@ -436,21 +436,21 @@
         //on max and min area btn find btn store values of area min and area max price min
 
         $(document.body).on("change", "[name=max_area]", function () {
-            let data2 = $('[name=max_area]').val();
+            let data2 = $(this).val();
             sessionStorage.setItem('max_area', data2);
         });
         $(document.body).on("change", "[name=min_area]", function () {
-            let data1 = $('[name=min_area]').val();
+            let data1 = $(this).val();
             sessionStorage.setItem('min_area', data1);
         });
 
         //    get value from model
-        $('#area-unit-save').on('click', function () {
-            let area_unit = $('#area-unit option:selected').val();
-            $('#input-area-unit').val(area_unit);
-            $('#search2-input-area-unit').val(area_unit);
-            areaUnitOptions(area_unit);
-        });
+        // $('#area-unit-save').on('click', function () {
+            // let area_unit = $('#area-unit option:selected').val();
+            // $('#input-area-unit').val(area_unit);
+            // $('#search2-input-area-unit').val(area_unit);
+            // areaUnitOptions(area_unit);
+        // });
         areaUnitOptions('Marla');
     });
 })

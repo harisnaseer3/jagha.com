@@ -85,7 +85,7 @@ class PropertySeeder extends Seeder
                         'city' => json_encode([$city->name]),
                         'title' => $data['agency_name'],
                         'description' => $data['agency_description'],
-                        'phone' => isset($data['agency_phone']) ? explode('-',$data['agency_phone'])[0]:null,
+                        'phone' => isset($data['agency_phone']) ? $data['agency_phone'] :null,
                         'cell' => null,
                         'fax' => null,
                         'address' => null,

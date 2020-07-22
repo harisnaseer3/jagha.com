@@ -19,7 +19,9 @@ class FooterController extends Controller
             ->limit(5)
             ->get();
 
-        $footer_agencies = (new Agency)->select('title', 'city', 'cell', 'ceo_name')->where('status', '=', 'verified')
+        $footer_agencies = (new Agency)->select('title', 'city', 'phone', 'ceo_name')
+            ->where('status', '=', 'verified')
+            ->where('featured_listing', '=', '1')
             ->orderBy('created_at', 'DESC')
             ->limit(5)
             ->get();
