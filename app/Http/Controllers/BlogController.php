@@ -27,7 +27,7 @@ class BlogController extends Controller
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
                         LEFT JOIN `wp_terms`  ON `wp_terms`.`term_id` = `wp_term_taxonomy`.`term_id`
                         JOIN `wp_users` ON `wp_posts`.`post_author` = `wp_users`.`ID`
-                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Medical\'  AND `wp_posts`.`post_type` = \'post\'
+                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Property\'  AND `wp_posts`.`post_type` = \'post\'
                     GROUP BY `wp_posts`.`ID`
                 ) `t1`
                 JOIN (
@@ -59,7 +59,7 @@ class BlogController extends Controller
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
                         LEFT JOIN `wp_terms`  ON `wp_terms`.`term_id` = `wp_term_taxonomy`.`term_id`
                         JOIN `wp_users` ON `wp_posts`.`post_author` = `wp_users`.`ID`
-                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Medical\'  AND `wp_posts`.`post_type` = \'post\'
+                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Property\'  AND `wp_posts`.`post_type` = \'post\'
                     GROUP BY `wp_posts`.`ID`
                 ) `t1`
                 JOIN (SELECT `wp_posts`.`ID` AS `id`, `pm2`.`meta_value` AS `image`
@@ -77,7 +77,7 @@ class BlogController extends Controller
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
                         LEFT JOIN `wp_terms`  ON `wp_terms`.`term_id` = `wp_term_taxonomy`.`term_id`
                         JOIN `wp_users` ON `wp_posts`.`post_author` = `wp_users`.`ID`
-                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Medical\'  AND `wp_posts`.`post_type` = \'post\'
+                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Property\'  AND `wp_posts`.`post_type` = \'post\'
                     GROUP BY `wp_posts`.`ID`
                 ) `t1`
                 JOIN (SELECT `wp_posts`.`ID` AS `id`, `pm2`.`meta_value` AS `image`
