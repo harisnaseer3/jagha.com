@@ -16,8 +16,6 @@
 <!-- Favicon icon -->
 <link rel="shortcut icon" href="{{asset('favicon.ico')}}" type="image/x-icon">
 
-<link rel="stylesheet" type="text/css" href="{{asset('website/fonts/font-awesome/css/font-awesome.min.css')}}" async defer>
-
 <!-- Google fonts -->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700" rel="stylesheet" async defer>
 
