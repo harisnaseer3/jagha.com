@@ -129,63 +129,84 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <div class="index-page-select p-0">
-                                            <label class="search2-input-label" for="search2-select-min-price">MIN PRICE</label>
-                                            <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-select-min-price" style="width: 100%;" tabindex="-1"
-                                                    aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_price">
-                                                <option value="0" data-index="0" {{request()->query('min_price')? '' : 'selected'}} >0</option>
-                                                @foreach(['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000'] as $key => $price)
-                                                    <option value="{{$price}}" {{request()->query('min_price') === $price? 'selected' : ''}} data-index="{{$key}}">{{$price}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 input-select-on-small-screen mt-0">
-                                    <div class="form-group">
-                                        <div class="index-page-select p-0">
-                                            <label class="search2-input-label" for="search2-select-max-price">MAX PRICE</label>
-                                            <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-max-price" style="width: 100%;" tabindex="-1"
-                                                    aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_price">
-                                                <option value="Any" data-index="0" selected>Any</option>
-                                                @foreach(['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000', '5,000,000,000'] as $price)
-                                                    <option value="{{$price}}" {{request()->query('max_price') === $price? 'selected' : ''}} data-index="{{$key}}">{{$price}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-area-container"></div>
-                        {{ Form::bsHidden('search2-area_unit','Marla',['id' => 'search2-input-area-unit']) }}
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 mt-2">
-                            <div class="form-group" style="background-color:#274abb; border-radius: 3px;">
-                                <div class="reset-search-banner2 padding-5">
-                                    <strong style="color: white;">Reset Search</strong>
-                                </div>
-                            </div>
-                            <div class="form-group" style="background-color: #274abb; border-radius: 3px;">
-                                <div class="padding-5" type="btn" data-toggle="modal" data-target="#modalCart">
-                                    <strong style="color: white;">Change Area Unit</strong>
+                            <div class="form-group">
+                                <div class="index-page-select p-0">
+                                    <label class="search2-input-label" for="search2-bedrooms">AREA UNIT</label>
+                                    <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-input-area-unit" style="width: 100%;" tabindex="-1" aria-hidden="true"
+                                            aria-describedby="unit-error" aria-invalid="false" name="search2-unit">
+                                        @foreach(['Marla','Kanal','Square Feet','Square Yards','Square Meters'] as $key => $unit)
+                                            <option value="{{$unit}}"
+                                                    {{ucwords(str_replace('-', ' ', request()->query('area_unit'))) === $unit? 'selected' : ''}}
+                                                    data-index="{{$unit}}"> {{$unit}}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
                             <div class="form-group">
-                                <button class="search-button" style="margin-top:10px;text-transform:none; padding: 5px 5px" type="submit">
+                                <div class="index-page-select p-0">
+                                    <label class="search2-input-label" for="search2-select-min-price">MIN PRICE</label>
+                                    <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-select-min-price" style="width: 100%;" tabindex="-1"
+                                            aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_price">
+                                        <option value="0" data-index="0" {{request()->query('min_price')? '' : 'selected'}} >0</option>
+                                        @foreach(['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000'] as $key => $price)
+                                            <option value="{{$price}}" {{request()->query('min_price') === $price? 'selected' : ''}} data-index="{{$key}}">{{$price}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6">
+                             <div class="form-group">
+                                <div class="index-page-select p-0">
+                                    <label class="search2-input-label" for="search2-select-max-price">MAX PRICE</label>
+                                    <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-max-price" style="width: 100%;" tabindex="-1"
+                                            aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_price">
+                                        <option value="Any" data-index="0" selected>Any</option>
+                                        @foreach(['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000', '5,000,000,000'] as $price)
+                                            <option value="{{$price}}" {{request()->query('max_price') === $price? 'selected' : ''}} data-index="{{$key}}">{{$price}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-min-area"></div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-max-area"></div>
+{{--                        {{ Form::bsHidden('search2-area_unit','Marla',['id' => 'search2-input-area-unit']) }}--}}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6">
+                            <div class="form-group mt-2">
+                                <div class="reset-search-banner2 search-button" style="text-transform:none;">
+                                    <strong style="color: white">Reset Search</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6">
+                            <div class="form-group">
+                                <button class="search-button" style="margin-top:10px;text-transform:none;" type="submit">
                                     <i class="fa fa-search"></i><strong style="color: white">Find</strong>
                                 </button>
                             </div>
                         </div>
+                        {{--                        <div class="col-lg-3 col-md-6 col-sm-6 col-6">--}}
+                        {{--                            <div class="form-group" style="background-color:#274abb; border-radius: 3px;">--}}
+                        {{--                                <div class="reset-search-banner2 search-button" style="text-transform:none;">--}}
+                        {{--                                    <strong style="color: white">Reset Search</strong>--}}
+                        {{--                                </div>--}}
+                        {{--                            </div>--}}
+                        {{--                                 <div class="form-group" style="background-color: #274abb; border-radius: 3px;">--}}
+                        {{--                                     <div class="padding-5" type="btn" data-toggle="modal" data-target="#modalCart">--}}
+                        {{--                                         <strong style="color: white;">Change Area Unit</strong>--}}
+                        {{--                                     </div>--}}
+                        {{--                                 </div>--}}
+                        {{--                        </div>--}}
+
                     </div>
                     {{ Form::hidden('sort','newest')}}
                     {{ Form::close() }}
@@ -196,39 +217,39 @@
     </div>
 </div>
 {{--Modal--}}
-<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Change area unit</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 justify-content-center">
-                            <div class="form-group">
-                                <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" style="width: 100%;" tabindex="-1"
-                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="unit" id="area-unit">
-                                    <option value selected disabled>Select unit</option>
-                                    <option value="Square Feet">Square Feet</option>
-                                    <option value="Square Yards">Square Yards</option>
-                                    <option value="Square Meters">Square Meters</option>
-                                    <option value="Marla" selected>Marla</option>
-                                    <option value="Kanal">Kanal</option>
-                                </select>
-                            </div>
-                            <a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; color: white"
-                               data-dismiss="modal" id="area-unit-save">Save</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--}}
+{{--     aria-hidden="true">--}}
+{{--    <div class="modal-dialog" role="document">--}}
+{{--        <div class="modal-content">--}}
+{{--            <!--Header-->--}}
+{{--            <div class="modal-header">--}}
+{{--                <h4 class="modal-title" id="myModalLabel">Change area unit</h4>--}}
+{{--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+{{--                    <span aria-hidden="true">×</span>--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--            <!--Body-->--}}
+{{--            <div class="modal-body">--}}
+{{--                <div class="container">--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-sm-12 justify-content-center">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" style="width: 100%;" tabindex="-1"--}}
+{{--                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="unit" id="area-unit">--}}
+{{--                                    <option value selected disabled>Select unit</option>--}}
+{{--                                    <option value="Square Feet">Square Feet</option>--}}
+{{--                                    <option value="Square Yards">Square Yards</option>--}}
+{{--                                    <option value="Square Meters">Square Meters</option>--}}
+{{--                                    <option value="Marla" selected>Marla</option>--}}
+{{--                                    <option value="Kanal">Kanal</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; color: white"--}}
+{{--                               data-dismiss="modal" id="area-unit-save">Save</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}

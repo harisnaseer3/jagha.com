@@ -58,7 +58,7 @@ if(request()->segment(1) !== 'properties'){
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-3 col-6 search-col middle-col-1" style="border-right:1px solid #ced4da">
+                <div class="col-lg-2 col-sm-3 col-6 search-col middle-col-1" style="border-right:1px solid #ced4da">
                     <div class="label-container"><label class="input-label" for="city">CITY</label></div>
                     <div class="index-page-select">
                         <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible city-select2" id="city" style="width: 100%; border: 0" tabindex="-1"
@@ -75,7 +75,20 @@ if(request()->segment(1) !== 'properties'){
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-4 col-8 search-col middle-col-2" style="border-right:1px solid #ced4da;">
+                <div class="col-lg-2 col-sm-1 col-2 search-col border-right">
+                    <div class="label-container"><label class="input-label" for="property-purpose">AREA UNIT</label></div>
+                    <div class="index-page-select" style="font-weight:800; font-size:14px">
+                        <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible property-area-unit-select2"
+                                style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
+                                name="property_area_unit" id="property-area-unit">
+                            <option disabled>Select unit</option>
+                            @foreach(['Marla','Kanal','Square Feet','Square Yards','Square Meters'] as $key=>$option)
+                                <option {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-4 col-8 search-col middle-col-2" style="border-right:1px solid #ced4da;">
                     <div class="label-container"><label class="input-label" for="location">LOCATION</label></div>
                     <input type="text" class="index-page-text-area" id="location" name="location" list="locations"
                            value="{{ucwords(str_replace('-',' ',request()->query('location')))}}"
@@ -161,48 +174,48 @@ if(request()->segment(1) !== 'properties'){
                    style="margin:0; background-color: #274abb;">
                     <span class="reset-search">Reset Search</span>
                 </a>
-                <a type="button" class="btn btn-outline-primary reset-search-btn text-transform" data-toggle="modal" data-target="#modalCart"
-                   style="margin-left: 5px;background-color: #274abb;">
-                    <span style="padding: 2px; color: white; font-size: 12px; font-weight: 600">Change Area Unit</span>
-                </a>
+{{--                <a type="button" class="btn btn-outline-primary reset-search-btn text-transform" data-toggle="modal" data-target="#modalCart"--}}
+{{--                   style="margin-left: 5px;background-color: #274abb;">--}}
+{{--                    <span style="padding: 2px; color: white; font-size: 12px; font-weight: 600">Change Area Unit</span>--}}
+{{--                </a>--}}
             </div>
         </div>
     </div>
 </div>
 {{--Model--}}
-<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Change area unit</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 justify-content-center">
-                            <div class="form-group">
-                                <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" style="width: 100%;" tabindex="-1"
-                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="unit" id="area-unit">
-                                    <option value selected disabled>Select unit</option>
-                                    <option value="Square Feet">Square Feet</option>
-                                    <option value="Square Yards">Square Yards</option>
-                                    <option value="Square Meters">Square Meters</option>
-                                    <option value="Marla" selected>Marla</option>
-                                    <option value="Kanal">Kanal</option>
-                                </select>
-                            </div>
-                            <a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; color: white"
-                               data-dismiss="modal" id="area-unit-save">SAVE</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--}}
+{{--     aria-hidden="true">--}}
+{{--    <div class="modal-dialog" role="document">--}}
+{{--        <div class="modal-content">--}}
+{{--            <!--Header-->--}}
+{{--            <div class="modal-header">--}}
+{{--                <h4 class="modal-title" id="myModalLabel">Change area unit</h4>--}}
+{{--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+{{--                    <span aria-hidden="true">×</span>--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--            <!--Body-->--}}
+{{--            <div class="modal-body">--}}
+{{--                <div class="container">--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-sm-12 justify-content-center">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" style="width: 100%;" tabindex="-1"--}}
+{{--                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="unit" id="area-unit">--}}
+{{--                                    <option value selected disabled>Select unit</option>--}}
+{{--                                    <option value="Square Feet">Square Feet</option>--}}
+{{--                                    <option value="Square Yards">Square Yards</option>--}}
+{{--                                    <option value="Square Meters">Square Meters</option>--}}
+{{--                                    <option value="Marla" selected>Marla</option>--}}
+{{--                                    <option value="Kanal">Kanal</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                            <a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; color: white"--}}
+{{--                               data-dismiss="modal" id="area-unit-save">SAVE</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}

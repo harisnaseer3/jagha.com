@@ -4,12 +4,11 @@
 <script src="{{asset('website/js/bootstrap-submenu.min.js')}}"></script>
 <script src="{{asset('website/js/wow.min.js')}}"></script>
 <script src="{{asset('website/js/bootstrap-select.min.js')}}"></script>
-<script src="{{asset('website/js/scrollup.min.js')}}"></script>
 <script src="{{asset('website/js/jquery.mCustomScrollbar.concat.min.js')}}"></script>
 <script src="{{asset('website/js/dropzone.min.js')}}"></script>
 <script src="{{asset('website/js/slick.min.js')}}"></script>
 <script src="{{asset('website/js/jquery.magnific-popup.min.js')}}"></script>
 <script src="{{asset('website/js/countdown.min.js')}}"></script>
-<script src="{{asset('website/js/app.min.js')}}"></script>
+<script src="{{asset('website/js/app.js')}}"></script>
 <script src="{{asset('website/js/wordpress.minify.js')}}" defer async></script>
 @yield('script')

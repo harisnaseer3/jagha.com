@@ -4828,7 +4828,7 @@ h3.foot-head {
     font-weight: 700;
     line-height: 100%;
     margin-bottom: 15px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     width: 100%;
 }
 
