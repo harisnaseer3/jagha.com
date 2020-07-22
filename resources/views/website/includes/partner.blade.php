@@ -5,7 +5,7 @@
         <div class="slick-slider-area" id="agency-slider">
             <div class="row slick-carousel" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
-                 data-slick='{"slidesToShow": 6, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 2}}]}'>
+                 data-slick='{"slidesToShow": 5, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 2}}]}'>
                 @foreach($featured_agencies as $agency)
                     <div class="slick-slide-item" aria-label="featured agency">
                         @if($agency->logo !== null)
