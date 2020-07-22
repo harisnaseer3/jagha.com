@@ -3,14 +3,12 @@
 
 <!-- External CSS libraries -->
 <link rel="stylesheet" type="text/css" href="{{asset('website/css/bootstrap.min.css')}}"  async defer>
-<link rel='stylesheet' id='mvp-style-css'  href="{{asset('website/css/style.min.css')}}" type='text/css' media='all' async defer/>
+<link rel='stylesheet' id='mvp-style-css'  href="{{asset('website/css/menustyle.css')}}" type='text/css' media='all' async defer/>
 <link rel='stylesheet' id='mvp-media-queries-css' href="{{asset('website/css/media-queries.min.css')}}" type='text/css' media='all' async defer/>
 <link rel='stylesheet' id='bliss-loadmore-css-css' href="{{asset('website/css/bliss-loadmore.min.css')}}" type='text/css' media='all' async defer/>
 <link rel="stylesheet" href="{{asset('website/css/menu.css')}}" async defer>
-<link crossorigin="anonymous" rel='stylesheet' id='mvp-fonts-css' href='//fonts.googleapis.com/css?family=Oswald%3A400%2C700%7CLato%3A400%2C700%7CWork+Sans%3A900%7CMontserrat%3A400%2C700%7COpen+Sans%3A800%7CPlayfair+Display%3A400%2C700%2C900%7CQuicksand%7CRaleway%3A200%2C400%2C700%7CRoboto+Slab%3A400%2C700%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CLato%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%26subset%3Dlatin%2Clatin-ext%2Ccyrillic%2Ccyrillic-ext%2Cgreek-ext%2Cgreek%2Cvietnamese&display=swap'type='text/css' media='all'/>
+<!-- <link crossorigin="anonymous" rel='stylesheet' id='mvp-fonts-css' href='//fonts.googleapis.com/css?family=Oswald%3A400%2C700%7CLato%3A400%2C700%7CWork+Sans%3A900%7CMontserrat%3A400%2C700%7COpen+Sans%3A800%7CPlayfair+Display%3A400%2C700%2C900%7CQuicksand%7CRaleway%3A200%2C400%2C700%7CRoboto+Slab%3A400%2C700%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CWork+Sans%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CLato%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%7CMontserrat%3A100%2C200%2C300%2C400%2C500%2C600%2C700%2C800%2C900%26subset%3Dlatin%2Clatin-ext%2Ccyrillic%2Ccyrillic-ext%2Cgreek-ext%2Cgreek%2Cvietnamese&display=swap'type='text/css' media='all'/> -->
 <link rel="stylesheet" type="text/css" href="{{asset('plugins/fontawesome-pro-5.12.0/css/all.min.css')}}" async defer>
-<link rel="preload" as="font" href="{{asset('plugins/fontawesome-pro-5.12.0/webfonts/fa-solid-900.woff2')}}" type="font/woff2" crossorigin="anonymous">
-<link rel="preload" as="font" href="{{asset('plugins/fontawesome-pro-5.12.0/webfonts/fa-brands-400.woff2')}}" type="font/woff2" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="{{asset('website/fonts/flaticon/font/flaticon.css')}}" async defer>
 <link rel="stylesheet" type="text/css" href="{{asset('website/css/slick.css')}}" async defer>
 <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}" async defer>
@@ -21,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('website/fonts/font-awesome/css/font-awesome.min.css')}}" async defer>
 
 <!-- Google fonts -->
-<!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700" rel="stylesheet" async defer> -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700" rel="stylesheet" async defer>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <!--[if eq IE 10]><link rel="stylesheet" type="text/css" href="{{ asset('website/css/ie10-viewport-bug-workaround.css')}}"><![endif]-->
