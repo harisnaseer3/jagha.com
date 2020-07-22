@@ -270,7 +270,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
                            href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-user mt-1"></i>
+                            <i class="fas fa-user"></i>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -283,3 +283,39 @@
                 </ul>
             </div>
         </nav>
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+        <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+            <!--Header-->
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Log in</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 justify-content-center">
+                            @if(\Illuminate\Support\Facades\Auth::check())
+                                <p class="my-3 text-center"><strong>{{\Illuminate\Support\Facades\Auth::user()->name}}</strong></p>
+                                <a href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"
+                                   class="btn btn-block" style="background: #274abb;color: white">PROFILE</a>
+                                <a href="{{route('accounts.logout')}}" class="btn btn-block btn-outline sign-in" style="color: #0b2e13">LOGOUT</a>
+                            @else
+                                <p class="text-center">Already a member?</p>
+                                <a href="{{route('login')}}" class="btn btn-block sign-in login-btn" style="color: #0b2e13; padding: 6px 20px 9px 20px;">Login</a>
+                                <p class="text-center">OR</p>
+                                <p class="text-center">Become a new member.</p>
+                                <a href="{{route('register')}}" class="btn btn-block btn-outline sign-in text-bold"
+                                   style="color: #274abb; padding: 6px 20px 9px 20px;">REGISTER</a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div
