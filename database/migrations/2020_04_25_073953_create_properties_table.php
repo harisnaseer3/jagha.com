@@ -18,8 +18,7 @@ class CreatePropertiesTable extends Migration
             $table->id();
 //            TODO: add unique feature after seeder
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-//            $table->string('reference')->unique();
-            $table->string('reference');
+            $table->string('reference')->unique();
             $table->foreignId('city_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('location_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('agency_id')->nullable();
@@ -41,11 +40,11 @@ class CreatePropertiesTable extends Migration
             $table->boolean('super_hot_listing')->default(false);
             $table->boolean('hot_listing')->default(false);
             $table->boolean('magazine_listing')->default(false);
-            $table->string('contact_person', 255);
-            $table->string('phone', 32)->nullable();
-            $table->string('cell', 32)->nullable();
+            $table->string('contact_person', 255)->nullable();
+            $table->string('phone', 32)->nullable()->nullable();
+            $table->string('cell', 32)->nullable()->nullable();
             $table->string('fax', 32)->nullable();
-            $table->string('email', 255);
+            $table->string('email', 255)->nullable();
             $table->unsignedBigInteger('favorites')->default(0);
             $table->unsignedBigInteger('views')->default(0);
             $table->unsignedBigInteger('visits')->default(0);

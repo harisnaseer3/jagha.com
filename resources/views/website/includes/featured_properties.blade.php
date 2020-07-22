@@ -21,13 +21,12 @@
                                         <div class="tag feature-tag">SUPER HOT</div>
                                     @endif
                                     @if($feature_property->image != null)
-                                        <img class="d-block w-100" src="{{asset('storage/properties/'.$feature_property->image)}}"
+                                        <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
                                              title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
-                                             onerror="this.src='{{asset('storage/properties/default-image.png')}}'"/>
+                                             />
                                     @else
-                                        <img class="d-block w-100" src="{{asset('storage/properties/default-image.png')}}" alt="properties"
-                                             onerror="this.src='{{asset('storage/properties/default-image.png')}}'"/>
+                                        <img class="d-block w-100" src="{{asset('storage/properties/default-image.png')}}" alt="properties"/>
                                     @endif
                                 </div>
                             </a>

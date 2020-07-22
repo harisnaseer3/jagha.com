@@ -20,14 +20,14 @@ class CreateAgenciesTable extends Migration
             $table->json('city');
             $table->string('title', 225);
             $table->string('description', 4096);
-            $table->string('phone', 32);
+            $table->string('phone', 32)->nullable();
             $table->string('cell', 32)->nullable();
             $table->string('fax', 32)->nullable();
-            $table->string('address', 255);
+            $table->string('address', 255)->nullable();
             $table->integer('zip_code')->nullable();
             $table->string('country', 255);
-            $table->string('email')->unique();
-            $table->string('website', 1024);
+            $table->string('email')->unique()->nullable();
+            $table->string('website', 1024)->nullable();
             $table->string('logo', 4096)->nullable();
             $table->string('ceo_name', 255)->nullable();
             $table->string('ceo_designation', 255)->nullable();
