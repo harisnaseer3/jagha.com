@@ -62,6 +62,8 @@
                 var paused = false,
                     interval = setInterval(function () {
                         (!paused) && $('#agency-next').trigger('click');
+                       $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
+                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
                     }, 3000);
                 $('#agency-slider, .controls').hover(function () {
                     paused = true;
@@ -82,6 +84,7 @@
             });
         })(jQuery);
     </script>
+
     <script src="{{asset('website/js/script-custom.js')}}"></script>
 
 @endsection

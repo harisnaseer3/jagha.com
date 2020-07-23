@@ -54,7 +54,6 @@ class PropertyController extends Controller
             ->orderBy('views', 'DESC')
             ->limit(10)
             ->get();
-
         //   $aggregates = $this->_getPropertyAggregates();
 
         $data = [
