@@ -52,8 +52,8 @@
                 <div class="detail">
                     <h2 class="title">
                         <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}">
-                            <span aria-label="currency"> PKR </span>
-                            <span aria-label="price"> {{ \Illuminate\Support\Str::limit(explode(',',Helper::getPriceInWords($property->price))[0], 10, $end='...') }}</span>
+                            <span aria-label="currency" class="font-16"> PKR </span>
+                            <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             {{--                            <span style="color: red"><i class="fas fa-fire"></i></span>--}}

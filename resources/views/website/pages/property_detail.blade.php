@@ -100,7 +100,7 @@
                             @else
                                 <div class="carousel-inner">
                                     <div class="active item carousel-item" data-slide-number="0">
-                                        <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>
+{{--                                        <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
                                         <div class="price-ratings-box">
                                             @if (\Illuminate\Support\Facades\Auth::guest())
                                                 <div class="favorite-property ratings" style="font-size: 20px;" aria-label="add to favourite">
@@ -129,7 +129,7 @@
                                     <li class="list-inline-item active">
                                         <a id="carousel-selector-1" class="selected" data-slide-to="0"
                                            data-target="#propertiesDetailsSlider">
-                                            <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>
+{{--                                            <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
                                         </a>
                                     </li>
                                 </ul>
@@ -291,7 +291,7 @@
                     </div>
                     @if (count($similar_properties))
                         <div class="tab-pane" id="six" role="tabpanel" aria-labelledby="6-tab">
-                            @include('website.includes.similar_properties')
+{{--                            @include('website.includes.similar_properties')--}}
                         </div>
                     @endif
                 </div>
@@ -310,10 +310,10 @@
                                         <div class="col-sm-6 text-center">
                                             <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 40%">
                                         </div>
-                                    @else
-                                        <div class="col-sm-6 text-center">
-                                            <img src="{{asset('img/default_company.jpg')}}" alt="brand" style="max-width: 50%">
-                                        </div>
+{{--                                    @else--}}
+{{--                                        <div class="col-sm-6 text-center">--}}
+{{--                                            <img src="{{asset('img/default_company.jpg')}}" alt="brand" style="max-width: 50%">--}}
+{{--                                        </div>--}}
                                     @endif
                                     <div class="col-sm-6 mt-1">
                                         <div style="font-size: 1rem">
