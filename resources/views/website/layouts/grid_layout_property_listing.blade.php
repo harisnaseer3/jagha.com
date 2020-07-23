@@ -2,14 +2,14 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-                <span class="heading-icon"><i class="fa fa-th-large"></i></span>
-                <span class="title-name">Properties Grid</span>
+            <span class="heading-icon"><i class="fa fa-th-large"></i></span>
+            <span class="title-name">Properties Grid</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="sorting">
-                <option value="popular" {{ $params['sort'] === 'popular' ? 'selected' : '' }}>Popular</option>
+                {{--                <option value="popular" {{ $params['sort'] === 'popular' ? 'selected' : '' }}>Popular</option>--}}
                 <option value="newest" {{ $params['sort'] === 'newest' ? 'selected' : '' }}>Newest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' ? 'selected' : '' }}>Price (Low To High)</option>
@@ -54,7 +54,8 @@
                             <div class="ratings grid-stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>
-                        <img class="d-block w-100" src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("storage/properties/default-image.png")}}"
+                        <img class="d-block w-100"
+                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("storage/properties/default-image.png")}}"
                              alt="{{$property->sub_type}} for {{$property->purpose}}"
                              title="{{$property->sub_type}} for {{$property->purpose}}">
                     </a>
@@ -62,8 +63,9 @@
                 <div class="detail">
                     <h2 class="title">
                         <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}">
-                            <span aria-label="currency">PKR </span> <span
-                                aria-label="price"> {{ \Illuminate\Support\Str::limit(explode(',',Helper::getPriceInWords($property->price))[0], 10, $end='...') }}</span>
+                            <span aria-label="currency" class="font-size-14">PKR </span>
+                            <span aria-label="price"> {{Helper::getPriceInWords($property->price) }}</span>
+
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status)  && $property->agency_status === 'verified')
