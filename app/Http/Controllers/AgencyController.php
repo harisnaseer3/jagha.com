@@ -377,7 +377,7 @@ class AgencyController extends Controller
 
     public function keyAgencies()
     {
-        return (new Agency)->select('title', 'logo', 'city')->where('status', '=', 'verified')->where('key_listing', '=', 1)->get();
+        return (new Agency)->select('title', 'logo', 'city','phone')->where('status', '=', 'verified')->where('key_listing', '=', 1)->get();
 
     }
 
