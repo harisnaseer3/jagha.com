@@ -330,8 +330,9 @@
         let property_type = $('.property-type-select2');
         property_type.on('change', function (e) {
             const selectedValue = $(this).val();
-            if (selectedValue === 'Plots') $('.beds-block').hide();
+            if (selectedValue === 'Plots' || selectedValue === 'Commercial') $('.beds-block').hide();
             else $('.beds-block').show();
+
             $('[id^=property_subtype-]').hide();
             $('[id^=search2-property_subtype-]').hide();
             $('#property_subtype-' + selectedValue).toggle();
@@ -444,13 +445,6 @@
             sessionStorage.setItem('min_area', data1);
         });
 
-        //    get value from model
-        // $('#area-unit-save').on('click', function () {
-            // let area_unit = $('#area-unit option:selected').val();
-            // $('#input-area-unit').val(area_unit);
-            // $('#search2-input-area-unit').val(area_unit);
-            // areaUnitOptions(area_unit);
-        // });
         areaUnitOptions('Marla');
     });
 })

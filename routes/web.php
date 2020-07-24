@@ -19,6 +19,7 @@ Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
 Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
 
+Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 
 //list of blogs
 Route::get('blogs', 'BlogController@index')->name('blogs.index');
@@ -26,7 +27,7 @@ Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
 
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
-    Route::resource('properties', 'PropertyController')->except(['index','show']);
+    Route::resource('properties', 'PropertyController')->except(['index', 'show']);
     Route::resource('images', 'ImageController')->only(['destroy']);
     Route::resource('floorPlans', 'FloorPlanController')->only(['destroy']);
     Route::resource('videos', 'VideoController')->only(['destroy']);

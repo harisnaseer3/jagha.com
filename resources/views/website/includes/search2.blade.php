@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 beds-block">
                             <div class="form-group">
                                 <div class="index-page-select p-0">
                                     <label class="search2-input-label" for="search2-bedrooms">BEDROOMS</label>
