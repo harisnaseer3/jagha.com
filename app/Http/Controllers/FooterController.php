@@ -16,14 +16,14 @@ class FooterController extends Controller
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
             ->orderBy('created_at', 'DESC')
-            ->limit(5)
+            ->limit(7)
             ->get();
 
         $footer_agencies = (new Agency)->select('title', 'city', 'phone', 'ceo_name')
             ->where('status', '=', 'verified')
             ->where('featured_listing', '=', '1')
             ->orderBy('created_at', 'DESC')
-            ->limit(5)
+            ->limit(7)
             ->get();
         return [$recent_properties, $footer_agencies];
     }
