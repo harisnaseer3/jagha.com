@@ -601,7 +601,7 @@ body.custom-background {
 }
 
 .feat-top-wrap {
-  
+
     overflow: hidden;
     width: 100%;
     margin-bottom: 15px;
@@ -613,4 +613,7 @@ body.custom-background {
 }
 .page-font {
     font-size: 12px;
+}
+.more-popular-cities{
+    color:#274abb;
 }

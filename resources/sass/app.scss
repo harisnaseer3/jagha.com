@@ -1,8 +1,10 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
 @import 'variables';
-
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+#agency-slider .slick-center {
+    background: linear-gradient(45deg, rgb(246, 146, 89), rgb(241, 105, 117));
+    .middle-element {
+        display: block;
+    }
+}

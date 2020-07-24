@@ -1,4 +1,4 @@
-<div class="categories content-area-8 pt-0">
+<div class="categories content-area-8 pt-5">
     <div class="container">
         <!-- Main title -->
         <div class="main-title">
@@ -25,6 +25,7 @@
                                     </h6>
                                 </li>
                             @endforeach
+                            <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -40,8 +41,9 @@
                                             <span>({{$property_data->property_count}})</span>
                                         </a>
                                     </h6>
+                                    @endforeach
                                 </li>
-                            @endforeach
+                                <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -61,15 +63,15 @@
                                     </h6>
                                 </li>
                             @endforeach
+                            <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                         <h4 class="font-16 color-555 pb-3">Rentals</h4>
                         <ul>
                             @foreach($popular_cities_property_on_rent as $key => $property_data)
-                                <li>
-                                    <h6 class="custom-font">
-                                        <a href="{{route('sale.property.search',['sub_type' => lcfirst($property_data->property_sub_type),'city' => lcfirst($property_data->city_name),
+                                <li><h6 class="custom-font">
+                                        <a href="{{route('sale.property.search',['sub_type' => strtolower(str_replace(' ','-',$property_data->property_sub_type)),'city' => lcfirst($property_data->city_name),
                                                 'purpose'=>lcfirst($property_data->property_purpose), 'sort'=>'newest'])}}"
                                            title="{{$property_data->property_sub_type}} for {{$property_data->property_purpose}} in {{$property_data->city_name}}">
 
@@ -80,6 +82,8 @@
                                     </h6>
                                 </li>
                             @endforeach
+                            <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+
                         </ul>
                     </div>
                 </div>
@@ -96,8 +100,8 @@
                                     <li>
                                         <h6 class="custom-font">
                                             <a href="{{route('search.houses.plots', ['type'=>lcfirst($property_data->property_type),'city' => lcfirst($property_data->city_name),'location'=> str_replace(' ', '-',str_replace('-','_',$property_data->location_name)), 'sort'=>'newest'])}}"
-                                               title="{{$property_data->property_type}} for {{$property_data->property_purpose}} in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 27, $end='...') }}">
-                                                {{$property_data->property_type}} for {{$property_data->property_purpose}} in {{$property_data->location_name}}
+                                               title="{{$property_data->property_type}} for {{$property_data->property_purpose}} in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...')}}">
+                                                {{$property_data->property_type}} for {{$property_data->property_purpose}} in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...')}}
                                                 <span>({{$property_data->property_count}})</span>
                                             </a>
                                         </h6>
@@ -119,9 +123,9 @@
                                     <li>
                                         <h6 class="custom-font">
                                             <a href="{{route('search.houses.plots',['type'=>lcfirst($property_data->property_type),'city' => lcfirst($property_data->city_name), 'location'=> str_replace(' ', '-',str_replace('-','_',$property_data->location_name)), 'sort'=>'newest'])}}"
-                                               title="{{$property_data->property_type}} for {{$property_data->property_purpose}} in {{$property_data->location_name}}">
+                                               title="{{$property_data->property_type}} for {{$property_data->property_purpose}} in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...')}}">
                                                 {{$property_data->property_type}} for {{$property_data->property_purpose}}
-                                                in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 27, $end='...') }}
+                                                in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...') }}
                                                 <span>({{$property_data->property_count}})</span>
                                             </a>
                                         </h6>

@@ -62,13 +62,19 @@
                 var paused = false,
                     interval = setInterval(function () {
                         (!paused) && $('#agency-next').trigger('click');
-                    }, 3000);
-                $('#agency-slider, .controls').hover(function () {
-                    paused = true;
-                }, function () {
-                    paused = false;
+                       $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
+                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
+                    }, 2000);
+                $('#agency-slider, .controls').click(function ()
+                {
+                    $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
+                    $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
                 });
-                // $('select option:first-child').css('cursor', 'default').prop('disabled', true);
+                $('#featured-agency-slider .slick-slide-item').hover(function ()
+                {
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+
 
                 $('.select2').select2({
                     language: '{{app()->getLocale()}}',
@@ -82,6 +88,8 @@
             });
         })(jQuery);
     </script>
+
     <script src="{{asset('website/js/script-custom.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}" async defer></script> 
 
 @endsection

@@ -42,11 +42,9 @@
                                     @else
                                         <li><a href="{{$footer_property->property_detail_path()}}"
                                                title="{{\Illuminate\Support\Str::limit($footer_property->title, 70, $end='..')}}">
-                                                {{\Illuminate\Support\Str::limit($footer_property->title, 70, $end='..')}}
+                                               {{\Illuminate\Support\Str::limit($footer_property->city, 30, $end='..')}} |  {{\Illuminate\Support\Str::limit($footer_property->title, 70, $end='..')}} |  PKR {{ \Illuminate\Support\Str::limit(explode(',',Helper::getPriceInWords($footer_property->price))[0], 10, $end='...') }}
                                             </a>
                                         </li>
-                                        <p class="property-price"> {{\Illuminate\Support\Str::limit($footer_property->city, 30, $end='..')}} |
-                                            PKR {{ \Illuminate\Support\Str::limit(explode(',',Helper::getPriceInWords($footer_property->price))[0], 10, $end='...') }}</p>
                                     @endif
                                 @endforeach
                             </ul>
@@ -59,11 +57,10 @@
                                 @foreach($footer_agencies as $key => $agency)
                                     <li><a href="javascript:void(0)"
                                            title="{{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}">
-                                            {{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}
+                                           {{\Illuminate\Support\Str::limit(implode (", ", json_decode($agency->city)), 25, $end='..')}}  |  {{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}   |
+                                        {{$agency->phone}}
                                         </a>
                                     </li>
-                                    <p class="property-price"> {{\Illuminate\Support\Str::limit(implode (", ", json_decode($agency->city)), 25, $end='..')}} |
-                                        {{$agency->phone}}</p>
                                 @endforeach
 
                             </ul>

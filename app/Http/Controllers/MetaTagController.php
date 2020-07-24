@@ -140,6 +140,7 @@ class MetaTagController extends Controller
 
     public function addMetaTagsOnDetailBlog($result)
     {
+    
         $result = $result[0];
         SEOMeta::setTitle($result->post_title);
         SEOMeta::setDescription(\Illuminate\Support\Str::limit(strip_tags($result->post_title), 69, $end = '...'));

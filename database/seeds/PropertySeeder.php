@@ -28,7 +28,7 @@ class PropertySeeder extends Seeder
     public function run()
     {
 //        to get all files of directory
-        $path = ('C:/inetpub/wwwroot/property/database/json');
+        $path = ('database/json');
         $files = File::files($path);
 //        dd($path, $files);
         foreach ($files as $jsonfile)
@@ -166,7 +166,6 @@ class PropertySeeder extends Seeder
         $filename = rand(0, 99);
         $extension = 'webp';
         $filenametostore = 'logo-'.$filename. time() . '-200x200.' . $extension;
-//        Storage::disk('public')->put( $request->file('photo')->hashName(), $photo);
         Storage::put('public/agency_logos/' . $filenametostore, fopen("database/images/" . $logo, 'r+'));
 
 

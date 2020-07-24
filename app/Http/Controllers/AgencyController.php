@@ -355,12 +355,29 @@ class AgencyController extends Controller
 
     public function FeaturedAgencies()
     {
-        return (new Agency)->select('title', 'logo', 'city')->where('status', '=', 'verified')->where('featured_listing', '=', 1)->get();
+       
+        return (new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city', DB::raw('count(properties.agency_id) as sale_count'))
+                           ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
+                           ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
+                           ->where('properties.purpose','=','sale')
+                           ->groupby('agencies.title', 'agencies.logo', 'agencies.city')->get();
+
+                        
+            
+        // dd((new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city', DB::raw('count(properties.agency_id) as sale_count'))
+        //                    ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
+        //                    ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
+        //                    ->where('properties.purpose','=','rent')
+        //                    ->groupby('agencies.title', 'agencies.logo', 'agencies.city')->get());
+
+        // return   $sale_count->union($rent_count)->get();
+
+
     }
 
     public function keyAgencies()
     {
-        return (new Agency)->select('title', 'logo', 'city')->where('status', '=', 'verified')->where('key_listing', '=', 1)->get();
+        return (new Agency)->select('title', 'logo', 'city','phone')->where('status', '=', 'verified')->where('key_listing', '=', 1)->get();
 
     }
 
