@@ -174,42 +174,4 @@
         </div>
     </div>
 </div>
-{{--Modal--}}
-{{--<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--}}
-{{--     aria-hidden="true">--}}
-{{--    <div class="modal-dialog" role="document">--}}
-{{--        <div class="modal-content ">--}}
-{{--            <!--Header-->--}}
-{{--            <div class="modal-header">--}}
-{{--                <h4 class="modal-title" id="myModalLabel">Change area unit</h4>--}}
-{{--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                    <span aria-hidden="true">×</span>--}}
-{{--                </button>--}}
-{{--            </div>--}}
-{{--            <!--Body-->--}}
-{{--            <div class="modal-body">--}}
-{{--                <div class="container">--}}
-{{--                    <div class="row">--}}
 
-{{--                        <div class="col-sm-12 justify-content-center">--}}
-{{--                            <div class="form-group">--}}
-{{--                                <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" style="width: 100%;" tabindex="-1"--}}
-{{--                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="unit" id="area-unit">--}}
-{{--                                    <option value selected disabled>Select unit</option>--}}
-{{--                                    <option value="Square Feet">Square Feet</option>--}}
-{{--                                    <option value="Square Yards">Square Yards</option>--}}
-{{--                                    <option value="Square Meters">Square Meters</option>--}}
-{{--                                    <option value="Marla" selected>Marla</option>--}}
-{{--                                    <option value="Kanal">Kanal</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; color: white"--}}
-{{--                               data-dismiss="modal" id="area-unit-save">SAVE</a>--}}
-
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}

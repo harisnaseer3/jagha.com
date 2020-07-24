@@ -104,7 +104,7 @@
                 </div>
                 <div class="footer clearfix">
                     <div class="pull-left days">
-                        <a><i class="fa fa-user"></i> {{ $property->contact_person }}</a>
+                        <a><i class="fa fa-user"></i> {{ $property->contact_person != ''? $property->contact_person: $property->agent }}</a>
                     </div>
                     <div class="pull-right">
                         <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}</a>
@@ -137,15 +137,22 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                <td class="w-70 font-weight-bold">{{ $property->phone !== null ? $property->cell: '-'}}</td>
+                                <td class="w-70 font-weight-bold">{{ $property->cell !== null  ? $property->cell: '-'}}</td>
                             </tr>
                             <tr>
                                 <td>Phone No</td>
-                                <td class="font-weight-bold">{{$property->phone !== null ?$property->phone :''}}</td>
+                                @if($property->phone !== null)
+                                    <td class="font-weight-bold">{{$property->phone}}</td>
+                                @elseif($property->agency_phone !== null)
+                                    <td class="font-weight-bold">{{$property->phone}}</td>
+                                @else
+                                    <td class="font-weight-bold">-</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td>Agent</td>
-                                <td class="font-weight-bold"><h6 class="font-size-14" style="font-weight: 400">{{ ucwords($property->contact_person) }}</h6></td>
+                                <td class="font-weight-bold">  {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
+                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -163,7 +170,7 @@
                         <div class="text-center">
                             <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
                             <div class="m-3" style="font-size: 14px">Message sent successfully</div>
-                            <div class="mb-2">Add email@aboutpakistan.com to your white list to get email from us.</div>
+                            <div class="mb-2">Add info@aboutpakistan.com to your white list to get email from us.</div>
                             <button class="btn btn-success" data-dismiss="modal">Dismiss</button>
                         </div>
                     </div>

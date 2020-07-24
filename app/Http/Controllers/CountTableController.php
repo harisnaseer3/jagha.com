@@ -67,6 +67,15 @@ class CountTableController extends Controller
             ->orderBy('property_count','DESC')
             ->limit(6)->get();
 
+        $lahore_commercial = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->where('property_type', '=', 'Commercial')
+            ->where('property_purpose', '=', 'sale')
+            ->where('city_name', '=', 'lahore')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->orderBy('property_count','DESC')
+            ->limit(6)->get();
+
         $karachi_homes = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->where('property_type', '=', 'Homes')
@@ -74,6 +83,26 @@ class CountTableController extends Controller
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->orderBy('property_count','DESC')
             ->limit(6)->get();
+
+        $karachi_plots = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->where('property_type', '=', 'Plots')
+            ->where('property_purpose', '=', 'sale')
+            ->where('city_name', '=', 'karachi')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->orderBy('property_count','DESC')
+            ->limit(6)->get();
+
+        $karachi_commercial = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->where('property_type', '=', 'Commercial')
+            ->where('property_purpose', '=', 'sale')
+            ->where('city_name', '=', 'karachi')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->orderBy('property_count','DESC')
+            ->limit(6)->get();
+
+
 
         $peshawar_plots = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
@@ -93,14 +122,16 @@ class CountTableController extends Controller
             ->orderBy('property_count','DESC')
             ->limit(6)->get();
 
-        $karachi_plots = DB::table('property_count_by_property_purposes')
+        $peshawar_commercial = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Plots')
+            ->where('property_type', '=', 'Commercial')
             ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'karachi')
+            ->where('city_name', '=', 'peshawar')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->orderBy('property_count','DESC')
             ->limit(6)->get();
+
+
 
         $isb_homes = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
@@ -130,8 +161,22 @@ class CountTableController extends Controller
                 ['property_type', '=', 'plot'],
                 ['property_sub_type', '=', 'rawalpindi'],
             ])
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->orderBy('property_count','DESC')
+            ->limit(6)->get();
 
-
+        $isb_commercial = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
+            ->where([
+                ['property_purpose', '=', 'sale'],
+                ['property_type', '=', 'commercial'],
+                ['city_name', '=', 'islamabad'],
+            ])
+            ->orwhere([
+                ['property_purpose', '=', 'sale'],
+                ['property_type', '=', 'commercial'],
+                ['property_sub_type', '=', 'rawalpindi'],
+            ])
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
             ->orderBy('property_count','DESC')
             ->limit(6)->get();
@@ -150,6 +195,12 @@ class CountTableController extends Controller
                 'peshawar' => $peshawar_plots,
                 'lahore' => $lahore_plots,
                 'rawalpindi/Islamabad' => $isb_plots
+            ],
+            'city_wise_commercial_data' => [
+                'karachi' => $karachi_commercial,
+                'peshawar' => $peshawar_commercial,
+                'lahore' => $lahore_commercial,
+                'rawalpindi/Islamabad' => $isb_commercial
             ],
             'popular_cities_commercial_on_sale' => $popular_cities_commercial_on_sale,
             'popular_cities_property_on_rent' => $popular_cities_property_on_rent

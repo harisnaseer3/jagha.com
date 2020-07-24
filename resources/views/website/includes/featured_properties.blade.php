@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Main title -->
         <div class="main-title">
-            <h2>Popular Properties</h2>
+            <h2><a href="{{route('featured',['sort'=>'newest'])}}" title="Popular Properties">Popular Properties</a></h2>
         </div>
         <div class="slick-slider-area" aria-label="popular properties">
             <div class="row slick-carousel"

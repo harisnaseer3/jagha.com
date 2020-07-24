@@ -50,6 +50,7 @@ class PropertyController extends Controller
             })
             ->leftJoin('favorites', 'favorites.property_id', '=', 'properties.id')
             ->where('properties.status', '=', 'active')
+            ->where('properties.premium_listing', '=', 1)
             ->whereNull('properties.deleted_at')
             ->orderBy('views', 'DESC')
             ->limit(10)
@@ -74,6 +75,12 @@ class PropertyController extends Controller
                 'lahore' => (new CountTableController())->popularLocations()['city_wise_plots_data']['lahore'],
                 'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_plots_data']['rawalpindi/Islamabad']
             ],
+            'city_wise_commercial_data' => [
+                'karachi' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['karachi'],
+                'peshawar' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['peshawar'],
+                'lahore' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['lahore'],
+                'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['rawalpindi/Islamabad']
+            ],
             'popular_cities_commercial_on_sale' => (new CountTableController())->popularLocations()['popular_cities_commercial_on_sale'],
             'popular_cities_property_on_rent' => (new CountTableController())->popularLocations()['popular_cities_property_on_rent'],
             'property_types' => $property_types,
@@ -84,6 +91,53 @@ class PropertyController extends Controller
 //            'aggregates' => $aggregates,
         ];
         return view('website.index', $data);
+    }
+
+//    list all featured properties
+    public function featuredProperties(Request $request)
+    {
+        $properties = (new Property)
+            ->select('properties.reference', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+                'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'properties.favorites', 'locations.name AS location',
+                'cities.name AS city', 'p.name AS image',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+            ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+            ->leftJoin('images as p', function ($q) {
+                $q->on('properties.id', '=', 'p.property_id')
+                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+            })
+            ->where('properties.status', '=', 'active')
+            ->where('properties.premium_listing', '=', 1)
+            ->whereNull('properties.deleted_at');
+
+        $sort = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
+
+        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
+        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
+        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
+        else $properties->orderBy('views', 'DESC');
+
+        $property_types = (new PropertyType)->all();
+        $aggregates = $this->_getPropertyAggregates();
+
+        $data = [
+            'params' => ['sort' => $sort],
+            'property_types' => $property_types,
+            'properties' => $properties->paginate(10),
+            'aggregates' => $aggregates,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+
+        ];
+        return view('website.pages.property_listing', $data);
     }
 
     public function create()
@@ -667,7 +721,8 @@ class PropertyController extends Controller
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'properties.favorites', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image', 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status')
+                'cities.name AS city', 'p.name AS image',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
@@ -710,52 +765,100 @@ class PropertyController extends Controller
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
 //        TODO: how to send search request inside this if body if only one argument is set in search form else than page number
-        if( count($request->all()) == 1 && $request->filled('sort') ||
-            count($request->all()) == 2 && $request->filled('sort') && $request->filled('page') ) {
-            $type = '';
-            if (in_array($sub_type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) $type = 'homes';
-            if ($sub_type === 'plots') $type = 'plots';
-            if (in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
-                $type = 'commercial';
+        if (count($request->all()) == 1 && $request->filled('sort') ||
+            count($request->all()) == 2 && $request->filled('sort') && $request->filled('page')) {
+//            to handle the request for city name
+//            dd($sub_type, $purpose, $city);
+            if (in_array($sub_type, ['homes', 'plots', 'commercial'])) {
+                $type = $sub_type;
+                $sub_type = '';
+                $city1 = $city2 = $city_1 = $city_2 = '';
 
-            if ($sub_type === 'houses') $sub_type = 'house';
-            elseif ($sub_type === 'flats') $sub_type = 'flat';
-            elseif (in_array($sub_type, ['house', 'flat', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse']))
-                $sub_type = str_replace('-', ' ', $sub_type);
-            else $sub_type = '';
+                if ($city == 'rawalpindi-Islamabad') {
+                    $city1 = explode('-', $city)[0];
+                    $city2 = explode('-', $city)[1];
+                    $city = '';
+                }
+                if ($city1 !== $city2) {
+                    $city_1 = City::select('id')->where('name', '=', $city1)->first();
+                    $city_2 = City::select('id')->where('name', '=', $city2)->first();
 
-            $city = City::select('id')->where('name', '=', $city)->first();
+                    (new MetaTagController())->addMetaTagsAccordingToCity($city_1->name);
+
+                } else {
+
+                    $city = City::select('id')->where('name', '=', $city)->first();
+                    (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
+                }
+                $properties = (new Property)
+                    ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+                        'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                        'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+                        'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
+                        'cities.name AS city', 'p.name AS image',
+                        'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+                    ->leftJoin('images as p', function ($q) {
+                        $q->on('p.property_id', '=', 'properties.id')
+                            ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+                    })
+                    ->join('cities', 'properties.city_id', '=', 'cities.id')
+                    ->join('locations', 'properties.location_id', '=', 'locations.id')
+                    ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+                    ->where('properties.status', '=', 'active');
+                if ($city != '') $properties->where('properties.city_id', '=', $city->id);
+                else {
+                    $properties
+                        ->where('properties.city_id', '=', $city_1->id)
+                        ->orwhere('properties.city_id', '=', $city_2->id);
+                }
+                $properties->where('properties.purpose', '=', $purpose);
+                $properties->where('properties.type', '=', $type);
+            } else {
+                $type = '';
+                if (in_array($sub_type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) $type = 'homes';
+                if ($sub_type === 'plots') $type = 'plots';
+                if (in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
+                    $type = 'commercial';
+
+                if ($sub_type === 'houses') $sub_type = 'house';
+                elseif ($sub_type === 'flats') $sub_type = 'flat';
+                elseif (in_array($sub_type, ['house', 'flat', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse', 'office', 'shop', 'warehouse', 'factory', 'building', 'other']))
+                    $sub_type = str_replace('-', ' ', $sub_type);
+                else $sub_type = '';
+
+                $city = City::select('id')->where('name', '=', $city)->first();
 
 //            dd($city, $type, $sub_type);
 
-            (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
+                (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
 
-            $properties = (new Property)
-                ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                    'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                    'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                    'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
-                    'cities.name AS city', 'p.name AS image', 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status')
-                ->leftJoin('images as p', function ($q) {
-                    $q->on('p.property_id', '=', 'properties.id')
-                        ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-                })
-                ->join('locations', 'properties.location_id', '=', 'locations.id')
-                ->join('cities', 'properties.city_id', '=', 'cities.id')
-                ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-                ->where('properties.status', '=', 'active');
+                $properties = (new Property)
+                    ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+                        'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                        'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+                        'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
+                        'cities.name AS city', 'p.name AS image',
+                        'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+                    ->leftJoin('images as p', function ($q) {
+                        $q->on('p.property_id', '=', 'properties.id')
+                            ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+                    })
+                    ->join('locations', 'properties.location_id', '=', 'locations.id')
+                    ->join('cities', 'properties.city_id', '=', 'cities.id')
+                    ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+                    ->where('properties.status', '=', 'active');
 
-            $properties->where('properties.city_id', '=', $city->id);
+                $properties->where('properties.city_id', '=', $city->id);
 
 
+                $properties->where('properties.purpose', '=', $purpose);
+                $properties->where('properties.type', '=', $type);
+                if ($sub_type !== '') $properties->where('properties.sub_type', '=', $sub_type);
+            }
 
-            $properties->where('properties.purpose', '=', $purpose);
-            $properties->where('properties.type', '=', $type);
-            if ($sub_type !== '') $properties->where('properties.sub_type', '=', $sub_type);
-        }
 
-        else {
+        } else {
             str_replace('-', ' ', $sub_type);
             $city = str_replace('-', ' ', $city);
             $type = '';
@@ -832,22 +935,29 @@ class PropertyController extends Controller
     public function searchForHousesAndPlots(string $type, string $city, string $location, string $purpose = 'sale')
     {
         $city = City::select('id')->where('name', '=', $city)->first();
+
+        $clean_location = str_replace('_', '-', str_replace('-', ' ', $location));
+
+        if ($clean_location !== 'Bahria Tow' && preg_match('/Tow$/', $clean_location)) $clean_location = $clean_location . 'n';
+
         $location_data = Location::select('id', 'name')->where('city_id', '=', $city->id)
-            ->where('name', '=', str_replace('_', '-', str_replace('-', ' ', $location)))
+            ->where('name', '=', $clean_location)
             ->first();
+
+
+//        dd($city, $location_data);
 
         $properties = (new Property)
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
-                'properties.title', 'properties.description','properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at',
-                'locations.name AS location','properties.location_id',
-                'cities.name AS city', 'p.name AS image', 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status')
+                'locations.name AS location', 'properties.location_id', 'cities.name AS city', 'p.name AS image',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->leftJoin('images as p', function ($q) {
                 $q->on('p.property_id', '=', 'properties.id')
                     ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
             })
-
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
@@ -857,9 +967,7 @@ class PropertyController extends Controller
 
         $properties->where('properties.purpose', '=', $purpose);
         $properties->where('properties.location_id', '=', $location_data->id)
-                   ->whereNull('properties.deleted_at');
-//        dd($type, $city, $location_data->id,$location_data->name, $purpose, $properties->get());
-
+            ->whereNull('properties.deleted_at');
 //        dd($type,$location_data->id,$purpose, str_replace('_', '-', str_replace('-', ' ', $location)), $properties->get());
 
         $sort = '';
@@ -920,7 +1028,8 @@ class PropertyController extends Controller
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'locations.id as location_id', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image', 'properties.favorites', 'agencies.title as agency')
+                'cities.name AS city', 'p.name AS image', 'properties.favorites',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('images as p', function ($q) {

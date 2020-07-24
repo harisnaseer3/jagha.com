@@ -104,7 +104,11 @@
 
                 <div class="footer clearfix" style="line-height: 30px;">
                     <div class="days">
-                        <a><i class="fa fa-user"></i> {{ \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...') }}</a>
+                        <a>
+                            <i class="fa fa-user"></i>
+                            {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
+                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}
+                        </a>
                     </div>
                     <div class="mt-0">
                         <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans()}}</a>
@@ -139,12 +143,18 @@
                                     <td class="w-70 font-weight-bold">{{ $property->phone !== null ? $property->cell: '-'}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Phone No</td>
-                                    <td class="font-weight-bold">{{$property->phone !== null ?$property->phone :''}}</td>
+                                    @if($property->phone !== null)
+                                        <td class="font-weight-bold">{{$property->phone}}</td>
+                                    @elseif($property->agency_phone !== null)
+                                        <td class="font-weight-bold">{{$property->phone}}</td>
+                                    @else
+                                        <td class="font-weight-bold">-</td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <td>Agent</td>
-                                    <td class="font-weight-bold">{{ ucwords($property->contact_person) }}</td>
+                                    <td class="font-weight-bold">  {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
+                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}</td>
                                 </tr>
                                 </tbody>
                             </table>

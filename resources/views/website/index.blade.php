@@ -24,10 +24,10 @@
     @include('website.includes.index-page-banner')
     <!-- Search Section start -->
     @include('website.includes.search2')
-    <!-- featured agencies -->
-    @include('website.includes.partner')
     <!-- Featured properties start -->
     @include('website.includes.featured_properties')
+    <!-- featured agencies -->
+    @include('website.includes.partner')
     <!-- Key agencies -->
     @include('website.includes.featured_agencies')
     <!-- Most popular places start -->
@@ -37,7 +37,7 @@
     @include('website.includes.recent_blogs')
     <!-- Footer start -->
     @include('website.includes.footer')
-    
+
     <div class="fly-to-top back-to-top">
             <i class="fa fa-angle-up fa-3"></i>
             <span class="to-top-text">To Top</span>
@@ -64,9 +64,9 @@
                         (!paused) && $('#agency-next').trigger('click');
                        $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
                        $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
-                    }, 3000);
+                    }, 2000);
                 $('#agency-slider, .controls').hover(function () {
-                    paused = true;
+                    paused = false;
                 }, function () {
                     paused = false;
                 });
