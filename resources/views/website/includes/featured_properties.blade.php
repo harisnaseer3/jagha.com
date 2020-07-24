@@ -26,7 +26,7 @@
                                              title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
                                              />
                                     @else
-                                        <img class="d-block w-100" src="{{asset('storage/properties/default-image.png')}}" alt="properties"/>
+                                        <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                                     @endif
                                 </div>
                             </a>
