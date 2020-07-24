@@ -924,15 +924,98 @@
     .foot-widget p {
         margin-bottom: 0;
     }
-    #middle-agency-name{
-        font-size: 26px;
+    
+    #middle-agency-name {
+        font-size: 20px;
         font-weight: 200;
         padding-top: 30px;
     }
-   #agency-slider .slick-slide-item {
-    padding: 0;
-   }
-   #sale-count{
-    font-weight: 100;
-    font-size: 15px;
-   }
+    
+    #agency-slider .slick-slide-item {
+        padding: 0;
+    }
+    
+    #sale-count {
+        font-weight: 100;
+        font-size: 15px;
+    }
+    .top-style-prev{
+        left: -42px;
+    }
+    .top-style-next{
+        right: -52px;
+    }
+    .tooltip-inner {
+        max-width: 600px !important;
+        background-color: #444444;
+    }
+    .tool-image{
+        width:100px;
+        height:100px;
+    }
+    
+     
+     
+     
+    
+     
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+    .item-height-gap {
+    
+    
+        margin-bottom: -6px;
+    
+    
+    }
+    
+    
+    .arrow-line-height {
+    
+       line-he ight: 41px;
+    }
+    
+    .top-style {
+        top: 46% !importants;
+    }
