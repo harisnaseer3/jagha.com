@@ -39,11 +39,11 @@
     @include('website.includes.footer')
 
     <div class="fly-to-top back-to-top">
-            <i class="fa fa-angle-up fa-3"></i>
-            <span class="to-top-text">To Top</span>
-        </div><!--fly-to-top-->
-        <div class="fly-fade">
-        </div><!--fly-fade-->
+        <i class="fa fa-angle-up fa-3"></i>
+        <span class="to-top-text">To Top</span>
+    </div><!--fly-to-top-->
+    <div class="fly-fade">
+    </div><!--fly-fade-->
 @endsection
 
 @section('script')
@@ -62,8 +62,8 @@
                 var paused = false,
                     interval = setInterval(function () {
                         (!paused) && $('#agency-next').trigger('click');
-                       $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
-                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
+                        $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text() + ' (' + $("#agency-slider .slick-center .slick-slide-item .agency-city").text() + ')');
+                        $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text() + ' Properties For Sale');
                     }, 2000);
                 $('#agency-slider, .controls').hover(function () {
                     paused = false;
@@ -81,10 +81,17 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
+
+                // $('.featured-agency-image').hover(function () {
+                //     console.log('hi');
+                //     $(this).tooltip({content: '<img src="https://i.etsystatic.com/18461744/r/il/8cc961/1660161853/il_794xN.1660161853_sohi.jpg" />'});
+                //
+                // });
+
             });
         })(jQuery);
     </script>
-
+    <script src="{{asset('website/js/popper.min.js')}}"></script>
     <script src="{{asset('website/js/script-custom.js')}}"></script>
 
 @endsection
