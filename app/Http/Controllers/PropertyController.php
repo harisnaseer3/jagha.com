@@ -746,13 +746,13 @@ class PropertyController extends Controller
         else $properties->orderBy('views', 'DESC');
 
         $property_types = (new PropertyType)->all();
-        $aggregates = $this->_getPropertyAggregates();
+//        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
             'properties' => $properties->paginate(10),
-            'aggregates' => $aggregates,
+//            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -917,13 +917,13 @@ class PropertyController extends Controller
         else $properties->orderBy('views', 'DESC');
         $property_types = (new PropertyType)->all();
 
-        $aggregates = $this->_getPropertyAggregates();
+//        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
             'properties' => $properties->paginate(10),
-            'aggregates' => $aggregates,
+//            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];

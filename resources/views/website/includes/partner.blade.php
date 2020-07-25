@@ -1,7 +1,7 @@
 <div class="partners">
     <div class="container content-area-12">
         <div class="main-title">
-            <h2>Our Featured Partners</h2></div>
+            <h2><a href="{{route('featured-partners',['sort'=>'newest'])}}" title="Featured Partners">Our Featured Partners</a></h2></div>
         <div class="slick-slider-area" id="agency-slider">
             <div class="row slick-carousel" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div>
-            <h2 id="middle-agency-name"> </h2>
+            <h2 id="middle-agency-name"></h2>
             <h5 class="pt-3" id="sale-count"></h5>
         </div>
 
