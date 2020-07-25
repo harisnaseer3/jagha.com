@@ -5,15 +5,15 @@
         <div class="slick-slider-area" id="agency-slider">
             <div class="row slick-carousel" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
-                 data-slick='{"slidesToShow": 5, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 2}}]}'>
+                 data-slick='{"slidesToShow": 7, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 2}}]}'>
                 
                 @foreach($featured_agencies as $agency)
                     <div class="slick-slide-item" aria-label="featured agency">
                         @if($agency->logo !== null)
-                            <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{strtoupper($agency->title)}}" width="50%" height="30%" class="img-fluid"
+                            <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{strtoupper($agency->title)}}" width="40%" height="40%" class="img-fluid"
                                  title="{{strtoupper($agency->title)}}">
                         @else
-                            <img src="{{asset('img/agency.png')}}" alt="{{strtoupper($agency->title)}}" width="50%" height="30%" class="img-fluid" title="{{strtoupper($agency->title)}}">
+                            <img src="{{asset('img/agency.png')}}" alt="{{strtoupper($agency->title)}}" width="40%" height="40%" class="img-fluid" title="{{strtoupper($agency->title)}}">
                         @endif
                         <h2 class="agency-name mt-3 text-transform d-none">{{$agency->title}}</h2>
                         <h2 class="sale-count mt-3 text-transform d-none">{{$agency->sale_count}}</h2>
