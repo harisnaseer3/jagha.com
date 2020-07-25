@@ -1000,14 +1000,14 @@
 .partners .slick-center img{
     width: 70%;
     height : 70%;
-      box-shadow: 10px 10px 5px #ccc;
-      -moz-box-shadow: 10px 10px 5px #ccc;
-      -webkit-box-shadow: 10px 10px 5px #ccc;
-      -khtml-box-shadow: 10px 10px 5px #ccc;
+      box-shadow: 10px 10px 5px #8e8484;
+      -moz-box-shadow: 10px 10px 5px #8e8484;
+      -webkit-box-shadow: 10px 10px 5px #8e8484;
+      -khtml-box-shadow: 10px 10px 5px #8e8484;
 }
 .partners .slick-slide-item img:hover{
-    width: 40%;
-    height: 40%
+    width: 50%;
+    height: 50%
 }
     
      
