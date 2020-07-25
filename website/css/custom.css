@@ -924,15 +924,154 @@
     .foot-widget p {
         margin-bottom: 0;
     }
-    #middle-agency-name{
-        font-size: 26px;
+    
+    #middle-agency-name {
+        font-size: 20px;
         font-weight: 200;
         padding-top: 30px;
     }
-   #agency-slider .slick-slide-item {
-    padding: 0;
-   }
-   #sale-count{
-    font-weight: 100;
-    font-size: 15px;
-   }
+    
+    #agency-slider .slick-slide-item {
+        padding: 0;
+    }
+    
+    #sale-count {
+        font-weight: 100;
+        font-size: 15px;
+    }
+    .top-style-prev{
+        left: -42px;
+    }
+    .top-style-next{
+        right: -52px;
+    }
+    .tooltip-inner {
+        max-width: 600px !important;
+        background-color: #444444;
+    }
+    .tool-image{
+        width:100px;
+        height:100px;
+    }
+    .our-services {
+    background-color: #00BCD4;
+    padding: 70px 0px;
+}
+.service-box {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin: 15px 0px 15px;
+    transition: 0.5s;
+    border: 1px solid transparent;
+}
+.service-box:hover {
+    background-color: #f9f9f9;
+    border-radius: 40px;
+    border: 1px solid #ddd;
+}
+.service-box:hover h3 a{
+  color: #00bcd4;
+}
+.service-box .fa-map-marker {
+    color: red;
+}
+.service-box .fa-phone {
+    color: blue;
+}
+.service-box .fa-2x {
+    font-size: 1.5em;
+}
+.service-box h4 a {
+    text-decoration: none;
+    font-size: 12px;
+}
+.service-box :before {
+    margin: 0 auto;
+    display: block;
+    float: none;
+}
+.partners .slick-next {
+    right: 457px;
+}
+.partners .slick-prev {
+    left: 457px;
+}
+.partners .slick-center img{
+    width: 70%;
+    height : 70%;
+      box-shadow: 10px 10px 5px #8e8484;
+      -moz-box-shadow: 10px 10px 5px #8e8484;
+      -webkit-box-shadow: 10px 10px 5px #8e8484;
+      -khtml-box-shadow: 10px 10px 5px #8e8484;
+}
+.partners .slick-slide-item img:hover{
+    width: 50%;
+    height: 50%
+}
+    
+     
+     
+     
+    
+     
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+     
+    
+    
+    .item-height-gap {
+    
+    
+        margin-bottom: -6px;
+    
+    
+    }
+    
+    
+    .arrow-line-height {
+    
+       line-he ight: 41px;
+    }
+    
+    .top-style {
+        top: 46% !importants;
+    }
