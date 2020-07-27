@@ -1196,7 +1196,7 @@ input[type="checkbox"]:checked + label::before {
     height: 100%;
     bottom: 0;
     background-color: rgba(36, 42, 53, 0.3);
-	##background-color: rgba(128, 128, 128, 0.7);
+	#background-color: rgba(128, 128, 128, 0.7);
 }
 
 .banner .banner-slider-inner .btn {
@@ -2444,14 +2444,7 @@ input[type="checkbox"]:checked + label::before {
 }
 
 /** TESTIMONIAL STARTED **/
-.testimonial {
-    padding: 100px 0 130px;
-    background: url(../img/banner/banner-5.jpg);
-    z-index: 0;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+
 
 .testimonial .testimonial-inner .carousel-item {
     margin-bottom: 30px;
@@ -2547,16 +2540,7 @@ input[type="checkbox"]:checked + label::before {
 }
 
 /** TESTIMONIAL 2 STARTED **/
-.testimonial-2 {
-    padding: 100px 0;
-    text-align: center;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    background: url(../img/bg-1.jpg);
-    z-index: 0;
-}
+
 
 .testimonial-2 .testimonial-header {
     margin: 0 auto 40px;
@@ -2645,15 +2629,6 @@ input[type="checkbox"]:checked + label::before {
 }
 
 /** TESTIMONIAL 3 STARTED **/
-.testimonial-3 {
-    padding: 100px 0;
-    background: url(../img/bg-1.jpg);
-    z-index: 0;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-}
 
 .testimonial-3 .testimonial-header {
     margin: 0 auto 40px;
@@ -4062,30 +4037,6 @@ footer {
     height: 515px;
 }
 
-.cat-1-bg {
-    background-image: url(../img/popular-places/popular-places-1.jpg);
-}
-
-.cat-2-bg {
-    background-image: url(../img/popular-places/popular-places-2.jpg);
-}
-
-.cat-3-bg {
-    background-image: url(../img/popular-places/popular-places-4.jpg);
-}
-
-.cat-4-bg {
-    background-image: url(../img/popular-places/popular-places-3.jpg);
-}
-
-.cat-5-bg {
-    background-image: url(../img/popular-places/popular-places-5.jpg);
-}
-
-.cat-6-bg {
-    background-image: url(../img/popular-places/popular-places-6.jpg);
-}
-
 .category_bg_box:hover {
     background-size: 110% 110%;
 }
@@ -4213,29 +4164,6 @@ footer {
     height: 350px;
 }
 
-.property-photo {
-    background-image: url(../img/properties/properties-7.jpg);
-}
-
-.property-photo-2 {
-    background-image: url(../img/properties/properties-8.jpg);
-}
-
-.property-photo-3 {
-    background-image: url(../img/properties/properties-9.jpg);
-}
-
-.property-photo-4 {
-    background-image: url(../img/properties/properties-10.jpg);
-}
-
-.property-photo-5 {
-    background-image: url(../img/properties/properties-11.jpg);
-}
-
-.property-photo-6 {
-    background-image: url(../img/properties/properties-12.jpg);
-}
 
 /** PROPERY BOX 5 AREA START **/
 .property-box-5 {
@@ -4510,21 +4438,21 @@ footer {
     border-radius: 10px 0 0 10px;
 }
 
-.contact-section .bg-img {
-    background: rgba(0, 0, 0, 0.04) url(../img/contact.jpg) top left repeat;
-    background-size: cover;
-    top: 0;
-    bottom: 0;
-    border-radius: 0 20px 20px 0;
-    opacity: 1;
-    width: 100%;
-    z-index: 999;
-    min-height: 496px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+/*.contact-section .bg-img {*/
+/*    background: rgba(0, 0, 0, 0.04) url(../img/contact.jpg) top left repeat;*/
+/*    background-size: cover;*/
+/*    top: 0;*/
+/*    bottom: 0;*/
+/*    border-radius: 0 20px 20px 0;*/
+/*    opacity: 1;*/
+/*    width: 100%;*/
+/*    z-index: 999;*/
+/*    min-height: 496px;*/
+/*    position: relative;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
 
 .contact-section-bg {
     background: #f7f7f7;
@@ -4897,7 +4825,7 @@ footer {
 }
 
 .option-bar .title-name {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
     color: #515151;

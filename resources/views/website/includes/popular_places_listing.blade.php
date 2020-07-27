@@ -89,7 +89,7 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col-sm-12">
-                        <h4 class="font-16 color-555">Popular Locations to Buy Homes</h4>
+                        <h4 class="font-16 color-555">Popular Locations to Buy Houses</h4>
                         <hr>
                     </div>
 

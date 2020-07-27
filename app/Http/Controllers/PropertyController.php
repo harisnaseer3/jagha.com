@@ -67,19 +67,19 @@ class PropertyController extends Controller
                 'karachi' => (new CountTableController())->popularLocations()['city_wise_homes_data']['karachi'],
                 'peshawar' => (new CountTableController())->popularLocations()['city_wise_homes_data']['peshawar'],
                 'lahore' => (new CountTableController())->popularLocations()['city_wise_homes_data']['lahore'],
-                'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_homes_data']['rawalpindi/Islamabad']
+                'Islamabad/Rawalpindi' => (new CountTableController())->popularLocations()['city_wise_homes_data']['rawalpindi/Islamabad']
             ],
             'city_wise_plots_data' => [
                 'karachi' => (new CountTableController())->popularLocations()['city_wise_plots_data']['karachi'],
                 'peshawar' => (new CountTableController())->popularLocations()['city_wise_plots_data']['peshawar'],
                 'lahore' => (new CountTableController())->popularLocations()['city_wise_plots_data']['lahore'],
-                'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_plots_data']['rawalpindi/Islamabad']
+                'Islamabad/Rawalpindi' => (new CountTableController())->popularLocations()['city_wise_plots_data']['rawalpindi/Islamabad']
             ],
             'city_wise_commercial_data' => [
                 'karachi' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['karachi'],
                 'peshawar' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['peshawar'],
                 'lahore' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['lahore'],
-                'rawalpindi/Islamabad' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['rawalpindi/Islamabad']
+                'Islamabad/Rawalpindi' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['rawalpindi/Islamabad']
             ],
             'popular_cities_commercial_on_sale' => (new CountTableController())->popularLocations()['popular_cities_commercial_on_sale'],
             'popular_cities_property_on_rent' => (new CountTableController())->popularLocations()['popular_cities_property_on_rent'],
@@ -302,7 +302,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully');
         } catch (Exception $e) {
-            dd($e);
+//            dd($e);
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -746,13 +746,13 @@ class PropertyController extends Controller
         else $properties->orderBy('views', 'DESC');
 
         $property_types = (new PropertyType)->all();
-        $aggregates = $this->_getPropertyAggregates();
+//        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
             'properties' => $properties->paginate(10),
-            'aggregates' => $aggregates,
+//            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -774,7 +774,7 @@ class PropertyController extends Controller
                 $sub_type = '';
                 $city1 = $city2 = $city_1 = $city_2 = '';
 
-                if ($city == 'rawalpindi-Islamabad') {
+                if ($city == 'Islamabad-Rawalpindi') {
                     $city1 = explode('-', $city)[0];
                     $city2 = explode('-', $city)[1];
                     $city = '';
@@ -917,13 +917,13 @@ class PropertyController extends Controller
         else $properties->orderBy('views', 'DESC');
         $property_types = (new PropertyType)->all();
 
-        $aggregates = $this->_getPropertyAggregates();
+//        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
             'properties' => $properties->paginate(10),
-            'aggregates' => $aggregates,
+//            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];

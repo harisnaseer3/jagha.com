@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use App\Models\Dashboard\User;
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,29 @@ class AgencyController extends Controller
     public function create()
     {
         return view('website.account.agency_create', ['table_name' => 'users', 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+    }
+
+    public function listingFeaturedPartners()
+    {
+        $agencies = (new Agency)
+            ->select('agencies.title', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
+                'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
+//            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
+            ->where('agencies.status', '=', 'verified')
+            ->where('agencies.featured_listing', '=', 1)
+            ->whereNull('agencies.deleted_at');
+        $agencies->orderBy('agencies.created_at', 'DESC');
+        $property_types = (new PropertyType)->all();
+
+
+        $data = [
+            'property_types' => $property_types,
+            'agencies' => $agencies->paginate(10),
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+
+        ];
+        return view('website.pages.agency_listing', $data);
     }
 
     /**
@@ -187,7 +211,7 @@ class AgencyController extends Controller
      */
     public function edit(Agency $agency)
     {
-        if(Auth::user()->hasRole('admin')){
+        if (Auth::user()->hasRole('admin')) {
             return view('website.account.agency',
                 ['table_name' => 'users',
                     'agency' => $agency,
@@ -355,29 +379,19 @@ class AgencyController extends Controller
 
     public function FeaturedAgencies()
     {
-       
+
         return (new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city', DB::raw('count(properties.agency_id) as sale_count'))
-                           ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
-                           ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
-                           ->where('properties.purpose','=','sale')
-                           ->groupby('agencies.title', 'agencies.logo', 'agencies.city')->get();
-
-                        
-            
-        // dd((new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city', DB::raw('count(properties.agency_id) as sale_count'))
-        //                    ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
-        //                    ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
-        //                    ->where('properties.purpose','=','rent')
-        //                    ->groupby('agencies.title', 'agencies.logo', 'agencies.city')->get());
-
-        // return   $sale_count->union($rent_count)->get();
-
-
+            ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
+            ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
+            ->where('properties.purpose', '=', 'sale')
+            ->groupby('agencies.title', 'agencies.logo', 'agencies.city')->get();
     }
 
     public function keyAgencies()
     {
-        return (new Agency)->select('title', 'logo', 'city','phone')->where('status', '=', 'verified')->where('key_listing', '=', 1)->get();
+        return (new Agency)->select('title', 'logo', 'city', 'phone')
+            ->where('status', '=', 'verified')
+            ->where('key_listing', '=', 1)->get();
 
     }
 
@@ -396,7 +410,7 @@ class AgencyController extends Controller
     public function getAgencyListingCount(string $user)
     {
         $counts = [];
-        foreach (['verified','pending', 'expired', 'rejected', 'deleted'] as $status) {
+        foreach (['verified', 'pending', 'expired', 'rejected', 'deleted'] as $status) {
             $counts[$status]['all'] = $this->_listings($status, $user)->count();
 
             if ($status === 'verified') {
@@ -413,7 +427,7 @@ class AgencyController extends Controller
         // listing of status
         $status = strtolower($status);
 
-        if (!in_array($status, ['verified_agencies','pending_agencies', 'expired_agencies', 'rejected_agencies', 'deleted_agencies'])) {
+        if (!in_array($status, ['verified_agencies', 'pending_agencies', 'expired_agencies', 'rejected_agencies', 'deleted_agencies'])) {
             return redirect()->back(302)->withInput()->withErrors(['message', 'Invalid status provided.']);
         }
 

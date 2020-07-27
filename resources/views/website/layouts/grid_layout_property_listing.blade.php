@@ -3,7 +3,7 @@
     <div class="float-left">
         <h4>
             <span class="heading-icon"><i class="fa fa-th-large"></i></span>
-            <span class="title-name">Properties Grid</span>
+            <span class="title-name text-transform">Properties Grid</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
@@ -55,7 +55,7 @@
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>
                         <img class="d-block w-100"
-                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("storage/properties/default-image.png")}}"
+                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
                              alt="{{$property->sub_type}} for {{$property->purpose}}"
                              title="{{$property->sub_type}} for {{$property->purpose}}">
                     </a>
