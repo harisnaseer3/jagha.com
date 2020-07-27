@@ -3,13 +3,13 @@
     <div class="float-left">
         <h4>
             <span class="heading-icon"><i class="fa fa-th-list"></i></span>
-            <span class="title-name">Properties List</span>
+            <span class="title-name text-transform">Properties List</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="sorting">
-                <option value="popular" {{ $params['sort']  === 'popular' || request()->query('sort') === 'popular'  ? 'selected' : '' }}>Popular</option>
+{{--                <option value="popular" {{ $params['sort']  === 'popular' || request()->query('sort') === 'popular'  ? 'selected' : '' }}>Popular</option>--}}
                 <option value="newest" {{ $params['sort'] === 'newest' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' || request()->query('sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' || request()->query('sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>
@@ -98,6 +98,11 @@
                         @else
                             {{ Form::hidden('property',$property->id)}}
                         @endif
+                        <div class="col-sm-12">
+                            <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
+                                {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
+                            </a>
+                        </div>
                         <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
                         <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                     </div>

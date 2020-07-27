@@ -1,12 +1,12 @@
 <div class="partners">
     <div class="container content-area-12">
         <div class="main-title">
-            <h2>Our Featured Partners</h2></div>
+            <h2><a href="{{route('featured-partners',['sort'=>'newest'])}}" title="Featured Partners">Our Featured Partners</a></h2></div>
         <div class="slick-slider-area" id="agency-slider">
             <div class="row slick-carousel" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
                  data-slick='{"slidesToShow": 7, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 2}}]}'>
-                
+
                 @foreach($featured_agencies as $agency)
                     <div class="slick-slide-item" aria-label="featured agency">
                         @if($agency->logo !== null)
@@ -19,7 +19,7 @@
                         <h2 class="sale-count mt-3 text-transform d-none">{{$agency->sale_count}}</h2>
                         <div class="mt-1 agency-city d-none">{{implode(', ', json_decode($agency->city))}}</div>
                     </div>
- 
+
                 @endforeach
             </div>
             <div class="controls">
@@ -32,10 +32,10 @@
             </div>
         </div>
         <div>
-            <h2 id="middle-agency-name"> </h2>
-            <h5 class="pt-3" id="sale-count"></h4>
+            <h2 id="middle-agency-name"></h2>
+            <h5 class="pt-3" id="sale-count"></h5>
         </div>
-        
+
     </div>
 </div>
 

@@ -20,6 +20,7 @@ Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
+Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
 
 //list of blogs
 Route::get('blogs', 'BlogController@index')->name('blogs.index');
