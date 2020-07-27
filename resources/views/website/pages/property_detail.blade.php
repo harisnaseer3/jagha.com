@@ -14,7 +14,7 @@
 @section('content')
     {{--    @include('website.includes.main_header')--}}
     <!-- Sub banner start -->
-    @include('website.includes.top_header2')
+    @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
     <div class="properties-details-page content-area-7">

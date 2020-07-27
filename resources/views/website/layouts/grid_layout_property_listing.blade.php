@@ -55,7 +55,7 @@
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>
                         <img class="d-block w-100"
-                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("storage/properties/default-image.png")}}"
+                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
                              alt="{{$property->sub_type}} for {{$property->purpose}}"
                              title="{{$property->sub_type}} for {{$property->purpose}}">
                     </a>

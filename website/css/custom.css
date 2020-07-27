@@ -643,10 +643,12 @@ textarea.form-control.is-invalid {
 }
 
 .detail-page-banner {
-    background: black;
-    margin-top: 10px;
+    background: #444444;
+    margin-top: 12px;
     margin-bottom: 10px;
-    border: 10px solid black
+    border: 1px solid #444444;
+    padding-top: 12px;
+    padding-bottom: 12px;
 }
 
 .login-dropdown {
@@ -940,10 +942,6 @@ nav.fly-nav-menu ul li a,
     padding-top: 30px;
 }
 
-#agency-slider .slick-slide-item {
-    padding: 0;
-}
-
 #sale-count {
     font-weight: 100;
     font-size: 15px;
@@ -1015,26 +1013,19 @@ nav.fly-nav-menu ul li a,
 }
 
 .partners .slick-next {
-    right: 457px;
+    right: 435px;
 }
 
 .partners .slick-prev {
-    left: 457px;
+    left: 435px;
 }
 
-.partners .slick-center img {
-    width: 70%;
-    height: 70%;
-    box-shadow: 10px 10px 5px #8e8484;
-    -moz-box-shadow: 10px 10px 5px #8e8484;
-    -webkit-box-shadow: 10px 10px 5px #8e8484;
-    -khtml-box-shadow: 10px 10px 5px #8e8484;
-}
 
 .partners .slick-slide-item img:hover {
-    width: 50%;
-    height: 50%
+    width: 60%;
+    height: 60%
 }
+
 
 .item-height-gap {
     margin-bottom: -6px;
@@ -1048,4 +1039,32 @@ nav.fly-nav-menu ul li a,
 }
 .color-blue{
     color: #274abb
+}
+.partners .slick-slide-item img
+{
+    padding-top:20px;
+}
+.partners .slick-center img {
+    width: 85%;
+    height: 85%;
+    padding: 0px;
+    box-shadow: 10px 10px 5px #8e8484;
+    -moz-box-shadow: 10px 10px 5px #8e8484;
+    -webkit-box-shadow: 10px 10px 5px #8e8484;
+    -khtml-box-shadow: 10px 10px 5px #8e8484;
+}
+.partners .slick-center img:hover {
+    width: 85%;
+    height: 85%
+}
+footer{
+    padding-top: 0px !important;
+}
+@media (min-width: 993px) and (max-width: 1199px) {
+  .partners .slick-next {
+    right: 357px;
+}
+.partners .slick-prev {
+    left: 357px;
+}
 }

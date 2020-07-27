@@ -19,7 +19,7 @@
 
 @section('content')
     <!-- Top header start -->
-    @include('website.includes.top_header2')
+    @include('website.includes.nav')
     <!-- Main header start -->
     <!-- Blog body start -->
     <div class="blog-body content-area">

@@ -14,7 +14,7 @@
     <!-- Top header start -->
     <!-- Top header end -->
     <!-- Main header start -->
-    @include('website.includes.top_header2')
+    @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
 

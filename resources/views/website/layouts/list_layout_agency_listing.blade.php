@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
-                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.$agency->logo): asset("storage/properties/default-image.png")}}"
+                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.$agency->logo): asset("/img/logo/dummy-logo.png")}}"
                          alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo">
                 </a>
             </div>

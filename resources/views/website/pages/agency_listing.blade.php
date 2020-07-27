@@ -14,9 +14,8 @@
     <!-- Top header start -->
     <!-- Top header end -->
     <!-- Main header start -->
-    @include('website.includes.top_header2')
+    @include('website.includes.nav')
     @include('website.includes.banner2')
-{{--    @include('website.includes.search2')--}}
 
     <!-- Properties section body start -->
     <div class="properties-section content-area">
@@ -54,11 +53,6 @@
                     <div class="page-list-layout">
                         @include('website.layouts.list_layout_agency_listing')
                     </div>
-
-{{--                    <div class="page-grid-layout" style="display: none;">--}}
-{{--                        @include('website.layouts.grid_layout_property_listing')--}}
-{{--                    </div>--}}
-
                     <!-- Pagination -->
                     <div class="pagination-box hidden-mb-45 text-center" role="navigation">
                         {{ $agencies->links() }}
@@ -88,44 +82,14 @@
             </div>
         </div>
     </div>
-{{--    <div class="modal fade" id="EmailModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
-{{--        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
-{{--            <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">--}}
-{{--                <!--Header-->--}}
-{{--                <div class="modal-header">--}}
-{{--                    <h5 class="modal-title" id="myModalLabel">Contact Agent</h5>--}}
-{{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                        <span aria-hidden="true">×</span>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--                <!--Body-->--}}
-{{--                <div class="modal-body">--}}
-{{--                    <div class="container">--}}
-{{--                        {{ Form::open(['route'=>['contact'],'method' => 'post','role' => 'form', 'id'=> 'email-contact-form', 'role' => 'form']) }}--}}
-{{--                        <div><label class="mt-2">Name<span style="color:red">*</span></label></div>--}}
-{{--                        {{ Form::text('name', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"Name"])) }}--}}
-{{--                        <div><label class="mt-2">Email<span style="color:red">*</span></label></div>--}}
-{{--                        {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}--}}
-{{--                        <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>--}}
-{{--                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}--}}
-{{--                        <div><label class="mt-2">Meassage<span style="color:red">*</span></label></div>--}}
-{{--                        {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}--}}
-{{--                        <div class="mt-2">--}}
-{{--                            {{ Form::bsRadio('i am','Buyer', ['required' => true, 'list' => ['Buyer', 'Agent', 'Other']]) }}--}}
-{{--                        </div>--}}
-{{--                        {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}--}}
-{{--                        <div class="text-center">--}}
-{{--                            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-success','id'=>'send-mail']) }}--}}
-{{--                        </div>--}}
-{{--                        {{ Form::close() }}--}}
-{{--                        <a href="" class="btn btn-block btn-outline-success mt-2 agent-call">Call</a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
     <!-- Footer start -->
     @include('website.includes.footer')
+    <div class="fly-to-top back-to-top">
+        <i class="fa fa-angle-up fa-3"></i>
+        <span class="to-top-text">To Top</span>
+    </div><!--fly-to-top-->
+    <div class="fly-fade">
+    </div><!--fly-fade-->
 @endsection
 
 @section('script')
