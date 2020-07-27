@@ -132,10 +132,10 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center">
-                            <div> {{ $property->agency !== null ? $property->agency: '' }} </div>
-                            <div>Please use property reference</div>
-                            <div style="font-weight: bold"> {{ $property->reference }} </div>
-                            <div>while calling us</div>
+                            <div class= "mb-2"> {{ $property->agency !== null ? $property->agency: '' }} </div>
+                            <div class= "mb-2">Please use property reference</div>
+                            <div class= "mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
+                            <div class="mb-2">while calling us</div>
                         </div>
 
                         <table class="table table-borderless">
