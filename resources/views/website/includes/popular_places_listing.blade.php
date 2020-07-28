@@ -124,7 +124,6 @@
                     <div class="col-sm-12"><h4 class="font-16 color-555">Popular Locations to Buy Plots</h4>
                         <hr>
                     </div>
-                    {{--                    {{dd($city_wise_plots_data['Islamabad/Rawalpindi'])}}--}}
                     @foreach($city_wise_plots_data as $key_value => $value)
                         <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                             <h6 class="font-16 color-555 pb-3"><a
