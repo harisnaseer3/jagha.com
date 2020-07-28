@@ -30,8 +30,6 @@
                                 <a class="mr-2" href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube"><i class="fab fa-youtube"></i> </a>
                             </div><!--foot-soc-->
                         </div><!--foot-widget-->
-
-
                     </div>
                     <div id="mvp_catlist_widget-8" class="foot-widget left relative mvp_catlist_widget"><h3 class="foot-head">Recent Properties</h3>
                         <div class="blog-widget-wrap left relative">
@@ -42,7 +40,8 @@
                                     @else
                                         <li><a href="{{$footer_property->property_detail_path()}}"
                                                title="{{\Illuminate\Support\Str::limit($footer_property->title, 70, $end='..')}}">
-                                               {{\Illuminate\Support\Str::limit($footer_property->city,25, $end='..')}} |   {{\Illuminate\Support\Str::limit($footer_property->location, 25, $end='..')}} |  {{\Illuminate\Support\Str::limit(str_replace($footer_property->city,'',$footer_property->title), 40, $end='..')}} |  PKR {{ Helper::getPriceInWords($footer_property->price)}}
+                                               {{\Illuminate\Support\Str::limit($footer_property->city,25, $end='..')}} |   {{\Illuminate\Support\Str::limit($footer_property->location, 25, $end='..')}} |  {{\Illuminate\Support\Str::limit(str_replace($footer_property->city,'',$footer_property->title), 25, $end='..')}} |  PKR {{ Helper::getPriceInWords($footer_property->price)}}
+
                                             </a>
                                         </li>
                                     @endif
@@ -51,7 +50,8 @@
                         </div><!--blog-widget-wrap-->
                     </div>
 
-                    <div id="mvp_catlist_widget-9" class="foot-widget left relative mvp_catlist_widget"><h3 class="foot-head">Featured Partners</h3>
+                    <div id="mvp_catlist_widget-9" class="foot-widget left relative mvp_catlist_widget">
+                        <h3 class="foot-head">Featured Partners</h3>
                         <div class="blog-widget-wrap left relative">
                             <ul class="blog-widget-list left relative" id="footer-blogs">
                                 @foreach($footer_agencies as $key => $agency)

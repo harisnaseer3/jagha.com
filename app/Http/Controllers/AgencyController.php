@@ -43,6 +43,27 @@ class AgencyController extends Controller
         $agencies->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
 
+        $data = [
+            'property_types' => $property_types,
+            'agencies' => $agencies->paginate(10),
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+
+        ];
+        return view('website.pages.agency_listing', $data);
+    }
+
+    public function listingKeyPartners()
+    {
+        $agencies = (new Agency)
+            ->select('agencies.title', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
+                'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
+//            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
+            ->where('agencies.status', '=', 'verified')
+            ->where('agencies.key_listing', '=', 1)
+            ->whereNull('agencies.deleted_at');
+        $agencies->orderBy('agencies.created_at', 'DESC');
+        $property_types = (new PropertyType)->all();
 
         $data = [
             'property_types' => $property_types,
@@ -53,6 +74,7 @@ class AgencyController extends Controller
         ];
         return view('website.pages.agency_listing', $data);
     }
+
 
     /**
      * Store a newly created resource in storage.

@@ -10,7 +10,8 @@ class FooterController extends Controller
     public function footerContent()
     {
         $recent_properties = (new Property)
-            ->select('properties.id', 'properties.title', 'properties.reference', 'properties.price', 'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city')
+            ->select('properties.id', 'properties.title', 'properties.reference', 'properties.price', 'properties.created_at',
+                'properties.updated_at', 'locations.name AS location', 'cities.name AS city')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->where('properties.status', '=', 'active')
