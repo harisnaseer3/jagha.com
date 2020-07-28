@@ -21,7 +21,7 @@ class CountTableController extends Controller
                 ['property_type', '=', 'Homes'],
                 ['property_sub_type', '=', 'Flat'],
             ])
-            ->orderBy('property_count','DESC')
+            ->orderBy('property_count', 'DESC')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->limit(6)->get();
 
@@ -29,7 +29,7 @@ class CountTableController extends Controller
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
             ->where('property_type', '=', 'Plots')
             ->where('property_purpose', '=', 'sale')
-            ->orderBy('property_count','DESC')
+            ->orderBy('property_count', 'DESC')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
             ->limit(6)->get();
 
@@ -37,7 +37,7 @@ class CountTableController extends Controller
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->where('property_type', '=', 'commercial')
             ->where('property_purpose', '=', 'sale')
-            ->orderBy('property_count','DESC')
+            ->orderBy('property_count', 'DESC')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->limit(6)->get();
 
@@ -45,141 +45,218 @@ class CountTableController extends Controller
         $popular_cities_property_on_rent = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->where('property_purpose', '=', 'rent')
-            ->orderBy('property_count','DESC')
+            ->orderBy('property_count', 'DESC')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->limit(6)->get();
 
+        $lahore_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'homes\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'homes\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 3
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $lahore_homes = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Homes')
-            ->where('city_name', '=', 'lahore')
-            ->groupBy('location_id', 'location_name','city_id', 'city_name', 'property_purpose', 'property_type')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $lahore_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'plots\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'plots\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 3
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $lahore_plots = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Plots')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'lahore')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $lahore_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'commercial\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'commercial\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 3
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $lahore_commercial = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Commercial')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'lahore')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $karachi_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'homes\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'homes\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 2
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $karachi_homes = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Homes')
-            ->where('city_name', '=', 'karachi')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $karachi_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'plots\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'plots\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 2
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $karachi_plots = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Plots')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'karachi')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $karachi_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'commercial\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'commercial\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 2
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $karachi_commercial = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Commercial')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'karachi')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
-
-
-
-        $peshawar_plots = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Plots')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'peshawar')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
-
-        $peshawar_homes = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Homes')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'peshawar')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
-
-        $peshawar_commercial = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where('property_type', '=', 'Commercial')
-            ->where('property_purpose', '=', 'sale')
-            ->where('city_name', '=', 'peshawar')
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $peshawar_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'plots\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'plots\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 153
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
 
+        $peshawar_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'homes\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'homes\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 153
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $isb_homes = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where([
-                ['property_purpose', '=', 'sale'],
-                ['property_type', '=', 'Homes'],
-                ['city_name', '=', 'islamabad'],
-            ])
-            ->orwhere([
-                ['property_purpose', '=', 'sale'],
-                ['property_type', '=', 'Homes'],
-                ['property_sub_type', '=', 'rawalpindi'],
-            ])
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $peshawar_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'commercial\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'commercial\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 153
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 6'));
 
-        $isb_plots = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where([
-                ['property_purpose', '=', 'sale'],
-                ['property_type', '=', 'plots'],
-                ['city_name', '=', 'islamabad'],
-            ])
-            ->orwhere([
-                ['property_purpose', '=', 'sale'],
-                ['property_type', '=', 'plot'],
-                ['property_sub_type', '=', 'rawalpindi'],
-            ])
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $isb_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'homes\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'homes\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 1
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 3'));
 
-        $isb_commercial = DB::table('property_count_by_property_purposes')
-            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->where([
-                ['property_purpose', '=', 'sale'],
-                ['property_type', '=', 'commercial'],
-                ['city_name', '=', 'islamabad'],
-            ])
-            ->orwhere([
-                ['property_purpose', '=', 'sale'],
-                ['property_type', '=', 'commercial'],
-                ['property_sub_type', '=', 'rawalpindi'],
-            ])
-            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'location_id', 'location_name')
-            ->orderBy('property_count','DESC')
-            ->limit(6)->get();
+        $pwd_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'homes\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'homes\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 4
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 3'));
+        foreach ($pwd_homes as $data) {
+            array_push($isb_homes, $data);
+        }
+
+
+        $isb_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'plots\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'plots\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 1
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 3'));
+
+        $pwd_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'plots\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'plots\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 4
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 3'));
+
+        foreach ($pwd_plots as $data) {
+            array_push($isb_plots, $data);
+        }
+
+        $isb_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'commercial\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'commercial\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 1
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 3'));
+
+        $pwd_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    FROM `property_count_by_property_purposes`
+                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+                    WHERE `city_popular_locations`.`property_type` = \'commercial\'
+                    AND `property_count_by_property_purposes`.`property_type` = \'commercial\'
+                    AND  `property_count_by_property_purposes`.`city_id` = 4
+                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
+                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
+                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
+                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
+                    ORDER BY property_count DESC LIMIT 3'));
+
+        foreach ($pwd_commercial as $data) {
+            array_push($isb_commercial, $data);
+        }
+
 
         $popular_locations = [
             'popular_cities_homes_on_sale' => $popular_cities_houses_on_sale,

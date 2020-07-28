@@ -34,22 +34,21 @@
                                 <div class="top">
                                     <h2 class="title">
                                         <!-- method to convert price in number into price in words -->
-                                        <a href="{{$feature_property->property_detail_path()}}" title="{{\Illuminate\Support\Str::limit($feature_property->title, 27, $end='')}}">
+                                        <a href="{{$feature_property->property_detail_path()}}" title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='')}}">
                                             <span class="font-16 color-blue">PKR</span> {{ \Illuminate\Support\Str::limit(Helper::getPriceInWords($feature_property->price), 11, $end='K') }}
                                         </a>
                                     </h2>
                                     <div class="location">
-{{--                                        <a href="javascript:void(0)" tabindex="0">--}}
                                             <i class="fas fa-map-marker-alt"></i>
-                                            {{\Illuminate\Support\Str::limit($feature_property->location, 27, $end='...')}}
-                                            <div class="grid-area mt-3 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 27, $end='...')}}</div>
-{{--                                        </a>--}}
+                                            {{\Illuminate\Support\Str::limit($feature_property->location, 20, $end='...')}}
+                                            <div class="grid-area mt-3 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 20, $end='...')}}</div>
+
                                     </div>
                                 </div>
                                 <ul class="facilities-list clearfix">
                                     <li style="width: 40%; margin-top: 3px;text-align: center">
                                         <i class="fas fa-arrows-alt"></i>
-                                        <p>{{ number_format($feature_property->land_area) }} @if($feature_property->area_unit === 'Square Meters')
+                                        <p>{{ number_format($feature_property->land_area, 2) }} @if($feature_property->area_unit === 'Square Meters')
                                                 Sq.M. @elseif($feature_property->area_unit === 'Square Feet') Sq.F. @elseif ($feature_property->area_unit === 'Square Yards')
                                                 Sq.Yd. @else {{$feature_property->area_unit}} @endif</p>
                                     </li>

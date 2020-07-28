@@ -21,6 +21,7 @@ Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
+Route::get('key-partners', 'AgencyController@listingKeyPartners')->name('key-partners');
 
 //list of blogs
 Route::get('blogs', 'BlogController@index')->name('blogs.index');
@@ -76,12 +77,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 });
 
 
-Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertyController@searchWithArgumentsForProperty')
-    ->name('sale.property.search');
-
-Route::get('{type}_for_sale/{city}/{location}', 'PropertyController@searchForHousesAndPlots')
-    ->name('search.houses.plots');
-
+Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertyController@searchWithArgumentsForProperty')->name('sale.property.search');
+Route::get('{type}_for_sale/{city}/{location}', 'PropertyController@searchForHousesAndPlots')->name('search.houses.plots');
 Route::get('/{type}_property', 'PropertyController@getPropertyListing')->name('properties.get_listing');
 
 Route::group(['prefix' => 'properties'], function () {

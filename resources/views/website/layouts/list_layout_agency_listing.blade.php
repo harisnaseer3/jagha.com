@@ -29,8 +29,7 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
-                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.$agency->logo): asset("/img/logo/dummy-logo.png")}}"
-                         alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo">
+                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo">
                 </a>
             </div>
             <div class="col-lg-7 col-md-7 col-pad">
@@ -51,90 +50,79 @@
                         </div>
                     </h2>
                     <h5 class="location mb-2">
-                        <span><a aria-label="Listing location" title="{{$agency->title}}">
-                            <i class="flaticon-location"></i>
-                            {{implode(', ', json_decode($agency->city))}}
-                            </a></span>
-                        <span class="m-2">|</span>
-                        <span> <a aria-label="Listing location" title="{{$agency->title}}">
-                            <i class="fa fa-phone"></i>
-                            {{$agency->phone}}
-                           </a></span>
+                        <span><a aria-label="Listing location" title="{{$agency->title}}"><i class="flaticon-location"></i>{{implode(', ', json_decode($agency->city))}}</a></span>
+                        @if( $agency->agent != '')
+                            <span class="m-2">|</span>
+                            <span><a><i class="fa fa-user"></i><span class="m-1"> {{$agency->agent}}</span></a></span>
+                        @endif
+
                     </h5>
-                    <h5 class="location mb-2" ><a><i class="fa fa-user"></i><span class="m-1"> {{ $agency->agent != ''? $agency->agent: '' }}</span></a></h5>
                     <div class="row call-email-container contact-container">
                         {{ Form::hidden('phone',$agency->phone, array_merge(['class'=>'number']))}}
                         @if(!empty($agency))
                             {{ Form::hidden('agent',$agency->id)}}
                         @endif
-                        <div class="col-sm-12">
-                            <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
-                                <h6 class="custom-font text-transform">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 200, $end='...more')}}</h6>
-                            </a>
-                        </div>
-                        <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
-                        <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        @if($agency->description !='')
+                            <div class="col-sm-12 my-4">
+                                <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
+                                    <h6 class="custom-font text-transform">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
+                                </a>
+                            </div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        @else
+                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        @endif
+
                     </div>
                 </div>
-{{--                <div class="footer clearfix">--}}
-{{--                    <div class="pull-left days">--}}
-{{--                        <a><i class="fa fa-user"></i> {{ $agency->agent != ''? $agency->agent: '' }}</a>--}}
-{{--                    </div>--}}
-{{--                    --}}{{--                    <div class="pull-right">--}}
-{{--                    --}}{{--                        <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}</a>--}}
-{{--                    --}}{{--                    </div>--}}
-{{--                </div>--}}
             </div>
         </div>
     </div>
-    {{--    <div class="modal fade" id="CallModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
-    {{--        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
-    {{--            <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">--}}
-    {{--                <!--Header-->--}}
-    {{--                <div class="modal-header">--}}
-    {{--                    <h5 class="modal-title" id="myModalLabel">Contact Us</h5>--}}
-    {{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-    {{--                        <span aria-hidden="true">×</span>--}}
-    {{--                    </button>--}}
-    {{--                </div>--}}
-    {{--                <!--Body-->--}}
-    {{--                <div class="modal-body">--}}
-    {{--                    <div class="container" style="font-size: 12px; color: #555">--}}
-    {{--                        <div class="text-center">--}}
-    {{--                            <div> {{ $property->agency !== null ? $property->agency: '' }} </div>--}}
-    {{--                            <div>Please use property reference</div>--}}
-    {{--                            <div style="font-weight: bold"> {{ $property->reference }} </div>--}}
-    {{--                            <div>while calling us</div>--}}
-    {{--                        </div>--}}
-
-    {{--                        <table class="table table-borderless">--}}
-    {{--                            <tbody>--}}
-    {{--                            <tr>--}}
-    {{--                                <td class="w-30">Mobile</td>--}}
-    {{--                                <td class="w-70 font-weight-bold">{{ $property->cell !== null  ? $property->cell: '-'}}</td>--}}
-    {{--                            </tr>--}}
-    {{--                            <tr>--}}
-    {{--                                <td>Phone No</td>--}}
-    {{--                                @if($property->phone !== null)--}}
-    {{--                                    <td class="font-weight-bold">{{$property->phone}}</td>--}}
-    {{--                                @elseif($property->agency_phone !== null)--}}
-    {{--                                    <td class="font-weight-bold">{{$property->phone}}</td>--}}
-    {{--                                @else--}}
-    {{--                                    <td class="font-weight-bold">-</td>--}}
-    {{--                                @endif--}}
-    {{--                            </tr>--}}
-    {{--                            <tr>--}}
-    {{--                                <td>Agent</td>--}}
-    {{--                                <td class="font-weight-bold">  {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')--}}
-    {{--                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}</td>--}}
-    {{--                            </tr>--}}
-    {{--                            </tbody>--}}
-    {{--                        </table>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
+    <div class="modal fade" id="CallModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+            <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+                <!--Header-->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Contact Us</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <div class="container" style="font-size: 12px; color: #555">
+                        <div class="text-center">
+                            <div> {{ $agency->title }} </div>
+                        </div>
+                        <table class="table table-borderless">
+                            <tbody>
+                            <tr>
+                                <td class="w-30">Mobile</td>
+                                <td class="w-70 font-weight-bold">{{ $agency->cell !== null  ? $agency->cell: '-'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Phone No</td>
+                                @if($agency->phone !== null)
+                                    <td class="font-weight-bold">{{$agency->phone}}</td>
+                                @else
+                                    <td class="font-weight-bold">-</td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <td>Agent</td>
+                                <td class="font-weight-bold">  {{ $agency->contact_person != ''?
+                                        \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
+                                        :'-'}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {{--    <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
     {{--        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
     {{--            <div class="modal-content">--}}
