@@ -42,7 +42,7 @@
                                     @else
                                         <li><a href="{{$footer_property->property_detail_path()}}"
                                                title="{{\Illuminate\Support\Str::limit($footer_property->title, 70, $end='..')}}">
-                                               {{\Illuminate\Support\Str::limit($footer_property->city, 30, $end='..')}} |  {{\Illuminate\Support\Str::limit(str_replace($footer_property->city,'',$footer_property->title), 70, $end='..')}} |  PKR {{ Helper::getPriceInWords($footer_property->price)}}
+                                               {{\Illuminate\Support\Str::limit($footer_property->city,25, $end='..')}} |   {{\Illuminate\Support\Str::limit($footer_property->location, 25, $end='..')}} |  {{\Illuminate\Support\Str::limit(str_replace($footer_property->city,'',$footer_property->title), 40, $end='..')}} |  PKR {{ Helper::getPriceInWords($footer_property->price)}}
                                             </a>
                                         </li>
                                     @endif

@@ -1,4 +1,4 @@
-<div class="blog blog content-area-12 pt-0">
+<div class="blog blog content-area-12">
     <div class="container">
         <!-- Main title -->
         <div class="main-title">

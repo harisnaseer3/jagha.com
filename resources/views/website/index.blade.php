@@ -18,9 +18,10 @@
 @endsection
 
 @section('content')
-
+ 
     @include('website.includes.nav')
     <!-- Banner start -->
+    <div class="container-fluid">
     @include('website.includes.index-page-banner')
     <!-- Search Section start -->
     @include('website.includes.search2')
@@ -35,8 +36,10 @@
     <div class="clearfix"></div>
     <!-- Blog start -->
     @include('website.includes.recent_blogs')
+    </div>
     <!-- Footer start -->
     @include('website.includes.footer')
+
 
     <div class="fly-to-top back-to-top">
         <i class="fa fa-angle-up fa-3"></i>
@@ -65,7 +68,8 @@
 
                        $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
                        $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
-                    },2000);
+                       $('#agency-phone').html($("#agency-slider .slick-center .slick-slide-item .agency-phone").text());
+                    },3000);
                 $('#agency-slider, .controls').click(function ()
                 {
                     $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
@@ -86,12 +90,6 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
-
-                // $('.featured-agency-image').hover(function () {
-                //     console.log('hi');
-                //     $(this).tooltip({content: '<img src="https://i.etsystatic.com/18461744/r/il/8cc961/1660161853/il_794xN.1660161853_sohi.jpg" />'});
-                //
-                // });
 
             });
         })(jQuery);

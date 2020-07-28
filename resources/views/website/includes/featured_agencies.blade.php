@@ -1,34 +1,32 @@
 <div class="featured-agencies">
     <div class="container content-area-12">
         <div class="main-title">
-            <h2>Key Partners</h2></div>
+            <h2><a class="hover-color" href="#" title="Key Partners">Key Partners</a></h2></div>
         <!-- <div class="slider"></div> -->
         <div class="slick-slider-area" id="featured-agency-slider">
             <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
-                 data-slick='{"slidesToShow": 3, "rows":4,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+                 data-slick='{"slidesToShow": 5, "rows":3,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
                 @foreach($key_agencies as $agency)
                     <div class="slick-slide-item" aria-label="key agency">
                     @if($agency->logo !== null)
-                        <!-- <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{$agency->title}}"   title='<div class="row p-2"><div class="col-md-12"><img class= "tool-image" src="{{asset("thumbnails/agency_logos/".$agency->logo)}}" alt="{{$agency->title}}"/><p class="color-white mb-2">{{$agency->title}}</p><p class="color-white"><i class="fa fa-map-marker mr-2" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p><p class="color-white mb-2"><i class="fa fa-phone mr-2" aria-hidden="true"></i>{{$agency->phone}}</p></div></div>' data-toggle="tooltip" data-html="true" data-placement="top"  class="img-fluid featured-agency-image"
-                                 style="height:53px; width: 53px ;"> -->
                             <div class="service-box">
                                 <div class="row">
                                     <div class="col-12">
-                                        <h4><a href="#">{{$agency->title}}</a></h4>
+                                        <h4><a href="#">{{\Illuminate\Support\Str::limit($agency->title, 25, $end='..')}}</a></h4>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{$agency->title}}" class="img-fluid featured-agency-image"
                                              style="height:53px; width: 60px ;">
                                     </div>
-                                    <div class="col-9">
-                                        <p><i class="fa fa-map-marker mr-2 mt-2 fa-2x" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p>
+                                    <div class="col-8">
+                                        <p><i class="fa fa-map-marker mr-1 mt-1 fa-2x" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p>
                                         <p>
                                             @if($agency->phone == null || preg_match('/\+92$/', $agency->phone))
                                             @else
-                                                <i class="fa fa-phone mr-2 fa-2x" aria-hidden="true"></i>{{$agency->phone}}
+                                                <i class="fa fa-phone mr-1 fa-2x" aria-hidden="true"></i>{{$agency->phone}}
                                             @endif
                                         </p>
                                     </div>

@@ -1,7 +1,7 @@
 <div class="partners">
-    <div class="container content-area-12">
+    <div class="container">
         <div class="main-title">
-            <h2><a href="{{route('featured-partners',['sort'=>'newest'])}}" title="Featured Partners">Our Featured Partners</a></h2></div>
+            <h2><a class="hover-color" href="{{route('featured-partners',['sort'=>'newest'])}}" title="Featured Partners">Our Featured Partners</a></h2></div>
         <div class="slick-slider-area" id="agency-slider">
             <div class="row slick-carousel" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
@@ -16,6 +16,7 @@
                             <img src="{{asset('img/agency.png')}}" alt="{{strtoupper($agency->title)}}" width="50%" height="50%" class="img-fluid" title="{{strtoupper($agency->title)}}">
                         @endif
                         <h2 class="agency-name mt-3 text-transform d-none">{{$agency->title}}</h2>
+                        <h2 class="agency-phone mt-3 text-transform d-none">{{$agency->phone}}</h2>
                         <h2 class="sale-count mt-3 text-transform d-none">{{$agency->sale_count}}</h2>
                         <div class="mt-1 agency-city d-none">{{implode(', ', json_decode($agency->city))}}</div>
                     </div>
@@ -33,7 +34,8 @@
         </div>
         <div>
             <h2 id="middle-agency-name"></h2>
-            <h5 class="pt-3" id="sale-count"></h5>
+            <h5 class="pt-1" id="agency-phone"></h5>
+            <h5 class="pt-1" id="sale-count"></h5>
         </div>
 
     </div>

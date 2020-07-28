@@ -1,4 +1,4 @@
-<div class="categories content-area-8 pt-5">
+<div class="categories">
     <div class="container">
         <!-- Main title -->
         <div class="main-title">
