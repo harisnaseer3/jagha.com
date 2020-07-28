@@ -41,7 +41,7 @@
                                     <div class="location">
 {{--                                        <a href="javascript:void(0)" tabindex="0">--}}
                                             <i class="fas fa-map-marker-alt"></i>
-                                            {{\Illuminate\Support\Str::limit($feature_property->location, 30, $end='...')}}
+                                            {{\Illuminate\Support\Str::limit($feature_property->location, 25, $end='...')}}
                                             <div class="grid-area mt-3 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 30, $end='...')}}</div>
 {{--                                        </a>--}}
                                     </div>
@@ -49,7 +49,7 @@
                                 <ul class="facilities-list clearfix">
                                     <li style="width: 40%; margin-top: 3px;text-align: center">
                                         <i class="fal fa-ruler-combined"></i>
-                                        <p>{{ number_format($feature_property->land_area) }} @if($feature_property->area_unit === 'Square Meters')
+                                        <p>{{ number_format($feature_property->land_area, 1) }} @if($feature_property->area_unit === 'Square Meters')
                                                 Sq.M. @elseif($feature_property->area_unit === 'Square Feet') Sq.F. @elseif ($feature_property->area_unit === 'Square Yards')
                                                 Sq.Yd. @else {{$feature_property->area_unit}} @endif</p>
                                     </li>

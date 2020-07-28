@@ -768,7 +768,6 @@ class PropertyController extends Controller
         if (count($request->all()) == 1 && $request->filled('sort') ||
             count($request->all()) == 2 && $request->filled('sort') && $request->filled('page')) {
 //            to handle the request for city name
-//            dd($sub_type, $purpose, $city);
             if (in_array($sub_type, ['homes', 'plots', 'commercial'])) {
                 $type = $sub_type;
                 $sub_type = '';
@@ -820,18 +819,14 @@ class PropertyController extends Controller
                 if (in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
                     $type = 'commercial';
 
-                if ($sub_type === 'houses') $sub_type = 'house';
-                elseif ($sub_type === 'flats') $sub_type = 'flat';
+                if ($sub_type === 'houses' || $sub_type === 'house') $sub_type = 'house';
+                elseif ($sub_type === 'flats' || $sub_type === 'flat') $sub_type = 'flat';
                 elseif (in_array($sub_type, ['house', 'flat', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse', 'office', 'shop', 'warehouse', 'factory', 'building', 'other']))
                     $sub_type = str_replace('-', ' ', $sub_type);
                 else $sub_type = '';
-
                 $city = City::select('id')->where('name', '=', $city)->first();
 
-//            dd($city, $type, $sub_type);
-
                 (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
-
 
                 $properties = (new Property)
                     ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
@@ -932,23 +927,22 @@ class PropertyController extends Controller
     }
 
     /* search function for houses at different locations*/
+    /* locations are going to be fixed to we use like or regexp to find that location*/
+
     public function searchForHousesAndPlots(string $type, string $city, string $location, string $purpose = 'sale')
     {
         $city = City::select('id')->where('name', '=', $city)->first();
 
         $clean_location = str_replace('_', '-', str_replace('-', ' ', $location));
 
-        if ($clean_location !== 'Bahria Tow' && preg_match('/Tow$/', $clean_location)) $clean_location = $clean_location . 'n';
+        /*change this part to locate some fix locations in location table */
+        $location_data = Location::select('id')->where('city_id', '=', $city->id)
+            ->where('name', 'REGEXP', $clean_location)->get()->toArray();
 
-        $location_data = Location::select('id', 'name')->where('city_id', '=', $city->id)
-            ->where('name', '=', $clean_location)
-            ->first();
-
-
-//        dd($city, $location_data);
+//        dd($city, $location_data->id);
 
         $properties = (new Property)
-            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
+            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.city_id', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
                 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at',
@@ -963,12 +957,15 @@ class PropertyController extends Controller
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
             ->where('properties.status', '=', 'active');
 
-        if ($city !== '') $properties->where('properties.city_id', '=', $city->id);
+        if ($city !== null) $properties->where('properties.city_id', '=', $city->id);
+        if ($type !== '') $properties->where('properties.type', '=', $type);
 
         $properties->where('properties.purpose', '=', $purpose);
-        $properties->where('properties.location_id', '=', $location_data->id)
+//        $properties->where('properties.location_id', '=', $location_data->id);
+        $properties->whereIn('properties.location_id',$location_data)
             ->whereNull('properties.deleted_at');
-//        dd($type,$location_data->id,$purpose, str_replace('_', '-', str_replace('-', ' ', $location)), $properties->get());
+//        dd($properties->get());
+//        dd($city->id,$type,$location_data->id,$purpose, str_replace('_', '-', str_replace('-', ' ', $location)), $properties->get());
 
         $sort = '';
         if (request()->input('sort') !== null)

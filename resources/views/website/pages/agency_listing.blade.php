@@ -16,8 +16,7 @@
     <!-- Main header start -->
     @include('website.includes.top_header2')
     @include('website.includes.banner2')
-{{--    @include('website.includes.search2')--}}
-
+    @include('website.includes.search2')
     <!-- Properties section body start -->
     <div class="properties-section content-area">
         <div class="container">
@@ -35,9 +34,9 @@
                             <span itemprop="name">
                                 <!-- if homes are selected from nav bar -->
                                 @if(request()->segment(2) == 'null' || request()->segment(2) == '')
-                                    {{ucfirst(explode('_', request()->segment(1))[0])}}
+                                    {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                 @else
-                                    {{ucfirst(request()->segment(2))}}
+                                    {{ucwords(str_replace('-',' ',request()->segment(2)))}}
                                 @endif
                             </span>
                             <meta itemprop="position" content="2">
@@ -134,6 +133,10 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+
+                $('.btn-call').on('click', function (e) {
+                    console.log($(this));
+                });
 
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');

@@ -27,7 +27,7 @@ class CreatePropertiesTable extends Migration
             $table->string('type', 255);
             $table->string('sub_type', 255);
             $table->string('title', 255);
-            $table->string('description', 4096);
+            $table->string('description', 6144);
             $table->bigInteger('price', false, true);
             $table->decimal('land_area', 12, 2, true);
             $table->enum('area_unit', ['Square Feet', 'Square Yards', 'Square Meters', 'Marla', 'Kanal']);

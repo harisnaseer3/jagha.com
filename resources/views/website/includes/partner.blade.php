@@ -10,7 +10,7 @@
                 @foreach($featured_agencies as $agency)
                     <div class="slick-slide-item" aria-label="featured agency">
                         @if($agency->logo !== null)
-                            <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{strtoupper($agency->title)}}" width="40%" height="40%" class="img-fluid"
+                            <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{strtoupper($agency->title)}}" width="40%" height="40%" class="img-fluid"
                                  title="{{strtoupper($agency->title)}}">
                         @else
                             <img src="{{asset('img/agency.png')}}" alt="{{strtoupper($agency->title)}}" width="40%" height="40%" class="img-fluid" title="{{strtoupper($agency->title)}}">

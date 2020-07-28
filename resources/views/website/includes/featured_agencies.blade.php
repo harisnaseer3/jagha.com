@@ -1,7 +1,7 @@
 <div class="featured-agencies">
     <div class="container content-area-12">
         <div class="main-title">
-            <h2>Key Partners</h2></div>
+            <h2><a href="{{route('key-partners',['sort'=>'newest'])}}">Key Partners</a></h2></div>
         <!-- <div class="slider"></div> -->
         <div class="slick-slider-area" id="featured-agency-slider">
             <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
@@ -20,7 +20,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-3">
-                                        <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{$agency->title}}" class="img-fluid featured-agency-image"
+                                        <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{$agency->title}}"
+                                             class="img-fluid featured-agency-image"
                                              style="height:53px; width: 60px ;">
                                     </div>
                                     <div class="col-9">
@@ -28,7 +29,7 @@
                                         <p>
                                             @if($agency->phone == null || preg_match('/\+92$/', $agency->phone))
                                             @else
-                                                <i class="fa fa-phone mr-2 fa-2x" aria-hidden="true"></i>{{$agency->phone}}
+                                                <i class="fa fa-phone mr-2 fa-2x" aria-hidden="true"></i>{{explode('-+92',$agency->phone)[0]}}
                                             @endif
                                         </p>
                                     </div>
