@@ -18,8 +18,8 @@
                                     <h6 class="custom-font">
                                         <a href="{{route('sale.property.search', ['sub_type' => lcfirst($property_data->property_sub_type), 'city' => lcfirst($property_data->city_name) ,
                                                     'purpose'=>lcfirst($property_data->property_purpose), 'sort'=>'newest'])}}"
-                                           title="{{$property_data->property_sub_type}}  in {{$property_data->city_name}}">
-                                            {{$property_data->property_sub_type}} in {{$property_data->city_name}}
+                                           title="{{$property_data->property_sub_type.'s'}}  in {{$property_data->city_name}}">
+                                            {{$property_data->property_sub_type.'s'}} in {{$property_data->city_name}}
                                             <span>({{$property_data->property_count}})</span>
                                         </a>
                                     </h6>
