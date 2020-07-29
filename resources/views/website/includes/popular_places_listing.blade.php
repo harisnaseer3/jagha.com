@@ -54,9 +54,9 @@
                                     <h6 class="custom-font">
                                         <a href="{{route('sale.property.search',['sub_type' => lcfirst($property_data->property_sub_type),'city' => lcfirst($property_data->city_name),
                                                 'purpose'=>lcfirst($property_data->property_purpose), 'sort'=>'newest'])}}"
-                                           title="{{$property_data->property_sub_type}} in {{$property_data->city_name}}">
+                                           title="{{$property_data->property_sub_type.'s'}} in {{$property_data->city_name}}">
 
-                                            {{$property_data->property_sub_type}} in {{$property_data->city_name}}
+                                            {{$property_data->property_sub_type.'s'}} in {{$property_data->city_name}}
 
                                             <span>({{$property_data->property_count}})</span>
                                         </a>
@@ -73,9 +73,9 @@
                                 <li><h6 class="custom-font">
                                         <a href="{{route('sale.property.search',['sub_type' => strtolower(str_replace(' ','-',$property_data->property_sub_type)),'city' => lcfirst($property_data->city_name),
                                                 'purpose'=>lcfirst($property_data->property_purpose), 'sort'=>'newest'])}}"
-                                           title="{{$property_data->property_sub_type}} in {{$property_data->city_name}}">
+                                           title="{{$property_data->property_sub_type.'s'}} in {{$property_data->city_name}}">
 
-                                            {{$property_data->property_sub_type}} in {{$property_data->city_name}}
+                                            {{$property_data->property_sub_type.'s'}} in {{$property_data->city_name}}
 
                                             <span>({{$property_data->property_count}})</span>
                                         </a>
@@ -92,8 +92,6 @@
                         <h4 class="font-16 color-555">Popular Locations to Buy Houses</h4>
                         <hr>
                     </div>
-                    {{--                    {{dd($city_wise_homes_data['Islamabad/Rawalpindi'])}}--}}
-
                     @foreach($city_wise_homes_data as $key_value => $value)
                         <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                             <h4 class="font-16 color-555 pb-3"><a
@@ -104,8 +102,9 @@
                                     <li>
                                         <h6 class="custom-font">
                                             <a href="{{route('search.houses.plots', ['type'=>lcfirst($property_data->property_type),'city' => lcfirst($property_data->city_name),'location'=> str_replace(' ', '-',str_replace('-','_',$property_data->location_name)), 'sort'=>'newest'])}}"
-                                               title="{{$property_data->property_type}} in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...')}}">
-                                                {{$property_data->property_type}}
+                                               title="Houses in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...')}}">
+{{--                                                {{$property_data->property_type}}--}}Houses
+
                                                 @if($key_value == 'Islamabad/Rawalpindi' && $key < 3 && $property_data->location_name === 'Bahria Town')
                                                     in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 30, $end='...').' Islamabad'}}
                                                 @else
@@ -156,7 +155,6 @@
                         <h4 class="font-16 color-555">Popular Locations to Buy Commercial Properties</h4>
                         <hr>
                     </div>
-                    {{--                    {{dd($city_wise_commercial_data['Islamabad/Rawalpindi'])}}--}}
                     @foreach($city_wise_commercial_data as $key_name => $value)
                         <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                             <h4 class="font-16 color-555 pb-3"><a
