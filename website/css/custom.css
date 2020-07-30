@@ -1194,3 +1194,6 @@ footer {
 .partners{
     margin-bottom :0px;
 }
+footer#foot-wrap {
+    margin-top: 0px;
+}
