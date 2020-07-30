@@ -1167,6 +1167,30 @@ footer {
 .partners .slick-arrow-buton {
     top: 40%;
 }
-.hover-color:hover{
- color: #274abb;
+
+.hover-color:hover {
+    color: #274abb;
+}
+
+.sidebar-right {
+    margin-top: 32%;
+}   }
+}
+
+.btn-call , .btn-email{
+    border-color: #2238D8;
+}
+.btn-email{
+    background-color: #2238D8;
+    color: white !important;
+}
+.btn-call:hover , .btn-email:hover {
+    background-color: #2238D8;
+    color:white !important;
+}
+.content-area-12 {
+    padding: 40px 0 40px;
+}
+.partners{
+    margin-bottom :0px;
 }

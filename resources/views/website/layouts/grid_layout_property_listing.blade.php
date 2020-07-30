@@ -83,7 +83,7 @@
                     <ul class="facilities-list clearfix grid-view-facilities">
                         @if(isset($property->land_area))
                             <li aria-label="land area">
-                                <i class="fal fa-ruler-combined"></i>
+                                <i class="fas fa-arrows-alt"></i>
                                 {{ number_format($property->land_area) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')
                                     Sq.F. @elseif ($property->area_unit === 'Square Yards') Sq.Yd. @else {{$property->area_unit}} @endif
                             </li>
@@ -98,7 +98,7 @@
                     @else
                         {{ Form::hidden('property',$property->id)}}
                     @endif
-                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1" data-toggle="modal" data-target="#CallModel2" aria-label="Call">Call</a></div>
+                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1 btn-call" data-toggle="modal" data-target="#CallModel2" aria-label="Call">Call</a></div>
                     <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
 
@@ -118,7 +118,7 @@
         </div>
         <div class="modal fade" id="CallModel2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+                <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
                         <h5 class="modal-title" id="myModalLabel">Contact Us</h5>
@@ -167,7 +167,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
                 <div class="modal-content">
                     <!--Body-->
-                    <div class="modal-body" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+                    <div class="modal-body">
                         <div class="container">
                             <div class="text-center">
                                 <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>

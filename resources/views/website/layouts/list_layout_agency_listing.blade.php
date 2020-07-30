@@ -82,7 +82,7 @@
     </div>
     <div class="modal fade" id="CallModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-            <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+            <div class="modal-content">
                 <!--Header-->
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel">Contact Us</h5>
@@ -123,23 +123,6 @@
             </div>
         </div>
     </div>
-    {{--    <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
-    {{--        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
-    {{--            <div class="modal-content">--}}
-    {{--                <!--Body-->--}}
-    {{--                <div class="modal-body" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">--}}
-    {{--                    <div class="container">--}}
-    {{--                        <div class="text-center">--}}
-    {{--                            <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>--}}
-    {{--                            <div class="m-3" style="font-size: 14px">Message sent successfully</div>--}}
-    {{--                            <div class="mb-2">Add info@aboutpakistan.com to your white list to get email from us.</div>--}}
-    {{--                            <button class="btn btn-success" data-dismiss="modal">Dismiss</button>--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
 @endforeach
 
 
