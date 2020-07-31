@@ -286,7 +286,7 @@
 
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-        <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+        <div class="modal-content">
             <!--Header-->
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Log in</h4>

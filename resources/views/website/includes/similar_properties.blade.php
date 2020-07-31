@@ -54,7 +54,7 @@
                                             </li>
                                         @endif
                                         <li style="width: 50%; margin-top: 3px" class="area-md">
-                                            <i class="fal fa-ruler-combined"></i>
+                                            <i class="fas fa-arrows-alt"></i>
                                             <p>{{ number_format($feature_property->land_area) }} @if($feature_property->area_unit === 'Square Meters')
                                                     Sq.M. @elseif($feature_property->area_unit === 'Square Feet') Sq.F. @elseif ($feature_property->area_unit === 'Square Yards')
                                                     Sq.Yd. @else {{$feature_property->area_unit}} @endif</p>
