@@ -90,7 +90,7 @@
     </div>
     <div class="modal fade" id="EmailModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-            <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+            <div class="modal-content">
                 <!--Header-->
                 <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel">Contact Agent</h5>
@@ -134,7 +134,6 @@
     <script>
         (function ($) {
             $(document).ready(function () {
-
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');
                     // console.log(sessionStorage.getItem("page-layout"))

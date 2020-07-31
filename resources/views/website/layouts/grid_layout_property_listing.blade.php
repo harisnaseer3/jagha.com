@@ -30,12 +30,12 @@
                 <div class="property-thumbnail">
                     <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                         <div class="listing-badges">
-                            @if($property->premium_listing === 1)
+                            @if($property->premium_listing == 1)
                                 <span class="featured" aria-label="premium label">Premium</span>
-                            @elseif($property->super_hot_listing === 1)
+                            @elseif($property->super_hot_listing == 1)
                                 <span class="featured" aria-label="super hot label">Super Hot</span>
 
-                            @elseif($property->hot_listing  === 1)
+                            @elseif($property->hot_listing  == 1)
                                 <span class="featured" aria-label="hot label">Hot</span>
                             @endif
                             @if(isset($property->featured_listing)  && $property->featured_listing)
@@ -64,8 +64,7 @@
                     <h2 class="title">
                         <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}">
                             <span aria-label="currency" class="font-size-14">PKR </span>
-                            <span aria-label="price"> {{Helper::getPriceInWords($property->price) }}</span>
-
+                            <span aria-label="price"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status)  && $property->agency_status === 'verified')
@@ -98,10 +97,9 @@
                     @else
                         {{ Form::hidden('property',$property->id)}}
                     @endif
-                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1" data-toggle="modal" data-target="#CallModel2" aria-label="Call">Call</a></div>
+                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1" data-toggle="modal" data-target="{{'#CallModel2'.$property->reference}}" aria-label="Call">Call</a></div>
                     <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
-
                 <div class="footer clearfix" style="line-height: 30px;">
                     <div class="days">
                         <a>
@@ -116,9 +114,9 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="CallModel2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="{{'CallModel2'.$property->reference}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+                <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
                         <h5 class="modal-title" id="myModalLabel">Contact Us</h5>
@@ -130,19 +128,20 @@
                     <div class="modal-body">
                         <div class="container" style="font-size: 12px; color: #555">
                             <div class="text-center">
-                                <div> {{ $property->agency !== null ? $property->agency: '' }} </div>
-                                <div>Please use property reference</div>
-                                <div style="font-weight: bold"> {{ $property->reference }} </div>
-                                <div>while calling us</div>
+                                <div class= "mb-2"> {{ $property->agency !== null ? $property->agency: '' }} </div>
+                                <div class= "mb-2">Please use property reference</div>
+                                <div class= "mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
+                                <div class="mb-2">while calling us</div>
                             </div>
 
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>
                                     <td class="w-30">Mobile</td>
-                                    <td class="w-70 font-weight-bold">{{ $property->phone !== null ? $property->cell: '-'}}</td>
+                                    <td class="w-70 font-weight-bold">{{ $property->cell !== null  ? $property->cell: '-'}}</td>
                                 </tr>
                                 <tr>
+                                    <td>Phone No</td>
                                     @if($property->phone !== null)
                                         <td class="font-weight-bold">{{$property->phone}}</td>
                                     @elseif($property->agency_phone !== null)
@@ -167,7 +166,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
                 <div class="modal-content">
                     <!--Body-->
-                    <div class="modal-body" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+                    <div class="modal-body">
                         <div class="container">
                             <div class="text-center">
                                 <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
