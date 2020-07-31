@@ -34,7 +34,7 @@ class AgencyController extends Controller
     public function listingFeaturedPartners()
     {
         $agencies = (new Agency)
-            ->select('agencies.title', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
+            ->select('agencies.title','agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
                 'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
 //            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
             ->where('agencies.status', '=', 'verified')
@@ -56,7 +56,7 @@ class AgencyController extends Controller
     public function listingKeyPartners()
     {
         $agencies = (new Agency)
-            ->select('agencies.title', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
+            ->select('agencies.title','agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
                 'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
 //            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
             ->where('agencies.status', '=', 'verified')

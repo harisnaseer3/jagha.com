@@ -13,18 +13,18 @@
                             <a href="{{$feature_property->property_detail_path()}}" class="property-img"
                                title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}">
                                 <div class="property-thumbnail">
-                                    @if($feature_property->premium_listing === 1)
+                                    @if($feature_property->premium_listing == 1)
                                         <div class="tag feature-tag">Premium</div>
-                                    @elseif($feature_property->hot_listing === 1)
+                                    @elseif($feature_property->hot_listing == 1)
                                         <div class="tag feature-tag">HOT</div>
-                                    @elseif($feature_property->super_hot_listing === 1)
+                                    @elseif($feature_property->super_hot_listing == 1)
                                         <div class="tag feature-tag">SUPER HOT</div>
                                     @endif
                                     @if($feature_property->image != null)
                                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
                                              title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
-                                             />
+                                        />
                                     @else
                                         <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                                     @endif
@@ -35,13 +35,13 @@
                                     <h2 class="title">
                                         <!-- method to convert price in number into price in words -->
                                         <a href="{{$feature_property->property_detail_path()}}" title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='')}}">
-                                            <span class="font-16 color-blue">PKR</span> {{ \Illuminate\Support\Str::limit(Helper::getPriceInWords($feature_property->price), 11, $end='K') }}
+                                            <span class="font-16 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                                         </a>
                                     </h2>
                                     <div class="location">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            {{\Illuminate\Support\Str::limit($feature_property->location, 20, $end='...')}}
-                                            <div class="grid-area mt-3 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 20, $end='...')}}</div>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        {{\Illuminate\Support\Str::limit($feature_property->location, 20, $end='...')}}
+                                        <div class="grid-area mt-3 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 20, $end='...')}}</div>
 
                                     </div>
                                 </div>

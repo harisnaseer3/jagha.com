@@ -8,12 +8,6 @@
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            {{--            <select class="sorting">--}}
-            {{--                --}}{{--                <option value="popular" {{ $params['sort']  === 'popular' || request()->query('sort') === 'popular'  ? 'selected' : '' }}>Popular</option>--}}
-            {{--                <option value="newest" {{ $params['sort'] === 'newest' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>--}}
-            {{--                <option value="high_price" {{ $params['sort'] === 'high_price' || request()->query('sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>--}}
-            {{--                <option value="low_price" {{ $params['sort'] === 'low_price' || request()->query('sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>--}}
-            {{--            </select>--}}
             <a class="change-view-btn active-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
@@ -29,7 +23,8 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
-                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo">
+                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
+                         title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo">
                 </a>
             </div>
             <div class="col-lg-7 col-md-7 col-pad">
@@ -50,7 +45,9 @@
                         </div>
                     </h2>
                     <h5 class="location mb-2">
-                        <span><a aria-label="Listing location" title="{{$agency->title}}"><i class="flaticon-location"></i>{{implode(', ', json_decode($agency->city))}}</a></span>
+                        <span><a href="javascript:void(0)" aria-label="Agency location" title="{{$agency->title}}">
+                                <i class="flaticon-location"></i>{{implode(', ', json_decode($agency->city))}}</a>
+                        </span>
                         @if( $agency->agent != '')
                             <span class="m-2">|</span>
                             <span><a><i class="fa fa-user"></i><span class="m-1"> {{$agency->agent}}</span></a></span>
@@ -68,10 +65,12 @@
                                     <h6 class="custom-font text-transform">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
                                 </a>
                             </div>
-                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
-                            <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a>
+                            </div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                         @else
-                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}r"
+                                                         aria-label="Call">Call</a></div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                         @endif
 
@@ -80,7 +79,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="CallModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="{{'CallModelCenter'.$agency->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
             <div class="modal-content">
                 <!--Header-->
@@ -112,9 +111,7 @@
                             </tr>
                             <tr>
                                 <td>Agent</td>
-                                <td class="font-weight-bold">  {{ $agency->contact_person != ''?
-                                        \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
-                                        :'-'}}</td>
+                                <td class="font-weight-bold"> {{ $agency->agent != ''? $agency->agent:'-'}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -123,6 +120,26 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+        <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                <div class="modal-content">
+                    <!--Body-->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="text-center">
+                                <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
+                                <div class="m-3" style="font-size: 14px">Message sent successfully</div>
+                                <div class="mb-2">Add info@aboutpakistan.com to your white list to get email from us.</div>
+                                <button class="btn btn-success" data-dismiss="modal">Dismiss</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+>>>>>>> origin/rida
 @endforeach
 
 

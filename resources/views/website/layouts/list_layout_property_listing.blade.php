@@ -32,11 +32,11 @@
                     <img src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                          alt="{{$property->sub_type}} for {{$property->purpose}}"
                          title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo">
-                    @if($property->premium_listing === 1)
+                    @if($property->premium_listing == 1)
                         <div class="listing-badges"><span aria-label="premium label" class="featured">Premium</span></div>
-                    @elseif($property->super_hot_listing === 1)
+                    @elseif($property->super_hot_listing == 1)
                         <div class="listing-badges"><span aria-label="super hot label" class="featured">Super Hot</span></div>
-                    @elseif($property->hot_listing  === 1)
+                    @elseif($property->hot_listing  == 1)
                         <div class="listing-badges"><span aria-label="hot label" class="featured">Hot</span></div>
                     @endif
                     <div class="listing-time opening" aria-label="purpose label">For {{ $property->purpose }}</div>
@@ -100,10 +100,10 @@
                         @endif
                         <div class="col-sm-12">
                             <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
-                                {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
+                                {{\Illuminate\Support\Str::limit(strtolower($property->description), 130, $end='...more')}}
                             </a>
                         </div>
-                        <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
+                        <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</a></div>
                         <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="CallModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="{{'CallModelCenter'.$property->reference}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
             <div class="modal-content">
                 <!--Header-->
@@ -173,8 +173,8 @@
                 <div class="modal-body">
                     <div class="container">
                         <div class="text-center">
-                            <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
-                            <div class="m-3" style="font-size: 14px">Message sent successfully</div>
+                            <i class="fas fa-check-circle fa-3x" style="color: #274abb"></i>
+                            <div class="m-3 font-size-14">Message sent successfully</div>
                             <div class="mb-2">Add info@aboutpakistan.com to your white list to get email from us.</div>
                             <button class="btn btn-success" data-dismiss="modal">Dismiss</button>
                         </div>
