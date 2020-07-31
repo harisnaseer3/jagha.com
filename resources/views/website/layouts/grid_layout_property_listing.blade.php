@@ -98,8 +98,8 @@
                     @else
                         {{ Form::hidden('property',$property->id)}}
                     @endif
-                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1 btn-call" data-toggle="modal" data-target="#CallModel2" aria-label="Call">Call</a></div>
-                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                    <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="#CallModel2" aria-label="Call">Call</a></div>
+                    <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
 
                 <div class="footer clearfix" style="line-height: 30px;">

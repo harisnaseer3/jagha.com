@@ -1171,18 +1171,19 @@ footer {
 .hover-color:hover {
     color: #274abb;
 }
-
+@media (min-width: 426px){
 .sidebar-right {
     margin-top: 32%;
-}   }
-}
+} 
+} 
 
-.btn-call , .btn-email{
-    border-color: #2238D8;
+.btn-call{
+     border-color: #2238D8;
 }
 .btn-email{
     background-color: #2238D8;
     color: white !important;
+    border-color: #2238D8;
 }
 .btn-call:hover , .btn-email:hover {
     background-color: #2238D8;

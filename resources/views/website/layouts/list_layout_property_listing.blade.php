@@ -103,8 +103,8 @@
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                             </a>
                         </div>
-                        <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
-                        <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-call" data-toggle="modal" data-target="#CallModelCenter" aria-label="Call">Call</a></div>
+                        <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                     </div>
                 </div>
                 <div class="footer clearfix">
