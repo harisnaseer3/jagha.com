@@ -120,8 +120,6 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
         <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
                 <div class="modal-content">
@@ -139,7 +137,6 @@
                 </div>
             </div>
         </div>
->>>>>>> origin/rida
 @endforeach
 
 
