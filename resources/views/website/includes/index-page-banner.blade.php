@@ -160,44 +160,30 @@
                                     </a>
                                 </div>
                             </div>
-
+                            
+                        </div>    
+                        <div class="card" id="popular-cities">
+                        <div class="card-header">
+                        <h6 class ="popular-cities-heading">Popular Cities</h6>
                         </div>
-                        <div class="popular-cities">
-    <div class="card">
-    <div class="card-header">
-    <h6>Popular Cities</h6>
-    </div>
+                        <div class="card-body">
+        <div class="main-title">
         <!-- <div class="slider"></div> -->
-        <div class="slick-slider-area" id="featured-agency-slider">
+        <div class="slick-slider-area" id="popular-city-slider">
             <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"
-                 data-slick='{"slidesToShow": 1, "rows":1,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+                 data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
                 @foreach($key_agencies as $agency)
                     <div class="slick-slide-item" aria-label="key agency">
                     @if($agency->logo !== null)
-                           
                                 <div class="row">
-                                    <div class="col-12">
-                                        <h4><a href="#">{{\Illuminate\Support\Str::limit($agency->title, 25, $end='..')}}</a></h4>
-                                    </div>
+                                <div class="col-12">
+                                <a href="#" class="popular-city-font mb-2 mt-5">Rawalpindi</a>
+                                <p class ="popular-count-font">(1000)</p>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{$agency->title}}" class="img-fluid featured-agency-image"
+                            
+                                </div>
 
-                                             style="height:53px; width: 60px ;">
-                                    </div>
-                                    <div class="col-8">
-                                        <p><i class="fa fa-map-marker mr-1 mt-1 fa-2x" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p>
-                                        <p>
-                                            @if($agency->phone == null || preg_match('/\+92$/', $agency->phone))
-                                            @else
-                                                <i class="fa fa-phone mr-1 fa-2x" aria-hidden="true"></i>{{explode('-+92',$agency->phone)[0]}}
-                                            @endif
-                                        </p>
-                                    </div>
-                                </div>
-                           
                         @else
                             <img src="{{asset('storage/agency_logos/'.'img256by256_1588397752.jpg')}}" alt="{{$agency->title}}"
                                  title='<div class="row p-2"><div class="col-md-12"><p class="color-white mb-2">{{$agency->title}}</p><p class="color-white"> <i class="fa fa-map-marker mr-2" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p><p class="color-white mb-2"><i class="fa fa-phone mr-2" aria-hidden="true"></i>{{$agency->phone}}</p></div></div>'
@@ -207,18 +193,21 @@
                 @endforeach
             </div>
             <div class="controls">
-                <div class="slick-prev slick-arrow-buton top-style-prev" id="featured-agency-prev">
+                <div class="slick-prev slick-arrow-buton top-style-prev" id="popular-city-left">
                     <i class="fas fa-angle-left"></i>
                 </div>
-                <div class="slick-next slick-arrow-buton top-style-next" id="featured-agency-next">
+                <div class="slick-next slick-arrow-buton top-style-next" id="popular-city-right">
                     <i class="fas fa-angle-right"></i>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-                    </div>
+                        </div>
+                        </div>      
+                        </div>
+                       
                 </div>
+               
+            
             </div>
      
         </div>
