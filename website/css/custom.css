@@ -1205,3 +1205,9 @@ footer#foot-wrap {
     margin-top: 1%;
 
 }
+.banner .carousel-content {
+    align-self: initial !important;
+    margin: 0 auto;
+    color: #fff;
+    margin-top: 40px;
+}
