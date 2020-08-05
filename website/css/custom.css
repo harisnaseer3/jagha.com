@@ -1211,3 +1211,7 @@ footer#foot-wrap {
     color: #fff;
     margin-top: 40px;
 }
+.tag::after {
+    border-left: 0px;
+
+}
