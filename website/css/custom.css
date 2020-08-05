@@ -1205,3 +1205,6 @@ footer#foot-wrap {
     margin-top: 1%;
 
 }
+.tag::after {
+    border-left: 0px;
+}
