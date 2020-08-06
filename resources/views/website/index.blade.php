@@ -98,6 +98,6 @@
     </script>
     <script src="{{asset('website/js/popper.min.js')}}"></script>
     <script src="{{asset('website/js/script-custom.js')}}"></script>
-    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}" async defer></script>
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
 
 @endsection
