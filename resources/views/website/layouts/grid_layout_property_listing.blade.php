@@ -9,8 +9,8 @@
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="sorting">
-                {{--                <option value="popular" {{ $params['sort'] === 'popular' ? 'selected' : '' }}>Popular</option>--}}
                 <option value="newest" {{ $params['sort'] === 'newest' ? 'selected' : '' }}>Newest</option>
+                <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' ? 'selected' : '' }}>Price (Low To High)</option>
             </select>

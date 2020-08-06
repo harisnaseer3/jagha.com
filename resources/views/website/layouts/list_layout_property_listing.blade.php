@@ -9,13 +9,23 @@
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="sorting">
-{{--                <option value="popular" {{ $params['sort']  === 'popular' || request()->query('sort') === 'popular'  ? 'selected' : '' }}>Popular</option>--}}
                 <option value="newest" {{ $params['sort'] === 'newest' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
+                <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' || request()->query('sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' || request()->query('sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>
             </select>
             <a class="change-view-btn active-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
+        </div>
+    </div>
+    <div class="float-right cod-pad">
+        <div class="sorting-options" role="button" aria-label="sort by filter">
+            <select class="record-limit">
+                <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
+                <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
+                <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
+                <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
+            </select>
         </div>
     </div>
 </div>
@@ -132,9 +142,9 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center">
-                            <div class= "mb-2"> {{ $property->agency !== null ? $property->agency: '' }} </div>
-                            <div class= "mb-2">Please use property reference</div>
-                            <div class= "mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
+                            <div class="mb-2"> {{ $property->agency !== null ? $property->agency: '' }} </div>
+                            <div class="mb-2">Please use property reference</div>
+                            <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
                             <div class="mb-2">while calling us</div>
                         </div>
 

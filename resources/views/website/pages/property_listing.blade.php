@@ -173,15 +173,26 @@
 
                 $('.sorting').on('change', function (e) {
                     location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
-                    $('.favorite').on('click', function () {
-                        $('.favorite').hide();
-                        $('.remove-favorite').show();
+                });
+                
+                $('.favorite').on('click', function () {
+                    $('.favorite').hide();
+                    $('.remove-favorite').show();
 
-                    });
-                    $('.remove-favorite').on('click', function () {
-                        $('.favorite').show();
-                        $('.remove-favorite').hide();
-                    });
+                });
+                $('.remove-favorite').on('click', function () {
+                    $('.favorite').show();
+                    $('.remove-favorite').hide();
+                });
+                $('.record-limit').on('change', function (e) {
+                    $sort = $('.sorting').val();
+                    $limit = $(this).val();
+                    var params = {sort: $sort, limit: $limit};
+                    let str = jQuery.param(params);
+                    let uri = window.location.href.toString();
+                    if (uri.indexOf("?") > 0)
+                        uri = uri.substring(0, uri.indexOf("?"));
+                    location.assign(uri + "?" + str);
                 });
 
                 if ($('.pagination-box').length > 0) {
@@ -217,7 +228,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: 'http://127.0.0.1/propertymanagement/public/subscribe',
+                        url: window.location.origin + '/property' + '/subscribe',
                         data: {
                             email: $('#subscribe').val()
                         },
