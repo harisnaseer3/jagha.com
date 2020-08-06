@@ -115,10 +115,10 @@
                         </div>
                         {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}
                         <div class="text-center">
-                            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-success','id'=>'send-mail']) }}
+                            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
                         </div>
                         {{ Form::close() }}
-                        <a href="" class="btn btn-block btn-outline-success mt-2 agent-call">Call</a>
+                        <a href="" class="btn btn-block btn-call mt-2 agent-call">Call</a>
                     </div>
                 </div>
             </div>

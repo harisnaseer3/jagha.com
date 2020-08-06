@@ -61,9 +61,9 @@
                     @if(!empty($agency))
                         {{ Form::hidden('agent',$agency->id)}}
                     @endif
-                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-outline-success mb-1" data-toggle="modal" data-target="{{'#CallModel2'.$agency->id}}" aria-label="Call">Call</a>
+                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModel2'.$agency->id}}" aria-label="Call">Call</a>
                     </div>
-                    <div class="col-sm-6 p-1"><a class="btn btn-block btn-success mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                    <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
                 <div class="footer clearfix" style="line-height: 30px;">
 
