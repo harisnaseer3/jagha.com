@@ -1156,6 +1156,7 @@
         width: 62%;
         margin-left: 19%;
         margin-top: 1%;
+        border-radius: 3px;
     }
     
     .banner .carousel-content {
@@ -1241,6 +1242,7 @@
             width: 98%;
             margin-left: 1%;
             margin-top: 1%;
+            border-radius: 3px;
         }
     }
     
@@ -1249,6 +1251,7 @@
             width: 90%;
             margin-left: 5%;
             margin-top: 1%;
+            border-radius: 3px;
         }
     }
       @media (min-width: 1311px) and (max-width: 1440px) {
@@ -1256,6 +1259,7 @@
             width: 88%;
             margin-left: 6%;
             margin-top: 1%;
+            border-radius: 3px;
         }
     }
     .listing-badges .featured {
@@ -1270,9 +1274,11 @@
 
 .property-box-2 {
     margin-bottom: 15px;
+    border-radius : 3px;
 }
 .property-box {
     margin-bottom: 15px;
+    border-radius : 3px;
 }
 .property-box-2 .detail .title {
     margin-bottom: 5px;
