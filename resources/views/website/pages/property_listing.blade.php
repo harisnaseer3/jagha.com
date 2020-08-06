@@ -46,8 +46,8 @@
 
                     <!-- Search Result Count -->
                     <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
-                        <span aria-label="Summary text" class="ml-2">{{ $properties->total() }} results found</span>
-                        <span>({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->total() }} results found</span>
+                        <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                     </div>
 
                     <!-- Listing -->
@@ -93,7 +93,7 @@
             <div class="modal-content">
                 <!--Header-->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Contact Agent</h5>
+                    <h5 class="modal-title" id="myModalLabel">Contact Seller</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>

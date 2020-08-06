@@ -31,9 +31,9 @@
                     <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                         <div class="listing-badges">
                             @if($property->premium_listing == 1)
-                                <span class="featured" aria-label="premium label">Premium</span>
+                                <span class="featured bg-red" aria-label="premium label">Premium</span>
                             @elseif($property->super_hot_listing == 1)
-                                <span class="featured" aria-label="super hot label">Super Hot</span>
+                                <span class="featured bg-red" aria-label="super hot label">Super Hot</span>
 
                             @elseif($property->hot_listing  == 1)
                                 <span class="featured" aria-label="hot label">Hot</span>
@@ -128,10 +128,10 @@
                     <div class="modal-body">
                         <div class="container" style="font-size: 12px; color: #555">
                             <div class="text-center">
-                                <div class= "mb-2"> {{ $property->agency !== null ? $property->agency: '' }} </div>
+                                <div class= "mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class= "mb-2">Please use property reference</div>
                                 <div class= "mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
-                                <div class="mb-2">while calling us</div>
+                                <div class="mb-2">while calling please mention aboutpakistan.com</div>
                             </div>
 
                             <table class="table table-borderless">
@@ -152,8 +152,7 @@
                                 </tr>
                                 <tr>
                                     <td>Agent</td>
-                                    <td class="font-weight-bold">  {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
-                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}</td>
+                                    <td class="font-weight-bold">  {{ $property->contact_person != ''? $property->contact_person:$property->agent}}</td>
                                 </tr>
                                 </tbody>
                             </table>

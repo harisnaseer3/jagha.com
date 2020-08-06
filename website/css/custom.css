@@ -624,7 +624,7 @@
         letter-spacing: 1px;
         background: #c32a2a;
         color: rgb(255, 255, 255);
-        padding: 1px 10px 1px;
+        padding: 5px 10px 5px;
         font-weight: 500;
         /*border-radius: 3px 3px 3px 0;*/
     }
@@ -1244,10 +1244,65 @@
         }
     }
     
-    @media (min-width: 1025px) and (max-width: 1440px) {
+    @media (min-width: 1025px) and (max-width: 1310px) {
         .detail-page-banner {
-            width: 82%;
-            margin-left: 9%;
+            width: 90%;
+            margin-left: 5%;
             margin-top: 1%;
         }
     }
+      @media (min-width: 1311px) and (max-width: 1440px) {
+        .detail-page-banner {
+            width: 88%;
+            margin-left: 6%;
+            margin-top: 1%;
+        }
+    }
+    .listing-badges .featured {
+    background-color: red;
+}
+.fly-but-wrap, span.feat-cat, span.post-head-cat, .prev-next-text a, .prev-next-text a:visited, .prev-next-text a:hover {
+    background-color: red;
+}
+/* .property-box-2 .listing-time {
+    background-color: red;
+} */
+
+.property-box-2 {
+    margin-bottom: 15px;
+}
+.property-box {
+    margin-bottom: 15px;
+}
+.property-box-2 .detail .title {
+    margin-bottom: 5px;
+}
+.property-box-2 .detail .location {
+    margin: 0 0 5px; 
+    font-size: 15px;
+    font-weight: 400;
+}
+.property-description{
+    line-height: 1.0rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.property-title {
+    color: #2238D8;
+    font-size: 14px;
+    font-weight: 600;
+}
+.property-box-2 .facilities-list li i , .property-box .detail .location i , .property-box .facilities-list li i {
+    color: #666;
+}
+.property-box .detail .location {
+    margin: 0 0 5px;
+}
+.alert-info {
+    color: white;
+    background-color: #848484;
+    border-color: #848484;
+}
+.color-white{
+    color: white;
+}

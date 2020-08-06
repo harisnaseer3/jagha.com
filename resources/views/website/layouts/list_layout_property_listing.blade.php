@@ -109,6 +109,11 @@
                             {{ Form::hidden('property',$property->id)}}
                         @endif
                         <div class="col-sm-12">
+                            <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform">
+                                {{\Illuminate\Support\Str::limit(strtolower($property->title), 130, $end='...more')}}
+                            </a>
+                        </div>
+                        <div class="col-sm-12 property-description">
                             <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 130, $end='...more')}}
                             </a>
@@ -142,10 +147,10 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center">
-                            <div class="mb-2"> {{ $property->agency !== null ? $property->agency: '' }} </div>
+                            <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property reference</div>
                             <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
-                            <div class="mb-2">while calling us</div>
+                            <div class="mb-2">while calling please mention aboutpakistan.com</div>
                         </div>
 
                         <table class="table table-borderless">
@@ -166,8 +171,7 @@
                             </tr>
                             <tr>
                                 <td>Agent</td>
-                                <td class="font-weight-bold">  {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
-                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}</td>
+                                <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person:$property->agent}}</td>
                             </tr>
                             </tbody>
                         </table>
