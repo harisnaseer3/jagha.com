@@ -56,8 +56,8 @@ class PropertyController extends Controller
             ->limit(10)
             ->get();
         //   $aggregates = $this->_getPropertyAggregates();
-
         $data = [
+            'cities_count' => (new CountTableController())->getCitiesCount(),
             'featured_properties' => $featured_properties,
             'key_agencies' => (new AgencyController())->keyAgencies(),
             'featured_agencies' => (new AgencyController())->FeaturedAgencies(),
@@ -123,7 +123,7 @@ class PropertyController extends Controller
         if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
         else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
         else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else $properties->orderBy('views', 'DESC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
 
         $property_types = (new PropertyType)->all();
         $aggregates = $this->_getPropertyAggregates();
@@ -743,7 +743,7 @@ class PropertyController extends Controller
         if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
         else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
         else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else $properties->orderBy('views', 'DESC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
 
         $property_types = (new PropertyType)->all();
 //        $aggregates = $this->_getPropertyAggregates();
@@ -909,7 +909,7 @@ class PropertyController extends Controller
         if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
         else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
         else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else $properties->orderBy('views', 'DESC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
         $property_types = (new PropertyType)->all();
 
 //        $aggregates = $this->_getPropertyAggregates();
@@ -961,11 +961,8 @@ class PropertyController extends Controller
         if ($type !== '') $properties->where('properties.type', '=', $type);
 
         $properties->where('properties.purpose', '=', $purpose);
-//        $properties->where('properties.location_id', '=', $location_data->id);
-        $properties->whereIn('properties.location_id',$location_data)
+        $properties->whereIn('properties.location_id', $location_data)
             ->whereNull('properties.deleted_at');
-//        dd($properties->get());
-//        dd($city->id,$type,$location_data->id,$purpose, str_replace('_', '-', str_replace('-', ' ', $location)), $properties->get());
 
         $sort = '';
         if (request()->input('sort') !== null)
@@ -976,7 +973,7 @@ class PropertyController extends Controller
         if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
         else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
         else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else $properties->orderBy('views', 'DESC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
 
         $property_types = (new PropertyType)->all();
         $aggregates = $this->_getPropertyAggregates();

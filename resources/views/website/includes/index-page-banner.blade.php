@@ -160,57 +160,49 @@
                                     </a>
                                 </div>
                             </div>
-                            
-                        </div>    
-                        <div class="card" id="popular-cities">
-                        <div class="card-header">
-                        <h6 class ="popular-cities-heading">Popular Cities</h6>
-                        </div>
-                        <div class="card-body">
-        <div class="main-title">
-        <!-- <div class="slider"></div> -->
-        <div class="slick-slider-area" id="popular-city-slider">
-            <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
-                 data-cycle-carousel-horizontal="true"
-                 data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
-                @foreach($key_agencies as $agency)
-                    <div class="slick-slide-item" aria-label="key agency">
-                    @if($agency->logo !== null)
-                                <div class="row">
-                                <div class="col-12">
-                                <a href="#" class="popular-city-font mb-2 mt-5">Rawalpindi</a>
-                                <p class ="popular-count-font">(1000)</p>
-                                </div>
-                            
-                                </div>
 
-                        @else
-                            <img src="{{asset('storage/agency_logos/'.'img256by256_1588397752.jpg')}}" alt="{{$agency->title}}"
-                                 title='<div class="row p-2"><div class="col-md-12"><p class="color-white mb-2">{{$agency->title}}</p><p class="color-white"> <i class="fa fa-map-marker mr-2" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p><p class="color-white mb-2"><i class="fa fa-phone mr-2" aria-hidden="true"></i>{{$agency->phone}}</p></div></div>'
-                                 data-toggle="tooltip" data-html="true" data-placement="top" class="img-fluid featured-agency-image" style="height:53px; width: 53px ;">
-                        @endif
+                        </div>
+                        <div class="card" id="popular-cities">
+                            <div class="card-header">
+                                <h6 class="popular-cities-heading">Popular Cities</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="main-title">
+                                    <!-- <div class="slider"></div> -->
+                                    <div class="slick-slider-area" id="popular-city-slider">
+                                        <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next"
+                                             data-cycle-prev="slick-prev"
+                                             data-cycle-carousel-horizontal="true"
+                                             data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+                                            @foreach($cities_count as $city)
+                                                <div class="slick-slide-item" aria-label="key agency">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <a href="#" class="popular-city-font mb-2 mt-5">{{$city->city}}</a>
+                                                            <p class="popular-count-font">({{$city->count}})</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="controls">
+                                            <div class="slick-prev slick-arrow-buton top-style-prev" id="popular-city-left">
+                                                <i class="fas fa-angle-left"></i>
+                                            </div>
+                                            <div class="slick-next slick-arrow-buton top-style-next" id="popular-city-right">
+                                                <i class="fas fa-angle-right"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                @endforeach
-            </div>
-            <div class="controls">
-                <div class="slick-prev slick-arrow-buton top-style-prev" id="popular-city-left">
-                    <i class="fas fa-angle-left"></i>
+
+
                 </div>
-                <div class="slick-next slick-arrow-buton top-style-next" id="popular-city-right">
-                    <i class="fas fa-angle-right"></i>
-                </div>
+
             </div>
-        </div>
-                        </div>
-                        </div>      
-                        </div>
-                       
-                </div>
-               
-            
-            </div>
-     
         </div>
     </div>
 </div>
-

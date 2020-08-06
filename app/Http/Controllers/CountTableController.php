@@ -325,4 +325,11 @@ class CountTableController extends Controller
         where('property_type', '=', $property->type)->where('property_sub_type', '=', $property->sub_type)->where('property_purpose', '=', $property->purpose)->
         decrement('property_count');
     }
+
+    public function getCitiesCount()
+    {
+        $cities_count = $popular_cities_houses_on_sale = DB::table('property_count_by_cities')
+            ->select('property_count AS count', 'city_name AS city')->get();
+        return $cities_count;
+    }
 }
