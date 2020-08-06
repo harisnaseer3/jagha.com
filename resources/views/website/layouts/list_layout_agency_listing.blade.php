@@ -19,12 +19,13 @@
 @endif
 <!-- Property box 2 start -->
 @foreach($agencies as $agency)
+
     <div class="property-box-2">
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
                     <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
-                         title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo">
+                         title="{{$agency->title}}" class="w-50 ml-auto mr-auto" aria-label="Listing photo">
                 </a>
             </div>
             <div class="col-lg-7 col-md-7 col-pad">
@@ -39,8 +40,7 @@
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
-                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED</span></span>
-                           </span>
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED</span></span></span>
                             @endif
                         </div>
                     </h2>
@@ -65,15 +65,13 @@
                                     <h6 class="custom-font text-transform">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
                                 </a>
                             </div>
-                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a>
-                            </div>
+                            <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                         @else
-                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}r"
+                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}"
                                                          aria-label="Call">Call</a></div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                         @endif
-
                     </div>
                 </div>
             </div>
@@ -136,9 +134,5 @@
                 </div>
             </div>
         </div>
+    </div>
 @endforeach
-
-
-
-
-

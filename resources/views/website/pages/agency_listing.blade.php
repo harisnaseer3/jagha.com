@@ -24,9 +24,18 @@
                 <div class="col-lg-9 col-md-12">
                     <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="{{asset('/')}}" title="PropertyManagement" itemprop="item">
-                            <span itemprop="name">PropertyManagement</span></a>
+                            <a href="{{asset('/')}}" title="Property" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Property</span></a>
                             <meta itemprop="position" content="1">
+                        </span>
+                        <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+
+                        <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="javascript:void(0)" title="Property" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">
+                                   {{ucwords('partners')}}
+                            </span></a>
+                            <meta itemprop="position" content="2">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
@@ -48,7 +57,6 @@
                         <span aria-label="Summary text" class="ml-2">{{ $agencies->total() }} results found</span>
                         <span>({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                     </div>
-
                     <!-- Listing -->
                     <div class="page-list-layout">
                         @include('website.layouts.list_layout_agency_listing')

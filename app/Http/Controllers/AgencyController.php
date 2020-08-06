@@ -36,7 +36,6 @@ class AgencyController extends Controller
         $agencies = (new Agency)
             ->select('agencies.title','agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
                 'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
-//            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
             ->where('agencies.status', '=', 'verified')
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');

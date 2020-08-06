@@ -9172,3 +9172,6 @@ blockquote {
         height: 316px;
     }
 }
+.breadcrumb-link:hover{
+    color: #2238d8;
+}
