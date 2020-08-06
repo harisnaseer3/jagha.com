@@ -25,23 +25,52 @@
                 <div class="col-lg-9 col-md-12">
                     <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="{{asset('/')}}" title="PropertyManagement" itemprop="item">
-                            <span itemprop="name">PropertyManagement</span></a>
+                            <a href="{{asset('/')}}" title="Property" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Property</span></a>
                             <meta itemprop="position" content="1">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
-                        <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                        @if(request()->segment(2) == 'null' || request()->segment(2) == '')
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
-                                <!-- if homes are selected from nav bar -->
-                                @if(request()->segment(2) == 'null' || request()->segment(2) == '')
+                                <!-- if an option selected from nav bar -->
                                     {{ucfirst(explode('_', request()->segment(1))[0])}}
-                                @else
-                                    {{ucfirst(request()->segment(2))}}
-                                @endif
                             </span>
                             <meta itemprop="position" content="2">
-                        </span>
+                            </span>
+                        @else
+                            @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
+                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                    <a href="{{route('properties.get_listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
+                                       title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
+                                <span class="breadcrumb-link" itemprop="name">{{ucfirst(explode('_', request()->segment(1))[0])}}</span></a>
+                                <meta itemprop="position" content="2">
+                                </span>
+                            @else
+                                @php
+                                    if(in_array(ucwords(explode('_', request()->segment(1))[0]),['House', 'Flat', 'Upper Portion', 'Lower Portion', 'Farm House', 'Room', 'Penthouse']))
+                                            $type = 'Homes';
+                                    else if(in_array(ucwords(explode('_', request()->segment(1))[0]),['Office', 'Shop', 'Warehouse', 'Factory', 'Building', 'Other']))
+                                        $type = 'Commercial';
+                                    else $type = 'Plots';
+                                @endphp
+                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                    <a href="{{route('properties.get_listing',['type'=>$type, 'sort' =>'newest'])}}"
+                                       title="{{$type}}" itemprop="item">
+                                <span class="breadcrumb-link" itemprop="name">{{$type}}</span></a>
+                                <meta itemprop="position" content="2">
+                                </span>
+                            @endif
+
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">{{ucfirst(request()->segment(2))}}</span>
+                            <meta itemprop="position" content="3">
+                            </span>
+
+                        @endif
+
                     </div>
 
                     <!-- Search Result Count -->
@@ -172,27 +201,49 @@
                 }
 
                 $('.sorting').on('change', function (e) {
-                    location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
+                    insertParam('sort', $(this).val());
+                    // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
                 });
-                
+
                 $('.favorite').on('click', function () {
                     $('.favorite').hide();
                     $('.remove-favorite').show();
-
                 });
                 $('.remove-favorite').on('click', function () {
                     $('.favorite').show();
                     $('.remove-favorite').hide();
                 });
+
+                function insertParam(key, value) {
+                    key = encodeURIComponent(key);
+                    value = encodeURIComponent(value);
+
+                    // kvp looks like ['key1=value1', 'key2=value2', ...]
+                    var kvp = document.location.search.substr(1).split('&');
+                    let i = 0;
+
+                    for (; i < kvp.length; i++) {
+                        if (kvp[i].startsWith(key + '=')) {
+                            let pair = kvp[i].split('=');
+                            pair[1] = value;
+                            kvp[i] = pair.join('=');
+                            break;
+                        }
+                    }
+
+                    if (i >= kvp.length) {
+                        kvp[kvp.length] = [key, value].join('=');
+                    }
+
+                    // can return this or...
+                    let params = kvp.join('&');
+
+                    // reload page with new params
+                    document.location.search = params;
+                }
+
                 $('.record-limit').on('change', function (e) {
-                    $sort = $('.sorting').val();
-                    $limit = $(this).val();
-                    var params = {sort: $sort, limit: $limit};
-                    let str = jQuery.param(params);
-                    let uri = window.location.href.toString();
-                    if (uri.indexOf("?") > 0)
-                        uri = uri.substring(0, uri.indexOf("?"));
-                    location.assign(uri + "?" + str);
+                    insertParam('limit', $(this).val());
                 });
 
                 if ($('.pagination-box').length > 0) {

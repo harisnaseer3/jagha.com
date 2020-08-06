@@ -115,6 +115,12 @@ class PropertyController extends Controller
             ->whereNull('properties.deleted_at');
 
         $sort = '';
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
@@ -131,7 +137,7 @@ class PropertyController extends Controller
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $properties->paginate(10),
+            'properties' => $properties->paginate($limit),
             'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
@@ -735,6 +741,12 @@ class PropertyController extends Controller
             ->whereNull('properties.deleted_at');
 
         $sort = '';
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
@@ -751,7 +763,7 @@ class PropertyController extends Controller
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $properties->paginate(10),
+            'properties' => $properties->paginate($limit),
 //            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
@@ -900,6 +912,11 @@ class PropertyController extends Controller
         }
 
         $sort = '';
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
 
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
@@ -917,7 +934,7 @@ class PropertyController extends Controller
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $properties->paginate(10),
+            'properties' => $properties->paginate($limit),
 //            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
@@ -965,6 +982,12 @@ class PropertyController extends Controller
             ->whereNull('properties.deleted_at');
 
         $sort = '';
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
@@ -981,7 +1004,7 @@ class PropertyController extends Controller
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $properties->paginate(10),
+            'properties' => $properties->paginate($limit),
             'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
