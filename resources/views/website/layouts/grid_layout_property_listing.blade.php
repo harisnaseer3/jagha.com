@@ -78,7 +78,7 @@
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status)  && $property->agency_status === 'verified')
-                                <span style="color:green"><i class="far fa-shield-check"></i></span>
+                                <span style="color:green" data-toggle="tooltip" data-placement="top" title="Become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190" ><i class="far fa-shield-check"></i></span>
                             @endif
                         </div>
                     </h2>
@@ -141,7 +141,7 @@
                                 <div class= "mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class= "mb-2">Please use property reference</div>
                                 <div class= "mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
-                                <div class="mb-2">while calling please mention aboutpakistan.com</div>
+                                <div class="mb-2">While calling please mention aboutpakistan.com</div>
                             </div>
 
                             <table class="table table-borderless">
