@@ -375,7 +375,7 @@
                         });
                         jQuery.ajax({
                             type: 'post',
-                            url: 'http://127.0.0.1/propertymanagement/public/contactAgent',
+                            url: window.location.origin + '/property' + '/contactAgent',
                             data: form.serialize(),
                             dataType: 'json',
                             success: function (data) {
