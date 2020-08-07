@@ -24,7 +24,7 @@ if(request()->segment(1) !== 'properties'){
 @endphp
 
 <div class="banner" id="banner">
-    <div class="text-center detail-page-banner none-992">
+    <div class="text-center detail-page-banner none-992 sticky">
         <div class="container inline-search-area none-992">
             {{ Form::open(['route' => 'properties.search', 'method' => 'get', 'role' => 'form', 'class' => 'index-form']) }}
 

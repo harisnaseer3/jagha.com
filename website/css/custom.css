@@ -843,12 +843,6 @@
         }
     }
     
-    @media (min-width: 993px) and (max-width: 1199px) {
-        .call-email-container {
-            margin-top: 33px;
-        }
-    }
-    
     @media (max-width: 768px) {
         .detail-page-similar-properties {
             margin-top: 250px !important;
@@ -1118,11 +1112,17 @@
         color: #274abb;
     }
     
-    @media (min-width: 426px) {
+    @media (min-width: 991px) {
         .sidebar-right {
             margin-top: 32%;
         }
     }
+     .sidebar-right {
+            border-radius: .25rem;
+        }
+        .option-bar{
+            border-radius: .25rem;
+        }
     
     .btn-call {
         border-color: #2238D8;
@@ -1154,9 +1154,10 @@
     
     .detail-page-banner {
         width: 62%;
-        margin-left: 19%;
-        margin-top: 1%;
+        margin-left: 19%;;
         border-radius: 3px;
+        z-index: 1030;
+        position: fixed;
     }
     
     .banner .carousel-content {
@@ -1241,8 +1242,9 @@
         .detail-page-banner {
             width: 98%;
             margin-left: 1%;
-            margin-top: 1%;
             border-radius: 3px;
+            z-index: 1030;
+            position: fixed;
         }
     }
     
@@ -1250,16 +1252,18 @@
         .detail-page-banner {
             width: 90%;
             margin-left: 5%;
-            margin-top: 1%;
             border-radius: 3px;
+            z-index: 1030;
+            position: fixed;
         }
     }
       @media (min-width: 1311px) and (max-width: 1440px) {
         .detail-page-banner {
             width: 88%;
             margin-left: 6%;
-            margin-top: 1%;
             border-radius: 3px;
+            z-index: 1030;
+            position: fixed;
         }
     }
     .listing-badges .featured {
@@ -1274,11 +1278,11 @@
 
 .property-box-2 {
     margin-bottom: 15px;
-    border-radius : 3px;
+    border-radius : .25rem;
 }
 .property-box {
     margin-bottom: 15px;
-    border-radius : 3px;
+    border-radius :.25rem;
 }
 .property-box-2 .detail .title {
     margin-bottom: 5px;
@@ -1306,9 +1310,25 @@
 }
 .alert-info {
     color: white;
-    background-color: #848484;
-    border-color: #848484;
+    background-color: #444;
+    border-color: #444;
 }
 .color-white{
     color: white;
 }
+.tooltip-inner {
+   width: 250px;
+}
+ @media (min-width: 1024px){
+.content-area{
+    padding-top: 285px;
+}
+ }
+ @media (max-width: 992px)
+ {
+     .content-area {
+    padding: 80px 0 50px;
+    padding-top: 0;
+}
+
+ }
