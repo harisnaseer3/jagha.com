@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Main title -->
         <div class="main-title">
-            <h2><a class="hover-color" href="{{route('featured',['sort'=>'newest'])}}" title="Popular Properties">Popular Properties</a></h2>
+            <h2><a class="hover-color" href="{{route('featured',['sort'=>'newest'])}}" title="Check out famous of all properties">Popular Properties</a></h2>
         </div>
         <div class="slick-slider-area" aria-label="popular properties">
             <div class="row slick-carousel"
@@ -10,8 +10,7 @@
                 @foreach($featured_properties as $feature_property)
                     <div class="slick-slide-item">
                         <div class="property-box-3" aria-label="listing link">
-                            <a href="{{$feature_property->property_detail_path()}}" class="property-img"
-                               title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}">
+                            <a href="{{$feature_property->property_detail_path()}}" class="property-img" title="{{$feature_property->title}}">
                                 <div class="property-thumbnail">
                                     @if($feature_property->premium_listing == 1)
                                         <div class="tag feature-tag">Premium</div>
@@ -23,7 +22,7 @@
                                     @if($feature_property->image != null)
                                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
-                                             title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
+                                             title="{{$feature_property->title}}"
                                         />
                                     @else
                                         <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
@@ -34,7 +33,7 @@
                                 <div class="top">
                                     <h2 class="title">
                                         <!-- method to convert price in number into price in words -->
-                                        <a href="{{$feature_property->property_detail_path()}}" title="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='')}}">
+                                        <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->title}}">
                                             <span class="font-16 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                                         </a>
                                     </h2>
