@@ -66,13 +66,12 @@
                             <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
-                            {{--                            <span style="color: red"><i class="fas fa-fire"></i></span>--}}
                             @if(isset($property->agency_status) && $property->agency_status === 'verified')
                                 <span style="color:green"><i class="far fa-shield-check"></i></span>
                             @endif
                             @if(isset($property->featured_listing) && $property->featured_listing === 1)
                                 <span class="premium-badge">
-                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED</span></span>
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED AGENCY</span></span>
                            </span>
                             @endif
                         </div>
