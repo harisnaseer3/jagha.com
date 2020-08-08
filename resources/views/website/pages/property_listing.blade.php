@@ -41,7 +41,11 @@
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 <!-- if an option selected from nav bar -->
+                                @if(strpos(explode('_', request()->segment(1))[0] , 'cities' ) !== false)
+                                    {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
+                                @else
                                     {{ucwords(str_replace("-"," ",explode('_', request()->segment(1))[0]))}}
+                                @endif
                             </span>
                             <meta itemprop="position" content="3">
                             </span>
