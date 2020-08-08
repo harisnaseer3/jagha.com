@@ -23,10 +23,17 @@
             <div class="row">
                 <div class="col-lg-9 col-md-12">
                     <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
+                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Home</span></a>
+                            <meta itemprop="position" content="1">
+                        </span>
+                        <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{asset('/')}}" title="Property" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Property</span></a>
-                            <meta itemprop="position" content="1">
+                            <meta itemprop="position" content="2">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
@@ -35,7 +42,7 @@
                             <span class="breadcrumb-link" itemprop="name">
                                    {{ucwords('partners')}}
                             </span></a>
-                            <meta itemprop="position" content="2">
+                            <meta itemprop="position" content="3">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
@@ -48,7 +55,7 @@
                                     {{ucwords(str_replace('-',' ',request()->segment(2)))}}
                                 @endif
                             </span>
-                            <meta itemprop="position" content="2">
+                            <meta itemprop="position" content="4">
                         </span>
                     </div>
 
@@ -232,7 +239,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: 'http://127.0.0.1/propertymanagement/public/subscribe',
+                        url: window.location.origin + '/property' + '/subscribe',
                         data: {
                             email: $('#subscribe').val()
                         },
@@ -247,7 +254,7 @@
                             }
                         },
                         error: function (xhr, status, error) {
-                            console.log(error);
+                            // console.log(error);
                         },
                         complete: function (url, options) {
                         }
@@ -328,7 +335,7 @@
                         });
                         jQuery.ajax({
                             type: 'post',
-                            url: 'http://127.0.0.1/propertymanagement/public/contactAgent',
+                            url: window.location.origin + '/property' + '/contactAgent',
                             data: form.serialize(),
                             dataType: 'json',
                             success: function (data) {

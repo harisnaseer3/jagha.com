@@ -44,12 +44,12 @@
                     </a>
                 </div>
                 <div class="detail">
-                    <h2 class="title">
+                    <h2 class="title" style="height:20px">
                         <a href="javascript:void(0)" title="{{$agency->title}}">
                             {{$agency->title}}
                         </a>
                     </h2>
-                    <div class="location">
+                    <div class="location mt-5">
                         <a href="javascript:void(0)" aria-label="Agency location">
                             <i class="fa fa-map-marker"></i>
                             {{implode(', ', json_decode($agency->city))}}
@@ -65,15 +65,15 @@
                     </div>
                     <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
-                <div class="footer clearfix" style="line-height: 30px;">
+{{--                <div class="footer clearfix" style="line-height: 30px;">--}}
 
-                    <div class="days"><a href="javascript:void(0)"><span><a><i class="fa fa-user"></i> @if( $agency->agent != '')<span class="m-1"> {{$agency->agent}}</span>@endif</a></span></a></div>
-                </div>
+{{--                    <div class="days"><a href="javascript:void(0)"><span><a><i class="fa fa-user"></i> @if( $agency->agent != '')<span class="m-1"> {{$agency->agent}}</span>@endif</a></span></a></div>--}}
+{{--                </div>--}}
             </div>
         </div>
         <div class="modal fade" id="{{'CallModel2'.$agency->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+                <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header">
                         <h5 class="modal-title" id="myModalLabel">Contact Us</h5>
@@ -112,7 +112,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
                         <div class="modal-content">
@@ -130,7 +129,6 @@
                         </div>
                     </div>
                 </div>
-
     @endforeach
 </div>
 

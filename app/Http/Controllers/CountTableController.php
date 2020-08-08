@@ -332,4 +332,81 @@ class CountTableController extends Controller
             ->select('property_count AS count', 'city_name AS city')->get();
         return $cities_count;
     }
+
+    public function getAllCities(string $type, string $purpose)
+    {
+        $cities = '';
+        $result_type = '';
+        $result_purpose = '';
+        if ($type == 1 && $purpose == 1) {
+            $result_type = 'Houses & Flats';
+            $result_purpose = 'Sale';
+            $houses = DB::table('property_count_by_property_purposes')
+                ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+                ->where([
+                    ['property_purpose', '=', 'sale'],
+                    ['property_type', '=', 'Homes'],
+                    ['property_sub_type', '=', 'House'],
+                ])
+                ->orderBy('property_count', 'DESC')
+                ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+                ->get();
+            $flats = DB::table('property_count_by_property_purposes')
+                ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+                ->where([
+                    ['property_purpose', '=', 'sale'],
+                    ['property_type', '=', 'Homes'],
+                    ['property_sub_type', '=', 'Flat'],
+                ])
+                ->orderBy('property_count', 'DESC')
+                ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
+                ->get();
+            $cities = ['houses' => $houses, 'flats' => $flats];
+        }
+        if ($type == 1 && $purpose == 2) {
+            $result_type = 'Plots';
+            $result_purpose = 'Sale';
+            $plots = DB::table('property_count_by_property_purposes')
+                ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
+                ->where('property_type', '=', 'Plots')
+                ->where('property_purpose', '=', 'sale')
+                ->orderBy('property_count', 'DESC')
+                ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
+
+            $cities = ['plots' => $plots];
+        }
+        if ($type == 1 && $purpose == 3) {
+            $result_type = 'Commercial';
+            $result_purpose = 'Sale';
+            $commercial = DB::table('property_count_by_property_purposes')
+                ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
+                ->where('property_type', '=', 'commercial')
+                ->where('property_purpose', '=', 'sale')
+                ->orderBy('property_count', 'DESC')
+                ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
+
+            $cities = ['commercial' => $commercial];
+        }
+        if ($type == 2 && $purpose == 1) {
+            $result_type = 'Property';
+            $result_purpose = 'Rent';
+
+
+            $rent = DB::table('property_count_by_property_purposes')
+                ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
+                ->where('property_purpose', '=', 'rent')
+                ->orderBy('property_count', 'DESC')
+                ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
+            $cities = ['property' => $rent];
+        }
+
+        $data = [
+            'type' => $result_type,
+            'purpose' => $result_purpose,
+            'cities' => $cities,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1]
+        ];
+        return view('website.pages.all_cities_listing', $data);
+    }
 }
