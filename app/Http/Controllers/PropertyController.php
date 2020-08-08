@@ -1127,6 +1127,7 @@ class PropertyController extends Controller
     {
         $city = str_replace('_', ' ', $city);
         $city = City::select('id')->where('name', '=', $city)->first();
+        $data = [];
         if ($city) {
             $properties = (new Property)
                 ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.city_id', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
@@ -1173,9 +1174,9 @@ class PropertyController extends Controller
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];
-        } else {
+        }
+        else {
             $properties = (new Property)->newCollection();
-
 
             $property_types = (new PropertyType)->all();
             $aggregates = $this->_getPropertyAggregates();
@@ -1193,6 +1194,4 @@ class PropertyController extends Controller
 
         return view('website.pages.property_listing', $data);
     }
-
-
 }

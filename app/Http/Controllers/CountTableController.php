@@ -363,7 +363,7 @@ class CountTableController extends Controller
                 ->get();
             $cities = ['houses' => $houses, 'flats' => $flats];
         }
-        if ($type == 1 && $purpose == 2) {
+        else if ($type == 1 && $purpose == 2) {
             $result_type = 'Plots';
             $result_purpose = 'Sale';
             $plots = DB::table('property_count_by_property_purposes')
@@ -375,7 +375,7 @@ class CountTableController extends Controller
 
             $cities = ['plots' => $plots];
         }
-        if ($type == 1 && $purpose == 3) {
+        else if ($type == 1 && $purpose == 3) {
             $result_type = 'Commercial';
             $result_purpose = 'Sale';
             $commercial = DB::table('property_count_by_property_purposes')
@@ -387,7 +387,7 @@ class CountTableController extends Controller
 
             $cities = ['commercial' => $commercial];
         }
-        if ($type == 2 && $purpose == 1) {
+        else if ($type == 2 && $purpose == 1) {
             $result_type = 'Property';
             $result_purpose = 'Rent';
 
@@ -399,6 +399,8 @@ class CountTableController extends Controller
                 ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
             $cities = ['property' => $rent];
         }
+        else
+            abort(404);
 
         $data = [
             'type' => $result_type,

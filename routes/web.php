@@ -26,17 +26,19 @@ Route::get('key-partners', 'AgencyController@listingKeyPartners')->name('key-par
 
 Route::get('/{type}_property', 'PropertyController@getPropertyListing')->name('properties.get_listing');
 Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertyController@searchWithArgumentsForProperty')->name('sale.property.search');
-Route::get('/{city}/', 'PropertyController@searchInCities')->name('cities.sale.property');
+Route::get('/cities-{city}', 'PropertyController@searchInCities')->name('cities.sale.property');
 Route::get('{type}_for_sale/{city}/{location}', 'PropertyController@searchForHousesAndPlots')->name('search.houses.plots');
-Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAllCities')->name('all.cities.listings')
+Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAllCities')->name('cities.listings')
     ->where([
         'purpose' => '(1|2)',
         'type' => '(1|2|3|4)',
     ]);
+//agents
+Route::get('/agents/', 'AgencyController@index')->name('agents.listing');
 
 
 //list of blogs
-Route::get('blogs', 'BlogController@index')->name('blogs.index');
+Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
 Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
 

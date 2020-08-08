@@ -25,7 +25,7 @@
                                     </h6>
                                 </li>
                             @endforeach
-                            <li><a href="{{route('all.cities.listings',['type'=> 1,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                            <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -43,7 +43,7 @@
                                     </h6>
                                     @endforeach
                                 </li>
-                                <li><a href="{{route('all.cities.listings',['type'=> 2,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                                <li><a href="{{route('cities.listings',['type'=> 2,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -63,7 +63,7 @@
                                     </h6>
                                 </li>
                             @endforeach
-                            <li><a href="{{route('all.cities.listings',['type'=> 3,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                            <li><a href="{{route('cities.listings',['type'=> 3,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -82,7 +82,7 @@
                                     </h6>
                                 </li>
                             @endforeach
-                            <li><a href="{{route('all.cities.listings',['type'=> 1,'purpose'=>2])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                            <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=>2])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
 
                         </ul>
                     </div>

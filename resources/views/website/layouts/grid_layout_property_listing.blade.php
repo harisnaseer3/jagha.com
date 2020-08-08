@@ -18,7 +18,7 @@
             <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
-    <div class="float-right cod-pad">
+    <div class="float-right cod-pad none-992">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="record-limit">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
