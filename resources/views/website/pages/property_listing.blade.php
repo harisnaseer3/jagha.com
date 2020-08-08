@@ -25,9 +25,15 @@
                 <div class="col-lg-9 col-md-12">
                     <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Home</span></a>
+                            <meta itemprop="position" content="1">
+                        </span>
+                        <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                        <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{asset('/')}}" title="Property" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Property</span></a>
-                            <meta itemprop="position" content="1">
+                            <meta itemprop="position" content="2">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
@@ -37,7 +43,7 @@
                                 <!-- if an option selected from nav bar -->
                                     {{ucfirst(explode('_', request()->segment(1))[0])}}
                             </span>
-                            <meta itemprop="position" content="2">
+                            <meta itemprop="position" content="3">
                             </span>
                         @else
                             @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
@@ -45,7 +51,7 @@
                                     <a href="{{route('properties.get_listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
                                        title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{ucfirst(explode('_', request()->segment(1))[0])}}</span></a>
-                                <meta itemprop="position" content="2">
+                                <meta itemprop="position" content="3">
                                 </span>
                             @else
                                 @php
@@ -59,7 +65,7 @@
                                     <a href="{{route('properties.get_listing',['type'=>$type, 'sort' =>'newest'])}}"
                                        title="{{$type}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{$type}}</span></a>
-                                <meta itemprop="position" content="2">
+                                <meta itemprop="position" content="3">
                                 </span>
                             @endif
 
@@ -74,12 +80,19 @@
                     </div>
 
                     <!-- Search Result Count -->
-                    <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
-                        <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->total() }} results found</span>
-                        <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
-                    </div>
+                    @if(count($properties) == 0)
+                        <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
+                            <span aria-label="Summary text" class="ml-2 color-white">0 results found</span>
+                            <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        </div>
+                    @else
+                        <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
+                            <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->total() }} results found</span>
+                            <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        </div>
+                    @endif
 
-                    <!-- Listing -->
+                <!-- Listing -->
                     <div class="page-list-layout">
                         @include('website.layouts.list_layout_property_listing')
                     </div>
@@ -87,11 +100,12 @@
                     <div class="page-grid-layout" style="display: none;">
                         @include('website.layouts.grid_layout_property_listing')
                     </div>
-
+                    @if($properties->count())
                     <!-- Pagination -->
-                    <div class="pagination-box hidden-mb-45 text-center" role="navigation">
-                        {{ $properties->links() }}
-                    </div>
+                        <div class="pagination-box hidden-mb-45 text-center" role="navigation">
+                            {{ $properties->links() }}
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">
@@ -379,7 +393,7 @@
                         });
                         jQuery.ajax({
                             type: 'post',
-                            url: 'http://127.0.0.1/propertymanagement/public/contactAgent',
+                            url: window.location.origin + '/property' + '/contactAgent',
                             data: form.serialize(),
                             dataType: 'json',
                             success: function (data) {
