@@ -25,7 +25,7 @@
                                     </h6>
                                 </li>
                             @endforeach
-                            <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                            <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -43,7 +43,7 @@
                                     </h6>
                                     @endforeach
                                 </li>
-                                <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                                <li><a href="{{route('cities.listings',['type'=> 2,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -63,7 +63,7 @@
                                     </h6>
                                 </li>
                             @endforeach
-                            <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                            <li><a href="{{route('cities.listings',['type'=> 3,'purpose'=> 1])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3 col-md-6 col-sm-6 p-3">
@@ -82,7 +82,7 @@
                                     </h6>
                                 </li>
                             @endforeach
-                            <li><a href="javascript:void(0)" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+                            <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=>2])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
 
                         </ul>
                     </div>
@@ -95,15 +95,15 @@
                     @foreach($city_wise_homes_data as $key_value => $value)
                         <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                             <h4 class="font-16 color-555 pb-1"><a class="hover-color"
-                                    href="{{route('sale.property.search', ['sub_type' => 'homes', 'city' => str_replace('/','-',$key_value),'purpose'=>'sale', 'sort'=>'newest'])}}"
-                                    title="{{ucfirst($key_value)}}">{{ucfirst($key_value)}}</a></h4>
+                                                                  href="{{route('sale.property.search', ['sub_type' => 'homes', 'city' => str_replace('/','-',$key_value),'purpose'=>'sale', 'sort'=>'newest'])}}"
+                                                                  title="{{ucfirst($key_value)}}">{{ucfirst($key_value)}}</a></h4>
                             <ul>
                                 @foreach($value as $key => $property_data)
                                     <li>
                                         <h6 class="custom-font">
                                             <a href="{{route('search.houses.plots', ['type'=>lcfirst($property_data->property_type),'city' => lcfirst($property_data->city_name),'location'=> str_replace(' ', '-',str_replace('-','_',$property_data->location_name)), 'sort'=>'newest'])}}"
                                                title="Houses in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 17, $end='...')}}">
-{{--                                                {{$property_data->property_type}}--}}Houses
+                                                {{--                                                {{$property_data->property_type}}--}}Houses
 
                                                 @if($key_value == 'Islamabad/Rawalpindi' && $key < 3 && $property_data->location_name === 'Bahria Town')
                                                     in {{\Illuminate\Support\Str::limit(strip_tags($property_data->location_name), 30, $end='...').' Islamabad'}}
@@ -126,8 +126,8 @@
                     @foreach($city_wise_plots_data as $key_value => $value)
                         <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                             <h6 class="font-16 color-555 pb-1"><a class="hover-color"
-                                    href="{{route('sale.property.search', ['sub_type' => 'plots', 'city' => str_replace('/','-',$key_value),'purpose'=>'sale', 'sort'=>'newest'])}}"
-                                    title="{{ucfirst($key_value)}}">{{ucfirst($key_value)}}</a></h6>
+                                                                  href="{{route('sale.property.search', ['sub_type' => 'plots', 'city' => str_replace('/','-',$key_value),'purpose'=>'sale', 'sort'=>'newest'])}}"
+                                                                  title="{{ucfirst($key_value)}}">{{ucfirst($key_value)}}</a></h6>
                             <ul>
 
                                 @foreach($value as $key => $property_data)
@@ -158,8 +158,8 @@
                     @foreach($city_wise_commercial_data as $key_name => $value)
                         <div class="col-lg-3 col-md-6 col-sm-6 p-3">
                             <h4 class="font-16 color-555 pb-1"><a class="hover-color"
-                                    href="{{route('sale.property.search', ['sub_type' => 'commercial', 'city' => str_replace('/','-',$key_name),'purpose'=>'sale', 'sort'=>'newest'])}}"
-                                    title="{{ucfirst($key_name)}}">{{ucfirst($key_name)}}</a>
+                                                                  href="{{route('sale.property.search', ['sub_type' => 'commercial', 'city' => str_replace('/','-',$key_name),'purpose'=>'sale', 'sort'=>'newest'])}}"
+                                                                  title="{{ucfirst($key_name)}}">{{ucfirst($key_name)}}</a>
                             </h4>
                             <ul>
                                 @foreach($value as $key => $property_data)

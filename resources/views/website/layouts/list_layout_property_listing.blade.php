@@ -18,7 +18,7 @@
             <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
-    <div class="float-right cod-pad">
+    <div class="float-right cod-pad none-992">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="record-limit">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
@@ -66,13 +66,12 @@
                             <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
-                            {{--                            <span style="color: red"><i class="fas fa-fire"></i></span>--}}
                             @if(isset($property->agency_status) && $property->agency_status === 'verified')
-                                <span style="color:green"><i class="far fa-shield-check"></i></span>
+                                <span style="color:green" data-toggle="tooltip" data-placement="top" title="Become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
                             @endif
                             @if(isset($property->featured_listing) && $property->featured_listing === 1)
                                 <span class="premium-badge">
-                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED</span></span>
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED AGENCY</span></span>
                            </span>
                             @endif
                         </div>
@@ -110,12 +109,12 @@
                         @endif
                         <div class="col-sm-12">
                             <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform">
-                                {{\Illuminate\Support\Str::limit(strtolower($property->title), 130, $end='...more')}}
+                                {{\Illuminate\Support\Str::limit(strtolower($property->title), 50, $end='...')}}
                             </a>
                         </div>
                         <div class="col-sm-12 property-description">
                             <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
-                                {{\Illuminate\Support\Str::limit(strtolower($property->description), 130, $end='...more')}}
+                                {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                             </a>
                         </div>
                         <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</a></div>
@@ -150,7 +149,7 @@
                             <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property reference</div>
                             <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
-                            <div class="mb-2">while calling please mention aboutpakistan.com</div>
+                            <div class="mb-2">While calling please mention aboutpakistan.com</div>
                         </div>
 
                         <table class="table table-borderless">

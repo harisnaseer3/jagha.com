@@ -25,7 +25,7 @@
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
                     <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
-                         title="{{$agency->title}}" class="w-50 ml-auto mr-auto" aria-label="Listing photo">
+                         title="{{$agency->title}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                 </a>
             </div>
             <div class="col-lg-7 col-md-7 col-pad">

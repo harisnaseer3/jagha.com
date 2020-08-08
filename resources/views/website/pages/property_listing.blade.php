@@ -25,9 +25,15 @@
                 <div class="col-lg-9 col-md-12">
                     <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Home</span></a>
+                            <meta itemprop="position" content="1">
+                        </span>
+                        <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                        <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{asset('/')}}" title="Property" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Property</span></a>
-                            <meta itemprop="position" content="1">
+                            <meta itemprop="position" content="2">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
@@ -35,9 +41,9 @@
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 <!-- if an option selected from nav bar -->
-                                    {{ucfirst(explode('_', request()->segment(1))[0])}}
+                                    {{ucwords(str_replace("-"," ",explode('_', request()->segment(1))[0]))}}
                             </span>
-                            <meta itemprop="position" content="2">
+                            <meta itemprop="position" content="3">
                             </span>
                         @else
                             @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
@@ -45,7 +51,7 @@
                                     <a href="{{route('properties.get_listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
                                        title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{ucfirst(explode('_', request()->segment(1))[0])}}</span></a>
-                                <meta itemprop="position" content="2">
+                                <meta itemprop="position" content="3">
                                 </span>
                             @else
                                 @php
@@ -59,7 +65,7 @@
                                     <a href="{{route('properties.get_listing',['type'=>$type, 'sort' =>'newest'])}}"
                                        title="{{$type}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{$type}}</span></a>
-                                <meta itemprop="position" content="2">
+                                <meta itemprop="position" content="3">
                                 </span>
                             @endif
 
@@ -74,12 +80,19 @@
                     </div>
 
                     <!-- Search Result Count -->
-                    <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
-                        <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->total() }} results found</span>
-                        <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
-                    </div>
+                    @if(count($properties) == 0)
+                        <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
+                            <span aria-label="Summary text" class="ml-2 color-white">0 results found</span>
+                            <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        </div>
+                    @else
+                        <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
+                            <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->total() }} results found</span>
+                            <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        </div>
+                    @endif
 
-                    <!-- Listing -->
+                <!-- Listing -->
                     <div class="page-list-layout">
                         @include('website.layouts.list_layout_property_listing')
                     </div>
@@ -87,11 +100,12 @@
                     <div class="page-grid-layout" style="display: none;">
                         @include('website.layouts.grid_layout_property_listing')
                     </div>
-
+                    @if($properties->count())
                     <!-- Pagination -->
-                    <div class="pagination-box hidden-mb-45 text-center" role="navigation">
-                        {{ $properties->links() }}
-                    </div>
+                        <div class="pagination-box hidden-mb-45 text-center" role="navigation">
+                            {{ $properties->links() }}
+                        </div>
+                    @endif
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">
@@ -137,7 +151,7 @@
                         {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
                         <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>
                         {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
-                        <div><label class="mt-2">Meassage<span style="color:red">*</span></label></div>
+                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
                             {{ Form::bsRadio('i am','Buyer', ['required' => true, 'list' => ['Buyer', 'Agent', 'Other']]) }}
@@ -160,9 +174,13 @@
 @section('script')
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
     <script>
         (function ($) {
             $(document).ready(function () {
+
+                $('[data-toggle="tooltip"]').tooltip();
+
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');
                     // console.log(sessionStorage.getItem("page-layout"))
@@ -306,7 +324,7 @@
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
-                    let message = 'I would like to inquire about your property [' + reference + ']. Please contact me at your earliest convenience.';
+                    let message = 'I would like to gather information about your property. Please contact me at your earliest.';
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     // console.log(property, agency, reference,);
 
@@ -375,7 +393,7 @@
                         });
                         jQuery.ajax({
                             type: 'post',
-                            url: 'http://127.0.0.1/propertymanagement/public/contactAgent',
+                            url: window.location.origin + '/property' + '/contactAgent',
                             data: form.serialize(),
                             dataType: 'json',
                             success: function (data) {
