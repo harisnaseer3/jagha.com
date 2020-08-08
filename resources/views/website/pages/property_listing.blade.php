@@ -41,7 +41,7 @@
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 <!-- if an option selected from nav bar -->
-                                    {{ucfirst(explode('_', request()->segment(1))[0])}}
+                                    {{ucwords(str_replace("-"," ",explode('_', request()->segment(1))[0]))}}
                             </span>
                             <meta itemprop="position" content="3">
                             </span>
