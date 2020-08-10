@@ -4,14 +4,13 @@
 {{--    {!! SEO::generate(true) !!}--}}
 {{--@endsection--}}
 
-@section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
-@endsection
+
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
 @section('content')
+
     @include('website.includes.nav')
 
     <!-- Properties section body start -->
@@ -113,15 +112,15 @@
                     });
                 }
 
-                $('.select2').select2({
-                    language: '{{app()->getLocale()}}',
-                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
-                });
-                $('.select2bs4').select2({
-                    language: '{{app()->getLocale()}}',
-                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
-                    theme: 'bootstrap4',
-                });
+                {{--$('.select2').select2({--}}
+                {{--    language: '{{app()->getLocale()}}',--}}
+                {{--    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',--}}
+                {{--});--}}
+                {{--$('.select2bs4').select2({--}}
+                {{--    language: '{{app()->getLocale()}}',--}}
+                {{--    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',--}}
+                {{--    theme: 'bootstrap4',--}}
+                {{--});--}}
 
                 $('#subscribe-form').on('submit', function (e) {
                     e.preventDefault();
@@ -157,6 +156,6 @@
             });
         })(jQuery);
     </script>
-    <script src="{{asset('website/js/script-custom.js')}}"></script>
+{{--    <script src="{{asset('website/js/script-custom.js')}}"></script>--}}
 
 @endsection
