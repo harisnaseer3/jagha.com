@@ -44,12 +44,12 @@
                     </a>
                 </div>
                 <div class="detail">
-                    <h2 class="title" style="height:20px">
+                    <h2 class="title" style="height:25px">
                         <a href="javascript:void(0)" title="{{$agency->title}}">
                             {{$agency->title}}
                         </a>
                     </h2>
-                    <div class="location mt-5">
+                    <div class="location mt-4">
                         <a href="javascript:void(0)" aria-label="Agency location">
                             <i class="fa fa-map-marker"></i>
                             {{implode(', ', json_decode($agency->city))}}
@@ -65,10 +65,6 @@
                     </div>
                     <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
-{{--                <div class="footer clearfix" style="line-height: 30px;">--}}
-
-{{--                    <div class="days"><a href="javascript:void(0)"><span><a><i class="fa fa-user"></i> @if( $agency->agent != '')<span class="m-1"> {{$agency->agent}}</span>@endif</a></span></a></div>--}}
-{{--                </div>--}}
             </div>
         </div>
         <div class="modal fade" id="{{'CallModel2'.$agency->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -83,7 +79,7 @@
                     </div>
                     <!--Body-->
                     <div class="modal-body">
-                        <div class="container" style="font-size: 12px; color: #555">
+                        <div class="container color-555 font-12">
                             <div class="text-center">
                                 <div> {{ $agency->title }} </div>
                             </div>
@@ -113,22 +109,22 @@
             </div>
         </div>
         <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                        <div class="modal-content">
-                            <!--Body-->
-                            <div class="modal-body">
-                                <div class="container">
-                                    <div class="text-center">
-                                        <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
-                                        <div class="m-3" style="font-size: 14px">Message sent successfully</div>
-                                        <div class="mb-2">Add email@aboutpakistan.com to your white list to get email from us.</div>
-                                        <button class="btn btn-success" data-dismiss="modal">Dismiss</button>
-                                    </div>
-                                </div>
+            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                <div class="modal-content">
+                    <!--Body-->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="text-center">
+                                <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
+                                <div class="m-3" style="font-size: 14px">Message sent successfully</div>
+                                <div class="mb-2">Add email@aboutpakistan.com to your white list to get email from us.</div>
+                                <button class="btn btn-success" data-dismiss="modal">Dismiss</button>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
     @endforeach
 </div>
 
