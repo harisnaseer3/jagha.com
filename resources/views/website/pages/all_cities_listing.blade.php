@@ -111,16 +111,17 @@
                         }
                     });
                 }
+                setInterval(function() {
+                    var docHeight = $(window).height();
+                    var footerHeight = $('#foot-wrap').height();
+                    var footerTop = $('#foot-wrap').position().top + footerHeight;
+                    var marginTop = (docHeight - footerTop);
 
-                {{--$('.select2').select2({--}}
-                {{--    language: '{{app()->getLocale()}}',--}}
-                {{--    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',--}}
-                {{--});--}}
-                {{--$('.select2bs4').select2({--}}
-                {{--    language: '{{app()->getLocale()}}',--}}
-                {{--    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',--}}
-                {{--    theme: 'bootstrap4',--}}
-                {{--});--}}
+                    if (footerTop < docHeight)
+                        $('#foot-wrap').css('margin-top', marginTop + 'px'); // padding of 30 on footer
+                    else
+                        $('#foot-wrap').css('margin-top', '0px');
+                }, 250);
 
                 $('#subscribe-form').on('submit', function (e) {
                     e.preventDefault();
@@ -147,7 +148,7 @@
                             }
                         },
                         error: function (xhr, status, error) {
-                            console.log(error);
+                            // console.log(error);
                         },
                         complete: function (url, options) {
                         }
@@ -156,6 +157,4 @@
             });
         })(jQuery);
     </script>
-{{--    <script src="{{asset('website/js/script-custom.js')}}"></script>--}}
-
 @endsection
