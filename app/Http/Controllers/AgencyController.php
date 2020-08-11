@@ -19,9 +19,66 @@ class AgencyController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
+    {
+        $data = [];
+        $cities = (new Agency)->select('city')->groupBy('city')->get()->toArray();
+        foreach ($cities as $city)
+            array_push($data, $city['city']);
+
+        $cities_count = (new Agency)->select(DB::raw('COUNT(id) AS agency_count'), 'city')->whereIN('city', $data)
+            ->groupBy('city')
+            ->orderBy('agency_count', 'DESC')
+            ->get();
+
+
+        $data = [
+            'agencies' => $cities_count,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1]
+        ];
+
+        return view('website.pages.all_cities_listing_wrt_agency', $data);
+    }
+
+
+    public function ListingCityAgencies(string $city)
+    {
+//        TODO: change city store method to find city in db
+        $city_list = [];
+        $city = ucwords(str_replace('-', ' ', $city));
+        array_push($city_list, '["' . $city . '"]');
+
+//        $city_list = ['["Peshawar"]', '["Lahore"]','["Faisalabad"]','["Karachi"]','["Islamabad"]','["Rawalpindi"]'];
+        $city_list = ['["Karachi"]'];
+
+
+        $agencies = (new Agency)->select('title', 'id', 'featured_listing', 'description', 'key_listing', 'featured_listing', 'status', 'city', 'description', 'phone', 'cell', 'ceo_name AS agent', 'logo')
+            ->where('city', 'LIKE', '["' . $city . '"]')
+            ->where('status', '=', 'verified')
+            ->groupBy('city', 'title', 'id', 'featured_listing')
+            ->orderBy('agencies.created_at', 'DESC');
+        $property_types = (new PropertyType)->all();
+
+        $data = [
+            'property_types' => $property_types,
+            'agencies' => $agencies->paginate(10),
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+
+        ];
+        return view('website.pages.agency_listing', $data);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\Agency $agency
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Agency $agency)
     {
         //
     }
@@ -34,8 +91,8 @@ class AgencyController extends Controller
     public function listingFeaturedPartners()
     {
         $agencies = (new Agency)
-            ->select('agencies.title','agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
-                'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
+            ->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
+                'agencies.status', 'agencies.city', 'agencies.description', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
             ->where('agencies.status', '=', 'verified')
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
@@ -55,8 +112,8 @@ class AgencyController extends Controller
     public function listingKeyPartners()
     {
         $agencies = (new Agency)
-            ->select('agencies.title','agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
-                'agencies.status','agencies.city','agencies.description',  'agencies.phone','agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
+            ->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
+                'agencies.status', 'agencies.city', 'agencies.description', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
 //            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
             ->where('agencies.status', '=', 'verified')
             ->where('agencies.key_listing', '=', 1)
@@ -211,17 +268,6 @@ class AgencyController extends Controller
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Error updating record of agency, Resolve following error(s).');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Agency $agency
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Agency $agency)
-    {
-        //
     }
 
     /**
@@ -401,11 +447,11 @@ class AgencyController extends Controller
     public function FeaturedAgencies()
     {
 
-        return (new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city','agencies.phone', DB::raw('count(properties.agency_id) as sale_count'))
+        return (new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city', 'agencies.phone', DB::raw('count(properties.agency_id) as sale_count'))
             ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
             ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
             ->where('properties.purpose', '=', 'sale')
-            ->groupby('agencies.title', 'agencies.logo', 'agencies.city','agencies.phone')->get();
+            ->groupby('agencies.title', 'agencies.logo', 'agencies.city', 'agencies.phone')->get();
     }
 
     public function keyAgencies()

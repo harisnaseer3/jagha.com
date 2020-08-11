@@ -38,9 +38,9 @@
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="javascript:void(0)" title="Property" itemprop="item">
+                            <a href="{{route('agents.listing')}}" title="Agents" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">
-                                   {{ucwords('partners')}}
+                                   {{ucwords('Agents')}}
                             </span></a>
                             <meta itemprop="position" content="3">
                         </span>
@@ -50,7 +50,11 @@
                             <span itemprop="name">
                                 <!-- if homes are selected from nav bar -->
                                 @if(request()->segment(2) == 'null' || request()->segment(2) == '')
-                                    {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
+                                    @if(strpos(explode('-', request()->segment(1))[0] , 'agents') !== false)
+                                        {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
+                                    @else
+                                        {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
+                                    @endif
                                 @else
                                     {{ucwords(str_replace('-',' ',request()->segment(2)))}}
                                 @endif
@@ -265,8 +269,8 @@
                 $('.btn-email').click(function (e) {
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
-                    let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
-                    let message = 'I would like to inquire about your property [' + reference + ']. Please contact me at your earliest convenience.';
+                    // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
+                    let message = 'I would like to inquire about your property. Please contact me at your earliest convenience.';
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     // console.log(property, agency, reference,);
 
