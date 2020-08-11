@@ -32,6 +32,7 @@ class AgencyController extends Controller
             ->groupBy('city')
             ->orderBy('agency_count', 'DESC')
             ->get();
+        dd($cities_count);
 
 
         $data = [
@@ -47,12 +48,7 @@ class AgencyController extends Controller
     public function ListingCityAgencies(string $city)
     {
 //        TODO: change city store method to find city in db
-        $city_list = [];
         $city = ucwords(str_replace('-', ' ', $city));
-        array_push($city_list, '["' . $city . '"]');
-
-//        $city_list = ['["Peshawar"]', '["Lahore"]','["Faisalabad"]','["Karachi"]','["Islamabad"]','["Rawalpindi"]'];
-        $city_list = ['["Karachi"]'];
 
 
         $agencies = (new Agency)->select('title', 'id', 'featured_listing', 'description', 'key_listing', 'featured_listing', 'status', 'city', 'description', 'phone', 'cell', 'ceo_name AS agent', 'logo')
