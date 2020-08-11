@@ -138,10 +138,11 @@
                     <div class="modal-body">
                         <div class="container" style="font-size: 12px; color: #555">
                             <div class="text-center">
+                                <div class="mb-2 font-weight-bold title-font"> {{ $property->title }} </div>
                                 <div class= "mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class= "mb-2">Please use property reference</div>
                                 <div class= "mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
-                                <div class="mb-2">While calling please mention aboutpakistan.com</div>
+                                <div class="mb-2">While calling please mention <a class="hover-color" href="https://www.aboutpakistan.com/">aboutpakistan.com</a></div>
                             </div>
 
                             <table class="table table-borderless">

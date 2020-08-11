@@ -13,12 +13,13 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
+
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
 @section('content')
- 
+
     @include('website.includes.nav')
     <!-- Banner start -->
     <div class="container-fluid">

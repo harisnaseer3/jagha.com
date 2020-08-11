@@ -1164,13 +1164,12 @@ class PropertyController extends Controller
             else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
             else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
             $property_types = (new PropertyType)->all();
-            $aggregates = $this->_getPropertyAggregates();
+//            $aggregates = $this->_getPropertyAggregates();
 
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,
                 'properties' => $properties->paginate($limit),
-                'aggregates' => $aggregates,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];
@@ -1179,13 +1178,12 @@ class PropertyController extends Controller
             $properties = (new Property)->newCollection();
 
             $property_types = (new PropertyType)->all();
-            $aggregates = $this->_getPropertyAggregates();
+//            $aggregates = $this->_getPropertyAggregates();
 
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,
                 'properties' => $properties,
-                'aggregates' => $aggregates,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];

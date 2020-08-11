@@ -409,6 +409,6 @@ class CountTableController extends Controller
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
-        return view('website.pages.all_cities_listing', $data);
+        return view('website.pages.all_cities_listing_wrt_property', $data);
     }
 }
