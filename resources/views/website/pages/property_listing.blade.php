@@ -158,7 +158,7 @@
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
-                            {{ Form::bsRadio('i am','Buyer', ['required' => true, 'list' => ['Buyer', 'Agent', 'Other']]) }}
+                            {{ Form::bsRadio('i am','Buyer', ['list' => ['Buyer', 'Agent', 'Other']]) }}
                         </div>
                         {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}
                         <div class="text-center">

@@ -28,13 +28,10 @@ class AgencyController extends Controller
         foreach ($cities as $city)
             array_push($data, $city['city']);
 
-        $cities_count = (new Agency)->select(DB::raw('COUNT(id) AS agency_count'), 'city')->whereIN('city', $data)
+        $cities_count = (new Agency)->select(DB::raw('COUNT(id) AS agency_count'), 'city')
             ->groupBy('city')
             ->orderBy('agency_count', 'DESC')
             ->get();
-        dd($cities_count);
-
-
         $data = [
             'agencies' => $cities_count,
             'recent_properties' => (new FooterController)->footerContent()[0],
