@@ -3,7 +3,7 @@
     <div class="float-left">
         <h4>
             <span class="heading-icon"><i class="fa fa-th-list"></i></span>
-            <span class="title-name text-transform">Featured Agencies List</span>
+            <span class="title-name text-transform">Agencies List</span>
         </h4>
     </div>
     <div class="float-right cod-pad">

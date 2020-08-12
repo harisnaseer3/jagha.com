@@ -155,14 +155,18 @@
                         {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
                         <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>
                         {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
+                        {{--                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>--}}
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
-                        {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
+                        <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
+                        </div>
+                        {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
                             {{ Form::bsRadio('i am','Buyer', ['list' => ['Buyer', 'Agent', 'Other']]) }}
                         </div>
                         {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}
                         <div class="text-center">
-                            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
+                            {{--                            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}--}}
+                            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block','id'=>'send-mail']) }}
                         </div>
                         {{ Form::close() }}
                         <a href="" class="btn btn-block btn-call mt-2 agent-call">Call</a>
@@ -311,8 +315,6 @@
                                 let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
                                 $("#subscribe-form").slideUp();
                                 $('.Subscribe-box').append(btn);
-                            } else {
-                                //
                             }
                         },
                         error: function (xhr, status, error) {
@@ -324,19 +326,28 @@
                 });
                 let phone = '';
                 let form = $('#email-contact-form');
+
                 $('.btn-email').click(function (e) {
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
-                    let anchor_link = '<a href="' + property_link + '"> Link </a>';
-                    let message = 'I would like to gather information about your property.' + anchor_link + 'Please contact me at your earliest.';
+                    let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue"> Property Link </a>';
+                    let message = 'I would like to gather information about your property.\n' + anchor_link + '. Please contact me at your earliest.';
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
+                    let editable_div = $('.editable-div');
+                    editable_div.html(message);
+                    $('input[name=message]').val(editable_div.html());
+                    editable_div.click(function () {
+                        if (editable_div.html() !== '') {
+                            $('input[name=message]').val(editable_div.html());
+                        }
+                    });
+
                     if (!(property == null))
                         $('.selected').val(property).attr('name', 'property');
                     else if (!(agency == null))
                         $('.selected').val(agency).attr('name', 'agency');
-                    $('textarea[name=message]').html(message);
                     call_btn.text('Call');
                 });
                 let call_btn = $('.agent-call');
@@ -407,13 +418,13 @@
                                     $('#EmailConfirmModel').modal('show');
 
                                 } else {
-                                    console.log(data.data);
+                                    // console.log(data.data);
                                 }
                             },
                             error: function (xhr, status, error) {
-                                console.log(error);
-                                console.log(status);
-                                console.log(xhr);
+                                // console.log(error);
+                                // console.log(status);
+                                // console.log(xhr);
                             },
                             complete: function (url, options) {
                             }
