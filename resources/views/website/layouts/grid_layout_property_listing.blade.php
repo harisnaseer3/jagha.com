@@ -111,6 +111,32 @@
                     <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                 </div>
                 <div class="footer clearfix" style="line-height: 30px;">
+                <ul class="float-right">
+                                        @if(\Illuminate\Support\Facades\Auth::check())
+                                            <li>
+                                                <div class="favorite-property" style="font-size: 20px;">
+                                                    <a href="javascript:void(0);" title="Add to favorite"
+                                                       style="display: {{$property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()? 'none':'block' }}"
+                                                       class="favorite" data-id="{{$property->id}}">
+                                                        <i class="fal fa-heart empty-heart color-black"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0);" title="Add to favorite"
+                                                       style="display : {{$property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier() ? 'block':'none'}}"
+                                                       class="remove-favorite color-black" data-id="{{$property->id}}">
+                                                        <i class="fas fa-heart filled-heart color-red"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <div class="favorite-property font-20">
+                                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">
+                                                        <i class="fal fa-heart empty-heart"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        @endif
+                    </ul>
                     <div class="days">
                         <a>
                             <i class="fa fa-user"></i>
@@ -121,6 +147,7 @@
                     <div class="mt-0">
                         <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans()}}</a>
                     </div>
+                   
                 </div>
             </div>
         </div>
