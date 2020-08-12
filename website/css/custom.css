@@ -1271,6 +1271,7 @@ footer#foot-wrap {
 
 .property-box {
     margin-bottom: 15px;
+    border: 2px solid white;
     border-radius: .25rem;
 }
 

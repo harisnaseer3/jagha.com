@@ -41,14 +41,17 @@ class PropertyController extends Controller
         $featured_properties = (new Property)
             ->select('properties.id', 'properties.reference', 'properties.title', 'properties.description', 'properties.price', 'properties.premium_listing', 'properties.land_area',
                 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing',
-                'properties.favorites', 'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'favorites.user_id AS user_favorite', 'p.name AS image')
+                'properties.favorites','properties.views', 'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'f.user_id AS user_favorite', 'p.name AS image')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('images as p', function ($q) {
                 $q->on('properties.id', '=', 'p.property_id')
                     ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
             })
-            ->leftJoin('favorites', 'favorites.property_id', '=', 'properties.id')
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+            })
             ->where('properties.status', '=', 'active')
             ->where('properties.premium_listing', '=', 1)
             ->whereNull('properties.deleted_at')
@@ -100,7 +103,7 @@ class PropertyController extends Controller
             ->select('properties.reference', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'properties.favorites', 'locations.name AS location',
+                'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
                 'cities.name AS city', 'p.name AS image',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
@@ -109,6 +112,10 @@ class PropertyController extends Controller
             ->leftJoin('images as p', function ($q) {
                 $q->on('properties.id', '=', 'p.property_id')
                     ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+            })
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->where('properties.status', '=', 'active')
             ->where('properties.premium_listing', '=', 1)
@@ -356,7 +363,7 @@ class PropertyController extends Controller
         $similar_properties = (new Property)
             ->select('properties.id', 'title', 'price', 'land_area', 'area_unit', 'bedrooms', 'bathrooms', 'features', 'premium_listing',
                 'super_hot_listing', 'hot_listing', 'magazine_listing', 'contact_person', 'email', 'views', 'status', 'properties.created_at', 'properties.updated_at',
-                'locations.name AS location', 'cities.name AS city', 'p.name AS image')
+                'locations.name AS location', 'cities.name AS city', 'p.name AS image','properties.favorites','properties.views')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('images as p', function ($q) {
@@ -722,12 +729,11 @@ class PropertyController extends Controller
     /* function call from top header (nav bar)*/
     public function getPropertyListing(string $type)
     {
-//        dd('here');
         $properties = (new Property)
             ->select('properties.reference', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'properties.favorites', 'locations.name AS location',
+                'properties.fax', 'properties.email','properties.favorites','properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
                 'cities.name AS city', 'p.name AS image',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
@@ -736,6 +742,10 @@ class PropertyController extends Controller
             ->leftJoin('images as p', function ($q) {
                 $q->on('properties.id', '=', 'p.property_id')
                     ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+            })
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->where('properties.status', '=', 'active')
             ->where('properties.type', '=', $type)
@@ -806,7 +816,7 @@ class PropertyController extends Controller
                     ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                         'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                         'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                        'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
+                        'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
                         'cities.name AS city', 'p.name AS image',
                         'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
                     ->leftJoin('images as p', function ($q) {
@@ -816,6 +826,10 @@ class PropertyController extends Controller
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+                    ->leftJoin('favorites as f', function ($f) {
+                        $f->on('properties.id', '=', 'f.property_id')
+                            ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+                    })
                     ->where('properties.status', '=', 'active');
                 if ($city != '') $properties->where('properties.city_id', '=', $city->id);
                 else {
@@ -845,7 +859,7 @@ class PropertyController extends Controller
                     ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                         'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                         'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                        'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
+                        'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
                         'cities.name AS city', 'p.name AS image',
                         'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
                     ->leftJoin('images as p', function ($q) {
@@ -855,7 +869,11 @@ class PropertyController extends Controller
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
                     ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-                    ->where('properties.status', '=', 'active');
+                    ->where('properties.status', '=', 'active')
+                    ->leftJoin('favorites as f', function ($f) {
+                        $f->on('properties.id', '=', 'f.property_id')
+                            ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+                    });
 
                 $properties->where('properties.city_id', '=', $city->id);
 
@@ -962,7 +980,7 @@ class PropertyController extends Controller
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.city_id', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
                 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at',
+                'properties.fax', 'properties.email','properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at',
                 'locations.name AS location', 'properties.location_id', 'cities.name AS city', 'p.name AS image',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->leftJoin('images as p', function ($q) {
@@ -972,6 +990,10 @@ class PropertyController extends Controller
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+            })
             ->where('properties.status', '=', 'active');
 
         if ($city !== null) $properties->where('properties.city_id', '=', $city->id);
@@ -1044,14 +1066,18 @@ class PropertyController extends Controller
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'locations.id as location_id', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image', 'properties.favorites',
+                'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'locations.id as location_id', 'locations.name AS location',
+                'cities.name AS city', 'p.name AS image', 'f.user_id AS user_favorite',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('images as p', function ($q) {
                 $q->on('properties.id', '=', 'p.property_id')
                     ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+            })
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
 //            check if agency is active
             ->leftJoin('agencies', 'properties.agency_id', '=', 'agencies.id')
@@ -1133,7 +1159,7 @@ class PropertyController extends Controller
                 ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.city_id', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
                     'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                     'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                    'properties.fax', 'properties.email', 'properties.views', 'properties.status', 'properties.favorites', 'properties.created_at', 'properties.updated_at',
+                    'properties.fax', 'properties.email','properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at',
                     'locations.name AS location', 'properties.location_id', 'cities.name AS city', 'p.name AS image',
                     'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
                 ->leftJoin('images as p', function ($q) {
@@ -1143,6 +1169,10 @@ class PropertyController extends Controller
                 ->join('locations', 'properties.location_id', '=', 'locations.id')
                 ->join('cities', 'properties.city_id', '=', 'cities.id')
                 ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+                ->leftJoin('favorites as f', function ($f) {
+                    $f->on('properties.id', '=', 'f.property_id')
+                        ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+                })
                 ->where('properties.status', '=', 'active');
 
             $properties->where('properties.city_id', '=', $city->id)->whereNull('properties.deleted_at');
@@ -1173,8 +1203,7 @@ class PropertyController extends Controller
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];
-        }
-        else {
+        } else {
             $properties = (new Property)->newCollection();
 
             $property_types = (new PropertyType)->all();
@@ -1188,8 +1217,6 @@ class PropertyController extends Controller
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];
         }
-
-
         return view('website.pages.property_listing', $data);
     }
 }
