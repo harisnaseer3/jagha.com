@@ -231,14 +231,6 @@
                     // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
                 });
 
-                $('.favorite').on('click', function () {
-                    $('.favorite').hide();
-                    $('.remove-favorite').show();
-                });
-                $('.remove-favorite').on('click', function () {
-                    $('.favorite').show();
-                    $('.remove-favorite').hide();
-                });
 
                 function insertParam(key, value) {
                     key = encodeURIComponent(key);

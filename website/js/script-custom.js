@@ -111,7 +111,6 @@
     }
 
     function addFavorite(id, selector, task) {
-        //TODO: how make a dynamic url in ajax to call this function from any page
         jQuery.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -119,14 +118,14 @@
         });
         jQuery.ajax({
             type: 'get',
-            // url: task === 'add' ? 'http://127.0.0.1/propertymanagement/public/dashboard/properties/' + id + '/favorites' : 'http://127.0.0.1/propertymanagement/public/dashboard/properties/' + id + '/favorites/1',
             url: task === 'add' ? window.location.origin + '/property/dashboard/properties/' + id + '/favorites' : window.location.origin + '/property/dashboard/properties/' + id + '/favorites/1',
             dataType: 'json',
             success: function (data) {
-                // console.log(data);
             },
             error: function (xhr, status, error) {
                 console.log(error);
+                // console.log(xhr);
+                // console.log(status);
             },
             complete: function (url, options) {
             }
@@ -173,12 +172,12 @@
             '                               <label class="search2-input-label min-area-label" for="search2-select-min-area"> MIN AREA</label>' +
             '                               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-min-area" style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_area">';
 
-        if (sessionStorage.getItem('min_area') === '0') search2_min_html  += '   <option value="0" selected>0</option>';
-        else search2_min_html  += '  <option value="0">0</option>';
-        search2_min_html  += min_options;
-        search2_min_html  += '                    </select>' +
+        if (sessionStorage.getItem('min_area') === '0') search2_min_html += '   <option value="0" selected>0</option>';
+        else search2_min_html += '  <option value="0">0</option>';
+        search2_min_html += min_options;
+        search2_min_html += '                    </select>' +
             '                           </div>' +
-            '                       </div>' ;
+            '                       </div>';
 
         let search2_max_html = '    <div class="form-group">' +
             '                           <div class="index-page-select" style="padding: 0">' +
