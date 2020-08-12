@@ -1370,3 +1370,8 @@ footer#foot-wrap {
     overflow-wrap: break-word;
     overflow: auto;
 }
+.email-btn-model{
+    background-color: #2238D8;
+    color: white !important;
+    border-color: #2238D8;
+}
