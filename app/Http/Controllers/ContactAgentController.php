@@ -17,13 +17,12 @@ class ContactAgentController extends Controller
 {
     public function store(Request $request)
     {
-
         if ($request->ajax()) {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'email' => 'required|email',
                 'phone' => 'required|regex:/\+92-3\d{2}-\d{7}/',
-                'message' => 'required',
+//                'message' => 'required',
                 'agent' => 'string',
                 'property' => 'string'
             ]);
@@ -31,18 +30,18 @@ class ContactAgentController extends Controller
                 return response()->json(['data' => $validator->errors(), 'status' => 201]);
             }
             $data = $request->all();
-            $sent_to = '';
-            $name = '';
-            if ($request->filled('agent')) {
-                $agency = (new Agency)->select('email', 'user_id')->where('id', '=', $request->input('agent'))->first();
-                $user = (new User)->select('name')->where('id', '=', $agency->user_id)->first();
-                $sent_to = $agency->email;
-                $name = $user->name;
-            } else {
-                $property = (new Property)->select('email', 'contact_person')->where('id', $request->input('property'))->first();
-                $sent_to = $property->email;
-                $name = $property->contact_person;
-            }
+            $sent_to = 'mail@google.com';
+            $name = 'random';
+//            if ($request->filled('agent')) {
+//                $agency = (new Agency)->select('email', 'user_id')->where('id', '=', $request->input('agent'))->first();
+//                $user = (new User)->select('name')->where('id', '=', $agency->user_id)->first();
+//                $sent_to = $agency->email;
+//                $name = $user->name;
+//            } else {
+//                $property = (new Property)->select('email', 'contact_person')->where('id', $request->input('property'))->first();
+//                $sent_to = $property->email;
+//                $name = $property->contact_person;
+//            }
             Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
             return response()->json(['data' => 'success', 'status' => 200]);
         } else {
