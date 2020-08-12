@@ -10,6 +10,7 @@ class FavoriteController extends Controller
 {
     public function store(Property $property)
     {
+        dd($property->id);
         $favorites = $property->favorites;
         $property->favorites = $favorites + 1;
         $property->save();

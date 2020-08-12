@@ -122,6 +122,32 @@
                     </div>
                 </div>
                 <div class="footer clearfix">
+                <ul class="float-left mr-2">
+                                        @if(\Illuminate\Support\Facades\Auth::check())
+                                            <li>
+                                                <div class="favorite-property" style="font-size: 20px;">
+                                                    <a href="javascript:void(0);" title="Add to favorite"
+                                                       style="display: {{$property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()? 'none':'block' }}"
+                                                       class="favorite" data-id="{{$property->id}}">
+                                                        <i class="fal fa-heart empty-heart color-black"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0);" title="Add to favorite"
+                                                       style="display : {{$property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier() ? 'block':'none'}}"
+                                                       class="remove-favorite color-black" data-id="{{$property->id}}">
+                                                        <i class="fas fa-heart filled-heart color-red"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <div class="favorite-property font-20">
+                                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">
+                                                        <i class="fal fa-heart empty-heart"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        @endif
+                    </ul>
                     <div class="pull-left days">
                         <a><i class="fa fa-user"></i> {{ $property->contact_person != ''? $property->contact_person: $property->agent }}</a>
                     </div>

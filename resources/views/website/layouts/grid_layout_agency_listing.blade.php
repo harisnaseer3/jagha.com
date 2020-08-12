@@ -3,17 +3,11 @@
     <div class="float-left">
         <h4>
             <span class="heading-icon"><i class="fa fa-th-large"></i></span>
-            <span class="title-name text-transform">Properties Grid</span>
+            <span class="title-name text-transform">Agencies Grid</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            {{--            <select class="sorting">--}}
-            {{--                <option value="popular" {{ $params['sort'] === 'popular' ? 'selected' : '' }}>Popular</option>--}}
-            {{--                <option value="newest" {{ $params['sort'] === 'newest' ? 'selected' : '' }}>Newest</option>--}}
-            {{--                <option value="high_price" {{ $params['sort'] === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>--}}
-            {{--                <option value="low_price" {{ $params['sort'] === 'low_price' ? 'selected' : '' }}>Price (Low To High)</option>--}}
-            {{--            </select>--}}
             <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>

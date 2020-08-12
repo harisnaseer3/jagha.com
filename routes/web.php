@@ -3,8 +3,6 @@
 use App\Mail\ContactAgentMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Intervention\Image\Facades\Image;
-
 
 Route::get('/', 'PropertyController@index')->name('home');
 
