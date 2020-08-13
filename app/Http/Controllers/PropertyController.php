@@ -58,7 +58,6 @@ class PropertyController extends Controller
             ->orderBy('views', 'DESC')
             ->limit(10)
             ->get();
-        //   $aggregates = $this->_getPropertyAggregates();
         $data = [
             'cities_count' => (new CountTableController())->getCitiesCount(),
             'featured_properties' => $featured_properties,
@@ -1194,7 +1193,6 @@ class PropertyController extends Controller
             else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
             else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
             $property_types = (new PropertyType)->all();
-//            $aggregates = $this->_getPropertyAggregates();
 
             $data = [
                 'params' => ['sort' => 'newest'],
@@ -1207,8 +1205,6 @@ class PropertyController extends Controller
             $properties = (new Property)->newCollection();
 
             $property_types = (new PropertyType)->all();
-//            $aggregates = $this->_getPropertyAggregates();
-
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,

@@ -1,6 +1,6 @@
 @php
     $type=''; $subtype = ''; $purpose = '';$selected_city ='';
-    if(request()->segment(1) !== 'properties'){
+    if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'agents-' ) !== false)){
       if(request()->segment(2) == 'null' || request()->segment(2) == '')
         $type = ucfirst(explode('_',request()->segment(1))[0]);
       else {

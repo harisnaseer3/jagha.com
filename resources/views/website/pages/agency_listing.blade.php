@@ -160,6 +160,37 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+                function insertParam(key, value) {
+                    key = encodeURIComponent(key);
+                    value = encodeURIComponent(value);
+
+                    // kvp looks like ['key1=value1', 'key2=value2', ...]
+                    var kvp = document.location.search.substr(1).split('&');
+                    let i = 0;
+
+                    for (; i < kvp.length; i++) {
+                        if (kvp[i].startsWith(key + '=')) {
+                            let pair = kvp[i].split('=');
+                            pair[1] = value;
+                            kvp[i] = pair.join('=');
+                            break;
+                        }
+                    }
+
+                    if (i >= kvp.length) {
+                        kvp[kvp.length] = [key, value].join('=');
+                    }
+
+                    // can return this or...
+                    let params = kvp.join('&');
+
+                    // reload page with new params
+                    document.location.search = params;
+                }
+
+                $('.record-limit').on('change', function (e) {
+                    insertParam('limit', $(this).val());
+                });
 
                 $('[data-toggle="tooltip"]').tooltip();
 
@@ -170,25 +201,11 @@
                     $('.page-grid-layout').hide();
                 });
 
-                $.fn.stars = function () {
-                    return $(this).each(function () {
-                        let rating = $(this).data("rating");
-                        rating = rating > 5 ? 5 : rating;
-                        const numStars = $(this).data("numStars");
-                        const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
-                        const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
-                        const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
-                        $(this).html(`${fullStar}${halfStar}${noStar}`);
-                    });
-                }
-                $('.stars').stars();
-
                 $('.grid-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'grid-layout');
                     // console.log(sessionStorage.getItem("page-layout"))
                     $('.page-list-layout').hide();
                     $('.page-grid-layout').show();
-                    $('.grid-stars').stars();
                 });
 
                 if (sessionStorage.getItem("page-layout") === 'list-layout') {
@@ -197,20 +214,10 @@
                 } else if (sessionStorage.getItem("page-layout") === 'grid-layout') {
                     $('.page-list-layout').hide();
                     $('.page-grid-layout').show();
-                    $('.grid-stars').stars();
                 }
 
                 $('.sorting').on('change', function (e) {
                     location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
-                    $('.favorite').on('click', function () {
-                        $('.favorite').hide();
-                        $('.remove-favorite').show();
-
-                    });
-                    $('.remove-favorite').on('click', function () {
-                        $('.favorite').show();
-                        $('.remove-favorite').hide();
-                    });
                 });
 
                 if ($('.pagination-box').length > 0) {

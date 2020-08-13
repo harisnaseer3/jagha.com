@@ -9,7 +9,7 @@
                  data-slick='{"slidesToShow": 5, "rows":3,"responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 3}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
                 @foreach($key_agencies as $agency)
                     <div class="slick-slide-item" aria-label="key agency">
-                    @if($agency->logo !== null)
+                        @if($agency->logo !== null)
                             <div class="service-box">
                                 <div class="row">
                                     <div class="col-12">
@@ -18,9 +18,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-4">
-                                        <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{$agency->title}}" class="img-fluid featured-agency-image"
-
-                                             style="height:53px; width: 60px ;">
+{{--                                        <a href="{{route('agents.ads.listing',--}}
+{{--                                            [ 'city'=>implode(", ", json_decode($agency->city)),--}}
+{{--                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),--}}
+{{--                                               'agency'=> $agency->id ,--}}
+{{--                                               ])}}">--}}
+                                            <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{$agency->title}}"
+                                                 class="img-fluid featured-agency-image" style="height:53px; width: 60px ;">
+{{--                                        </a>--}}
                                     </div>
                                     <div class="col-8">
                                         <p><i class="fa fa-map-marker mr-1 mt-1 fa-2x" aria-hidden="true"></i>{{implode(", ", json_decode($agency->city))}}</p>
