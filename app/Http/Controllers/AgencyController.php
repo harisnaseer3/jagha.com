@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use App\Models\Dashboard\User;
+use App\Models\Property;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,23 +42,32 @@ class AgencyController extends Controller
         return view('website.pages.all_cities_listing_wrt_agency', $data);
     }
 
+    function _listingForntend()
+    {
+        return (new Agency)->select('title', 'id', 'featured_listing', 'description', 'key_listing', 'featured_listing', 'status', 'city', 'description', 'phone', 'cell', 'ceo_name AS agent', 'logo')
+            ->where('status', '=', 'verified');
+    }
+
 
     public function ListingCityAgencies(string $city)
     {
 //        TODO: change city store method to find city in db
         $city = ucwords(str_replace('-', ' ', $city));
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
 
-
-        $agencies = (new Agency)->select('title', 'id', 'featured_listing', 'description', 'key_listing', 'featured_listing', 'status', 'city', 'description', 'phone', 'cell', 'ceo_name AS agent', 'logo')
+        $agencies = $this->_listingForntend()
             ->where('city', 'LIKE', '["' . $city . '"]')
-            ->where('status', '=', 'verified')
             ->groupBy('city', 'title', 'id', 'featured_listing')
             ->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
 
         $data = [
             'property_types' => $property_types,
-            'agencies' => $agencies->paginate(10),
+            'agencies' => $agencies->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -65,16 +75,64 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Agency $agency
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Agency $agency)
+
+    public function show(string $city, string $slug, string $agency)
     {
-        //
+        $properties = (new Property)
+            ->select('properties.reference', 'properties.agency_id', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
+                'cities.name AS city', 'p.name AS image',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+            ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+            ->leftJoin('images as p', function ($q) {
+                $q->on('properties.id', '=', 'p.property_id')
+                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+            })
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+            })
+            ->where('properties.status', '=', 'active')
+            ->where('properties.agency_id', '=', $agency)
+            ->whereNull('properties.deleted_at');
+
+        $sort = '';
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
+
+        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
+        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
+        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
+
+        $property_types = (new PropertyType)->all();
+//        $aggregates = $this->_getPropertyAggregates();
+
+        $data = [
+            'params' => ['sort' => $sort],
+            'property_types' => $property_types,
+            'properties' => $properties->paginate($limit),
+//            'aggregates' => $aggregates,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+
+        ];
+        return view('website.pages.property_listing', $data);
+
     }
+
 
     public function create()
     {
@@ -83,18 +141,20 @@ class AgencyController extends Controller
 
     public function listingFeaturedPartners()
     {
-        $agencies = (new Agency)
-            ->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
-                'agencies.status', 'agencies.city', 'agencies.description', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
-            ->where('agencies.status', '=', 'verified')
+        $agencies = $this->_listingForntend()
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
 
         $data = [
             'property_types' => $property_types,
-            'agencies' => $agencies->paginate(10),
+            'agencies' => $agencies->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -104,19 +164,20 @@ class AgencyController extends Controller
 
     public function listingKeyPartners()
     {
-        $agencies = (new Agency)
-            ->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing',
-                'agencies.status', 'agencies.city', 'agencies.description', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
-//            ->leftjoin('properties', 'properties.agency_id', '=', 'agencies.id')
-            ->where('agencies.status', '=', 'verified')
+        $agencies = $this->_listingForntend()
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
 
         $data = [
             'property_types' => $property_types,
-            'agencies' => $agencies->paginate(10),
+            'agencies' => $agencies->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -439,20 +500,14 @@ class AgencyController extends Controller
 
     public function FeaturedAgencies()
     {
-
-        return (new Agency)->select('agencies.title', 'agencies.logo', 'agencies.city', 'agencies.phone', DB::raw('count(properties.agency_id) as sale_count'))
-            ->leftJoin('properties', 'properties.agency_id', '=', 'agencies.id')
-            ->where('agencies.status', '=', 'verified')->where('agencies.featured_listing', '=', 1)
-            ->where('properties.purpose', '=', 'sale')
-            ->groupby('agencies.title', 'agencies.logo', 'agencies.city', 'agencies.phone')->get();
+        return $this->_listingForntend()
+            ->where('agencies.featured_listing', '=', 1)->get();
     }
 
     public function keyAgencies()
     {
-        return (new Agency)->select('title', 'logo', 'city', 'phone')
-            ->where('status', '=', 'verified')
+        return $this->_listingForntend()
             ->where('key_listing', '=', 1)->get();
-
     }
 
     private function _listings(string $status, string $user)
@@ -503,9 +558,6 @@ class AgencyController extends Controller
         if (!in_array($page, [10, 15, 30, 50])) {
             $page = 10;
         }
-//        dd($this->getAgencyListingCount($user));
-//        dd($this->_listings(explode("_", $status)[0], $user)->orderBy($sort, $order)->get());
-
         $data = [
             'params' => [
                 'status' => $status,

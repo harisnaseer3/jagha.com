@@ -34,6 +34,7 @@ Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAll
     ]);
 //agents
 Route::get('/agents/', 'AgencyController@index')->name('agents.listing');
+Route::get('agents-{city}/{slug}_{agency}', 'AgencyController@show')->name('agents.ads.listing');
 
 
 //list of blogs

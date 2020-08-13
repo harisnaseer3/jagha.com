@@ -23,22 +23,72 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
-                    <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
+                    @if(strpos( request()->segment(1), 'agents-' ) !== false)
+                        <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
+                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Home</span></a>
+                            <meta itemprop="position" content="1">
+                        </span>
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="{{asset('/')}}" title="Property" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">Property</span></a>
+                            <meta itemprop="position" content="2">
+                        </span>
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <a href="{{route('agents.listing')}}" title="Agents" itemprop="item">
+                            <span class="breadcrumb-link" itemprop="name">
+                                   {{ucwords('Agents')}}
+                            </span></a>
+                            <meta itemprop="position" content="3">
+                        </span>
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">
+                                <!-- if homes are selected from nav bar -->
+                                @if(strpos(explode('-', request()->segment(1))[0] , 'agents') !== false)
+                                    <a href="{{route('agencies.citywise.listing',['city'=> explode('-',explode('_', request()->segment(1))[0])[1],'sort'=> 'newest'])}}" title="city" itemprop="item">
+                                        <span class="breadcrumb-link" itemprop="name">
+                                        {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
+                                    </span>
+                                    </a>
+                                @else
+                                    {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
+                                @endif
+                            </span>
+                            <meta itemprop="position" content="4">
+                            </span>
+
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">
+                                <!-- if homes are selected from nav bar -->
+                                    {{ucwords(str_replace('-',' ',explode('_',request()->segment(2))[0]))}}
+                            </span>
+                            <meta itemprop="position" content="5">
+                            </span>
+                        </div>
+                    @else
+                        <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Home</span></a>
                             <meta itemprop="position" content="1">
                         </span>
-                        <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-                        <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{asset('/')}}" title="Property" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Property</span></a>
                             <meta itemprop="position" content="2">
                         </span>
-                        <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
-                        @if(request()->segment(2) == 'null' || request()->segment(2) == '')
-                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            @if(request()->segment(2) == 'null' || request()->segment(2) == '')
+                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 <!-- if an option selected from nav bar -->
                                 @if(strpos(explode('_', request()->segment(1))[0] , 'cities' ) !== false)
@@ -49,41 +99,42 @@
                             </span>
                             <meta itemprop="position" content="3">
                             </span>
-                        @else
-                            @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
-                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            @else
+                                @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
+                                    <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{route('properties.get_listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
                                        title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{ucfirst(explode('_', request()->segment(1))[0])}}</span></a>
                                 <meta itemprop="position" content="3">
                                 </span>
-                            @else
-                                @php
-                                    if(in_array(ucwords(explode('_', request()->segment(1))[0]),['House', 'Flat', 'Upper Portion', 'Lower Portion', 'Farm House', 'Room', 'Penthouse']))
-                                            $type = 'Homes';
-                                    else if(in_array(ucwords(explode('_', request()->segment(1))[0]),['Office', 'Shop', 'Warehouse', 'Factory', 'Building', 'Other']))
-                                        $type = 'Commercial';
-                                    else $type = 'Plots';
-                                @endphp
-                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                @else
+                                    @php
+                                        if(in_array(ucwords(explode('_', request()->segment(1))[0]),['House', 'Flat', 'Upper Portion', 'Lower Portion', 'Farm House', 'Room', 'Penthouse']))
+                                                $type = 'Homes';
+                                        else if(in_array(ucwords(explode('_', request()->segment(1))[0]),['Office', 'Shop', 'Warehouse', 'Factory', 'Building', 'Other']))
+                                            $type = 'Commercial';
+                                        else $type = 'Plots';
+                                    @endphp
+                                    <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{route('properties.get_listing',['type'=>$type, 'sort' =>'newest'])}}"
                                        title="{{$type}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{$type}}</span></a>
                                 <meta itemprop="position" content="3">
                                 </span>
-                            @endif
+                                @endif
 
-                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">{{ucfirst(request()->segment(2))}}</span>
                             <meta itemprop="position" content="3">
                             </span>
 
-                        @endif
+                            @endif
 
-                    </div>
+                        </div>
+                    @endif
 
-                    <!-- Search Result Count -->
+                <!-- Search Result Count -->
                     @if(count($properties) == 0)
                         <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
                             <span aria-label="Summary text" class="ml-2 color-white">0 results found</span>
