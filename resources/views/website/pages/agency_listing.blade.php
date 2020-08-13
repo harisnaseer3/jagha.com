@@ -126,10 +126,10 @@
                         {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
                         <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>
                         {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
-                        <div><label class="mt-2">Meassage<span style="color:red">*</span></label></div>
+                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
-                            {{ Form::bsRadio('i am','Buyer', ['required' => true, 'list' => ['Buyer', 'Agent', 'Other']]) }}
+                            {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent', 'Other']]) }}
                         </div>
                         {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}
                         <div class="text-center">
@@ -273,7 +273,7 @@
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
-                    let message = 'I would like to inquire about your property. Please contact me at your earliest convenience.';
+                    let message = 'I would like to gather information about your property.Please contact me at your earliest.';
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     // console.log(property, agency, reference,);
 
