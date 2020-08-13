@@ -1392,3 +1392,6 @@ footer#foot-wrap {
     color: white !important;
     border-color: #2238D8;
 }
+.blog-padding {
+    padding: 100px 0 70px !important
+}

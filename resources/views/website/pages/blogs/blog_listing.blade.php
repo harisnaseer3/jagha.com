@@ -22,7 +22,7 @@
     @include('website.includes.nav')
     <!-- Main header start -->
     <!-- Blog body start -->
-    <div class="blog-body content-area">
+    <div class="blog-body content-area blog-padding">
         <div class="container">
             <div class="row more-blogs">
                 @foreach($results as $key => $result)
