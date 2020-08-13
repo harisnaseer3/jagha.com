@@ -22,13 +22,13 @@
 
     <div class="property-box-2">
         <div class="row">
-            <div class="col-lg-5 col-md-5 col-pad">
+            <div class="col-lg-4 col-md-4 col-pad">
                 <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
                     <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
                          title="{{$agency->title}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                 </a>
             </div>
-            <div class="col-lg-7 col-md-7 col-pad">
+            <div class="col-lg-8 col-md-8 col-pad">
                 <div class="detail">
                     <h2 class="title">
                         <a href="javascript:void(0)" title="{{$agency->title}}">
@@ -36,7 +36,8 @@
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($agency->status) &$agency->status === 'verified')
-                                <span style="color:green"><i class="far fa-shield-check"></i></span>
+                                <span style="color:green" data-toggle="tooltip" data-placement="top"
+                                      title="Become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
@@ -60,14 +61,19 @@
                             {{ Form::hidden('agent',$agency->id)}}
                         @endif
                         @if($agency->description !='')
-                            <div class="col-sm-12 my-4">
+                            <div class="col-sm-12 my-2">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
-                                    <h6 class="custom-font text-transform">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
+                                    <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
                                 </a>
                             </div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                         @else
+                        <div class="col-sm-12 my-2 agency-description-height">
+                                <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
+                                    <h6 class="custom-font text-transform agent-description">No Description Added..</h6>
+                                </a>
+                            </div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}"
                                                          aria-label="Call">Call</a></div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
@@ -90,8 +96,8 @@
                 <!--Body-->
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
-                        <div class="text-center">
-                            <div> {{ $agency->title }} </div>
+                        <div class="text-center mb-2">
+                            <div class = "font-weight-bold">{{ $agency->title }}</div>
                         </div>
                         <table class="table table-borderless">
                             <tbody>
@@ -102,9 +108,9 @@
                             <tr>
                                 <td>Phone No</td>
                                 @if($agency->phone !== null)
-                                    <td class="font-weight-bold">{{$agency->phone}}</td>
+                                    <td class="font-weight-bold">{{$agency->phone}} </td>
                                 @else
-                                    <td class="font-weight-bold">-</td>
+                                    <td class="font-weight-bold"> - </td>
                                 @endif
                             </tr>
                             <tr>

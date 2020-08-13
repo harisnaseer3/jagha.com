@@ -1290,11 +1290,28 @@ footer#foot-wrap {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+.agent-description {
+    line-height: 1.2rem;
+}
+
 
 .property-title {
     color: #2238D8;
     font-size: 14px;
     font-weight: 600;
+}
+.property-box-3 {
+        border: 2px solid white;
+        border-radius: .25rem;
+}
+.property-box .detail .title {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: 'Roboto', sans-serif;
+}
+.agency-description-height {
+    height: 80px;
 }
 
 .property-box-2 .facilities-list li i, .property-box .detail .location i, .property-box .facilities-list li i {

@@ -65,8 +65,8 @@
 
                     <!-- Search Result Count -->
                     <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
-                        <span aria-label="Summary text" class="ml-2">{{ $agencies->total() }} results found</span>
-                        <span>({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        <span aria-label="Summary text" class="ml-2 color-white">{{ $agencies->total() }} results found</span>
+                        <span class = "color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                     </div>
                     <!-- Listing -->
                     <div class="page-list-layout">
@@ -156,9 +156,12 @@
 @section('script')
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
     <script>
         (function ($) {
             $(document).ready(function () {
+
+                $('[data-toggle="tooltip"]').tooltip();
 
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');

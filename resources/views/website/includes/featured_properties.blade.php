@@ -19,6 +19,9 @@
                                     @elseif($feature_property->super_hot_listing == 1)
                                         <div class="tag feature-tag">SUPER HOT</div>
                                     @endif
+                                    
+                                  
+                                    
                                     @if($feature_property->image != null)
                                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
@@ -70,6 +73,9 @@
                                         <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans() }}</p>
                                     </div>
                                     <ul class="float-right">
+                                            <li>
+                                            <i class="fa fa-eye fa-2 mr-2"></i>{{$feature_property->views}}
+                                            </li>
                                         @if(\Illuminate\Support\Facades\Auth::check())
                                             <li>
                                                 <div class="favorite-property" style="font-size: 20px;">
