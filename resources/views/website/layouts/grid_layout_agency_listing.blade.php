@@ -25,7 +25,8 @@
                     <a href="javascript:void(0)" class="agency-img" title="{{$agency->title}}">
                         <div class="listing-badges pull-right">
                             @if(isset($agency->status) &$agency->status === 'verified')
-                                <span style="color:green"><i class="far fa-shield-check"></i></span>
+                                <span style="color:green" data-toggle="tooltip" data-placement="top"
+                                      title="Become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
@@ -74,8 +75,8 @@
                     <!--Body-->
                     <div class="modal-body">
                         <div class="container color-555 font-12">
-                            <div class="text-center">
-                                <div> {{ $agency->title }} </div>
+                            <div class="text-center mb-2">
+                                <div class = "font-weight-bold"> {{ $agency->title }} </div>
                             </div>
                             <table class="table table-borderless">
                                 <tbody>
