@@ -40,7 +40,7 @@
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
-                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED</span></span>
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span>
                            </span>
                             @endif
                         </div>

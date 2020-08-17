@@ -51,7 +51,7 @@
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
-                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED</span></span></span>
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span></span>
                             @endif
                         </div>
                     </h2>
@@ -67,10 +67,12 @@
                     </h5>
                     <div class="row call-email-container contact-container">
                         {{ Form::hidden('phone',$agency->phone, array_merge(['class'=>'number']))}}
+                      
                         @if(!empty($agency))
                             {{ Form::hidden('agent',$agency->id)}}
                         @endif
                         @if($agency->description !='')
+                        
                             <div class="col-sm-12 my-2">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
@@ -107,7 +109,8 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center mb-2">
-                            <div class = "font-weight-bold">{{ $agency->title }}</div>
+                            <div class = "mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
+                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
                         </div>
                         <table class="table table-borderless">
                             <tbody>

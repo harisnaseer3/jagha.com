@@ -129,14 +129,14 @@
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
-                            {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent', 'Other']]) }}
+                            {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent']]) }}
                         </div>
                         {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}
                         <div class="text-center">
                             {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
                         </div>
                         {{ Form::close() }}
-                        <a href="" class="btn btn-block btn-call mt-2 agent-call">Call</a>
+                        <button  class="btn btn-block btn-danger  mt-2" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -280,7 +280,9 @@
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
+                    let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
                     let message = 'I would like to gather information about your property.Please contact me at your earliest.';
+                    
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     // console.log(property, agency, reference,);
 
@@ -331,7 +333,7 @@
                             const message = errors === 1
                                 ? 'You missed 1 field. It has been highlighted'
                                 : 'You missed ' + errors + ' fields. They have been highlighted';
-                            $('div.error.text-red span').html(message);
+                            $('div.error.text-red span').text(message);
                             error_tag.show();
                         } else {
                             $('div.error.text-red').hide();
