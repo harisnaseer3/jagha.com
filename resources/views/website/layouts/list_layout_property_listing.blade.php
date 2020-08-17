@@ -74,7 +74,7 @@
                             @endif
                             @if(isset($property->featured_listing) && $property->featured_listing === 1)
                                 <span class="premium-badge">
-                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED AGENCY</span></span>
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span>
                            </span>
                             @endif
                         </div>
@@ -97,13 +97,14 @@
                         @endif
                         @if(isset($property->land_area))
                             <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
-                                <span> {{ number_format($property->land_area) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')
+                                <span> {{ number_format($property->land_area, 2) }}  @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')
                                         Sq.F. @elseif ($property->area_unit === 'Square Yards') Sq.Yd. @else {{$property->area_unit}} @endif </span>
                             </li>
                         @endif
                     </ul>
                     <div class="row call-email-container contact-container">
                         {{ Form::hidden('phone',$property->cell, array_merge(['class'=>'number']))}}
+                        {{ Form::hidden('title',$property->title)}}
                         {{ Form::hidden('reference',$property->reference)}}
                         @if(!empty($agency))
                             {{ Form::hidden('agent',$agency->id)}}
@@ -178,11 +179,11 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center">
-                            <div class="mb-2 font-weight-bold title-font"> {{ $property->title }} </div>
+                        <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font" title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a> </div>
                             <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property reference</div>
                             <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
-                            <div class="mb-2">While calling please mention <a class="hover-color" href="https://www.aboutpakistan.com/">aboutpakistan.com</a></div>
+                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
                         </div>
 
                         <table class="table table-borderless">

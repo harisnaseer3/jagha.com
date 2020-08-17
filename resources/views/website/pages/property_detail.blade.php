@@ -371,6 +371,12 @@
     </div>
     <!-- Footer start -->
     @include('website.includes.footer')
+    <div class="fly-to-top back-to-top">
+        <i class="fa fa-angle-up fa-3"></i>
+        <span class="to-top-text">To Top</span>
+    </div><!--fly-to-top-->
+    <div class="fly-fade">
+    </div><!--fly-fade-->
 @endsection
 
 @section('script')

@@ -212,7 +212,7 @@
                         </div>
                         {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
-                            {{ Form::bsRadio('i am','Buyer', ['list' => ['Buyer', 'Agent', 'Other']]) }}
+                            {{ Form::bsRadio('i am','Buyer', ['list' => ['Buyer', 'Agent']]) }}
                         </div>
                         {{ Form::hidden(null,null, array_merge(['class'=>'selected']))}}
                         <div class="text-center">
@@ -220,7 +220,7 @@
                             {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block email-btn-model','id'=>'send-mail']) }}
                         </div>
                         {{ Form::close() }}
-                        <a href="" class="btn btn-block btn-call mt-2 agent-call">Call</a>
+                        <button  class="btn btn-block btn-danger  mt-2" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -228,6 +228,12 @@
     </div>
     <!-- Footer start -->
     @include('website.includes.footer')
+    <div class="fly-to-top back-to-top">
+        <i class="fa fa-angle-up fa-3"></i>
+        <span class="to-top-text">To Top</span>
+    </div><!--fly-to-top-->
+    <div class="fly-fade">
+    </div><!--fly-fade-->
 @endsection
 
 @section('script')
@@ -377,11 +383,13 @@
 
                 $('.btn-email').click(function (e) {
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
+                    let title  = $(this).closest('.contact-container').find('input[name=title]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
-                    let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue"> Property Link </a>';
-                    let message = 'I would like to gather information about your property.\n' + anchor_link + '. Please contact me at your earliest.';
+                    let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">'+ title +' </a>';
+                    let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
+                    let message = 'I would like to gather information about your property\n' + anchor_link + '. While mailing please mention '+ link;
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     let editable_div = $('.editable-div');
                     editable_div.html(message);
