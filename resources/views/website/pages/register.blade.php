@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Register Page : Property Management By propertymanagement.com</title>
+    <title> Register Page : Property Management By https://www.aboutpakistan.com</title>
 @endsection
 
 @section('css_library')

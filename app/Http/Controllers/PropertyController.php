@@ -30,6 +30,44 @@ use Spatie\SchemaOrg\Schema;
 
 class PropertyController extends Controller
 {
+
+    function listingFrontend()
+    {
+        return (new Property)
+            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
+                'cities.name AS city', 'p.name AS image',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+            ->where('properties.status', '=', 'active')
+            ->whereNull('properties.deleted_at')
+            ->leftJoin('images as p', function ($q) {
+                $q->on('p.property_id', '=', 'properties.id')
+                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+            })
+            ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+            });
+    }
+
+    function sortPropertyListing($sort, $sort_area, $properties)
+    {
+        if ($sort_area === 'higher_area') $properties->orderBy('land_area', 'DESC');
+        else if ($sort_area === 'lower_area') $properties->orderBy('land_area', 'ASC');
+
+        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
+        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
+        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
+
+        return $properties;
+    }
+
 //    display data on index page
     public function index()
     {
@@ -38,23 +76,8 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
 
         // Popular posts based upon max views
-        $featured_properties = (new Property)
-            ->select('properties.id', 'properties.reference', 'properties.title', 'properties.description', 'properties.price', 'properties.premium_listing', 'properties.land_area',
-                'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing',
-                'properties.favorites','properties.views', 'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'f.user_id AS user_favorite', 'p.name AS image')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('properties.id', '=', 'p.property_id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
-            ->leftJoin('favorites as f', function ($f) {
-                $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            })
-            ->where('properties.status', '=', 'active')
+        $featured_properties = $this->listingfrontend()
             ->where('properties.premium_listing', '=', 1)
-            ->whereNull('properties.deleted_at')
             ->orderBy('views', 'DESC')
             ->limit(10)
             ->get();
@@ -98,56 +121,34 @@ class PropertyController extends Controller
 //    list all featured properties
     public function featuredProperties(Request $request)
     {
-        $properties = (new Property)
-            ->select('properties.reference', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('properties.id', '=', 'p.property_id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
-            ->leftJoin('favorites as f', function ($f) {
-                $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            })
-            ->where('properties.status', '=', 'active')
-            ->where('properties.premium_listing', '=', 1)
-            ->whereNull('properties.deleted_at');
+        $properties = $this->listingfrontend()
+            ->where('properties.premium_listing', '=', 1);
 
         $sort = '';
         $limit = '';
+        $sort_area = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+        else
+            $sort_area = 'ASC';
 
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
             $sort = 'newest';
 
-        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
 
         $property_types = (new PropertyType)->all();
-        $aggregates = $this->_getPropertyAggregates();
-
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $properties->paginate($limit),
-            'aggregates' => $aggregates,
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
-
         ];
         return view('website.pages.property_listing', $data);
     }
@@ -362,7 +363,7 @@ class PropertyController extends Controller
         $similar_properties = (new Property)
             ->select('properties.id', 'title', 'price', 'land_area', 'area_unit', 'bedrooms', 'bathrooms', 'features', 'premium_listing',
                 'super_hot_listing', 'hot_listing', 'magazine_listing', 'contact_person', 'email', 'views', 'status', 'properties.created_at', 'properties.updated_at',
-                'locations.name AS location', 'cities.name AS city', 'p.name AS image','properties.favorites','properties.views')
+                'locations.name AS location', 'cities.name AS city', 'p.name AS image', 'properties.favorites', 'properties.views')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('images as p', function ($q) {
@@ -728,53 +729,32 @@ class PropertyController extends Controller
     /* function call from top header (nav bar)*/
     public function getPropertyListing(string $type)
     {
-        $properties = (new Property)
-            ->select('properties.reference', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email','properties.favorites','properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('properties.id', '=', 'p.property_id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
-            ->leftJoin('favorites as f', function ($f) {
-                $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            })
-            ->where('properties.status', '=', 'active')
-            ->where('properties.type', '=', $type)
-            ->whereNull('properties.deleted_at');
+        $properties = $this->listingFrontend()
+            ->where('properties.type', '=', $type);
 
         $sort = '';
         $limit = '';
+        $sort_area = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+        else
+            $sort_area = 'ASC';
 
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
             $sort = 'newest';
 
-        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
-
         $property_types = (new PropertyType)->all();
-//        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $properties->paginate($limit),
-//            'aggregates' => $aggregates,
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -786,7 +766,6 @@ class PropertyController extends Controller
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
-//        TODO: how to send search request inside this if body if only one argument is set in search form else than page number
         if (count($request->all()) == 1 && $request->filled('sort') ||
             count($request->all()) == 2 && $request->filled('sort') && $request->filled('page')) {
 //            to handle the request for city name
@@ -811,25 +790,7 @@ class PropertyController extends Controller
                     $city = City::select('id')->where('name', '=', $city)->first();
                     (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
                 }
-                $properties = (new Property)
-                    ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                        'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                        'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                        'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
-                        'cities.name AS city', 'p.name AS image',
-                        'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-                    ->leftJoin('images as p', function ($q) {
-                        $q->on('p.property_id', '=', 'properties.id')
-                            ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-                    })
-                    ->join('cities', 'properties.city_id', '=', 'cities.id')
-                    ->join('locations', 'properties.location_id', '=', 'locations.id')
-                    ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-                    ->leftJoin('favorites as f', function ($f) {
-                        $f->on('properties.id', '=', 'f.property_id')
-                            ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-                    })
-                    ->where('properties.status', '=', 'active');
+                $properties = $this->listingFrontend();
                 if ($city != '') $properties->where('properties.city_id', '=', $city->id);
                 else {
                     $properties
@@ -854,29 +815,9 @@ class PropertyController extends Controller
 
                 (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
-                $properties = (new Property)
-                    ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                        'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                        'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                        'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
-                        'cities.name AS city', 'p.name AS image',
-                        'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-                    ->leftJoin('images as p', function ($q) {
-                        $q->on('p.property_id', '=', 'properties.id')
-                            ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-                    })
-                    ->join('locations', 'properties.location_id', '=', 'locations.id')
-                    ->join('cities', 'properties.city_id', '=', 'cities.id')
-                    ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-                    ->where('properties.status', '=', 'active')
-                    ->leftJoin('favorites as f', function ($f) {
-                        $f->on('properties.id', '=', 'f.property_id')
-                            ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-                    });
+                $properties = $this->listingFrontend();
 
                 $properties->where('properties.city_id', '=', $city->id);
-
-
                 $properties->where('properties.purpose', '=', $purpose);
                 $properties->where('properties.type', '=', $type);
                 if ($sub_type !== '') $properties->where('properties.sub_type', '=', $sub_type);
@@ -931,28 +872,26 @@ class PropertyController extends Controller
 
         $sort = '';
         $limit = '';
+        $sort_area = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+        else
+            $sort_area = 'ASC';
 
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
             $sort = 'newest';
-
-        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
         $property_types = (new PropertyType)->all();
-
-//        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $properties->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -973,60 +912,35 @@ class PropertyController extends Controller
         $location_data = Location::select('id')->where('city_id', '=', $city->id)
             ->where('name', 'REGEXP', $clean_location)->get()->toArray();
 
-//        dd($city, $location_data->id);
-
-        $properties = (new Property)
-            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.city_id', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
-                'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email','properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at',
-                'locations.name AS location', 'properties.location_id', 'cities.name AS city', 'p.name AS image',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('p.property_id', '=', 'properties.id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-            ->leftJoin('favorites as f', function ($f) {
-                $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            })
-            ->where('properties.status', '=', 'active');
+        $properties = $this->listingFrontend();
 
         if ($city !== null) $properties->where('properties.city_id', '=', $city->id);
         if ($type !== '') $properties->where('properties.type', '=', $type);
-
         $properties->where('properties.purpose', '=', $purpose);
-        $properties->whereIn('properties.location_id', $location_data)
-            ->whereNull('properties.deleted_at');
-
+        $properties->whereIn('properties.location_id', $location_data);
         $sort = '';
         $limit = '';
+        $sort_area = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+        else
+            $sort_area = 'ASC';
 
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
         else
             $sort = 'newest';
 
-        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
-
         $property_types = (new PropertyType)->all();
-        $aggregates = $this->_getPropertyAggregates();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $properties->paginate($limit),
-            'aggregates' => $aggregates,
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -1061,25 +975,7 @@ class PropertyController extends Controller
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
-        $properties = (new Property)
-            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.favorites','properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'locations.id as location_id', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image', 'f.user_id AS user_favorite',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('properties.id', '=', 'p.property_id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
-            ->leftJoin('favorites as f', function ($f) {
-                $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            })
-//            check if agency is active
-            ->leftJoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+        $properties = $this->listingFrontend()
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
         if ($location !== null) $properties->where('location_id', '=', $location->id);
@@ -1154,50 +1050,32 @@ class PropertyController extends Controller
         $city = City::select('id')->where('name', '=', $city)->first();
         $data = [];
         if ($city) {
-            $properties = (new Property)
-                ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.city_id', 'properties.sub_purpose', 'properties.sub_type', 'properties.type',
-                    'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                    'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                    'properties.fax', 'properties.email','properties.favorites','properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at',
-                    'locations.name AS location', 'properties.location_id', 'cities.name AS city', 'p.name AS image',
-                    'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
-                ->leftJoin('images as p', function ($q) {
-                    $q->on('p.property_id', '=', 'properties.id')
-                        ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-                })
-                ->join('locations', 'properties.location_id', '=', 'locations.id')
-                ->join('cities', 'properties.city_id', '=', 'cities.id')
-                ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-                ->leftJoin('favorites as f', function ($f) {
-                    $f->on('properties.id', '=', 'f.property_id')
-                        ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-                })
-                ->where('properties.status', '=', 'active');
-
-            $properties->where('properties.city_id', '=', $city->id)->whereNull('properties.deleted_at');
+            $properties = $this->listingFrontend();
+            $properties->where('properties.city_id', '=', $city->id);
 
             $sort = '';
             $limit = '';
+            $sort_area = '';
             if (request()->input('limit') !== null)
                 $limit = request()->input('limit');
             else
                 $limit = '15';
+            if (request()->input('area_sort') !== null)
+                $sort_area = request()->input('area_sort');
+            else
+                $sort_area = 'ASC';
 
             if (request()->input('sort') !== null)
                 $sort = request()->input('sort');
             else
                 $sort = 'newest';
 
-            if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-            else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-            else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-            else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
             $property_types = (new PropertyType)->all();
 
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,
-                'properties' => $properties->paginate($limit),
+                'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];
