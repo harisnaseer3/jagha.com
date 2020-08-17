@@ -13,6 +13,8 @@
                 <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' || request()->query('sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' || request()->query('sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>
+                <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
+                <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
             </select>
             <a class="change-view-btn active-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>

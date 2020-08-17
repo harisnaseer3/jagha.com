@@ -278,7 +278,12 @@
                 }
 
                 $('.sorting').on('change', function (e) {
-                    insertParam('sort', $(this).val());
+                    // console.log($(this).val());
+                    let area_sort = ['higher_area', 'lower_area'];
+                    if (jQuery.inArray($(this).val(), area_sort) !== -1) {
+                        insertParam('area_sort', $(this).val());
+                    } else
+                        insertParam('sort', $(this).val());
                     // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
                 });
 

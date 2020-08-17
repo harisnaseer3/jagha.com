@@ -1,8 +1,8 @@
 @extends('website.layouts.app')
 @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
 @section('title')
-    @if ($current_route_name === 'properties.create')   <title> Post New Listing : Property Management Software By propertymanagement.com</title>
-    @elseif ($current_route_name === 'properties.edit') <title> Edit Listing : Property Management Software By propertymanagement.com </title>
+    @if ($current_route_name === 'properties.create')   <title> Post New Listing : Property Management Software By https://www.aboutpakistan.com</title>
+    @elseif ($current_route_name === 'properties.edit') <title> Edit Listing : Property Management Software By https://www.aboutpakistan.com </title>
     @endif
 @endsection
 
