@@ -20,8 +20,6 @@ class CreateCityPopularLocations extends Migration
             $table->string('location_name', 255);
             $table->string('property_type', 255);
             $table->string('property_subtype', 255);
-
-
             $table->softDeletes();
             $table->timestamps();
         });

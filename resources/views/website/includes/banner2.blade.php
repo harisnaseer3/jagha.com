@@ -82,8 +82,9 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                                 style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
                                 name="property_area_unit" id="property-area-unit">
                             <option disabled>Select unit</option>
-                            @foreach(['Marla','Kanal','Square Feet','Square Yards','Square Meters'] as $key=>$option)
-                                <option {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
+                            @foreach(['Marla','New Marla (225 Sqft)','Kanal','New Kanal (16 Marla)','Square Feet','Square Yards','Square Meters'] as $key=>$option)
+                                <option
+                                    {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -174,10 +175,10 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                    style="margin:0; background-color: #274abb;">
                     <span class="reset-search">Reset Search</span>
                 </a>
-{{--                <a type="button" class="btn btn-outline-primary reset-search-btn text-transform" data-toggle="modal" data-target="#modalCart"--}}
-{{--                   style="margin-left: 5px;background-color: #274abb;">--}}
-{{--                    <span style="padding: 2px; color: white; font-size: 12px; font-weight: 600">Change Area Unit</span>--}}
-{{--                </a>--}}
+                {{--                <a type="button" class="btn btn-outline-primary reset-search-btn text-transform" data-toggle="modal" data-target="#modalCart"--}}
+                {{--                   style="margin-left: 5px;background-color: #274abb;">--}}
+                {{--                    <span style="padding: 2px; color: white; font-size: 12px; font-weight: 600">Change Area Unit</span>--}}
+                {{--                </a>--}}
             </div>
         </div>
     </div>

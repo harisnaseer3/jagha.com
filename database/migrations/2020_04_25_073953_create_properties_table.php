@@ -31,6 +31,13 @@ class CreatePropertiesTable extends Migration
             $table->bigInteger('price', false, true);
             $table->decimal('land_area', 12, 2, true);
             $table->enum('area_unit', ['Square Feet', 'Square Yards', 'Square Meters', 'Marla', 'Kanal']);
+            $table->decimal('area_in_sqft', 12, 2, true);
+            $table->decimal('area_in_sqyd', 12, 2, true);
+            $table->decimal('area_in_sqm', 12, 2, true);
+            $table->decimal('area_in_marla', 12, 2, true);
+            $table->decimal('area_in_new_marla', 12, 2, true);
+            $table->decimal('area_in_kanal', 12, 2, true);
+            $table->decimal('area_in_new_kanal', 12, 2, true);
             $table->unsignedTinyInteger('bedrooms')->default(0);
             $table->unsignedTinyInteger('bathrooms')->default(0);
             $table->decimal('latitude', 10, 8)->nullable();

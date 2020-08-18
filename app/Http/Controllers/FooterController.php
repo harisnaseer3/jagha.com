@@ -20,10 +20,13 @@ class FooterController extends Controller
             ->limit(7)
             ->get();
 
-        $footer_agencies = (new Agency)->select('title', 'city', 'phone', 'ceo_name')
-            ->where('status', '=', 'verified')
+        $footer_agencies = (new Agency)->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+            'agency_cities.city_id','cities.name AS city', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo')
+            ->where('agencies.status', '=', 'verified')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
             ->where('featured_listing', '=', '1')
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('agencies.created_at', 'DESC')
             ->limit(7)
             ->get();
         return [$recent_properties, $footer_agencies];
