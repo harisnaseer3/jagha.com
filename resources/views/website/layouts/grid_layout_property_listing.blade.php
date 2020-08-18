@@ -1,50 +1,32 @@
 <!-- Option bar start -->
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="float-right mb-3">
+<div class="option-bar">
+    <div class="float-left">
+        <h4>
+            <span class="heading-icon"><i class="fa fa-th-large"></i></span>
+            <span class="title-name text-transform">Properties Grid</span>
+        </h4>
+    </div>
+    <div class="float-right cod-pad">
+        <div class="sorting-options" role="button" aria-label="sort by filter">
+            <select class="sorting">
+                <option value="newest" {{ $params['sort'] === 'newest' ? 'selected' : '' }}>Newest</option>
+                <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
+                <option value="high_price" {{ $params['sort'] === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
+                <option value="low_price" {{ $params['sort'] === 'low_price' ? 'selected' : '' }}>Price (Low To High)</option>
+                <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
+                <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
+            </select>
             <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
-</div>
-
-
-<div class="option-bar">
-    <div class="float-left">
-        <h4>
-            <span class="heading-icon"><i class="fa fa-th-list"></i></span>
-            <span class="title-name text-transform">Properties List</span>
-        </h4>
-    </div>
-    <div class="float-right cod-pad">
+    <div class="float-right cod-pad none-992">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="record-limit">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
                 <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
                 <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
                 <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
-            </select>
-            <select class="sorting select-sorting-option">
-                <option value="newest" {{ request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
-                <option value="oldest" {{ request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
-                <option value="price" {{request()->query('price_sort') != null && request()->query('area_sort') == null ? 'selected' : ''}}>By Price</option>
-                <option value="area" {{request()->query('area_sort') != null && request()->query('price_sort') == null ? 'selected' : ''}}>By Area</option>
-                @if(request()->query('area_sort') !== null && request()->query('price_sort') !== null)
-                    <option value="price_and_area" selected>By Price and Area</option>
-                @else
-                    <option value="price_and_area">By Price and Area</option>
-                @endif
-            </select>
-
-            <select class="sorting sorting-price" style="display: none">
-                <option value="high_price" {{ request()->query('price_sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
-                <option value="low_price" {{  request()->query('price_sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>
-            </select>
-
-            <select class="sorting sorting-area" style="display: none">
-                <option value="higher_area" {{  request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
-                <option value="lower_area" {{  request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
             </select>
         </div>
     </div>
@@ -111,7 +93,20 @@
                         </a>
                     </div>
                     <ul class="facilities-list clearfix grid-view-facilities">
-                        @if(isset($property->land_area))
+                        @if(request()->query('area_unit') != null)
+                            <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
+                                <span>
+                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
+                                    @endif
+                                </span>
+                            </li>
+                        @elseif(isset($property->land_area))
                             <li aria-label="land area">
                                 <i class="fas fa-arrows-alt"></i>
                                 {{ number_format($property->land_area) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')

@@ -56,19 +56,15 @@ class PropertyController extends Controller
             });
     }
 
-    function sortPropertyListing($sort, $sort_area, $sort_price, $properties)
+    function sortPropertyListing($sort, $sort_area, $properties)
     {
-//        dd($sort, $sort_area, $sort_price);
-        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
-
         if ($sort_area === 'higher_area') $properties->orderBy('area_in_sqft', 'DESC');
         else if ($sort_area === 'lower_area') $properties->orderBy('area_in_sqft', 'ASC');
 
-
-        else if ($sort_price === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort_price === 'low_price') $properties->orderBy('price', 'ASC');
-
+        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
+        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
+        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
+        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
         return $properties;
     }
 
@@ -130,11 +126,11 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
-        $sort_price = '';
+
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
-//        else
-//            $sort = 'newest';
+        else
+            $sort = 'newest';
 
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
@@ -144,14 +140,12 @@ class PropertyController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
-        if (request()->input('price_sort') !== null)
-            $sort_price = request()->input('price_sort');
 
         $property_types = (new PropertyType)->all();
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ];
@@ -741,11 +735,11 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
-        $sort_price = '';
+
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
-//        else
-//            $sort = 'newest';
+        else
+            $sort = 'newest';
 
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
@@ -754,15 +748,13 @@ class PropertyController extends Controller
 
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        if (request()->input('price_sort') !== null)
-            $sort_price = request()->input('price_sort');
 
         $property_types = (new PropertyType)->all();
 
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -881,11 +873,10 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
-        $sort_price = '';
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
-//        else
-//            $sort = 'newest';
+        else
+            $sort = 'newest';
 
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
@@ -894,14 +885,13 @@ class PropertyController extends Controller
 
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        if (request()->input('price_sort') !== null)
-            $sort_price = request()->input('price_sort');
+
         $property_types = (new PropertyType)->all();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -931,11 +921,10 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
-        $sort_price = '';
         if (request()->input('sort') !== null)
             $sort = request()->input('sort');
-//        else
-//            $sort = 'newest';
+        else
+            $sort = 'newest';
 
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
@@ -944,15 +933,13 @@ class PropertyController extends Controller
 
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        if (request()->input('price_sort') !== null)
-            $sort_price = request()->input('price_sort');
 
         $property_types = (new PropertyType)->all();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -988,12 +975,10 @@ class PropertyController extends Controller
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
         $properties = $this->listingFrontend()
-
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
         if ($location !== null) $properties->where('location_id', '=', $location->id);
         $properties->where('properties.purpose', '=', $data['purpose']);
-
 
 
         if ($data['type'] !== '' && $data['type'] !== null) $properties->where('properties.type', '=', $data['type']);
@@ -1084,11 +1069,10 @@ class PropertyController extends Controller
             $sort = '';
             $limit = '';
             $sort_area = '';
-            $sort_price = '';
             if (request()->input('sort') !== null)
                 $sort = request()->input('sort');
-//            else
-//                $sort = 'newest';
+            else
+                $sort = 'newest';
 
             if (request()->input('limit') !== null)
                 $limit = request()->input('limit');
@@ -1097,15 +1081,13 @@ class PropertyController extends Controller
 
             if (request()->input('area_sort') !== null)
                 $sort_area = request()->input('area_sort');
-            if (request()->input('price_sort') !== null)
-                $sort_price = request()->input('price_sort');
 
             $property_types = (new PropertyType)->all();
 
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,
-                'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
+                'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];

@@ -1290,6 +1290,7 @@ footer#foot-wrap {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
 .agent-description {
     line-height: 1.2rem;
 }
@@ -1300,16 +1301,19 @@ footer#foot-wrap {
     font-size: 14px;
     font-weight: 600;
 }
+
 .property-box-3 {
-        border: 2px solid white;
-        border-radius: .25rem;
+    border: 2px solid white;
+    border-radius: .25rem;
 }
+
 .property-box .detail .title {
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 10px;
     font-family: 'Roboto', sans-serif;
 }
+
 .agency-description-height {
     height: 80px;
 }
@@ -1387,8 +1391,13 @@ footer#foot-wrap {
     overflow-wrap: break-word;
     overflow: auto;
 }
-.email-btn-model{
+
+.email-btn-model {
     background-color: #2238D8;
     color: white !important;
     border-color: #2238D8;
+}
+
+.property-description a:hover {
+    color: #2238D8 !important;
 }
