@@ -7,7 +7,7 @@
     <?php echo $localBusiness->toScript()  ?>
 @endsection
 
-@section('css_library')
+@section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
@@ -73,7 +73,7 @@
                 });
                 $('#featured-agency-slider .slick-slide-item').hover(function ()
                 {
-                    
+
                 });
 
 
