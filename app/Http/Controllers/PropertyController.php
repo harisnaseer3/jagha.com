@@ -37,8 +37,9 @@ class PropertyController extends Controller
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.updated_at', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image',
+                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
+                'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
+                'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
@@ -55,15 +56,18 @@ class PropertyController extends Controller
             });
     }
 
-    function sortPropertyListing($sort, $sort_area, $properties)
+    function sortPropertyListing($sort, $sort_area, $sort_price, $properties)
     {
-        if ($sort_area === 'higher_area') $properties->orderBy('land_area', 'DESC');
-        else if ($sort_area === 'lower_area') $properties->orderBy('land_area', 'ASC');
-
+//        dd($sort, $sort_area, $sort_price);
         if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
         else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
+
+        if ($sort_area === 'higher_area') $properties->orderBy('area_in_sqft', 'DESC');
+        else if ($sort_area === 'lower_area') $properties->orderBy('area_in_sqft', 'ASC');
+
+
+        else if ($sort_price === 'high_price') $properties->orderBy('price', 'DESC');
+        else if ($sort_price === 'low_price') $properties->orderBy('price', 'ASC');
 
         return $properties;
     }
@@ -113,7 +117,6 @@ class PropertyController extends Controller
             'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
-//            'aggregates' => $aggregates,
         ];
         return view('website.index', $data);
     }
@@ -127,26 +130,28 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
+        $sort_price = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+//        else
+//            $sort = 'newest';
+
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        else
-            $sort_area = 'ASC';
 
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
-
+        if (request()->input('price_sort') !== null)
+            $sort_price = request()->input('price_sort');
 
         $property_types = (new PropertyType)->all();
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ];
@@ -208,6 +213,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+//        TODO: add conversions of land_area based on new /old marla, kanal
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('image');
             if (count($error_msg)) {
@@ -735,26 +741,28 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
+        $sort_price = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+//        else
+//            $sort = 'newest';
+
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        else
-            $sort_area = 'ASC';
-
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
+        if (request()->input('price_sort') !== null)
+            $sort_price = request()->input('price_sort');
 
         $property_types = (new PropertyType)->all();
 
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -873,25 +881,27 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
+        $sort_price = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+//        else
+//            $sort = 'newest';
+
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        else
-            $sort_area = 'ASC';
-
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
+        if (request()->input('price_sort') !== null)
+            $sort_price = request()->input('price_sort');
         $property_types = (new PropertyType)->all();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -921,26 +931,28 @@ class PropertyController extends Controller
         $sort = '';
         $limit = '';
         $sort_area = '';
+        $sort_price = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+//        else
+//            $sort = 'newest';
+
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
-        else
-            $sort_area = 'ASC';
-
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
+        if (request()->input('price_sort') !== null)
+            $sort_price = request()->input('price_sort');
 
         $property_types = (new PropertyType)->all();
 
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -956,7 +968,7 @@ class PropertyController extends Controller
             'subtype' => ['nullable', 'string'],
             'location' => ['nullable', 'string'],
             'city' => ['required', 'string'],
-            'area_unit' => ['string', Rule::in(['Marla', 'Square Feet', 'Square Yards', 'Square Meters', 'Kanal'])],
+            'area_unit' => ['string', Rule::in(['Marla', 'New Marla (225 Sqft)', 'Square Feet', 'Square Yards', 'Square Meters', 'Kanal', 'New Kanal (16 Marla)'])],
             'min_area' => ['nullable', 'string'],
             'max_area' => ['nullable', 'string'],
             'min_price' => ['nullable', 'string'],
@@ -966,6 +978,7 @@ class PropertyController extends Controller
         if ($validator->fails()) {
             return (['error' => $validator->errors()]);
         }
+//        dd($data['area_unit']);
         $location = '';
 
         $city = (new City)->select('id', 'name')->where('name', '=', $data['city'])->first();
@@ -974,18 +987,21 @@ class PropertyController extends Controller
             $location = (new Location)->select('id')->where('city_id', '=', $city->id)->where('name', '=', $data['location'])->first();
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
-
         $properties = $this->listingFrontend()
+
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
         if ($location !== null) $properties->where('location_id', '=', $location->id);
         $properties->where('properties.purpose', '=', $data['purpose']);
 
+
+
         if ($data['type'] !== '' && $data['type'] !== null) $properties->where('properties.type', '=', $data['type']);
         if ($data['subtype'] !== null && $data['subtype'] !== '') $properties->where('properties.sub_type', '=', str_replace('-', ' ', $data['subtype']));
 
         if ($data['beds']) $properties->where('properties.bedrooms', '=', $data['beds']);
-        if ($data['area_unit'] !== '') $properties->where('properties.area_unit', '=', $data['area_unit']);
+
+//        if ($data['area_unit'] !== '') $properties->where('properties.area_unit', '=', $data['area_unit']);
 
         $min_price = intval(str_replace(',', '', $data['min_price']));
         $max_price = intval(str_replace(',', '', $data['max_price']));
@@ -1006,14 +1022,26 @@ class PropertyController extends Controller
         $min_area = floatval(str_replace(',', '', $data['min_area']));
         $max_area = floatval(str_replace(',', '', $data['max_area']));
 
-        if ($min_area !== 0 and $max_area !== 0) {
-            if ($min_area < $max_area) $properties->whereBetween('land_area', [$min_area, $max_area]);
+        $area_column_wrt_unit = '';
+
+
+        if ($data['area_unit'] === 'Marla') $area_column_wrt_unit = 'area_in_marla';
+        if ($data['area_unit'] === 'New Marla (225 Sqft)') $area_column_wrt_unit = 'area_in_new_marla';
+        if ($data['area_unit'] === 'Kanal') $area_column_wrt_unit = 'area_in_kanal';
+        if ($data['area_unit'] === 'New Kanal (16 Marla)') $area_column_wrt_unit = 'area_in_new_kanal';
+        if ($data['area_unit'] === 'Square Feet') $area_column_wrt_unit = 'area_in_sqft';
+        if ($data['area_unit'] === 'Square Yards') $area_column_wrt_unit = 'area_in_sqyd';
+        if ($data['area_unit'] === 'Square Meters') $area_column_wrt_unit = 'area_in_sqm';
+
+
+        if ($min_area !== 0.0 and $max_area !== 0.0) {
+            if ($min_area < $max_area) $properties->whereBetween($area_column_wrt_unit, [$min_area, $max_area]);
         } //      if min area is selected
-        else if ($min_area !== 0 and $max_area === 0) {
-            $properties->where('land_area', '>=', $min_area);
+        else if ($min_area !== 0.0 and $max_area === 0.0) {
+            $properties->where($area_column_wrt_unit, '>=', $min_area);
         } //      if max price is selected
-        else if ($min_area === 0 and $max_area !== 0) {
-            $properties->where('land_area', '<=', $max_area);
+        else if ($min_area === 0.0 and $max_area !== 0.0) {
+            $properties->where($area_column_wrt_unit, '<=', $max_area);
         }
         return ['properties' => $properties];
     }
@@ -1056,26 +1084,28 @@ class PropertyController extends Controller
             $sort = '';
             $limit = '';
             $sort_area = '';
+            $sort_price = '';
+            if (request()->input('sort') !== null)
+                $sort = request()->input('sort');
+//            else
+//                $sort = 'newest';
+
             if (request()->input('limit') !== null)
                 $limit = request()->input('limit');
             else
                 $limit = '15';
+
             if (request()->input('area_sort') !== null)
                 $sort_area = request()->input('area_sort');
-            else
-                $sort_area = 'ASC';
-
-            if (request()->input('sort') !== null)
-                $sort = request()->input('sort');
-            else
-                $sort = 'newest';
+            if (request()->input('price_sort') !== null)
+                $sort_price = request()->input('price_sort');
 
             $property_types = (new PropertyType)->all();
 
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,
-                'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+                'properties' => $this->sortPropertyListing($sort, $sort_area, $sort_price, $properties)->paginate($limit),
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];

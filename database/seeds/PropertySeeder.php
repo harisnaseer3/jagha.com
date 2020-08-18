@@ -73,16 +73,64 @@ class PropertySeeder extends Seeder
                     if (in_array($subtype, $plot)) $type = 'Plots';
                     if (in_array($subtype, $commercials)) $type = 'Commercial';
 
-                    $max_id = DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT;
+                    $max_id = DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management_advance' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT;
 
                     $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
                     $agency = '';
-                    if (isset($data['agency_logo']) && $data['agency_logo'] !== '') {
-                        if (Agency::where('city', 'LIKE', json_encode([$city->name]))->where('title', '=', $data['agency_name'])->exists()) {
+//                    if (isset($data['agency_logo']) && $data['agency_logo'] !== '') {
+//                        if (Agency::where('city', 'LIKE', json_encode([$city->name]))->where('title', '=', $data['agency_name'])->exists()) {
+//                            $agency = (new App\Models\Agency)
+//                                ->where('city', 'LIKE', json_encode([$city->name]))
+//                                ->where('title', '=', $data['agency_name'])->first();
+//                            (new App\Models\Agency)->where('city', 'LIKE', json_encode([$city->name]))->where('title', '=', $data['agency_name'])
+//                                ->update([
+//                                    'description' => $data['agency_description'],
+//                                    'phone' => isset($data['agency_phone']) ? $data['agency_phone'] : null,
+//                                    'cell' => null,
+//                                    'fax' => null,
+//                                    'address' => null,
+//                                    'zip_code' => null,
+//                                    'country' => 'Pakistan',
+//                                    'email' => null,
+//                                    'website' => null,
+//                                    'ceo_name' => isset($data['agency_agent']) ? $data['agency_agent'] : null,
+//                                    'ceo_designation' => null,
+//                                    'ceo_message' => null,
+//                                    'status' => 'verified',
+//                                ]);
+//                            $this->storeAgencyLogo($data['agency_logo'], $agency);
+//
+//                        }
+//                        else {
+//                            $agency = (new App\Models\Agency)->updateOrCreate(
+//                                ['city' => json_encode([$city->name]), 'title' => $data['agency_name']],
+//                                [
+//                                    'user_id' => 1,
+//                                    'city' => json_encode([$city->name]),
+//                                    'title' => $data['agency_name'],
+//                                    'description' => $data['agency_description'],
+//                                    'phone' => isset($data['agency_phone']) ? $data['agency_phone'] : null,
+//                                    'cell' => null,
+//                                    'fax' => null,
+//                                    'address' => null,
+//                                    'zip_code' => null,
+//                                    'country' => 'Pakistan',
+//                                    'email' => null,
+//                                    'website' => null,
+//                                    'ceo_name' => isset($data['agency_agent']) ? $data['agency_agent'] : null,
+//                                    'ceo_designation' => null,
+//                                    'ceo_message' => null,
+//                                    'status' => 'verified',
+//                                ]);
+//                            $this->storeAgencyLogo($data['agency_logo'], $agency);
+//                        }
+//                    }
+                    if (isset($data['agency_name']) && $data['agency_name'] !== '') {
+                        if (Agency::where('city_id', '=', $city->id)->where('title', '=', $data['agency_name'])->exists()) {
                             $agency = (new App\Models\Agency)
-                                ->where('city', 'LIKE', json_encode([$city->name]))
+                                ->where('city_id', '=', $city->id)
                                 ->where('title', '=', $data['agency_name'])->first();
-                                (new App\Models\Agency)->where('city', 'LIKE', json_encode([$city->name]))->where('title', '=', $data['agency_name'])
+                            (new App\Models\Agency)->where('city_id', '=', $city->id)->where('title', '=', $data['agency_name'])
                                 ->update([
                                     'description' => $data['agency_description'],
                                     'phone' => isset($data['agency_phone']) ? $data['agency_phone'] : null,
@@ -98,14 +146,14 @@ class PropertySeeder extends Seeder
                                     'ceo_message' => null,
                                     'status' => 'verified',
                                 ]);
-                            $this->storeAgencyLogo($data['agency_logo'], $agency);
+                            if (isset($data['agency_logo']) && $data['agency_logo'] !== '')
+                                $this->storeAgencyLogo($data['agency_logo'], $agency);
 
                         } else {
-                            $agency = (new App\Models\Agency)->updateOrCreate(
-                                ['city' => json_encode([$city->name]), 'title' => $data['agency_name']],
+                            $agency = (new App\Models\Agency)->Create(
                                 [
                                     'user_id' => 1,
-                                    'city' => json_encode([$city->name]),
+                                    'city_id' => $city->id,
                                     'title' => $data['agency_name'],
                                     'description' => $data['agency_description'],
                                     'phone' => isset($data['agency_phone']) ? $data['agency_phone'] : null,
@@ -121,9 +169,44 @@ class PropertySeeder extends Seeder
                                     'ceo_message' => null,
                                     'status' => 'verified',
                                 ]);
-                            $this->storeAgencyLogo($data['agency_logo'], $agency);
+                            DB::table('agency_cities')->insert(['agency_id' => $agency->id, 'city_id' => $city->id]);
+                            if (isset($data['agency_logo']) && $data['agency_logo'] !== '')
+                                $this->storeAgencyLogo($data['agency_logo'], $agency);
                         }
                     }
+
+//                    dd((floatval($data['area'] * 225)) / 4352);
+//                    area conversion
+                    $area = number_format((float)str_replace(',', '', $data['area']), 2, '.', '');
+                    $area_in_sqft = 0;
+                    $area_in_sqyd = 0;
+                    $area_in_sqm = 0;
+                    $area_in_marla = 0;
+                    $area_in_new_marla = 0;
+                    $area_in_kanal = 0;
+                    $area_in_new_kanal = 0;
+
+                    if ($data['area_unit'] === 'Marla') {
+                        $area_in_sqft = $area * 225;
+                        $area_in_marla = $area_in_sqft / 272;
+                        $area_in_new_marla = $area_in_sqft / 225;
+                        $area_in_sqyd = $area_in_sqft / 9;
+                        $area_in_sqm = $area_in_sqft / 10.7639;
+                        $area_in_kanal = $area_in_sqft / 4500;
+                        $area_in_new_kanal = $area_in_sqft / 3600;
+
+                    } else if ($data['area_unit'] === 'Kanal') {
+                        $area_in_sqft = $area * 4500;
+                        $area_in_marla = $area_in_sqft / 225;
+                        $area_in_new_marla = $area_in_sqft / 272;
+                        $area_in_sqyd = $area_in_sqft / 9;
+                        $area_in_sqm = $area_in_sqft / 10.7639;
+                        $area_in_kanal = $area;
+                        $area_in_new_kanal = $area_in_sqft / 3600;
+                    }
+
+//                    dd('sqft' . $area_in_sqft, 'marla' . $area_in_marla, 'new marla' . $area_in_new_marla, 'sqyd' . $area_in_sqyd, 'sqm' . $area_in_sqm, 'kanal ' . $area_in_kanal, 'new kanal' . $area_in_new_kanal);
+
                     $property = (new Property)->Create([
                         'reference' => $reference,
                         'user_id' => $user_id,
@@ -137,8 +220,15 @@ class PropertySeeder extends Seeder
                         'title' => $data['title'],
                         'description' => $data['description'],
                         'price' => $data['price'],
-                        'land_area' => number_format((float)str_replace(',', '', $data['area']), 2, '.', ''),
+                        'land_area' => $area,
                         'area_unit' => $data['area_unit'],
+                        'area_in_sqft' => $area_in_sqft,
+                        'area_in_sqyd' => $area_in_sqyd,
+                        'area_in_sqm' => $area_in_sqm,
+                        'area_in_new_marla' => $area_in_new_marla,
+                        'area_in_marla' => $area_in_marla,
+                        'area_in_kanal' => $area_in_kanal,
+                        'area_in_new_kanal' => $area_in_new_kanal,
                         'bedrooms' => isset($data['bedrooms']) && $data['bedrooms'] != 'Added' && $data['bedrooms'] != '-' ? $data['bedrooms'] : 0,
                         'bathrooms' => isset($data['bathrooms']) && $data['bathrooms'] != '-' && $data['bathrooms'] != '-' ? $data['bathrooms'] : 0,
                         'latitude' => $latitude,
@@ -162,7 +252,8 @@ class PropertySeeder extends Seeder
                 } catch (Exception $e) {
                     dd($e);
                 }
-                print(', success, ' . $data['url']);
+                print('success, ' . $data['url'].PHP_EOL);
+//                exit();
             }
 //        factory(Property::class, 10000)->create();
         }

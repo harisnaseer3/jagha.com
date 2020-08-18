@@ -10,8 +10,9 @@
                 @foreach($featured_agencies as $agency)
                     <div class="slick-slide-item" aria-label="featured agency">
                         @if($agency->logo !== null)
+
                             <a href="{{route('agents.ads.listing',
-                                            [ 'city'=>strtolower(implode(", ", json_decode($agency->city))),
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
                                                'slug'=>\Illuminate\Support\Str::slug($agency->title),
                                                'agency'=> $agency->id ,
                                                ])}}">
@@ -20,12 +21,18 @@
                                      title="{{strtoupper($agency->title)}}">
                             </a>
                         @else
-                            <img src="{{asset('img/agency.png')}}" alt="{{strtoupper($agency->title)}}" width="50%" height="50%" class="img-fluid" title="{{strtoupper($agency->title)}}">
+                            <a href="{{route('agents.ads.listing',
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
+                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),
+                                               'agency'=> $agency->id ,
+                                               ])}}">
+                                <img src="{{asset('img/agency.png')}}" alt="{{strtoupper($agency->title)}}" width="50%" height="50%" class="img-fluid" title="{{strtoupper($agency->title)}}">
+                            </a>
                         @endif
                         <h2 class="agency-name mt-3 text-transform d-none">{{$agency->title}}</h2>
                         <h2 class="agency-phone mt-3 text-transform d-none">{{$agency->phone}}</h2>
                         <h2 class="sale-count mt-3 text-transform d-none">{{$agency->sale_count}}</h2>
-                        <div class="mt-1 agency-city d-none">{{implode(', ', json_decode($agency->city))}}</div>
+                        <div class="mt-1 agency-city d-none">{{$agency->city}}</div>
                     </div>
 
                 @endforeach

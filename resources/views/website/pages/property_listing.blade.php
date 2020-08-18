@@ -6,9 +6,6 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
-@section('css_library')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
-@endsection
 
 @section('content')
     <!-- Top header start -->
@@ -238,11 +235,38 @@
         (function ($) {
             $(document).ready(function () {
 
+                function insertParam(key, value) {
+                    key = encodeURIComponent(key);
+                    value = encodeURIComponent(value);
+
+                    // kvp looks like ['key1=value1', 'key2=value2', ...]
+                    var kvp = document.location.search.substr(1).split('&');
+                    let i = 0;
+
+                    for (; i < kvp.length; i++) {
+                        if (kvp[i].startsWith(key + '=')) {
+                            let pair = kvp[i].split('=');
+                            pair[1] = value;
+                            kvp[i] = pair.join('=');
+                            break;
+                        }
+                    }
+
+                    if (i >= kvp.length) {
+                        kvp[kvp.length] = [key, value].join('=');
+                    }
+
+                    // can return this or...
+                    let params = kvp.join('&');
+
+                    // reload page with new params
+                    document.location.search = params;
+                }
+
                 $('[data-toggle="tooltip"]').tooltip();
 
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');
-                    // console.log(sessionStorage.getItem("page-layout"))
                     $('.page-list-layout').show();
                     $('.page-grid-layout').hide();
                 });
@@ -277,44 +301,112 @@
                     $('.grid-stars').stars();
                 }
 
-                $('.sorting').on('change', function (e) {
-                    // console.log($(this).val());
-                    let area_sort = ['higher_area', 'lower_area'];
-                    if (jQuery.inArray($(this).val(), area_sort) !== -1) {
-                        insertParam('area_sort', $(this).val());
-                    } else
-                        insertParam('sort', $(this).val());
-                    // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
-                });
+                // $('.sorting').on('change', function (e) {
+                //     // console.log($(this).val());
+                //     let area_sort = ['higher_area', 'lower_area'];
+                //     if (jQuery.inArray($(this).val(), area_sort) !== -1) {
+                //         insertParam('area_sort', $(this).val());
+                //     } else
+                //         insertParam('sort', $(this).val());
+                //     // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
+                // });
+                function removeParam(parameter) {
+                    var url = document.location.href;
+                    var urlparts = url.split('?');
 
+                    if (urlparts.length >= 2) {
+                        var urlBase = urlparts.shift();
+                        var queryString = urlparts.join("?");
 
-                function insertParam(key, value) {
-                    key = encodeURIComponent(key);
-                    value = encodeURIComponent(value);
+                        var prefix = encodeURIComponent(parameter) + '=';
+                        var pars = queryString.split(/[&;]/g);
+                        for (var i = pars.length; i-- > 0;)
+                            if (pars[i].lastIndexOf(prefix, 0) !== -1)
+                                pars.splice(i, 1);
+                        url = urlBase + '?' + pars.join('&');
+                        window.history.pushState('', document.title, url); // added this line to push the new url directly to url bar .
 
-                    // kvp looks like ['key1=value1', 'key2=value2', ...]
-                    var kvp = document.location.search.substr(1).split('&');
-                    let i = 0;
-
-                    for (; i < kvp.length; i++) {
-                        if (kvp[i].startsWith(key + '=')) {
-                            let pair = kvp[i].split('=');
-                            pair[1] = value;
-                            kvp[i] = pair.join('=');
-                            break;
-                        }
                     }
-
-                    if (i >= kvp.length) {
-                        kvp[kvp.length] = [key, value].join('=');
-                    }
-
-                    // can return this or...
-                    let params = kvp.join('&');
-
-                    // reload page with new params
-                    document.location.search = params;
+                    return url;
                 }
+                let sorting_filter = $('.select-sorting-option');
+                let area_filter = $('.sorting-area');
+                let price_filter = $('.sorting-price');
+
+                sorting_filter.on('change', function () {
+                    // console.log($(this).val());
+                    if ($(this).val() === 'price') {
+                        price_filter.show();
+                        area_filter.hide();
+                        // removeParam('sort');
+                        // removeParam('area_sort');
+                        // insertParam('price_sort', 'high_price');
+                    } else if ($(this).val() === 'area') {
+                        area_filter.show();
+                        price_filter.hide();
+                        // removeParam('sort');
+                        // removeParam('price_sort');
+                        // insertParam('area_sort', 'higher_area');
+                    } else if ($(this).val() === 'price_and_area') {
+                        area_filter.show();
+                        price_filter.show();
+                        // removeParam('sort');
+                        // let currentUrl = location.href;
+                        // let url = new URL(currentUrl);
+                        // url.searchParams.set('area_sort', 'higher_area'); // setting your param
+                        // url.searchParams.set('price_sort', 'high_price'); // setting your param
+                        // location.assign(url.href);
+                    } else if ($(this).val() === 'newest' || $(this).val() === 'oldest') {
+                        removeParam('price_sort');
+                        removeParam('area_sort');
+                        insertParam('sort', $(this).val());
+                        area_filter.hide();
+                        price_filter.hide();
+                    }
+                });
+                let sorting_filter_val = sorting_filter.val();
+                if (sorting_filter_val === 'price') {
+                    $('.sorting-area').hide();
+                    $('.sorting-price').show();
+                }
+                if (sorting_filter_val === 'area') {
+                    $('.sorting-area').show();
+                    $('.sorting-price').hide();
+                }
+                if (sorting_filter_val === 'price_and_area') {
+                    $('.sorting-area').show();
+                    $('.sorting-price').show();
+                }
+
+                area_filter.on('change', function () {
+                    removeParam('sort');
+                    if (price_filter.is(":visible")) {
+                        let currentUrl = location.href;
+                        let url = new URL(currentUrl);
+                        url.searchParams.set('area_sort', $(this).val()); // setting your param
+                        url.searchParams.set('price_sort', price_filter.val()); // setting your param
+                        location.assign(url.href);
+                    }
+                    else {
+                        removeParam('price_sort');
+                        insertParam('area_sort', $(this).val());
+                    }
+                });
+                price_filter.on('change', function () {
+                    removeParam('sort');
+                    if (area_filter.is(":visible")) {
+                        console.log(area_filter.is(":visible"));
+                        let currentUrl = location.href;
+                        let url = new URL(currentUrl);
+                        url.searchParams.set('price_sort', $(this).val()); // setting your param
+                        url.searchParams.set('area_sort', area_filter.val()); // setting your param
+                        location.assign(url.href);
+                    } else {
+                        removeParam('area_sort');
+                        insertParam('price_sort', $(this).val());
+                    }
+
+                });
 
                 $('.record-limit').on('change', function (e) {
                     insertParam('limit', $(this).val());

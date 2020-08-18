@@ -27,10 +27,10 @@
                             <div class="row">
                                 @foreach($agencies as $agency)
                                     <div class="col-sm-3 my-2">
-                                        <a href="{{route('agencies.citywise.listing',['city'=> implode(', ', json_decode(strtolower(str_replace(' ','-', $agency->city)))),'sort'=> 'newest'])}}"
-                                           title="agencies in {{implode(', ', json_decode($agency->city))}}"
+                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                           title="agencies in {{$agency->city}}"
                                            class="breadcrumb-link">
-                                            {{implode(', ', json_decode($agency->city))}} ({{$agency->agency_count}})
+                                            {{$agency->city}} ({{$agency->agency_count}})
                                         </a>
                                     </div>
                                 @endforeach
