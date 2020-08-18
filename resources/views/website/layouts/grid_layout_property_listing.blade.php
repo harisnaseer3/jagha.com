@@ -13,6 +13,8 @@
                 <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' ? 'selected' : '' }}>Price (Low To High)</option>
+                <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
+                <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
             </select>
             <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
@@ -91,7 +93,20 @@
                         </a>
                     </div>
                     <ul class="facilities-list clearfix grid-view-facilities">
-                        @if(isset($property->land_area))
+                        @if(request()->query('area_unit') != null)
+                            <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
+                                <span>
+                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
+                                    @endif
+                                </span>
+                            </li>
+                        @elseif(isset($property->land_area))
                             <li aria-label="land area">
                                 <i class="fas fa-arrows-alt"></i>
                                 {{ number_format($property->land_area, 2) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')

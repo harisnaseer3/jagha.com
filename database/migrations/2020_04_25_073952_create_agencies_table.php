@@ -17,7 +17,7 @@ class CreateAgenciesTable extends Migration
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->json('city');
+            $table->foreignId('city_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('title', 225);
             $table->string('description', 4096);
             $table->string('phone', 32)->nullable();

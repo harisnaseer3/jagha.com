@@ -6,9 +6,6 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
-@section('css_library')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
-@endsection
 
 @section('content')
     <!-- Top header start -->
@@ -244,15 +241,19 @@
         (function ($) {
             $(document).ready(function () {
 
+                <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
-
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');
                     // console.log(sessionStorage.getItem("page-layout"))
                     $('.page-list-layout').show();
                     $('.page-grid-layout').hide();
                 });
-
                 $.fn.stars = function () {
                     return $(this).each(function () {
                         let rating = $(this).data("rating");
@@ -265,7 +266,6 @@
                     });
                 }
                 $('.stars').stars();
-
                 $('.grid-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'grid-layout');
                     // console.log(sessionStorage.getItem("page-layout"))
@@ -273,7 +273,6 @@
                     $('.page-grid-layout').show();
                     $('.grid-stars').stars();
                 });
-
                 if (sessionStorage.getItem("page-layout") === 'list-layout') {
                     $('.page-list-layout').show();
                     $('.page-grid-layout').hide();
@@ -282,7 +281,6 @@
                     $('.page-grid-layout').show();
                     $('.grid-stars').stars();
                 }
-
                 $('.sorting').on('change', function (e) {
                     // console.log($(this).val());
                     let area_sort = ['higher_area', 'lower_area'];
@@ -292,16 +290,12 @@
                         insertParam('sort', $(this).val());
                     // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
                 });
-
-
                 function insertParam(key, value) {
                     key = encodeURIComponent(key);
                     value = encodeURIComponent(value);
-
                     // kvp looks like ['key1=value1', 'key2=value2', ...]
                     var kvp = document.location.search.substr(1).split('&');
                     let i = 0;
-
                     for (; i < kvp.length; i++) {
                         if (kvp[i].startsWith(key + '=')) {
                             let pair = kvp[i].split('=');
@@ -310,22 +304,17 @@
                             break;
                         }
                     }
-
                     if (i >= kvp.length) {
                         kvp[kvp.length] = [key, value].join('=');
                     }
-
                     // can return this or...
                     let params = kvp.join('&');
-
                     // reload page with new params
                     document.location.search = params;
                 }
-
                 $('.record-limit').on('change', function (e) {
                     insertParam('limit', $(this).val());
                 });
-
                 if ($('.pagination-box').length > 0) {
                     let current_search_params = window.location.search.split('&page')[0];
                     $('.page-item').each(function () {
@@ -338,7 +327,6 @@
                         }
                     });
                 }
-
                 $('.select2').select2({
                     language: '{{app()->getLocale()}}',
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
@@ -348,7 +336,6 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
-
                 $('#subscribe-form').on('submit', function (e) {
                     e.preventDefault();
                     // console.log($('#subscribe').val());
@@ -380,7 +367,6 @@
                 });
                 let phone = '';
                 let form = $('#email-contact-form');
-
                 $('.btn-email').click(function (e) {
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let title  = $(this).closest('.contact-container').find('input[name=title]').val();
@@ -388,8 +374,8 @@
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
                     let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">'+ title +' </a>';
-                    let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
-                    let message = 'I would like to gather information about your property\n' + anchor_link + '. While mailing please mention '+ link;
+                    let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>.';
+                    let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at '+ link + '<br><br> Please contact me at your earliest by phone or by email.';
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     let editable_div = $('.editable-div');
                     editable_div.html(message);
@@ -399,7 +385,6 @@
                             $('input[name=message]').val(editable_div.html());
                         }
                     });
-
                     if (!(property == null))
                         $('.selected').val(property).attr('name', 'property');
                     else if (!(agency == null))
@@ -413,7 +398,6 @@
                 $.validator.addMethod("regx", function (value, element, regexpr) {
                     return regexpr.test(value);
                 }, "Please enter a valid value. (+92-300-1234567)");
-
                 form.validate({
                     rules: {
                         name: {
@@ -453,7 +437,6 @@
                         }
                     }
                 });
-
                 $('#send-mail').click(function (event) {
                     if (form.valid()) {
                         event.preventDefault();
@@ -472,7 +455,6 @@
                                     console.log(data.data);
                                     $('#EmailModelCenter').modal('hide');
                                     $('#EmailConfirmModel').modal('show');
-
                                 } else {
                                     // console.log(data.data);
                                 }

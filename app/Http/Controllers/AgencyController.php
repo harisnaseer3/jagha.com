@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agency;
+use App\Models\Dashboard\City;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Models\PropertyType;
@@ -24,15 +25,12 @@ class AgencyController extends Controller
      */
     public function index()
     {
-        $data = [];
-        $cities = (new Agency)->select('city')->groupBy('city')->get()->toArray();
-        foreach ($cities as $city)
-            array_push($data, $city['city']);
 
-        $cities_count = (new Agency)->select(DB::raw('COUNT(id) AS agency_count'), 'city')
-            ->groupBy('city')
-            ->orderBy('agency_count', 'DESC')
-            ->get();
+        $cities_count = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+            ->where('agencies.status', '=', 'verified')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+            ->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
         $data = [
             'agencies' => $cities_count,
             'recent_properties' => (new FooterController)->footerContent()[0],
@@ -42,26 +40,29 @@ class AgencyController extends Controller
         return view('website.pages.all_cities_listing_wrt_agency', $data);
     }
 
-    function _listingForntend()
+    function _listingFrontend()
     {
-        return (new Agency)->select('title', 'id', 'featured_listing', 'description', 'key_listing', 'featured_listing', 'status', 'city', 'description', 'phone', 'cell', 'ceo_name AS agent', 'logo')
-            ->where('status', '=', 'verified');
+        return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city','agency_cities.city_id')
+            ->where('agencies.status', '=', 'verified')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
     }
-
 
     public function ListingCityAgencies(string $city)
     {
 //        TODO: change city store method to find city in db
-        $city = ucwords(str_replace('-', ' ', $city));
+        $city_name = ucwords(str_replace('-', ' ', $city));
+        $city_id = City::select('id')->where('name', '=', $city_name)->first();
         $limit = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
 
-        $agencies = $this->_listingForntend()
-            ->where('city', 'LIKE', '["' . $city . '"]')
-            ->groupBy('city', 'title', 'id', 'featured_listing')
+        $agencies = $this->_listingFrontend()
+            ->where('agency_cities.city_id', '=', $city_id->id)
+            ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing','agency_cities.city_id')
             ->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
 
@@ -141,7 +142,7 @@ class AgencyController extends Controller
 
     public function listingFeaturedPartners()
     {
-        $agencies = $this->_listingForntend()
+        $agencies = $this->_listingFrontend()
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
@@ -164,7 +165,7 @@ class AgencyController extends Controller
 
     public function listingKeyPartners()
     {
-        $agencies = $this->_listingForntend()
+        $agencies = $this->_listingFrontend()
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
@@ -500,13 +501,13 @@ class AgencyController extends Controller
 
     public function FeaturedAgencies()
     {
-        return $this->_listingForntend()
+        return $this->_listingFrontend()
             ->where('agencies.featured_listing', '=', 1)->get();
     }
 
     public function keyAgencies()
     {
-        return $this->_listingForntend()
+        return $this->_listingFrontend()
             ->where('key_listing', '=', 1)->get();
     }
 

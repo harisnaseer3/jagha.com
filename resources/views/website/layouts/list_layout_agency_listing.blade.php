@@ -57,7 +57,7 @@
                     </h2>
                     <h5 class="location mb-2">
                         <span><a href="javascript:void(0)" aria-label="Agency location" title="{{$agency->title}}">
-                                <i class="flaticon-location"></i>{{implode(', ', json_decode($agency->city))}}</a>
+                                <i class="flaticon-location"></i>{{$agency->city}}</a>
                         </span>
                         @if( $agency->agent != '')
                             <span class="m-2">|</span>
@@ -81,7 +81,7 @@
                             <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                         @else
-                        <div class="col-sm-12 my-2 agency-description-height">
+                            <div class="col-sm-12 my-2 agency-description-height">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">No Description Added..</h6>
                                 </a>
@@ -111,6 +111,7 @@
                         <div class="text-center mb-2">
                             <div class = "mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
                             <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+
                         </div>
                         <table class="table table-borderless">
                             <tbody>
@@ -123,7 +124,7 @@
                                 @if($agency->phone !== null)
                                     <td class="font-weight-bold">{{$agency->phone}} </td>
                                 @else
-                                    <td class="font-weight-bold"> - </td>
+                                    <td class="font-weight-bold"> -</td>
                                 @endif
                             </tr>
                             <tr>

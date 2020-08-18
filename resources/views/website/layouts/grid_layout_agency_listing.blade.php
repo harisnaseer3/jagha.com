@@ -57,7 +57,7 @@
                     <div class="location mt-4">
                         <a href="javascript:void(0)" aria-label="Agency location">
                             <i class="fa fa-map-marker"></i>
-                            {{implode(', ', json_decode($agency->city))}}
+                            {{$agency->city}}
                         </a>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                     <div class="modal-body">
                         <div class="container color-555 font-12">
                             <div class="text-center mb-2">
-                                <div class = "font-weight-bold"> {{ $agency->title }} </div>
+                                <div class="font-weight-bold"> {{ $agency->title }} </div>
                             </div>
                             <table class="table table-borderless">
                                 <tbody>

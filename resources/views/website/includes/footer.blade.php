@@ -57,7 +57,7 @@
                                 @foreach($footer_agencies as $key => $agency)
                                     <li><a href="javascript:void(0)"
                                            title="{{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}">
-                                           {{\Illuminate\Support\Str::limit(implode (", ", json_decode($agency->city)), 25, $end='..')}}  |  {{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}   |
+                                           {{\Illuminate\Support\Str::limit($agency->city, 25, $end='..')}}  |  {{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}   |
                                         {{$agency->phone}}
                                         </a>
                                     </li>

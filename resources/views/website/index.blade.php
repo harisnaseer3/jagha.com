@@ -3,15 +3,8 @@
     {!! SEO::generate(true) !!}
 @endsection
 
-
-
 @section('json-ld')
     <?php echo $localBusiness->toScript()  ?>
-@endsection
-
-
-@section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
 @section('css_library')
@@ -80,7 +73,7 @@
                 });
                 $('#featured-agency-slider .slick-slide-item').hover(function ()
                 {
-                    $('[data-toggle="tooltip"]').tooltip();
+                    
                 });
 
 

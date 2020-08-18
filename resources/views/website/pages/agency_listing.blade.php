@@ -127,7 +127,9 @@
                         <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>
                         {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
-                        {!! Form::textarea('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
+                        <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
+                        </div>
+                        {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
                             {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent']]) }}
                         </div>
@@ -281,10 +283,18 @@
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
-                    let message = 'I would like to gather information about your property.Please contact me at your earliest.';
+                    let message = 'I would like to gather information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest by phone or by email.';
                     
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     // console.log(property, agency, reference,);
+                    let editable_div = $('.editable-div');
+                    editable_div.html(message);
+                    $('input[name=message]').val(editable_div.html());
+                    editable_div.click(function () {
+                        if (editable_div.html() !== '') {
+                            $('input[name=message]').val(editable_div.html());
+                        }
+                    })
 
                     if (!(property == null))
                         $('.selected').val(property).attr('name', 'property');
