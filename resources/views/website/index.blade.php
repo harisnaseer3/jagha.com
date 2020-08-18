@@ -80,7 +80,7 @@
                 });
                 $('#featured-agency-slider .slick-slide-item').hover(function ()
                 {
-                    $('[data-toggle="tooltip"]').tooltip();
+                    
                 });
 
 
