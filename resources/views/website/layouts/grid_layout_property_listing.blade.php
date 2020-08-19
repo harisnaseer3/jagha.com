@@ -75,8 +75,8 @@
                 <div class="detail">
                     <h2 class="title">
                         <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}">
-                            <span aria-label="currency" class="font-size-14">PKR </span>
-                            <span aria-label="price"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
+                            <span aria-label="currency" class="font-size-14 color-blue">PKR </span>
+                            <span aria-label="price" class="color-blue"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status)  && $property->agency_status === 'verified')
