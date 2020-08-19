@@ -31,7 +31,7 @@
     @foreach($agencies as $agency)
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="property-box">
-                <div class="property-thumbnail">
+                <div class="property-thumbnail image-padding">
                     <a href="javascript:void(0)" class="agency-img" title="{{$agency->title}}">
                         <div class="listing-badges pull-right">
                             @if(isset($agency->status) &$agency->status === 'verified')
@@ -85,9 +85,11 @@
                     <!--Body-->
                     <div class="modal-body">
                         <div class="container color-555 font-12">
-                            <div class="text-center mb-2">
-                                <div class="font-weight-bold"> {{ $agency->title }} </div>
-                            </div>
+                        <div class="text-center mb-2">
+                            <div class = "mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
+                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+
+                        </div>
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>

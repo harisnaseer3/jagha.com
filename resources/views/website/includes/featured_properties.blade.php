@@ -19,6 +19,13 @@
                                     @elseif($feature_property->super_hot_listing == 1)
                                         <div class="tag feature-tag">SUPER HOT</div>
                                     @endif
+                                    <!-- @if(isset($feature_property->featured_listing)  && $feature_property->featured_listing)
+                                <span class="featured float-right tag-padding" style="background-color: #555">
+                                    <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
+                                        <span class="color-white">FEATURED PARTNER</span>
+                                    </span>
+                                </span>
+                            @endif -->
                                     @if($feature_property->image != null)
                                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
@@ -27,6 +34,7 @@
                                     @else
                                         <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                                     @endif
+                                    <div class="listing-time opening" aria-label="purpose label"><i class="fa fa-eye fa-2 mr-1"></i>{{$feature_property->views}}</div>
                                 </div>
                             </a>
                             <div class="details m-0" style="width: 100%">
@@ -34,7 +42,7 @@
                                     <h2 class="title">
                                         <!-- method to convert price in number into price in words -->
                                         <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->title}}">
-                                            <span class="font-16 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
+                                            <span class="font-size-14 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                                         </a>
                                     </h2>
                                     <div class="location">
@@ -54,13 +62,13 @@
                                             @else {{$feature_property->area_unit}} @endif</p>
                                     </li>
                                     @if($feature_property->bedrooms > 0)
-                                        <li style="width: 30%; text-align: left">
+                                        <li style="width: 30%; text-align: center">
                                             <i class="flaticon-furniture"></i>
                                             <p>{{ number_format($feature_property->bedrooms) }} Beds</p>
                                         </li>
                                     @endif
                                     @if($feature_property->bathrooms > 0)
-                                        <li style="width: 30%; text-align: left">
+                                        <li style="width: 30%; text-align: center">
                                             <i class="flaticon-holidays"></i>
                                             <p>{{ number_format($feature_property->bathrooms) }} Bath</p>
                                         </li>
@@ -69,9 +77,9 @@
                                 </ul>
                                 <div class="footer clearfix">
                                     <ul class="float-right">
-                                        <li>
+                                        <!-- <li>
                                             <i class="fa fa-eye fa-2 mr-2"></i>{{$feature_property->views}}
-                                        </li>
+                                        </li> -->
                                         @if(\Illuminate\Support\Facades\Auth::check())
                                             <li>
                                                 <div class="favorite-property" style="font-size: 20px;">
