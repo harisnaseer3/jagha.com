@@ -6,14 +6,8 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
-@section('css_library')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
-@endsection
 
 @section('content')
-    <!-- Top header start -->
-    <!-- Top header end -->
-    <!-- Main header start -->
     @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
@@ -66,9 +60,13 @@
                     <!-- Search Result Count -->
                     <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
                         <span aria-label="Summary text" class="ml-2 color-white">{{ $agencies->total() }} results found</span>
-                        <span class = "color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
+                        <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                     </div>
-                    <!-- Listing -->
+                    <!-- cities cards in case of featured and key partners-->
+                @if(strpos($_SERVER['REQUEST_URI'], 'partners') !== false && request()->segment(2) == null)
+                    @include('website.includes.agencies_cities_card')
+                @endif
+                <!-- Listing -->
                     <div class="page-list-layout">
                         @include('website.layouts.list_layout_agency_listing')
                     </div>
@@ -82,6 +80,7 @@
                         {{ $agencies->links() }}
                     </div>
                 </div>
+
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">
                         <div class="sidebar widget" aria-label="Subscription form">
@@ -138,7 +137,7 @@
                             {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
                         </div>
                         {{ Form::close() }}
-                        <button  class="btn btn-block btn-danger  mt-2" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-block btn-danger  mt-2" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -189,6 +188,11 @@
                     // reload page with new params
                     document.location.search = params;
                 }
+
+                $('#close-icon').click(function () {
+                    $(this).text($(this).text() === 'close' ? 'open' : 'close');
+                    $("#cities-card").slideToggle();
+                });
 
                 $('.record-limit').on('change', function (e) {
                     insertParam('limit', $(this).val());
@@ -284,7 +288,7 @@
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
                     let message = 'I would like to gather information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest by phone or by email.';
-                    
+
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     // console.log(property, agency, reference,);
                     let editable_div = $('.editable-div');

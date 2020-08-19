@@ -240,13 +240,6 @@
     <script>
         (function ($) {
             $(document).ready(function () {
-
-                <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}"></script>
-    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
-    <script>
-        (function ($) {
-            $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');

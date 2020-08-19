@@ -66,9 +66,6 @@
 
                                 </ul>
                                 <div class="footer clearfix">
-                                    <div class="float-left days">
-                                        <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans() }}</p>
-                                    </div>
                                     <ul class="float-right">
                                         <li>
                                             <i class="fa fa-eye fa-2 mr-2"></i>{{$feature_property->views}}
@@ -98,7 +95,11 @@
                                             </li>
                                         @endif
                                     </ul>
+                                    <div class="days">
+                                        <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans(['parts' => 2]) }}</p>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
