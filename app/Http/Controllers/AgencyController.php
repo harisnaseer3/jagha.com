@@ -204,6 +204,8 @@ class AgencyController extends Controller
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
+        $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
+
         $property_types = (new PropertyType)->all();
         $limit = '';
         if (request()->input('limit') !== null)
@@ -214,6 +216,7 @@ class AgencyController extends Controller
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
+            'agencies_count' => $agencyCount,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 

@@ -97,14 +97,14 @@
                         @endif
                         @if(request()->query('area_unit') != null)
                             <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
-                                = <span>
-                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal (16 marla)
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Marla
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
+                                <span>
+                                    @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal (16 marla)
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'marla'){{ number_format($property->area_in_marla,2) }} Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
                                     @endif
                                 </span>
                             </li>

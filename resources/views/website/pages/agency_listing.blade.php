@@ -42,19 +42,43 @@
 
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
-                                <!-- if homes are selected from nav bar -->
                                 @if(request()->segment(2) == 'null' || request()->segment(2) == '')
                                     @if(strpos(explode('-', request()->segment(1))[0] , 'agents') !== false)
                                         {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
                                     @else
                                         {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                     @endif
-                                @else
-                                    {{ucwords(str_replace('-',' ',request()->segment(2)))}}
+                                @elseif(strpos(request()->segment(1), 'partners') !== false && request()->segment(2) !== null)
+                                    @if(request()->segment(1) === 'featured-partners')
+                                        <a href="{{route('featured-partners',['sort'=>'newest'])}}">
+                                            <span class="breadcrumb-link" itemprop="name">
+                                            {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
+                                            </span>
+                                        </a>
+                                    @else
+                                        <a href="{{route('key-partners',['sort'=>'newest'])}}">
+                                             <span class="breadcrumb-link" itemprop="name">
+                                            {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
+                                             </span>
+                                        </a>
+                                    @endif
+
                                 @endif
                             </span>
                             <meta itemprop="position" content="4">
                         </span>
+                        @if(strpos(request()->segment(1), 'partners') !== false && request()->segment(2) !== null)
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+
+                            <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span itemprop="name">
+
+                                    {{ucwords(str_replace('-',' ',request()->segment(2)))}}
+                            </span>
+                            <meta itemprop="position" content="5">
+                        </span>
+                        @endif
+
                     </div>
 
                     <!-- Search Result Count -->
