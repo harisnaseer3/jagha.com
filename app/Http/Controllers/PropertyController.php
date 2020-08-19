@@ -142,6 +142,7 @@ class PropertyController extends Controller
 
 
         $property_types = (new PropertyType)->all();
+        (new MetaTagController())->addMetaTags();
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
@@ -749,6 +750,8 @@ class PropertyController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
+        (new MetaTagController())->addMetaTags();
+
         $property_types = (new PropertyType)->all();
 
         $data = [
@@ -867,7 +870,6 @@ class PropertyController extends Controller
                 return redirect('/');
             }
             $properties = $search_result['properties'];
-
         }
 
         $sort = '';
@@ -887,7 +889,7 @@ class PropertyController extends Controller
             $sort_area = request()->input('area_sort');
 
         $property_types = (new PropertyType)->all();
-
+        (new MetaTagController())->addMetaTags();
         $data = [
             'params' => ['sort' => 'newest'],
             'property_types' => $property_types,
@@ -904,7 +906,7 @@ class PropertyController extends Controller
 
     public function searchForHousesAndPlots(string $type, string $city, string $location, string $purpose = 'sale')
     {
-        $city = City::select('id')->where('name', '=', $city)->first();
+        $city = City::select('id', 'name')->where('name', '=', $city)->first();
 
         $clean_location = str_replace('_', '-', str_replace('-', ' ', $location));
 
@@ -933,6 +935,8 @@ class PropertyController extends Controller
 
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
+
+        (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
         $property_types = (new PropertyType)->all();
 
@@ -1060,7 +1064,7 @@ class PropertyController extends Controller
     public function searchInCities(string $city)
     {
         $city = str_replace('_', ' ', $city);
-        $city = City::select('id')->where('name', '=', $city)->first();
+        $city = City::select('id', 'name')->where('name', '=', $city)->first();
         $data = [];
         if ($city) {
             $properties = $this->listingFrontend();
@@ -1083,6 +1087,7 @@ class PropertyController extends Controller
                 $sort_area = request()->input('area_sort');
 
             $property_types = (new PropertyType)->all();
+            (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
             $data = [
                 'params' => ['sort' => 'newest'],

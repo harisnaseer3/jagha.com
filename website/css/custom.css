@@ -1456,10 +1456,12 @@ span.post-head-cat,
     padding: 7px 4px !important;
 }
 .price-ratings-box, .listing-time {
-
     background: rgb(0 0 0 / 54%);
 }
 .property-description a:hover {
     color: #2238D8 !important;
+}
+#close-icon{
+    border-color: #274abb;
 }
 

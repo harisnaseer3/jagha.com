@@ -163,7 +163,7 @@
                     </div>
                     <div>
                         <div class=" float-left mt-0">
-                            <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans()}}</a>
+                            <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans(['parts' => 2])}}</a>
                         </div>
                         <div class="float-right mt-0">
                             <a aria-label="Listing creation date"><i class="far fa-eye"></i> {{ $property->views}}</a>
