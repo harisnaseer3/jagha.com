@@ -1457,6 +1457,7 @@ span.post-head-cat,
 }
 .price-ratings-box, .listing-time {
     background: rgb(0 0 0 / 54%);
+    /*background: #444444;*/
 }
 .property-description a:hover {
     color: #2238D8 !important;
@@ -1467,7 +1468,7 @@ span.post-head-cat,
 .detail-nav-style {
     color: white !important;
 }
-.detail-nav-style: hover {
+.detail-nav-style:hover {
     color: black !important;
 }
 .tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
@@ -1497,7 +1498,7 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
 .image-padding {
     background-color: white;
     padding: 12%;
-    padding-bottom: 0%;
+    padding-bottom: 0;
 }
 .price-ratings-box {
     bottom: 0;
@@ -1510,4 +1511,9 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
 }
 .property-box-2 .listing-time {
     top: 0;
+}
+@media (max-width: 1024px) {
+    .record-limit{
+        display: none
+    }
 }
