@@ -8,26 +8,24 @@
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            <select class="sorting">
-                <option value="newest" {{ $params['sort'] === 'newest' ? 'selected' : '' }}>Newest</option>
-                <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
-                <option value="high_price" {{ $params['sort'] === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
-                <option value="low_price" {{ $params['sort'] === 'low_price' ? 'selected' : '' }}>Price (Low To High)</option>
-                <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
-                <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
-            </select>
-            <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
-            <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
-        </div>
-    </div>
-    <div class="float-right cod-pad none-992">
-        <div class="sorting-options" role="button" aria-label="sort by filter">
-            <select class="record-limit">
+            <select class="sorting record-limit none-992">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
                 <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
                 <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
                 <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
             </select>
+            <select class="sorting area-filter none-992">
+                <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
+                <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
+            </select>
+            <select class="sorting">
+                <option value="newest" {{ $params['sort'] === 'newest' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
+                <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
+                <option value="high_price" {{ $params['sort'] === 'high_price' || request()->query('sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
+                <option value="low_price" {{ $params['sort'] === 'low_price' || request()->query('sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>
+            </select>
+            <a class="change-view-btn active-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
+            <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
 </div>
