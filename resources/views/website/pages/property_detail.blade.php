@@ -157,8 +157,8 @@
                         <!-- Tabbing box start -->
                         <div class="tabbing tabbing-box tb-2 mb-40">
                             <ul class="nav nav-tabs" id="carTab" role="tablist" style="padding:5px; background-color: black">
-                                <li class="nav-item li-detail-page">
-                                    <a class="text-transform nav-link active show" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one"
+                                <li class="nav-item li-detail-page mr-1">
+                                    <a class="text-transform nav-link active show detail-nav-style" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one"
                                        aria-selected="true">Overview</a>
                                 </li>
                                 @if(!empty($video))
@@ -166,12 +166,12 @@
                                         <a class="nav-link" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Video</a>
                                     </li>
                                 @endif
-                                <li class="nav-item li-detail-page text-transform">
-                                    <a class="nav-link" id="5-tab" href="#five" role="tab" aria-controls="5" aria-selected="true">Location & Nearby</a>
+                                <li class="nav-item li-detail-page text-transform mr-1">
+                                    <a class="nav-link detail-nav-style" id="5-tab" href="#five" role="tab" aria-controls="5" aria-selected="true">Location & Nearby</a>
                                 </li>
                                 @if(count($similar_properties))
-                                    <li class="nav-item li-detail-page text-transform">
-                                        <a class="nav-link" id="6-tab" href="#six" role="tab" aria-controls="6" aria-selected="true">Similar Properties</a>
+                                    <li class="nav-item li-detail-page text-transform mr-1">
+                                        <a class="nav-link detail-nav-style" id="6-tab" href="#six" role="tab" aria-controls="6" aria-selected="true">Similar Properties</a>
                                     </li>
                                 @endif
                             </ul>
@@ -308,28 +308,26 @@
                                 <div class="row">
                                     @if($agency->logo !==null)
                                         <div class="col-sm-6 text-center">
-                                            <img src="{{asset('thumbnails/agency_logos/'.$agency->logo)}}" alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 40%">
+                                            <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 80%">
                                         </div>
-{{--                                    @else--}}
-{{--                                        <div class="col-sm-6 text-center">--}}
-{{--                                            <img src="{{asset('img/default_company.jpg')}}" alt="brand" style="max-width: 50%">--}}
-{{--                                        </div>--}}
                                     @endif
                                     <div class="col-sm-6 mt-1">
                                         <div style="font-size: 1rem">
                                             @if($agency->status === 'verified')
-                                                <span style="color:green"><i class="far fa-shield-check"></i> Verified</span>
+                                            <div class="mb-3">
+                                                <span  style="color:green"><i class="far fa-shield-check"></i> Verified</span>
+                                                </div>
                                             @endif
                                             @if($agency->featured_listing === 1)
-                                                <div>
+                                                <div class="mb-3">
                                                 <span class="premium-badge" style="color:#ffcc00;">
                                                     <i class="fas fa-star"></i>
-                                                    <span style="color: white">FEATURED AGENCY</span>
+                                                    <span style="color: white">FEATURED PARTNER</span>
                                                 </span>
                                                 </div>
                                             @endif
                                             @if($agency->ceo_name !== null)
-                                                <div class="mt-1" style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$agency->ceo_name}} </span></div>
+                                                <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$agency->ceo_name}} </span></div>
                                             @endif
                                         </div>
                                     </div>
@@ -587,6 +585,13 @@
             });
 
             $('#send-mail').click(function (event) {
+                $('input[name=message]').val(editable_div.html());
+                    editable_div.click(function () {
+                        if (editable_div.html() !== '') {
+                            $('input[name=message]').val(editable_div.html());
+                        }
+                    });
+                
                 if (form.valid()) {
                     event.preventDefault();
                     jQuery.ajaxSetup({

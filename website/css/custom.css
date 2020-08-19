@@ -1462,4 +1462,26 @@ span.post-head-cat,
 .property-description a:hover {
     color: #2238D8 !important;
 }
-
+.properties-details-page {
+    padding-top: 290px !important;
+}
+.detail-nav-style {
+    color: white !important;
+}
+.detail-nav-style: hover {
+    color: black !important;
+}
+.tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: black !important;
+    border-radius: 50px;
+    background: #eeeeef;
+}
+tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
+    border-radius: 50px;
+    background: #eeeeef;
+    color: black !important;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: white !important;
+    background-color: #2238D8;
+}
