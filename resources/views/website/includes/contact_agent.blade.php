@@ -1,5 +1,6 @@
+
 <div class="sidebar widget mb-2">
-    <h3 class="sidebar-title">Contact Agent</h3>
+    <h3 class="sidebar-title">Contact Seller</h3>
     <div class="s-border"></div>
     <div class="m-border"></div>
     <div class="Subscribe-box" aria-label="Agency contact form">
@@ -10,11 +11,13 @@
         {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
         <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>
         {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
-        <div><label class="mt-2">Meassage<span style="color:red">*</span></label></div>
-        {!! Form::textarea('message',
-        'I would like to inquire about your property ['.$property->reference.']. Please contact me at your earliest convenience.', array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
+        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
+        <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
+        I would like to gather information about your property <a href="{{$property->property_detail_path()}}" style="text-decoration:underline; color:blue">{{$property->title}} </a> being displayed at <a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com </a> <br><br> Please contact me at your earliest by phone or by email.
+        </div>
+                        {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
         <div class="mt-2">
-            {{ Form::bsRadio('i am','Buyer', ['required' => true, 'list' => ['Buyer', 'Agent', 'Other']]) }}
+            {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent']]) }}
         </div>
         @if(!empty($agency))
             {{ Form::hidden('agent',$agency->id)}}
@@ -22,17 +25,17 @@
             {{ Form::hidden('property',$property->id)}}
         @endif
         <div class="text-center">
-            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-success','id'=>'send-mail']) }}
+            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
         </div>
         {{ Form::close() }}
-        <button class="btn btn-block btn-outline-success mt-2" data-toggle="modal" data-target="#CallModel">Call</button>
+        <button class="btn btn-block mt-2 btn-call" data-toggle="modal" data-target="#CallModel">Call</button>
     </div>
 </div>
 
 <!--model-->
 <div class="modal fade" id="CallModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-        <div class="modal-content" style="border-bottom: #28a745 5px solid; border-top: #28a745 5px solid; border-radius: 5px">
+        <div class="modal-content">
             <!--Header-->
             <div class="modal-header">
                 <h5 class="modal-title" id="myModalLabel">Contact Us</h5>
@@ -44,10 +47,12 @@
             <div class="modal-body">
                 <div class="container" style="font-size: 12px; color: #555">
                     <div class="text-center">
-                        <div> {{ $property->agency !== null ? $property->agency: '' }} </div>
-                        <div>Please use property reference</div>
-                        <div style="font-weight: bold"> {{ $property->reference }} </div>
-                        <div>while calling us</div>
+                    <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font" title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a> </div>
+                            <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
+                            <div class="mb-2">Please use property reference</div>
+                            <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
+                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+                   
                     </div>
 
                     <table class="table table-borderless">
@@ -58,11 +63,17 @@
                         </tr>
                         <tr>
                             <td>Phone No</td>
-                            <td class="font-weight-bold">{{$property->phone !== null ?$property->phone :''}}</td>
+                            @if($property->phone !== null)
+                                    <td class="font-weight-bold">{{$property->phone}}</td>
+                                @elseif($property->agency_phone !== null)
+                                    <td class="font-weight-bold">{{$property->phone}}</td>
+                                @else
+                                    <td class="font-weight-bold">-</td>
+                                @endif
                         </tr>
                         <tr>
                             <td>Agent</td>
-                            <td class="font-weight-bold">{{ ucwords($property->contact_person) }}</td>
+                            <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person:$property->agent}}</td>
                         </tr>
                         </tbody>
                     </table>
