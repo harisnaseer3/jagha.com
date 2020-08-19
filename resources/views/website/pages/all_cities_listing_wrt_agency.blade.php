@@ -37,7 +37,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right mt-0">

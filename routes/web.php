@@ -20,6 +20,9 @@ Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
 Route::get('key-partners', 'AgencyController@listingKeyPartners')->name('key-partners');
+//get featured or key partner on city base
+Route::get('{agency}-partners/{city}', 'AgencyController@listingPartnersCitywise')->name('city.wise.partners');
+
 
 
 Route::get('/{type}_property', 'PropertyController@getPropertyListing')->name('properties.get_listing');

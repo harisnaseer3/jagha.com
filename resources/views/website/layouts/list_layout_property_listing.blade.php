@@ -97,15 +97,14 @@
                         @endif
                         @if(request()->query('area_unit') != null)
                             <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
-=
                                 <span>
-                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal (16 marla)
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Marla
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
+                                    @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal (16 marla)
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'marla'){{ number_format($property->area_in_marla,2) }} Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
                                     @endif
                                 </span>
                             </li>
@@ -173,7 +172,9 @@
                         <a><i class="fa fa-user"></i> {{ $property->contact_person != ''? $property->contact_person: $property->agent }}</a>
                     </div>
                     <div class="pull-right">
-                        <a aria-label="Listing creation date"><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}</a>
+                        <a aria-label="Listing creation date"><i class="flaticon-time"></i>
+                            {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans(['parts' => 2]) }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -193,7 +194,8 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center">
-                        <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font" title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a> </div>
+                            <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font"
+                                                 title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                             <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property reference</div>
                             <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>

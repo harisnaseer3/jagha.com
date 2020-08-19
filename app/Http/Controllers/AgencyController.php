@@ -25,14 +25,8 @@ class AgencyController extends Controller
      */
     public function index()
     {
-
-        $cities_count = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
-            ->where('agencies.status', '=', 'verified')
-            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
-            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
-            ->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
         $data = [
-            'agencies' => $cities_count,
+            'agencies' => $this->_agencyCount()->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get(),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -43,7 +37,15 @@ class AgencyController extends Controller
     function _listingFrontend()
     {
         return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
-            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city','agency_cities.city_id')
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city', 'agency_cities.city_id')
+            ->where('agencies.status', '=', 'verified')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
+    }
+
+    function _agencyCount()
+    {
+        return (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
@@ -62,7 +64,7 @@ class AgencyController extends Controller
 
         $agencies = $this->_listingFrontend()
             ->where('agency_cities.city_id', '=', $city_id->id)
-            ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing','agency_cities.city_id')
+            ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id')
             ->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
 
@@ -76,7 +78,7 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-
+//show properties of agency
     public function show(string $city, string $slug, string $agency)
     {
         $properties = (new Property)
@@ -134,7 +136,6 @@ class AgencyController extends Controller
 
     }
 
-
     public function create()
     {
         return view('website.account.agency_create', ['table_name' => 'users', 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
@@ -142,16 +143,50 @@ class AgencyController extends Controller
 
     public function listingFeaturedPartners()
     {
+
         $agencies = $this->_listingFrontend()
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
+
         $agencies->orderBy('agencies.created_at', 'DESC');
+        $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
         $property_types = (new PropertyType)->all();
+
         $limit = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+
+        $data = [
+            'property_types' => $property_types,
+            'agencies' => $agencies->paginate($limit),
+            'agencies_count' => $agencyCount,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+
+        ];
+        return view('website.pages.agency_listing', $data);
+    }
+
+    function listingPartnersCitywise(string $agency, string $city)
+    {
+        $city_name = ucwords(str_replace('-', ' ', $city));
+        $city_id = City::select('id')->where('name', '=', $city_name)->first();
+        $limit = '';
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+
+        $agencies = $this->_listingFrontend()
+            ->where('agency_cities.city_id', '=', $city_id->id);
+        if ($agency === 'featured') $agencies->where('agencies.featured_listing', '=', 1);
+        if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
+
+        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id')
+            ->orderBy('agencies.created_at', 'DESC');
+        $property_types = (new PropertyType)->all();
 
         $data = [
             'property_types' => $property_types,
@@ -169,6 +204,8 @@ class AgencyController extends Controller
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
+        $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
+
         $property_types = (new PropertyType)->all();
         $limit = '';
         if (request()->input('limit') !== null)
@@ -179,6 +216,7 @@ class AgencyController extends Controller
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
+            'agencies_count' => $agencyCount,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 

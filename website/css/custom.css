@@ -1456,7 +1456,6 @@ span.post-head-cat,
     padding: 7px 4px !important;
 }
 .price-ratings-box, .listing-time {
-
     background: rgb(0 0 0 / 54%);
 }
 .property-description a:hover {
@@ -1485,3 +1484,14 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
     color: white !important;
     background-color: #2238D8;
 }
+#close-icon{
+    border-color: #274abb;
+}
+.detail-tab-style
+{
+    padding: 5px !important;
+    background-color: #444444 !important;
+    border-radius: .25rem;
+
+}
+
