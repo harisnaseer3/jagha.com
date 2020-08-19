@@ -1487,4 +1487,11 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
 #close-icon{
     border-color: #274abb;
 }
+.detail-tab-style
+{
+    padding: 5px !important;
+    background-color: #444444 !important;
+    border-radius: .25rem;
+
+}
 

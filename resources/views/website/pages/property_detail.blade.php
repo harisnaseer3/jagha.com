@@ -156,7 +156,7 @@
 
                         <!-- Tabbing box start -->
                         <div class="tabbing tabbing-box tb-2 mb-40">
-                            <ul class="nav nav-tabs" id="carTab" role="tablist" style="padding:5px; background-color: black">
+                            <ul class="nav nav-tabs detail-tab-style" id="carTab" role="tablist" >
                                 <li class="nav-item li-detail-page mr-1">
                                     <a class="text-transform nav-link active show detail-nav-style" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one"
                                        aria-selected="true">Overview</a>

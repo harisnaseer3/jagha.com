@@ -94,7 +94,7 @@
                     </div>
                     <ul class="facilities-list clearfix grid-view-facilities">
                         @if(request()->query('area_unit') != null)
-                            <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
+                            <li aria-label="land area" style="width:100%;"><i class="fas fa-arrows-alt"></i>
                                 <span>
                                     @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal
