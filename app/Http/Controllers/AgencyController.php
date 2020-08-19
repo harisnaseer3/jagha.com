@@ -143,13 +143,13 @@ class AgencyController extends Controller
 
     public function listingFeaturedPartners()
     {
-
         $agencies = $this->_listingFrontend()
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
 
         $agencies->orderBy('agencies.created_at', 'DESC');
         $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
+
         $property_types = (new PropertyType)->all();
 
         $limit = '';
@@ -182,7 +182,7 @@ class AgencyController extends Controller
         $agencies = $this->_listingFrontend()
             ->where('agency_cities.city_id', '=', $city_id->id);
         if ($agency === 'featured') $agencies->where('agencies.featured_listing', '=', 1);
-        if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
+        else if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
 
         $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id')
             ->orderBy('agencies.created_at', 'DESC');
@@ -204,7 +204,7 @@ class AgencyController extends Controller
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
         $agencies->orderBy('agencies.created_at', 'DESC');
-        $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
+        $agencyCount = $this->_agencyCount()->where('agencies.key_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
 
         $property_types = (new PropertyType)->all();
         $limit = '';
