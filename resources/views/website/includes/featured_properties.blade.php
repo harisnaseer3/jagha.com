@@ -47,9 +47,11 @@
                                 <ul class="facilities-list clearfix">
                                     <li style="width: 40%; margin-top: 3px;text-align: center">
                                         <i class="fas fa-arrows-alt"></i>
-                                        <p>{{ number_format($feature_property->land_area, 2) }} @if($feature_property->area_unit === 'Square Meters')
-                                                Sq.M. @elseif($feature_property->area_unit === 'Square Feet') Sq.F. @elseif ($feature_property->area_unit === 'Square Yards')
-                                                Sq.Yd. @else {{$feature_property->area_unit}} @endif</p>
+                                        <p>{{ number_format($feature_property->land_area, 2) }}
+                                            @if($feature_property->area_unit === 'Square Meters')Sq.M.
+                                            @elseif($feature_property->area_unit === 'Square Feet') Sq.F.
+                                            @elseif ($feature_property->area_unit === 'Square Yards')Sq.Yd.
+                                            @else {{$feature_property->area_unit}} @endif</p>
                                     </li>
                                     @if($feature_property->bedrooms > 0)
                                         <li style="width: 30%; text-align: left">
