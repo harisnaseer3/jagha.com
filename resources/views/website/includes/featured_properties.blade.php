@@ -38,10 +38,12 @@
                                         </a>
                                     </h2>
                                     <div class="location">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        {{\Illuminate\Support\Str::limit($feature_property->location, 20, $end='...')}}
-                                        <div class="grid-area mt-2 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 20, $end='...')}}</div>
-                                        <div class="mt-2 property-description">
+                                        <a href="javascript:void(0)" aria-label="Listing location">
+                                            <i class="fa fa-map-marker"></i>
+                                            {{ \Illuminate\Support\Str::limit($feature_property->location , 12, $end='...')}}
+                                            <span class="grid-area hidden-md">, {{ \Illuminate\Support\Str::limit($feature_property->city, 11, $end='...') }}</span>
+                                        </a>
+                                        <div class="mt-3 property-description">
                                             <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->sub_type}} for {{$feature_property->purpose}}"
                                                class="color-blue text-transform">
                                                 {{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 27, $end='..')}}
