@@ -22,11 +22,13 @@
                 <div class="col-lg-9 col-md-12">
                     @if(strpos( request()->segment(1), 'agents-' ) !== false)
                         <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
+
                          <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Home</span></a>
                             <meta itemprop="position" content="1">
                         </span>
+
                             <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">

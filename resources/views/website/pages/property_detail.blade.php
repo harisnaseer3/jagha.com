@@ -25,15 +25,25 @@
                         <div id="propertiesDetailsSlider" class="carousel properties-details-sliders slide mb-40">
                             <!-- Heading properties start -->
                             <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2">
-                        <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                        <a href="{{asset('/')}}" title="PropertyManagement" itemprop="item">
-                            <span itemprop="name" class="m-0">PropertyManagement</span></a>
-                            <meta itemprop="position" content="1"></span>
-                                <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
+                                <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                    <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                                        <span class="breadcrumb-link" itemprop="name">Home</span></a>
+                                    <meta itemprop="position" content="1">
+                                </span>
+
+                                <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+
                                 <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="javascript:void(0)" title="{{$property->title}}" itemprop="item"><span itemprop="name"> {{$property->title}}</span></a>
-                            <meta itemprop="position" content="2">
-                        </span>
+                                    <a href="{{asset('/')}}" title="Property Portal" itemprop="item">
+                                        <span itemprop="name" class="m-0">Property</span></a>
+                                    <meta itemprop="position" content="2"></span>
+
+                                <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
+
+                                <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                    <a href="javascript:void(0)" title="{{$property->title}}" itemprop="item"><span itemprop="name"> {{$property->title}}</span></a>
+                                    <meta itemprop="position" content="3">
+                                </span>
                             </div>
                             <div class="heading-properties-2">
                                 <div class="row">
@@ -100,7 +110,7 @@
                             @else
                                 <div class="carousel-inner">
                                     <div class="active item carousel-item" data-slide-number="0">
-{{--                                        <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
+                                        {{--                                        <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
                                         <div class="price-ratings-box">
                                             @if (\Illuminate\Support\Facades\Auth::guest())
                                                 <div class="favorite-property ratings" style="font-size: 20px;" aria-label="add to favourite">
@@ -129,7 +139,7 @@
                                     <li class="list-inline-item active">
                                         <a id="carousel-selector-1" class="selected" data-slide-to="0"
                                            data-target="#propertiesDetailsSlider">
-{{--                                            <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
+                                            {{--                                            <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
                                         </a>
                                     </li>
                                 </ul>
@@ -156,7 +166,7 @@
 
                         <!-- Tabbing box start -->
                         <div class="tabbing tabbing-box tb-2 mb-40">
-                            <ul class="nav nav-tabs detail-tab-style" id="carTab" role="tablist" >
+                            <ul class="nav nav-tabs detail-tab-style" id="carTab" role="tablist">
                                 <li class="nav-item li-detail-page mr-1">
                                     <a class="text-transform nav-link active show detail-nav-style" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one"
                                        aria-selected="true">Overview</a>
@@ -235,7 +245,7 @@
                                                     <ul class="amenities custom-amenities">
                                                         {{--   {{dd(json_decode($property->features,true)['features'])}}--}}
                                                         @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                            @if($value !== null && $value !== 'None' && $value !=='no' && $key !== '_method' && $key !== 'data-index' && $value !== '0')
+                                                            @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0')
                                                                 <li class="mb-5">
                                                                     <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                     {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
@@ -291,7 +301,7 @@
                     </div>
                     @if (count($similar_properties))
                         <div class="tab-pane" id="six" role="tabpanel" aria-labelledby="6-tab">
-{{--                            @include('website.includes.similar_properties')--}}
+                            @include('website.includes.similar_properties')
                         </div>
                     @endif
                 </div>
@@ -308,14 +318,15 @@
                                 <div class="row">
                                     @if($agency->logo !==null)
                                         <div class="col-sm-6 text-center">
-                                            <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 80%">
+                                            <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                                                 alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 80%">
                                         </div>
                                     @endif
                                     <div class="col-sm-6 mt-1">
                                         <div style="font-size: 1rem">
                                             @if($agency->status === 'verified')
-                                            <div class="mb-3">
-                                                <span  style="color:green"><i class="far fa-shield-check"></i> Verified</span>
+                                                <div class="mb-3">
+                                                    <span style="color:green"><i class="far fa-shield-check"></i> Verified</span>
                                                 </div>
                                             @endif
                                             @if($agency->featured_listing === 1)
@@ -586,12 +597,12 @@
 
             $('#send-mail').click(function (event) {
                 $('input[name=message]').val(editable_div.html());
-                    editable_div.click(function () {
-                        if (editable_div.html() !== '') {
-                            $('input[name=message]').val(editable_div.html());
-                        }
-                    });
-                
+                editable_div.click(function () {
+                    if (editable_div.html() !== '') {
+                        $('input[name=message]').val(editable_div.html());
+                    }
+                });
+
                 if (form.valid()) {
                     event.preventDefault();
                     jQuery.ajaxSetup({

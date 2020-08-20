@@ -9,10 +9,10 @@
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="sorting record-limit none-992">
-                <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
-                <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
-                <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
-                <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
+                <option value="15" {{ request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
+                <option value="30" {{ request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
+                <option value="45" {{ request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
+                <option value="60" {{ request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
             </select>
             <select class="sorting area-filter none-992">
                 <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>

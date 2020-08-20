@@ -3441,6 +3441,7 @@ return array(
     'PhpParser\\Parser\\Tokens' => $vendorDir . '/nikic/php-parser/lib/PhpParser/Parser/Tokens.php',
     'PhpParser\\PrettyPrinterAbstract' => $vendorDir . '/nikic/php-parser/lib/PhpParser/PrettyPrinterAbstract.php',
     'PhpParser\\PrettyPrinter\\Standard' => $vendorDir . '/nikic/php-parser/lib/PhpParser/PrettyPrinter/Standard.php',
+    'PropertyCountByAgencySeeder' => $baseDir . '/database/seeds/PropertyCountByAgencySeeder.php',
     'PropertyCountByCitySeeder' => $baseDir . '/database/seeds/PropertyCountByCitySeeder.php',
     'PropertyCountByLocationSeeder' => $baseDir . '/database/seeds/PropertyCountByLocationSeeder.php',
     'PropertyCountByPropertyPurposeSeeder' => $baseDir . '/database/seeds/PropertyCountByPropertyPurposeSeeder.php',

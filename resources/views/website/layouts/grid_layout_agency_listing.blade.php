@@ -60,6 +60,8 @@
                             {{$agency->city}}
                         </a>
                     </div>
+                    <div class="color-555 mt-2 date-box"><span>Total Properties: </span> {{ $agency->count }}</div>
+                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>
                 </div>
                 <div class="row contact-container" style="padding: 0 20px;">
                     {{ Form::hidden('phone',$agency->phone, array_merge(['class'=>'number']))}}
@@ -85,11 +87,10 @@
                     <!--Body-->
                     <div class="modal-body">
                         <div class="container color-555 font-12">
-                        <div class="text-center mb-2">
-                            <div class = "mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
-                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
-
-                        </div>
+                            <div class="text-center mb-2">
+                                <div class="mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
+                                <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+                            </div>
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>
