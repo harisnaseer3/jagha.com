@@ -27,13 +27,14 @@
                         <div class="card-body">
                             @if(trim(explode('&',$type)[0]) =='Houses')<h2 class="all-cities-header">{{trim(explode('&',$type)[0])}}</h2>@endif
                             <div class="row">
-                            @if(isset($cities[trim(strtolower(explode('&',$type)[0]))]))
+                                @if(isset($cities[trim(strtolower(explode('&',$type)[0]))]))
                                     @foreach($cities[trim(strtolower(explode('&',$type)[0]))] as  $city)
                                         <div class="col-sm-3 my-2">
                                             <a href="{{route('sale.property.search', ['sub_type' => lcfirst(isset($city->property_sub_type)?$city->property_sub_type:$city->property_type),
                                                     'city' => lcfirst($city->city_name) ,
                                                     'purpose'=>lcfirst($city->property_purpose),
-                                                    'sort'=>'newest'])}}"
+                                                    'sort'=>'newest',
+                                                    'limit'=>15])}}"
                                                title="{{isset($city->property_sub_type)?$city->property_sub_type.'s':$city->property_type}}  in {{$city->city_name}}"
                                                class="breadcrumb-link">
                                                 {{$city->city_name}} ({{$city->property_count}})
@@ -48,7 +49,7 @@
                                     @foreach($cities['flats'] as  $city2)
                                         <div class="col-sm-3 my-2">
                                             <a href="{{route('sale.property.search', ['sub_type' => lcfirst($city2->property_sub_type), 'city' => lcfirst($city2->city_name) ,
-                                                    'purpose'=>lcfirst($city2->property_purpose), 'sort'=>'newest'])}}"
+                                                    'purpose'=>lcfirst($city2->property_purpose), 'sort'=>'newest','limit'=>15])}}"
                                                title="{{$city2->property_sub_type.'s'}}  in {{$city2->city_name}}"
                                                class="breadcrumb-link">
                                                 {{$city2->city_name}} ({{$city2->property_count}})
@@ -117,7 +118,7 @@
                         }
                     });
                 }
-                setInterval(function() {
+                setInterval(function () {
                     var docHeight = $(window).height();
                     var footerHeight = $('#foot-wrap').height();
                     var footerTop = $('#foot-wrap').position().top + footerHeight;

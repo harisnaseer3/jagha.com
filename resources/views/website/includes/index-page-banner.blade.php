@@ -178,7 +178,7 @@
                                                 <div class="slick-slide-item" aria-label="key agency">
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <a href="{{route('cities.sale.property',['city'=> strtolower(str_replace(' ','_',$city->city)), 'sort'=>'newest'])}}"
+                                                            <a href="{{route('cities.sale.property',['city'=> strtolower(str_replace(' ','_',$city->city)), 'sort'=>'newest','limit'=>15])}}"
                                                                class="popular-city-font mb-2 mt-5">{{$city->city}}</a>
                                                             <p class="popular-count-font">({{$city->count}})</p>
                                                         </div>

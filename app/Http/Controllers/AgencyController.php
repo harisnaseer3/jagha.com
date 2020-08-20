@@ -37,10 +37,12 @@ class AgencyController extends Controller
     function _listingFrontend()
     {
         return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
-            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city', 'agency_cities.city_id')
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'agency_cities.city_id', 'property_count_by_agencies.property_count AS count')
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
-            ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
     }
 
     function _agencyCount()
@@ -64,7 +66,7 @@ class AgencyController extends Controller
 
         $agencies = $this->_listingFrontend()
             ->where('agency_cities.city_id', '=', $city_id->id)
-            ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id')
+            ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
             ->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
 
@@ -79,6 +81,7 @@ class AgencyController extends Controller
     }
 
 //show properties of agency
+//TODO: change property method
     public function show(string $city, string $slug, string $agency)
     {
         $properties = (new Property)
@@ -105,6 +108,7 @@ class AgencyController extends Controller
 
         $sort = '';
         $limit = '';
+        $sort_area = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
@@ -115,19 +119,21 @@ class AgencyController extends Controller
         else
             $sort = 'newest';
 
-        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
 
+
+        $properties = (new PropertyController)->sortPropertyListing($sort, $sort_area, $properties);
+
+        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
+            $lastPage = ceil((int)$properties->count() / $limit);
+            request()->merge(['page' => (int)$lastPage]);
+        }
         $property_types = (new PropertyType)->all();
-//        $aggregates = $this->_getPropertyAggregates();
-
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),
-//            'aggregates' => $aggregates,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -184,7 +190,7 @@ class AgencyController extends Controller
         if ($agency === 'featured') $agencies->where('agencies.featured_listing', '=', 1);
         else if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
 
-        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id')
+        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
             ->orderBy('agencies.created_at', 'DESC');
         $property_types = (new PropertyType)->all();
 

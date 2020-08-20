@@ -12,20 +12,18 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
-use Artesaos\SEOTools\Facades\OpenGraph;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\TwitterCard;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Exception;
 use Illuminate\Http\Request;
+
+//use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Throwable;
-use Spatie\SchemaOrg\Schema;
+use function GuzzleHttp\Promise\all;
 
 
 class PropertyController extends Controller
@@ -120,6 +118,7 @@ class PropertyController extends Controller
 //    list all featured properties
     public function featuredProperties(Request $request)
     {
+//        on a specific limit if last page greater than first page return to page 1
         $properties = $this->listingfrontend()
             ->where('properties.premium_listing', '=', 1);
 
@@ -140,13 +139,17 @@ class PropertyController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
-
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
+            $lastPage = ceil((int)$properties->count() / $limit);
+            request()->merge(['page' => (int)$lastPage]);
+        }
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $data = [
-            'params' => ['sort' => $sort],
+            'params' => request()->all(),
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $properties->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ];
@@ -361,16 +364,7 @@ class PropertyController extends Controller
 
 
         //similar properties criteria same city, type and subtype
-        $similar_properties = (new Property)
-            ->select('properties.id', 'title', 'price', 'land_area', 'area_unit', 'bedrooms', 'bathrooms', 'features', 'premium_listing',
-                'super_hot_listing', 'hot_listing', 'magazine_listing', 'contact_person', 'email', 'views', 'status', 'properties.created_at', 'properties.updated_at',
-                'locations.name AS location', 'cities.name AS city', 'p.name AS image', 'properties.favorites', 'properties.views')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('properties.id', '=', 'p.property_id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
+        $similar_properties = $this->listingFrontend()
             ->where([
                 ['properties.id', '<>', $property->id],
                 ['properties.city_id', '=', $property->city_id],
@@ -728,7 +722,7 @@ class PropertyController extends Controller
     }
 
     /* function call from top header (nav bar)*/
-    public function getPropertyListing(string $type)
+    public function getPropertyListing(Request $request, string $type)
     {
         $properties = $this->listingFrontend()
             ->where('properties.type', '=', $type);
@@ -742,22 +736,28 @@ class PropertyController extends Controller
         else
             $sort = 'newest';
 
-        if (request()->input('limit') !== null)
+        if (request()->input('limit') !== null) {
             $limit = request()->input('limit');
-        else
+        } else
             $limit = '15';
 
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
+        if ($request->has('page') && $request->input('page') > ceil($properties->count() / $limit)) {
+            $lastPage = ceil((int)$properties->count() / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
         (new MetaTagController())->addMetaTags();
 
         $property_types = (new PropertyType)->all();
 
         $data = [
-            'params' => ['sort' => $sort],
+            'params' => $request->all(),
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $properties->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
 
@@ -884,16 +884,22 @@ class PropertyController extends Controller
             $limit = request()->input('limit');
         else
             $limit = '15';
-
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
+
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
+        if ($request->has('page') && $request->input('page') > ceil($properties->count() / $limit)) {
+            $lastPage = ceil((int)$properties->count() / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $data = [
-            'params' => ['sort' => 'newest'],
+            'params' => $request->all(),
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $properties->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -936,14 +942,21 @@ class PropertyController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
+        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
+            $lastPage = ceil((int)$properties->count() / $limit);
+            request()->merge(['page' => (int)$lastPage]);
+        }
+
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
         $property_types = (new PropertyType)->all();
 
         $data = [
-            'params' => ['sort' => 'newest'],
+            'params' => request()->all(),
             'property_types' => $property_types,
-            'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+            'properties' => $properties->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -1086,13 +1099,20 @@ class PropertyController extends Controller
             if (request()->input('area_sort') !== null)
                 $sort_area = request()->input('area_sort');
 
+            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
+            if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
+                $lastPage = ceil((int)$properties->count() / $limit);
+                request()->merge(['page' => (int)$lastPage]);
+            }
+
             $property_types = (new PropertyType)->all();
             (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
             $data = [
-                'params' => ['sort' => 'newest'],
+                'params' => request()->all(),
                 'property_types' => $property_types,
-                'properties' => $this->sortPropertyListing($sort, $sort_area, $properties)->paginate($limit),
+                'properties' => $properties->paginate($limit),
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ];

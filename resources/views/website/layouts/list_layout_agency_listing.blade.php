@@ -63,16 +63,23 @@
                             <span class="m-2">|</span>
                             <span><a><i class="fa fa-user"></i><span class="m-1"> {{$agency->agent}}</span></a></span>
                         @endif
-
                     </h5>
+                    <div class="row">
+                        <div class="col-md-6 color-555">
+                            <span>Total Properties:</span> {{ $agency->count }}
+                        </div>
+                        <div class="col-md-6 color-555">
+                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}
+                        </div>
+                    </div>
+
                     <div class="row call-email-container contact-container">
                         {{ Form::hidden('phone',$agency->phone, array_merge(['class'=>'number']))}}
-                      
+
                         @if(!empty($agency))
                             {{ Form::hidden('agent',$agency->id)}}
                         @endif
                         @if($agency->description !='')
-                        
                             <div class="col-sm-12 my-2">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
@@ -109,7 +116,7 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center mb-2">
-                            <div class = "mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
+                            <div class="mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
                             <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
 
                         </div>

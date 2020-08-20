@@ -4010,6 +4010,7 @@ class ComposerStaticInit99d0ae252d7d858c09f11084765f0a84
         'PhpParser\\Parser\\Tokens' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Parser/Tokens.php',
         'PhpParser\\PrettyPrinterAbstract' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/PrettyPrinterAbstract.php',
         'PhpParser\\PrettyPrinter\\Standard' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/PrettyPrinter/Standard.php',
+        'PropertyCountByAgencySeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByAgencySeeder.php',
         'PropertyCountByCitySeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByCitySeeder.php',
         'PropertyCountByLocationSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByLocationSeeder.php',
         'PropertyCountByPropertyPurposeSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByPropertyPurposeSeeder.php',
