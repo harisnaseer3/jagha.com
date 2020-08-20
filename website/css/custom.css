@@ -1517,3 +1517,12 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
         display: none
     }
 }
+@media (max-width: 768px)
+{
+.property-box-2 .price-ratings-box {
+    right: 0;
+}
+.property-box-2 .listing-time {
+    right: 0;
+}
+}
