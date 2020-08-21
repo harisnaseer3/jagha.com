@@ -1,4 +1,4 @@
-<div class="similar-properties mb-30 detail-page-similar-properties" style="margin-top: 100px">
+<div class="similar-properties detail-page-similar-properties" style="margin-top: 100px">
     <!-- Main title -->
     <h3 class="heading-2">Similar Properties</h3>
     <div class="row similar-properties">

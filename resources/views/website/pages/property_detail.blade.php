@@ -31,9 +31,7 @@
                                         <span class="breadcrumb-link" itemprop="name">Home</span></a>
                                     <meta itemprop="position" content="1">
                                 </span>
-
                                 <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-
                                 <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{asset('/')}}" title="Property Portal" itemprop="item">
                                         <span itemprop="name" class="m-0">Property</span></a>
@@ -138,8 +136,7 @@
                                 <!-- main slider carousel nav controls -->
                                 <ul class="carousel-indicators smail-properties list-inline nav nav-justified">
                                     <li class="list-inline-item active">
-                                        <a id="carousel-selector-1" class="selected" data-slide-to="0"
-                                           data-target="#propertiesDetailsSlider">
+                                        <a id="carousel-selector-1" class="selected" data-slide-to="0" data-target="#propertiesDetailsSlider">
                                             {{--                                            <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
                                         </a>
                                     </li>
@@ -148,32 +145,15 @@
                             @endif
                         </div>
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content" style="width:80%">
-                                    <div class="modal-body">
-                                        <button type="button" class="close pt-0" data-dismiss="modal" aria-label="Close"
-                                                style="padding: 1rem; margin: -1rem -1rem -1rem auto;">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <div class="container mt-2">
-                                            <a href="{{route('login')}}" class="btn btn-block btn-outline">Login</a>
-                                            <a href="{{route('register')}}" class="btn btn-block btn-outline">Register</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Tabbing box start -->
                         <div class="tabbing tabbing-box tb-2 mb-40">
                             <ul class="nav nav-tabs detail-tab-style" id="carTab" role="tablist">
                                 <li class="nav-item li-detail-page mr-1">
-                                    <a class="text-transform nav-link active show detail-nav-style" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one"
-                                       aria-selected="true">Overview</a>
+                                    <a class="text-transform nav-link active show detail-nav-style" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one" aria-selected="true">Overview</a>
                                 </li>
                                 <li class="nav-item li-detail-page text-transform mr-1">
-                                    <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" >Location & Nearby</a>
+                                    <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" aria-controls="2" aria-selected="true">Location & Nearby</a>
                                 </li>
                                 @if(count($similar_properties))
                                     <li class="nav-item li-detail-page text-transform mr-1">
@@ -185,112 +165,98 @@
                                         <a class="nav-link" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Video</a>
                                     </li>
                                 @endif
-                              
-                              
                             </ul>
-                            <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
-                                <div class="properties-description mb-50">
-                                    <h3 class="heading-2 text-transform">
-                                        Overview
-                                    </h3>
-                                    <!-- Properties detail start -->
-                                    <div class="property-details mb-40">
-                                        <h5 style="font-weight: 400">Details</h5>
-                                        <div class="row">
-                                            <div class="col-md-4 col-sm-6">
-                                                <ul>
-                                                    <li aria-label="value"><strong>Price: </strong>PKR {{ $property->price }}</li>
-                                                    <li aria-label="value"><strong>Property Type: </strong> {{ $property->sub_type }}</li>
-                                                    @if($property->city)
-                                                        <li aria-label="value"><strong>City: </strong>{{$property->city}}</li>
-                                                    @endif
-                                                    <li aria-label="value"><strong>Added: </strong>{{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}</li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <ul>
-                                                    @if(isset($property->land_area))
-                                                        <li aria-label="value"><strong>Land area: </strong>{{ number_format($property->land_area) }} {{ $property->area_unit }} </li>
-                                                    @endif
-                                                    @if($property->bathrooms > 0)
-                                                        <li aria-label="value"><strong>Bathrooms: </strong>{{number_format($property->bathrooms)}} </li>
-                                                    @endif
-                                                    @if($property->bedrooms > 0)
-                                                        <li aria-label="value"><strong>Bedrooms: </strong>{{ number_format($property->bedrooms) }}</li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-4 col-sm-6">
-                                                <ul>
-                                                    <li aria-label="value"><strong>Property Owner: </strong>{{$property->contact_person}}</li>
-                                                    @if(isset($property->phone))
-                                                        <li aria-label="value"><strong>Phone: </strong>{{$property->phone}}</li>
-                                                    @endif
-                                                </ul>
-                                            </div>
+                        </div>
+                        <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
+                            <div class="properties-description mb-50">
+                                <h3 class="heading-2 text-transform">
+                                    Overview
+                                </h3>
+                                <!-- Properties detail start -->
+                                <div class="property-details mb-40">
+                                    <h5 style="font-weight: 400">Details</h5>
+                                    <div class="row">
+                                        <div class="col-md-4 col-sm-6">
+                                            <ul>
+                                                <li aria-label="value"><strong>Price: </strong>PKR {{ $property->price }}</li>
+                                                <li aria-label="value"><strong>Property Type: </strong> {{ $property->sub_type }}</li>
+                                                @if($property->city)
+                                                    <li aria-label="value"><strong>City: </strong>{{$property->city}}</li>
+                                                @endif
+                                                <li aria-label="value"><strong>Added: </strong>{{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <ul>
+                                                @if(isset($property->land_area))
+                                                    <li aria-label="value"><strong>Land area: </strong>{{ number_format($property->land_area) }} {{ $property->area_unit }} </li>
+                                                @endif
+                                                @if($property->bathrooms > 0)
+                                                    <li aria-label="value"><strong>Bathrooms: </strong>{{number_format($property->bathrooms)}} </li>
+                                                @endif
+                                                @if($property->bedrooms > 0)
+                                                    <li aria-label="value"><strong>Bedrooms: </strong>{{ number_format($property->bedrooms) }}</li>
+                                                @endif
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-4 col-sm-6">
+                                            <ul>
+                                                <li aria-label="value"><strong>Property Owner: </strong>{{$property->contact_person}}</li>
+                                                @if(isset($property->phone))
+                                                    <li aria-label="value"><strong>Phone: </strong>{{$property->phone}}</li>
+                                                @endif
+                                            </ul>
                                         </div>
                                     </div>
-                                    <!-- Properties description start -->
-                                    <div class="property-description mb-40">
-                                        <h5 style="font-weight: 400">Description</h5>
-                                        <p style="white-space: pre-line" class="description" aria-label="property description">{{$property->description}}</p>
-                                        <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
-                                    </div>
-                                    <!-- Properties condition start -->
-                                    <!-- Properties amenities start -->
-                                    @if($property->features !== null)
-                                        <div class="properties-amenities mb-40">
-                                            <h3 class="heading-2">
-                                                Features
-                                            </h3>
-                                            <div>
-                                                <div class="features-list">
-                                                    <ul class="amenities custom-amenities">
-                                                        {{--   {{dd(json_decode($property->features,true)['features'])}}--}}
-                                                        @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                            @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0')
-                                                                <li class="mb-5 pt-1">
-                                                                    <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
-                                                                    {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                </div>
-                                                <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
-                                            </div>
-                                        </div>
-                                    @endif
                                 </div>
+                                <!-- Properties description start -->
+                                <div class="property-description mb-40">
+                                    <h5 style="font-weight: 400">Description</h5>
+                                    <p style="white-space: pre-line" class="description" aria-label="property description">{{$property->description}}</p>
+                                    <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
+                                </div>
+                                <!-- Properties condition start -->
+                                <!-- Properties amenities start -->
+                                @if($property->features !== null)
+                                    <div class="properties-amenities mb-40">
+                                        <h3 class="heading-2">
+                                            Features
+                                        </h3>
+                                        <div>
+                                            <div class="features-list">
+                                                <ul class="amenities custom-amenities">
+                                                    {{--   {{dd(json_decode($property->features,true)['features'])}}--}}
+                                                    @foreach(json_decode($property->features,true)['features'] as $key => $value)
+                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0')
+                                                            <li class="mb-5 pt-1">
+                                                                <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
+                                                                {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                            <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="2-tab">
-                            <div class="location mb-50">
+                        <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
+
+                        </div>
+                        <div>
+                            <div class="location mb-30">
                                 <h3 class="heading-2">Location and Nearby</h3>
                                 @include('website.includes.location_and_nearby')
                             </div>
                         </div>
-                    </div>
-                    @if (count($similar_properties))
-                        <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="3-tab">
-                            @include('website.includes.similar_properties')
-                        </div>
-                    @endif
-                        <!-- @if(!empty(array_filter($floor_plans)))
-                            <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="two-tab">
-                                <div class="floor-plans mb-50">
-                                    <h3 class="heading-2">Floor Plan</h3>
-                                    @foreach($floor_plans as $key => $value)
-                                        <div class="mb-10">
-                                            <h5 style="font-weight: 400">{{$value['title']. ( $key+1)}}</h5>
-                                            <img src="{{asset('storage/floor_plans/'.$value['name'])}}" alt="floor-plans" class="img-fluid">
-                                        </div>
-                                        <hr>
-                                    @endforeach
-                                </div>
+                        @if (count($similar_properties))
+                            <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="3-tab">
+                                @include('website.includes.similar_properties')
                             </div>
                         @endif
-                  -->
+
                         @if(!empty(array_filter($video)))
                             <div class="tab-pane " id="four" role="tabpanel" aria-labelledby="4-tab">
                                 <div class="inside-properties mb-50">
@@ -308,7 +274,23 @@
                                 </div>
                             </div>
                         @endif
-               
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="width:80%">
+                            <div class="modal-body">
+                                <button type="button" class="close pt-0" data-dismiss="modal" aria-label="Close"
+                                        style="padding: 1rem; margin: -1rem -1rem -1rem auto;">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div class="container mt-2">
+                                    <a href="{{route('login')}}" class="btn btn-block btn-outline">Login</a>
+                                    <a href="{{route('register')}}" class="btn btn-block btn-outline">Register</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="sidebar-right">

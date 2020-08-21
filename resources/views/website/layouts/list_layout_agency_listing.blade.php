@@ -45,7 +45,7 @@
                             {{$agency->title}}
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
-                            @if(isset($agency->status) &$agency->status === 'verified')
+                            @if(isset($agency->status) & $agency->status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
                                       title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
                             @endif
@@ -56,7 +56,7 @@
                         </div>
                     </h2>
                     <h5 class="location mb-2">
-                        <span><a href="javascript:void(0)" aria-label="Agency location" title="{{$agency->title}}">
+                        <span><a href="{{route('city.wise.partners',['agency'=>explode('-', request()->segment(1))[0],'city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}" aria-label="Agency location" title="{{$agency->title}}">
                                 <i class="flaticon-location"></i>{{$agency->city}}</a>
                         </span>
                         @if( $agency->agent != '')
