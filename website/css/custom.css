@@ -1511,7 +1511,7 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
     bottom: 0;
     right: 0;
 }
-.listing-time 
+.listing-time
 {
     right: 0;
     top : 0;
@@ -1533,4 +1533,9 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
 .property-box-2 .listing-time {
     right: 0;
 }
+}
+.tooltip-divider{
+    display: inline-block;
+    border-bottom: #999999 1px solid;
+    width: 60%;
 }

@@ -47,7 +47,9 @@
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($agency->status) & $agency->status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
+                                      title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190">
+                                    <i class="far fa-shield-check"></i>
+                                </span>
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
