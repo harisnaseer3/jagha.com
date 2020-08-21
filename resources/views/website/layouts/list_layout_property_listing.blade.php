@@ -66,6 +66,8 @@
                             <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
+                        
+
                             @if(isset($property->agency_status) && $property->agency_status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
                                       title="Become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
@@ -75,26 +77,36 @@
                                <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span>
                            </span>
                             @endif
+                       
                         </div>
+                    
+                      
                     </h2>
                     <h5 class="location">
                         <a aria-label="Listing location" title="{{$property->title}}"><i class="flaticon-location"></i>
                             {{ \Illuminate\Support\Str::limit($property->location, 15, $end='...') }} {{ \Illuminate\Support\Str::limit($property->city, 15, $end='...') }}
                         </a>
                     </h5>
+          
+                       
                     <ul class="facilities-list facilities-list-custom clearfix">
+                        <li aria-label="bedrooms">
                         @if($property->bedrooms > 0)
-                            <li aria-label="bedrooms"><i class="flaticon-furniture"></i>
+                            <i class="flaticon-furniture"></i>
                                 <span>{{ number_format($property->bedrooms) }} Beds</span>
-                            </li>
+                         
                         @endif
+                        </li>
+                        <li aria-label="baths">
                         @if($property->bathrooms > 0)
-                            <li aria-label="baths"><i class="flaticon-holidays"></i>
+                        <i class="flaticon-holidays"></i>
                                 <span>{{ number_format($property->bathrooms) }} Baths</span>
-                            </li>
+                            
                         @endif
+                        </li>
+                        <li aria-label="land area" style="width:50%;">
                         @if(request()->query('area_unit') != null)
-                            <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
+                           <i class="fas fa-arrows-alt"></i>
                                 <span>
                                     @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal (16 marla)
@@ -105,13 +117,19 @@
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
                                     @endif
                                 </span>
-                            </li>
                         @elseif(isset($property->land_area))
-                            <li aria-label="land area" style="width:50%;"><i class="fas fa-arrows-alt"></i>
+                            <i class="fas fa-arrows-alt"></i>
                                 <span> {{ number_format($property->land_area,2) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')
                                         Sq.F. @elseif ($property->area_unit === 'Square Yards') Sq.Yd. @else {{$property->area_unit}} @endif </span>
-                            </li>
+                           
                         @endif
+                        </li>
+                        <!-- <li class="property-agency-logo">
+                        @if(isset($property->logo))
+                  
+                        <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}" title="{{$property->agency}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
+                        @endif
+                        </li>    -->
                     </ul>
                     <div class="row call-email-container contact-container">
                         {{ Form::hidden('phone',$property->cell, array_merge(['class'=>'number']))}}

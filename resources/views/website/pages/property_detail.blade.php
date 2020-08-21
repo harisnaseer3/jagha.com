@@ -4,11 +4,12 @@
 @endsection
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
+
 @section('css_library')
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
 @section('content')
@@ -171,19 +172,21 @@
                                     <a class="text-transform nav-link active show detail-nav-style" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="one"
                                        aria-selected="true">Overview</a>
                                 </li>
+                                <li class="nav-item li-detail-page text-transform mr-1">
+                                    <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" >Location & Nearby</a>
+                                </li>
+                                @if(count($similar_properties))
+                                    <li class="nav-item li-detail-page text-transform mr-1">
+                                        <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Similar Properties</a>
+                                    </li>
+                                @endif
                                 @if(!empty($video))
                                     <li class="nav-item li-detail-page text-transform">
                                         <a class="nav-link" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Video</a>
                                     </li>
                                 @endif
-                                <li class="nav-item li-detail-page text-transform mr-1">
-                                    <a class="nav-link detail-nav-style" id="5-tab" href="#five" role="tab" aria-controls="5" aria-selected="true">Location & Nearby</a>
-                                </li>
-                                @if(count($similar_properties))
-                                    <li class="nav-item li-detail-page text-transform mr-1">
-                                        <a class="nav-link detail-nav-style" id="6-tab" href="#six" role="tab" aria-controls="6" aria-selected="true">Similar Properties</a>
-                                    </li>
-                                @endif
+                              
+                              
                             </ul>
                             <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
                                 <div class="properties-description mb-50">
@@ -246,7 +249,7 @@
                                                         {{--   {{dd(json_decode($property->features,true)['features'])}}--}}
                                                         @foreach(json_decode($property->features,true)['features'] as $key => $value)
                                                             @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0')
-                                                                <li class="mb-5">
+                                                                <li class="mb-5 pt-1">
                                                                     <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                     {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
                                                                 </li>
@@ -261,7 +264,19 @@
                                 </div>
                             </div>
                         </div>
-                        @if(!empty(array_filter($floor_plans)))
+                        <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="2-tab">
+                            <div class="location mb-50">
+                                <h3 class="heading-2">Location and Nearby</h3>
+                                @include('website.includes.location_and_nearby')
+                            </div>
+                        </div>
+                    </div>
+                    @if (count($similar_properties))
+                        <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="3-tab">
+                            @include('website.includes.similar_properties')
+                        </div>
+                    @endif
+                        <!-- @if(!empty(array_filter($floor_plans)))
                             <div class="tab-pane" id="two" role="tabpanel" aria-labelledby="two-tab">
                                 <div class="floor-plans mb-50">
                                     <h3 class="heading-2">Floor Plan</h3>
@@ -275,6 +290,7 @@
                                 </div>
                             </div>
                         @endif
+                  -->
                         @if(!empty(array_filter($video)))
                             <div class="tab-pane " id="four" role="tabpanel" aria-labelledby="4-tab">
                                 <div class="inside-properties mb-50">
@@ -292,18 +308,7 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="tab-pane" id="five" role="tabpanel" aria-labelledby="5-tab">
-                            <div class="location mb-50">
-                                <h3 class="heading-2">Location and Nearby</h3>
-                                @include('website.includes.location_and_nearby')
-                            </div>
-                        </div>
-                    </div>
-                    @if (count($similar_properties))
-                        <div class="tab-pane" id="six" role="tabpanel" aria-labelledby="6-tab">
-                            @include('website.includes.similar_properties')
-                        </div>
-                    @endif
+               
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="sidebar-right">

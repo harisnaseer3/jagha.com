@@ -39,12 +39,12 @@
                                         </h2>
                                         <div class="location">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            {{\Illuminate\Support\Str::limit($feature_property->location, 20, $end='...')}}
-                                            <div class="grid-area mt-2 ml-3">{{\Illuminate\Support\Str::limit($feature_property->city, 20, $end='...')}}</div>
+                                            {{ \Illuminate\Support\Str::limit($feature_property->location , 10, $end='...')}}
+                                            {{\Illuminate\Support\Str::limit($feature_property->city, 11, $end='...')}}
                                             <div class="mt-2 property-description">
                                                 <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->sub_type}} for {{$feature_property->purpose}}"
                                                    class="color-blue text-transform">
-                                                    {{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 20, $end='..')}}
+                                                    {{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 25, $end='..')}}
                                                 </a>
                                             </div>
                                         </div>

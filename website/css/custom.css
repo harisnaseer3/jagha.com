@@ -1,3 +1,10 @@
+
+.modal-open {
+    padding-right: 0 !important;
+}
+html {
+    overflow-y: scroll !important;
+}
 body {
     font-size: .80rem;
     background-color: #eee;
@@ -1481,7 +1488,7 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
     background: #eeeeef;
     color: black !important;
 }
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active, .nav-pills .show >.nav-link {
     color: white !important;
     background-color: #2238D8;
 }
@@ -1504,7 +1511,8 @@ tabbing-box .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
     bottom: 0;
     right: 0;
 }
-.listing-time {
+.listing-time 
+{
     right: 0;
     top : 0;
 
