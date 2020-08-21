@@ -57,23 +57,41 @@
         (function ($) {
             $(document).ready(function () {
                 var paused = false,
-                    interval = setInterval(function () {
+
+                    agency_interval = setInterval(function () {
                         (!paused) && $('#agency-next').trigger('click');
                        $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
                        $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
                        $('#agency-phone').html($("#agency-slider .slick-center .slick-slide-item .agency-phone").text());
                     },3000);
+
                     interval = setInterval(function () {
                         (!paused) && $('#featured-agency-next').trigger('click');
                     },4000);
+                    
                 $('#agency-slider, .controls').click(function ()
                 {
                     $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
                     $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
                 });
-                $('#featured-agency-slider .slick-slide-item').hover(function ()
-                {
-
+        
+                $('#featured-agency-slider .slick-slide-item').hover(function(ev){
+                    clearInterval(interval);
+                }, function(ev){
+                    interval = setInterval(function () {
+                        (!paused) && $('#featured-agency-next').trigger('click');
+                    },4000);
+                });
+                $('#agency-slider .slick-slide-item').hover(function(ev){
+                    clearInterval(agency_interval);
+                }, function(ev){
+                    agency_interval = setInterval(function () {
+                        (!paused) && $('#agency-next').trigger('click');
+                       $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
+                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
+                       $('#agency-phone').html($("#agency-slider .slick-center .slick-slide-item .agency-phone").text());
+                    },3000);
+                   
                 });
 
 
