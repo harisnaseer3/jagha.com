@@ -331,7 +331,7 @@
                                         <div style="font-size: 1rem">
                                             @if($agency->status === 'verified')
                                                 <div class="mb-3">
-                                                    <span style="color:green"><i class="far fa-shield-check"></i> Verified</span>
+                                                    <span style="color:green"  data-toggle="tooltip" data-placement="top" title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
                                                 </div>
                                             @endif
                                             @if($agency->featured_listing === 1)
@@ -396,6 +396,7 @@
 @section('script')
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
     <script>
         let map;
         let service;
@@ -464,6 +465,7 @@
                 $('.map-canvas').on('click', function () {
                     initMap($(this).data('value'));
                 });
+                $('[data-toggle="tooltip"]').tooltip();
                 $.fn.stars = function () {
                     return $(this).each(function () {
                         let rating = $(this).data("rating");
