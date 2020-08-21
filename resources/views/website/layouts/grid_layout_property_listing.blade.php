@@ -59,7 +59,8 @@
 
                         <div class="price-ratings-box">
                             <p class="price">
-                                <span aria-label="currency" class="color-white">PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
+                                <span aria-label="currency" class="color-white">
+                                    PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
                             </p>
                             <div class="ratings grid-stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
                                  data-num-stars="5" aria-label="rating"></div>
@@ -72,14 +73,26 @@
                 </div>
                 <div class="detail">
                     <h2 class="title">
-                        <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}">
+                        <a href="{{$property->property_detail_path()}}" data-toggle="tooltip" data-placement="right" data-html="true"
+                           title='<div class="row">
+                                                <div class="col-md-12 color-white"><h5 class="color-white">Area Info</h5></div>
+                                                <div class="col-md-12 color-white tooltip-divider"></div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} New Kanal (16 Marla)</div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Marla </div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
+                                                <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
+                                               </div>'>
                             <span aria-label="currency" class="font-size-14 color-blue">PKR </span>
                             <span aria-label="price" class="color-blue"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status)  && $property->agency_status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$property->agency}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
+                                      title="{{$property->agency}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                        class="far fa-shield-check"></i></span>
                             @endif
                         </div>
                     </h2>
@@ -184,7 +197,8 @@
                     <div class="modal-body">
                         <div class="container" style="font-size: 12px; color: #555">
                             <div class="text-center">
-                                <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font" title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a> </div>
+                                <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font"
+                                                     title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                                 <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class="mb-2">Please use property reference</div>
                                 <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
