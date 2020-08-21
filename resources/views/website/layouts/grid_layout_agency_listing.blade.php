@@ -55,7 +55,7 @@
                         </a>
                     </h2>
                     <div class="location mt-4">
-                        <a href="javascript:void(0)" aria-label="Agency location">
+                        <a href="{{route('city.wise.partners',['agency'=>explode('-', request()->segment(1))[0],'city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}" aria-label="Agency location">
                             <i class="fa fa-map-marker"></i>
                             {{$agency->city}}
                         </a>
