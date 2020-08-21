@@ -12,18 +12,15 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Exception;
 use Illuminate\Http\Request;
 
-//use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Throwable;
-use function GuzzleHttp\Promise\all;
 
 
 class PropertyController extends Controller
@@ -769,8 +766,9 @@ class PropertyController extends Controller
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
-        if (count($request->all()) == 1 && $request->filled('sort') ||
-            count($request->all()) == 2 && $request->filled('sort') && $request->filled('page')) {
+        if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
+            count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page'))
+        {
 //            to handle the request for city name
             if (in_array($sub_type, ['homes', 'plots', 'commercial'])) {
                 $type = $sub_type;
@@ -827,7 +825,8 @@ class PropertyController extends Controller
             }
 
 
-        } else {
+        }
+        else {
             str_replace('-', ' ', $sub_type);
             $city = str_replace('-', ' ', $city);
             $type = '';

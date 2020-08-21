@@ -53,7 +53,7 @@ class AgencyController extends Controller
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
     }
 
-    public function ListingCityAgencies(string $city)
+    public function ListingCityAgencies(string $city, Request $request)
     {
 //        TODO: change city store method to find city in db
         $city_name = ucwords(str_replace('-', ' ', $city));
@@ -68,6 +68,12 @@ class AgencyController extends Controller
             ->where('agency_cities.city_id', '=', $city_id->id)
             ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
             ->orderBy('agencies.created_at', 'DESC');
+
+        if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
+            $lastPage = ceil((int)$agencies->count() / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
+
         $property_types = (new PropertyType)->all();
 
         $data = [
@@ -147,7 +153,7 @@ class AgencyController extends Controller
         return view('website.account.agency_create', ['table_name' => 'users', 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
-    public function listingFeaturedPartners()
+    public function listingFeaturedPartners(Request $request)
     {
         $agencies = $this->_listingFrontend()
             ->where('agencies.featured_listing', '=', 1)
@@ -164,6 +170,11 @@ class AgencyController extends Controller
         else
             $limit = '15';
 
+        if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
+            $lastPage = ceil((int)$agencies->count() / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
+
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
@@ -175,7 +186,7 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-    function listingPartnersCitywise(string $agency, string $city)
+    function listingPartnersCitywise(string $agency, string $city, Request $request)
     {
         $city_name = ucwords(str_replace('-', ' ', $city));
         $city_id = City::select('id')->where('name', '=', $city_name)->first();
@@ -192,6 +203,12 @@ class AgencyController extends Controller
 
         $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
             ->orderBy('agencies.created_at', 'DESC');
+
+        if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
+            $lastPage = ceil((int)$agencies->count() / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
+
         $property_types = (new PropertyType)->all();
 
         $data = [
@@ -204,7 +221,7 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-    public function listingKeyPartners()
+    public function listingKeyPartners(Request $request)
     {
         $agencies = $this->_listingFrontend()
             ->where('agencies.key_listing', '=', 1)
@@ -218,6 +235,11 @@ class AgencyController extends Controller
             $limit = request()->input('limit');
         else
             $limit = '15';
+
+        if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
+            $lastPage = ceil((int)$agencies->count() / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
 
         $data = [
             'property_types' => $property_types,
