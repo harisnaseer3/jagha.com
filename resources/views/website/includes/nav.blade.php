@@ -266,7 +266,7 @@
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('agents.listing')}}">
-                                Agents</a>
+                                Partners</a>
                         </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">

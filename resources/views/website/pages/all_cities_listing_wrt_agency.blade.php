@@ -21,7 +21,7 @@
                     <!-- Listing -->
                     <div class="card">
                         <div class="card-header">
-                            <h1 class="all-cities-header">Estate Agents Listing</h1>
+                            <h1 class="all-cities-header">Estate Partners Listing</h1>
                         </div>
                         <div class="card-body">
                             <div class="row">
