@@ -33,7 +33,16 @@
                                     <div class="top">
                                         <h2 class="title">
                                             <!-- method to convert price in number into price in words -->
-                                            <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->title}}">
+                                            <a href="{{$feature_property->property_detail_path()}}" data-toggle="tooltip" data-placement="right" data-html="true"
+                           title='<div class="row mt-1">
+                           <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
+                           <div class="col-md-12 mb-1  mt-1"> {{ number_format($feature_property->area_in_sqft,2) }} Sq.Ft.</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqyd,2) }} Sq.Yd.</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqm,2) }} Sq.M.</div>  
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_marla,2) }} Marla </div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_kanal,2) }} Kanal </div>
+                           </div>'>
                                                 <span class="font-size-14 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                                             </a>
                                         </h2>
@@ -50,7 +59,16 @@
                                         </div>
                                     </div>
                                     <ul class="facilities-list clearfix">
-                                        <li style="width: 40%; margin-top: 3px;text-align: center">
+                                        <li style="width: 40%; margin-top: 3px;text-align: center"  data-toggle="tooltip" data-placement="right" data-html="true"
+                           title='<div class="row mt-1">
+                           <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
+                           <div class="col-md-12 mb-1  mt-1"> {{ number_format($feature_property->area_in_sqft,2) }} Sq.Ft.</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqyd,2) }} Sq.Yd.</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqm,2) }} Sq.M.</div>  
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_marla,2) }} Marla </div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_kanal,2) }} Kanal </div>  
+                           </div>'>
                                             <i class="fas fa-arrows-alt"></i>
                                             <p>{{ number_format($feature_property->land_area, 2) }}
                                                 @if($feature_property->area_unit === 'Square Meters')Sq.M.
@@ -111,14 +129,14 @@
                 </div>
                 <!-- Modal -->
 
-                {{--                <div class="slick-btn">--}}
-                {{--                    <div class="slick-prev slick-arrow-buton">--}}
-                {{--                        <i class="fa fa-angle-left"></i>--}}
-                {{--                    </div>--}}
-                {{--                    <div class="slick-next slick-arrow-buton">--}}
-                {{--                        <i class="fa fa-angle-right"></i>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                                <div class="slick-btn">
+                                 <div class="slick-prev slick-arrow-buton">
+                                        <i class="fa fa-angle-left"></i>
+                                   </div>
+                                  <div class="slick-next slick-arrow-buton">
+                                        <i class="fa fa-angle-right"></i>
+                                   </div>
+                                </div>
             </div>
         </div>
     </div>

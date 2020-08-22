@@ -56,6 +56,7 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
                 var paused = false,
 
                     agency_interval = setInterval(function () {

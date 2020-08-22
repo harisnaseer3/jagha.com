@@ -368,7 +368,7 @@ class PropertyController extends Controller
                 ['properties.type', '=', $property->type],
                 ['properties.sub_type', '=', $property->sub_type],
             ])
-            ->whereNull('properties.deleted_at')->limit(3)->get();
+            ->whereNull('properties.deleted_at')->get();
 
         $aggregates = $this->_getPropertyAggregates();
         return view('website.pages.property_detail', [
