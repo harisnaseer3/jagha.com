@@ -63,7 +63,7 @@
                                                     style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
                                                     name="property_area_unit" id="property-area-unit">
                                                 <option disabled>Select unit</option>
-                                                @foreach(['Marla','New Marla (225 Sqft)','Kanal','New Kanal (16 Marla)','Square Feet','Square Yards','Square Meters'] as $key=>$option)
+                                                @foreach(['Marla','New Marla (225 Sqft)','Square Feet','Square Yards','Square Meters','Kanal'] as $key=>$option)
                                                     <option {{$option === 'Marla'? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
                                                 @endforeach
                                             </select>
