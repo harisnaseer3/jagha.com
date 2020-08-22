@@ -8,7 +8,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: 'http://127.0.0.1/propertymanagement/public/features',
+            url: 'http://127.0.0.1/Property/public/features',
             data: {name: selectedValue},
             dataType: 'json',
             success: function (data) {
@@ -39,7 +39,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: 'http://127.0.0.1/propertymanagement/public/features',
+            url: 'http://127.0.0.1/Property/public/features',
             data: {name: selectedValue, 'index': property_index},
             dataType: 'json',
             success: function (data) {

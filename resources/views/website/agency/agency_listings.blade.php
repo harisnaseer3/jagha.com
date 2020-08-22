@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Property Management By propertymanagement.com</title>
+    <title> Property Management By Property.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
