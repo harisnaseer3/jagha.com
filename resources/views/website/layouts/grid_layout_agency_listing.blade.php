@@ -3,7 +3,7 @@
     <div class="float-left">
         <h4>
             <span class="heading-icon"><i class="fa fa-th-large"></i></span>
-            <span class="title-name text-transform">Agencies Grid</span>
+            <span class="title-name text-transform">Partners Grid</span>
         </h4>
     </div>
     <div class="float-right cod-pad">

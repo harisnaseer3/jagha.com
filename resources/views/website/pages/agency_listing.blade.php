@@ -34,7 +34,7 @@
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <a href="{{route('agents.listing')}}" title="Agents" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">
-                                   {{ucwords('Agents')}}
+                                   {{ucwords('Partners')}}
                             </span></a>
                             <meta itemprop="position" content="3">
                         </span>
@@ -69,12 +69,8 @@
                         </span>
                         @if(strpos(request()->segment(1), 'partners') !== false && request()->segment(2) !== null)
                             <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <span itemprop="name">
-
-                                    {{ucwords(str_replace('-',' ',request()->segment(2)))}}
-                            </span>
+                            <span itemprop="name">{{ucwords(str_replace('-',' ',request()->segment(2)))}}</span>
                             <meta itemprop="position" content="5">
                         </span>
                         @endif
