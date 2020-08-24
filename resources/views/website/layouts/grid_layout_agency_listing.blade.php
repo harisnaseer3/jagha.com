@@ -73,7 +73,6 @@
                     <div class="color-555 mt-2 date-box"><span>Total Properties: </span> {{ $agency->count }}</div>
 {{--                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>--}}
                     <div class="color-555 mt-2 date-box"><span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}</div>
-
                 </div>
                 <div class="row contact-container" style="padding: 0 20px;">
                     {{ Form::hidden('phone',$agency->phone, array_merge(['class'=>'number']))}}
