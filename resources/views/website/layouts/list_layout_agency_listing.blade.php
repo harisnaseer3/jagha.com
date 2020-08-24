@@ -82,9 +82,9 @@
                             <span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}
 {{--                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}--}}
                         </div>
-                        <div class="col-md-6 color-555">
-                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}
-                        </div>
+{{--                        <div class="col-md-6 color-555">--}}
+{{--                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}--}}
+{{--                        </div>--}}
                     </div>
 
                     <div class="row call-email-container contact-container">
