@@ -3,7 +3,7 @@
     function searchWithparams() {
         //TODO: change base url when upload to server
 
-        // let baseurl = 'http://127.0.0.1/propertymanagement/public';
+        // let baseurl = 'http://127.0.0.1/Property/public';
         let baseurl = window.location.origin + '/property';
 
         let page_link = '', purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
@@ -44,7 +44,7 @@
 
     function search2Withparams() {
         //TODO: change base url when upload to server
-        // let baseurl = 'http://127.0.0.1/propertymanagement/public';
+        // let baseurl = 'http://127.0.0.1/Property/public';
         let baseurl = window.location.origin + '/property';
 
         let purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
@@ -91,7 +91,7 @@
         //change url when shifted to server
         jQuery.ajax({
             type: 'post',
-            // url: 'http://127.0.0.1/propertymanagement/public/searchWithID',
+            // url: 'http://127.0.0.1/Property/public/searchWithID',
             url: window.location.origin + '/property/searchWithID',
             data: {id: id},
             // dataType: 'json',

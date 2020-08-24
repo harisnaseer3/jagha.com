@@ -97,17 +97,17 @@ class MetaTagController extends Controller
 
     public function addMetaTagsOnBlog()
     {
-        SEOMeta::setTitle('A blog about real estate, lifestyle and tourism in Pakistan | PropertyManagement Blog');
+        SEOMeta::setTitle('A blog about real estate, lifestyle and tourism in Pakistan | Property Blog');
         SEOMeta::setDescription('Property Management blog is your go-to place for real estate investment trends, property market analysis, lifestyle, home decor tips, tourism and much more in Pakistan.');
 
-        OpenGraph::setTitle('A blog about real estate, lifestyle and tourism in Pakistan | PropertyManagement Blog');
+        OpenGraph::setTitle('A blog about real estate, lifestyle and tourism in Pakistan | Property Blog');
         OpenGraph::setDescription('About Pakistan Property blog is your go-to place for real estate investment trends, property market analysis, lifestyle, home decor tips, tourism and much more in Pakistan.');
         OpenGraph::setUrl(URL::current());
         OpenGraph::addProperty('image', asset('img/logo/logo-with-text-200x200.png'));
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', ['en-us']);
 
-        TwitterCard::setTitle('A blog about real estate, lifestyle and tourism in Pakistan | PropertyManagement Blog');
+        TwitterCard::setTitle('A blog about real estate, lifestyle and tourism in Pakistan | Property Blog');
         TwitterCard::setSite('@aboutpk_');
         TwitterCard::setDescription('About Pakistan Property blog is your go-to place for real estate investment trends, property market analysis, lifestyle, home decor tips, tourism and much more in Pakistan.');
         TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));

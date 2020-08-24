@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Portfolio : Property Management Software By propertymanagement.com</title>
+    <title> Portfolio : Property Management Software By Property.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
