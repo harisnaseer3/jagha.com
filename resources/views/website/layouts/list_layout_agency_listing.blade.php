@@ -94,7 +94,7 @@
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...')}}
                                         @if(strlen($agency->description) > 300 )
-                                            <span  data-toggle="popover" data-trigger="hover" title ="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif
+                                            <span class="hover-color"  data-toggle="popover" data-trigger="hover" title ="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif
                                     </h6>
                                 </a>
                             </div>

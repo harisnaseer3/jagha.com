@@ -179,7 +179,7 @@
                                     <h5 style="font-weight: 400">Description</h5>
                                     <p style="white-space: pre-line" class="description"
                                        aria-label="property description">{{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', $property->description)))}}</p>
-                                    <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">https://www.aboutpakistan.com</a></p>
+                                    <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
                                     <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
                                 </div>
                                 <!-- Properties condition start -->
