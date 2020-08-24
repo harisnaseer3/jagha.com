@@ -20,20 +20,25 @@
                     <!-- Listing -->
                     <div class="card">
                         <div class="card-header">
-                            <h1 class="all-cities-header">Estate Partners Listing</h1>
+                            <h1 class="all-cities-header">
+                                {{ucwords($type)}} for Sale in All Cities of Pakistan</h1>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                @foreach($agencies as $agency)
-                                    <div class="col-sm-3 my-2">
-                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
-                                           title="agencies in {{$agency->city}}"
-                                           class="breadcrumb-link">
-                                            {{$agency->city}} ({{$agency->agency_count}})
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
+                        @if($properties)
+                                <div class="row">
+                                    @foreach($properties as  $property)
+                                        <div class="col-sm-3 my-2">
+                                            <a href="{{route('sale.property.search', ['sub_type' => lcfirst($property->property_type),
+                                                                                      'city' => lcfirst($property->city_name) ,
+                                                                                      'purpose'=>lcfirst($property->property_purpose), 'sort'=>'newest','limit'=>15])}}"
+                                               title="{{$property->property_type}}  in {{$property->city_name}}"
+                                               class="breadcrumb-link">
+                                                {{$property->city_name}} ({{$property->property_count}})
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

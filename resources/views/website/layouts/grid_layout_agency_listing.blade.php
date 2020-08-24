@@ -8,18 +8,18 @@
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
-            <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
-        </div>
-    </div>
-    <div class="float-right cod-pad">
-        <div class="sorting-options" role="button" aria-label="sort by filter">
-            <select class="record-limit">
+            <select class="record-limit none-992">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
                 <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
                 <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
                 <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
             </select>
+            <select class="sorting">
+                <option value="newest" {{ request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
+                <option value="oldest" {{ request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
+            </select>
+            <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
+            <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
 </div>
@@ -32,11 +32,16 @@
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="property-box">
                 <div class="property-thumbnail image-padding">
-                    <a href="javascript:void(0)" class="agency-img" title="{{$agency->title}}">
+                    <a href="{{route('agents.ads.listing',
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
+                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),
+                                               'agency'=> $agency->id ,
+                                               ])}}" class="agency-img" title="{{$agency->title}}">
                         <div class="listing-badges pull-right">
                             @if(isset($agency->status) &$agency->status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
+                                      title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                        class="far fa-shield-check"></i></span>
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
@@ -50,18 +55,24 @@
                 </div>
                 <div class="detail">
                     <h2 class="title" style="height:25px">
-                        <a href="javascript:void(0)" title="{{$agency->title}}">
+                        <a href="{{route('agents.ads.listing',
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
+                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),
+                                               'agency'=> $agency->id ,
+                                               ])}}" title="{{$agency->title}}">
                             {{$agency->title}}
                         </a>
                     </h2>
                     <div class="location mt-4">
-                        <a href="{{route('city.wise.partners',['agency'=>explode('-', request()->segment(1))[0],'city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}" aria-label="Agency location">
+                        <a href="{{route('city.wise.partners',['agency'=>explode('-', request()->segment(1))[0],'city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                           aria-label="Agency location">
                             <i class="fa fa-map-marker"></i>
                             {{$agency->city}}
                         </a>
                     </div>
                     <div class="color-555 mt-2 date-box"><span>Total Properties: </span> {{ $agency->count }}</div>
-                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>
+{{--                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>--}}
+                    <div class="color-555 mt-2 date-box"><span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}</div>
                 </div>
                 <div class="row contact-container" style="padding: 0 20px;">
                     {{ Form::hidden('phone',$agency->phone, array_merge(['class'=>'number']))}}

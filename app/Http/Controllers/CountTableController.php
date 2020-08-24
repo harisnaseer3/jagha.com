@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
 
 class CountTableController extends Controller
 {
@@ -362,8 +364,7 @@ class CountTableController extends Controller
                 ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
                 ->get();
             $cities = ['houses' => $houses, 'flats' => $flats];
-        }
-        else if ($type == 1 && $purpose == 2) {
+        } else if ($type == 1 && $purpose == 2) {
             $result_type = 'Plots';
             $result_purpose = 'Sale';
             $plots = DB::table('property_count_by_property_purposes')
@@ -372,10 +373,8 @@ class CountTableController extends Controller
                 ->where('property_purpose', '=', 'sale')
                 ->orderBy('property_count', 'DESC')
                 ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
-
             $cities = ['plots' => $plots];
-        }
-        else if ($type == 1 && $purpose == 3) {
+        } else if ($type == 1 && $purpose == 3) {
             $result_type = 'Commercial';
             $result_purpose = 'Sale';
             $commercial = DB::table('property_count_by_property_purposes')
@@ -386,8 +385,7 @@ class CountTableController extends Controller
                 ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
 
             $cities = ['commercial' => $commercial];
-        }
-        else if ($type == 2 && $purpose == 1) {
+        } else if ($type == 2 && $purpose == 1) {
             $result_type = 'Property';
             $result_purpose = 'Rent';
 
@@ -398,9 +396,10 @@ class CountTableController extends Controller
                 ->orderBy('property_count', 'DESC')
                 ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')->get();
             $cities = ['property' => $rent];
-        }
-        else
+        } else
             abort(404);
+
+        (new MetaTagController())->addMetaTags();
 
         $data = [
             'type' => $result_type,
@@ -410,5 +409,29 @@ class CountTableController extends Controller
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
         return view('website.pages.all_cities_listing_wrt_property', $data);
+    }
+
+    public function getCitywisePropertyCount(string $type, Request $request)
+    {
+        (new MetaTagController())->addMetaTags();
+
+
+        $properties = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
+            ->where([
+                ['property_purpose', '=', 'sale'],
+                ['property_type', '=', $type],
+            ])
+            ->orderBy('property_count', 'DESC')
+            ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
+            ->get();
+        $data = [
+            'type' => $type,
+            'properties' => $properties,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1]
+        ];
+        return view('website.pages.property_count_by_city', $data);
+
     }
 }

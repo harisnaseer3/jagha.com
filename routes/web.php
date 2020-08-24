@@ -24,8 +24,14 @@ Route::get('key-partners', 'AgencyController@listingKeyPartners')->name('key-par
 Route::get('{agency}-partners/{city}', 'AgencyController@listingPartnersCitywise')->name('city.wise.partners');
 
 
-
+//nav bar homes, plots, commercials
 Route::get('/{type}_property', 'PropertyController@getPropertyListing')->name('properties.get_listing');
+Route::get('/all_cities/pakistan/{type}', 'CountTableController@getCitywisePropertyCount')->name('property.city.count.listing')
+    ->where([
+        'type' => '(homes|plots|commercial)',
+    ]);
+
+
 Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertyController@searchWithArgumentsForProperty')->name('sale.property.search');
 Route::get('/cities-{city}', 'PropertyController@searchInCities')->name('cities.sale.property');
 Route::get('/agents-{city}', 'AgencyController@ListingCityAgencies')->name('agencies.citywise.listing');
@@ -35,6 +41,7 @@ Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAll
         'purpose' => '(1|2)',
         'type' => '(1|2|3|4)',
     ]);
+
 //agents
 Route::get('/partners/', 'AgencyController@index')->name('agents.listing');
 Route::get('partners-{city}/{slug}_{agency}', 'AgencyController@show')->name('agents.ads.listing');
