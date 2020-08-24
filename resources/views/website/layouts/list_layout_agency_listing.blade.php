@@ -80,11 +80,7 @@
                         </div>
                         <div class="col-md-8 color-555">
                             <span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}
-{{--                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}--}}
                         </div>
-{{--                        <div class="col-md-6 color-555">--}}
-{{--                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}--}}
-{{--                        </div>--}}
                     </div>
 
                     <div class="row call-email-container contact-container">
@@ -96,7 +92,10 @@
                         @if($agency->description !='')
                             <div class="col-sm-12 my-2">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
-                                    <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...')}} @if(strlen($agency->description) > 300 )<span  data-toggle="popover" data-trigger="hover" title ="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif</h6>
+                                    <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...')}}
+                                        @if(strlen($agency->description) > 300 )
+                                            <span  data-toggle="popover" data-trigger="hover" title ="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif
+                                    </h6>
                                 </a>
                             </div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>

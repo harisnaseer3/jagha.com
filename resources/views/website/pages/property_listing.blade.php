@@ -219,7 +219,7 @@
                             {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block email-btn-model','id'=>'send-mail']) }}
                         </div>
                         {{ Form::close() }}
-                        <button  class="btn btn-block btn-danger  mt-2" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-block btn-danger  mt-2" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -243,6 +243,22 @@
         (function ($) {
             $(document).ready(function () {
                 $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="popover"]').popover({trigger: "hover"});
+                $(document).on("click", ".popover .close", function () {
+                    $(this).parents(".popover").popover('hide');
+                });
+                $('body').on('click', function (e) {
+                    $('[data-toggle=popover]').each(function () {
+                        // hide any open popovers when the anywhere else in the body is clicked
+                        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                            $(this).popover('hide');
+                        }
+                    });
+                });
+
+                $('.tt_large').tooltip({template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner large"></div></div>'});
+
+
                 $('.list-layout-btn').on('click', function (e) {
                     sessionStorage.setItem("page-layout", 'list-layout');
                     // console.log(sessionStorage.getItem("page-layout"))
@@ -285,6 +301,7 @@
                         insertParam('sort', $(this).val());
                     // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
                 });
+
                 function insertParam(key, value) {
                     key = encodeURIComponent(key);
                     value = encodeURIComponent(value);
@@ -307,6 +324,7 @@
                     // reload page with new params
                     document.location.search = params;
                 }
+
                 $('.record-limit').on('change', function (e) {
                     insertParam('limit', $(this).val());
                 });
@@ -364,13 +382,13 @@
                 let form = $('#email-contact-form');
                 $('.btn-email').click(function (e) {
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
-                    let title  = $(this).closest('.contact-container').find('input[name=title]').val();
+                    let title = $(this).closest('.contact-container').find('input[name=title]').val();
                     let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
-                    let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">'+ title +' </a>';
+                    let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + title + ' </a>';
                     let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>.';
-                    let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at '+ link + '<br><br> Please contact me at your earliest by phone or by email.';
+                    let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + '<br><br> Please contact me at your earliest by phone or by email.';
                     phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                     let editable_div = $('.editable-div');
                     editable_div.html(message);
