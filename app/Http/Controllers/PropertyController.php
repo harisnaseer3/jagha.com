@@ -35,7 +35,7 @@ class PropertyController extends Controller
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
-                'agencies.title AS agency', 'agencies.featured_listing','agencies.logo AS logo','agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
             ->leftJoin('images as p', function ($q) {
@@ -767,8 +767,7 @@ class PropertyController extends Controller
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
-            count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page'))
-        {
+            count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page')) {
 //            to handle the request for city name
             if (in_array($sub_type, ['homes', 'plots', 'commercial'])) {
                 $type = $sub_type;
@@ -800,6 +799,8 @@ class PropertyController extends Controller
                 }
                 $properties->where('properties.purpose', '=', $purpose);
                 $properties->where('properties.type', '=', $type);
+                (new MetaTagController())->addMetaTags();
+
             } else {
                 $type = '';
                 if (in_array($sub_type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) $type = 'homes';
@@ -825,8 +826,7 @@ class PropertyController extends Controller
             }
 
 
-        }
-        else {
+        } else {
             str_replace('-', ' ', $sub_type);
             $city = str_replace('-', ' ', $city);
             $type = '';
@@ -1077,7 +1077,6 @@ class PropertyController extends Controller
     {
         $city = str_replace('_', ' ', $city);
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
-        $data = [];
         if ($city) {
             $properties = $this->listingFrontend();
             $properties->where('properties.city_id', '=', $city->id);
@@ -1119,6 +1118,7 @@ class PropertyController extends Controller
             $properties = (new Property)->newCollection();
 
             $property_types = (new PropertyType)->all();
+            (new MetaTagController())->addMetaTags();
             $data = [
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,

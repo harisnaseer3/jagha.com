@@ -1,8 +1,7 @@
 @extends('website.layouts.app')
-<!--TODO add SEO on this page-->
-{{--@section('title')--}}
-{{--    {!! SEO::generate(true) !!}--}}
-{{--@endsection--}}
+@section('title')
+    {!! SEO::generate(true) !!}
+@endsection
 
 
 @section('css_library')

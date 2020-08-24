@@ -247,17 +247,17 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav header-ml">
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('properties.get_listing',['type'=>'homes','sort' =>'newest','limit'=>'15'])}}">
+                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
                                 Homes
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('properties.get_listing', ['type'=>'plots','sort' =>'newest','limit'=>'15'])}}">
+                            <a class="nav-link" href="{{route('property.city.count.listing', ['type'=>'plots'])}}">
                                 Plots
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/commercial/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('properties.get_listing',['type'=> 'commercial', 'sort' =>'newest','limit'=>'15'])}}">
+                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
                                 Commercial</a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">

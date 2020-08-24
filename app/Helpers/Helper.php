@@ -6,10 +6,14 @@ class Helper
 {
     static function getPriceInWords($value)
     {
-        $val = intval(str_replace(',', '', $value));
+        $val = floatval(str_replace(',', '', $value));
         $valStr = '';
         if ($val >= 1000) {
             if ($val >= 1000000000) {
+                $valStr .= floor($val / 1000000000) . ' Arab';
+                $val = 0;
+            }
+            if ($val == 1000000000) {
                 $valStr .= floor($val / 1000000000) . ' Arab';
                 $val %= 1000000000;
             }

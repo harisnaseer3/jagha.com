@@ -39,9 +39,9 @@
                             <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="{{route('agents.listing')}}" title="Agents" itemprop="item">
+                            <a href="{{route('agents.listing')}}" title="Partners" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">
-                                   {{ucwords('Agents')}}
+                                   {{ucwords('Partners')}}
                             </span></a>
                             <meta itemprop="position" content="3">
                         </span>
@@ -101,7 +101,7 @@
                             @else
                                 @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
                                     <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="{{route('properties.get_listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
+                                    <a href="{{route('property.city.count.listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
                                        title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{ucfirst(explode('_', request()->segment(1))[0])}}</span></a>
                                 <meta itemprop="position" content="3">
@@ -115,7 +115,7 @@
                                         else $type = 'Plots';
                                     @endphp
                                     <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="{{route('properties.get_listing',['type'=>$type, 'sort' =>'newest'])}}"
+                                    <a href="{{route('property.city.count.listing',['type'=>$type, 'sort' =>'newest'])}}"
                                        title="{{$type}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{$type}}</span></a>
                                 <meta itemprop="position" content="3">

@@ -8,18 +8,18 @@
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            <a class="change-view-btn active-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
-            <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
-        </div>
-    </div>
-    <div class="float-right cod-pad">
-        <div class="sorting-options" role="button" aria-label="sort by filter">
             <select class="record-limit">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
                 <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
                 <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
                 <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
             </select>
+            <select class="sorting">
+                <option value="newest" {{ request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
+                <option value="oldest" {{ request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
+            </select>
+            <a class="change-view-btn active-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
+            <a class="change-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
 </div>
@@ -33,7 +33,11 @@
     <div class="property-box-2">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-pad">
-                <a href="javascript:void(0)" class="agency-logo" title="{{$agency->title}}">
+                <a href="{{route('agents.ads.listing',
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
+                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),
+                                               'agency'=> $agency->id ,
+                                               ])}}" class="agency-logo" title="{{$agency->title}}">
                     <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
                          title="{{$agency->title}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                 </a>
@@ -41,7 +45,11 @@
             <div class="col-lg-8 col-md-8 col-pad">
                 <div class="detail">
                     <h2 class="title">
-                        <a href="javascript:void(0)" title="{{$agency->title}}">
+                        <a href="{{route('agents.ads.listing',
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
+                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),
+                                               'agency'=> $agency->id ,
+                                               ])}}" title="{{$agency->title}}">
                             {{$agency->title}}
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
@@ -67,8 +75,12 @@
                         @endif
                     </h5>
                     <div class="row">
-                        <div class="col-md-6 color-555">
+                        <div class="col-md-4 color-555">
                             <span>Total Properties:</span> {{ $agency->count }}
+                        </div>
+                        <div class="col-md-8 color-555">
+                            <span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}
+{{--                            <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}--}}
                         </div>
                         <div class="col-md-6 color-555">
                             <span>Added on:</span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}

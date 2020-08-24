@@ -25,6 +25,8 @@ class AgencyController extends Controller
      */
     public function index()
     {
+        (new MetaTagController())->addMetaTagsOnPartnersListing();
+
         $data = [
             'agencies' => $this->_agencyCount()->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get(),
             'recent_properties' => (new FooterController)->footerContent()[0],
@@ -37,7 +39,7 @@ class AgencyController extends Controller
     function _listingFrontend()
     {
         return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
-            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell','agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
             'agency_cities.city_id', 'property_count_by_agencies.property_count AS count')
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
@@ -75,13 +77,13 @@ class AgencyController extends Controller
         }
 
         $property_types = (new PropertyType)->all();
+        (new MetaTagController())->addMetaTagsOnPartnersListing();
 
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
-
         ];
         return view('website.pages.agency_listing', $data);
     }
@@ -163,6 +165,8 @@ class AgencyController extends Controller
         $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
 
         $property_types = (new PropertyType)->all();
+        (new MetaTagController())->addMetaTagsOnPartnersListing();
+
 
         $limit = '';
         if (request()->input('limit') !== null)
@@ -208,6 +212,8 @@ class AgencyController extends Controller
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
+        (new MetaTagController())->addMetaTagsOnPartnersListing();
+
 
         $property_types = (new PropertyType)->all();
 
@@ -240,6 +246,8 @@ class AgencyController extends Controller
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
+        (new MetaTagController())->addMetaTagsOnPartnersListing();
+
 
         $data = [
             'property_types' => $property_types,
