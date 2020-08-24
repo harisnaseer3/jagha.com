@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
-                    @if(strpos( request()->segment(1), 'agents-' ) !== false)
+                    @if(strpos( request()->segment(1), 'partners-' ) !== false)
                         <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
 
                          <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
@@ -39,9 +39,9 @@
                             <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
 
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="{{route('agents.listing')}}" title="Agents" itemprop="item">
+                            <a href="{{route('agents.listing')}}" title="Partners" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">
-                                   {{ucwords('Agents')}}
+                                   {{ucwords('Partners')}}
                             </span></a>
                             <meta itemprop="position" content="3">
                         </span>
@@ -49,7 +49,7 @@
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 <!-- if homes are selected from nav bar -->
-                                @if(strpos(explode('-', request()->segment(1))[0] , 'agents') !== false)
+                                @if(strpos(explode('-', request()->segment(1))[0] , 'partners') !== false)
                                     <a href="{{route('agencies.citywise.listing',['city'=> explode('-',explode('_', request()->segment(1))[0])[1],'sort'=> 'newest'])}}" title="city" itemprop="item">
                                         <span class="breadcrumb-link" itemprop="name">
                                         {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
@@ -101,7 +101,7 @@
                             @else
                                 @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
                                     <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="{{route('properties.get_listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
+                                    <a href="{{route('property.city.count.listing',['type'=>explode('_', request()->segment(1))[0], 'sort' =>'newest'])}}"
                                        title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{ucfirst(explode('_', request()->segment(1))[0])}}</span></a>
                                 <meta itemprop="position" content="3">
@@ -115,7 +115,7 @@
                                         else $type = 'Plots';
                                     @endphp
                                     <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="{{route('properties.get_listing',['type'=>$type, 'sort' =>'newest'])}}"
+                                    <a href="{{route('property.city.count.listing',['type'=>$type, 'sort' =>'newest'])}}"
                                        title="{{$type}}" itemprop="item">
                                 <span class="breadcrumb-link" itemprop="name">{{$type}}</span></a>
                                 <meta itemprop="position" content="3">

@@ -164,4 +164,26 @@ class MetaTagController extends Controller
         SEOMeta::addMeta('article:section', $result->source);
         SEOMeta::addMeta('article:tag', $result->post_title);
     }
+
+    public function addMetaTagsOnPartnersListing(){
+        SEOMeta::setTitle('About Pakistan Property Partners - Real Estate Property Agencies in Pakistan');
+        SEOMeta::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+
+        OpenGraph::setTitle('About Pakistan Property Partners - Real Estate Property Agencies in Pakistan');
+        OpenGraph::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        OpenGraph::setUrl(URL::current());
+        OpenGraph::addProperty('image', asset('img/logo/logo-with-text-200x200.png'));
+        OpenGraph::addProperty('type', 'website');
+        OpenGraph::addProperty('locale', ['en-us']);
+
+        TwitterCard::setTitle('AboutPakistan Property Partners - Real Estate Property Agencies in Pakistan');
+        TwitterCard::setSite('@aboutpk_');
+        TwitterCard::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));
+
+        SEOMeta::addMeta('site_name', env('APP_NAME'), 'name');
+        SEOMeta::addMeta('image', asset('img/logo/logo-with-text-200x200.png'), 'itemprop');
+        SEOMeta::addMeta('description', 'About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.', 'itemprop');
+
+    }
 }
