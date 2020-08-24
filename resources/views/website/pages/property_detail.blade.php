@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if(!empty($images))
+                        @if(!empty($images))
                             <!-- main slider carousel items -->
                                 <div class="carousel-inner">
                                     @foreach($images as $key => $value)
@@ -107,8 +107,8 @@
                                     @endforeach
                                 </ul>
                             @endif
-                            </div>
-                        
+                        </div>
+
                         <!-- Modal -->
 
                         <!-- Tabbing box start -->
@@ -178,8 +178,7 @@
                                 <div class="property-description mb-40">
                                     <h5 style="font-weight: 400">Description</h5>
                                     <p style="white-space: pre-line" class="description"
-{{--                                       aria-label="property description">{{str_replace('zameen','https://www.aboutpakistan.com', $property->description)}}</p>--}}
-                                       aria-label="property description">{{str_replace('zameen','https://www.aboutpakistan.com', $property->description)}}</p>
+                                       aria-label="property description">{{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', $property->description)))}}</p>
                                     <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">https://www.aboutpakistan.com</a></p>
                                     <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
                                 </div>
@@ -281,7 +280,9 @@
                                         <div style="font-size: 1rem">
                                             @if($agency->status === 'verified')
                                                 <div class="mb-3">
-                                                    <span style="color:green"  data-toggle="tooltip" data-placement="top" title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
+                                                    <span style="color:green" data-toggle="tooltip" data-placement="top"
+                                                          title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                                            class="far fa-shield-check"></i></span>
                                                 </div>
                                             @endif
                                             @if($agency->featured_listing === 1)

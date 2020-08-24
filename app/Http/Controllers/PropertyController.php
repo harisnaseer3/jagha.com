@@ -35,7 +35,8 @@ class PropertyController extends Controller
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent')
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
+                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description', 'property_count_by_agencies.property_count AS agency_property_count')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
             ->leftJoin('images as p', function ($q) {
@@ -48,7 +49,8 @@ class PropertyController extends Controller
             ->leftJoin('favorites as f', function ($f) {
                 $f->on('properties.id', '=', 'f.property_id')
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            });
+            })
+            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
     }
 
     function sortPropertyListing($sort, $sort_area, $properties)
