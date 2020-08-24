@@ -78,7 +78,7 @@
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status) && $property->agency_status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title=" {{$property->agency}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                      title=" {{$property->agency}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
                                         class="far fa-shield-check"></i></span>
                             @endif
                             @if(isset($property->featured_listing) && $property->featured_listing === 1)
@@ -151,16 +151,29 @@
                         @else
                             {{ Form::hidden('property',$property->id)}}
                         @endif
-                        <div class="col-sm-12">
-                            <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform">
-                                {{\Illuminate\Support\Str::limit(strtolower($property->title), 50, $end='...')}}
+                        <div class="col-sm-12 col-md-9" style= "height:70px;">
+                        <div class="mb-2">
+                            <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
+                                {{\Illuminate\Support\Str::limit(strtolower($property->title), 30, $end='...')}}
+                            </a>
+                            </div>
+                            <div class ="property-description">
+                            <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform property-description">
+                                {{\Illuminate\Support\Str::limit(strtolower($property->description),75, $end='...more')}}
                             </a>
                         </div>
-                        <div class="col-sm-12 property-description">
+                        </div>
+                        <div class="col-sm-12 col-md-3 partner-logo-style" style= "height:70px;">
+                        @if(isset($property->logo))
+
+<img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}" title="{{$property->agency}}"  aria-label="Listing photo">
+@endif
+                        </div>
+                        <!-- <div class="col-sm-12 property-description">
                             <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                             </a>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</a></div>
                         <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                     </div>

@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @if(!empty($images))
+                            @if(!empty($images))
                             <!-- main slider carousel items -->
                                 <div class="carousel-inner">
                                     @foreach($images as $key => $value)
@@ -106,44 +106,9 @@
                                         </li>
                                     @endforeach
                                 </ul>
-                            @else
-                                <div class="carousel-inner">
-                                    <div class="active item carousel-item" data-slide-number="0">
-                                        {{--                                        <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
-                                        <div class="price-ratings-box">
-                                            @if (\Illuminate\Support\Facades\Auth::guest())
-                                                <div class="favorite-property ratings" style="font-size: 20px;" aria-label="add to favourite">
-                                                    <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite">
-                                                        <i class="fal fa-heart empty-heart"></i>
-                                                    </a>
-                                                </div>
-                                            @else
-                                                <div class="favorite-property ratings" style="font-size: 20px;">
-                                                    <a href="javascript:void(0);"
-                                                       style="color: black; display: {{$is_favorite? 'none': 'block'}};" class="favorite" data-id="{{$property->id}}">
-                                                        <i class="fal fa-heart empty-heart"></i>
-                                                    </a>
-                                                    <a href="javascript:void(0);"
-                                                       style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="remove-favorite" data-id="{{$property->id}}"
-                                                       aria-label="add to favourite">
-                                                        <i class="fas fa-heart filled-heart" style="color: red;"></i>
-                                                    </a>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- main slider carousel nav controls -->
-                                <ul class="carousel-indicators smail-properties list-inline nav nav-justified">
-                                    <li class="list-inline-item active">
-                                        <a id="carousel-selector-1" class="selected" data-slide-to="0" data-target="#propertiesDetailsSlider">
-                                            {{--                                            <img src="{{asset("storage/properties/default-image.png")}}" class="img-fluid" alt="slider-properties"/>--}}
-                                        </a>
-                                    </li>
-                                </ul>
-                                <!-- main slider carousel items -->
                             @endif
-                        </div>
+                            </div>
+                        
                         <!-- Modal -->
 
                         <!-- Tabbing box start -->
@@ -155,7 +120,7 @@
                                 <li class="nav-item li-detail-page text-transform mr-1">
                                     <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" aria-controls="2" aria-selected="true">Location & Nearby</a>
                                 </li>
-                                @if(count($similar_properties))
+                                @if(count($similar_properties) > 3)
                                     <li class="nav-item li-detail-page text-transform mr-1">
                                         <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Similar Properties</a>
                                     </li>
@@ -254,7 +219,7 @@
                                 @include('website.includes.location_and_nearby')
                             </div>
                         </div>
-                        @if (count($similar_properties))
+                        @if (count($similar_properties) > 3)
                             <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="3-tab">
                                 @include('website.includes.similar_properties')
                             </div>
@@ -316,9 +281,7 @@
                                         <div style="font-size: 1rem">
                                             @if($agency->status === 'verified')
                                                 <div class="mb-3">
-                                                    <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                                          title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
-                                                            class="far fa-shield-check"></i></span>
+                                                    <span style="color:green"  data-toggle="tooltip" data-placement="top" title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
                                                 </div>
                                             @endif
                                             @if($agency->featured_listing === 1)

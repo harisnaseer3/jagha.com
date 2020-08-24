@@ -270,13 +270,32 @@
                         </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
-
+                    @if(\Illuminate\Support\Facades\Auth::check())
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  href="javascript:void(0);" id="dropdownMenuButton">
+                                <i class="fas fa-user"></i>
+                                @if(\Illuminate\Support\Facades\Auth::check())
+                                         Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}
+                                            @endif
+                            </a> 
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>       
+                        </li>
+                    
+                        @else 
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
                                href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i>
+                                <i class="fas fa-user"></i>     
                             </a>
+                         
                         </li>
+                        @endif
                         <li class="nav-item">
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                             <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="ref-id" autocomplete="false">
