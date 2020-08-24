@@ -1585,4 +1585,12 @@ hr.solid {
 .tooltip-span {
      color: #2238D8;
 }
+.dropdown-item {
+    font-size: 14px;
+}
+.dropdown-item:hover {
+
+    background: #2238D8;
+    color: white;
+}
 
