@@ -31,7 +31,7 @@
                         @endif
                         <h2 class="agency-name mt-3 text-transform d-none">{{$agency->title}}</h2>
                         <h2 class="agency-phone mt-3 text-transform d-none">{{$agency->phone}}</h2>
-                        <h2 class="sale-count mt-3 text-transform d-none">{{$agency->sale_count}}</h2>
+                        <h2 class="sale-count mt-3 text-transform d-none">{{$agency->count}}</h2>
                         <div class="mt-1 agency-city d-none">{{$agency->city}}</div>
                     </div>
 

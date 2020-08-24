@@ -26,7 +26,12 @@
                                         @else
                                             <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                                         @endif
-                                        <div class="listing-time opening" aria-label="purpose label"><i class="fa fa-eye fa-2 mr-1"></i>{{$feature_property->views}}</div>
+                                        <div class="listing-time opening" aria-label="purpose label">For {{ $feature_property->purpose }}</div>
+                                    <div class="price-ratings-box">
+                                        <p class="price price-line">
+                                            <span class="color-white" aria-label="price"><i class="fas fa-eye"></i> {{ $feature_property->views}}</span>
+                                        </p>
+                                    </div>  
                                     </div>
                                 </a>
                                 <div class="details m-0" style="width: 100%">

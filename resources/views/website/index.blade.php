@@ -62,7 +62,7 @@
                     agency_interval = setInterval(function () {
                         (!paused) && $('#agency-next').trigger('click');
                        $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
-                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
+                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Total Properties');
                        $('#agency-phone').html($("#agency-slider .slick-center .slick-slide-item .agency-phone").text());
                     },3000);
 
@@ -73,7 +73,7 @@
                 $('#agency-slider, .controls').click(function ()
                 {
                     $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
-                    $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
+                    $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Total Properties');
                 });
         
                 $('#featured-agency-slider .slick-slide-item').hover(function(ev){
@@ -89,7 +89,7 @@
                     agency_interval = setInterval(function () {
                         (!paused) && $('#agency-next').trigger('click');
                        $('#middle-agency-name').html($("#agency-slider .slick-center .slick-slide-item .agency-name").text()+' ('+ $("#agency-slider .slick-center .slick-slide-item .agency-city").text()+')');
-                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Properties For Sale');
+                       $('#sale-count').html($("#agency-slider .slick-center .slick-slide-item .sale-count").text()+ ' Total Properties');
                        $('#agency-phone').html($("#agency-slider .slick-center .slick-slide-item .agency-phone").text());
                     },3000);
                    

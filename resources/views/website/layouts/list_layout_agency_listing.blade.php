@@ -47,7 +47,7 @@
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($agency->status) & $agency->status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$agency->title}} is our verified agent. To become our trusted agent, simply contact us or call us at +92 51 4862317 OR +92 301 5993190">
+                                      title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190">
                                     <i class="far fa-shield-check"></i>
                                 </span>
                             @endif
@@ -84,7 +84,7 @@
                         @if($agency->description !='')
                             <div class="col-sm-12 my-2">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
-                                    <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...more')}}</h6>
+                                    <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...')}} @if(strlen($agency->description) > 300 )<span  data-toggle="popover" data-trigger="hover" title ="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif</h6>
                                 </a>
                             </div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>

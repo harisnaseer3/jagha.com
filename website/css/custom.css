@@ -996,9 +996,16 @@ padding-bottom: 0px;
     right: -52px;
 }
 
-.tooltip-inner {
-    max-width: 600px !important;
+ .tooltip-inner {
+  
     background-color: #444444;
+   
+}
+
+.popover {
+    width: 600px;
+    max-width: 600px;
+    text-align: justify;
 }
 
 .tool-image {
@@ -1387,9 +1394,6 @@ span.post-head-cat,
     color: white;
 }
 
-.tooltip-inner {
-    width: 250px;
-}
 
 @media (min-width: 1024px) {
     .content-area {
@@ -1564,5 +1568,21 @@ hr.solid {
     margin-bottom : 0;
 }
 .slick-arrow-buton:hover {
-    background: #2238D8 ;
+    background: #2238D8;
 }
+.partner-logo-style {
+    top: -20px;
+}
+@media (max-width: 767px) {
+.partner-logo-style {
+  display: none;
+}
+
+}
+.price-line {
+    line-height: 0;
+}
+.tooltip-span {
+     color: #2238D8;
+}
+
