@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
-                    @if(strpos( request()->segment(1), 'agents-' ) !== false)
+                    @if(strpos( request()->segment(1), 'partners-' ) !== false)
                         <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
 
                          <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
@@ -49,7 +49,7 @@
                             <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 <!-- if homes are selected from nav bar -->
-                                @if(strpos(explode('-', request()->segment(1))[0] , 'agents') !== false)
+                                @if(strpos(explode('-', request()->segment(1))[0] , 'partners') !== false)
                                     <a href="{{route('agencies.citywise.listing',['city'=> explode('-',explode('_', request()->segment(1))[0])[1],'sort'=> 'newest'])}}" title="city" itemprop="item">
                                         <span class="breadcrumb-link" itemprop="name">
                                         {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}

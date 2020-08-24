@@ -138,6 +138,8 @@ class AgencyController extends Controller
             request()->merge(['page' => (int)$lastPage]);
         }
         $property_types = (new PropertyType)->all();
+        (new MetaTagController())->addMetaTags();
+
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
