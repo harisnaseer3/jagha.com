@@ -270,39 +270,42 @@
                         </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
-                    @if(\Illuminate\Support\Facades\Auth::check())
-                        <li class="nav-item">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  href="javascript:void(0);" id="dropdownMenuButton">
-                                <i class="fas fa-user"></i>
-                                @if(\Illuminate\Support\Facades\Auth::check())
-                                         Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}
-                                            @endif
-                            </a> 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>       
-                        </li>
-                    
-                        @else 
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
-                               href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user"></i>     
-                            </a>
-                         
-                        </li>
-                        @endif
-                        <li class="nav-item">
+                    <li class="nav-item">
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                             <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="ref-id" autocomplete="false">
                             <small id="property_id-error" class="help-block text-red"></small>
                             <i class="fa fa-search ml-1"></i>
                             {{ Form::close() }}
                         </li>
+                    @if(\Illuminate\Support\Facades\Auth::check())
+                        <li class="nav-item">
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown"  role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user mr-3"></i>
+                                @if(\Illuminate\Support\Facades\Auth::check())
+                                         Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}
+                                            @endif
+                            </a> 
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"><i
+                                        class="far fa-user-cog mr-2"></i>Manage Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
+                                        class="far fa-sign-out mr-2"></i>Logout</a>
+                                       </div>    
+                        </div>   
+                        </li>
+                    
+                        @else 
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
+                               href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user mr-3"></i>     
+                            </a>
+                         
+                        </li>
+                        @endif
+                      
                     </ul>
                 </div>
             </nav>
@@ -322,19 +325,13 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-sm-12 justify-content-center">
-                                        @if(\Illuminate\Support\Facades\Auth::check())
-                                            <p class="my-3 text-center"><strong>{{\Illuminate\Support\Facades\Auth::user()->name}}</strong></p>
-                                            <a href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"
-                                               class="btn btn-block" style="background: #274abb;color: white">PROFILE</a>
-                                            <a href="{{route('accounts.logout')}}" class="btn btn-block btn-outline sign-in" style="color: #0b2e13">LOGOUT</a>
-                                        @else
+                                    
                                             <p class="text-center">Already a member?</p>
                                             <a href="{{route('login')}}" class="btn btn-block sign-in login-btn" style="color: #0b2e13; padding: 6px 20px 9px 20px;">Login</a>
                                             <p class="text-center">OR</p>
                                             <p class="text-center">Become a new member.</p>
                                             <a href="{{route('register')}}" class="btn btn-block btn-outline sign-in text-bold"
                                                style="color: #274abb; padding: 6px 20px 9px 20px;">REGISTER</a>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
