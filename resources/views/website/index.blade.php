@@ -11,22 +11,22 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
-@section('script')
-    <script>
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId            : '639361382871128',
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v8.0'
-            });
-        };
-    </script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>
-@endsection
+{{--@section('script')--}}
+{{--    <script>--}}
+{{--        window.fbAsyncInit = function() {--}}
+{{--            FB.init({--}}
+{{--                appId            : '639361382871128',--}}
+{{--                autoLogAppEvents : true,--}}
+{{--                xfbml            : true,--}}
+{{--                version          : 'v8.0'--}}
+{{--            });--}}
+{{--        };--}}
+{{--    </script>--}}
+{{--    <script src="https://apis.google.com/js/platform.js" async defer></script>--}}
+{{--    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>--}}
+{{--    <div id="fb-root"></div>--}}
+{{--    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>--}}
+{{--@endsection--}}
 
 @section('content')
 

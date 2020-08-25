@@ -61,4 +61,5 @@ class LoginController extends Controller
         }
         return response()->json(['error' => $validator->errors()->all()]);
     }
+
 }
