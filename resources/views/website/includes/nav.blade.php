@@ -270,72 +270,42 @@
                         </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
-                    <li class="nav-item">
+                        <li class="nav-item">
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                             <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="ref-id" autocomplete="false">
                             <small id="property_id-error" class="help-block text-red"></small>
                             <i class="fa fa-search ml-1"></i>
                             {{ Form::close() }}
                         </li>
-                    @if(\Illuminate\Support\Facades\Auth::check())
-                        <li class="nav-item">
-                        <div class="dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown"  role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user mr-3"></i>
-                                @if(\Illuminate\Support\Facades\Auth::check())
-                                         Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}
-                                            @endif
-                            </a> 
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
+                                       aria-expanded="false">
+                                        <i class="fas fa-user mr-3"></i>
+                                        @if(\Illuminate\Support\Facades\Auth::check())
+                                            Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}
+                                        @endif
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"><i
-                                        class="far fa-user-cog mr-2"></i>Manage Profile</a>
+                                                class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
-                                        class="far fa-sign-out mr-2"></i>Logout</a>
-                                       </div>    
-                        </div>   
-                        </li>
-                    
-                        @else 
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
-                               href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-user mr-3"></i>     
-                            </a>
-                         
-                        </li>
+                                                class="far fa-sign-out mr-2"></i>Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
+                                   href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user mr-3"></i>
+                                </a>
+                            </li>
                         @endif
-                      
                     </ul>
                 </div>
             </nav>
+            @include('website.layouts.sign-in-modal')
 
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                    <div class="modal-content">
-                        <!--Header-->
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Log in</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <!--Body-->
-                        <div class="modal-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-12 justify-content-center">
-                                    
-                                            <p class="text-center">Already a member?</p>
-                                            <a href="{{route('login')}}" class="btn btn-block sign-in login-btn" style="color: #0b2e13; padding: 6px 20px 9px 20px;">Login</a>
-                                            <p class="text-center">OR</p>
-                                            <p class="text-center">Become a new member.</p>
-                                            <a href="{{route('register')}}" class="btn btn-block btn-outline sign-in text-bold"
-                                               style="color: #274abb; padding: 6px 20px 9px 20px;">REGISTER</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div
