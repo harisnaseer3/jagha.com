@@ -41,7 +41,6 @@ trait AuthenticatesUsers
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
             return $this->sendLockoutResponse($request);
         }
 

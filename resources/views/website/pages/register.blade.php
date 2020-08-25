@@ -63,6 +63,9 @@
                                         <strong style="color: #e3342f">{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <p id="passwordHelpBlock" class="form-text text-muted">
+                                    Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.
+                                </p>
                             </div>
                             <div class="form-group form-box">
                                 <input id="password-confirm" type="password" class="form-control input-text" name="password_confirmation" required autocomplete="new-password"
