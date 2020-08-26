@@ -28,10 +28,10 @@
     @include('website.includes.featured_agencies')
 
     <!-- Most popular places start -->
-        @include('website.includes.popular_places_listing')
+    @include('website.includes.popular_places_listing')
         <div class="clearfix"></div>
         <!-- Blog start -->
-        @include('website.includes.recent_blogs')
+    @include('website.includes.recent_blogs')
     </div>
     <!-- Footer start -->
     @include('website.includes.footer')
@@ -46,20 +46,7 @@
 @endsection
 
 @section('script')
-    <script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '639361382871128',
-                autoLogAppEvents: true,
-                xfbml: true,
-                version: 'v8.0'
-            });
-        };
-    </script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>
+
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="http://malsup.github.io/jquery.cycle2.js"></script>
     <script src="http://malsup.github.io/jquery.cycle2.carousel.js"></script>

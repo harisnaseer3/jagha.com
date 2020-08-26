@@ -11,12 +11,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 justify-content-center">
-{{--                            <div class="btn btn-block btn-outline sign-in sign-card color-black fb-login-button" style="text-align: left;" data-size="large" data-button-type="login_with"--}}
-{{--                                 data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-width="">--}}
-{{--                                <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Continue with Facebook--}}
-{{--                            </div>--}}
-                            <div class="fb-login-button btn btn-block" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true"
-                                 data-width=""></div>
+                          <div class="btn btn-block btn-outline sign-in sign-card color-black fb-login-button" style="text-align: left;" data-size="large" data-button-type="login_with"
+                              data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-width="">
+                               <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Continue with Facebook
+
+                          </div>
+                          <a href="{{url('/redirect')}}" class="btn btn-primary">Login with Facebook</a>
 
 
                             <a href="javascript:void(0)" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
