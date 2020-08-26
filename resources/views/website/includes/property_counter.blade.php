@@ -1,7 +1,7 @@
 <div class="counters" style="background-color: white">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center">
                 <div class="media counter-box">
                     <div class="media-left">
                         <img src="img/property-icon.png">
@@ -13,7 +13,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center">
                 <div class="media counter-box">
                     <div class="media-left">
 {{--                        <i class="flaticon-business"></i>--}}
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-4">
+            <div class="col-lg-4 col-md-4 col-sm-12 d-flex justify-content-center">
                 <div class="media counter-box">
                     <div class="media-left">
 {{--                        <i class="flaticon-people"></i>--}}
