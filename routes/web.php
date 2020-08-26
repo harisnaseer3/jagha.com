@@ -123,3 +123,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
     Route::resource('/locations', 'LocationController');
     Route::resource('/cities', 'CityController');
 });
+
+//Facebook Login 
+Route::get('/redirect', 'SocialAuthFacebookController@redirect');
+Route::get('/callback', 'SocialAuthFacebookController@callback');
