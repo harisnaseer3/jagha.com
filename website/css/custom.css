@@ -1603,11 +1603,19 @@ hr.solid {
 .dropdown-item {
     font-size: 14px;
 }
-
 .dropdown-item:hover {
+    background-color:  #2238D8;
+    color:white;
+}
 
-    background: #2238D8;
-    color: white;
+.counters {
+    padding-top: 40px;
+}
+.counter {
+    color: black !important;
+}
+.count-text {
+  color: #2238D8 !important;
 }
 .sign-card {
     padding: 5px 15px 5px 15px;
