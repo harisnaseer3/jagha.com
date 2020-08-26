@@ -1609,11 +1609,9 @@ hr.solid {
     background: #2238D8;
     color: white;
 }
-
 .sign-card {
     padding: 5px 15px 5px 15px;
     font-size: 14px;
 }.sign-card:hover {
     color: black;
-
 }

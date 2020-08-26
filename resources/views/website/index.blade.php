@@ -24,7 +24,7 @@
     @include('website.includes.partner')
     <!-- Key agencies -->
     @include('website.includes.featured_agencies')
-        
+
     <!-- Most popular places start -->
         @include('website.includes.popular_places_listing')
         <div class="clearfix"></div>
