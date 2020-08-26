@@ -1593,4 +1593,13 @@ hr.solid {
     background: #2238D8;
     color: white;
 }
+.counters {
+    padding-top: 40px;
+}
 
+.counter {
+    color: black !important;
+}
+.count-text {
+  color: #2238D8 !important;
+}
