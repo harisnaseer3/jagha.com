@@ -50,16 +50,18 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-//        dd($request->all());
 
         if ($validator->passes()) {
             if (auth()->attempt(array('email' => $request->input('email'),
                 'password' => $request->input('password')), true)) {
-                return response()->json(['data' => 'success']);
+                $user = [
+                    'name' =>Auth::user()->name,
+                    'id' => Auth::user()->getAuthIdentifier()
+                ];
+                return response()->json(['data' => 'success', 'user'=> $user]);
             }
             return response()->json(['error' =>$validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
         }
         return response()->json(['error' => $validator->errors()->all()]);
     }
-
 }
