@@ -277,8 +277,9 @@
                             <i class="fa fa-search ml-1"></i>
                             {{ Form::close() }}
                         </li>
-                        @if(\Illuminate\Support\Facades\Auth::check())
-                            <li class="nav-item">
+                        <li class="nav-item user-dropdown">
+                            @if(\Illuminate\Support\Facades\Auth::check())
+                                {{--                            <li class="nav-item">--}}
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
                                        aria-expanded="false">
@@ -295,17 +296,15 @@
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
                                     </div>
                                 </div>
-                            </li>
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
+                            @else
+                                <a class="nav-link " data-toggle="modal" data-target="#exampleModalCenter"
                                    href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-user mr-3"></i>
                                 </a>
-                            </li>
-                        @endif
+                            @endif
+                        </li>
                     </ul>
                 </div>
             </nav>
-            @include('website.layouts.sign-in-modal')
+@include('website.layouts.sign-in-modal')
 

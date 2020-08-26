@@ -1,4 +1,4 @@
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="SigninModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 350px">
         <div class="modal-content">
             <div class="mr-2 mt-1">
@@ -15,8 +15,8 @@
 {{--                                 data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true" data-width="">--}}
 {{--                                <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Continue with Facebook--}}
 {{--                            </div>--}}
-{{--                            <div class="fb-login-button btn btn-block" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true"--}}
-{{--                                 data-width=""></div>--}}
+                            <div class="fb-login-button btn btn-block" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="true"
+                                 data-width=""></div>
 
 
                             <a href="javascript:void(0)" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
@@ -54,8 +54,8 @@
                                     <div class="form-group row">
                                         <div class="col-sm-6">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                <label class="form-check-label text-transform mt-2 color-black font-12" for="remember">
+                                                <input class="form-check-input mt-2" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                                <label class="form-check-label text-transform color-black font-12 mt-2" for="remember">
                                                     {{ __('Remember Me') }}
                                                 </label>
                                             </div>
