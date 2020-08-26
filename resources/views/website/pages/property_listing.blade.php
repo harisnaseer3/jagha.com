@@ -185,7 +185,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="EmailModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="EmailModelCenter" tabindex="-1" role="dialog" aria-labelledby="EmailModel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
             <div class="modal-content">
                 <!--Header-->
@@ -234,8 +234,21 @@
     <div class="fly-fade">
     </div><!--fly-fade-->
 @endsection
-
 @section('script')
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '639361382871128',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v8.0'
+            });
+        };
+    </script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>

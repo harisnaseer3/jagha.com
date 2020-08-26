@@ -521,7 +521,7 @@ ul {
     background-color: #fff;
 }
 
-input[type="checkbox"]:checked + label::before {
+input[type="checkbox"]:checked {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-weight: normal;
@@ -531,7 +531,7 @@ input[type="checkbox"]:checked + label::before {
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    content: "\f111";
+    /*content: "\f111";*/
     text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
     text-align: center;
     line-height: 19px;
@@ -4481,8 +4481,8 @@ footer {
 .contact-section .form-section p {
     color: #fff;
     margin-bottom: 0;
-    font-size: 15px;
-    font-weight: 500;
+    /*font-size: 15px;*/
+    /*font-weight: 500;*/
 }
 
 .contact-section .form-section p a {
@@ -4652,14 +4652,14 @@ footer {
 
 .contact-section .form-section .form-check label::before {
     content: "";
-    display: inline-block;
-    position: absolute;
-    width: 17px;
-    height: 17px;
-    margin-left: -25px;
-    border: 1px solid #c5c3c3;
-    border-radius: 3px;
-    background-color: darkgrey;
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*width: 17px;*/
+    /*height: 17px;*/
+    /*margin-left: -25px;*/
+    /*border: 1px solid #c5c3c3;*/
+    /*border-radius: 3px;*/
+    /*background-color: darkgrey;*/
 }
 
 .contact-section .form-section .form-check-label {
@@ -4671,11 +4671,11 @@ footer {
 }
 
 .contact-section .form-section input[type=checkbox]:checked + label:before {
-    font-weight: 300;
-    color: #f3f3f3;
-    line-height: 15px;
-    font-size: 14px;
-    content: "\2713";
+    /*font-weight: 300;*/
+    /*color: #f3f3f3;*/
+    /*line-height: 15px;*/
+    /*font-size: 14px;*/
+    /*content: "\2713";*/
 }
 
 .contact-section .form-section input[type=checkbox], input[type=radio] {

@@ -2,6 +2,7 @@
 
 namespace Illuminate\Foundation\Auth;
 
+use App\Http\Controllers\PropertyController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,8 @@ trait AuthenticatesUsers
     {
         session(['link' => url()->previous()]);
 //        return view('auth.login');
-        return view('website.pages.login');
+        return (new PropertyController())->index();
+//        return view('website.pages.login');
     }
 
     /**
@@ -41,7 +43,6 @@ trait AuthenticatesUsers
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
             return $this->sendLockoutResponse($request);
         }
 

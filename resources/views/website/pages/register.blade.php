@@ -4,6 +4,7 @@
 @endsection
 
 @section('css_library')
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
@@ -18,10 +19,10 @@
                 <div class="align-self-center pad-0">
                     <div class="form-section clearfix">
                         <h3>Create an account</h3>
-                        <div class="btn-section clearfix">
-                            <a href="{{ route('login') }}" class="link-btn btn-1 default-bg">Login</a>
-                            <a href="{{ route('register') }}" class="link-btn active btn-2 active-bg ">Register</a>
-                        </div>
+{{--                        <div class="btn-section clearfix">--}}
+{{--                            <a href="{{ route('login') }}" class="link-btn btn-1 default-bg">Login</a>--}}
+{{--                            <a href="{{ route('register') }}" class="link-btn active btn-2 active-bg ">Register</a>--}}
+{{--                        </div>--}}
                         {{--                        <div class="mb-3">--}}
                         {{--                            <button class="btn-md btn-theme">--}}
                         {{--                                Login with Facebook--}}
@@ -45,7 +46,7 @@
 
                             </div>
                             <div class="form-group form-box">
-                                <input id="email" type="email" class="form-control input-text  @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
+                                <input id="email" type="email" class="form-control input-text mb-2 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
                                        autocomplete="email" placeholder="Email Address">
 
                                 @error('email')
@@ -55,7 +56,7 @@
                                 @enderror
                             </div>
                             <div class="form-group form-box clearfix">
-                                <input id="password" type="password" class="form-control input-text  @error('password') is-invalid @enderror" name="password" required autocomplete="new-password"
+                                <input id="password" type="password" class="form-control input-text mb-2  @error('password') is-invalid @enderror" name="password" required autocomplete="new-password"
                                        placeholder="Password">
 
                                 @error('password')
@@ -63,6 +64,9 @@
                                         <strong style="color: #e3342f">{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <p id="passwordHelpBlock" class="form-text text-muted font-12">
+                                    Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.
+                                </p>
                             </div>
                             <div class="form-group form-box">
                                 <input id="password-confirm" type="password" class="form-control input-text" name="password_confirmation" required autocomplete="new-password"
@@ -70,9 +74,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6" id="agency-container">
-                                    <div class="form-check" style="padding-left: 0">
+                                    <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="agent-model" {{ old('agent-model') ? 'checked' : '' }} id="agent-model">
-                                        <label class="form-check-label text-transform" for="agent-model" style="color: black; font-size:12px">
+                                        <label class="form-check-label text-transform mt-1" for="agent-model" style="color: black; font-size:12px">
                                             {{ __('Are You an Agent?') }}
                                         </label>
                                     </div>

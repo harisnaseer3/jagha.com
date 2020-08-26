@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
+
 
 class LoginController extends Controller
 {
@@ -28,7 +31,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+//    protected $redirectTo = '/';
+//    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -40,8 +44,24 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-//    protected function redirectTo()
-//    {
-//        return '/dashboard/accounts/users/' . auth()->user()->getAuthIdentifier() . '/edit';
-//    }
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->passes()) {
+            if (auth()->attempt(array('email' => $request->input('email'),
+                'password' => $request->input('password')), true)) {
+                $user = [
+                    'name' =>Auth::user()->name,
+                    'id' => Auth::user()->getAuthIdentifier()
+                ];
+                return response()->json(['data' => 'success', 'user'=> $user]);
+            }
+            return response()->json(['error' =>$validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
+        }
+        return response()->json(['error' => $validator->errors()->all()]);
+    }
 }

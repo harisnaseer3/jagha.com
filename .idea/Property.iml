@@ -33,5 +33,7 @@
     <orderEntry type="library" name="jquery.cycle2" level="application" />
     <orderEntry type="library" name="jquery.cycle2.carousel" level="application" />
     <orderEntry type="library" name="additional-methods" level="application" />
+    <orderEntry type="library" name="sdk" level="application" />
+    <orderEntry type="library" name="platform" level="application" />
   </component>
 </module>
