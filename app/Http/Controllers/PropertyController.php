@@ -78,7 +78,12 @@ class PropertyController extends Controller
             ->orderBy('views', 'DESC')
             ->limit(10)
             ->get();
+
+        // property count table
+        $total_count = DB::table('total_property_count')->select('property_count', 'agency_count', 'city_count')->get()->all();
+
         $data = [
+            'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
             'featured_properties' => $featured_properties,
             'key_agencies' => (new AgencyController())->keyAgencies(),
@@ -210,7 +215,8 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-//        TODO: add conversions of land_area based on new /old marla, kanal
+        //        TODO: add conversions of land_area based on new /old marla, kanal
+        //        TODO: add data in total_property_count_property
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('image');
             if (count($error_msg)) {
