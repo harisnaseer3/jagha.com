@@ -2,7 +2,6 @@
 
 namespace Illuminate\Foundation\Auth;
 
-use App\Http\Controllers\PropertyController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +14,11 @@ trait AuthenticatesUsers
     /**
      * Show the application's login form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function showLoginForm()
     {
-        session(['link' => url()->previous()]);
-//        return view('auth.login');
-        return (new PropertyController())->index();
-//        return view('website.pages.login');
+        return view('auth.login');
     }
 
     /**
@@ -43,6 +39,7 @@ trait AuthenticatesUsers
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
+
             return $this->sendLockoutResponse($request);
         }
 
@@ -128,7 +125,7 @@ trait AuthenticatesUsers
      */
     protected function authenticated(Request $request, $user)
     {
-        return redirect(session('link'));
+        //
     }
 
     /**
