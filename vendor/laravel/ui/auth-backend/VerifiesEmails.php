@@ -15,13 +15,13 @@ trait VerifiesEmails
      * Show the email verification notice.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\View\View
      */
     public function show(Request $request)
     {
         return $request->user()->hasVerifiedEmail()
                         ? redirect($this->redirectPath())
-                        : view('website.verify');
+                        : view('auth.verify');
     }
 
     /**

@@ -12,12 +12,11 @@ trait SendsPasswordResetEmails
     /**
      * Display the form to request a password reset link.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function showLinkRequestForm()
     {
-//        return view('auth.passwords.email');
-        return view('website.pages.passwords.email');
+        return view('auth.passwords.email');
     }
 
     /**

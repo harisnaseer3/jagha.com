@@ -37,7 +37,7 @@ class AuthCommand extends Command
         'auth/register.stub' => 'auth/register.blade.php',
         'auth/verify.stub' => 'auth/verify.blade.php',
         'home.stub' => 'home.blade.php',
-        'layouts/app.stub' => 'layouts/login.blade.php',
+        'layouts/app.stub' => 'layouts/app.blade.php',
     ];
 
     /**
@@ -113,10 +113,15 @@ class AuthCommand extends Command
     {
         $this->callSilent('ui:controllers');
 
-        file_put_contents(
-            app_path('Http/Controllers/IndexController.php'),
-            $this->compileControllerStub()
-        );
+        $controller = app_path('Http/Controllers/HomeController.php');
+
+        if (file_exists($controller) && ! $this->option('force')) {
+            if ($this->confirm("The [HomeController.php] file already exists. Do you want to replace it?")) {
+                file_put_contents($controller, $this->compileControllerStub());
+            }
+        } else {
+            file_put_contents($controller, $this->compileControllerStub());
+        }
 
         file_put_contents(
             base_path('routes/web.php'),
@@ -131,7 +136,7 @@ class AuthCommand extends Command
     }
 
     /**
-     * Compiles the "IndexController" stub.
+     * Compiles the "HomeController" stub.
      *
      * @return string
      */
