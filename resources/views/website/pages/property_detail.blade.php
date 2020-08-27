@@ -243,22 +243,6 @@
                         @endif
                     </div>
                 </div>
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content" style="width:80%">
-                            <div class="modal-body">
-                                <button type="button" class="close pt-0" data-dismiss="modal" aria-label="Close"
-                                        style="padding: 1rem; margin: -1rem -1rem -1rem auto;">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                <div class="container mt-2">
-                                    <a href="{{route('login')}}" class="btn btn-block btn-outline">Login</a>
-                                    <a href="{{route('register')}}" class="btn btn-block btn-outline">Register</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="sidebar-right">
                         <!-- Advanced search start -->
@@ -293,6 +277,14 @@
                                                 </span>
                                                 </div>
                                             @endif
+                                            @if($agency->key_listing === 1)
+                                                <div class="mb-3">
+                                                <span class="premium-badge" style="color:#ffcc00;">
+                                                    <i class="fas fa-star"></i>
+                                                    <span style="color: white">KEY PARTNER</span>
+                                                </span>
+                                                </div>
+                                            @endif
                                             @if($agency->ceo_name !== null)
                                                 <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$agency->ceo_name}} </span></div>
                                             @endif
@@ -302,33 +294,6 @@
                             </div>
                             <hr>
                         @endif
-
-                        {{--                    @include('website.includes.advance_search')--}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-            <div class="modal-content">
-                <!--Header-->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Contact Dealer</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <!--Body-->
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12" style="text-align: center">
-                                <div><span style="font-weight: bold">Contact Person : </span><span>  {{ ucwords($property->contact_person) }}</span></div>
-                                <div><span style="font-weight: bold">Phone No :   </span><span>  {{$property->phone}}</span></div>
-                                {{--                                <div><span style="font-weight: bold">Mobile No :   </span><span>  {{$property->mobile}}</span></div>--}}
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -468,7 +433,6 @@
                 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                     anchor.addEventListener('click', function (e) {
                         e.preventDefault();
-
                         document.querySelector(this.getAttribute('href')).scrollIntoView({
                             behavior: 'smooth'
                         });
@@ -524,11 +488,39 @@
                     });
                 }
             });
+            let phone = '';
             let form = $('#email-contact-form');
+            $('.btn-email').click(function (e) {
+                let property = $(this).closest('.contact-container').find('input[name=property]').val();
+                let title = $(this).closest('.contact-container').find('input[name=title]').val();
+                let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
+                // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
+                let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
+                let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + title + ' </a>';
+                let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>.';
+                let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + '<br><br> Please contact me at your earliest by phone or by email.';
+                phone = $(this).closest('.contact-container').find('input[name=phone]').val();
+                let editable_div = $('.editable-div');
+                editable_div.html(message);
+                $('input[name=message]').val(editable_div.html());
+                editable_div.click(function () {
+                    if (editable_div.html() !== '') {
+                        $('input[name=message]').val(editable_div.html());
+                    }
+                });
+                if (!(property == null))
+                    $('.selected').val(property).attr('name', 'property');
+                else if (!(agency == null))
+                    $('.selected').val(agency).attr('name', 'agency');
+                call_btn.text('Call');
+            });
+            let call_btn = $('.agent-call');
+            call_btn.on('click', function () {
+                call_btn.attr('href', 'tel:' + phone).text(phone);
+            });
             $.validator.addMethod("regx", function (value, element, regexpr) {
                 return regexpr.test(value);
-            }, "Please enter a valid value. (+92-300-1234567)");
-
+            }, "Please enter a valid value. (+923001234567)");
             form.validate({
                 rules: {
                     name: {
@@ -536,7 +528,7 @@
                     },
                     phone: {
                         required: true,
-                        regx: /^\+92-3\d{2}-\d{7}$/,
+                        regx: /^\+923\d{2}\d{7}$/,
                     },
                     email: {
                         required: true,
@@ -568,15 +560,7 @@
                     }
                 }
             });
-
             $('#send-mail').click(function (event) {
-                $('input[name=message]').val(editable_div.html());
-                editable_div.click(function () {
-                    if (editable_div.html() !== '') {
-                        $('input[name=message]').val(editable_div.html());
-                    }
-                });
-
                 if (form.valid()) {
                     event.preventDefault();
                     jQuery.ajaxSetup({
@@ -586,28 +570,29 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: 'http://127.0.0.1/Property/contactAgent',
+                        url: window.location.origin + '/property' + '/contactAgent',
                         data: form.serialize(),
                         dataType: 'json',
                         success: function (data) {
                             if (data.status === 200) {
-                                console.log(data.data);
+                                // console.log(data.data);
+                                $('#EmailModelCenter').modal('hide');
                                 $('#EmailConfirmModel').modal('show');
-
                             } else {
                                 console.log(data.data);
                             }
                         },
                         error: function (xhr, status, error) {
-                            // console.log(error);
-                            // console.log(status);
-                            // console.log(xhr);
+                            console.log(error);
+                            console.log(status);
+                            console.log(xhr);
                         },
                         complete: function (url, options) {
                         }
                     });
                 }
-            })
+            });
+
         })
         (jQuery);
     </script>

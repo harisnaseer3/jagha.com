@@ -16,7 +16,6 @@ Route::post('/subscribe', 'SubscriberController@store')->name('subscribe');
 Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
 Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
-//Route::post('/login', 'Logincontroller@login');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
@@ -124,6 +123,6 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
     Route::resource('/cities', 'CityController');
 });
 
-//Facebook Login 
+//Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 Route::get('/callback', 'SocialAuthFacebookController@callback');

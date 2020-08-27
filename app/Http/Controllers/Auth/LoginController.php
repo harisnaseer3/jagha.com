@@ -31,7 +31,9 @@ class LoginController extends Controller
      *
      * @var string
      */
-//    protected $redirectTo = '/';
+    protected $redirectTo = '/';
+//    protected $redirectTo = url()->full();
+
 //    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
@@ -55,13 +57,30 @@ class LoginController extends Controller
             if (auth()->attempt(array('email' => $request->input('email'),
                 'password' => $request->input('password')), true)) {
                 $user = [
-                    'name' =>Auth::user()->name,
+                    'name' => Auth::user()->name,
                     'id' => Auth::user()->getAuthIdentifier()
                 ];
-                return response()->json(['data' => 'success', 'user'=> $user]);
+                return response()->json(['data' => 'success', 'user' => $user]);
             }
-            return response()->json(['error' =>$validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
+            return response()->json(['error' => $validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
         }
         return response()->json(['error' => $validator->errors()->all()]);
     }
+
+//    public function logout(Request $request)
+//    {
+//        $this->guard()->logout();
+//
+//        $request->session()->invalidate();
+//        $request->session()->regenerateToken();
+//
+//        return response()->json(['data' => 'success']);
+//    }
+
+//    protected function loggedOut(Request $request)
+//    {
+//        return response()->json(['data' => 'success']);
+//
+//    }
+
 }

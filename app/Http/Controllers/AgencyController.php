@@ -38,9 +38,9 @@ class AgencyController extends Controller
 
     function _listingFrontend()
     {
-        return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
-            'agency_cities.city_id', 'agencies.phone', 'agencies.cell','agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
-            'agency_cities.city_id', 'property_count_by_agencies.property_count AS count')
+        return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'property_count_by_agencies.property_count AS count')
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
@@ -60,21 +60,27 @@ class AgencyController extends Controller
 //        TODO: change city store method to find city in db
         $city_name = ucwords(str_replace('-', ' ', $city));
         $city_id = City::select('id')->where('name', '=', $city_name)->first();
+
         $limit = '';
+        $sort = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
 
         $agencies = $this->_listingFrontend()
-            ->where('agency_cities.city_id', '=', $city_id->id)
-            ->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
-            ->orderBy('agencies.created_at', 'DESC');
+            ->where('agency_cities.city_id', '=', $city_id->id);
 
         if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
+        $agencies = $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
+            ->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTagsOnPartnersListing();
@@ -163,8 +169,8 @@ class AgencyController extends Controller
             ->where('agencies.featured_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
 
-        $agencies->orderBy('agencies.created_at', 'DESC');
-        $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
+        $agencyCount = $this->_agencyCount()->where('agencies.featured_listing', '=', 1)
+            ->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTagsOnPartnersListing();
@@ -175,11 +181,17 @@ class AgencyController extends Controller
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
 
         if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
+
+        $agencies->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
 
         $data = [
             'property_types' => $property_types,
@@ -197,23 +209,28 @@ class AgencyController extends Controller
         $city_name = ucwords(str_replace('-', ' ', $city));
         $city_id = City::select('id')->where('name', '=', $city_name)->first();
         $limit = '';
+        $sort = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
 
         $agencies = $this->_listingFrontend()
             ->where('agency_cities.city_id', '=', $city_id->id);
         if ($agency === 'featured') $agencies->where('agencies.featured_listing', '=', 1);
         else if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
 
-        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
-            ->orderBy('agencies.created_at', 'DESC');
-
         if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
+
+        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
+            ->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
 
@@ -234,20 +251,27 @@ class AgencyController extends Controller
         $agencies = $this->_listingFrontend()
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
-        $agencies->orderBy('agencies.created_at', 'DESC');
+
         $agencyCount = $this->_agencyCount()->where('agencies.key_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
 
         $property_types = (new PropertyType)->all();
         $limit = '';
+        $sort ='';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
 
         if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
+        $agencies = $agencies->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
+
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
 

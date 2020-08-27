@@ -203,8 +203,8 @@
                         {{ Form::text('name', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"Name"])) }}
                         <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
                         {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
-                        <div><label class="mt-2">Phone<span style="color:red">*</span></label></div>
-                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
+                        <div><label class="mt-2">Phone (+923001234567) <span style="color:red">*</span></label></div>
+                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+923001234567"])) }}
                         {{--                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>--}}
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
@@ -234,7 +234,9 @@
     <div class="fly-fade">
     </div><!--fly-fade-->
 @endsection
+
 @section('script')
+
     <script>
         window.fbAsyncInit = function () {
             FB.init({
@@ -353,6 +355,7 @@
                         }
                     });
                 }
+
                 $('.select2').select2({
                     language: '{{app()->getLocale()}}',
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
@@ -423,7 +426,7 @@
                 });
                 $.validator.addMethod("regx", function (value, element, regexpr) {
                     return regexpr.test(value);
-                }, "Please enter a valid value. (+92-300-1234567)");
+                }, "Please enter a valid value. (+923001234567)");
                 form.validate({
                     rules: {
                         name: {
@@ -431,7 +434,7 @@
                         },
                         phone: {
                             required: true,
-                            regx: /^\+92-3\d{2}-\d{7}$/,
+                            regx: /^\+923\d{2}\d{7}$/,
                         },
                         email: {
                             required: true,
@@ -482,19 +485,20 @@
                                     $('#EmailModelCenter').modal('hide');
                                     $('#EmailConfirmModel').modal('show');
                                 } else {
-                                    // console.log(data.data);
+                                    console.log(data.data);
                                 }
                             },
                             error: function (xhr, status, error) {
-                                // console.log(error);
-                                // console.log(status);
-                                // console.log(xhr);
+                                console.log(error);
+                                console.log(status);
+                                console.log(xhr);
                             },
                             complete: function (url, options) {
                             }
                         });
                     }
-                })
+                });
+
             });
         })(jQuery);
     </script>
