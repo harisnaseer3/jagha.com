@@ -62,7 +62,7 @@
                             <div class="row">
                                 @foreach($normal_agencies as $agency)
                                     <div class="col-sm-3 my-2">
-                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                        <a href="{{route('city.wise.partners',['agency'=>'other','city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
                                            title="agencies in {{$agency->city}}"
                                            class="breadcrumb-link">
                                             {{$agency->city}} ({{$agency->agency_count}})
