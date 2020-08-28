@@ -7,9 +7,9 @@
     <?php echo $blog_organization->toScript()  ?>
 @endsection
 
-@php
-    $result = $result[0];
-@endphp
+{{--@php--}}
+{{--    $result = $result[0];--}}
+{{--@endphp--}}
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
@@ -28,25 +28,25 @@
                     <!-- Blog box start -->
                     <div class="blog-1 blog-big">
                         <div class="blog-photo">
-                            <img src="{{asset('img/blogs/'.$result->image)}}" alt="blog-img" class="img-fluid">
+                            <img src="{{asset('img/blogs/'.$result[0]->image)}}" alt="blog-img" class="img-fluid">
                         </div>
                         <div class="detail">
                             <h2>
-                                <a href="javascript:void(0);">{{$result->post_title}}</a>
+                                <a href="javascript:void(0);">{{$result[0]->post_title}}</a>
                             </h2>
                             <div class="post-meta clearfix mb-20">
-                                <span><a href="javascript:void(0)" tabindex="0"><i class="fa fa-user"></i>{{$result->author}} </a></span>
-                                <span><a href="javascript:void(0)" tabindex="0"><i class="fa fa-calendar"></i>Posted on {{date_format(date_create($result->post_date),"M d, Y")}}</a></span>
+                                <span><a href="javascript:void(0)" tabindex="0"><i class="fa fa-user"></i>{{$result[0]->author}} </a></span>
+                                <span><a href="javascript:void(0)" tabindex="0"><i class="fa fa-calendar"></i>Posted on {{date_format(date_create($result[0]->post_date),"M d, Y")}}</a></span>
                             </div>
                             <p id="paragraph">
-                                @php echo htmlspecialchars_decode($result->post_content) @endphp
+                                @php echo htmlspecialchars_decode($result[0]->post_content) @endphp
                             </p>
                         </div>
                         <div class="row clearfix">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <div class="blog-tags">
                                     <span>Tags</span>
-                                    <a href="javascript:void(0)">{{$result->category}}</a>
+                                    <a href="javascript:void(0)">{{$result[0]->category}}</a>
                                 </div>
                             </div>
                         </div>
@@ -106,39 +106,39 @@
 @section('script')
     <script>
         $(document).ready(function () {
-            setTimeout(function () {
-                $("#subscribeModalCenter").modal('show')
-            }, 4000);
-            $('#subscribe-form').on('submit', function (e) {
-                e.preventDefault();
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    type: 'post',
-                    url: window.location.origin+'/property/subscribe',
-                    data: {
-                        email: $('#subscribe').val()
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.status === 200) {
-                            let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
-                            $("#subscribe-form").slideUp();
-                            $('.Subscribe-box').append(btn);
-                        } else {
-                            //
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // console.log(error);
-                    },
-                    complete: function (url, options) {
-                    }
-                });
-            });
+            // setTimeout(function () {
+            //     $("#subscribeModalCenter").modal('show')
+            // }, 4000);
+            // $('#subscribe-form').on('submit', function (e) {
+            //     e.preventDefault();
+            //     jQuery.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     jQuery.ajax({
+            //         type: 'post',
+            //         url: window.location.origin+'/property/subscribe',
+            //         data: {
+            //             email: $('#subscribe').val()
+            //         },
+            //         dataType: 'json',
+            //         success: function (data) {
+            //             if (data.status === 200) {
+            //                 let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
+            //                 $("#subscribe-form").slideUp();
+            //                 $('.Subscribe-box').append(btn);
+            //             } else {
+            //                 //
+            //             }
+            //         },
+            //         error: function (xhr, status, error) {
+            //             // console.log(error);
+            //         },
+            //         complete: function (url, options) {
+            //         }
+            //     });
+            // });
         });
     </script>
 @endsection

@@ -518,6 +518,12 @@
                             html += '</div>' + '</div>';
 
                             user_dropdown.html(html);
+                            // console.log(data.user.email);
+
+                            if ($('.user-name').length > 0) {
+                                $('input[name=name]').val(data.user.name);
+                                $('input[name=email]').val(data.user.email)
+                            }
                             // window.location.reload(true);
                         } else if (data.error) {
                             $('div.help-block small').html(data.error.password);

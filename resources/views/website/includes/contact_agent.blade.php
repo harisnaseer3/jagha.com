@@ -5,9 +5,9 @@
     <div class="Subscribe-box" aria-label="Agency contact form">
         {{ Form::open(['route'=>['contact'],'method' => 'post','role' => 'form', 'id'=> 'email-contact-form', 'role' => 'form']) }}
         <div><label class="mt-2">Name<span style="color:red">*</span></label></div>
-        {{ Form::text('name', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"Name"])) }}
+        {{ Form::text('name', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->name:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm user-name' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>'Name'])) }}
         <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
-        {{ Form::email('email', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
+        {{ Form::email('email', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm user-email', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=> "name@domain.com"])) }}
         <div><label class="mt-2">Phone (+923001234567)<span style="color:red">*</span></label></div>
         {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+923001234567"])) }}
         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>

@@ -27,8 +27,31 @@ class AgencyController extends Controller
     {
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
+        $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+            ->where('agencies.status', '=', 'verified')
+            ->where('agencies.featured_listing', '=', '0')
+            ->where('agencies.key_listing', '=', '0')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+            ->orderBy('agency_count', 'DESC')->get();
+        $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+            ->where('agencies.status', '=', 'verified')
+            ->where('agencies.featured_listing', '=', '1')
+            ->where('agencies.key_listing', '=', '0')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+            ->orderBy('agency_count', 'DESC')->get();
+        $key_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+            ->where('agencies.status', '=', 'verified')
+            ->where('agencies.key_listing', '=', '1')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+            ->groupBy('cities.name')->orderBy('agency_count', 'DESC')->get();
+//        dd($normal_agencies);
         $data = [
-            'agencies' => $this->_agencyCount()->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get(),
+            'normal_agencies' => $normal_agencies,
+            'featured_agencies' => $featured_agencies,
+            'key_agencies' => $key_agencies,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -80,7 +103,7 @@ class AgencyController extends Controller
             $request->merge(['page' => (int)$lastPage]);
         }
         $agencies = $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
-            ->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
+            ->orderBy('agencies.created_at', $sort === 'newest' ? 'ASC' : 'DESC');
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTagsOnPartnersListing();
@@ -191,7 +214,7 @@ class AgencyController extends Controller
             $request->merge(['page' => (int)$lastPage]);
         }
 
-        $agencies->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
+        $agencies->orderBy('agencies.created_at', $sort === 'newest' ? 'ASC' : 'DESC');
 
         $data = [
             'property_types' => $property_types,
@@ -230,7 +253,7 @@ class AgencyController extends Controller
         }
 
         $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
-            ->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
+            ->orderBy('agencies.created_at', $sort === 'newest' ? 'ASC' : 'DESC');
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
 
@@ -252,11 +275,12 @@ class AgencyController extends Controller
             ->where('agencies.key_listing', '=', 1)
             ->whereNull('agencies.deleted_at');
 
-        $agencyCount = $this->_agencyCount()->where('agencies.key_listing', '=', 1)->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
+        $agencyCount = $this->_agencyCount()->where('agencies.key_listing', '=', 1)
+            ->groupBy('agency_cities.city_id')->orderBy('agency_count', 'DESC')->get();
 
         $property_types = (new PropertyType)->all();
         $limit = '';
-        $sort ='';
+        $sort = '';
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
@@ -270,7 +294,7 @@ class AgencyController extends Controller
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
-        $agencies = $agencies->orderBy('agencies.created_at', $sort ==='newest'? 'ASC':'DESC');
+        $agencies = $agencies->orderBy('agencies.created_at', $sort === 'newest' ? 'ASC' : 'DESC');
 
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 

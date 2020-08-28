@@ -18,13 +18,49 @@
             <div class="row">
                 <div class="col-lg-9 col-md-12 pb-3">
                     <!-- Listing -->
-                    <div class="card">
+                    <div class="card mb-3">
                         <div class="card-header">
-                            <h1 class="all-cities-header">Estate Partners Listing</h1>
+                            <h1 class="all-cities-header">Featured Partners Listing</h1>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                @foreach($agencies as $agency)
+                                @foreach($featured_agencies as $agency)
+                                    <div class="col-sm-3 my-2">
+                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                           title="agencies in {{$agency->city}}"
+                                           class="breadcrumb-link">
+                                            {{$agency->city}} ({{$agency->agency_count}})
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h1 class="all-cities-header">Key Partners Listing</h1>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($key_agencies as $agency)
+                                    <div class="col-sm-3 my-2">
+                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                           title="agencies in {{$agency->city}}"
+                                           class="breadcrumb-link">
+                                            {{$agency->city}} ({{$agency->agency_count}})
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h1 class="all-cities-header">Other Partners Listing</h1>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($normal_agencies as $agency)
                                     <div class="col-sm-3 my-2">
                                         <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
                                            title="agencies in {{$agency->city}}"
