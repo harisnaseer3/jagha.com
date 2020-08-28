@@ -26,7 +26,7 @@
                             <div class="row">
                                 @foreach($featured_agencies as $agency)
                                     <div class="col-sm-3 my-2">
-                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                        <a href="{{route('city.wise.partners',['agency'=>'featured','city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
                                            title="agencies in {{$agency->city}}"
                                            class="breadcrumb-link">
                                             {{$agency->city}} ({{$agency->agency_count}})
@@ -44,7 +44,7 @@
                             <div class="row">
                                 @foreach($key_agencies as $agency)
                                     <div class="col-sm-3 my-2">
-                                        <a href="{{route('agencies.citywise.listing',['city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                        <a href="{{route('city.wise.partners',['agency'=>'key','city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
                                            title="agencies in {{$agency->city}}"
                                            class="breadcrumb-link">
                                             {{$agency->city}} ({{$agency->agency_count}})

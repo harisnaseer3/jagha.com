@@ -280,10 +280,10 @@
                 <div class="modal-body">
                     <div class="container">
                         <div class="text-center">
-                            <i class="fas fa-check-circle fa-3x" style="color: #274abb"></i>
+                            <i class="fas fa-check-circle fa-3x" style="color: #28a745;"></i>
                             <div class="m-3 font-size-14">Message sent successfully</div>
-                            <div class="mb-2">Add info@aboutpakistan.com to your white list to get email from us.</div>
-                            <button class="btn btn-success" data-dismiss="modal">Dismiss</button>
+                            <div class="mb-2 line-height">Add info@aboutpakistan.com to your white list to get email from us.</div>
+                            <button class="btn btn-email" data-dismiss="modal">Dismiss</button>
                         </div>
                     </div>
                 </div>
