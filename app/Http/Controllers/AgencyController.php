@@ -246,6 +246,7 @@ class AgencyController extends Controller
             ->where('agency_cities.city_id', '=', $city_id->id);
         if ($agency === 'featured') $agencies->where('agencies.featured_listing', '=', 1);
         else if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
+        else if ($agency === 'other') $agencies->where('agencies.featured_listing', '=', 0)->where('agencies.key_listing', '=', 0);
 
         if ($request->has('page') && $request->input('page') > ceil($agencies->count() / $limit)) {
             $lastPage = ceil((int)$agencies->count() / $limit);
