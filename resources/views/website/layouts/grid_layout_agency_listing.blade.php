@@ -40,12 +40,18 @@
                         <div class="listing-badges pull-right">
                             @if(isset($agency->status) &$agency->status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i class="far fa-shield-check"></i></span>
+                                      title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                        class="far fa-shield-check"></i></span>
 
                             @endif
                             @if(isset($agency->featured_listing) && $agency->featured_listing === 1)
                                 <span class="premium-badge">
                                <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span>
+                           </span>
+                            @endif
+                            @if(isset($agency->key_listing) && $agency->key_listing === 1)
+                                <span class="premium-badge">
+                               <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> KEY PARTNER</span></span>
                            </span>
                             @endif
                         </div>
@@ -71,7 +77,7 @@
                         </a>
                     </div>
                     <div class="color-555 mt-2 date-box"><span>Total Properties: </span> {{ $agency->count }}</div>
-{{--                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>--}}
+                    {{--                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>--}}
                     <div class="color-555 mt-2 date-box"><span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}</div>
                 </div>
                 <div class="row contact-container" style="padding: 0 20px;">

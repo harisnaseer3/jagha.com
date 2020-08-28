@@ -63,10 +63,15 @@
                                 <span class="premium-badge">
                                <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span></span>
                             @endif
+                            @if(isset($agency->key_listing) && $agency->key_listing === 1)
+                                <span class="premium-badge">
+                               <span style="color:#ffcc00"><i class="fas fa-star"></i><span class="color-white"> KEY PARTNER</span></span></span>
+                            @endif
                         </div>
                     </h2>
                     <h5 class="location mb-2">
-                        <span><a href="{{route('city.wise.partners',['agency'=>explode('-', request()->segment(1))[0],'city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}" aria-label="Agency location" title="{{$agency->title}}">
+                        <span><a href="{{route('city.wise.partners',['agency'=>explode('-', request()->segment(1))[0],'city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
+                                 aria-label="Agency location" title="{{$agency->title}}">
                                 <i class="flaticon-location"></i>{{$agency->city}}</a>
                         </span>
                         @if( $agency->agent != '')
@@ -75,11 +80,11 @@
                         @endif
                     </h5>
                     <div class="row">
-                        <div class="col-md-4 color-555">
-                            <span>Total Properties:</span> {{ $agency->count }}
+                        <div class="col-md-4 color-blue">
+                            <span class="color-blue">Total Properties:</span> {{ $agency->count }}
                         </div>
-                        <div class="col-md-8 color-555">
-                            <span>Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}
+                        <div class="col-md-8 color-blue">
+                            <span class="color-blue">Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}
                         </div>
                     </div>
 
@@ -94,7 +99,7 @@
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...')}}
                                         @if(strlen($agency->description) > 300 )
-                                            <span class="hover-color"  data-toggle="popover" data-trigger="hover" title ="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif
+                                            <span class="hover-color" data-toggle="popover" data-trigger="hover" title="{{$agency->title}}" data-content="{{$agency->description}}"> More </span> @endif
                                     </h6>
                                 </a>
                             </div>
