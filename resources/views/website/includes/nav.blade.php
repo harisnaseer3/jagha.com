@@ -284,7 +284,7 @@
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-3"></i>
                                         @if(\Illuminate\Support\Facades\Auth::check())
-                                            Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}
+                                           <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}</span> 
                                         @endif
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
