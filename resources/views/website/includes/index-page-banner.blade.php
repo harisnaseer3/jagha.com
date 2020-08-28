@@ -162,9 +162,9 @@
                             </div>
 
                         </div>
-                        
+
                         <div class="card" id="popular-cities">
-                        
+
                             <div class="card-header">
                                 <h6 class="popular-cities-heading">Popular Cities</h6>
                             </div>

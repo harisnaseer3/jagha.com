@@ -997,7 +997,6 @@ class PropertyController extends Controller
         if ($validator->fails()) {
             return (['error' => $validator->errors()]);
         }
-//        dd($data['area_unit']);
         $location = '';
 
         $city = (new City)->select('id', 'name')->where('name', '=', $data['city'])->first();
@@ -1040,7 +1039,6 @@ class PropertyController extends Controller
         $max_area = floatval(str_replace(',', '', $data['max_area']));
 
         $area_column_wrt_unit = '';
-
 
         if ($data['area_unit'] === 'Marla') $area_column_wrt_unit = 'area_in_marla';
         if ($data['area_unit'] === 'New Marla (225 Sqft)') $area_column_wrt_unit = 'area_in_new_marla';
