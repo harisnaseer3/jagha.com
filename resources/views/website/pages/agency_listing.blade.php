@@ -55,12 +55,16 @@
                                             {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                             </span>
                                         </a>
-                                    @else
+                                    @elseif(request()->segment(1) === 'key-partners')
                                         <a href="{{route('key-partners',['sort'=>'newest'])}}">
-                                             <span class="breadcrumb-link" itemprop="name">
+                                            <span class="breadcrumb-link" itemprop="name">
                                             {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
-                                             </span>
+                                            </span>
                                         </a>
+                                        @else 
+                                        <span  itemprop="name">
+                                            {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
+                                            </span>
                                     @endif
 
                                 @endif
