@@ -55,6 +55,13 @@
                                     </span>
                                 </span>
                             @endif
+                            @if(isset($property->key_listing)  && $property->key_listing)
+                                <span class="featured float-right tag-padding" style="background-color: #555">
+                                    <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
+                                        <span class="color-white">KEY PARTNER</span>
+                                    </span>
+                                </span>
+                            @endif
                         </div>
 
                         <div class="price-ratings-box">
@@ -78,8 +85,8 @@
                            <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
                            <div class="col-md-12 mb-1 mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>  
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Marla </div>
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft) </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
@@ -103,20 +110,20 @@
                     </div>
                     <ul class="facilities-list clearfix grid-view-facilities">
                         @if(request()->query('area_unit') != null)
-                            <li aria-label="land area" style="width:100%;"  data-toggle="tooltip" data-placement="right" data-html="true"
-                           title='<div class="row mt-1">
+                            <li aria-label="land area" style="width:100%;" data-toggle="tooltip" data-placement="right" data-html="true"
+                                title='<div class="row mt-1">
                            <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>  
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Marla </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal</div>   
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal</div>
                            </div>'><i class="fas fa-arrows-alt"></i>
                                 <span>
-                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla
+                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Marla
+                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
                                     @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
@@ -125,13 +132,13 @@
                                 </span>
                             </li>
                         @elseif(isset($property->land_area))
-                            <li aria-label="land area"  data-toggle="tooltip" data-placement="right" data-html="true"
-                           title='<div class="row mt-1">
+                            <li aria-label="land area" data-toggle="tooltip" data-placement="right" data-html="true"
+                                title='<div class="row mt-1">
                            <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
                            <div class="col-md-12 mb-1 mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>  
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Marla </div>
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft) </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
