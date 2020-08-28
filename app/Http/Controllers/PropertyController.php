@@ -79,10 +79,17 @@ class PropertyController extends Controller
             ->limit(10)
             ->get();
 
+        $properties_to_sale = DB::table('properties')->select(DB::raw('COUNT(id) AS sale_property_count'))
+            ->where('purpose', '=', 'sale')->get();
+        $properties_to_rent = DB::table('properties')->select(DB::raw('COUNT(id) AS rent_property_count'))
+            ->where('purpose', '=', 'rent')->get();
+
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'agency_count', 'city_count')->get()->all();
 
         $data = [
+            'sale_property_count' =>$properties_to_sale,
+            'rent_property_count' => $properties_to_rent,
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
             'featured_properties' => $featured_properties,
@@ -359,7 +366,7 @@ class PropertyController extends Controller
             ->select('properties.reference', 'properties.id', 'purpose', 'sub_purpose', 'sub_type', 'type', 'title', 'description', 'price', 'land_area', 'area_unit', 'bedrooms', 'bathrooms',
                 'features', 'premium_listing', 'super_hot_listing', 'hot_listing', 'magazine_listing', 'contact_person', 'phone', 'cell', 'fax', 'email', 'views', 'status',
                 'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'properties.favorites', 'properties.latitude',
-                'properties.longitude','property_count_by_agencies.property_count AS agency_property_count')
+                'properties.longitude', 'property_count_by_agencies.property_count AS agency_property_count')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftJoin('property_count_by_agencies', 'properties.agency_id', '=', 'property_count_by_agencies.agency_id')

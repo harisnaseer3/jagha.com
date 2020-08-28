@@ -43,11 +43,12 @@
 <section class="wow fadeIn animated counters" style="visibility: visible; animation-name: fadeIn;">
     <div class="container">
         <div class="row">
-        <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> <i class="fa fa-beer medium-icon"></i> <span id="anim-number-pizza" class="counter-number"></span> <span class="timer counter alt-font appear" data-to="{{$total_count[0]->property_count}}" data-speed="7000">{{$total_count[0]->property_count}}</span>
+{{--            {{dd($rent_property_count[0]->rent_property_count)}}--}}
+        <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> <i class="fa fa-beer medium-icon"></i> <span id="anim-number-pizza" class="counter-number"></span> <span class="timer counter alt-font appear" data-to="{{$sale_property_count[0]->sale_property_count}}" data-speed="7000">{{$sale_property_count[0]->sale_property_count}}</span>
                 <p class="counter-title">Properties To Sale</p>
             </div> <!-- end counter -->
             <!-- counter -->
-            <div class="col-md-3  col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> <i class="fa fa-beer medium-icon"></i> <span id="anim-number-pizza" class="counter-number"></span> <span class="timer counter alt-font appear" data-to="{{$total_count[0]->property_count}}" data-speed="7000">{{$total_count[0]->property_count}}</span>
+            <div class="col-md-3  col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> <i class="fa fa-beer medium-icon"></i> <span id="anim-number-pizza" class="counter-number"></span> <span class="timer counter alt-font appear" data-to="{{$rent_property_count[0]->rent_property_count}}" data-speed="7000">{{$rent_property_count[0]->rent_property_count}}</span>
                 <p class="counter-title">Properties To Rent</p>
             </div> <!-- end counter -->
             <!-- counter -->
