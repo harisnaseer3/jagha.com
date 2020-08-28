@@ -257,7 +257,11 @@
                                     @if($agency->logo !==null)
                                         <div class="col-sm-6 text-center">
                                             <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                                                 alt="{{ucwords($agency->title)}}" title="{{ucwords($agency->title)}}" style="max-width: 80%">
+                                                 alt="{{ucwords($agency->title)}}"  style="max-width: 80%"  data-toggle="popover" data-trigger="hover" title="{{$agency->title}}" data-placement ="bottom" data-html='true' data-content='
+                                    <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
+                                    <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
+                                    <br \>
+                                    <div>{{$agency->description}}</div>'>
                                         </div>
                                     @endif
                                     <div class="col-sm-6 mt-1">
@@ -398,6 +402,7 @@
                     initMap($(this).data('value'));
                 });
                 $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="popover"]').popover({trigger: "hover"});
                 $.fn.stars = function () {
                     return $(this).each(function () {
                         let rating = $(this).data("rating");

@@ -1672,3 +1672,6 @@ hr.solid {
     margin-bottom: 15px !important;
     color: #2238D8 !important;
 }
+.line-height {
+    line-height: 1.2rem;
+}
