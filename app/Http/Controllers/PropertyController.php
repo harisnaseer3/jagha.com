@@ -359,9 +359,10 @@ class PropertyController extends Controller
             ->select('properties.reference', 'properties.id', 'purpose', 'sub_purpose', 'sub_type', 'type', 'title', 'description', 'price', 'land_area', 'area_unit', 'bedrooms', 'bathrooms',
                 'features', 'premium_listing', 'super_hot_listing', 'hot_listing', 'magazine_listing', 'contact_person', 'phone', 'cell', 'fax', 'email', 'views', 'status',
                 'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'properties.favorites', 'properties.latitude',
-                'properties.longitude')
+                'properties.longitude','property_count_by_agencies.property_count AS agency_property_count')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->leftJoin('property_count_by_agencies', 'properties.agency_id', '=', 'property_count_by_agencies.agency_id')
             ->where('properties.id', '=', $property->id)
             ->whereNull('properties.deleted_at')->first();
 
