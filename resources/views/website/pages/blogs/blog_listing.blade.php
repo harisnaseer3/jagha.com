@@ -48,7 +48,8 @@
                             <div class="caption detail blog-detail">
                                 <h4><a href="{{route('blogs.show',[\Illuminate\Support\Str::slug($result->post_title),$result->id])}}"
                                        title="{{$result->post_title}}">{{ \Illuminate\Support\Str::limit(strip_tags($result->post_title), 75, $end='...') }}</a></h4>
-                                <h5 class="font-size-14 color-555" style="font-weight: 400; line-height: 26px">{{ \Illuminate\Support\Str::limit(strip_tags($result->post_content), 74, $end='...') }}</h5>
+                                <h5 class="font-size-14 color-555"
+                                    style="font-weight: 400; line-height: 26px">{{ \Illuminate\Support\Str::limit(strip_tags($result->post_content), 74, $end='...') }}</h5>
 
                             </div>
                         </div>
@@ -114,172 +115,141 @@
 
 @section('script')
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-
     <script>
         $(document).ready(function () {
             setTimeout(function () {
-                $("#subscribeModalCenter").modal('show')
-            }, 3000);
-            $('#load-more').on('click', function (e) {
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    type: 'get',
-                    url: window.location.origin+'/property/load-more-data',
-                    data: {
-                        id: $('#blog-list').data('index')
-                    },
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $("#load-more").html('Loading...');
-                    },
-                    success: function (data) {
-                        if (data.status === 200) {
-                            $('.more-blogs').append(data.data.html);
-                            $('#blog-list').attr('data-index', data.data.last_id)
+                //     $("#subscribeModalCenter").modal('show')
+                // }, 3000);
+                $('#load-more').on('click', function (e) {
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        type: 'get',
+                        url: window.location.origin + '/property/load-more-data',
+                        data: {
+                            id: $('#blog-list').data('index')
+                        },
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $("#load-more").html('Loading...');
+                        },
+                        success: function (data) {
+                            if (data.status === 200) {
+                                $('.more-blogs').append(data.data.html);
+                                $('#blog-list').attr('data-index', data.data.last_id)
 
-                        } else {
-                            $('.more-blogs').append(data.data);
-                            $('#load-more').hide();
-                            // console.log(data.data);
+                            } else {
+                                $('.more-blogs').append(data.data);
+                                $('#load-more').hide();
+                                // console.log(data.data);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // console.log(xhr);
+                            // console.log(status);
+                            // console.log(error);
+                        },
+                        complete: function (url, options) {
+                            $("#load-more").html('Load More');
+                        }
+                    });
+                });
+
+
+                let form = $('#sign-in-card');
+                form.validate({
+                    rules: {
+                        email: {
+                            required: true,
+                        },
+                        password: {
+                            required: true,
                         }
                     },
-                    error: function (xhr, status, error) {
-                        // console.log(xhr);
-                        // console.log(status);
-                        // console.log(error);
-                    },
-                    complete: function (url, options) {
-                        $("#load-more").html('Load More');
-                    }
-                });
-            });
-        });
-
-        let form = $('#sign-in-card');
-        form.validate({
-            rules: {
-                email: {
-                    required: true,
-                },
-                password: {
-                    required: true,
-                }
-            },
-            messages: {},
-            errorElement: 'small',
-            errorClass: 'help-block text-red',
-            submitHandler: function (form) {
-                event.preventDefault();
-            },
-            invalidHandler: function (event, validator) {
-                // 'this' refers to the form
-                const errors = validator.numberOfInvalids();
-                if (errors) {
-                    let error_tag = $('div.error.text-red');
-                    error_tag.hide();
-                    const message = errors === 1
-                        ? 'You missed 1 field. It has been highlighted'
-                        : 'You missed ' + errors + ' fields. They have been highlighted';
-                    $('div.error.text-red span').html(message);
-                    error_tag.show();
-                } else {
-                    $('div.error.text-red').hide();
-
-                }
-            }
-        });
-
-        $('#sign-in-btn').click(function (event) {
-            if (form.valid()) {
-                event.preventDefault();
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                event.preventDefault();
-                jQuery.ajax({
-                    type: 'post',
-                    url: window.location.origin + '/property' + '/login',
-                    data: form.serialize(),
-                    dataType: 'json',
-                    success: function (data) {
-                        // console.log(data);
-                        if (data.data) {
-                            // console.log(data.user);
-                            $('.error-tag').hide();
-                            $('#exampleModalCenter').modal('hide');
-                            let user_dropdown = $('.user-dropdown')
-                            user_dropdown.html('');
-                            let user_name = data.user.name;
-                            let user_id = data.user.id;
-                            let html =
-                                '            <div class="dropdown">' +
-                                '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
-                                '                    aria-expanded="false">' +
-                                '                      <i class="fas fa-user mr-3"></i>';
-                            html += 'Logged in as' + user_name;
-                            html += '</a>' +
-                                '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                            html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
-                                '                     <div class="dropdown-divider"></div>' +
-                                '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
-                            html += '</div>' + '</div>';
-
-                            user_dropdown.html(html);
-                            // window.location.reload(true);
-                        } else if (data.error) {
-                            $('div.help-block small').html(data.error.password);
-                            $('.error-tag').show();
-                        }
-                    },
-                    error: function (xhr, status, error) {
+                    messages: {},
+                    errorElement: 'small',
+                    errorClass: 'help-block text-red',
+                    submitHandler: function (form) {
                         event.preventDefault();
-
-                        // console.log(error);
-                        // console.log(status);
-                        // console.log(xhr);
                     },
-                    complete: function (url, options) {
+                    invalidHandler: function (event, validator) {
+                        // 'this' refers to the form
+                        const errors = validator.numberOfInvalids();
+                        if (errors) {
+                            let error_tag = $('div.error.text-red');
+                            error_tag.hide();
+                            const message = errors === 1
+                                ? 'You missed 1 field. It has been highlighted'
+                                : 'You missed ' + errors + ' fields. They have been highlighted';
+                            $('div.error.text-red span').html(message);
+                            error_tag.show();
+                        } else {
+                            $('div.error.text-red').hide();
+
+                        }
                     }
                 });
-            }
-        });
-        // $('.logout-btn').on('click', function () {
-        //     // console.log($('meta[name="csrf-token"]').attr('content'));
-        //     jQuery.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-        //     event.preventDefault();
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: window.location.origin + '/property' + '/logout',
-        //         success: function (data) {
-        //             // console.log(data.data);
-        //             let user_dropdown = $('.user-dropdown')
-        //             user_dropdown.html('');
-        //             let html2 = '<a class="nav-link " data-toggle="modal" data-target="#exampleModalCenter"  href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">'+
-        //                 '<i class="fas fa-user mr-3"></i>' +
-        //                 '</a> ';
-        //             user_dropdown.html(html2);
-        //         },
-        //         error: function (xhr, status, error) {
-        //             event.preventDefault();
-        //
-        //             // console.log(error);
-        //             // console.log(status);
-        //             // console.log(xhr);
-        //         },
-        //         complete: function (url, options) {
-        //         }
-        //     });
-        // });
 
+                $('#sign-in-btn').click(function (event) {
+                    if (form.valid()) {
+                        event.preventDefault();
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        event.preventDefault();
+                        jQuery.ajax({
+                            type: 'post',
+                            url: window.location.origin + '/property' + '/login',
+                            data: form.serialize(),
+                            dataType: 'json',
+                            success: function (data) {
+                                // console.log(data);
+                                if (data.data) {
+                                    // console.log(data.user);
+                                    $('.error-tag').hide();
+                                    $('#exampleModalCenter').modal('hide');
+                                    let user_dropdown = $('.user-dropdown')
+                                    user_dropdown.html('');
+                                    let user_name = data.user.name;
+                                    let user_id = data.user.id;
+                                    let html =
+                                        '            <div class="dropdown">' +
+                                        '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
+                                        '                    aria-expanded="false">' +
+                                        '                      <i class="fas fa-user mr-3"></i>';
+                                    html += 'Logged in as' + user_name;
+                                    html += '</a>' +
+                                        '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+                                    html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                                        '                     <div class="dropdown-divider"></div>' +
+                                        '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
+                                    html += '</div>' + '</div>';
+
+                                    user_dropdown.html(html);
+                                    // window.location.reload(true);
+                                } else if (data.error) {
+                                    $('div.help-block small').html(data.error.password);
+                                    $('.error-tag').show();
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                event.preventDefault();
+
+                                // console.log(error);
+                                // console.log(status);
+                                // console.log(xhr);
+                            },
+                            complete: function (url, options) {
+                            }
+                        });
+                    }
+                });
+
+            })});
     </script>
 @endsection

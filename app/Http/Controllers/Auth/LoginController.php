@@ -58,7 +58,8 @@ class LoginController extends Controller
                 'password' => $request->input('password')), true)) {
                 $user = [
                     'name' => Auth::user()->name,
-                    'id' => Auth::user()->getAuthIdentifier()
+                    'id' => Auth::user()->getAuthIdentifier(),
+                    'email'=>Auth::user()->email
                 ];
                 return response()->json(['data' => 'success', 'user' => $user]);
             }
