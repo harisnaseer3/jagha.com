@@ -35,7 +35,7 @@ class JsonLdMulti implements JsonLdMultiContract
      */
     public function __construct(array $defaultJsonLdData = [])
     {
-        $this->defaultJsonLdData;
+        $this->defaultJsonLdData = $defaultJsonLdData;
         // init the first JsonLd group
         if (empty($this->list)) {
             $this->newJsonLd();
@@ -49,7 +49,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         if (count($this->list) > 1) {
             return array_reduce($this->list, function (string $output, JsonLd $jsonLd) {
-                return $output . (!$jsonLd->isEmpty() ? $jsonLd->generate() : '');
+                return $output . (! $jsonLd->isEmpty() ? $jsonLd->generate() : '');
             }, '');
         }
     }
@@ -59,10 +59,10 @@ class JsonLdMulti implements JsonLdMultiContract
      */
     public function newJsonLd()
     {
-//        $this->index = count($this->list);
-//        $this->list[] = new JsonLd($this->defaultJsonLdData);
+        $this->index = count($this->list);
+        $this->list[] = new JsonLd($this->defaultJsonLdData);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -83,7 +83,7 @@ class JsonLdMulti implements JsonLdMultiContract
             $this->index = $index;
         }
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -93,7 +93,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->addValue($key, $value);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -103,7 +103,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->addValues($values);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -113,7 +113,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setType($type);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -123,7 +123,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setTitle($title);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -133,7 +133,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setSite($site);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -143,7 +143,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setDescription($description);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -153,7 +153,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setUrl($url);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -163,7 +163,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setImages($images);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -173,7 +173,7 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->addImage($image);
 
-        return 0;
+        return $this;
     }
 
     /**
@@ -183,6 +183,6 @@ class JsonLdMulti implements JsonLdMultiContract
     {
         $this->list[$this->index]->setImage($image);
 
-        return 0;
+        return $this;
     }
 }

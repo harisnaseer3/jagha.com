@@ -42,27 +42,27 @@ class JsonLd implements JsonLdContract
     public function __construct(array $defaults = [])
     {
         if (key_exists('title', $defaults)) {
-//            $this->setTitle($defaults['title']);
+            $this->setTitle($defaults['title']);
             unset($defaults['title']);
         }
 
         if (key_exists('description', $defaults)) {
-//            $this->setDescription($defaults['description']);
+            $this->setDescription($defaults['description']);
             unset($defaults['description']);
         }
 
         if (key_exists('type', $defaults)) {
-//            $this->setType($defaults['type']);
+            $this->setType($defaults['type']);
             unset($defaults['type']);
         }
 
         if (key_exists('url', $defaults)) {
-//            $this->setUrl($defaults['url']);
+            $this->setUrl($defaults['url']);
             unset($defaults['url']);
         }
 
         if (key_exists('images', $defaults)) {
-//            $this->setImages($defaults['images']);
+            $this->setImages($defaults['images']);
             unset($defaults['images']);
         }
 
@@ -91,15 +91,15 @@ class JsonLd implements JsonLdContract
             '@context' => 'https://schema.org',
         ];
 
-        if (!empty($this->type)) {
+        if (! empty($this->type)) {
             $generated['@type'] = $this->type;
         }
 
-        if (!empty($this->title)) {
+        if (! empty($this->title)) {
             $generated['name'] = $this->title;
         }
 
-        if (!empty($this->description)) {
+        if (! empty($this->description)) {
             $generated['description'] = $this->description;
         }
 
@@ -107,7 +107,7 @@ class JsonLd implements JsonLdContract
             $generated['url'] = $this->url ?? app('url')->full();
         }
 
-        if (!empty($this->images)) {
+        if (! empty($this->images)) {
             $generated['image'] = count($this->images) === 1 ? reset($this->images) : json_encode($this->images);
         }
 
