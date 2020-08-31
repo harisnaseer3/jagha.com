@@ -61,8 +61,8 @@
                                             {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                             </span>
                                         </a>
-                                        @else 
-                                        <span  itemprop="name">
+                                    @else
+                                        <span itemprop="name">
                                             {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                             </span>
                                     @endif
@@ -104,7 +104,6 @@
                         {{ $agencies->links() }}
                     </div>
                 </div>
-
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">
                         <div class="sidebar widget" aria-label="Subscription form">
@@ -129,6 +128,7 @@
             </div>
         </div>
     </div>
+    <!-- email models  -->
     <div class="modal fade" id="EmailModelCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
             <div class="modal-content">
@@ -148,7 +148,7 @@
                         <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
                         {{ Form::email('email', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email : null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
                         <div><label class="mt-2">Phone (+923001234567) <span style="color:red">*</span></label></div>
-                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+92-300-1234567"])) }}
+                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+923001234567"])) }}
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
                         </div>
@@ -167,7 +167,23 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+            <div class="modal-content">
+                <!--Body-->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="text-center">
+                            <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
+                            <div class="m-3" style="font-size: 14px">Message sent successfully</div>
+                            <div class="mb-2 line-height">Add info@aboutpakistan.com to your white list to get email from us.</div>
+                            <button class="btn btn-email" data-dismiss="modal">Dismiss</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer start -->
     @include('website.includes.footer')
     <div class="fly-to-top back-to-top">
@@ -398,11 +414,11 @@
                 $('#send-mail').click(function (event) {
                     if (form.valid()) {
                         event.preventDefault();
-                        // jQuery.ajaxSetup({
-                        //     headers: {
-                        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        //     }
-                        // });
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
                         jQuery.ajax({
                             type: 'post',
                             url: window.location.origin + '/property' + '/contactAgent',
@@ -410,7 +426,8 @@
                             dataType: 'json',
                             success: function (data) {
                                 if (data.status === 200) {
-                                    console.log(data.data);
+                                    // console.log(data.data);
+                                    form.trigger("reset");
                                     $('#EmailModelCenter').modal('hide');
                                     $('#EmailConfirmModel').modal('show');
 
