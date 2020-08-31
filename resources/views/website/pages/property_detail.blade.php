@@ -581,6 +581,7 @@
                         success: function (data) {
                             if (data.status === 200) {
                                 // console.log(data.data);
+                                form.trigger("reset");
                                 $('#EmailModelCenter').modal('hide');
                                 $('#EmailConfirmModel').modal('show');
                             } else {
