@@ -83,6 +83,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
             'page' => '\d+',
         ]);
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
+    Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
         Route::get('/logout', 'AccountController@logout')->name('accounts.logout');
