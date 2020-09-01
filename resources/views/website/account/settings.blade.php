@@ -53,7 +53,7 @@
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">User Settings</div>
                                         <div class="card-body">
-                                            {{ Form::bsTextArea('message_signature', isset($account->message_signature)?$account->message_signature:null) }}
+                                            <!-- {{ Form::bsTextArea('message_signature', isset($account->message_signature)?$account->message_signature:null) }} -->
                                             {{ Form::bsRadio('email_notification', isset($account->email_notification)?$account->email_notification:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
                                             {{ Form::bsRadio('newsletter', isset($account->newsletter)?$account->newsletter:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
                                             {{ Form::bsRadio('automated_reports', isset($account->automated_reports)?$account->automated_reports:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
