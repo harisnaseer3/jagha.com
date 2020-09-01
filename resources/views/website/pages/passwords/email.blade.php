@@ -1,5 +1,4 @@
 @extends('website.layouts.app')
-@section('title', 'Email')
 
 @section('css')
 
