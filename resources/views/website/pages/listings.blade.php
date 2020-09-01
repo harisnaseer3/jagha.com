@@ -42,7 +42,7 @@
                                             <h6>All Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>
@@ -90,7 +90,7 @@
                                             <h6>For Sale</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>
@@ -139,7 +139,7 @@
                                             <h6>For Rent</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>
@@ -188,7 +188,7 @@
                                             <h6>For Wanted</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>
@@ -237,7 +237,7 @@
                                             <h6>Super Hot Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>
@@ -286,7 +286,7 @@
                                             <h6>Hot Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>
@@ -334,7 +334,7 @@
                                             <h6>Magazine Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Type</td>

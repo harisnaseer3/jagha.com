@@ -42,7 +42,7 @@
                                             <h6>All Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
@@ -90,7 +90,7 @@
                                             <h6>Key Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
@@ -139,7 +139,7 @@
                                             <h6>Featured Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>

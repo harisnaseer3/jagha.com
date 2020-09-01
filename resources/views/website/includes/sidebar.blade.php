@@ -1,16 +1,16 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header bg-success text-white">Tools</div>
+    <div class="card-header theme-grey text-white">Tools</div>
     @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
     <ul class="list-group">
         <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->
         <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a
                 href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">
                 @if ($current_route_name === 'properties.edit') Edit Listing @else Post New Listing @endif</a></li>
-        <li class="list-group-item"><a href="#">Zone Details</a></li>
-        <li class="list-group-item"><a href="#">Listing Policy</a></li>
+        <!-- <li class="list-group-item"><a href="#">Zone Details</a></li>
+        <li class="list-group-item"><a href="#">Listing Policy</a></li> -->
     </ul>
 
-    <div class="card-header bg-success text-white">Listings</div>
+    <div class="card-header theme-grey text-white">Listings</div>
     <ul class="list-group">
         <li>
             <div class="accordion" id="accordionListings">
@@ -29,7 +29,7 @@
                 @endif
                 <div class="card">
                     @foreach(['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected'] as $status)
-                        <div class="card-header {{ $params['status'] === $status ? 'bg-secondary' : '' }}" id="headingListing{{ ucfirst($status) }}">
+                        <div class="card-header {{ $params['status'] === $status ? 'secondary-grey' : '' }}" id="headingListing{{ ucfirst($status) }}">
                             <a href="#collapseListing{{ ucfirst($status) }}" class="{{ $params['status'] === $status ? '' : 'collapsed' }} {{ $params['status'] === $status ? 'text-white' : '' }}"
                                role="button" data-toggle="collapse" aria-expanded="{{ $params['status'] === $status ? 'true' : 'false' }}" aria-controls="collapseExample">{{ ucfirst($status) }}
                                 ({{ $counts[$status]['all'] }})</a>
@@ -52,9 +52,9 @@
                                             ({{ $counts[$status]['super_hot'] }})</a>
                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'hot_listing' ? 'active' : '' }}" id="listings-hot-tab" data-toggle="pill" href="#listings-hot" role="tab"
                                            aria-controls="listings-hot" aria-selected="{{ $params['purpose'] === 'hot' ? 'true' : 'false' }}">Hot Listing ({{ $counts[$status]['hot'] }})</a>
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'magazine_listing' ? 'active' : '' }}" id="listings-magazine-tab" data-toggle="pill" href="#listings-magazine"
+                                        <!-- <a class="nav-link side-link-style {{ $params['purpose'] === 'magazine_listing' ? 'active' : '' }}" id="listings-magazine-tab" data-toggle="pill" href="#listings-magazine"
                                            role="tab" aria-controls="listings-magazine" aria-selected="{{ $params['purpose'] === 'magazine' ? 'true' : 'false' }}">Magazine Listing
-                                            ({{ $counts[$status]['magazine'] }})</a>
+                                            ({{ $counts[$status]['magazine'] }})</a> -->
                                     @endif
                                 @else
                                     <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
@@ -67,15 +67,15 @@
                                             ({{ $counts[$status]['super_hot'] }})</a>
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'hot_listing'])) }}">Hot Listing
                                             ({{ $counts[$status]['hot'] }})</a>
-                                        <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'magazine_listing'])) }}">Magazine Listing
-                                            ({{ $counts[$status]['magazine'] }})</a>
+                                        <!-- <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'magazine_listing'])) }}">Magazine Listing
+                                            ({{ $counts[$status]['magazine'] }})</a> -->
                                     @endif
                                 @endif
                             </div>
                         </div>
                     @endforeach
 
-                    <div class="card-header {{ $params['status'] === 'rejected_images' ? 'bg-secondary' : '' }}" id="headingListingRejectedImages">
+                    <div class="card-header {{ $params['status'] === 'rejected_images' ? 'secondary-grey' : '' }}" id="headingListingRejectedImages">
                         <a href="#collapseListingRejectedImages"
                            class="{{ $params['status'] === 'rejected_images' ? '' : 'collapsed' }} {{ $params['status'] === 'rejected_images' ? 'text-white' : '' }}" role="button"
                            data-toggle="collapse" aria-expanded="{{ $params['status'] === 'rejected_images' ? 'true' : 'false' }}" aria-controls="collapseExample">Rejected Images</a>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="card-header {{ $params['status'] === 'rejected_videos' ? 'bg-secondary' : '' }}" id="headingListingRejectedVideos">
+                    <div class="card-header {{ $params['status'] === 'rejected_videos' ? 'secondary-grey' : '' }}" id="headingListingRejectedVideos">
                         <a href="#collapseListingRejectedVideos"
                            class="{{ $params['status'] === 'rejected_videos' ? '' : 'collapsed' }} {{ $params['status'] === 'rejected_videos' ? 'text-white' : '' }}" role="button"
                            data-toggle="collapse" aria-expanded="{{ $params['status'] === 'rejected_videos' ? 'true' : 'false' }}" aria-controls="collapseExample">Rejected Videos</a>
@@ -133,7 +133,7 @@
         </li>
     </ul>
 
-    <div class="card-header bg-success text-white">Credit Expiry Log</div>
+    <div class="card-header theme-grey text-white">Credit Expiry Log</div>
     <ul class="list-group">
         <li class="list-group-item"><a href="#">View Log</a></li>
     </ul>

@@ -1,7 +1,7 @@
 <div class="card" id="sidebar-property-management">
     @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
 
-    <div class="card-header bg-success text-white">Listings</div>
+    <div class="card-header theme-grey text-white">Listings</div>
     <ul class="list-group">
         <li>
             <div class="accordion" id="accordionListings">
