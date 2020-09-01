@@ -1675,5 +1675,13 @@ hr.solid {
 .line-height {
     line-height: 1.2rem;
 }
+.container-padding {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.side-link-style {
+    font-size: 12px;
+    font-weight: 500;
+}
 
    

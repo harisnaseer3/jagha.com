@@ -22,8 +22,8 @@
     </div>
 
     <!-- Submit Property start -->
-    <div class="submit-property content-area">
-        <div class="container-fluid">
+    <div class="submit-property">
+        <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
 
