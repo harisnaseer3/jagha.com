@@ -17,7 +17,17 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
-                        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                            <div class="my-4">
+                      
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
+                            <div class="row my-4">
+                            Property Management
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show active" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
                             <div class="my-4">
                             <div class="card">
                             <div class="row">
@@ -28,17 +38,7 @@
                                     </div>
                             </div>
                         </div>
-                    </div>
-                            </div>
                         </div>
-                        <div class="tab-pane fade " id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
-                            <div class="row my-4">
-                            Property Management
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
-                            <div class="my-4">
-                                Message Center
                             </div>
                         </div>
                         <div class="tab-pane fade" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
