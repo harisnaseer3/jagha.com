@@ -65,12 +65,12 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6" id="agency-container">
-                                    <div class="form-check">
+                                    <!-- <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="agent-model" {{ old('agent-model') ? 'checked' : '' }} id="agent-model">
                                         <label class="form-check-label text-transform mt-1" for="agent-model" style="color: black; font-size:12px">
                                             {{ __('Are You an Agent?') }}
                                         </label>
-                                    </div>
+                                    </div> -->
                                     <input type="hidden" value="{{ old('agency-cities') }}" name="agency-cities">
                                     <input type="hidden" value="{{ old('agency-email') }}" name="agency-email">
                                     <input type="hidden" value="{{ old('agency-title') }}" name="agency-title">
