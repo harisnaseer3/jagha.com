@@ -246,28 +246,31 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav header-ml">
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
-                                Homes
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="#">
+                                Dashboard
                             </a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing', ['type'=>'plots'])}}">
-                                Plots
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['properties.create', 'properties.edit', 'properties.listings']) ? 'active' : '' }}">
+                            <a class="nav-link" href="{{route('properties.create')}}">
+                               Property Management
                             </a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/commercial/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
-                                Commercial</a>
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="#">
+                                Message Center</a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('blogs.index')}}">
-                                Blogs</a>
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                            <a class="nav-link" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
+                            My Accounts &amp; Profiles</a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('agents.listing')}}">
-                                Partners</a>
+                        @if(Auth::user()->hasRole('Admin'))
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                        <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                            <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}" href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
+                            Agency Listing</a>
                         </li>
+                        @endif
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">

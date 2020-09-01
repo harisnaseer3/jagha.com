@@ -1,12 +1,15 @@
 @extends('website.layouts.app')
+@php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
 @section('title')
     <title> Portfolio : Property Portal Software By https://www.aboutpakistan.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
 @section('content')
+@include('website.includes.dashboard-nav')
     <!-- Top header start -->
     <div class="sub-banner">
         <div class="container">
@@ -16,25 +19,12 @@
         </div>
     </div>
 
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class=" mt-3 float-right">
-                        <a href="{{route('home')}}">Home Page</a> |
-                        <a href="{{route('accounts.logout')}}">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Submit Property start -->
     <div class="submit-property content-area">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    @include('website.includes.tabs')
+                
 
                     <div class="tab-content" id="portfolioTabContent">
                         <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
