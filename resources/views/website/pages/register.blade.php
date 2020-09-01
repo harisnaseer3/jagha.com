@@ -19,15 +19,6 @@
                 <div class="align-self-center pad-0">
                     <div class="form-section clearfix">
                         <h3>Create an account</h3>
-{{--                        <div class="btn-section clearfix">--}}
-{{--                            <a href="{{ route('login') }}" class="link-btn btn-1 default-bg">Login</a>--}}
-{{--                            <a href="{{ route('register') }}" class="link-btn active btn-2 active-bg ">Register</a>--}}
-{{--                        </div>--}}
-                        {{--                        <div class="mb-3">--}}
-                        {{--                            <button class="btn-md btn-theme">--}}
-                        {{--                                Login with Facebook--}}
-                        {{--                            </button>--}}
-                        {{--                        </div>--}}
 
                         <div class="clearfix"></div>
                         @include('website.layouts.flash-message')

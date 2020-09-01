@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Portfolio : Property Management Software By Property.com</title>
+    <title> Portfolio : Property Portal Software By https://www.aboutpakistan.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
@@ -61,10 +61,10 @@
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => 'user.password.update', 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header bg-success text-white text-uppercase">Change Password</div>
+                                        <div class="card-header bg-success text-white text-capitalize">Change Password</div>
                                         <div class="card-body">
                                             {{ Form::bsPassword('current_password', ['required' => true]) }}
-                                            {{ Form::bsPassword('new_password', ['required' => true]) }}
+                                            {{ Form::bsPassword('new_password', ['required' => true,'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
                                             {{ Form::bsPassword('confirm_new_password', ['required' => true]) }}
                                         </div>
                                         <div class="card-footer">

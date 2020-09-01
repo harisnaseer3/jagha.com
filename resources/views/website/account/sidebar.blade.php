@@ -1,5 +1,5 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header bg-success text-white">Profiles</div>
+    <div class="card-header bg-success text-white text-capitalize">Profile and user setting</div>
     @php
         $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName();
         $user_id = \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier();
@@ -8,12 +8,12 @@
     @endphp
 
     <ul class="list-group">
-        <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
-                href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">User Roles</a></li>
         <li class="list-group-item {{ $current_route_name === 'users.edit' ? 'active' : '' }}"><a
                 href="{{ route('users.edit', ['user' => $user_id]) }}" class="{{ $current_route_name === 'users.edit' ? 'text-white' : '' }}">User Profile</a></li>
+        <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
+                href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">User Roles</a></li>
         <li class="list-group-item {{ $current_route_name === 'settings.edit' ? 'active' : '' }}"><a
-                href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }}">User Settings</a></li>
+                href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }} text-capitalize">User setting/communication setting</a></li>
         <li class="list-group-item {{ $current_route_name === 'password.edit' ? 'active' : '' }}"><a
                 href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-white' : '' }}">Change Password</a></li>
         @if(!empty($agency_id))

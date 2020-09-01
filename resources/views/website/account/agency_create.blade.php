@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Portfolio : Property Management By Property.com</title>
+    <title> Portfolio : Property Portal Software By https://www.aboutpakistan.com</title>
 @endsection
 
 @section('css_library')
@@ -130,7 +130,7 @@
                                 Agency Staff
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="clients_leads" rolwe="tabpanel" aria-labelledby="clients_leads-tab">
+                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
                             <div class="my-4">
                                 Clients &amp; Leads
                             </div>

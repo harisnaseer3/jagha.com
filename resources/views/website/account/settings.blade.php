@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Portfolio : Property Management Software By Property.com</title>
+    <title> Portfolio : Property Portal Software By https://www.aboutpakistan.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
@@ -63,7 +63,7 @@
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => ['settings.update', $account], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header bg-success text-white text-uppercase">User Settings</div>
+                                        <div class="card-header bg-success text-white text-capitalize">User Settings</div>
                                         <div class="card-body">
                                             {{ Form::bsTextArea('message_signature', isset($account->message_signature)?$account->message_signature:null) }}
                                             {{ Form::bsRadio('email_notification', isset($account->email_notification)?$account->email_notification:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
@@ -72,18 +72,23 @@
                                             {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}
                                         </div>
 
-                                        <div class="card-header bg-success text-white text-uppercase">General Settings</div>
+                                        <div class="card-header bg-success text-white text-capitalize">General Settings</div>
                                         <div class="card-body">
-                                            {{ Form::bsSelect2('default_currency', ['Brazil (BRL)' => 'Brazil (BRL)', 'Canada (CAD)' => 'Canada (CAD)', 'EU (EUR)' => 'EU (EUR)', 'Kuwait (KWD)' => 'Kuwait (KWD)', 'Pakistan (PKR)' => 'Pakistan (PKR)', 'Qatar (QAR)' => 'Qatar (QAR)', 'Saudi Arabia (SAR)' => 'Saudi Arabia (SAR)', 'Turkey (TRY)' => 'Turkey (TRY)', 'United Arab Emirates (AED)' => 'United Arab Emirates (AED)', 'United Kingdom (GBP)' => 'United Kingdom (GBP)', 'United States of America (USD)' => 'United States of America (USD)'],
-                                                isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)', ['required' => true]) }}
-                                            {{ Form::bsSelect2('default_area_unit', ['Marla' => 'Marla', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards'],
+{{--                                            {{ Form::bsSelect2('default_currency', ['Brazil (BRL)' => 'Brazil (BRL)', 'Canada (CAD)' => 'Canada (CAD)', 'EU (EUR)' => 'EU (EUR)', 'Kuwait (KWD)' => 'Kuwait (KWD)', 'Pakistan (PKR)' => 'Pakistan (PKR)', 'Qatar (QAR)' => 'Qatar (QAR)', 'Saudi Arabia (SAR)' => 'Saudi Arabia (SAR)', 'Turkey (TRY)' => 'Turkey (TRY)', 'United Arab Emirates (AED)' => 'United Arab Emirates (AED)', 'United Kingdom (GBP)' => 'United Kingdom (GBP)', 'United States of America (USD)' => 'United States of America (USD)'],--}}
+{{--                                                isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)',['required' => true]) }}--}}
+                                            {{ Form::bsText('default_currency', isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)', ['required' => true, 'readonly' => 'readonly']) }}
+
+
+                                            {{ Form::bsSelect2('default_area_unit', ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
                                             isset($account->default_area_unit)?$account->default_area_unit:'Square Feet', ['required' => true]) }}
-                                            {{ Form::bsSelect2('default_language', ['English' => 'English'], ['English' => 'English'], ['required' => true]) }}
+{{--                                            {{ Form::bsSelect2('default_language', ['English' => 'English'], ['English' => 'English'], ['required' => true]) }}--}}
+                                            {{ Form::bsText('default_language', isset($account->default_language)?$account->default_language:'English', ['required' => true, 'readonly' => 'readonly']) }}
+
                                         </div>
 
-                                        <div class="card-header bg-success text-white text-uppercase">SMS Settings</div>
+                                        <div class="card-header bg-success text-white text-capitalize">SMS Settings</div>
                                         <div class="card-body">
-                                            {{ Form::bsRadio('sms_notification', isset($account->sms_notification)?$account->sms_notification:'On', ['required' => true, 'list' => ['On', 'Off']]) }}
+                                            {{ Form::bsRadio('sms_notification', isset($account->sms_notification)?$account->sms_notification:'Off', ['required' => true, 'list' => ['On', 'Off']]) }}
                                         </div>
                                         <div class="card-footer">
                                             {{ Form::submit('Update', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
@@ -144,6 +149,7 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
+
             });
         })(jQuery);
     </script>

@@ -640,7 +640,12 @@ class AgencyController extends Controller
     {
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Agency)
-            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
+//            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
+            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+                'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+                'agencies.created_at')
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
             ->whereNull('agencies.deleted_at');
 
         // user is admin who can see this listing
@@ -705,6 +710,4 @@ class AgencyController extends Controller
 
         return view('website.agency.agency_listings', $data);
     }
-
-
 }
