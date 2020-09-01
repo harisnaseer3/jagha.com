@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Portfolio : Property Management Software By Property.com</title>
+    <title> Portfolio : Property Portal Software By https://www.aboutpakistan.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
@@ -64,32 +64,38 @@
 {{--                                    {{dd($role)}}--}}
                                     {{ Form::open(['route' => ['user_roles.update', !empty($role) ? $role[0] : $role], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header bg-success text-white text-uppercase">User Roles</div>
+                                        <div class="card-header bg-success text-white text-capitalize">User Roles</div>
                                         <div class="card-body">
-                                            {{ Form::bsCheckbox('individual[]', $role, [
-                                                'list'=> [
-                                                    (object) ['id' => 2, 'name' => 'Owner/Investor'],
-                                                    (object) ['id' => 3, 'name' => 'Tenant'],
-                                                ],
-                                                'display' => 'block',
-                                            ]) }}
+{{--                                            {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}--}}
+                                            <!-- TODO: $role get the user role name not id-->
+                                            {{ Form::bsRadio('individual', 'Investor', ['list'=> ['Investor','Owner/Tenant'],'display' => 'block']) }}
+{{--                                            {{ Form::bsCheckbox('individual[]', $role, [--}}
+{{--                                                'list'=> [--}}
+{{--                                                    (object) ['id' => 2, 'name' => 'Owner/Tenant'],--}}
+{{--                                                    (object) ['id' => 3, 'name' => 'Investor'],--}}
+{{--                                                ],--}}
+{{--                                                'display' => 'block',--}}
+{{--                                            ]) }}--}}
+                                            {{ Form::bsRadio('company', isset($role)? $role :'', ['list' => ['Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                  'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block']) }}
 
-                                            {{ Form::bsCheckbox('company[]', $role, [
-                                                'list'=> [
-                                                    (object) ['id' => 4, 'name' => 'Agent/Broker'],
-                                                    (object) ['id' => 5, 'name' => 'Appraiser'],
-                                                    (object) ['id' => 6, 'name' => 'Architect'],
-                                                    (object) ['id' => 7, 'name' => 'Builder'],
-                                                    (object) ['id' => 8, 'name' => 'Corporate Investor'],
-                                                    (object) ['id' => 9, 'name' => 'Developer'],
-                                                    (object) ['id' => 10, 'name' => 'Listing Administrator'],
-                                                    (object) ['id' => 11, 'name' => 'Mortgage Broker'],
-                                                    (object) ['id' => 12, 'name' => 'Partner'],
-                                                    (object) ['id' => 13, 'name' => 'Property/Asset Manager'],
-                                                    (object) ['id' => 14, 'name' => 'Researcher'],
-                                                ],
-                                                'display' => 'block',
-                                            ]) }}
+                                            {{--                                            {{ Form::bsCheckbox('company[]', $role, [--}}
+{{--                                                'list'=> [--}}
+{{--                                                    (object) ['id' => 4, 'name' => 'Agent/Broker'],--}}
+{{--                                                    (object) ['id' => 5, 'name' => 'Appraiser'],--}}
+{{--                                                    (object) ['id' => 6, 'name' => 'Architect'],--}}
+{{--                                                    (object) ['id' => 7, 'name' => 'Builder'],--}}
+{{--                                                    (object) ['id' => 8, 'name' => 'Corporate Investor'],--}}
+{{--                                                    (object) ['id' => 9, 'name' => 'Developer'],--}}
+{{--                                                    (object) ['id' => 10, 'name' => 'Listing Administrator'],--}}
+{{--                                                    (object) ['id' => 11, 'name' => 'Mortgage Broker'],--}}
+{{--                                                    (object) ['id' => 12, 'name' => 'Partner'],--}}
+{{--                                                    (object) ['id' => 13, 'name' => 'Property/Asset Manager'],--}}
+{{--                                                    (object) ['id' => 14, 'name' => 'Researcher'],--}}
+{{--                                                    (object) ['id' => 15, 'name' => 'Other'],--}}
+{{--                                                ],--}}
+{{--                                                'display' => 'block',--}}
+{{--                                            ]) }}--}}
                                         </div>
                                         <div class="card-footer">
                                             {{ Form::submit('Update', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}

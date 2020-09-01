@@ -1,11 +1,25 @@
 <div class="form-group row">
-    <label for="{{ $name }}" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
-        {{ ucwords(str_replace('_', ' ', $name)) }}
+    @if($name === 'community_nick')
+        <label for="{{ $name }}" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+            {{ ucwords(' Profile display name') }}
+        </label>
+    @elseif($name === 'zip_code')
+        <label for="{{ $name }}" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+            {{ ucwords('Postal code') }}
 
-        @if(!empty($attributes['required']))
-            <span class="text-danger">*</span>
-        @endif
-    </label>
+            @if(!empty($attributes['required']))
+                <span class="text-danger">*</span>
+            @endif
+        </label>
+    @else
+        <label for="{{ $name }}" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+            {{ ucwords(str_replace('_', ' ', $name)) }}
+
+            @if(!empty($attributes['required']))
+                <span class="text-danger">*</span>
+            @endif
+        </label>
+    @endif
 
     <div class="col-sm-8 col-md-5">
         {{ Form::text($name, $value, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => $name . '-error', 'aria-invalid' => 'false'], $attributes)) }}
