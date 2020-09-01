@@ -88,7 +88,7 @@ class PropertyController extends Controller
         $total_count = DB::table('total_property_count')->select('property_count', 'agency_count', 'city_count')->get()->all();
 
         $data = [
-            'sale_property_count' =>$properties_to_sale,
+            'sale_property_count' => $properties_to_sale,
             'rent_property_count' => $properties_to_rent,
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
@@ -415,8 +415,13 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
-        return view('website.pages.portfolio', ['property' => $property, 'property_types' => $property_types, 'counts' => $counts, 'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]]);
+        return view('website.pages.portfolio',
+            [
+                'property' => $property,
+                'property_types' => $property_types,
+                'counts' => $counts,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     public function update(Request $request, Property $property)

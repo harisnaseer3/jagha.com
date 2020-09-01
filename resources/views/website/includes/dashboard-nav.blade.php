@@ -253,7 +253,7 @@
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['properties.create', 'properties.edit', 'properties.listings']) ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('properties.create')}}">
-                               Property Management
+                                Property Management
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
@@ -262,15 +262,21 @@
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
-                            My Accounts &amp; Profiles</a>
+                                My Accounts &amp; Profiles</a>
                         </li>
                         @if(Auth::user()->hasRole('Admin'))
-                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
-                        <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
-                            <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}" href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
-                            Agency Listing</a>
-                        </li>
+                            <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                                <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
+                                   href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
+                                    Agency Listing</a>
+                            </li>
                         @endif
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}">
+                            <a class="nav-link" href="{{route('agencies.create')}}">
+                                Add Agency
+                            </a>
+                        </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">
@@ -287,19 +293,19 @@
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-3"></i>
                                         @if(\Illuminate\Support\Facades\Auth::check())
-                                           <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}</span> 
+                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}</span>
                                         @endif
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
-                                                <div class="dropdown-divider"></div>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('properties.create')}}"><i
                                                 class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
-{{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
+                                        {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                     </div>
                                 </div>
                             @else

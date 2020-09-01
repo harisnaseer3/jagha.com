@@ -183,7 +183,7 @@ class AgencyController extends Controller
 
     public function create()
     {
-        return view('website.account.agency_create', ['table_name' => 'users', 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+        return view('website.agency_profile.agency_create', ['table_name' => 'users', 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     public function listingFeaturedPartners(Request $request)
@@ -459,7 +459,7 @@ class AgencyController extends Controller
     public function edit(Agency $agency)
     {
         if (Auth::user()->hasRole('admin')) {
-            return view('website.account.agency',
+            return view('website.agency_profile.agency',
                 ['table_name' => 'users',
                     'agency' => $agency,
                     'recent_properties' => (new FooterController)->footerContent()[0],
@@ -468,7 +468,7 @@ class AgencyController extends Controller
         }
         $agency_id = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
         $agency = (new Agency)->select('*')->where('id', '=', $agency_id->agency_id)->first();
-        return view('website.account.agency',
+        return view('website.agency_profile.agency',
             ['table_name' => 'users',
                 'agency' => $agency,
                 'recent_properties' => (new FooterController)->footerContent()[0],
