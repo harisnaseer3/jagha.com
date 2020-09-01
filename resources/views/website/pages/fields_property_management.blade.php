@@ -1,13 +1,13 @@
 <div class="card">
     <div class="card-header theme-blue text-white">Property Type and Location</div>
     <div class="card-body">
-        {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : '', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
+        {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
 
         <div id="purpose-Wanted" style="display: none;">
             {{ Form::bsRadio('wanted_for', isset($property->sub_purpose)? $property->sub_purpose : '', ['list' => ['Buy', 'Rent']]) }}
         </div>
 
-        {{ Form::bsRadio('property_type',isset($property->type)? $property->type : '', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
+        {{ Form::bsRadio('property_type',isset($property->type)? $property->type : 'Homes', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
 
         @foreach($property_types as $property_type)
             <div id="property_subtype-{{ $property_type->name }}" style="display: none;">
@@ -19,13 +19,14 @@
             isset($property->city) ? str_replace(' ', '_',strtolower($property->city)) : null, ['required' => true, 'placeholder' => 'Select city']) }}
         {{ Form::bsText('location', isset($property->location)? $property->location : null, ['required' => true]) }}
     </div>
+
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
         {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true]) }}
-        {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (in thousands)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+        {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
-        {{ Form::bsSelect2('unit', ['Square Feet' => 'Square Feet', 'Square Yards' => 'Square Yards', 'Square Meters' => 'Square Meters', 'Marla' => 'Marla', 'Kanal' => 'Kanal'],
+        {{ Form::bsSelect2('unit',  ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
             isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         @if(Auth::user()->hasRole('Admin'))
             {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
@@ -117,16 +118,17 @@
 
 
     </div>
-    <div class="card-header theme-blue text-white">Client Details</div>
-    <div class="card-body">
-        {{ Form::bsCheckbox(null, null, ['required' => false, 'list'=> [(object) ['id' => 0, 'name' => 'If you are entering this property for a client then please enter client data.']], '']) }}
-    </div>
-    <div class="card-header theme-blue text-white">Contact Details</div>
+
+    {{--    <div class="card-header bg-success text-white text-capitalize">Client Details</div>--}}
+    {{--    <div class="card-body">--}}
+    {{--        {{ Form::bsCheckbox(null, null, ['required' => false, 'list'=> [(object) ['id' => 0, 'name' => 'If you are entering this property for a client then please enter client data.']], '']) }}--}}
+    {{--    </div>--}}
+    <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
         {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : null, ['required' => true]) }}
-        {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : null, ['data-default' => 'E.g. +92-51-1234567']) }}
-        {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : null,  ['required' => true,'data-default' => 'E.g. +92-300-1234567']) }}
-        {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. +92-21-1234567']) }}
+        {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : null, ['data-default' => 'E.g. 0511234567']) }}
+        {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : null,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}
+        {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. 0211234567']) }}
         {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : null, ['required' => true]) }}
     </div>
     <div class="card-footer">

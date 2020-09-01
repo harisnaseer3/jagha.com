@@ -29,7 +29,7 @@
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-                  
+
 
                     <div class="tab-content" id="portfolioTabContent">
                         <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
@@ -203,6 +203,17 @@
                     let record_id = $(event.relatedTarget).data('record-id');
                     $(this).find('.modal-body #video-record-id').val(record_id);
                 });
+
+                $("input[name='phone']").keyup(function () {
+                    $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+                });
+                $("input[name='mobile']").keyup(function () {
+                    $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+                });
+                $("input[name='fax']").keyup(function () {
+                    $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+                });
+                $('.custom-select').parent().children().css({'border': '1px solid #ced4da','border-radius': '.25rem'});
             });
         })(jQuery);
     </script>

@@ -16,14 +16,14 @@
                 href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }} text-capitalize">User setting/communication setting</a></li>
         <li class="list-group-item {{ $current_route_name === 'password.edit' ? 'active' : '' }}"><a
                 href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-white' : '' }}">Change Password</a></li>
-        @if(!empty($agency_id))
-            <li class="list-group-item {{ $current_route_name === 'agencies.edit' ? 'active' : '' }}" style="display: {{$agency_user > 0 ? 'block':'none'}} ">
-                <a href="{{ route('agencies.edit', ['agency' => $agency_id[0] ]) }}" class="{{ $current_route_name === 'agencies.edit' ? 'text-white' : '' }}">Agency Profile</a>
-            </li>
-        @else
-            <li class="list-group-item {{ $current_route_name === 'agencies.create' ? 'active' : '' }}">
-                <a href="{{ route('agencies.create') }}" class="{{ $current_route_name === 'agencies.create' ? 'text-white' : '' }}">Add Agency</a>
-            </li>
-        @endif
+{{--        @if(!empty($agency_id))--}}
+{{--            <li class="list-group-item {{ $current_route_name === 'agencies.edit' ? 'active' : '' }}" style="display: {{$agency_user > 0 ? 'block':'none'}} ">--}}
+{{--                <a href="{{ route('agencies.edit', ['agency' => $agency_id[0] ]) }}" class="{{ $current_route_name === 'agencies.edit' ? 'text-white' : '' }}">Agency Profile</a>--}}
+{{--            </li>--}}
+{{--        @else--}}
+{{--            <li class="list-group-item {{ $current_route_name === 'agencies.create' ? 'active' : '' }}">--}}
+{{--                <a href="{{ route('agencies.create') }}" class="{{ $current_route_name === 'agencies.create' ? 'text-white' : '' }}">Add Agency</a>--}}
+{{--            </li>--}}
+{{--        @endif--}}
     </ul>
 </div>

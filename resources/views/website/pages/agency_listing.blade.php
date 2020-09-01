@@ -147,8 +147,8 @@
                         {{ Form::text('name',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->name: null, array_merge(['required'=>'true','class' => 'form-control form-control-sm' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"Name"])) }}
                         <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
                         {{ Form::email('email', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email : null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
-                        <div><label class="mt-2">Phone (+923001234567) <span style="color:red">*</span></label></div>
-                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"+923001234567"])) }}
+                        <div><label class="mt-2">Phone (03001234567) <span style="color:red">*</span></label></div>
+                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"03001234567"])) }}
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
                         </div>
@@ -337,6 +337,9 @@
                     });
                 });
                 let phone = '';
+                $("input[name='phone']").keyup(function () {
+                    $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+                });
                 let form = $('#email-contact-form');
                 $('.btn-email').click(function (e) {
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
@@ -369,7 +372,7 @@
                 });
                 $.validator.addMethod("regx", function (value, element, regexpr) {
                     return regexpr.test(value);
-                }, "Please enter a valid value. (+923001234567)");
+                }, "Please enter a valid value. (+92-3001234567)");
 
                 form.validate({
                     rules: {
@@ -378,7 +381,7 @@
                         },
                         phone: {
                             required: true,
-                            regx: /^\+923\d{2}\d{7}$/,
+                            regx: /^\+92-3\d{2}\d{7}$/,
                         },
                         email: {
                             required: true,
