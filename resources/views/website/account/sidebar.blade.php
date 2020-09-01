@@ -1,5 +1,5 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header theme-grey text-white text-capitalize">Profile and user setting</div>
+    <div class="card-header theme-grey text-white text-capitalize">Profile & user settings</div>
     @php
         $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName();
         $user_id = \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier();
@@ -13,7 +13,7 @@
         <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
                 href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">User Roles</a></li>
         <li class="list-group-item {{ $current_route_name === 'settings.edit' ? 'active' : '' }}"><a
-                href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }} text-capitalize">User setting/communication setting</a></li>
+                href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }} text-capitalize">User & Communication Settings</a></li>
         <li class="list-group-item {{ $current_route_name === 'password.edit' ? 'active' : '' }}"><a
                 href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-white' : '' }}">Change Password</a></li>
 {{--        @if(!empty($agency_id))--}}
