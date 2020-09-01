@@ -495,6 +495,9 @@
             });
             let phone = '';
             let form = $('#email-contact-form');
+            $("input[name='phone']").keyup(function () {
+                $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+            });
             $('.btn-email').click(function (e) {
                 let property = $(this).closest('.contact-container').find('input[name=property]').val();
                 let title = $(this).closest('.contact-container').find('input[name=title]').val();
@@ -525,7 +528,7 @@
             });
             $.validator.addMethod("regx", function (value, element, regexpr) {
                 return regexpr.test(value);
-            }, "Please enter a valid value. (+923001234567)");
+            }, "Please enter a valid value. (03001234567)");
             form.validate({
                 rules: {
                     name: {
@@ -533,7 +536,7 @@
                     },
                     phone: {
                         required: true,
-                        regx: /^\+923\d{2}\d{7}$/,
+                        regx: /^\+92-3\d{2}\d{7}$/,
                     },
                     email: {
                         required: true,
@@ -598,7 +601,6 @@
                     });
                 }
             });
-
         })
         (jQuery);
     </script>
