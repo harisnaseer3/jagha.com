@@ -22,8 +22,8 @@
     </div>
 
     <!-- Submit Property start -->
-    <div class="submit-property content-area">
-        <div class="container-fluid">
+    <div class="submit-property">
+        <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
 
@@ -53,7 +53,7 @@
                                     {{--                                    {{dd($role)}}--}}
                                     {{ Form::open(['route' => ['user_roles.update', !empty($role) ? $role[0] : $role], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header bg-success text-white text-capitalize">User Roles</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">User Roles</div>
                                         <div class="card-body">
                                         {{--                                            {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}--}}
                                         <!-- TODO: $role get the user role name not id-->

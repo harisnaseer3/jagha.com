@@ -24,8 +24,8 @@
 
 
     <!-- Submit Property start -->
-    <div class="submit-property content-area">
-        <div class="container-fluid">
+    <div class="submit-property">
+        <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
 
@@ -56,7 +56,7 @@
 
                                     {{ Form::open(['route' => ['users.update',\Illuminate\Support\Facades\Auth::user()->id], 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
                                     <div class="card">
-                                        <div class="card-header bg-success text-white text-capitalize">User Profile</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">User Profile</div>
                                         <div class="card-body">
                                             {{ Form::bsEmail('email', \Illuminate\Support\Facades\Auth::user()->email, ['required' => true, 'readonly' => 'readonly', 'data-default' => 'Email is locked for security reasons, contact admin to change.']) }}
                                             {{ Form::bsText('name', \Illuminate\Support\Facades\Auth::user()->name, ['required' => true]) }}

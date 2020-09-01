@@ -233,17 +233,19 @@
                                     let user_name = data.user.name;
                                     let user_id = data.user.id;
                                     let html =
-                                        '            <div class="dropdown">' +
-                                        '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
-                                        '                    aria-expanded="false">' +
-                                        '                      <i class="fas fa-user mr-3"></i>';
-                                    html += '<span class="mr-1"> Logged in as <span>'+ user_name ;
-                                    html += '</a>' +
-                                        '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                                    html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
-                                        '                     <div class="dropdown-divider"></div>' +
-                                        '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
-                                    html += '</div>' + '</div>';
+                                '            <div class="dropdown">' +
+                                '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
+                                '                    aria-expanded="false">' +
+                                '                      <i class="fas fa-user mr-3"></i>';
+                            html += '<span class="mr-1"> Logged in as <span>'+ user_name ;
+                            html += '</a>' +
+                                '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+                            html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                                '                     <div class="dropdown-divider"></div>' +
+                                '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
+                                '                     <div class="dropdown-divider"></div>' +
+                                '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
+                            html += '</div>' + '</div>';
 
                                     user_dropdown.html(html);
                                     // window.location.reload(true);

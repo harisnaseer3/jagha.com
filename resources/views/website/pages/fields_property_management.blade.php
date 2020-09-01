@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header bg-success text-white text-capitalize">Property Type and Location</div>
+    <div class="card-header theme-blue text-white">Property Type and Location</div>
     <div class="card-body">
         {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
 
@@ -19,7 +19,8 @@
             isset($property->city) ? str_replace(' ', '_',strtolower($property->city)) : null, ['required' => true, 'placeholder' => 'Select city']) }}
         {{ Form::bsText('location', isset($property->location)? $property->location : null, ['required' => true]) }}
     </div>
-    <div class="card-header bg-success text-white text-capitalize">Property Details</div>
+
+    <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
         {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true]) }}
@@ -47,7 +48,7 @@
 
         </div>
     </div>
-    <div class="card-header bg-success text-white text-capitalize">Property Details</div>
+    <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
         @if(isset($property) and !$property->image->isEmpty())
             <div class="row border-bottom my-2">
@@ -117,11 +118,12 @@
 
 
     </div>
+
     {{--    <div class="card-header bg-success text-white text-capitalize">Client Details</div>--}}
     {{--    <div class="card-body">--}}
     {{--        {{ Form::bsCheckbox(null, null, ['required' => false, 'list'=> [(object) ['id' => 0, 'name' => 'If you are entering this property for a client then please enter client data.']], '']) }}--}}
     {{--    </div>--}}
-    <div class="card-header bg-success text-white text-capitalize">Contact Details</div>
+    <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
         {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : null, ['required' => true]) }}
         {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : null, ['data-default' => 'E.g. 0511234567']) }}

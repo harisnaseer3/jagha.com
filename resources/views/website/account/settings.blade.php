@@ -21,8 +21,8 @@
         </div>
     </div>
     <!-- Submit Property start -->
-    <div class="submit-property content-area">
-        <div class="container-fluid">
+    <div class="submit-property">
+        <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
 
@@ -51,7 +51,7 @@
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => ['settings.update', $account], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header bg-success text-white text-capitalize">User Settings</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">User Settings</div>
                                         <div class="card-body">
                                             {{ Form::bsTextArea('message_signature', isset($account->message_signature)?$account->message_signature:null) }}
                                             {{ Form::bsRadio('email_notification', isset($account->email_notification)?$account->email_notification:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
@@ -60,7 +60,7 @@
                                             {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}
                                         </div>
 
-                                        <div class="card-header bg-success text-white text-capitalize">General Settings</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">General Settings</div>
                                         <div class="card-body">
                                             {{--                                            {{ Form::bsSelect2('default_currency', ['Brazil (BRL)' => 'Brazil (BRL)', 'Canada (CAD)' => 'Canada (CAD)', 'EU (EUR)' => 'EU (EUR)', 'Kuwait (KWD)' => 'Kuwait (KWD)', 'Pakistan (PKR)' => 'Pakistan (PKR)', 'Qatar (QAR)' => 'Qatar (QAR)', 'Saudi Arabia (SAR)' => 'Saudi Arabia (SAR)', 'Turkey (TRY)' => 'Turkey (TRY)', 'United Arab Emirates (AED)' => 'United Arab Emirates (AED)', 'United Kingdom (GBP)' => 'United Kingdom (GBP)', 'United States of America (USD)' => 'United States of America (USD)'],--}}
                                             {{--                                                isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)',['required' => true]) }}--}}
@@ -74,7 +74,7 @@
 
                                         </div>
 
-                                        <div class="card-header bg-success text-white text-capitalize">SMS Settings</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">SMS Settings</div>
                                         <div class="card-body">
                                             {{ Form::bsRadio('sms_notification', isset($account->sms_notification)?$account->sms_notification:'Off', ['required' => true, 'list' => ['On', 'Off']]) }}
                                         </div>

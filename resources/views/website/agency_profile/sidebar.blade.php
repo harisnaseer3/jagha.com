@@ -1,5 +1,5 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header bg-success text-white">Tools</div>
+    <div class="card-header theme-grey text-white">Tools</div>
     @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName();
         $user_id = \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier();
         $agency_user  = App\Models\Agency::where('user_id',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())->count();

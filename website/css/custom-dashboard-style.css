@@ -88,15 +88,8 @@ body {
     }
 }
 
-.foot-menu {
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: rgb(220, 220, 220);
-}
-
 .foot-copy {
     float: left;
-    padding: 10px 0;
     font-size: .7rem;
     color: #555 !important;
 }

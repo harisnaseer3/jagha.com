@@ -1,39 +1,28 @@
 @extends('website.layouts.app')
+@php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
 @section('title')
     <title> Property Management By Property.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 
 @section('content')
+@include('website.includes.dashboard-nav')
     <!-- Top header start -->
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>Property Management</h1>
-            </div>
-        </div>
-    </div>
-
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class=" mt-3 float-right">
-                        <a href="{{route('home')}}">Home Page</a> |
-                        <a href="{{route('accounts.logout')}}">Logout</a>
-                    </div>
-                </div>
+                <h1>Agency Listings</h1>
             </div>
         </div>
     </div>
     <!-- Submit Property start -->
-    <div class="submit-property content-area">
-        <div class="container-fluid">
+    <div class="submit-property">
+        <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-                    @include('website.includes.tabs')
                     <div class="tab-content" id="ListingsTabContent">
                         <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="my-4">
@@ -53,11 +42,11 @@
                                             <h6>All Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
-                                                        <td>address</td>
+                                                        <td>Address</td>
                                                         <td>City</td>
                                                         <td>Website</td>
                                                         <td>Phone</td>
@@ -101,7 +90,7 @@
                                             <h6>Key Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
@@ -150,7 +139,7 @@
                                             <h6>Featured Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="bg-success text-white">
+                                                    <thead class="theme-blue text-white">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>

@@ -247,7 +247,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav header-ml">
                         <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{route('user.dashboard')}}">
                                 Dashboard
                             </a>
                         </li>
