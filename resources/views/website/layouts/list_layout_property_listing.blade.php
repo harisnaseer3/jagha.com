@@ -171,6 +171,14 @@
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
                                     <div>{{$property->agency_description}}</div>'>
+                                    @else 
+                                    <img src="{{asset('img/logo/dummy-logo.png')}}" alt="{{$property->agency}}"
+                                     data-toggle="popover" data-trigger="hover" title="{{$property->agency}}" data-html='true' data-content='
+                                    <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
+                                    <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
+                                    <br \>
+                                    <div>{{$property->agency_description}}</div>'>
+                                    
                             @endif
                         </div>
                     <!-- <div class="col-sm-12 property-description">

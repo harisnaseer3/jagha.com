@@ -68,6 +68,8 @@
         @endif
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
 
+        <div class="mb-3"><span style="color:red">* </span>Image will be uploaded on form submission</div>
+
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
             <div class="row border-bottom my-2">
@@ -115,6 +117,7 @@
         @endif
 
         {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 128 KB']) }}
+        <div><span style="color:red">* </span>Floor plans will be uploaded on form submission</div>
 
 
     </div>

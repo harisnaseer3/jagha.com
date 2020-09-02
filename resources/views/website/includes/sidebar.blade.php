@@ -135,6 +135,6 @@
 
     <div class="card-header theme-grey text-white">Credit Expiry Log</div>
     <ul class="list-group">
-        <li class="list-group-item"><a href="#">View Log</a></li>
+        <li class="list-group-item {{ $current_route_name === 'user.logs' ? 'active' : '' }}"><a  class="{{ $current_route_name === 'user.logs' ? 'text-white' : '' }}" href="{{route('user.logs')}}">View Log</a></li>
     </ul>
 </div>
