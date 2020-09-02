@@ -40,26 +40,28 @@ class ImageController extends Controller
      */
     public function store(Request $request, $property)
     {
-        foreach (request()->file('image') as $file) {
+        foreach (request()->file('image') as $file_name) {
             $filename = rand(0, 99);
             $extension = 'webp';
 
-            //filename to store 150x150
-            $filenametostore = $filename .'-'. time() . '-750x600.' . $extension;
+            $filenamewithoutext = $filename . time();
+            $filenametostore = $filenamewithoutext . '.' . $extension;
+            $files = [['width' => 750, 'height' => 600], ['width' => 450, 'height' => 350], ['width' => 200, 'height' => 200]];
 
+            foreach ($files as $file) {
+                $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
+                Storage::put('public/properties/' . $updated_path, fopen($file_name, 'r+'));
 
-            Storage::put('public/properties/' . $filenametostore, fopen($file, 'r+'));
-//            Storage::put('public/img/properties/thumbnail/' . $filenametostore, fopen($file, 'r+'));
+                //Resize image here
+                $thumbnailpath = ('thumbnails/properties/' . $updated_path);
 
-            //Resize image here
-            $thumbnailpath = public_path('storage/properties/' . $filenametostore);
+                $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                    $constraint->aspectRatio();
+                })->encode('webp', 1);
 
-            $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit(750, 600, function ($constraint) {
-                $constraint->aspectRatio();
-            })->encode('webp', 1);
-
-            $img->save($thumbnailpath);
-            $user_id = Auth::check() ? Auth::user()->getAuthIdentifier() : 1;
+                $img->save($thumbnailpath);
+            }
+            $user_id = Auth::user()->getAuthIdentifier();
 
             (new Image)->updateOrCreate(['property_id' => $property->id, 'name' => $filenametostore], [
                 'user_id' => $user_id,
@@ -100,26 +102,28 @@ class ImageController extends Controller
      */
     public function update(Request $request, $property)
     {
-        foreach (request()->file('image') as $file) {
+        foreach (request()->file('image') as $file_name) {
             $filename = rand(0, 99);
-
-            //get file extension
             $extension = 'webp';
 
-            //filename to store
-            $filenametostore = $filename .'-'. time() . '-750x600.' . $extension;
+            $filenamewithoutext = $filename . time();
+            $filenametostore = $filenamewithoutext . '.' . $extension;
+            $files = [['width' => 750, 'height' => 600], ['width' => 450, 'height' => 350], ['width' => 200, 'height' => 200]];
 
-            Storage::put('public/properties/' . $filenametostore, fopen($file, 'r+'));
+            foreach ($files as $file) {
+                $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
+                Storage::put('public/properties/' . $updated_path, fopen($file_name, 'r+'));
 
-            //Resize image here
-            $thumbnailpath = public_path('storage/properties/' . $filenametostore);
+                //Resize image here
+                $thumbnailpath = ('thumbnails/properties/' . $updated_path);
 
-            $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit(750, 600, function ($constraint) {
-                $constraint->aspectRatio();
-            })->encode('webp', 1);
+                $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                    $constraint->aspectRatio();
+                })->encode('webp', 1);
 
-            $img->save($thumbnailpath);
-            $user_id = Auth::check() ? Auth::user()->getAuthIdentifier() : 1;
+                $img->save($thumbnailpath);
+            }
+            $user_id = Auth::user()->getAuthIdentifier();
 
             (new Image)->updateOrCreate(['property_id' => $property->id, 'name' => $filenametostore], [
                 'user_id' => $user_id,

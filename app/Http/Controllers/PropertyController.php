@@ -195,6 +195,7 @@ class PropertyController extends Controller
                 } else {
                     $error_msg['image.' . $index] = 'image' . ($index + 1) . ' has invalid image dimensions';
                 }
+
             }
             return $error_msg;
         }
@@ -222,11 +223,9 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-        //        TODO: add conversions of land_area based on new /old marla, kanal
-        //        TODO: add data in total_property_count_property
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('image');
-            if (count($error_msg)) {
+            if ($error_msg !== null && count($error_msg)) {
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
             }
         }
@@ -242,6 +241,9 @@ class PropertyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
+//            dd($request->all());
+            $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
+
             $json_features = '';
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
@@ -302,6 +304,13 @@ class PropertyController extends Controller
                 'price' => $request->input('all_inclusive_price'),
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
+                'area_in_sqft' => $area_values['sqft'],
+                'area_in_sqyd' => $area_values['sqyd'],
+                'area_in_sqm' => $area_values['sqm'],
+                'area_in_marla' => $area_values['marla'],
+                'area_in_new_marla' => $area_values['new_marla'],
+                'area_in_kanal' => $area_values['kanal'],
+                'area_in_new_kanal' => $area_values['new_kanal'],
                 'bedrooms' => $request->has('bedrooms') ? $request->has('bedrooms') : 0,
                 'bathrooms' => $request->has('bathrooms') ? $request->has('bathrooms') : 0,
                 'latitude' => $latitude,
@@ -334,6 +343,75 @@ class PropertyController extends Controller
 //            dd($e);
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
+    }
+
+//    calculate area value for different units
+    public function calculateArea($area_unit, $land_area)
+    {
+        $area = number_format($land_area, 2, '.', '');
+        $area_in_sqft = 0;
+        $area_in_sqyd = 0;
+        $area_in_sqm = 0;
+        $area_in_marla = 0;
+        $area_in_new_marla = 0;
+        $area_in_kanal = 0;
+        $area_in_new_kanal = 0;
+
+        if ($area_unit === 'New Marla (225 sqft)') {
+            $area_in_sqft = $area * 225;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
+        }
+        if ($area_unit === 'Old Marla (272 sqft)') {
+            $area_in_sqft = $area * 272;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 5440;
+//            $area_in_new_kanal = $area_in_sqft / 4500;
+        }
+        if ($area_unit === 'Square Feet') {
+            $area_in_sqft = $area;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
+        }
+        if ($area_unit === 'Square Meters') {
+            $area_in_sqft = $area * 10.7639;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
+        }
+        if ($area_unit === 'Kanal') {
+            $area_in_sqft = $area * 5440;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
+        }
+        return [
+            'new_marla' => $area_in_new_marla,
+            'sqft' => $area_in_sqft,
+            'sqyd' => $area_in_sqyd,
+            'sqm' => $area_in_sqm,
+            'marla' => $area_in_marla,
+            'kanal' => $area_in_kanal,
+            'new_kanal' => $area_in_new_kanal];
+
     }
 
     //    Display detailed page of property
@@ -428,7 +506,8 @@ class PropertyController extends Controller
     {
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('images');
-            if (count($error_msg)) {
+
+            if ($error_msg !== null && count($error_msg)) {
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
             }
         }
@@ -457,6 +536,9 @@ class PropertyController extends Controller
                     'icons' => $icon_value
                 ];
             }
+
+            $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
+
             $address = $prepAddr = str_replace(' ', '+', $location['location_name'] . ',' . $city->name . ' Pakistan');
             $apiKey = config('app.google_map_api_key');
             $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
@@ -489,6 +571,13 @@ class PropertyController extends Controller
                 'price' => $request->input('all_inclusive_price'),
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
+                'area_in_sqft' => $area_values['sqft'],
+                'area_in_sqyd' => $area_values['sqyd'],
+                'area_in_sqm' => $area_values['sqm'],
+                'area_in_marla' => $area_values['marla'],
+                'area_in_new_marla' => $area_values['new_marla'],
+                'area_in_kanal' => $area_values['kanal'],
+                'area_in_new_kanal' => $area_values['new_kanal'],
                 'bedrooms' => $request->has('bedrooms') ? $request->has('bedrooms') : 0,
                 'bathrooms' => $request->has('bathrooms') ? $request->has('bathrooms') : 0,
                 'latitude' => $latitude,

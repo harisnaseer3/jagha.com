@@ -60,7 +60,7 @@
                                style="position: absolute; top: 0; right: 0; z-index: 1">
                                 <i class="fad fa-times-circle fa-2x" style="color: red"></i>
                             </a>
-                            <img src="{{asset('storage/properties/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>
+                            <img src="{{asset('thumbnails/properties/'.explode('.',$available_image->name)[0].'-450x350.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
                         </div>
                     </div>
                 @endforeach
@@ -109,14 +109,15 @@
                                style="position: absolute; top: 0; right: 0; z-index: 1">
                                 <i class="fad fa-times-circle fa-2x" style="color: red"></i>
                             </a>
-                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>
+{{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
+                            <img src="{{asset('thumbnails/floor_plans/'.explode('.',$available_image->name)[0].'-750x600.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
                         </div>
                     </div>
                 @endforeach
             </div>
         @endif
 
-        {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 128 KB']) }}
+        {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 256 KB']) }}
         <div><span style="color:red">* </span>Floor plans will be uploaded on form submission</div>
 
 

@@ -38,6 +38,7 @@
                                     @include('website.layouts.flash-message')
 
                                     <div class="tab-content" id="listings-tabContent">
+                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post New Listing</a> </div>
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
                                             <div class="my-4">
@@ -453,6 +454,65 @@
                             let new_url = url_piece_1 + 'purpose/' + purpose + '/user/' + url_piece_3;
                             $(this).attr('href', new_url)
                         })
+                    }
+                });
+                $('#sign-in-btn').click(function (event) {
+                    if (form.valid()) {
+                        event.preventDefault();
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        event.preventDefault();
+                        jQuery.ajax({
+                            type: 'post',
+                            url: window.location.origin + '/property' + '/login',
+                            data: form.serialize(),
+                            dataType: 'json',
+                            success: function (data) {
+                                // console.log(data);
+                                if (data.data) {
+                                    // console.log(data.user);
+                                    $('.error-tag').hide();
+                                    $('#exampleModalCenter').modal('hide');
+                                    let user_dropdown = $('.user-dropdown')
+                                    user_dropdown.html('');
+                                    let user_name = data.user.name;
+                                    let user_id = data.user.id;
+                                    let html =
+                                        '            <div class="dropdown">' +
+                                        '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
+                                        '                    aria-expanded="false">' +
+                                        '                      <i class="fas fa-user mr-3"></i>';
+                                    html += '<span class="mr-1"> Logged in as <span>'+ user_name ;
+                                    html += '</a>' +
+                                        '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+                                    html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                                        '                     <div class="dropdown-divider"></div>' +
+                                        // '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
+                                        '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/'+user_id +'/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
+                                        '                     <div class="dropdown-divider"></div>' +
+                                        '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
+                                    html += '</div>' + '</div>';
+
+                                    user_dropdown.html(html);
+                                    // window.location.reload(true);
+                                } else if (data.error) {
+                                    $('div.help-block small').html(data.error.password);
+                                    $('.error-tag').show();
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                event.preventDefault();
+
+                                // console.log(error);
+                                // console.log(status);
+                                // console.log(xhr);
+                            },
+                            complete: function (url, options) {
+                            }
+                        });
                     }
                 });
             });
