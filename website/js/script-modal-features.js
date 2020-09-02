@@ -8,7 +8,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: 'http://127.0.0.1/Property/public/features',
+            url:  window.location.origin + '/property' + '/features',
             data: {name: selectedValue},
             dataType: 'json',
             success: function (data) {
@@ -39,7 +39,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: 'http://127.0.0.1/Property/public/features',
+            url:  window.location.origin + '/property' + '/features',
             data: {name: selectedValue, 'index': property_index},
             dataType: 'json',
             success: function (data) {
@@ -198,6 +198,7 @@
         let selectValue = '';
         $('[name^=property_subtype-]').on('click', function (e) {
             selectValue = $('[name^=property_subtype-]:checked').val();
+
             if (selectValue !== 'Penthouse' && selectValue !== 'Room')
                 getFeatures(selectValue);
             displayFeatureBtn();

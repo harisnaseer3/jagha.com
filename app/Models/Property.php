@@ -48,6 +48,13 @@ class Property extends Model
         'price',
         'land_area',
         'area_unit',
+        'area_in_sqft',
+        'area_in_sqyd',
+        'area_in_sqm',
+        'area_in_marla',
+        'area_in_new_marla',
+        'area_in_new_kanal',
+        'area_in_kanal',
         'bedrooms',
         'bathrooms',
         'latitude',
@@ -80,9 +87,9 @@ class Property extends Model
         'unit' => 'required',
         'image.*' => 'image|mimes:jpeg,png,jpg|max:256',
         'floor_plans.*' => 'image|mimes:jpeg,png,jpg|max:256',
-        'phone' => 'nullable|regex:/\+92-\d{2}-\d{7}/', // +92-51-1234567
-        'mobile' => 'nullable|regex:/\+92-3\d{2}-\d{7}/', // +92-300-1234567
-        'fax' => 'nullable|regex:/\+92-\d{2}\-\d{7}/', // +92-21-1234567
+        'phone' => 'nullable|regex:/\+92-\d{2}\d{7}/', // +92-511234567
+        'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
+        'fax' => 'nullable|regex:/\+92-\d{2}\\d{7}/', // +92-211234567
         'contact_person' => 'required|max:225',
         'contact_email' => 'required|email',
         'video_link' => 'nullable|url'

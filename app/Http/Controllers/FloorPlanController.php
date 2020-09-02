@@ -40,22 +40,29 @@ class FloorPlanController extends Controller
      */
     public function store(Request $request, $property)
     {
-        foreach (request()->file('floor_plans') as $file) {
-            //get filename without extension
-            $extension = 'webp';
+        foreach (request()->file('floor_plans') as $file_name) {
             $filename = rand(0, 99);
-            $filenametostore = $filename . time() . '-750x400.' . $extension;
-            Storage::put('public/floor_plans/' . $filenametostore, fopen($file, 'r+'));
+            $extension = 'webp';
 
-            //Resize image here
-            $thumbnailpath = public_path('storage/floor_plans/' . $filenametostore);
+            $filenamewithoutext = $filename . time();
+            $filenametostore = $filenamewithoutext . '.' . $extension;
+            $files = [['width' => 750, 'height' => 600]];
 
-            $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit(750, 400, function ($constraint) {
-                $constraint->aspectRatio();
-            })->encode('webp', 10);
+            foreach ($files as $file) {
+                $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
+                Storage::put('public/floor_plans/' . $filenametostore, fopen($file_name, 'r+'));
 
-            $img->save($thumbnailpath);
-            $user_id = Auth::check() ? Auth::user()->getAuthIdentifier() : 1;
+                //Resize image here
+                $thumbnailpath = ('thumbnails/floor_plans/' . $updated_path);
+
+                $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                    $constraint->aspectRatio();
+                })->encode('webp', 1);
+
+                $img->save($thumbnailpath);
+            }
+
+            $user_id = Auth::user()->getAuthIdentifier();
 
             (new FloorPlan)->updateOrCreate(['property_id' => $property->id, 'name' => $filenametostore], [
                 'user_id' => $user_id,
@@ -97,22 +104,29 @@ class FloorPlanController extends Controller
      */
     public function update(Request $request, Property $property)
     {
-        foreach (request()->file('floor_plans') as $file) {
-            //get filename without extension
-            $extension = 'webp';
+        foreach (request()->file('floor_plans') as $file_name) {
             $filename = rand(0, 99);
-            $filenametostore = $filename . time() . '-750x400.' . $extension;
-            Storage::put('public/floor_plans/' . $filenametostore, fopen($file, 'r+'));
+            $extension = 'webp';
 
-            //Resize image here
-            $thumbnailpath = public_path('storage/floor_plans/' . $filenametostore);
+            $filenamewithoutext = $filename . time();
+            $filenametostore = $filenamewithoutext . '.' . $extension;
+            $files = [['width' => 750, 'height' => 600]];
 
-            $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit(750, 400, function ($constraint) {
-                $constraint->aspectRatio();
-            })->encode('webp', 10);
+            foreach ($files as $file) {
+                $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
+                Storage::put('public/floor_plans/' . $filenametostore, fopen($file_name, 'r+'));
 
-            $img->save($thumbnailpath);
-            $user_id = Auth::check() ? Auth::user()->getAuthIdentifier() : 1;
+                //Resize image here
+                $thumbnailpath = ('thumbnails/floor_plans/' . $updated_path);
+
+                $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                    $constraint->aspectRatio();
+                })->encode('webp', 1);
+
+                $img->save($thumbnailpath);
+            }
+
+            $user_id = Auth::user()->getAuthIdentifier();
 
             (new FloorPlan)->updateOrCreate(['property_id' => $property->id, 'name' => $filenametostore], [
                 'user_id' => $user_id,

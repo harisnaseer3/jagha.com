@@ -15,7 +15,7 @@
 @endsection
 
 @section('content')
-@include('website.includes.dashboard-nav')
+    @include('website.includes.dashboard-nav')
     <!-- Top header start -->
     <div class="sub-banner">
         <div class="container">
@@ -96,7 +96,6 @@
 @section('script')
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}"></script>
-
     <script>
         (function ($) {
             $(document).ready(function () {
@@ -213,7 +212,7 @@
                 $("input[name='fax']").keyup(function () {
                     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
                 });
-                $('.custom-select').parent().children().css({'border': '1px solid #ced4da','border-radius': '.25rem'});
+                $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
             });
         })(jQuery);
     </script>

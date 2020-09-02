@@ -312,7 +312,6 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
@@ -351,27 +350,29 @@ class AgencyController extends Controller
     {
         if ($request->hasFile('upload_new_logo')) {
             $error_msg = $this->_imageValidation('upload_new_logo');
-            if (count($error_msg)) {
+            if ($error_msg !== null && count($error_msg)) {
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
             }
         }
 
         if ($request->hasFile('upload_new_picture')) {
             $error_msg = $this->_imageValidation('upload_new_picture');
-            if (count($error_msg)) {
+            if ($error_msg !== null && count($error_msg)) {
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
             }
         }
-
         $validator = Validator::make($request->all(), Agency::$rules);
 
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error storing record, Resolve following error(s).');
         }
+
         try {
+
+            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
             $agency = (new Agency)->Create([
                 'user_id' => Auth::user()->getAuthIdentifier(),
-                'city' => json_encode($request->input('select_cities')),
+                'city_id' => $city->id,
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
@@ -387,42 +388,19 @@ class AgencyController extends Controller
                 'ceo_message' => $request->input('message')
             ]);
             if ($request->hasFile('upload_new_logo')) {
-                $file = $request->file('upload_new_logo');
-                $filename = rand(0, 99);
-                $extension = 'webp';
-                $filenametostore = $filename . time() . '-256x256.' . $extension;
-                Storage::put('public/agency_logos/' . $filenametostore, fopen($file, 'r+'));
-
-                $thumbnailpath = public_path('storage/agency_logos/' . $filenametostore);
-                $img = Image::make($thumbnailpath)->fit(256, 256, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->encode('webp', 50);
-                $img->save($thumbnailpath);
-
-                $agency->logo = $filenametostore;
+                $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
             }
             if ($request->hasFile('upload_new_picture')) {
-                $file = $request->file('upload_new_picture');
-                $filename = rand(0, 99);
-                $extension = 'webp';
-                $filenametostore = $filename . time() . '-256x256.' . $extension;
-
-                Storage::put('public/agency_ceo_images/' . $filenametostore, fopen($file, 'r+'));
-
-                $thumbnailpath = public_path('storage/agency_ceo_images/' . $filenametostore);
-                $img = Image::make($thumbnailpath)->fit(256, 256, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->encode('webp', 50);
-                $img->save($thumbnailpath);
-
-                $agency->ceo_image = $filenametostore;
+                $this->storeAgencyLogo($request->file('upload_new_picture'), $agency);
             }
-
             (new AgencyUserController())->store($agency);
-
+            (new AgencyCityController())->store($agency);
+            if ($request->has('status') && $request->input('status') === 'active') {
+                $this->insertIntoCounterTable();
+            }
             return redirect()->back()->with('success', 'Your information has been saved.');
         } catch (Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Error updating record. Try again');
+            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
     }
 
@@ -459,6 +437,9 @@ class AgencyController extends Controller
      */
     public function edit(Agency $agency)
     {
+        $city = $agency->city->name;
+        $agency->city = $city;
+
         if (Auth::user()->hasRole('admin')) {
             return view('website.agency_profile.agency',
                 ['table_name' => 'users',
@@ -469,6 +450,7 @@ class AgencyController extends Controller
         }
         $agency_id = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
         $agency = (new Agency)->select('*')->where('id', '=', $agency_id->agency_id)->first();
+
         return view('website.agency_profile.agency',
             ['table_name' => 'users',
                 'agency' => $agency,
@@ -476,6 +458,7 @@ class AgencyController extends Controller
                 'footer_agencies' => (new FooterController)->footerContent()[1]]
         );
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -501,14 +484,13 @@ class AgencyController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-
-            'select_cities' => 'required',
+            'city' => 'required|string',
             'company_title' => 'required|string|max:255',
             'description' => 'required|string|max:4096',
             'email' => 'required|email',
-            'phone' => 'required|regex:/\+92-\d{2}-\d{7}/',   // +92-51-1234567
-            'mobile' => 'nullable|regex:/\+92-3\d{2}-\d{7}/', // +92-300-1234567
-            'fax' => 'nullable|regex:/\+92-\d{2}\-\d{7}/',   // +92-21-1234567
+            'phone' => 'required|regex:/\+92-\d{2}\d{7}/',   // +92-511234567
+            'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
+            'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
             'address' => 'nullable|string',
             'zip_code' => 'nullable|digits:5',
             'country' => 'required|string',
@@ -517,16 +499,20 @@ class AgencyController extends Controller
             'designation' => 'nullable|string',
             'message' => 'nullable|string',
             'website' => 'required|url',
-            'upload_new_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:128',
+            'upload_new_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
         ]);
 
         if ($validator->fails()) {
             return redirect()->route('agencies.edit', $agency)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
         }
         try {
-            (new Agency)->updateOrCreate(['id' => $agency->id], [
+            $status_before_update = $agency->status;
+            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+
+
+            (new Agency)::where('id', $agency->id)->update([
                 'user_id' => Auth::user()->getAuthIdentifier(),
-                'city' => json_encode($request->input('select_cities')),
+                'city_id' => $city->id,
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
@@ -542,41 +528,16 @@ class AgencyController extends Controller
                 'ceo_designation' => $request->input('designation'),
                 'ceo_message' => $request->input('message')
             ]);
-
             if ($request->hasFile('upload_new_logo')) {
-                $file = $request->file('upload_new_logo');
-
-                $filename = rand(0, 99);
-                $extension = 'webp';
-                $filenametostore = $filename . time() . '-256x256.' . $extension;
-                Storage::put('public/agency_logos/' . $filenametostore, fopen($file, 'r+'));
-
-                $thumbnailpath = public_path('storage/agency_logos/' . $filenametostore);
-                $img = Image::make($thumbnailpath)->fit(256, 256, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->encode('webp', 50);
-                $img->save($thumbnailpath);
-
-                $agency->logo = $filenametostore;
+                $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
             }
             if ($request->hasFile('upload_new_picture')) {
-                $file = $request->file('upload_new_picture');
-                $filename = rand(0, 99);
-                $extension = 'webp';
-                $filenametostore = $filename . time() . '-256x256.' . $extension;
-
-                Storage::put('public/agency_ceo_images/' . $filenametostore, fopen($file, 'r+'));
-
-                $thumbnailpath = public_path('storage/agency_ceo_images/' . $filenametostore);
-                $img = Image::make($thumbnailpath)->fit(256, 256, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->encode('webp', 50);
-                $img->save($thumbnailpath);
-
-                $agency->ceo_image = $filenametostore;
+                $this->storeAgencyCeoImage($request->file('upload_new_picture'), $agency);
             }
+            if ($status_before_update === 'verified' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
+                $this->deleteFromCounterTable();
 
-            $agency->save();
+
             return redirect()->route('agencies.edit', $agency->id)->with('success', 'Your information has been saved.');
         } catch (Throwable $e) {
             return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
@@ -668,7 +629,6 @@ class AgencyController extends Controller
         return $counts;
     }
 
-
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page)
     {
         // listing of status
@@ -710,5 +670,72 @@ class AgencyController extends Controller
         ];
 
         return view('website.agency.agency_listings', $data);
+    }
+
+
+    public function storeAgencyLogo($logo, $agency)
+    {
+        $filename = rand(0, 99);
+        $extension = 'webp';
+        $filenamewithoutext = 'logo-' . $filename . time();
+        $filenametostoreindb = $filenamewithoutext . '.' . $extension;
+
+        $files = [['width' => 100, 'height' => 100], ['width' => 450, 'height' => 350]];
+        foreach ($files as $file) {
+            $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
+
+            Storage::put('public/agency_logos/' . $updated_path, fopen($logo, 'r+'));
+            $thumbnailpath = ('thumbnails/agency_logos/' . $updated_path);
+
+            $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                $constraint->aspectRatio();
+            })->encode('webp', 1);
+            $img->save($thumbnailpath);
+
+            $agency->logo = $filenametostoreindb;
+            $agency->save();
+        }
+    }
+
+    public function storeAgencyCeoImage($logo, $agency)
+    {
+        $filename = rand(0, 99);
+        $extension = 'webp';
+        $filenamewithoutext = 'image-' . $filename . time();
+        $filenametostoreindb = $filenamewithoutext . '.' . $extension;
+
+        $files = [['width' => 100, 'height' => 100], ['width' => 450, 'height' => 350]];
+        foreach ($files as $file) {
+            $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
+
+            Storage::put('public/agency_ceo_images/' . $updated_path, fopen($logo, 'r+'));
+            $thumbnailpath = ('thumbnails/agency_ceo_images/' . $updated_path);
+
+            $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                $constraint->aspectRatio();
+            })->encode('webp', 1);
+            $img->save($thumbnailpath);
+
+            $agency->ceo_image = $filenametostoreindb;
+            $agency->save();
+        }
+    }
+
+    public function insertIntoCounterTable()
+    {
+        $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
+        $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
+        $cities_count = DB::table('cities')->select(DB::raw('COUNT(id) AS city_count'))->get();
+        DB::table('total_property_count')->update(['property_count' => $property_count[0]->property_count, 'agency_count' => $agency_count[0]->agency_count, 'city_count' => $cities_count[0]->city_count]);
+
+    }
+
+    public function deleteFromCounterTable()
+    {
+        $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
+        $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
+        $cities_count = DB::table('cities')->select(DB::raw('COUNT(id) AS city_count'))->get();
+        DB::table('total_property_count')->update(['property_count' => $property_count[0]->property_count, 'agency_count' => $agency_count[0]->agency_count, 'city_count' => $cities_count[0]->city_count]);
+
     }
 }
