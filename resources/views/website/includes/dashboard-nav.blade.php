@@ -300,8 +300,11 @@
                                         <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i
-                                                class="fa fa-building-o mr-2"></i>Property Management</a>
+                                        {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i class="fa fa-building-o mr-2"></i>Property Management</a>--}}
+                                        <a class="dropdown-item"
+                                           href="{{route('properties.listings',
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
+                                            <i class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>

@@ -1,14 +1,16 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header theme-grey text-white">Tools</div>
     @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
-    <ul class="list-group">
-        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->
-        <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a
-                href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">
-                @if ($current_route_name === 'properties.edit') Edit Listing @else Post New Listing @endif</a></li>
-        <!-- <li class="list-group-item"><a href="#">Zone Details</a></li>
-        <li class="list-group-item"><a href="#">Listing Policy</a></li> -->
-    </ul>
+
+    {{--    <div class="card-header theme-grey text-white">Tools</div>--}}
+    {{--    @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp--}}
+    {{--    <ul class="list-group">--}}
+    {{--        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->--}}
+    {{--        <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a--}}
+    {{--                href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">--}}
+    {{--                @if ($current_route_name === 'properties.edit') Edit Listing @else Post New Listing @endif</a></li>--}}
+    {{--        <!-- <li class="list-group-item"><a href="#">Zone Details</a></li>--}}
+    {{--        <li class="list-group-item"><a href="#">Listing Policy</a></li> -->--}}
+    {{--    </ul>--}}
 
     <div class="card-header theme-grey text-white">Listings</div>
     <ul class="list-group">
@@ -44,30 +46,36 @@
                                        aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale ({{ $counts[$status]['sale'] }})</a>
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab" data-toggle="pill" href="#listings-rent" role="tab"
                                        aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent ({{ $counts[$status]['rent'] }})</a>
-                                    <a class="nav-link side-link-style{{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted" role="tab"
+                                    <a class="nav-link side-link-style{{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted"
+                                       role="tab"
                                        aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted ({{ $counts[$status]['wanted'] }})</a>
                                     @if ($status === 'active')
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'super_hot_listing' ? 'active' : '' }}" id="listings-super_hot-tab" data-toggle="pill" href="#listings-super_hot"
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'super_hot_listing' ? 'active' : '' }}" id="listings-super_hot-tab" data-toggle="pill"
+                                           href="#listings-super_hot"
                                            role="tab" aria-controls="listings-super_hot" aria-selected="{{ $params['purpose'] === 'super_hot' ? 'true' : 'false' }}">Super Hot Listing
                                             ({{ $counts[$status]['super_hot'] }})</a>
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'hot_listing' ? 'active' : '' }}" id="listings-hot-tab" data-toggle="pill" href="#listings-hot" role="tab"
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'hot_listing' ? 'active' : '' }}" id="listings-hot-tab" data-toggle="pill" href="#listings-hot"
+                                           role="tab"
                                            aria-controls="listings-hot" aria-selected="{{ $params['purpose'] === 'hot' ? 'true' : 'false' }}">Hot Listing ({{ $counts[$status]['hot'] }})</a>
-                                        <!-- <a class="nav-link side-link-style {{ $params['purpose'] === 'magazine_listing' ? 'active' : '' }}" id="listings-magazine-tab" data-toggle="pill" href="#listings-magazine"
+                                    <!-- <a class="nav-link side-link-style {{ $params['purpose'] === 'magazine_listing' ? 'active' : '' }}" id="listings-magazine-tab" data-toggle="pill" href="#listings-magazine"
                                            role="tab" aria-controls="listings-magazine" aria-selected="{{ $params['purpose'] === 'magazine' ? 'true' : 'false' }}">Magazine Listing
                                             ({{ $counts[$status]['magazine'] }})</a> -->
                                     @endif
                                 @else
                                     <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                                     <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
-                                    <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale ({{ $counts[$status]['sale'] }})</a>
-                                    <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent ({{ $counts[$status]['rent'] }})</a>
-                                    <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted ({{ $counts[$status]['wanted'] }})</a>
+                                    <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale
+                                        ({{ $counts[$status]['sale'] }})</a>
+                                    <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent
+                                        ({{ $counts[$status]['rent'] }})</a>
+                                    <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted
+                                        ({{ $counts[$status]['wanted'] }})</a>
                                     @if ($status === 'active')
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'super_hot_listing'])) }}">Super Hot Listing
                                             ({{ $counts[$status]['super_hot'] }})</a>
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'hot_listing'])) }}">Hot Listing
                                             ({{ $counts[$status]['hot'] }})</a>
-                                        <!-- <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'magazine_listing'])) }}">Magazine Listing
+                                    <!-- <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'magazine_listing'])) }}">Magazine Listing
                                             ({{ $counts[$status]['magazine'] }})</a> -->
                                     @endif
                                 @endif
@@ -128,9 +136,20 @@
                             @endif
                         </div>
                     </div>
+
                 </div>
             </div>
         </li>
+    </ul>
+
+    <div class="card-header theme-grey text-white">Tools</div>
+    <ul class="list-group">
+        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->
+        <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a
+                href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">
+                @if ($current_route_name === 'properties.edit') Edit Listing @else Post New Listing @endif</a></li>
+        <!-- <li class="list-group-item"><a href="#">Zone Details</a></li>
+        <li class="list-group-item"><a href="#">Listing Policy</a></li> -->
     </ul>
 
     <div class="card-header theme-grey text-white">Credit Expiry Log</div>
