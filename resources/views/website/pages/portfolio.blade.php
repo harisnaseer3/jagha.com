@@ -213,6 +213,20 @@
                     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
                 });
                 $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+                $('[name=call_for_price_inquiry]').click(function(){
+                    if ($('[name=call_for_price_inquiry]').is(':checked')){
+                        console.log($(this).val())
+                        console.log('here 2');
+                        $('[name=all_inclusive_price]').attr('disable', 'true');
+                        $('.price-block').slideUp();
+                    }
+                    else {
+                        $('[name=all_inclusive_price]').attr('disable', 'false');
+                        $('.price-block').slideDown();
+                    }
+                });
+
+
             });
         })(jQuery);
     </script>

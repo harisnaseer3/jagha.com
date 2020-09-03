@@ -63,7 +63,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error inserting record, try again.');
@@ -149,31 +149,33 @@ class UserController extends Controller
                 if ($height < $allowed_height && $width < $allowed_width) {
                     $error_msg['upload_new_picture'] = 'upload_new_picture has invalid image dimensions';
                 }
-                if (count($error_msg)) {
+                if ($error_msg != null && count($error_msg)) {
                     return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
                 }
 
-                $file = $request->file('upload_new_picture');
                 $filename = rand(0, 99);
-
                 $extension = 'webp';
-                $filenametostore = $filename . '-' . time() . '-256x256.' . $extension;
-                $thumbnailpath = public_path('storage/user_profile_images/' . $filenametostore);
+                $filenamewithoutext = 'image-' . $filename . time();
+                $filenametostoreindb = $filenamewithoutext . '.' . $extension;
 
-                Storage::put('public/user_profile_images/' . $filenametostore, fopen($file, 'r+'));
+                $files = [['width' => 100, 'height' => 100], ['width' => 450, 'height' => 350]];
+                foreach ($files as $file) {
+                    $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
 
-                $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit(256, 256, function ($constraint) {
-                    $constraint->aspectRatio();
-                })->encode('webp', 1);
+                    Storage::put('public/user_images/' . $updated_path, fopen($request->file('upload_new_picture'), 'r+'));
+                    $thumbnailpath = ('thumbnails/user_images/' . $updated_path);
 
-                $img->save($thumbnailpath);
-
-                $user->image = $filenametostore;
+                    $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->encode('webp', 1);
+                    $img->save($thumbnailpath);
+                    $user->image = $filenametostoreindb;
+                    $img->save($thumbnailpath);
+                }
             }
             $user->save();
             return redirect()->route('users.edit', $user->id)->with('success', 'Your information has been saved');
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->route('users.edit', $user->id)->withInput()->with('error', 'No record updated !');
         }
     }
@@ -230,7 +232,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'current_password' => 'required',
 //            'new_password' => 'required|string|min:8|same:confirm_new_password',
-            'new_password' => ['required', 'string', 'min:8', 'same:confirm_new_password','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+            'new_password' => ['required', 'string', 'min:8', 'same:confirm_new_password', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
 
         ]);
 

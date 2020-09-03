@@ -24,10 +24,20 @@
     <div class="card-body">
         {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true]) }}
-        {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+        <div class="price-block">
+            {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+        </div>
+        {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}
+
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
-        {{ Form::bsSelect2('unit',  ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
-            isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
+        @if(isset($default_area_unit))
+            {{ Form::bsSelect2('unit',  ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
+                isset($default_area_unit->default_area_unit) ? $default_area_unit->default_area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
+        @else
+            {{ Form::bsSelect2('unit',  ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
+                isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
+        @endif
+
         @if(Auth::user()->hasRole('Admin'))
             {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
                isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
@@ -109,7 +119,7 @@
                                style="position: absolute; top: 0; right: 0; z-index: 1">
                                 <i class="fad fa-times-circle fa-2x" style="color: red"></i>
                             </a>
-{{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
+                            {{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
                             <img src="{{asset('thumbnails/floor_plans/'.explode('.',$available_image->name)[0].'-750x600.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
                         </div>
                     </div>
