@@ -252,7 +252,8 @@
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['properties.create', 'properties.edit', 'properties.listings']) ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('properties.create')}}">
+                            <a class="nav-link" href="{{route('properties.listings',
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
                                 Property Management
                             </a>
                         </li>
