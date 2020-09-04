@@ -83,59 +83,59 @@
                         </div>
                     @endforeach
 
-                    <div class="card-header {{ $params['status'] === 'rejected_images' ? 'secondary-grey' : '' }}" id="headingListingRejectedImages">
-                        <a href="#collapseListingRejectedImages"
-                           class="{{ $params['status'] === 'rejected_images' ? '' : 'collapsed' }} {{ $params['status'] === 'rejected_images' ? 'text-white' : '' }}" role="button"
-                           data-toggle="collapse" aria-expanded="{{ $params['status'] === 'rejected_images' ? 'true' : 'false' }}" aria-controls="collapseExample">Rejected Images</a>
-                    </div>
-                    <div id="collapseListingRejectedImages" class="collapse {{ $params['status'] === 'rejected_images' ? 'show' : '' }}" aria-labelledby="headingListingRejectedImages"
-                         data-parent="#accordionListings">
-                        <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
-                            @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === 'rejected_images')
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab"
-                                   aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab" data-toggle="pill" href="#listings-sale" role="tab"
-                                   aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale (0)</a>
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab" data-toggle="pill" href="#listings-rent" role="tab"
-                                   aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent (0)</a>
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted" role="tab"
-                                   aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted (0)</a>
-                            @else
-                                <?php $route_params = ['status' => 'rejected_images', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale (0)</a>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent (0)</a>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted (0)</a>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="card-header {{ $params['status'] === 'rejected_videos' ? 'secondary-grey' : '' }}" id="headingListingRejectedVideos">
-                        <a href="#collapseListingRejectedVideos"
-                           class="{{ $params['status'] === 'rejected_videos' ? '' : 'collapsed' }} {{ $params['status'] === 'rejected_videos' ? 'text-white' : '' }}" role="button"
-                           data-toggle="collapse" aria-expanded="{{ $params['status'] === 'rejected_videos' ? 'true' : 'false' }}" aria-controls="collapseExample">Rejected Videos</a>
-                    </div>
-                    <div id="collapseListingRejectedVideos" class="collapse {{ $params['status'] === 'rejected_videos' ? 'show' : '' }}" aria-labelledby="headingListingRejectedVideos"
-                         data-parent="#accordionListings">
-                        <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
-                            @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === 'rejected_videos')
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab"
-                                   aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
-                                <a class="nav-link side-link-style{{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab" data-toggle="pill" href="#listings-sale" role="tab"
-                                   aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale (0)</a>
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab" data-toggle="pill" href="#listings-rent" role="tab"
-                                   aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent (0)</a>
-                                <a class="nav-link side-link-style{{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted" role="tab"
-                                   aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted (0)</a>
-                            @else
-                                <?php $route_params = ['status' => 'rejected_videos', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale (0)</a>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent (0)</a>
-                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted (0)</a>
-                            @endif
-                        </div>
-                    </div>
+{{--                    <div class="card-header {{ $params['status'] === 'rejected_images' ? 'secondary-grey' : '' }}" id="headingListingRejectedImages">--}}
+{{--                        <a href="#collapseListingRejectedImages"--}}
+{{--                           class="{{ $params['status'] === 'rejected_images' ? '' : 'collapsed' }} {{ $params['status'] === 'rejected_images' ? 'text-white' : '' }}" role="button"--}}
+{{--                           data-toggle="collapse" aria-expanded="{{ $params['status'] === 'rejected_images' ? 'true' : 'false' }}" aria-controls="collapseExample">Rejected Images</a>--}}
+{{--                    </div>--}}
+{{--                    <div id="collapseListingRejectedImages" class="collapse {{ $params['status'] === 'rejected_images' ? 'show' : '' }}" aria-labelledby="headingListingRejectedImages"--}}
+{{--                         data-parent="#accordionListings">--}}
+{{--                        <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">--}}
+{{--                            @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === 'rejected_images')--}}
+{{--                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab"--}}
+{{--                                   aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>--}}
+{{--                                <a class="nav-link side-link-style {{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab" data-toggle="pill" href="#listings-sale" role="tab"--}}
+{{--                                   aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale (0)</a>--}}
+{{--                                <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab" data-toggle="pill" href="#listings-rent" role="tab"--}}
+{{--                                   aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent (0)</a>--}}
+{{--                                <a class="nav-link side-link-style {{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted" role="tab"--}}
+{{--                                   aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted (0)</a>--}}
+{{--                            @else--}}
+{{--                                <?php $route_params = ['status' => 'rejected_images', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale (0)</a>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent (0)</a>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted (0)</a>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{----}}
+{{--                    <div class="card-header {{ $params['status'] === 'rejected_videos' ? 'secondary-grey' : '' }}" id="headingListingRejectedVideos">--}}
+{{--                        <a href="#collapseListingRejectedVideos"--}}
+{{--                           class="{{ $params['status'] === 'rejected_videos' ? '' : 'collapsed' }} {{ $params['status'] === 'rejected_videos' ? 'text-white' : '' }}" role="button"--}}
+{{--                           data-toggle="collapse" aria-expanded="{{ $params['status'] === 'rejected_videos' ? 'true' : 'false' }}" aria-controls="collapseExample">Rejected Videos</a>--}}
+{{--                    </div>--}}
+{{--                    <div id="collapseListingRejectedVideos" class="collapse {{ $params['status'] === 'rejected_videos' ? 'show' : '' }}" aria-labelledby="headingListingRejectedVideos"--}}
+{{--                         data-parent="#accordionListings">--}}
+{{--                        <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">--}}
+{{--                            @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === 'rejected_videos')--}}
+{{--                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab"--}}
+{{--                                   aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>--}}
+{{--                                <a class="nav-link side-link-style{{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab" data-toggle="pill" href="#listings-sale" role="tab"--}}
+{{--                                   aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale (0)</a>--}}
+{{--                                <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab" data-toggle="pill" href="#listings-rent" role="tab"--}}
+{{--                                   aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent (0)</a>--}}
+{{--                                <a class="nav-link side-link-style{{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted" role="tab"--}}
+{{--                                   aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted (0)</a>--}}
+{{--                            @else--}}
+{{--                                <?php $route_params = ['status' => 'rejected_videos', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale (0)</a>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent (0)</a>--}}
+{{--                                <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted (0)</a>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                 </div>
             </div>
