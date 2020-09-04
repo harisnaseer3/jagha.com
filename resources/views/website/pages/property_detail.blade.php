@@ -50,12 +50,22 @@
                                         <div><h1 class="property-detail-title" aria-label="Property header">{{$property->title}}</h1></div>
                                         <div class="pull-left">
                                             <h2 style="font-weight: 400; font-size:20px;">
-                                                <span aria-label="currency"> PKR </span> <span aria-label="price"> {{Helper::getPriceInWords($property->price)}}</span>
+                                                @if($property->price !== 0 || $property->price !== null)
+                                                    <span aria-label="currency"> PKR </span> <span aria-label="price"> {{Helper::getPriceInWords($property->price)}}</span>
+                                                @else
+                                                    <span aria-label="currency"> Call Us to Get More Details </span>
+                                                @endif
                                             </h2>
                                             <h6 class="color-555" style="font-weight: 400; font-size:14px;"><i class="fa fa-map-marker"></i> {{ $property->location }}, {{ $property->city }}</h6>
                                         </div>
                                         <div class="pull-right">
-                                            <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
+                                            @if($property->price !== 0 || $property->price !== null)
+                                                <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
+                                            @else
+                                                <h3><span class="text-right"> <span aria-label="currency">  Call Us to Get More Details </span></span></h3>
+
+                                            @endif
+
                                             <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
                                                  data-num-stars="5" aria-label="rating"></div>
                                         </div>
@@ -257,7 +267,8 @@
                                     @if($agency->logo !==null)
                                         <div class="col-sm-6 text-center">
                                             <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                                                 alt="{{ucwords($agency->title)}}"  style="max-width: 80%"  data-toggle="popover" data-trigger="hover" title="{{$agency->title}}" data-placement ="bottom" data-html='true' data-content='
+                                                 alt="{{ucwords($agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$agency->title}}" data-placement="bottom"
+                                                 data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>

@@ -13,6 +13,7 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -308,7 +309,8 @@ class PropertyController extends Controller
                 'sub_type' => $subtype,
                 'title' => $request->input('property_title'),
                 'description' => $request->input('description'),
-                'price' => $request->input('all_inclusive_price'),
+                'price' => $request->input('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
                 'area_in_sqft' => $area_values['sqft'],
@@ -342,6 +344,10 @@ class PropertyController extends Controller
             }
             // insertion in count tables when property status is active
             if ($request->has('status') && $request->input('status') === 'active') {
+                $dt = Carbon::now();
+                $expiry = $dt->addMonths(3)->toDateTimeString();
+                $property->expired_at = $expiry;
+                $property->save();
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
             }
 
@@ -575,7 +581,8 @@ class PropertyController extends Controller
                 'sub_type' => $subtype,
                 'title' => $request->input('property_title'),
                 'description' => $request->input('description'),
-                'price' => $request->input('all_inclusive_price'),
+                'price' => $request->input('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
                 'area_in_sqft' => $area_values['sqft'],
@@ -608,6 +615,10 @@ class PropertyController extends Controller
                 (new VideoController)->update($request, $property);
             }
             if ($request->has('status') && $request->input('status') === 'active') {
+                $dt = Carbon::now();
+                $expiry = $dt->addMonths(3)->toDateTimeString();
+                $property->expired_at = $expiry;
+                $property->save();
                 event(new NewPropertyActivatedEvent($property));
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
             }

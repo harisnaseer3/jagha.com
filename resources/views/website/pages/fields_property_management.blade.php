@@ -24,10 +24,21 @@
     <div class="card-body">
         {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true]) }}
-        <div class="price-block">
-            {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
-        </div>
-        {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}
+
+
+        @if(isset($property->price) && $property->price == 0)
+            <div class="price-block" style="display:none">
+                {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+            </div>
+            {{ Form::bsCheckbox('call_for_price_inquiry', ['1'=>'1'], ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}
+        @else
+            <div class="price-block">
+                {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+            </div>
+            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}
+        @endif
+
+
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
         @if(isset($default_area_unit))

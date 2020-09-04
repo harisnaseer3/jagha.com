@@ -27,6 +27,7 @@ class PropertySeeder extends Seeder
      */
     public function run()
     {
+//        TODO: add value for expiry of property
 //        to get all files of directory
         $path = ('database/json');
         $files = File::files($path);

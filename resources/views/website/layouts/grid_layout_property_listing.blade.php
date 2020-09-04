@@ -65,10 +65,18 @@
                         </div>
 
                         <div class="price-ratings-box">
-                            <p class="price">
+                            @if($property->price !== 0 || $property->price !== null)
+                                <p class="price">
                                 <span aria-label="currency" class="color-white">
                                     PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
-                            </p>
+                                </p>
+                            @else
+                                <p class="price">
+                                <span aria-label="currency" class="color-white"> Call Us to Get More Details </span>
+                                </p>
+                            @endif
+
+
                             <div class="ratings grid-stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>

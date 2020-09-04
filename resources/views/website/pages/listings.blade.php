@@ -67,12 +67,11 @@
                                                             <td>{{ $all_listing->quota_used }}</td>
                                                             <td>{{ $all_listing->image_views }}</td>
                                                             <td>
-                                                                {{--                                                                {{ Form::bsRadio('', '', ['list' => ['active','expired','sold'],'display' => 'block']) }}--}}
                                                                 <form>
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $all_listing->id }}" {{$all_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$all_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
