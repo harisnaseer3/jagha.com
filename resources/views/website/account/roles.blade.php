@@ -50,45 +50,37 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
-                                    {{--                                    {{dd($role)}}--}}
-                                    {{ Form::open(['route' => ['user_roles.update', !empty($role) ? $role[0] : $role], 'method' => 'put', 'role' => 'form']) }}
+                                    {{ Form::open(['route' => ['user_roles.update'], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">User Roles</div>
                                         <div class="card-body">
-                                        {{--                                            {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}--}}
-                                        <!-- TODO: $role get the user role name not id-->
-                                            {{ Form::bsRadio('individual', '', ['list'=> ['Investor','Owner/Tenant'],'display' => 'block']) }}
-                                            {{--                                            {{ Form::bsCheckbox('individual[]', $role, [--}}
-                                            {{--                                                'list'=> [--}}
-                                            {{--                                                    (object) ['id' => 2, 'name' => 'Owner/Tenant'],--}}
-                                            {{--                                                    (object) ['id' => 3, 'name' => 'Investor'],--}}
-                                            {{--                                                ],--}}
-                                            {{--                                                'display' => 'block',--}}
-                                            {{--                                            ]) }}--}}
-                                            {{ Form::bsRadio('company', 'Agent/Broker', ['list' => ['Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
-                                                  'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block','class'=>'mt-3']) }}
-                                            <div class="other-textbox" style="display: none">
-                                                {{ Form::bsText('company',null) }}
-                                            </div>
+                                            <!-- TODO: $role get the user role name not id-->
+                                            {{--                                            {{ Form::bsRadio('role', '', ['list'=> ['Investor','Owner/Tenant'],'display' => 'block']) }}--}}
+                                            @if(!empty($role))
+                                                @if(in_array($role, ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                              'Mortgage Broker','Partner','Property/Asset Manager','Researcher'] ))
+                                                    {{ Form::bsRadio('user_roles', $role, ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                                  'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block','class'=>'mt-3']) }}
+                                                    <div class="other-textbox" style="display: none">
+                                                        {{ Form::bsText('new_role',null,['id'=>'new_role']) }}
+                                                    </div>
+                                                @else
+                                                    {{ Form::bsRadio('user_roles','Other', ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                              'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block','class'=>'mt-3']) }}
 
+                                                    <div class="other-textbox" style="display: block">
+                                                        {{ Form::bsText('new_role',$role,['id'=>'new_role']) }}
+                                                    </div>
+                                                @endif
+                                            @else
+                                                {{ Form::bsRadio('user_roles','Investor', ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                                  'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block','class'=>'mt-3']) }}
 
-                                            {{--                                            {{ Form::bsCheckbox('company[]', $role, [--}}
-                                            {{--                                                'list'=> [--}}
-                                            {{--                                                    (object) ['id' => 4, 'name' => 'Agent/Broker'],--}}
-                                            {{--                                                    (object) ['id' => 5, 'name' => 'Appraiser'],--}}
-                                            {{--                                                    (object) ['id' => 6, 'name' => 'Architect'],--}}
-                                            {{--                                                    (object) ['id' => 7, 'name' => 'Builder'],--}}
-                                            {{--                                                    (object) ['id' => 8, 'name' => 'Corporate Investor'],--}}
-                                            {{--                                                    (object) ['id' => 9, 'name' => 'Developer'],--}}
-                                            {{--                                                    (object) ['id' => 10, 'name' => 'Listing Administrator'],--}}
-                                            {{--                                                    (object) ['id' => 11, 'name' => 'Mortgage Broker'],--}}
-                                            {{--                                                    (object) ['id' => 12, 'name' => 'Partner'],--}}
-                                            {{--                                                    (object) ['id' => 13, 'name' => 'Property/Asset Manager'],--}}
-                                            {{--                                                    (object) ['id' => 14, 'name' => 'Researcher'],--}}
-                                            {{--                                                    (object) ['id' => 15, 'name' => 'Other'],--}}
-                                            {{--                                                ],--}}
-                                            {{--                                                'display' => 'block',--}}
-                                            {{--                                            ]) }}--}}
+                                                <div class="other-textbox" style="display: none">
+                                                    {{ Form::bsText('new_role',null,['id'=>'new_role']) }}
+                                                </div>
+                                            @endif
+
                                         </div>
                                         <div class="card-footer">
                                             {{ Form::submit('Update', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
@@ -149,11 +141,27 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
-               $('[name=company]').on('change', function () {
-                    if ($('[name=company]:checked').val() === 'Other') {
+
+                $('[name=user_roles]').on('change', function () {
+                    if ($('[name=user_roles]:checked').val() === 'Other') {
                         $('.other-textbox').show();
-                    } else
+                        $('#new_role').prop('required', true);
+                    } else {
+                        $('#new_role').val('');
+                        $('#new_role').prop('required', false);
                         $('.other-textbox').hide();
+                    }
+
+                });
+                if ($('[name=user_roles]:checked').val() === 'Other') {
+                    $('.other-textbox').show();
+                    $('#new_role').prop('required', true);
+                } else {
+                    $('#new_role').prop('required', false);
+                    $('.other-textbox').hide();
+                }
+                $('.search-submit-btn').on('click', function(){
+
                 });
             });
         })(jQuery);

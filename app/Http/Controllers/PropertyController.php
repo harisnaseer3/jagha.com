@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewPropertyActivatedEvent;
 use App\Http\Controllers\Dashboard\LocationController;
+use App\Models\Account;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
@@ -12,6 +13,7 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -169,11 +171,17 @@ class PropertyController extends Controller
 
     public function create()
     {
+        $unit = (new Account)->select('default_area_unit')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
+
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
-        return view('website.pages.portfolio', ['property_types' => $property_types, 'counts' => $counts, 'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]]);
+        return view('website.pages.portfolio',
+            ['default_area_unit' => $unit,
+                'property_types' => $property_types,
+                'counts' => $counts,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     private function _imageValidation($type)
@@ -301,7 +309,8 @@ class PropertyController extends Controller
                 'sub_type' => $subtype,
                 'title' => $request->input('property_title'),
                 'description' => $request->input('description'),
-                'price' => $request->input('all_inclusive_price'),
+                'price' => $request->input('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
                 'area_in_sqft' => $area_values['sqft'],
@@ -335,6 +344,10 @@ class PropertyController extends Controller
             }
             // insertion in count tables when property status is active
             if ($request->has('status') && $request->input('status') === 'active') {
+                $dt = Carbon::now();
+                $expiry = $dt->addMonths(3)->toDateTimeString();
+                $property->expired_at = $expiry;
+                $property->save();
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
             }
 
@@ -568,7 +581,8 @@ class PropertyController extends Controller
                 'sub_type' => $subtype,
                 'title' => $request->input('property_title'),
                 'description' => $request->input('description'),
-                'price' => $request->input('all_inclusive_price'),
+                'price' => $request->input('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
                 'area_in_sqft' => $area_values['sqft'],
@@ -601,6 +615,10 @@ class PropertyController extends Controller
                 (new VideoController)->update($request, $property);
             }
             if ($request->has('status') && $request->input('status') === 'active') {
+                $dt = Carbon::now();
+                $expiry = $dt->addMonths(3)->toDateTimeString();
+                $property->expired_at = $expiry;
+                $property->save();
                 event(new NewPropertyActivatedEvent($property));
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
             }
@@ -651,7 +669,7 @@ class PropertyController extends Controller
     {
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Property)
-            ->select('properties.id', 'sub_type AS type', 'locations.name AS location', 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"), DB::raw("'0' AS image_views"))
+            ->select('properties.id', 'sub_type AS type', 'properties.status', 'locations.name AS location', 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"), DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->whereNull('properties.deleted_at');
 
@@ -711,7 +729,7 @@ class PropertyController extends Controller
 
         // listing of status
         $status = strtolower($status);
-        if (!in_array($status, ['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'rejected_images', 'rejected_videos'])) {
+        if (!in_array($status, ['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold', 'rejected_images', 'rejected_videos'])) {
             return redirect()->back(302)->withInput()->withErrors(['message', 'Invalid status provided.']);
         }
 
@@ -777,7 +795,7 @@ class PropertyController extends Controller
     public function getPropertyListingCount(string $user)
     {
         $counts = [];
-        foreach (['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected'] as $status) {
+        foreach (['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold'] as $status) {
             $counts[$status]['all'] = $this->_listings($status, $user)->count();
             $counts[$status]['sale'] = $this->_listings($status, $user)->where('purpose', '=', 'sale')->count();
             $counts[$status]['rent'] = $this->_listings($status, $user)->where('purpose', '=', 'rent')->count();
@@ -1169,17 +1187,6 @@ class PropertyController extends Controller
         return response()->json(['data' => 'invalid value', 'status' => 202]);
     }
 
-    //  ajax calls
-    public function getAreaValue(Request $request)
-    {
-        if ($request->ajax()) {
-            $result = (new Property)->select('land_area')->WHERE('area_unit', '=', $request->area_unit)->distinct()->inRandomOrder()->orderBy('land_area', 'ASC')->limit(8)->get()->toArray();
-            return response()->json(['data' => $result, 'status' => 200]);
-        } else {
-            return "not found";
-        }
-    }
-
     //   search for city property
     public function searchInCities(string $city)
     {
@@ -1236,5 +1243,27 @@ class PropertyController extends Controller
             ];
         }
         return view('website.pages.property_listing', $data);
+    }
+
+    //  ajax calls
+    public function getAreaValue(Request $request)
+    {
+        if ($request->ajax()) {
+            $result = (new Property)->select('land_area')->WHERE('area_unit', '=', $request->area_unit)->distinct()->inRandomOrder()->orderBy('land_area', 'ASC')->limit(8)->get()->toArray();
+            return response()->json(['data' => $result, 'status' => 200]);
+        } else {
+            return "not found";
+        }
+    }
+
+//    ajax to change status by the user
+    public function changePropertyStatus(Request $request)
+    {
+        if ($request->ajax()) {
+            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+            return response()->json(['status' => 200]);
+        } else {
+            return "not found";
+        }
     }
 }

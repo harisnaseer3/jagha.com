@@ -46,9 +46,9 @@ class User extends Authenticatable
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|email',
-        'phone' => 'required|regex:/\+92-\d{2}-\d{7}/',   // +92-51-1234567
-        'mobile' => 'nullable|regex:/\+92-3\d{2}-\d{7}/', // +92-300-1234567
-        'fax' => 'nullable|regex:/\+92-\d{2}\-\d{7}/',   // +92-21-1234567
+        'phone' => 'required|regex:/\+92-\d{2}\d{7}/',   // +92-511234567
+        'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
+        'fax' => 'nullable|regex:/\+92-\d{2}\\d{7}/',   // +92-211234567
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',

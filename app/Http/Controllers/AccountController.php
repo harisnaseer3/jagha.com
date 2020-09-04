@@ -100,9 +100,11 @@ class AccountController extends Controller
      */
     public function editRoles(Request $request, Role $role)
     {
-        $role = DB::table('role_user')->select('role_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->pluck('role_id')->toArray();
-        return view('website.account.roles', ['role' => !empty($role) ? $role : null,
-            'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+//        Auth::user()->roles[0]->name;
+        return view('website.account.roles',
+            ['role' => !empty(Auth::user()->roles) ? Auth::user()->roles[0]->name : null,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     /**
@@ -113,28 +115,36 @@ class AccountController extends Controller
      */
     public function updateRoles(Request $request)
     {
-        $individual_roles = $request->input('individual');
-        $company_roles = $request->input('company');
+        $role = '';
+        if ($request->input('user_roles') === 'Other')
+            $role = $request->input('new_role');
+        else
+            $role = $request->input('user_roles');
 
+
+        $role_id = '';
+        if (DB::table('roles')->select('id', 'name')->where('name', '=', $role)->first())
+            $role_id = DB::table('roles')->select('id')->where('name', '=', $role)->first()->id;
+        else
+            $role_id = DB::table('roles')->insertGetId(['name' => $role]);
         DB::table('role_user')->where('user_id', '=', Auth::user()->getAuthIdentifier())->delete();
         try {
-            if (!is_null($individual_roles)) {
-                foreach ($individual_roles as $key => $value) {
-                    DB::table('role_user')
-                        ->updateOrInsert(
-                            ['user_id' => Auth::user()->getAuthIdentifier(), 'role_id' => $value]);
-                }
+            if (!is_null($role_id)) {
+                DB::table('role_user')
+                    ->updateOrInsert(['user_id' => Auth::user()->getAuthIdentifier()],
+                        ['user_id' => Auth::user()->getAuthIdentifier(), 'role_id' => $role_id]);
             }
-            if (!is_null($company_roles)) {
-                foreach ($company_roles as $key => $value) {
-                    DB::table('role_user')
-                        ->updateOrInsert(
-                            ['user_id' => Auth::user()->getAuthIdentifier(), 'role_id' => $value]);
-                }
-            }
-            $role = DB::table('role_user')->select('role_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->pluck('role_id')->toArray();
-//            return redirect()->route('user_roles.update', $role)->withInput()->with('success', 'User roles have been saved.');
-            return view('website.account.roles', ['role' => !empty($role) ? $role : null, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'User roles have been saved.');
+
+//            return view('website.account.roles',
+//                ['role' => !empty($role) ? $role : null,
+//                    'recent_properties' => (new FooterController)->footerContent()[0],
+//                    'footer_agencies' => (new FooterController)->footerContent()[1]
+//                ])->with('success', 'User roles have been saved.');
+            return redirect()->route('user_roles.update',
+                ['role' => !empty($role) ? $role : null,
+                    'recent_properties' => (new FooterController)->footerContent()[0],
+                    'footer_agencies' => (new FooterController)->footerContent()[1]
+                ])->with('success', 'User roles have been saved.');
         } catch (Throwable $e) {
 //            $role = DB::table('role_user')->select('role_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->pluck('role_id')->toArray();
             return redirect()->back()->withInput()->with('error', 'Error updating setting. Try again.');
@@ -155,7 +165,7 @@ class AccountController extends Controller
             return redirect()->route('settings.update', $account)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
         }
         try {
-            $account = (New Account)->updateOrCreate(['user_id' => Auth::user()->getAuthIdentifier()], [
+            $account = (new Account)->updateOrCreate(['user_id' => Auth::user()->getAuthIdentifier()], [
                 'user_id' => Auth::user()->getAuthIdentifier(),
                 'message_signature' => $request->input('message_signature'),
                 'email_notification' => $request->input('email_notification'),
@@ -168,7 +178,12 @@ class AccountController extends Controller
                 'sms_notification' => $request->input('sms_notification')
             ]);
 
-            return view('website.account.settings', ['table_name' => 'accounts', 'account' => $account, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Your settings are saved.');
+//            return view('website.account.settings',
+//                ['table_name' => 'accounts', 'account' => $account, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]])
+//                ->with('success', 'Your settings are saved.');
+            return  redirect()->route('settings.update', ['table_name' => 'accounts', 'account' => $account, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]])
+                ->with('success', 'Your settings are saved.');
+
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error updating setting. Try again.');
         }

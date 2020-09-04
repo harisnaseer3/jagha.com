@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-@include('website.includes.dashboard-nav')
+    @include('website.includes.dashboard-nav')
     <!-- Top header start -->
     <div class="sub-banner">
         <div class="container">
@@ -38,7 +38,7 @@
                                     @include('website.layouts.flash-message')
 
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post New Listing</a> </div>
+                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post New Listing</a></div>
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
                                             <div class="my-4">
@@ -52,6 +52,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -66,6 +67,18 @@
                                                             <td>{{ $all_listing->quota_used }}</td>
                                                             <td>{{ $all_listing->image_views }}</td>
                                                             <td>
+                                                                <form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $all_listing->id }}" {{$all_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired" {{$all_listing->status === 'expired'? '':'disabled' }}
+                                                                           data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form>
+                                                            </td>
+                                                            <td>
                                                                 <a type="button" href="{{route('properties.edit', $all_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -76,10 +89,11 @@
                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                 </a>
                                                             </td>
+
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -100,6 +114,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -114,6 +129,18 @@
                                                             <td>{{ $sale_listing->quota_used }}</td>
                                                             <td>{{ $sale_listing->image_views }}</td>
                                                             <td>
+                                                                <form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired"
+                                                                           data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form>
+                                                            </td>
+                                                            <td>
                                                                 <a type="button" href="{{route('properties.edit', $sale_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -127,7 +154,7 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -149,6 +176,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -163,6 +191,18 @@
                                                             <td>{{ $rent_listing->quota_used }}</td>
                                                             <td>{{ $rent_listing->image_views }}</td>
                                                             <td>
+                                                                <form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $rent_listing->id }}" {{$rent_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired"
+                                                                           data-id="{{ $rent_listing->id }}" {{$rent_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $rent_listing->id }}" {{$rent_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form>
+                                                            </td>
+                                                            <td>
                                                                 <a type="button" href="{{route('properties.edit', $rent_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -176,7 +216,7 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -198,6 +238,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -211,6 +252,16 @@
                                                             <td>{{ (new \Illuminate\Support\Carbon($wanted_listing->listed_date))->format('Y-m-d') }}</td>
                                                             <td>{{ $wanted_listing->quota_used }}</td>
                                                             <td>{{ $wanted_listing->image_views }}</td>
+                                                            <td><form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $wanted_listing->id }}" {{$wanted_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired"
+                                                                           data-id="{{ $wanted_listing->id }}" {{$wanted_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $wanted_listing->id }}" {{$wanted_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form></td>
                                                             <td>
                                                                 <a type="button" href="{{route('properties.edit', $wanted_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
@@ -225,7 +276,7 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -247,6 +298,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -260,6 +312,16 @@
                                                             <td>{{ (new \Illuminate\Support\Carbon($super_hot_listing->listed_date))->format('Y-m-d') }}</td>
                                                             <td>{{ $super_hot_listing->quota_used }}</td>
                                                             <td>{{ $super_hot_listing->image_views }}</td>
+                                                            <td><form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired"
+                                                                           data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form></td>
                                                             <td>
                                                                 <a type="button" href="{{route('properties.edit', $super_hot_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
@@ -274,7 +336,7 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -296,6 +358,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -309,6 +372,16 @@
                                                             <td>{{ (new \Illuminate\Support\Carbon($hot_listing->listed_date))->format('Y-m-d') }}</td>
                                                             <td>{{ $hot_listing->quota_used }}</td>
                                                             <td>{{ $hot_listing->image_views }}</td>
+                                                            <td><form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired"
+                                                                           data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form></td>
                                                             <td>
                                                                 <a type="button" href="{{route('properties.edit', $hot_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
@@ -322,7 +395,7 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -344,6 +417,7 @@
                                                         <td>Listed Date</td>
                                                         <td>Quota Used</td>
                                                         <td>Image Views</td>
+                                                        <td>Status Controls</td>
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -358,6 +432,18 @@
                                                             <td>{{ $magazine_listing->quota_used }}</td>
                                                             <td>{{ $magazine_listing->image_views }}</td>
                                                             <td>
+                                                                <form>
+                                                                    <input type="radio" name="status" value="active"
+                                                                           data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'active'? 'checked':'' }} >
+                                                                    <label for="active">Active</label><br>
+                                                                    <input type="radio" name="status" value="expired"
+                                                                           data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'expired'? 'checked':'' }}>
+                                                                    <label for="expired">Expired</label><br>
+                                                                    <input type="radio" name="status" value="sold" data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'sold'? 'checked':'' }}>
+                                                                    <label for="sold">Sold</label>
+                                                                </form>
+                                                            </td>
+                                                            <td>
                                                                 <a type="button" href="{{route('properties.edit', $magazine_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -370,7 +456,7 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                         </tr>
                                                     @endforelse
                                                     </tbody>
@@ -426,7 +512,7 @@
     </div>
 
     <!-- Footer start -->
-{{--    @include('website.includes.footer')--}}
+    {{--    @include('website.includes.footer')--}}
     @include('website.layouts.delete-modal', array('route'=>'properties'))
 @endsection
 
@@ -485,13 +571,13 @@
                                         '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                         '                    aria-expanded="false">' +
                                         '                      <i class="fas fa-user mr-3"></i>';
-                                    html += '<span class="mr-1"> Logged in as <span>'+ user_name ;
+                                    html += '<span class="mr-1"> Logged in as <span>' + user_name;
                                     html += '</a>' +
                                         '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                                     html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                         '                     <div class="dropdown-divider"></div>' +
                                         // '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
-                                        '<a class="dropdown-item" href=" ' + window.location.origin + '/property'+'/dashboard/listings/status/active/purpose/all/user/'+user_id +'/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
+                                        '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                         '                     <div class="dropdown-divider"></div>' +
                                         '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                                     html += '</div>' + '</div>';
@@ -514,6 +600,38 @@
                             }
                         });
                     }
+                });
+
+                $('[name=status]').on('change', function (event) {
+                    let status_value = $(this).val();
+
+                    if ($.inArray(status_value, ['active', 'sold', 'expired']) > -1) {
+                        // console.log(status_value);
+                        // console.log($(this).attr('data-id'));
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        jQuery.ajax({
+                            type: 'post',
+                            url: window.location.origin + '/property' + '/dashboard/change-status',
+                            data: {'id': $(this).attr('data-id'), 'status': status_value},
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.status === 200) {
+                                    console.log(data.status);
+                                    window.location.reload(true);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+
+                            },
+                            complete: function (url, options) {
+                            }
+                        });
+                    }
+
                 });
             });
         })(jQuery);

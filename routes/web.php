@@ -65,7 +65,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('listings/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
         ->name('properties.listings')
         ->where([
-            'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|rejected_images|rejected_videos)',
+            'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
             'purpose' => '(all|sale|rent|wanted|super_hot_listing|hot_listing|magazine_listing)',
             'user' => '(\d+|all)',
             'sort' => '(id|type|location|price|expiry|views|image_count)',
@@ -82,9 +82,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
             'order' => '(asc|desc)',
             'page' => '\d+',
         ]);
+
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
     Route::get('/user-logs', 'Log\UserLogController@index')->name('user.logs');
+
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
         Route::get('/logout', 'AccountController@logout')->name('accounts.logout');
@@ -100,6 +102,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
         Route::resource('agencies', 'AgencyController'); // user is not allowed other methods
     });
+
+//    ajax call to change status by the user
+    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('change.property.status');
+
+
 });
 
 

@@ -102,44 +102,48 @@
                 $('select option:first-child').prop('disabled', true);
 
                 (function priceInWords() {
+
                     let val = $('[name=all_inclusive_price]').val();
-                    let helpEl = $('#all_inclusive_price-help');
-                    let valStr = '';
+                    if (val !== undefined) {
+                        let helpEl = $('#all_inclusive_price-help');
+                        let valStr = '';
 
-                    if (!val.trim()) {
-                        helpEl.html(valStr);
-                        return;
-                    }
-
-                    if (val >= 1000) {
-                        if (val >= 100000000000) {
-                            helpEl.html('Price is too big. Please contact us.');
+                        if (!val.trim()) {
+                            helpEl.html(valStr);
                             return;
-                        } else if (val >= 1000000000) {
-                            valStr += parseInt(val / 1000000000) + ' arab';
-                            val %= 1000000000;
                         }
-                        if (val >= 10000000) {
-                            if (valStr) valStr += ', ';
-                            valStr += parseInt(val / 10000000) + ' crore';
-                            val %= 10000000;
-                        }
-                        if (val >= 100000) {
-                            if (valStr) valStr += ', ';
-                            valStr += parseInt(val / 100000) + ' lac';
-                            val %= 100000;
-                        }
+
                         if (val >= 1000) {
-                            if (valStr) valStr += ', ';
-                            valStr += parseInt(val / 1000) + ' thousand';
-                            val %= 1000;
+                            if (val >= 100000000000) {
+                                helpEl.html('Price is too big. Please contact us.');
+                                return;
+                            } else if (val >= 1000000000) {
+                                valStr += parseInt(val / 1000000000) + ' arab';
+                                val %= 1000000000;
+                            }
+                            if (val >= 10000000) {
+                                if (valStr) valStr += ', ';
+                                valStr += parseInt(val / 10000000) + ' crore';
+                                val %= 10000000;
+                            }
+                            if (val >= 100000) {
+                                if (valStr) valStr += ', ';
+                                valStr += parseInt(val / 100000) + ' lac';
+                                val %= 100000;
+                            }
+                            if (val >= 1000) {
+                                if (valStr) valStr += ', ';
+                                valStr += parseInt(val / 1000) + ' thousand';
+                                val %= 1000;
+                            }
                         }
+                        if (val > 0) {
+                            valStr += (valStr ? ', ' : '') + val;
+                        }
+                        helpEl.html('PKR ' + valStr);
+                        console.log(valStr);
                     }
-                    if (val > 0) {
-                        valStr += (valStr ? ', ' : '') + val;
-                    }
-                    helpEl.html('PKR ' + valStr);
-                    console.log(valStr);
+
                 })();
 
                 // Initialize Select2 Elements
@@ -213,6 +217,19 @@
                     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
                 });
                 $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+
+                $('[name=call_for_price_inquiry]').click(function () {
+                    if ($('[name=call_for_price_inquiry]').is(':checked')) {
+                        $('[name=all_inclusive_price]').removeAttr('required').attr('disable', 'true');
+                        $('[name=all_inclusive_price]').val('');
+                        $('.price-block').slideUp();
+                    } else {
+                        $('[name=all_inclusive_price]').attr('required', 'required').attr('disable', 'false');
+                        $('.price-block').slideDown();
+                    }
+                });
+
+
             });
         })(jQuery);
     </script>

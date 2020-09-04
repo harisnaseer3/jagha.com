@@ -72,8 +72,12 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
-                            <span aria-label="currency" class="font-16"> PKR </span>
-                            <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
+                            @if($property->price !== 0 || $property->price !== null)
+                                <span aria-label="currency" class="font-16"> PKR </span>
+                                <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
+                            @else
+                                <span aria-label="currency" class="font-16"> Call Us to Get More Details </span>
+                            @endif
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status) && $property->agency_status === 'verified')
@@ -171,14 +175,14 @@
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
                                     <div>{{$property->agency_description}}</div>'>
-                                    @else 
-                                    <img src="{{asset('img/logo/dummy-logo.png')}}" alt="{{$property->agency}}"
+                            @else
+                                <img src="{{asset('img/logo/dummy-logo.png')}}" alt="{{$property->agency}}"
                                      data-toggle="popover" data-trigger="hover" title="{{$property->agency}}" data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
                                     <div>{{$property->agency_description}}</div>'>
-                                    
+
                             @endif
                         </div>
                     <!-- <div class="col-sm-12 property-description">

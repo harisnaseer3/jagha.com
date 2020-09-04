@@ -72,7 +72,7 @@
                                                 <div class="form-group row">
                                                     <div class="col-sm-4 col-md-2 col-form-label col-form-label-sm">Picture</div>
                                                     <div class="col-sm-8 col-md-5">
-                                                        <img class="img-fluid img-thumbnail w-25" src="{{isset($user->image)?asset('storage/user_profile_images/'.$user->image):''}}"
+                                                        <img class="img-fluid img-thumbnail w-25" src="{{isset($user->image)?asset('thumbnails/user_images/'.explode('.',$user->image)[0].'-450x350.webp'):''}}"
                                                              onerror="this.src='{{asset('img/default_user.jpg')}}'" alt="image"/>
                                                     </div>
                                                 </div>
