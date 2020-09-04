@@ -133,7 +133,7 @@
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$sale_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'sold'? 'checked':'' }}>
@@ -195,7 +195,7 @@
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $rent_listing->id }}" {{$rent_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$rent_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $rent_listing->id }}" {{$rent_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $rent_listing->id }}" {{$rent_listing->status === 'sold'? 'checked':'' }}>
@@ -256,7 +256,7 @@
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $wanted_listing->id }}" {{$wanted_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$wanted_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $wanted_listing->id }}" {{$wanted_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $wanted_listing->id }}" {{$wanted_listing->status === 'sold'? 'checked':'' }}>
@@ -316,7 +316,7 @@
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$super_hot_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'sold'? 'checked':'' }}>
@@ -376,7 +376,7 @@
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$hot_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'sold'? 'checked':'' }}>
@@ -436,7 +436,7 @@
                                                                     <input type="radio" name="status" value="active"
                                                                            data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'active'? 'checked':'' }} >
                                                                     <label for="active">Active</label><br>
-                                                                    <input type="radio" name="status" value="expired"
+                                                                    <input type="radio" name="status" value="expired" {{$magazine_listing->status === 'expired'? '':'disabled' }}
                                                                            data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'expired'? 'checked':'' }}>
                                                                     <label for="expired">Expired</label><br>
                                                                     <input type="radio" name="status" value="sold" data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'sold'? 'checked':'' }}>
