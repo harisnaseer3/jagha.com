@@ -48,10 +48,12 @@ class StatusUpdateCommand extends Command
             $column->status = 'expired';
             $column->save();
 
-            $city = (new City)->select('id', 'name')->where('id', '=', $column->city_id)->first();
-            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $column->location_id)->first();
-            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
-            (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $column);
+//            $city = (new City)->select('id', 'name')->where('id', '=', $column->city_id)->first();
+//            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $column->location_id)->first();
+//            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+//            dd($city, $location);
+
+//            (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $column);
         }
         echo("status updated");
     }

@@ -82,9 +82,9 @@ class PropertyController extends Controller
             ->get();
 
         $properties_to_sale = DB::table('properties')->select(DB::raw('COUNT(id) AS sale_property_count'))
-            ->where('purpose', '=', 'sale')->get();
+            ->where('purpose', '=', 'sale')->where('status', '=', 'active')->get();
         $properties_to_rent = DB::table('properties')->select(DB::raw('COUNT(id) AS rent_property_count'))
-            ->where('purpose', '=', 'rent')->get();
+            ->where('purpose', '=', 'rent')->where('status', '=', 'active')->get();
 
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'agency_count', 'city_count')->get()->all();
@@ -1260,7 +1260,15 @@ class PropertyController extends Controller
     public function changePropertyStatus(Request $request)
     {
         if ($request->ajax()) {
-            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+             (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+             $property = (new Property)->WHERE('id', '=', $request->id)->first();
+            if ($request->status !== 'active') {
+
+                $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
+                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
+                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+                (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+            }
             return response()->json(['status' => 200]);
         } else {
             return "not found";
