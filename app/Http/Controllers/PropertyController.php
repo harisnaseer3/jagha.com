@@ -82,9 +82,9 @@ class PropertyController extends Controller
             ->get();
 
         $properties_to_sale = DB::table('properties')->select(DB::raw('COUNT(id) AS sale_property_count'))
-            ->where('purpose', '=', 'sale')->get();
+            ->where('purpose', '=', 'sale')->where('status','=','active')->get();
         $properties_to_rent = DB::table('properties')->select(DB::raw('COUNT(id) AS rent_property_count'))
-            ->where('purpose', '=', 'rent')->get();
+            ->where('purpose', '=', 'rent')->where('status','=','active')->get();
 
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'agency_count', 'city_count')->get()->all();
