@@ -100,9 +100,12 @@ class AccountController extends Controller
      */
     public function editRoles(Request $request, Role $role)
     {
+//        dd(Auth::user()->roles);
+//        dd(Auth::user()->roles->count()>0);
+//        dd(!empty(Auth::user()->roles));
 //        Auth::user()->roles[0]->name;
         return view('website.account.roles',
-            ['role' => !empty(Auth::user()->roles) ? Auth::user()->roles[0]->name : null,
+            ['role' => Auth::user()->roles->count()>0 ? Auth::user()->roles[0]->name : null,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
