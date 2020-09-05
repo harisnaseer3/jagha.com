@@ -512,7 +512,7 @@
     </div>
 
     <!-- Footer start -->
-    {{--    @include('website.includes.footer')--}}
+        @include('website.includes.footer')
     @include('website.layouts.delete-modal', array('route'=>'properties'))
 @endsection
 
@@ -620,15 +620,21 @@
                             dataType: 'json',
                             success: function (data) {
                                 if (data.status === 200) {
-                                    console.log(data.status);
+                                    // console.log(data.location);
+                                    // console.log(data.city);
+                                    // console.log(data.status);
                                     window.location.reload(true);
                                 }
                             },
                             error: function (xhr, status, error) {
-
+                                console.log(xhr);
+                                console.log(status);
+                                console.log(error);
                             },
                             complete: function (url, options) {
+
                             }
+
                         });
                     }
 
