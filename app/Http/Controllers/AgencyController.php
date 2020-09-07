@@ -401,6 +401,8 @@ class AgencyController extends Controller
             if ($request->has('status') && $request->input('status') === 'active') {
                 $this->insertIntoCounterTable();
             }
+//            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
+
             return redirect()->back()->with('success', 'Your information has been saved.');
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
@@ -526,7 +528,7 @@ class AgencyController extends Controller
                 'country' => $request->input('country'),
 //                'email' => $request->input('email'),
                 'website' => $request->input('website'),
-                'status' => $request->input('status'),
+                'status' => $request->has('status') ? $request->has('status') : 'pending',
                 'ceo_name' => $request->input('name'),
                 'ceo_designation' => $request->input('designation'),
                 'ceo_message' => $request->input('message')
@@ -543,6 +545,7 @@ class AgencyController extends Controller
 
             return redirect()->route('agencies.edit', $agency->id)->with('success', 'Your information has been saved.');
         } catch (Throwable $e) {
+            dd($e->getMessage());
             return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }
     }
