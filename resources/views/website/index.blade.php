@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 @section('content')
-    @include('website.includes.nav')
+    @include('website.includes.nav') 
     <!-- Banner start -->
     <div class="container-fluid">
     @include('website.includes.index-page-banner')
