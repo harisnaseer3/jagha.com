@@ -360,7 +360,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully');
         } catch (Exception $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
