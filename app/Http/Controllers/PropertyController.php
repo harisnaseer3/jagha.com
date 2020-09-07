@@ -193,8 +193,8 @@ class PropertyController extends Controller
             $allowed_height = 600;
             $allowed_width = 750;
 
-            if (count(request()->file('image')) > 10) {
-                $error_msg['image.' . 0] = 'Only 10 ' . ' images are allowed to upload.';
+            if (count(request()->file('image')) > 60) {
+                $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
                 return $error_msg;
             }
             foreach (request()->file('image') as $index => $file) {
