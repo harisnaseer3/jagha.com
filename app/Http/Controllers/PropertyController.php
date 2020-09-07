@@ -231,6 +231,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+		
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('image');
             if ($error_msg !== null && count($error_msg)) {
@@ -288,10 +289,14 @@ class PropertyController extends Controller
             if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
             else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
             else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
-
-            $max_id = DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT;
-
-            $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
+			$max_id = 0;
+            //$max_id = DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT;
+			//dd(DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT);
+          //  dd($max_id);
+		    $max_id = (new Property)->pluck('id')->last();
+            $max_id = $max_id + 1;
+			
+			$reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
 
             $agency = DB::table('agency_users')
                 ->select('agency_users.agency_id AS id')
@@ -353,7 +358,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully');
         } catch (Exception $e) {
-//            dd($e);
+            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
