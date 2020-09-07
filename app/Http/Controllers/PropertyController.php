@@ -38,7 +38,8 @@ class PropertyController extends Controller
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
-                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description', 'property_count_by_agencies.property_count AS agency_property_count')
+                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description', 'property_count_by_agencies.property_count AS agency_property_count',
+                'users.community_nick AS user_nick_name','users.name AS user_name')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
             ->leftJoin('images as p', function ($q) {
@@ -52,7 +53,8 @@ class PropertyController extends Controller
                 $f->on('properties.id', '=', 'f.property_id')
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
-            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
+            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id')
+            ->join('users','properties.user_id','=','users.id');
     }
 
     function sortPropertyListing($sort, $sort_area, $properties)
@@ -231,7 +233,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-		
+
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('image');
             if ($error_msg !== null && count($error_msg)) {
@@ -295,7 +297,7 @@ class PropertyController extends Controller
           //  dd($max_id);
 		    $max_id = (new Property)->pluck('id')->last();
             $max_id = $max_id + 1;
-			
+
 			$reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
 
             $agency = DB::table('agency_users')

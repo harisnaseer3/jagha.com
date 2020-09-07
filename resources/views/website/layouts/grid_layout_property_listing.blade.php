@@ -65,14 +65,12 @@
                         </div>
 
                         <div class="price-ratings-box">
-                            @if($property->price !== 0 || $property->price !== null)
+                            @if($property->price != 0 )
                                 <p class="price">
-                                <span aria-label="currency" class="color-white">
-                                    PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
+                                    <span aria-label="currency" class="color-white"> PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
                                 </p>
                             @else
-                                <p class="price">
-                                <span aria-label="currency" class="color-white"> Call Us to Get More Details </span>
+                                <p class="price"><span aria-label="currency" class="color-white"> Call Us for Price Details </span>
                                 </p>
                             @endif
 
@@ -98,8 +96,14 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
-                            <span aria-label="currency" class="font-size-14 color-blue">PKR </span>
-                            <span aria-label="price" class="color-blue"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
+                            @if($property->price != 0 )
+                                <span aria-label="currency" class="font-size-14 color-blue">PKR </span>
+                                <span aria-label="price" class="color-blue"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
+                            @else
+                                <span aria-label="currency" class="font-size-14 color-blue"> </span>
+                                <span aria-label="price" class="font-size-14 color-blue">Call Us for Price Details</span>
+                            @endif
+
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
                             @if(isset($property->agency_status)  && $property->agency_status === 'verified')
@@ -197,11 +201,17 @@
                         @endif
                     </ul>
                     <div class="days">
-                        <a>
-                            <i class="fa fa-user"></i>
-                            {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...')
-                                    :\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}
-                        </a>
+                        @if($property->contact_person != '' || $property->agent!= '' )
+                            <a>
+                                <i class="fa fa-user"></i>
+                                {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...'):\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}
+                            </a>
+                        @else
+                            <a>
+                                <i class="fa fa-user"></i>
+                                {{ $property->user_nick_name != ''? \Illuminate\Support\Str::limit($property->user_nick_name, 20, $end='...'):\Illuminate\Support\Str::limit($property->user_name, 20, $end='...') }}
+                            </a>
+                        @endif
                     </div>
                     <div>
                         <div class=" float-left mt-0">

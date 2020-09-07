@@ -50,19 +50,19 @@
                                         <div><h1 class="property-detail-title" aria-label="Property header">{{$property->title}}</h1></div>
                                         <div class="pull-left">
                                             <h2 style="font-weight: 400; font-size:20px;">
-                                                @if($property->price !== 0 || $property->price !== null)
+                                                @if($property->price != 0)
                                                     <span aria-label="currency"> PKR </span> <span aria-label="price"> {{Helper::getPriceInWords($property->price)}}</span>
-                                                @else
-                                                    <span aria-label="currency"> Call Us to Get More Details </span>
+                                                    {{--                                                @else--}}
+                                                    {{--                                                    <span aria-label="price"> Call Us to Get More Details </span>--}}
                                                 @endif
                                             </h2>
                                             <h6 class="color-555" style="font-weight: 400; font-size:14px;"><i class="fa fa-map-marker"></i> {{ $property->location }}, {{ $property->city }}</h6>
                                         </div>
                                         <div class="pull-right">
-                                            @if($property->price !== 0 || $property->price !== null)
+                                            @if($property->price != 0)
                                                 <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
-                                            @else
-                                                <h3><span class="text-right"> <span aria-label="currency">  Call Us to Get More Details </span></span></h3>
+                                                {{--                                            @else--}}
+                                                {{--                                                <h3><span class="text-right"> <span aria-label="currency">  Call Us to Get More Details </span></span></h3>--}}
 
                                             @endif
 
@@ -153,7 +153,11 @@
                                     <div class="row">
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
-                                                <li aria-label="value"><strong>Price: </strong>PKR {{ $property->price }}</li>
+                                                @if($property->price != 0)
+                                                    <li aria-label="value"><strong>Price: </strong>PKR {{ $property->price }}</li>
+                                                @else
+                                                    <li aria-label="value"><strong>Price: </strong>Call Us for Price Details</li>
+                                                @endif
                                                 <li aria-label="value"><strong>Property Type: </strong> {{ $property->sub_type }}</li>
                                                 @if($property->city)
                                                     <li aria-label="value"><strong>City: </strong>{{$property->city}}</li>
@@ -202,9 +206,9 @@
                                         <div>
                                             <div class="features-list">
                                                 <ul class="amenities custom-amenities">
-                                                    {{--   {{dd(json_decode($property->features,true)['features'])}}--}}
+                                                    {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0')
+                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry')
                                                             <li class="mb-5 pt-1">
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
