@@ -23,7 +23,7 @@
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
         {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
-        {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true]) }}
+        {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true,'data-default' => 'Description should have almost 6144 characters']) }}
 
 
         @if(isset($property->price) && $property->price == 0)
