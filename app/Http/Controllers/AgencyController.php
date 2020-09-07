@@ -127,7 +127,9 @@ class AgencyController extends Controller
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
                 'cities.name AS city', 'p.name AS image',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing','agencies.logo AS logo','agencies.created_at AS agency_created_at','agencies.description AS agency_description', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent','property_count_by_agencies.property_count AS agency_property_count')
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing','agencies.logo AS logo','agencies.created_at AS agency_created_at',
+                'agencies.description AS agency_description', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent',
+                'property_count_by_agencies.property_count AS agency_property_count','users.community_nick AS user_nick_name','users.name AS user_name')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
@@ -140,7 +142,8 @@ class AgencyController extends Controller
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id')
-            ->where('properties.status', '=', 'active')
+            ->join('users','properties.user_id','=','users.id')
+        ->where('properties.status', '=', 'active')
             ->where('properties.agency_id', '=', $agency)
             ->whereNull('properties.deleted_at');
 

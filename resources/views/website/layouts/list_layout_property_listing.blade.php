@@ -72,11 +72,11 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
-                            @if($property->price !== 0 || $property->price !== null)
+                            @if($property->price != 0)
                                 <span aria-label="currency" class="font-16"> PKR </span>
                                 <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
                             @else
-                                <span aria-label="currency" class="font-16"> Call Us to Get More Details </span>
+                                <span aria-label="currency" class="font-16"></span><span aria-label="price"> Call Us for Price Details</span></span>
                             @endif
                         </a>
                         <div class="pull-right" style="font-size: 1rem">
@@ -276,7 +276,13 @@
                             </tr>
                             <tr>
                                 <td>Agent</td>
-                                <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person:$property->agent}}</td>
+                                @if($property->contact_person != '' || $property->agent!= '' )
+                                    <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person:$property->agent}}</td>
+                                @else
+                                    <td class="font-weight-bold">{{ $property->user_nick_name != ''? $property->user_nick_name:$property->user_name}}</td>
+
+                                @endif
+
                             </tr>
                             </tbody>
                         </table>
