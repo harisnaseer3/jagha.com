@@ -48,7 +48,7 @@
                         <div class="tab-pane fade show active" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
-                                    @include('website.agency_profile.sidebar')
+                                    @include('website.agency.sidebar')
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
@@ -110,7 +110,7 @@
                                         </div>
 
                                         <div class="card-footer">
-                                            {{ Form::submit('Store', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
+                                            {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                         </div>
                                     </div>
                                     {{ Form::close() }}

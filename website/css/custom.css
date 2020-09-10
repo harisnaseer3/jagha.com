@@ -1702,4 +1702,8 @@ hr.solid {
     background-color: #007BFF;
 }
 
-   
+.anchor-disable {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}

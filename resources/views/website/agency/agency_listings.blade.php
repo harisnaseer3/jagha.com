@@ -38,6 +38,8 @@
                                     @include('website.layouts.flash-message')
 
                                     <div class="tab-content" id="listings-tabContent">
+                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Post New Agency</a></div>
+
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
                                             <div class="my-4">
@@ -60,7 +62,7 @@
                                                             <td>{{ $all_listing->id }}</td>
                                                             <td>{{ $all_listing->title }}</td>
                                                             <td>{{ $all_listing->address }}</td>
-                                                            <td class="text-right pr-3">{{ $all_listing->city}}</td>
+                                                            <td class="pr-3">{{ $all_listing->city}}</td>
                                                             <td>{{ $all_listing->website }}</td>
                                                             <td>{{ $all_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
@@ -108,7 +110,7 @@
                                                             <td>{{ $key_listing->id }}</td>
                                                             <td>{{ $key_listing->title }}</td>
                                                             <td>{{ $key_listing->address }}</td>
-                                                            <td class="text-right pr-3">{{ $key_listing->city }}</td>
+                                                            <td class=" pr-3">{{ $key_listing->city }}</td>
                                                             <td>{{ $key_listing->website }}</td>
                                                             <td>{{ $key_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
@@ -157,7 +159,7 @@
                                                             <td>{{ $featured_listing->id }}</td>
                                                             <td>{{ $featured_listing->title }}</td>
                                                             <td>{{ $featured_listing->address }}</td>
-                                                            <td class="text-right pr-3">{{ $featured_listing->city }}</td>
+                                                            <td class="pr-3">{{ $featured_listing->city }}</td>
                                                             <td>{{ $featured_listing->website }}</td>
                                                             <td>{{ $featured_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>

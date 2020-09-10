@@ -85,7 +85,7 @@
                                             <div class="mt-2"><span style="color:red">* </span>Above details will be updated in all property listings</div>
                                         </div>
                                         <div class="card-footer">
-                                            {{ Form::submit('Update', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
+                                            {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                         </div>
                                     </div>
                                     {{ Form::close() }}

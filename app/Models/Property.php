@@ -72,6 +72,7 @@ class Property extends Model
         'email',
         'views',
         'visits',
+        'activated_at',
         'click_through_rate',
         'status'
     ];

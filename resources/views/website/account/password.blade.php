@@ -24,7 +24,7 @@
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-                
+
 
                     <div class="tab-content" id="portfolioTabContent">
                         <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
@@ -58,7 +58,7 @@
                                             {{ Form::bsPassword('confirm_new_password', ['required' => true]) }}
                                         </div>
                                         <div class="card-footer">
-                                            {{ Form::submit('Update', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
+                                            {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                         </div>
                                     </div>
                                     {{ Form::close() }}

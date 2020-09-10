@@ -29,8 +29,6 @@
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-
-
                     <div class="tab-content" id="portfolioTabContent">
                         <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="my-4">
@@ -178,11 +176,12 @@
                 //if user edit a property then a property type must be selected then subtype must be visible
                 if ($('[name=property_type]').is(':checked')) {
                     const selectedValue = $('[name=property_type]:checked').val();
-                    $('#property_subtype-' + selectedValue).attr('required', true).slideDown();
-                    $('[for=property_subtype]').html('Property Subtype <span class="text-danger">*</span>');
+                    $('[name=property_subtype-' + selectedValue +']').each(function (index, value){
+                        $(value).attr('required', true);
+                    });
+                    $('#property_subtype-' + selectedValue ).attr('required', true).slideDown();
+                    $('[for=property_subtype-' + selectedValue + ']').html('Property Subtype <span class="text-danger">*</span>');
                 }
-
-
                 $('[name^=property_subtype-]').on('click', function (e) {
                     $('[name^=property_subtype-]').prop('checked', false).attr('disable', 'true');
                     $(this).prop('checked', true);

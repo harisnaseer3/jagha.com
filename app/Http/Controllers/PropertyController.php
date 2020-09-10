@@ -30,6 +30,11 @@ class PropertyController extends Controller
 
     function listingFrontend()
     {
+//        display data with agency
+//              if a user has an agency display property user with agency
+//              if a user has no agency display property user with no agency
+//         display data on user choice
+//              if a user has an agency display property user with agency
         return (new Property)
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
@@ -39,7 +44,7 @@ class PropertyController extends Controller
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
                 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description', 'property_count_by_agencies.property_count AS agency_property_count',
-                'users.community_nick AS user_nick_name','users.name AS user_name')
+                'users.community_nick AS user_nick_name', 'users.name AS user_name')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
             ->leftJoin('images as p', function ($q) {
@@ -54,7 +59,7 @@ class PropertyController extends Controller
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id')
-            ->join('users','properties.user_id','=','users.id');
+            ->join('users', 'properties.user_id', '=', 'users.id');
     }
 
     function sortPropertyListing($sort, $sort_area, $properties)
@@ -291,14 +296,14 @@ class PropertyController extends Controller
             if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
             else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
             else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
-			$max_id = 0;
+            $max_id = 0;
             //$max_id = DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT;
-			//dd(DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT);
-          //  dd($max_id);
-		    $max_id = (new Property)->pluck('id')->last();
+            //dd(DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT);
+            //  dd($max_id);
+            $max_id = (new Property)->pluck('id')->last();
             $max_id = $max_id + 1;
 
-			$reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
+            $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
 
             $agency = DB::table('agency_users')
                 ->select('agency_users.agency_id AS id')
@@ -352,6 +357,8 @@ class PropertyController extends Controller
             // insertion in count tables when property status is active
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
+                $property->activated_at = $dt;
+
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
                 $property->save();
@@ -623,6 +630,8 @@ class PropertyController extends Controller
             }
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
+                $property->activated_at = $dt;
+
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
                 $property->save();
@@ -676,8 +685,13 @@ class PropertyController extends Controller
     {
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Property)
-            ->select('properties.id', 'sub_type AS type', 'properties.status', 'locations.name AS location', 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"), DB::raw("'0' AS image_views"))
+            ->select('properties.id', 'sub_type AS type', 'properties.expired_at',
+                'properties.status', 'locations.name AS location', 'cities.name as city',
+                'properties.activated_at', 'properties.expired_at',
+                'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"),
+                DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->whereNull('properties.deleted_at');
 
         // user
@@ -1267,15 +1281,26 @@ class PropertyController extends Controller
     public function changePropertyStatus(Request $request)
     {
         if ($request->ajax()) {
-             (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
-             $property = (new Property)->WHERE('id', '=', $request->id)->first();
-            if ($request->status !== 'active') {
+            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
 
-                $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+            $property = (new Property)->WHERE('id', '=', $request->id)->first();
+            $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
+            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
+            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+            if ($request->status == 'sold' || $request->status == 'expired') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
             }
+//            if ($request->status === 'active') {
+//                $dt = Carbon::now();
+//                $property->activated_at = $dt;
+//
+//                $expiry = $dt->addMonths(3)->toDateTimeString();
+//                $property->expired_at = $expiry;
+//                $property->save();
+//
+//                event(new NewPropertyActivatedEvent($property));
+//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
+//            }
             return response()->json(['status' => 200]);
         } else {
             return "not found";

@@ -41,7 +41,7 @@
                                 <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                                 <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
                                 <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'key'])) }}">Key Agencies (0)</a>
-                                <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'featured'])) }}">Featured (0)</a>
+                                <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'featured'])) }}">Featured Agencies (0)</a>
                             @endif
                         </div>
                     </div>
@@ -65,8 +65,21 @@
                             </div>
                         </div>
                     @endforeach
+
+
                 </div>
             </div>
         </li>
     </ul>
+    <div class="card-header theme-grey text-white">Tools</div>
+    <ul class="list-group">
+        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->
+        <li class="list-group-item {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}"><a
+                href="{{ route('agencies.create') }}" class="{{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'text-white' : '' }}">
+                @if ($current_route_name === 'agencies.edit') Edit Agency @else Post New Agency @endif</a></li>
+        <!-- <li class="list-group-item"><a href="#">Zone Details</a></li>
+        <li class="list-group-item"><a href="#">Listing Policy</a></li> -->
+    </ul>
+
+
 </div>
