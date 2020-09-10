@@ -88,7 +88,6 @@
                                                                             Pending for Verification
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
-
                                                                         @else
                                                                             <form>
                                                                                 @if($params['status'] != 'expired')

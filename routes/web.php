@@ -105,8 +105,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
 //    ajax call to change status by the user
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('change.property.status');
-
-
+    Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('change.agency.status');
 });
 
 
