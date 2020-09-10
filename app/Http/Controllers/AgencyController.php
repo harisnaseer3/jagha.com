@@ -187,7 +187,13 @@ class AgencyController extends Controller
 
     public function create()
     {
-        return view('website.agency_profile.agency_create', ['table_name' => 'users', 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
+
+        return view('website.agency_profile.agency_create',
+
+            ['table_name' => 'users',
+                'counts' =>$counts,
+                'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     public function listingFeaturedPartners(Request $request)
@@ -455,9 +461,11 @@ class AgencyController extends Controller
         }
         $agency_id = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
         $agency = (new Agency)->select('*')->where('id', '=', $agency_id->agency_id)->first();
-
+        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
         return view('website.agency_profile.agency',
+
             ['table_name' => 'users',
+                'counts' => $counts,
                 'agency' => $agency,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]]
@@ -545,7 +553,7 @@ class AgencyController extends Controller
 
             return redirect()->route('agencies.edit', $agency->id)->with('success', 'Your information has been saved.');
         } catch (Throwable $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }
     }
@@ -609,7 +617,7 @@ class AgencyController extends Controller
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Agency)
 //            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
-            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+            ->select('agencies.title', 'agencies.id', 'agencies.description','agencies.address','agencies.website', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
                 'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
                 'agencies.created_at')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
@@ -617,6 +625,40 @@ class AgencyController extends Controller
             ->whereNull('agencies.deleted_at');
 
         // user is admin who can see this listing
+
+        if (!Auth::user()->hasRole('Admin')) {
+            if (empty($user)) {
+                $user = Auth::user()->getAuthIdentifier();
+            } elseif ($user === 'all') {
+                // listing of all users of the agency
+                $listings->whereIn('properties.user_id', DB::table('agency_users')
+                    ->select('agency_users.user_id')
+                    ->where('agency_id', '=', DB::table('agencies')
+                        ->join('agency_users', 'agencies.id', '=', 'agency_users.agency_id')
+                        ->select('agencies.id')
+                        ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->value('agencies.id'))
+                    ->pluck('agency_users.user_id'));
+            } else {
+                if (intval($user) === Auth::user()->getAuthIdentifier()) {
+                    // listing of logged in user
+                    $listings->where('agencies.user_id', '=', $user);
+                } else {
+                    $agency_users = DB::table('agency_users')
+                        ->select('agency_users.user_id')->where('agency_id', '=', DB::table('agency_users')
+                            ->select('agency_id')
+                            ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->value('agency_id'));
+
+                    // check if user is member of the agency
+                    if ($agency_users->count() === 0) {
+                        return redirect()->back(302)->withInput()->withErrors(['message', 'Invalid user provided.']);
+                    }
+
+                    // listing of user who is member of the agency
+                    $listings->whereIn('agencies.user_id', $agency_users->get()->toArray());
+                }
+            }
+        }
+
 
         return $listings->where('status', '=', $status);
     }

@@ -158,7 +158,7 @@
     </div>
     <div class="card-footer">
         {{form::bsHidden('data-index',isset($property->id)? $property->id : null)}}
-        {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-sm search-submit-btn']) }}
+        {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
     </div>
 </div>
 
