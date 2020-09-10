@@ -30,6 +30,11 @@ class PropertyController extends Controller
 
     function listingFrontend()
     {
+//        display data with agency
+//              if a user has an agency display property user with agency
+//              if a user has no agency display property user with no agency
+//         display data on user choice
+//              if a user has an agency display property user with agency
         return (new Property)
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',

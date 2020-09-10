@@ -273,11 +273,11 @@
                                     Agency Listing</a>
                             </li>
 {{--                        @endif--}}
-                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('agencies.create')}}">
-                                Add Agency
-                            </a>
-                        </li>
+{{--                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}">--}}
+{{--                            <a class="nav-link" href="{{route('agencies.create')}}">--}}
+{{--                                Add Agency--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">

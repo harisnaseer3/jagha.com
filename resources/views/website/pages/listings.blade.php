@@ -70,7 +70,7 @@
                                                                 @if($all_listing->price != '0')
                                                                     <td class="text-right pr-3">{{  $all_listing->price}}</td>
                                                                 @else
-                                                                    <td class="pr-3">{{ 'Call us to get details'}}</td>
+                                                                    <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                 @endif
                                                                 <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
                                                                 @if($params['status'] == 'active')
@@ -91,25 +91,33 @@
 
                                                                         @else
                                                                             <form>
-                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $all_listing->id }}"> <label
-                                                                                    for="active">Boost</label>
-                                                                                <input type="radio" name="status" value="reactive"
-                                                                                       {{$all_listing->status === 'active'? 'disabled':'' }}
-                                                                                       data-id="{{ $all_listing->id }}">
-                                                                                <label for="active">Reactive</label>
-                                                                                <input type="radio" name="status" value="expired"
-                                                                                       {{$all_listing->status === 'expired'? 'checked':'' }}
-                                                                                       {{$all_listing->status === 'edited'? 'disabled':'' }}
-                                                                                       {{$all_listing->status === 'sold'? 'checked':'' }}
-                                                                                       data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
-                                                                                <label for="expired">Expired</label>
+                                                                                @if($params['status'] != 'expired')
+                                                                                    <input type="radio" name="status" value="boost" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Boost</label>
+                                                                                @endif
+                                                                                @if($params['status'] != 'active')
+                                                                                    <input type="radio" name="status" value="reactive"
+                                                                                           {{$all_listing->status === 'active'? 'disabled':'' }}
+                                                                                           data-id="{{ $all_listing->id }}">
+                                                                                    <label for="active">Reactive</label>
+                                                                                @endif
+                                                                                @if($params['status'] != 'expired')
+                                                                                    <input type="radio" name="status" value="expired"
+                                                                                           {{$all_listing->status === 'expired'? 'checked':'' }}
+                                                                                           {{$all_listing->status === 'edited'? 'disabled':'' }}
+                                                                                           {{$all_listing->status === 'sold'? 'checked':'' }}
+                                                                                           data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
+                                                                                    <label for="expired">Expired</label>
+                                                                                @endif
 
-                                                                                <input type="radio" name="status" value="sold"
-                                                                                       data-id="{{ $all_listing->id }}"
-                                                                                    {{$all_listing->status === 'sold'? 'checked':'' }}
-                                                                                    {{$all_listing->status === 'edited'? 'disabled':'' }}
-                                                                                >
-                                                                                <label for="sold">Sold</label>
+                                                                                @if($params['status'] != 'sold')
+                                                                                    <input type="radio" name="status" value="sold"
+                                                                                           data-id="{{ $all_listing->id }}"
+                                                                                        {{$all_listing->status === 'sold'? 'checked':'' }}
+                                                                                        {{$all_listing->status === 'edited'? 'disabled':'' }}
+                                                                                    >
+                                                                                    <label for="sold">Sold</label>
+                                                                                @endif
                                                                             </form>
                                                                         @endif
 
@@ -152,6 +160,8 @@
                                                 </div>
                                                 @if($params['status'] === 'edited')
                                                     <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
                                                 {{ $listings['all']->links() }}
                                             </div>
@@ -260,6 +270,8 @@
                                                 </div>
                                                 @if($params['status'] === 'edited')
                                                     <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
                                                 {{ $listings['sale']->fragment('listings-sale')->links() }}
                                             </div>
@@ -366,7 +378,8 @@
                                                 </div>
                                                 @if($params['status'] === 'edited')
                                                     <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
-                                                @endif
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
                                                 {{ $listings['rent']->links() }}
                                             </div>
                                         </div>
@@ -472,7 +485,8 @@
                                                 </div>
                                                 @if($params['status'] === 'edited')
                                                     <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
-                                                @endif
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
                                                 {{ $listings['wanted']->links() }}
                                             </div>
                                         </div>
@@ -578,7 +592,8 @@
                                                 </div>
                                                 @if($params['status'] === 'edited')
                                                     <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
-                                                @endif
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
                                                 {{ $listings['super_hot']->links() }}
                                             </div>
                                         </div>
@@ -681,6 +696,8 @@
                                                 </div>
                                                 @if($params['status'] === 'edited')
                                                     <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
                                                 {{ $listings['hot']->links() }}
                                             </div>

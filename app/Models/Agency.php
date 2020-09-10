@@ -29,7 +29,8 @@ class Agency extends Model
         'city' => 'required|string',
         'company_title' => 'required|string|max:255',
         'description' => 'required|string|max:4096',
-        'email' => 'required|email|unique:agencies',
+//        'email' => 'required|email|unique:agencies',
+        'email' => 'required|email',
         'phone' => 'required|regex:/\+92-\d{2}\d{7}/',   // +92-511234567
         'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
         'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567

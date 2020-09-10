@@ -524,7 +524,7 @@ class AgencyController extends Controller
 
 
             (new Agency)::where('id', $agency->id)->update([
-                'user_id' => Auth::user()->getAuthIdentifier(),
+//                'user_id' => Auth::user()->getAuthIdentifier(),
                 'city_id' => $city->id,
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
@@ -534,7 +534,7 @@ class AgencyController extends Controller
                 'address' => $request->input('address'),
                 'zip_code' => $request->input('zip_code'),
                 'country' => $request->input('country'),
-//                'email' => $request->input('email'),
+                'email' => $request->input('email'),
                 'website' => $request->input('website'),
                 'status' => $request->has('status') ? $request->has('status') : 'pending',
                 'ceo_name' => $request->input('name'),
