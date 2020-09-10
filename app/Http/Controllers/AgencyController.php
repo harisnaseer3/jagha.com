@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use App\Models\Dashboard\City;
+use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Models\PropertyType;
@@ -127,9 +128,9 @@ class AgencyController extends Controller
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
                 'cities.name AS city', 'p.name AS image',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing','agencies.logo AS logo','agencies.created_at AS agency_created_at',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.logo AS logo', 'agencies.created_at AS agency_created_at',
                 'agencies.description AS agency_description', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent',
-                'property_count_by_agencies.property_count AS agency_property_count','users.community_nick AS user_nick_name','users.name AS user_name')
+                'property_count_by_agencies.property_count AS agency_property_count', 'users.community_nick AS user_nick_name', 'users.name AS user_name')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
@@ -142,8 +143,8 @@ class AgencyController extends Controller
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id')
-            ->join('users','properties.user_id','=','users.id')
-        ->where('properties.status', '=', 'active')
+            ->join('users', 'properties.user_id', '=', 'users.id')
+            ->where('properties.status', '=', 'active')
             ->where('properties.agency_id', '=', $agency)
             ->whereNull('properties.deleted_at');
 
@@ -192,7 +193,7 @@ class AgencyController extends Controller
         return view('website.agency_profile.agency_create',
 
             ['table_name' => 'users',
-                'counts' =>$counts,
+                'counts' => $counts,
                 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
@@ -617,7 +618,7 @@ class AgencyController extends Controller
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Agency)
 //            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
-            ->select('agencies.title', 'agencies.id', 'agencies.description','agencies.address','agencies.website', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.address', 'agencies.website', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
                 'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
                 'agencies.created_at')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
@@ -786,4 +787,30 @@ class AgencyController extends Controller
         DB::table('total_property_count')->update(['property_count' => $property_count[0]->property_count, 'agency_count' => $agency_count[0]->agency_count, 'city_count' => $cities_count[0]->city_count]);
 
     }
+
+    public function changeAgencyStatus(Request $request)
+    {
+        if ($request->ajax()) {
+            (new Agency)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+
+            $property = (new Property)->WHERE('id', '=', $request->id)->first();
+
+
+//            if ($request->status === 'active') {
+//                $dt = Carbon::now();
+//                $property->activated_at = $dt;
+//
+//                $expiry = $dt->addMonths(3)->toDateTimeString();
+//                $property->expired_at = $expiry;
+//                $property->save();
+//
+//                event(new NewPropertyActivatedEvent($property));
+//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
+//            }
+            return response()->json(['status' => 200]);
+        } else {
+            return "not found";
+        }
+    }
+
 }

@@ -67,14 +67,25 @@
                                                             <td>{{ $all_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
                                                             <td>
-                                                                <a type="button" href="{{route('agencies.edit', $all_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
+                                                                <a type="button" href="{{route('agencies.edit', $all_listing->id)}}" class="btn btn-sm btn-warning
+                                                                {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
+                                                                            " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
-                                                                <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                <a type="button" class="btn btn-sm btn-danger
+                                                                {{$params['status'] == 'deleted_agencies' ?' anchor-disable':''}}
+                                                                                " data-toggle-1="tooltip" data-placement="bottom" title="delete"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$all_listing->id}}">
                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                </a>
+                                                                <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted_agencies' ?'':'anchor-disable'}}"
+                                                                   data-toggle-1="tooltip" data-placement="bottom"
+                                                                   title="restore"
+                                                                   href="javascript:void(0)"
+                                                                   data-record-id="{{$all_listing->id}}">
+                                                                    <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -115,14 +126,26 @@
                                                             <td>{{ $key_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
                                                             <td>
-                                                                <a type="button" href="{{route('agencies.edit', $key_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
+                                                                <a type="button" href="{{route('agencies.edit', $key_listing->id)}}" class="btn btn-sm btn-warning
+                                                                {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
+                                                                    " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
-                                                                <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                <a type="button" class="btn btn-sm btn-danger
+                                                                {{$params['status'] == 'deleted' ?' anchor-disable':''}}
+                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="delete"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$key_listing->id}}">
                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                </a>
+                                                                <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                   data-toggle-1="tooltip" data-placement="bottom"
+                                                                   title="restore"
+                                                                   href="javascript:void(0)"
+                                                                   data-record-id="{{$key_listing->id}}">
+                                                                    <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -164,14 +187,26 @@
                                                             <td>{{ $featured_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>
                                                             <td>
-                                                                <a type="button" href="{{route('properties.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning" data-toggle-1="tooltip"
+                                                                <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning
+                                                                {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
+                                                                    " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
-                                                                <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                <a type="button" class="btn btn-sm btn-danger
+                                                                {{$params['status'] == 'deleted' ?' anchor-disable':''}}
+                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="delete"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$featured_listing->id}}">
                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                </a>
+                                                                <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                   data-toggle-1="tooltip" data-placement="bottom"
+                                                                   title="restore"
+                                                                   href="javascript:void(0)"
+                                                                   data-record-id="{{$featured_listing->id}}">
+                                                                    <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -242,6 +277,43 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+                function changePropertyStatus(status, id) {
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        type: 'post',
+                        url: window.location.origin + '/property' + '/dashboard/agency-change-status',
+                        data: {'id': id, 'status': status},
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            if (data.status === 200) {
+                                // console.log(data.location);
+                                // console.log(data.city);
+                                // console.log(data.status);
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                        },
+                        complete: function (url, options) {
+
+                        }
+
+                    });
+                }
+
+                $('.restore-btn').on('click', function () {
+                    let id = $(this).attr('data-record-id');
+                    changePropertyStatus('pending', id);
+                });
+
                 $('#delete').on('show.bs.modal', function (event) {
                     let record_id = $(event.relatedTarget).data('record-id');
                     $(this).find('.modal-body #record-id').val(record_id);
@@ -263,6 +335,7 @@
                             $(this).attr('href', new_url)
                         })
                     }
+
                 });
             });
         })(jQuery);
