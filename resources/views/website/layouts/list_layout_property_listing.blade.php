@@ -175,7 +175,7 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3 partner-logo-style" style="height:70px;">
-{{--                            {{dd($property->agency)}}--}}
+{{--                            {{dd($property->logo)}}--}}
                             @if($property->agency)
                                 @if(isset($property->logo))
                                     <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}"

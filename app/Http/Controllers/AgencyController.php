@@ -449,20 +449,22 @@ class AgencyController extends Controller
      */
     public function edit(Agency $agency)
     {
+        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
+
         $city = $agency->city->name;
         $agency->city = $city;
 
         if (Auth::user()->hasRole('admin')) {
             return view('website.agency_profile.agency',
                 ['table_name' => 'users',
+                    'counts' =>$counts,
                     'agency' => $agency,
                     'recent_properties' => (new FooterController)->footerContent()[0],
                     'footer_agencies' => (new FooterController)->footerContent()[1]]
             );
         }
-        $agency_id = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
-        $agency = (new Agency)->select('*')->where('id', '=', $agency_id->agency_id)->first();
-        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
+//        $agency_id = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
+//        $agency = (new Agency)->select('*')->where('id', '=', $agency_id->agency_id)->first();
         return view('website.agency_profile.agency',
 
             ['table_name' => 'users',
@@ -550,8 +552,6 @@ class AgencyController extends Controller
             }
             if ($status_before_update === 'verified' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 $this->deleteFromCounterTable();
-
-
             return redirect()->route('agencies.edit', $agency->id)->with('success', 'Your information has been saved.');
         } catch (Throwable $e) {
 //            dd($e->getMessage());

@@ -38,7 +38,7 @@
                                     @include('website.layouts.flash-message')
 
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Post New Agency</a></div>
+                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Add New Agency</a></div>
 
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>

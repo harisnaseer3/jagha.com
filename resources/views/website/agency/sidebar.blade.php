@@ -57,7 +57,8 @@
                              aria-labelledby="headingListing{{$status}}agency" data-parent="#accordionListings">
                             <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
                                 @if ($params['status'] === $status.'_agencies')
-                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab" aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
+                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all"
+                                       role="tab" aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
                                 @else
                                     <?php $route_params = ['status' => $status.'_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                                     <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
@@ -65,7 +66,6 @@
                             </div>
                         </div>
                     @endforeach
-
 
                 </div>
             </div>
