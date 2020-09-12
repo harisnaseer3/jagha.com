@@ -272,6 +272,10 @@
                                href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
                                 Agency Listing</a>
                         </li>
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="{{route('aboutpakistan.support')}}">
+                                Support</a>
+                        </li>
                         {{--                        @endif--}}
                         {{--                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}">--}}
                         {{--                            <a class="nav-link" href="{{route('agencies.create')}}">--}}
@@ -294,7 +298,7 @@
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-3"></i>
                                         @if(\Illuminate\Support\Facades\Auth::check())
-                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}}</span>
+                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::user()->id}})</span>
                                         @endif
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

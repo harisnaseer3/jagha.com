@@ -38,7 +38,7 @@
                                     @include('website.layouts.flash-message')
                                     {{--                                    {{dd($params['status'])}}--}}
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post New Listing</a></div>
+                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></div>
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
                                             <div class="my-4">
@@ -897,7 +897,7 @@
                                     $('#exampleModalCenter').modal('hide');
                                     let user_dropdown = $('.user-dropdown')
                                     user_dropdown.html('');
-                                    let user_name = data.user.name;
+                                    let user_name = data.user.name + ' (ID: ' + user_id + ')';
                                     let user_id = data.user.id;
                                     let html =
                                         '            <div class="dropdown">' +

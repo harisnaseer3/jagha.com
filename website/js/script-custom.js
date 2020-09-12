@@ -1,4 +1,4 @@
-(function ($) {
+(function($) {
 
     function searchWithparams() {
         //TODO: change base url when upload to server
@@ -6,7 +6,18 @@
         // let baseurl = 'http://127.0.0.1/Property/public';
         let baseurl = window.location.origin + '/property';
 
-        let page_link = '', purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
+        let page_link = '',
+            purpose = '',
+            type = '',
+            city = '',
+            beds = '',
+            min_price = '',
+            max_price = '',
+            min_area = '',
+            max_area = '',
+            area_unit = '',
+            location = '',
+            subtype = '';
 
         purpose = $('[name = property_purpose]').val();
         type = $('[name = property_type]').val();
@@ -47,7 +58,17 @@
         // let baseurl = 'http://127.0.0.1/Property/public';
         let baseurl = window.location.origin + '/property';
 
-        let purpose = '', type = '', city = '', beds = '', min_price = '', max_price = '', min_area = '', max_area = '', area_unit = '', location = '', subtype = '';
+        let purpose = '',
+            type = '',
+            city = '',
+            beds = '',
+            min_price = '',
+            max_price = '',
+            min_area = '',
+            max_area = '',
+            area_unit = '',
+            location = '',
+            subtype = '';
 
         purpose = $('#search2-property-purpose').val();
         type = $('#search2-property-type').val();
@@ -93,20 +114,19 @@
             type: 'post',
             // url: 'http://127.0.0.1/Property/public/searchWithID',
             url: window.location.origin + '/property/searchWithID',
-            data: {id: id},
+            data: { id: id },
             // dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 if (data.status === 200) {
                     location.assign(data.data);
                 } else $('#property_id-error').text(data.data)
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.log(xhr);
                 console.log(status);
                 console.log(error);
             },
-            complete: function (url, options) {
-            }
+            complete: function(url, options) {}
         });
     }
 
@@ -120,15 +140,13 @@
             type: 'get',
             url: task === 'add' ? window.location.origin + '/property/dashboard/properties/' + id + '/favorites' : window.location.origin + '/property/dashboard/properties/' + id + '/favorites/1',
             dataType: 'json',
-            success: function (data) {
-            },
-            error: function (xhr, status, error) {
+            success: function(data) {},
+            error: function(xhr, status, error) {
                 console.log(error);
                 // console.log(xhr);
                 // console.log(status);
             },
-            complete: function (url, options) {
-            }
+            complete: function(url, options) {}
         });
     }
 
@@ -142,26 +160,25 @@
         jQuery.ajax({
             type: 'get',
             url: window.location.origin + '/property/locations',
-            data: {city: city},
+            data: { city: city },
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 let locations = data.data
-                if (!jQuery.isEmptyObject({locations})) {
+                if (!jQuery.isEmptyObject({ locations })) {
                     let datalist = $('.location-datalist');
                     let html = '';
-                    $.each(data.data, function (index, value) {
+                    $.each(data.data, function(index, value) {
                         html += '<option value="' + value.name + '">';
                     });
                     datalist.html(html);
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.log(error);
                 console.log(status);
                 console.log(xhr);
             },
-            complete: function (url, options) {
-            }
+            complete: function(url, options) {}
         });
     }
 
@@ -198,7 +215,7 @@
 
     }
 
-//    change values of min and max area selectors
+    //    change values of min and max area selectors
     function addAreaOptions(end, options) {
         $('#select-max-area option').remove();
         $('#search2-select-max-area option').remove();
@@ -240,12 +257,12 @@
             area_options = kanal;
             area_short_form = 'kanal';
         }
-        $.each(area_options, function (idx, val) {
+        $.each(area_options, function(idx, val) {
             if (idx + 1 < area_options.length)
                 if (sessionStorage.getItem('min_area') === val) min_options += '<option value="' + val + '" data-index="' + (idx + 1) + '" selected>' + val + '</option>'
             min_options += '<option value="' + val + '" data-index="' + (idx + 1) + '">' + val + '</option>'
         });
-        $.each(area_options, function (index, value) {
+        $.each(area_options, function(index, value) {
             if (sessionStorage.getItem('max_area') === value) max_options += '<option value="' + value + '" data-index="' + (index + 1) + '" selected>' + value + '</option>'
             max_options += '<option value="' + value + '" data-index="' + (index + 1) + '">' + value + '</option>'
         });
@@ -284,42 +301,42 @@
 
         search2AreaUnitOption(area_options, area_short_form, min_options, max_options);
 
-        select_min_area.on('change', function (e) {
+        select_min_area.on('change', function(e) {
             addAreaOptions($("#select-min-area option:selected").data('index'), area_options);
         });
-        $('#search2-select-min-area').on('change', function (e) {
+        $('#search2-select-min-area').on('change', function(e) {
             addAreaOptions($("#search2-select-min-area option:selected").data('index'), area_options);
         });
     }
 
 
-    $(document).ready(function () {
-        $('#search-property-ref').submit(function (event) {
+    $(document).ready(function() {
+        $('#search-property-ref').submit(function(event) {
             event.preventDefault();
             searchWithId($('#ref-id').val());
         });
 
         //Main Search form submission
 
-        $('.index-form').submit(function (event) {
+        $('.index-form').submit(function(event) {
             event.preventDefault();
             searchWithparams();
         });
 
-        $('.index-form-2').submit(function (event) {
+        $('.index-form-2').submit(function(event) {
             event.preventDefault();
             search2Withparams();
         });
 
         // add property to fav
-        $('.favorite').on('click', function (e) {
+        $('.favorite').on('click', function(e) {
             $(this).hide();
             addFavorite($(this).data('id'), $(this), 'add');
             $(this).next().show();
         });
 
         // remove property from fav
-        $('.remove-favorite').on('click', function (e) {
+        $('.remove-favorite').on('click', function(e) {
             $(this).hide();
             addFavorite($(this).data('id'), $(this), 'delete');
             $(this).prev().show();
@@ -327,7 +344,7 @@
 
         //    index page form subtype selection
         let property_type = $('.property-type-select2');
-        property_type.on('change', function (e) {
+        property_type.on('change', function(e) {
             const selectedValue = $(this).val();
             if (selectedValue === 'Plots' || selectedValue === 'Commercial') $('.beds-block').hide();
             else $('.beds-block').show();
@@ -371,23 +388,23 @@
             }
         }
 
-        $('#select-min-price').on('change', function (e) {
+        $('#select-min-price').on('change', function(e) {
             addPriceOptions($("#select-min-price option:selected").data('index'));
         });
 
-        $('#search2-select-min-price').on('change', function (e) {
+        $('#search2-select-min-price').on('change', function(e) {
             addPriceOptions($("#search2-select-min-price option:selected").data('index'));
         });
 
-        $('#city').on('change', function (e) {
+        $('#city').on('change', function(e) {
             getCityLocations($('#city option:selected').val());
         });
 
-        $('#search2-city').on('change', function (e) {
+        $('#search2-city').on('change', function(e) {
             getCityLocations($('#search2-city option:selected').val());
         });
 
-        $('.reset-search-option').on('click', function () {
+        $('.reset-search-option').on('click', function() {
             $('#location').val('');
             $('input[name=area_unit]').val('Marla');
             // $('.min-area-label').text('MIN AREA');
@@ -403,9 +420,9 @@
         });
 
         // call rest form from banner lg view
-        $('.reset-search-banner2, #reset-search-banner2lg').on('click', function () {
+        $('.reset-search-banner2, #reset-search-banner2lg').on('click', function() {
 
-            $.each($('.custom-select'), function (index, value) {
+            $.each($('.custom-select'), function(index, value) {
                 if (!!~(value.id).indexOf("purpose"))
                     $(this).val('Buy').trigger('change');
                 if (!!~(value.id).indexOf("type"))
@@ -435,11 +452,11 @@
 
         //on max and min area btn find btn store values of area min and area max price min
 
-        $(document.body).on("change", "[name=max_area]", function () {
+        $(document.body).on("change", "[name=max_area]", function() {
             let data2 = $(this).val();
             sessionStorage.setItem('max_area', data2);
         });
-        $(document.body).on("change", "[name=min_area]", function () {
+        $(document.body).on("change", "[name=min_area]", function() {
             let data1 = $(this).val();
             sessionStorage.setItem('min_area', data1);
         });
@@ -459,18 +476,18 @@
             messages: {},
             errorElement: 'small',
             errorClass: 'help-block text-red',
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 event.preventDefault();
             },
-            invalidHandler: function (event, validator) {
+            invalidHandler: function(event, validator) {
                 // 'this' refers to the form
                 const errors = validator.numberOfInvalids();
                 if (errors) {
                     let error_tag = $('div.error.text-red');
                     error_tag.hide();
-                    const message = errors === 1
-                        ? 'You missed 1 field. It has been highlighted'
-                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                    const message = errors === 1 ?
+                        'You missed 1 field. It has been highlighted' :
+                        'You missed ' + errors + ' fields. They have been highlighted';
                     $('div.error.text-red span').html(message);
                     error_tag.show();
                 } else {
@@ -480,7 +497,7 @@
             }
         });
 
-        $('#sign-in-btn').click(function (event) {
+        $('#sign-in-btn').click(function(event) {
             if (form.valid()) {
                 event.preventDefault();
                 jQuery.ajaxSetup({
@@ -494,7 +511,7 @@
                     url: window.location.origin + '/property' + '/login',
                     data: form.serialize(),
                     dataType: 'json',
-                    success: function (data) {
+                    success: function(data) {
                         // console.log(data);
                         if (data.data) {
                             // console.log(data.user);
@@ -509,13 +526,13 @@
                                 '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
                                 '                      <i class="fas fa-user mr-3"></i>';
-                            html += '<span class="mr-1"> Logged in as <span>'+ user_name ;
+                            html += '<span class="mr-1"> Logged in as <span>' + user_name + ' (ID: ' + user_id + ')';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                 '                     <div class="dropdown-divider"></div>' +
                                 // '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
-                                '<a class="dropdown-item" href=" ' + window.location.origin +'/property'+ '/dashboard/listings/status/active/purpose/all/user/'+user_id +'/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
+                                '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
@@ -533,15 +550,14 @@
                             $('.error-tag').show();
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         event.preventDefault();
 
                         console.log(error);
                         console.log(status);
                         console.log(xhr);
                     },
-                    complete: function (url, options) {
-                    }
+                    complete: function(url, options) {}
                 });
             }
         });
