@@ -85,6 +85,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
+    Route::get('/support', 'Support\SupportController@index')->name('aboutpakistan.support');
     Route::get('/user-logs', 'Log\UserLogController@index')->name('user.logs');
 
     Route::group(['prefix' => 'accounts'], function () {

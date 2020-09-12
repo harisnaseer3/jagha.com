@@ -388,7 +388,7 @@ class AgencyController extends Controller
                 'website' => $request->input('website'),
                 'ceo_name' => $request->input('name'),
                 'ceo_designation' => $request->input('designation'),
-                'ceo_message' => $request->input('message')
+                'ceo_message' => $request->input('about_CEO')
             ]);
             if ($request->hasFile('upload_new_logo')) {
                 $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
@@ -505,7 +505,6 @@ class AgencyController extends Controller
             'name' => 'nullable|string',
             'designation' => 'nullable|string',
             'message' => 'nullable|string',
-            'website' => 'required|url',
             'upload_new_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
         ]);
 
@@ -533,7 +532,7 @@ class AgencyController extends Controller
                 'status' => $request->has('status') ? $request->has('status') : 'pending',
                 'ceo_name' => $request->input('name'),
                 'ceo_designation' => $request->input('designation'),
-                'ceo_message' => $request->input('message')
+                'ceo_message' => $request->input('about_CEO')
             ]);
             if ($request->hasFile('upload_new_logo')) {
                 $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
