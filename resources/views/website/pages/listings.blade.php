@@ -985,7 +985,7 @@
                 });
                 $('[name=status]').on('change', function (event) {
                     let status_value = $(this).val();
-                    if ($.inArray(status_value, ['reactive', 'sold', 'expired', 'boost']) > -1) {
+                    if ($.inArray(status_value, ['active','reactive', 'sold', 'expired', 'boost']) > -1) {
                         if (status_value === 'reactive') {
                             status_value = 'pending'
                         }
