@@ -38,6 +38,7 @@ class Property extends Model
         'reference',
         'user_id',
         'city_id',
+        'agency_id',
         'location_id',
         'purpose',
         'sub_purpose',
@@ -125,6 +126,11 @@ class Property extends Model
     public function floor_plans()
     {
         return $this->hasMany(FloorPlan::class);
+    }
+
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class, 'agency_id');
     }
 
     public function getPriceAttribute($price)

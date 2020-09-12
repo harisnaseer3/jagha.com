@@ -43,7 +43,8 @@ class PropertyController extends Controller
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
-                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description', 'property_count_by_agencies.property_count AS agency_property_count',
+                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description',
+                'property_count_by_agencies.property_count AS agency_property_count',
                 'users.community_nick AS user_nick_name', 'users.name AS user_name')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
@@ -183,8 +184,15 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
+        $agencies_data = (new Agency)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'verified')->get();
+        $agencies = [];
+        foreach ($agencies_data as $agency) {
+            $agencies = array_merge($agencies, [$agency->title => $agency->title]);
+        }
+
         return view('website.pages.portfolio',
             ['default_area_unit' => $unit,
+                'agencies' => $agencies,
                 'property_types' => $property_types,
                 'counts' => $counts,
                 'recent_properties' => (new FooterController)->footerContent()[0],
@@ -238,7 +246,6 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-
         if (request()->hasFile('image')) {
             $error_msg = $this->_imageValidation('image');
             if ($error_msg !== null && count($error_msg)) {
@@ -305,16 +312,20 @@ class PropertyController extends Controller
 
             $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
 
-            $agency = DB::table('agency_users')
-                ->select('agency_users.agency_id AS id')
-                ->where('user_id', '=', $user_id)->first();
+//            $agency = DB::table('agency_users')
+//                ->select('agency_users.agency_id AS id')
+//                ->where('user_id', '=', $user_id)->first();
+            $agency = '';
+            if ($request->input('agency')) {
+                $agency = DB::table('agencies')->select('id')->where('title', '=', $request->input('agency'))->where('user_id', '=', $user_id)->first();
+            }
 
             $property = (new Property)->Create([
                 'reference' => $reference,
                 'user_id' => $user_id,
                 'city_id' => $city->id,
                 'location_id' => $location['location_id'],
-                'agency_id' => $agency === null ? null : $agency->id,
+                'agency_id' => $agency != '' ? $agency->id : null,
                 'purpose' => $request->input('purpose'),
                 'sub_purpose' => $request->input('wanted_for') ? $request->has('wanted_for') : null,
                 'type' => $request->input('property_type'),
@@ -511,17 +522,28 @@ class PropertyController extends Controller
     {
 //        check if property has a agency and agency has status of verified then property status change to active
 
+        $agencies_data = (new Agency)->where('user_id', '=', $property->user_id)->where('status', '=', 'verified')->get();
+        $agencies = [];
+        foreach ($agencies_data as $agency) {
+            $agencies = array_merge($agencies, [$agency->title => $agency->title]);
+        }
+//        get name of assigned agency of property
+//        $agency
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
         $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
         $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
+        if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
+            $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
+        }
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
         return view('website.pages.portfolio',
             [
+                'agencies' => $agencies,
                 'property' => $property,
                 'property_types' => $property_types,
                 'counts' => $counts,
@@ -583,12 +605,18 @@ class PropertyController extends Controller
 
             $status_before_update = $property->status;
 
+            $agency = '';
+            if ($request->input('agency')) {
+                $agency = DB::table('agencies')->select('id')->
+                where('title', '=', $request->input('agency'))->where('user_id', '=', $property->user_id)->first();
+            }
+
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
                 'reference' => $property->reference,
                 'user_id' => $property->user_id,
                 'city_id' => $city->id,
                 'location_id' => $location['location_id'],
-                'agency_id' => $property->agency_id,
+                'agency_id' => $agency != '' ? $agency->id : $property->agency_id,
                 'purpose' => $request->input('purpose'),
                 'sub_purpose' => $request->has('wanted_for') ? $request->has('wanted_for') : null,
                 'type' => $request->input('property_type'),
@@ -693,7 +721,7 @@ class PropertyController extends Controller
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->whereNull('properties.deleted_at');
-
+//            dd(Auth::user()->hasRole('Admin'));
         // user
         if (!Auth::user()->hasRole('Admin')) {
             if (empty($user)) {
@@ -727,7 +755,6 @@ class PropertyController extends Controller
                 }
             }
         }
-
         return $listings->where('status', '=', $status);
     }
 
@@ -779,7 +806,6 @@ class PropertyController extends Controller
         if (!in_array($page, [10, 15, 30, 50])) {
             $page = 10;
         }
-
         $data = [
             'params' => [
                 'status' => $status,

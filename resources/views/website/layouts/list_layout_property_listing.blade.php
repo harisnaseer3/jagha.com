@@ -77,7 +77,7 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft) </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
                            </div>'>
                             @if($property->price != 0)
                                 <span aria-label="currency" class="font-16"> PKR </span>
@@ -125,25 +125,34 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft) </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
                            </div>'>
                             @if(request()->query('area_unit') != null)
                                 <i class="fas fa-arrows-alt"></i>
-                                <span>
-                                    @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} Kanal
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M
-                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.
-                                    @endif
+{{--                                <span>--}}
+{{--                                    @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)--}}
+{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} Kanal--}}
+{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)--}}
+{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal--}}
+{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.--}}
+{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M--}}
+{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.--}}
+{{--                                    @endif--}}
+{{--                                </span>--}}
+                                <span> {{ number_format($property->land_area,2) }}
+                                    @if($property->area_unit == 'Square Meters') Sq.M.
+                                    @elseif($property->area_unit == 'Square Feet')Sq.F.
+                                    @elseif ($property->area_unit == 'Square Yards') Sq.Yd.
+                                    @else {{$property->area_unit}}  @endif
                                 </span>
                             @elseif(isset($property->land_area))
                                 <i class="fas fa-arrows-alt"></i>
-                                <span> {{ number_format($property->land_area,2) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')
-                                        Sq.F. @elseif ($property->area_unit === 'Square Yards') Sq.Yd. @else {{$property->area_unit}} @endif </span>
-
+                                <span> {{ number_format($property->land_area,2) }}
+                                    @if($property->area_unit == 'Square Meters') Sq.M.
+                                    @elseif($property->area_unit == 'Square Feet')Sq.F.
+                                    @elseif ($property->area_unit == 'Square Yards') Sq.Yd.
+                                    @else {{$property->area_unit}}  @endif
+                                </span>
                             @endif
                         </li>
                     <!-- <li class="property-agency-logo">
@@ -175,7 +184,7 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3 partner-logo-style" style="height:70px;">
-{{--                            {{dd($property->agency)}}--}}
+{{--                            {{dd($property->logo)}}--}}
                             @if($property->agency)
                                 @if(isset($property->logo))
                                     <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}"

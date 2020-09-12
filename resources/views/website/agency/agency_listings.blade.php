@@ -38,7 +38,7 @@
                                     @include('website.layouts.flash-message')
 
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Post New Agency</a></div>
+                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Add New Agency</a></div>
 
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
@@ -313,6 +313,13 @@
                     let id = $(this).attr('data-record-id');
                     changePropertyStatus('pending', id);
                 });
+                // $('#listings-key-tab').on('click',function(){
+                //     // let new_location = window.location.href.split('?')[0]+'?page=1';
+                //     // reload to new location
+                //     window.location.href = window.location.href.split('?')[0]+'?page=1';
+                //     // document.location.reload(true);
+                //
+                // });
 
                 $('#delete').on('show.bs.modal', function (event) {
                     let record_id = $(event.relatedTarget).data('record-id');

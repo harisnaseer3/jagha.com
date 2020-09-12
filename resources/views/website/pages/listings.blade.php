@@ -158,9 +158,9 @@
                                                     </table>
                                                 </div>
                                                 @if($params['status'] === 'edited')
-                                                    <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
                                                 {{ $listings['all']->links() }}
                                             </div>
@@ -268,9 +268,9 @@
                                                     </table>
                                                 </div>
                                                 @if($params['status'] === 'edited')
-                                                    <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
                                                 {{ $listings['sale']->fragment('listings-sale')->links() }}
                                             </div>
@@ -376,9 +376,9 @@
                                                     </table>
                                                 </div>
                                                 @if($params['status'] === 'edited')
-                                                    <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
                                                 {{ $listings['rent']->links() }}
                                             </div>
                                         </div>
@@ -483,9 +483,9 @@
                                                     </table>
                                                 </div>
                                                 @if($params['status'] === 'edited')
-                                                    <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
                                                 {{ $listings['wanted']->links() }}
                                             </div>
                                         </div>
@@ -590,9 +590,9 @@
                                                     </table>
                                                 </div>
                                                 @if($params['status'] === 'edited')
-                                                    <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
                                                 {{ $listings['super_hot']->links() }}
                                             </div>
                                         </div>
@@ -694,9 +694,9 @@
                                                     </table>
                                                 </div>
                                                 @if($params['status'] === 'edited')
-                                                    <div class="font-12"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
                                                 {{ $listings['hot']->links() }}
                                             </div>
