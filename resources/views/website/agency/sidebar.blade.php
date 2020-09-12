@@ -34,9 +34,13 @@
                          data-parent="#accordionListings">
                         <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
                             @if ($params['status'] === 'verified_agencies')
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab" aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
-                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'key' ? 'active' : '' }}" id="listings-key-tab" data-toggle="pill" href="#listings-key" role="tab" aria-controls="listings-key" aria-selected="{{ $params['purpose'] === 'key' ? 'true' : 'false' }}"> Key Agencies ({{ $counts['verified']['key']}})</a>
-                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'featured' ? 'active' : '' }}" id="listings-featured-tab" data-toggle="pill" href="#listings-featured" role="tab"  aria-controls="listings-featured" aria-selected="{{ $params['purpose'] === 'featured' ? 'true' : 'false' }}">Featured Agencies ({{ $counts['verified']['featured']}})</a>
+                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab"
+                                   aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
+                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'key' ? 'active' : '' }}" id="listings-key-tab" data-toggle="pill" href="#listings-key" role="tab"
+                                   aria-controls="listings-key" aria-selected="{{ $params['purpose'] === 'key' ? 'true' : 'false' }}"> Key Agencies ({{ $counts['verified']['key']}})</a>
+                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'featured' ? 'active' : '' }}" id="listings-featured-tab" data-toggle="pill" href="#listings-featured"
+                                   role="tab" aria-controls="listings-featured" aria-selected="{{ $params['purpose'] === 'featured' ? 'true' : 'false' }}">Featured Agencies
+                                    ({{ $counts['verified']['featured']}})</a>
                             @else
                                 <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                                 <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
@@ -47,23 +51,24 @@
                     </div>
 
                     @foreach(['pending', 'expired', 'rejected', 'deleted'] as $status)
-                        <div class="card-header {{ $params['status'] === $status.'_agencies' ? 'bg-secondary' : '' }}" id="headingListing{{ucfirst($status)}}Agency">
-                            <a href="#collapseListing{{ucfirst($status)}}Agency"
-                               class="{{ $params['status'] === $status.'_agency' ? '' : 'collapsed' }} {{ $params['status'] === $status.'_agencies' ? 'text-white' : '' }}" role="button"
-                               data-toggle="collapse" aria-expanded="{{ $params['status'] === ucfirst($status).'Agency' ? 'true' : 'false' }}" aria-controls="collapseExample">{{ucfirst($status)}}
-                                ({{ $counts[$status]['all'] }})</a>
-                        </div>
-                        <div id="collapseListing{{ucfirst($status)}}Agency" class="collapse {{ $params['status'] === $status.'_agencies' ? 'show' : '' }}"
-                             aria-labelledby="headingListing{{$status}}agency" data-parent="#accordionListings">
-                            <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
-                                @if ($params['status'] === $status.'_agencies')
-                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all"
-                                       role="tab" aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
-                                @else
-                                    <?php $route_params = ['status' => $status.'_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
-                                    <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
-                                @endif
-                            </div>
+                        <div class="card-header {{ $params['status'] === $status.'_agencies' ? 'bg-secondary' : '' }}"
+                             id="headingListing{{ucfirst($status)}}Agency">
+
+                            @if ($params['status'] === $status.'_agencies')
+                                <a href="#collapseListing{{ucfirst($status)}}Agency"
+                                   class="{{ $params['status'] === $status.'_agency' ? '' : 'collapsed' }} {{ $params['status'] === $status.'_agencies' ? 'text-white' : '' }} {{ $params['purpose'] === 'all' ? 'active' : '' }}"
+                                   role="button"
+                                   aria-expanded="{{ $params['status'] === ucfirst($status).'Agency' ? 'true' : 'false' }}">
+                                    {{ucfirst($status)}}({{ $counts[$status]['all'] }})
+                                </a>
+                            @else
+                                <?php $route_params = ['status' => $status . '_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                                <a href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}"
+                                   class="{{ $params['status'] === $status.'_agency' ? '' : 'collapsed' }} {{ $params['status'] === $status.'_agencies' ? 'text-white' : '' }}" role="button"
+                                   aria-expanded="{{ $params['status'] === ucfirst($status).'Agency' ? 'true' : 'false' }}">
+                                    {{ucfirst($status)}}({{ $counts[$status]['all'] }})
+                                </a>
+                            @endif
                         </div>
                     @endforeach
 
@@ -73,13 +78,8 @@
     </ul>
     <div class="card-header theme-grey text-white">Tools</div>
     <ul class="list-group">
-        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->
         <li class="list-group-item {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}"><a
                 href="{{ route('agencies.create') }}" class="{{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'text-white' : '' }}">
-                @if ($current_route_name === 'agencies.edit') Edit Agency @else Post New Agency @endif</a></li>
-        <!-- <li class="list-group-item"><a href="#">Zone Details</a></li>
-        <li class="list-group-item"><a href="#">Listing Policy</a></li> -->
+                @if ($current_route_name === 'agencies.edit') Edit Agency @else Add New Agency @endif</a></li>
     </ul>
-
-
 </div>

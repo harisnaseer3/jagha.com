@@ -527,14 +527,17 @@ class PropertyController extends Controller
         foreach ($agencies_data as $agency) {
             $agencies = array_merge($agencies, [$agency->title => $agency->title]);
         }
+//        get name of assigned agency of property
+//        $agency
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
         $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
         $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
-        $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
-
+        if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
+            $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
+        }
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 

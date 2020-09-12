@@ -265,19 +265,19 @@
                             <a class="nav-link" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
                                 My Accounts &amp; Profiles</a>
                         </li>
-{{--                        @if(Auth::user()->hasRole('Admin'))--}}
-                            <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
-                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
-                                <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
-                                   href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
-                                    Agency Listing</a>
-                            </li>
-{{--                        @endif--}}
-{{--                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}">--}}
-{{--                            <a class="nav-link" href="{{route('agencies.create')}}">--}}
-{{--                                Add Agency--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
+                        {{--                        @if(Auth::user()->hasRole('Admin'))--}}
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                            <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
+                               href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
+                                Agency Listing</a>
+                        </li>
+                        {{--                        @endif--}}
+                        {{--                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['agencies.create', 'agencies.edit']) ? 'active' : '' }}">--}}
+                        {{--                            <a class="nav-link" href="{{route('agencies.create')}}">--}}
+                        {{--                                Add Agency--}}
+                        {{--                            </a>--}}
+                        {{--                        </li>--}}
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">

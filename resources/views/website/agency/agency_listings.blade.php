@@ -313,6 +313,13 @@
                     let id = $(this).attr('data-record-id');
                     changePropertyStatus('pending', id);
                 });
+                // $('#listings-key-tab').on('click',function(){
+                //     // let new_location = window.location.href.split('?')[0]+'?page=1';
+                //     // reload to new location
+                //     window.location.href = window.location.href.split('?')[0]+'?page=1';
+                //     // document.location.reload(true);
+                //
+                // });
 
                 $('#delete').on('show.bs.modal', function (event) {
                     let record_id = $(event.relatedTarget).data('record-id');

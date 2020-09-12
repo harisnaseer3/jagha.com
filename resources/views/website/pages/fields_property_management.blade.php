@@ -1,6 +1,11 @@
 <div class="card">
     <div class="card-header theme-blue text-white">Property Type and Location</div>
     <div class="card-body">
+
+        @if(isset($property->id))
+            {{ Form::bsText('property_id', isset($property->id)?$property->id:null, ['readonly' => 'readonly']) }}
+        @endif
+
         {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
 
         <div id="purpose-Wanted" style="display: none;">

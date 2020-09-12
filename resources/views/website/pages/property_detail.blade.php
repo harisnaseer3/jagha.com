@@ -208,7 +208,7 @@
                                                 <ul class="amenities custom-amenities">
                                                     {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry')
+                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id')
                                                             <li class="mb-5 pt-1">
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
