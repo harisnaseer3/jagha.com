@@ -85,7 +85,9 @@
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
                                                                         @if($params['status'] === 'pending')
-                                                                            Pending for Verification
+                                                                            <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -207,7 +209,9 @@
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
                                                                         @if($params['status'] === 'pending')
-                                                                            Pending for Verification
+                                                                            <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -317,7 +321,9 @@
                                                                 {{--                                                            <td>{{ $rent_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>@if($params['status'] === 'pending')
-                                                                            Pending for Verification
+                                                                            <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -425,7 +431,9 @@
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
                                                                         @if($params['status'] === 'pending')
-                                                                            Pending for Verification
+                                                                            <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -532,7 +540,9 @@
                                                                 {{--                                                            <td>{{ $super_hot_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>@if($params['status'] === 'pending')
-                                                                            Pending for Verification
+                                                                            <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -637,7 +647,9 @@
                                                                 {{--                                                            <td>{{ $hot_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>@if($params['status'] === 'pending')
-                                                                            Pending for Verification
+                                                                            <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
