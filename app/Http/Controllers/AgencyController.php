@@ -81,7 +81,6 @@ class AgencyController extends Controller
 
     public function ListingCityAgencies(string $city, Request $request)
     {
-//        TODO: change city store method to find city in db
         $city_name = ucwords(str_replace('-', ' ', $city));
         $city_id = City::select('id')->where('name', '=', $city_name)->first();
 
@@ -195,6 +194,72 @@ class AgencyController extends Controller
             ['table_name' => 'users',
                 'counts' => $counts,
                 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+    }
+
+    public function store(Request $request)
+    {
+        if ($request->hasFile('upload_new_logo')) {
+            $error_msg = $this->_imageValidation('upload_new_logo');
+            if ($error_msg !== null && count($error_msg)) {
+                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
+            }
+        }
+
+        if ($request->hasFile('upload_new_picture')) {
+            $error_msg = $this->_imageValidation('upload_new_picture');
+            if ($error_msg !== null && count($error_msg)) {
+                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
+            }
+        }
+        $validator = Validator::make($request->all(), Agency::$rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error storing record, Resolve following error(s).');
+        }
+
+        try {
+
+            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $agency = (new Agency)->Create([
+                'user_id' => Auth::user()->getAuthIdentifier(),
+                'city_id' => $city->id,
+                'title' => $request->input('company_title'),
+                'description' => $request->input('description'),
+                'phone' => $request->input('phone'),
+                'cell' => $request->input('cell'),
+                'fax' => $request->input('fax'),
+                'address' => $request->input('address'),
+                'zip_code' => $request->input('zip_code'),
+                'country' => $request->input('country'),
+                'email' => $request->input('email'),
+                'website' => $request->input('website'),
+                'ceo_name' => $request->input('name'),
+                'ceo_designation' => $request->input('designation'),
+                'ceo_message' => $request->input('about_CEO')
+            ]);
+            if ($request->hasFile('upload_new_logo')) {
+                $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
+            }
+            if ($request->hasFile('upload_new_picture')) {
+                $this->storeAgencyLogo($request->file('upload_new_picture'), $agency);
+            }
+            (new AgencyUserController())->store($agency);
+            (new AgencyCityController())->store($agency);
+            if ($request->has('status') && $request->input('status') === 'active') {
+                $this->insertIntoCounterTable();
+            }
+//            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
+            return redirect()->route('agencies.listings', [
+                'status' => 'pending_agencies',
+                'purpose' => 'all',
+                'user' => Auth::user()->getAuthIdentifier(),
+                'sort' => 'id',
+                'order' => 'asc',
+                'page' => 10,
+            ])->with('success', 'Agency profile has been saved.');
+        } catch (Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
+        }
     }
 
     public function listingFeaturedPartners(Request $request)
@@ -349,71 +414,7 @@ class AgencyController extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
-        if ($request->hasFile('upload_new_logo')) {
-            $error_msg = $this->_imageValidation('upload_new_logo');
-            if ($error_msg !== null && count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
-            }
-        }
 
-        if ($request->hasFile('upload_new_picture')) {
-            $error_msg = $this->_imageValidation('upload_new_picture');
-            if ($error_msg !== null && count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
-            }
-        }
-        $validator = Validator::make($request->all(), Agency::$rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error storing record, Resolve following error(s).');
-        }
-
-        try {
-
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-            $agency = (new Agency)->Create([
-                'user_id' => Auth::user()->getAuthIdentifier(),
-                'city_id' => $city->id,
-                'title' => $request->input('company_title'),
-                'description' => $request->input('description'),
-                'phone' => $request->input('phone'),
-                'cell' => $request->input('cell'),
-                'fax' => $request->input('fax'),
-                'address' => $request->input('address'),
-                'zip_code' => $request->input('zip_code'),
-                'country' => $request->input('country'),
-                'email' => $request->input('email'),
-                'website' => $request->input('website'),
-                'ceo_name' => $request->input('name'),
-                'ceo_designation' => $request->input('designation'),
-                'ceo_message' => $request->input('about_CEO')
-            ]);
-            if ($request->hasFile('upload_new_logo')) {
-                $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
-            }
-            if ($request->hasFile('upload_new_picture')) {
-                $this->storeAgencyLogo($request->file('upload_new_picture'), $agency);
-            }
-            (new AgencyUserController())->store($agency);
-            (new AgencyCityController())->store($agency);
-            if ($request->has('status') && $request->input('status') === 'active') {
-                $this->insertIntoCounterTable();
-            }
-//            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
-            return redirect()->route('agencies.listings', [
-                'status' => 'pending_agencies',
-                'purpose' => 'all',
-                'user' => Auth::user()->getAuthIdentifier(),
-                'sort' => 'id',
-                'order' => 'asc',
-                'page' => 10,
-            ])->with('success', 'Agency profile has been saved.');
-        } catch (Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
-        }
-    }
 
 //    call store agency a new when user register himself and agency
     public function newUserStoreAgency(Request $request)
