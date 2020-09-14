@@ -148,8 +148,7 @@
     @if(!empty($agencies))
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            {{ Form::bsSelect2('agency', $agencies,
-                        isset($property->agency) ? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property']) }}
+            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property']) }}
         </div>
     @endif
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
