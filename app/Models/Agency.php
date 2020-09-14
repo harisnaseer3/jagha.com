@@ -22,7 +22,7 @@ class Agency extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'user_id','city_id', 'title', 'description', 'phone', 'zip_code', 'cell', 'fax', 'address', 'country', 'email', 'ceo_name', 'ceo_designation',
+        'user_id','city_id', 'title', 'description', 'phone', 'zip_code', 'cell', 'fax', 'address', 'country', 'email', 'website', 'ceo_name', 'ceo_designation',
         'ceo_message','ceo_image','status','featured_listing','key_listing'
     ];
     public static $rules = [
