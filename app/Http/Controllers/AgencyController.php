@@ -807,23 +807,10 @@ class AgencyController extends Controller
     public function changeAgencyStatus(Request $request)
     {
         if ($request->ajax()) {
+
             (new Agency)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
 
-            $property = (new Property)->WHERE('id', '=', $request->id)->first();
-
-
-//            if ($request->status === 'active') {
-//                $dt = Carbon::now();
-//                $property->activated_at = $dt;
-//
-//                $expiry = $dt->addMonths(3)->toDateTimeString();
-//                $property->expired_at = $expiry;
-//                $property->save();
-//
-//                event(new NewPropertyActivatedEvent($property));
-//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
-//            }
-            return response()->json(['status' => 200]);
+            return response()->json(['status' =>200]);
         } else {
             return "not found";
         }

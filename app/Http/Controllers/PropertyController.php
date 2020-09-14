@@ -30,11 +30,7 @@ class PropertyController extends Controller
 
     function listingFrontend()
     {
-//        display data with agency
-//              if a user has an agency display property user with agency
-//              if a user has no agency display property user with no agency
-//         display data on user choice
-//              if a user has an agency display property user with agency
+
         return (new Property)
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
@@ -184,7 +180,15 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
-        $agencies_data = (new Agency)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'verified')->get();
+        $agency_ids = [];
+        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->toArray();
+        foreach ($agencies_ids as $ids) {
+            array_push($agency_ids,$ids->agency_id);
+        }
+
+        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+            ->where('status', '=', 'verified')->get();
+
         $agencies = [];
         foreach ($agencies_data as $agency) {
             $agencies = array_merge($agencies, [$agency->title => $agency->title]);
@@ -520,9 +524,15 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-//        check if property has a agency and agency has status of verified then property status change to active
+        $agency_ids = [];
+        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', $property->user_id)->get()->toArray();
 
-        $agencies_data = (new Agency)->where('user_id', '=', $property->user_id)->where('status', '=', 'verified')->get();
+        foreach ($agencies_ids as $ids) {
+            array_push($agency_ids,$ids->agency_id);
+        }
+        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('user_id', '=', $property->user_id)
+            ->where('status', '=', 'verified')->get();
+
         $agencies = [];
         foreach ($agencies_data as $agency) {
             $agencies = array_merge($agencies, [$agency->title => $agency->title]);

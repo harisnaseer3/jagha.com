@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-@include('website.includes.dashboard-nav')
+    @include('website.includes.dashboard-nav')
     <!-- Top header start -->
     <div class="sub-banner">
         <div class="container">
@@ -53,6 +53,9 @@
                                                         <td>Website</td>
                                                         <td>Phone</td>
                                                         <td>Listed Date</td>
+                                                        @if($params['status'] == 'pending_agencies')
+                                                            <td>Status Controls</td>
+                                                        @endif
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -66,16 +69,21 @@
                                                             <td>{{ $all_listing->website }}</td>
                                                             <td>{{ $all_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
+                                                            @if($params['status'] == 'pending_agencies')
+                                                                <td><input type="radio" name="status" value="verified" data-id="{{ $all_listing->id }}">
+                                                                    <label for="active">Activate</label>
+                                                                </td>
+                                                            @endif
                                                             <td>
                                                                 <a type="button" href="{{route('agencies.edit', $all_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
-                                                                            " data-toggle-1="tooltip"
+                                                                    " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="edit">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-danger
                                                                 {{$params['status'] == 'deleted_agencies' ?' anchor-disable':''}}
-                                                                                " data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="delete"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$all_listing->id}}">
                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
@@ -112,6 +120,9 @@
                                                         <td>Website</td>
                                                         <td>Phone</td>
                                                         <td>Listed Date</td>
+                                                        @if($params['status'] == 'pending_agencies')
+                                                            <td>Status Controls</td>
+                                                        @endif
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -125,6 +136,11 @@
                                                             <td>{{ $key_listing->website }}</td>
                                                             <td>{{ $key_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
+                                                            @if($params['status'] == 'pending_agencies')
+                                                                <td><input type="radio" name="status" value="verified" data-id="{{ $key_listing->id }}">
+                                                                    <label for="active">Activate</label>
+                                                                </td>
+                                                            @endif
                                                             <td>
                                                                 <a type="button" href="{{route('agencies.edit', $key_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
@@ -173,6 +189,9 @@
                                                         <td>Website</td>
                                                         <td>Phone</td>
                                                         <td>Listed Date</td>
+                                                        @if($params['status'] == 'pending_agencies')
+                                                            <td>Status Controls</td>
+                                                        @endif
                                                         <td>Controls</td>
                                                     </tr>
                                                     </thead>
@@ -186,6 +205,11 @@
                                                             <td>{{ $featured_listing->website }}</td>
                                                             <td>{{ $featured_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>
+                                                            @if($params['status'] == 'pending_agencies')
+                                                                <td><input type="radio" name="status" value="verified" data-id="{{ $featured_listing->id }}">
+                                                                    <label for="active">Activate</label>
+                                                                </td>
+                                                            @endif
                                                             <td>
                                                                 <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
@@ -289,7 +313,7 @@
                         data: {'id': id, 'status': status},
                         dataType: 'json',
                         success: function (data) {
-                            console.log(data);
+                            // console.log(data);
                             if (data.status === 200) {
                                 // console.log(data.location);
                                 // console.log(data.city);
@@ -310,16 +334,18 @@
                 }
 
                 $('.restore-btn').on('click', function () {
-                    let id = $(this).attr('data-record-id');
-                    changePropertyStatus('pending', id);
+                        let id = $(this).attr('data-record-id');
+                        let status_value = 'pending';
+                        changePropertyStatus(status_value, id);
+                    }
+                );
+                $('[name=status]').on('change', function (event) {
+                    let status_value = $(this).val();
+                    if ($.inArray(status_value, ['verified']) > -1) {
+                        let id = $(this).attr('data-id');
+                        changePropertyStatus(status_value, id);
+                    }
                 });
-                // $('#listings-key-tab').on('click',function(){
-                //     // let new_location = window.location.href.split('?')[0]+'?page=1';
-                //     // reload to new location
-                //     window.location.href = window.location.href.split('?')[0]+'?page=1';
-                //     // document.location.reload(true);
-                //
-                // });
 
                 $('#delete').on('show.bs.modal', function (event) {
                     let record_id = $(event.relatedTarget).data('record-id');
@@ -344,7 +370,10 @@
                     }
 
                 });
+
+
             });
-        })(jQuery);
+        })
+        (jQuery);
     </script>
 @endsection
