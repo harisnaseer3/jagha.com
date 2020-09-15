@@ -80,9 +80,11 @@
                         @endif
                     </h5>
                     <div class="row">
+                        @if($agency->count != null)
                         <div class="col-md-4 color-blue">
                             <span class="color-blue">Total Properties:</span> {{ $agency->count }}
                         </div>
+                        @endif
                         <div class="col-md-8 color-blue">
                             <span class="color-blue">Partner Since: </span>{{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}
                         </div>
