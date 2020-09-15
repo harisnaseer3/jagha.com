@@ -30,8 +30,8 @@ class ContactAgentController extends Controller
                 return response()->json(['data' => $validator->errors(), 'status' => 201]);
             }
             $data = $request->all();
-            $sent_to = 'mail@google.com';
-            $name = 'random';
+            $sent_to = '';
+            $name = '';
             if ($request->filled('agency')) {
                 $agency = (new Agency)->select('email', 'user_id')->where('id', '=', $request->input('agency'))->first();
                 $user = (new User)->select('name')->where('id', '=', $agency->user_id)->first();
@@ -42,9 +42,8 @@ class ContactAgentController extends Controller
                 $property = (new Property)->select('email', 'contact_person')->where('id', '=', $request->input('property'))->first();
                 $sent_to = $property->email;
                 $name = $property->contact_person;
-
             }
-            if ($sent_to != null && $sent_to != '') {
+            if ($sent_to != null || $sent_to != '') {
                 Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else
