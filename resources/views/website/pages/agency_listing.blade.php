@@ -342,8 +342,9 @@
                 });
                 let form = $('#email-contact-form');
                 $('.btn-email').click(function (e) {
-                    let property = $(this).closest('.contact-container').find('input[name=property]').val();
-                    let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
+                    // console.log($(this).closest('.contact-container').find('input')[1]);
+                    // let property = $(this).closest('.contact-container').find('input[name=property]').val();
+                    let agency = $(this).closest('.contact-container').find('input[name=agent]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
                     let message = 'I would like to gather information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest by phone or by email.';
@@ -357,11 +358,11 @@
                         if (editable_div.html() !== '') {
                             $('input[name=message]').val(editable_div.html());
                         }
-                    })
-
-                    if (!(property == null))
-                        $('.selected').val(property).attr('name', 'property');
-                    else if (!(agency == null))
+                    });
+                    // if (!(property == null))
+                    //     $('.selected').val(property).attr('name', 'property');
+                    // else
+                    if (!(agency == null))
                         $('.selected').val(agency).attr('name', 'agency');
                     $('textarea[name=message]').val(message);
                     call_btn.text('Call');
@@ -429,7 +430,7 @@
                             dataType: 'json',
                             success: function (data) {
                                 if (data.status === 200) {
-                                    // console.log(data.data);
+                                    console.log(data.data);
                                     form.trigger("reset");
                                     $('#EmailModelCenter').modal('hide');
                                     $('#EmailConfirmModel').modal('show');

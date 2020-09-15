@@ -418,9 +418,10 @@
                 });
                 let form = $('#email-contact-form');
                 $('.btn-email').click(function (e) {
+                    // console.log($(this).closest('.contact-container').find('input[name=property]').val());
                     let property = $(this).closest('.contact-container').find('input[name=property]').val();
                     let title = $(this).closest('.contact-container').find('input[name=title]').val();
-                    let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
+                    // let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
                     // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                     let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
                     let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + title + ' </a>';
@@ -435,10 +436,11 @@
                             $('input[name=message]').val(editable_div.html());
                         }
                     });
+
                     if (!(property == null))
                         $('.selected').val(property).attr('name', 'property');
-                    else if (!(agency == null))
-                        $('.selected').val(agency).attr('name', 'agency');
+                    // else if (!(agency == null))
+                    //     $('.selected').val(agency).attr('name', 'agency');
                     call_btn.text('Call');
                 });
                 let call_btn = $('.agent-call');
@@ -502,7 +504,7 @@
                             dataType: 'json',
                             success: function (data) {
                                 if (data.status === 200) {
-                                    // console.log(data.data);
+                                    console.log(data.data);
                                     form.trigger("reset");
                                     $('#EmailModelCenter').modal('hide');
                                     $('#EmailConfirmModel').modal('show');
