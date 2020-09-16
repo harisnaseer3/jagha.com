@@ -176,10 +176,10 @@
                 //if user edit a property then a property type must be selected then subtype must be visible
                 if ($('[name=property_type]').is(':checked')) {
                     const selectedValue = $('[name=property_type]:checked').val();
-                    $('[name=property_subtype-' + selectedValue +']').each(function (index, value){
+                    $('[name=property_subtype-' + selectedValue + ']').each(function (index, value) {
                         $(value).attr('required', true);
                     });
-                    $('#property_subtype-' + selectedValue ).attr('required', true).slideDown();
+                    $('#property_subtype-' + selectedValue).attr('required', true).slideDown();
                     $('[for=property_subtype-' + selectedValue + ']').html('Property Subtype <span class="text-danger">*</span>');
                 }
                 $('[name^=property_subtype-]').on('click', function (e) {
@@ -227,7 +227,6 @@
                         $('.price-block').slideDown();
                     }
                 });
-
 
             });
         })(jQuery);

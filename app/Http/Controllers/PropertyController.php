@@ -816,7 +816,6 @@ class PropertyController extends Controller
         if (!in_array($page, [10, 15, 30, 50])) {
             $page = 10;
         }
-        $notifications = Auth()->user()->unreadNotifications;
         $data = [
             'params' => [
                 'status' => $status,
@@ -826,7 +825,7 @@ class PropertyController extends Controller
                 'order' => $order,
                 'page' => $page,
             ],
-            'notifications' => $notifications,
+            'notifications' => Auth()->user()->unreadNotifications,
             'counts' => $this->getPropertyListingCount($user),
             'listings' => [
                 'all' => $this->_listings($status, $user)->orderBy($sort, $order)->paginate($page),
