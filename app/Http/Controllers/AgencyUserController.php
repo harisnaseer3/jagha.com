@@ -40,6 +40,18 @@ class AgencyUserController extends Controller
             ['agency_id' => $agency->id, 'user_id' => Auth::user()->getAuthIdentifier()],
         ]);
     }
+    public function addUsers($id){
+        $user = Auth::user()->getAuthIdentifier();
+
+        $data = [
+            'agency' => (new AgencyController)->getAgencyById($id),
+            'counts' => (new AgencyController)->getAgencyListingCount($user),
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+        ];
+        return view('website.agency.add_agency_users', $data);
+
+    }
 
     /**
      * Display the specified resource.

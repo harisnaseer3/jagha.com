@@ -82,6 +82,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
             'order' => '(asc|desc)',
             'page' => '\d+',
         ]);
+    Route::get('agencies/{agency}/add-users','AgencyUserController@addUsers')
+        ->name('agencies.add-users');
 
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');

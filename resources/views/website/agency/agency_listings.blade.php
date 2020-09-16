@@ -75,18 +75,24 @@
                                                                 </td>
                                                             @endif
                                                             <td>
+                                                                <a type="button" href="{{route('agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary
+                                                                {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
+                                                                    " data-toggle-1="tooltip"
+                                                                   data-placement="bottom" title="Add user in agency">
+                                                                    <i class="fas fa-user-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                </a>
                                                                 <a type="button" href="{{route('agencies.edit', $all_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
-                                                                   data-placement="bottom" title="edit">
+                                                                   data-placement="bottom" title="Edit Agency">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-danger
                                                                 {{$params['status'] == 'deleted_agencies' ?' anchor-disable':''}}
-                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$all_listing->id}}">
-                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted_agencies' ?'':'anchor-disable'}}"
                                                                    data-toggle-1="tooltip" data-placement="bottom"
@@ -142,26 +148,33 @@
                                                                 </td>
                                                             @endif
                                                             <td>
+                                                                <a type="button" href="{{route('agencies.edit', $key_listing->id)}}" class="btn btn-sm btn-primary
+                                                                {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
+                                                                    " data-toggle-1="tooltip"
+                                                                   data-placement="bottom" title="Add user in agency">
+                                                                    <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
+                                                                </a>
+
                                                                 <a type="button" href="{{route('agencies.edit', $key_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
                                                                 {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
-                                                                   data-placement="bottom" title="edit">
+                                                                   data-placement="bottom" title="Edit Agency">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-danger
                                                                 {{$params['status'] == 'deleted' ?' anchor-disable':''}}
-                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$key_listing->id}}">
-                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
                                                                    data-toggle-1="tooltip" data-placement="bottom"
-                                                                   title="restore"
+                                                                   title="Restore Agency"
                                                                    href="javascript:void(0)"
                                                                    data-record-id="{{$key_listing->id}}">
-                                                                    <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                    <i class="fas fa-redo-alt color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -211,26 +224,32 @@
                                                                 </td>
                                                             @endif
                                                             <td>
+                                                                <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-primary
+                                                                {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
+                                                                    " data-toggle-1="tooltip"
+                                                                   data-placement="bottom" title="Add user in agency">
+                                                                    <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
+                                                                </a>
                                                                 <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
                                                                 {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
-                                                                   data-placement="bottom" title="edit">
+                                                                   data-placement="bottom" title="Edit Agency">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-danger
                                                                 {{$params['status'] == 'deleted' ?' anchor-disable':''}}
-                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="delete"
+                                                                    " data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
                                                                    data-toggle="modal" data-target="#delete"
                                                                    data-record-id="{{$featured_listing->id}}">
-                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                 </a>
                                                                 <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
                                                                    data-toggle-1="tooltip" data-placement="bottom"
-                                                                   title="restore"
+                                                                   title="Restore Agency"
                                                                    href="javascript:void(0)"
                                                                    data-record-id="{{$featured_listing->id}}">
-                                                                    <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                    <i class="fas fa-redo-alt color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -298,9 +317,11 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
     <script>
         (function ($) {
             $(document).ready(function () {
+                $('[data-toggle-1="tooltip"]').tooltip();
                 function changePropertyStatus(status, id) {
                     jQuery.ajaxSetup({
                         headers: {
