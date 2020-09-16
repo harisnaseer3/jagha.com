@@ -610,6 +610,9 @@ class AgencyController extends Controller
         return $this->_listingFrontend()
             ->where('key_listing', '=', 1)->get();
     }
+    public static function getAgencyById($id){
+        return (new Agency)->where('id',$id)->first();
+    }
 
     private function _listings(string $status, string $user)
     {
