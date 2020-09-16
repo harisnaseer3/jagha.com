@@ -116,7 +116,17 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        {{--                                                        </tbody>--}}
+                                                        @if(isset($current_agency_users) && count($current_agency_users) > 0)
+                                                            @foreach($current_agency_users as $agency_user)
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>{{$agency_user->id}}</td>
+                                                                <td>{{$agency_user->email}}</td>
+                                                                <td></td>
+                                                            </tr>
+                                                            @endforeach
+                                                        @endif
+                                                        </tbody>
                                                     </table>
                                                     {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn ml-1 mb-1 user-submit']) }}
                                                     {{ Form::close() }}

@@ -48,12 +48,14 @@ class AgencyUserController extends Controller
     public function addUsers($id)
     {
         $user = Auth::user()->getAuthIdentifier();
+        $current_agency_users = User::select('id','email')->whereIn('id',DB::table('agency_users')->select('user_id')->where('agency_id','=',$id)->pluck('user_id')->toArray())->get();
 
         $data = [
             'agency' => (new AgencyController)->getAgencyById($id),
             'counts' => (new AgencyController)->getAgencyListingCount($user),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
+            'current_agency_users' => $current_agency_users
         ];
         return view('website.agency.add_agency_users', $data);
     }
