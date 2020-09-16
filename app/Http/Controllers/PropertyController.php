@@ -1326,17 +1326,17 @@ class PropertyController extends Controller
             if ($request->status == 'sold' || $request->status == 'expired') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
             }
-//            if ($request->status === 'active') {
-//                $dt = Carbon::now();
-//                $property->activated_at = $dt;
-//
-//                $expiry = $dt->addMonths(3)->toDateTimeString();
-//                $property->expired_at = $expiry;
-//                $property->save();
-//
-//                event(new NewPropertyActivatedEvent($property));
-//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
-//            }
+            if ($request->status === 'active') {
+                $dt = Carbon::now();
+                $property->activated_at = $dt;
+
+                $expiry = $dt->addMonths(3)->toDateTimeString();
+                $property->expired_at = $expiry;
+                $property->save();
+
+                event(new NewPropertyActivatedEvent($property));
+                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
+            }
             return response()->json(['status' => 200]);
         } else {
             return "not found";
