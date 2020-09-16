@@ -48,6 +48,7 @@ class ContactAgentController extends Controller
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else
                 return response()->json(['data' => 'no data available', 'status' => 200]);
+//                return response()->json(['data' => $request->all(), 'status' => 200]);
         } else {
             return 'not found';
         }

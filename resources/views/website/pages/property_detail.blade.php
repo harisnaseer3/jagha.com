@@ -208,7 +208,8 @@
                                                 <ul class="amenities custom-amenities">
                                                     {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id')
+{{--                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id'&& $key !== 'agency')--}}
+                                                        @if(!(in_array($value, ['0',  'null', 'no', 'None', null]))&& !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency'])))
                                                             <li class="mb-5 pt-1">
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
@@ -514,9 +515,9 @@
                 $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
             });
             $('.btn-email').click(function (e) {
-                let property = $(this).closest('.contact-container').find('input[name=property]').val();
-                let title = $(this).closest('.contact-container').find('input[name=title]').val();
-                let agency = $(this).closest('.contact-container').find('input[name=agency]').val();
+                let property = $(this).closest('#email-contact-form').find('input[name=property]').val();
+                let title = $(this).closest('#email-contact-form').find('input[name=title]').val();
+                let agency = $(this).closest('#email-contact-form').find('input[name=agency]').val();
                 // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                 let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
                 let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + title + ' </a>';
@@ -524,17 +525,19 @@
                 let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + '<br><br> Please contact me at your earliest by phone or by email.';
                 phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                 let editable_div = $('.editable-div');
-                editable_div.html(message);
+
+                // editable_div.html(message);
                 $('input[name=message]').val(editable_div.html());
                 editable_div.click(function () {
                     if (editable_div.html() !== '') {
                         $('input[name=message]').val(editable_div.html());
                     }
                 });
-                if (!(property == null))
+                if (!(property === undefined))
                     $('.selected').val(property).attr('name', 'property');
-                else if (!(agency == null))
+                else if (!(agency === undefined))
                     $('.selected').val(agency).attr('name', 'agency');
+
                 call_btn.text('Call');
             });
             let call_btn = $('.agent-call');
@@ -603,7 +606,7 @@
                                 $('#EmailModelCenter').modal('hide');
                                 $('#EmailConfirmModel').modal('show');
                             } else {
-                                console.log(data.data);
+                                // console.log(data.data);
                             }
                         },
                         error: function (xhr, status, error) {
