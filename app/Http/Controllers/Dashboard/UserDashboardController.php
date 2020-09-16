@@ -26,10 +26,10 @@ class UserDashboardController extends Controller
     public function index()
     {
         return view('website.user-dashboard.dashboard',
-            [
+            [   'notifications' => Auth()->user()->unreadNotifications,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
-       
+
     }
 }

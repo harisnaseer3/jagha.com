@@ -21,7 +21,7 @@
             {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent']]) }}
         </div>
         @if(!empty($agency))
-            {{ Form::hidden('agent',$agency->id)}}
+            {{ Form::hidden('agency',$agency->id)}}
         @else
             {{ Form::hidden('property',$property->id)}}
         @endif

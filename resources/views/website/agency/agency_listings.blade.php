@@ -79,7 +79,7 @@
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="Add user in agency">
-                                                                    <i class="fas fa-user-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                    <i class="fas fa-user-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Users</span>
                                                                 </a>
                                                                 <a type="button" href="{{route('agencies.edit', $all_listing->id)}}" class="btn btn-sm btn-warning
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}

@@ -825,6 +825,7 @@ class PropertyController extends Controller
                 'order' => $order,
                 'page' => $page,
             ],
+            'notifications' => Auth()->user()->unreadNotifications,
             'counts' => $this->getPropertyListingCount($user),
             'listings' => [
                 'all' => $this->_listings($status, $user)->orderBy($sort, $order)->paginate($page),

@@ -6,13 +6,16 @@ use App\Models\Dashboard\City;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 /**
  * @mixin Builder
  */
 class Agency extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Notifiable;
+
 
     public $table = 'agencies';
 

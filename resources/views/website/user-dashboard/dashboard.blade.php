@@ -19,6 +19,21 @@
                     <div class="tab-content" id="ListingsTabContent">
                         <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="m-4">
+                                @foreach($notifications as $notification)
+                                    <div>
+                                        <div class="alert alert-success alert-block">
+                                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                            <div>
+                                                Agency named <strong> {{$notification->data['name']}}</strong> wants to add you as an agent. Do you accept the invitation ?
+                                                <a class="color-green btn-accept" data-id="{{$notification->id}}"
+                                                   data-agency="{{$notification->data['id']}}"
+                                                   data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                                                   href="javascript:void(0)">Accept</a>
+                                                <a class="color-red btn-reject" data-id="{{$notification->id}}" href="javascript:void(0)">Reject</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                                 {{--                                <div class="card">--}}
                                 {{--                                    <div class="row">--}}
                                 {{--                                        <div class="col-md-12 col-sm-12 mb-5">--}}
@@ -138,6 +153,68 @@
             else
                 $('#foot-wrap').css('margin-top', '0px');
         }, 250);
+        $('.btn-accept').on('click', function () {
+            let alert = $(this);
+            let agency_id = alert.attr('data-agency');
+            let user_id = alert.attr('data-user');
+            let notification_id = alert.attr('data-id');
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/property' + '/dashboard/agencies/accept-invitation',
+                data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
+                dataType: 'json',
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status === 200) {
+                        alert.closest('.alert').remove();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                },
+                complete: function (url, options) {
+
+                }
+            });
+        });
+        $('.btn-reject').on('click', function () {
+            let alert = $(this);
+            let notification_id = alert.attr('data-id');
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/property' + '/dashboard/agencies/reject-invitation',
+                data: {'notification_id': notification_id},
+                dataType: 'json',
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status === 200) {
+                        alert.closest('.alert').remove();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                },
+                complete: function (url, options) {
+
+                }
+            });
+        });
     </script>
 
 @endsection

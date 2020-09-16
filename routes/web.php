@@ -82,8 +82,17 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
             'order' => '(asc|desc)',
             'page' => '\d+',
         ]);
-    Route::get('agencies/{agency}/add-users','AgencyUserController@addUsers')
+    Route::get('agencies/{agency}/add-users', 'AgencyUserController@addUsers')
         ->name('agencies.add-users');
+
+    Route::post('agencies/{agency}/add-users', 'AgencyUserController@storeAgencyUsers')
+        ->name('agencies.store-agency-users');
+
+    Route::post('agencies/accept-invitation', 'AgencyUserController@acceptInvitation')
+        ->name('agencies.accept_invitation');
+
+    Route::post('agencies/reject-invitation', 'AgencyUserController@rejectInvitation')
+        ->name('agencies.reject_invitation');
 
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');

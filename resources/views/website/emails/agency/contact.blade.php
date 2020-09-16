@@ -2,7 +2,7 @@
 # Greetings
 
 MR. {{ $name }}, hope your are doing good.
-A(n)  {{ $visitor }}, view your property and sent you an email.
+A {{ $visitor }}, view your property and sent you an email.
 
 <div><strong>Message</strong></div>
 <div>{{ $message }}</div>
@@ -19,6 +19,6 @@ A(n)  {{ $visitor }}, view your property and sent you an email.
         <img src="{{asset('img/logo/logo-with-text.png')}}" alt="About Pakistan" data-rjs="2"/>
     </div><!--foot-logo-->
     <div class="foot-info-text left relative">
-        <p>Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.</p></div>
+        Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.</div>
 </div>
 @endcomponent

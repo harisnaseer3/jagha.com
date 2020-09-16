@@ -36,7 +36,21 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
-                                    {{--                                    {{dd($params['status'])}}--}}
+                                    @foreach($notifications as $notification)
+                                        <div>
+                                            <div class="alert alert-success alert-block">
+                                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                                <div>
+                                                    Agency named <strong> {{$notification->data['name']}}</strong> wants to add you as an agent. Do you accept the invitation ?
+                                                    <a class="color-green btn-accept" data-id="{{$notification->id}}"
+                                                       data-agency="{{$notification->data['id']}}"
+                                                       data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                                                       href="javascript:void(0)">Accept</a>
+                                                    <a class="color-red btn-reject" data-id="{{$notification->id}}" href="javascript:void(0)">Reject</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></div>
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
@@ -84,10 +98,10 @@
                                                                 <td>{{ $all_listing->quota_used }}</td>
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
-                                                                        @if($params['status'] === 'pending')
-                                                                            <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active"  data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Activate</label>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
+                                                                                for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -208,10 +222,10 @@
                                                                 <td>{{ $sale_listing->quota_used }}</td>
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
-                                                                        @if($params['status'] === 'pending')
-                                                                            <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active"  data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Activate</label>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
+                                                                                for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -321,9 +335,9 @@
                                                                 {{--                                                            <td>{{ $rent_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>@if($params['status'] === 'pending')
-                                                                            <!-- Pending for Verification -->
+                                                                        <!-- Pending for Verification -->
                                                                             <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Activate</label>
+                                                                                for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -430,10 +444,10 @@
                                                                 {{--                                                            <td>{{ $wanted_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
-                                                                        @if($params['status'] === 'pending')
-                                                                            <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active"  data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Activate</label>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
+                                                                                for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -540,9 +554,9 @@
                                                                 {{--                                                            <td>{{ $super_hot_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>@if($params['status'] === 'pending')
-                                                                            <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active"  data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Activate</label>
+                                                                        <!-- Pending for Verification -->
+                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
+                                                                                for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -647,9 +661,9 @@
                                                                 {{--                                                            <td>{{ $hot_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>@if($params['status'] === 'pending')
-                                                                            <!-- Pending for Verification -->
+                                                                        <!-- Pending for Verification -->
                                                                             <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Activate</label>
+                                                                                for="active">Activate</label>
                                                                         @elseif($params['status'] === 'sold')
                                                                             Property Sold
                                                                         @else
@@ -959,12 +973,53 @@
                         data: {'id': id, 'status': status},
                         dataType: 'json',
                         success: function (data) {
+                            if (data.status === 200) {
+                                window.location.reload(true);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                        },
+                        complete: function (url, options) {
+                        }
+                    });
+                }
+                $('.restore-btn').on('click', function () {
+                    let id = $(this).attr('data-record-id');
+                    changePropertyStatus('pending', id);
+                });
+                $('[name=status]').on('change', function (event) {
+                    let status_value = $(this).val();
+                    if ($.inArray(status_value, ['active', 'reactive', 'sold', 'expired', 'boost']) > -1) {
+                        if (status_value === 'reactive') {
+                            status_value = 'pending'
+                        }
+                        let id = $(this).attr('data-id');
+                        changePropertyStatus(status_value, id);
+                    }
+                });
+                $('.btn-accept').on('click', function () {
+                    let alert = $(this);
+                    let agency_id = alert.attr('data-agency');
+                    let user_id = alert.attr('data-user');
+                    let notification_id = alert.attr('data-id');
+
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        type: 'post',
+                        url: window.location.origin + '/property' + '/dashboard/agencies/accept-invitation',
+                        data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
+                        dataType: 'json',
+                        success: function (data) {
                             // console.log(data);
                             if (data.status === 200) {
-                                // console.log(data.location);
-                                // console.log(data.city);
-                                // console.log(data.status);
-                                window.location.reload(true);
+                                alert.closest('.alert').remove();
                             }
                         },
                         error: function (xhr, status, error) {
@@ -975,23 +1030,37 @@
                         complete: function (url, options) {
 
                         }
-
                     });
-                }
-
-                $('.restore-btn').on('click', function () {
-                    let id = $(this).attr('data-record-id');
-                    changePropertyStatus('pending', id);
                 });
-                $('[name=status]').on('change', function (event) {
-                    let status_value = $(this).val();
-                    if ($.inArray(status_value, ['active','reactive', 'sold', 'expired', 'boost']) > -1) {
-                        if (status_value === 'reactive') {
-                            status_value = 'pending'
+                $('.btn-reject').on('click', function () {
+                    let alert = $(this);
+                    let notification_id = alert.attr('data-id');
+
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                        let id = $(this).attr('data-id');
-                        changePropertyStatus(status_value, id);
-                    }
+                    });
+                    jQuery.ajax({
+                        type: 'post',
+                        url: window.location.origin + '/property' + '/dashboard/agencies/reject-invitation',
+                        data: {'notification_id': notification_id},
+                        dataType: 'json',
+                        success: function (data) {
+                            // console.log(data);
+                            if (data.status === 200) {
+                                alert.closest('.alert').remove();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(xhr);
+                            console.log(status);
+                            console.log(error);
+                        },
+                        complete: function (url, options) {
+
+                        }
+                    });
                 });
 
             });

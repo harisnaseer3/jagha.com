@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Agency;
+use App\Models\Dashboard\User;
+use App\Notifications\AddAgencyUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class AgencyUserController extends Controller
 {
@@ -40,7 +44,9 @@ class AgencyUserController extends Controller
             ['agency_id' => $agency->id, 'user_id' => Auth::user()->getAuthIdentifier()],
         ]);
     }
-    public function addUsers($id){
+
+    public function addUsers($id)
+    {
         $user = Auth::user()->getAuthIdentifier();
 
         $data = [
@@ -50,8 +56,77 @@ class AgencyUserController extends Controller
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ];
         return view('website.agency.add_agency_users', $data);
+    }
+
+    public function storeAgencyUsers(Request $request, string $agency)
+    {
+        $agency_id = $agency;
+        $users = [];
+        $user_emails = $request->input('email');
+        $user_ids = $request->input('id');
+        foreach ($user_emails as $user_email) {
+            if ($user_email) {
+                $users[] = User::select('id')->where('email', '=', $user_email)->first();
+            }
+        }
+        foreach ($user_ids as $user_id) {
+            if ($user_id) {
+                $users[] = User::select('id')->where('id', '=', $user_id)->first();
+            }
+        }
+
+        $agency_data = Agency::where('id', '=', $agency_id)->first();
+        Notification::send($users, new AddAgencyUser($agency_data));
+        $user = Auth::user()->getAuthIdentifier();
+
+        $data = [
+            'agency' => (new AgencyController)->getAgencyById($agency),
+            'counts' => (new AgencyController)->getAgencyListingCount($user),
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+        ];
+//        return view('website.agency.add_agency_users', $data);
+        return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users');
 
     }
+
+    public function acceptInvitation(Request $request)
+    {
+        if ($request->ajax()) {
+            if (User::where('id', $request->user_id)->exists() && Agency::where('id', $request->agency_id)->exists()) {
+                if (!(DB::table('agency_users')->where('agency_id', $request->agency_id)->where('user_id', $request->user_id)->first())) {
+                    DB::table('agency_users')->insert(['agency_id' => $request->agency_id, 'user_id' => $request->user_id]);
+                }
+            }
+            auth()->user()
+                ->unreadNotifications
+                ->when($request->input('id'), function ($query) use ($request) {
+                    return $query->where('id', $request->input('notification_id'));
+                })
+                ->markAsRead();
+
+            return response()->json(['data' => $request->all(), 'status' => 200]);
+        } else {
+            return "not found";
+        }
+    }
+
+    public function rejectInvitation(Request $request)
+    {
+
+        if ($request->ajax()) {
+            auth()->user()
+                ->unreadNotifications
+                ->when($request->input('id'), function ($query) use ($request) {
+                    return $query->where('id', $request->input('notification_id'));
+                })
+                ->markAsRead();
+            return response()->json(['status' => 200]);
+        } else {
+            return "not found";
+        }
+    }
+
 
     /**
      * Display the specified resource.
