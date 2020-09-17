@@ -415,7 +415,6 @@ class AgencyController extends Controller
     }
 
 
-
 //    call store agency a new when user register himself and agency
     public function newUserStoreAgency(Request $request)
     {
@@ -610,8 +609,10 @@ class AgencyController extends Controller
         return $this->_listingFrontend()
             ->where('key_listing', '=', 1)->get();
     }
-    public static function getAgencyById($id){
-        return (new Agency)->where('id',$id)->first();
+
+    public static function getAgencyById($id)
+    {
+        return (new Agency)->where('id', $id)->first();
     }
 
     private function _listings(string $status, string $user)
@@ -735,6 +736,7 @@ class AgencyController extends Controller
                 'key' => $key->orderBy($sort, $order)->paginate($page),
                 'featured' => $featured->orderBy($sort, $order)->paginate($page),
             ],
+            'notifications' => Auth()->user()->unreadNotifications,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
@@ -814,7 +816,7 @@ class AgencyController extends Controller
 
             (new Agency)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
 
-            return response()->json(['status' =>200]);
+            return response()->json(['status' => 200]);
         } else {
             return "not found";
         }

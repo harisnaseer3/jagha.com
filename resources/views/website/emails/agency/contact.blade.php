@@ -1,24 +1,20 @@
 @component('mail::message')
 # Greetings
 
-MR. {{ $name }}, hope your are doing good.
-A {{ $visitor }}, view your property and sent you an email.
+Mr. {{ $name }}, hope your are doing good.
+A {{ $visitor }}, has recently viewed your property and sent you an email.
 
-<div><strong>Message</strong></div>
-<div>{{ $message }}</div>
+# Message
+{{ html_entity_decode($message, ENT_HTML5) }}
 
 
-# Contact Details
-<div>Name  : {{ $user_name }} </div>
-<div>Email : {{ $email }} </div>
-<div>Phone : {{ $phone }} </div>
+# Contact Details of the visitor
+Name  : {{ $user_name }} <br>
+Email : {{ $email }} <br>
+Phone : {{ $phone }} <br>
 
 # Regards,<br>
-<div class="foot-widget left relative">
-    <div class="foot-logo left realtive">
-        <img src="{{asset('img/logo/logo-with-text.png')}}" alt="About Pakistan" data-rjs="2"/>
-    </div><!--foot-logo-->
-    <div class="foot-info-text left relative">
-        Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.</div>
-</div>
+
+<img src="{{asset('img/logo/logo-with-text.png')}}" alt="About Pakistan" data-rjs="2"/><br>
+Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.
 @endcomponent

@@ -105,7 +105,9 @@ class AccountController extends Controller
 //        dd(!empty(Auth::user()->roles));
 //        Auth::user()->roles[0]->name;
         return view('website.account.roles',
-            ['role' => Auth::user()->roles->count()>0 ? Auth::user()->roles[0]->name : null,
+            [
+                'notifications' => Auth()->user()->unreadNotifications,
+                'role' => Auth::user()->roles->count() > 0 ? Auth::user()->roles[0]->name : null,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
@@ -157,7 +159,12 @@ class AccountController extends Controller
     public function editSettings(Account $account)
     {
         $account = (new Account)->select('*')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
-        return view('website.account.settings', ['table_name' => 'accounts', 'account' => $account, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+        return view('website.account.settings', [
+            'notifications' => Auth()->user()->unreadNotifications,
+            'table_name' => 'accounts',
+            'account' => $account,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     public function updateSettings(Request $request, Account $account)
@@ -184,7 +191,11 @@ class AccountController extends Controller
 //            return view('website.account.settings',
 //                ['table_name' => 'accounts', 'account' => $account, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]])
 //                ->with('success', 'Your settings are saved.');
-            return  redirect()->route('settings.update', ['table_name' => 'accounts', 'account' => $account, 'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]])
+            return redirect()->route('settings.update',
+                ['notifications' => Auth()->user()->unreadNotifications,
+                    'table_name' => 'accounts', 'account' => $account,
+                    'recent_properties' => (new FooterController)->footerContent()[0],
+                    'footer_agencies' => (new FooterController)->footerContent()[1]])
                 ->with('success', 'Your settings are saved.');
 
         } catch (Throwable $e) {

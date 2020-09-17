@@ -48,6 +48,7 @@
                                     @include('website.account.sidebar')
                                 </div>
                                 <div class="col-md-9">
+                                    @include('website.layouts.user_notification')
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => ['settings.update', $account], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
@@ -138,6 +139,68 @@
                     theme: 'bootstrap4',
                 });
                 $('[name=default_area_unit]').parent().children().css({'border': '1px solid #ced4da','border-radius': '.25rem'});
+            });
+            $('.btn-accept').on('click', function () {
+                let alert = $(this);
+                let agency_id = alert.attr('data-agency');
+                let user_id = alert.attr('data-user');
+                let notification_id = alert.attr('data-id');
+
+                jQuery.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                jQuery.ajax({
+                    type: 'post',
+                    url: window.location.origin + '/property' + '/dashboard/agencies/accept-invitation',
+                    data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
+                    dataType: 'json',
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status === 200) {
+                            alert.closest('.alert').remove();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    },
+                    complete: function (url, options) {
+
+                    }
+                });
+            });
+            $('.btn-reject').on('click', function () {
+                let alert = $(this);
+                let notification_id = alert.attr('data-id');
+
+                jQuery.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                jQuery.ajax({
+                    type: 'post',
+                    url: window.location.origin + '/property' + '/dashboard/agencies/reject-invitation',
+                    data: {'notification_id': notification_id},
+                    dataType: 'json',
+                    success: function (data) {
+                        // console.log(data);
+                        if (data.status === 200) {
+                            alert.closest('.alert').remove();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    },
+                    complete: function (url, options) {
+
+                    }
+                });
             });
         })(jQuery);
     </script>

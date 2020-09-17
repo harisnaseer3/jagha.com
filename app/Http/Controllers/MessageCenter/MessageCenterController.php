@@ -27,9 +27,10 @@ class MessageCenterController extends Controller
     {
         return view('website.message-center.center',
             [
+                'notifications' => Auth()->user()->unreadNotifications,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
-       
+
     }
 }
