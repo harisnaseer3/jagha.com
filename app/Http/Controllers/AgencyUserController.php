@@ -60,9 +60,10 @@ class AgencyUserController extends Controller
         $status_checks = DB::table('notifications')->select('read_at', 'notifiable_id')
             ->where('data', '=', $data)->get();
         foreach ($status_checks as $status_check) {
+            $status = '';
             if ($status_check->read_at == null) {
                 $status = 'pending';
-            } else if (DB::table('agency_users')->where('user_id', '=', $status_check->notifiable_id)->exists()) {
+            } else if (DB::table('agency_users')->where('user_id', '=', $status_check->notifiable_id)->where('agency_id', '=', $agency_data->id)->exists()) {
                 $status = 'accepted';
             } else {
                 $status = 'rejected';
@@ -156,9 +157,10 @@ class AgencyUserController extends Controller
             $status_checks = DB::table('notifications')->select('read_at', 'notifiable_id')
                 ->where('data', '=', $data)->get();
             foreach ($status_checks as $status_check) {
+                $status = '';
                 if ($status_check->read_at == null) {
                     $status = 'pending';
-                } else if (DB::table('agency_users')->where('user_id', '=', $status_check->notifiable_id)->exists()) {
+                } else if (DB::table('agency_users')->where('user_id', '=', $status_check->notifiable_id)->where('agency_id', '=', $agency_data->id)->exists()) {
                     $status = 'accepted';
                 } else {
                     $status = 'rejected';
@@ -177,12 +179,14 @@ class AgencyUserController extends Controller
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ];
+
+
         if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
-            return view('website.agency.add_agency_users', $data)->with('success', 'Agency invitation has been sent to users' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) not found' . ' ' . implode(',', $new_id_users) . ' ' . implode(',', $new_email_users));
+            return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users).' not found.');
         else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
-            return view('website.agency.add_agency_users', $data)->with('success', 'Agency invitation has been sent to user(s).');
+            return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
         else if (count($users) == 0) #if no users found
-            return view('website.agency.add_agency_users', $data)->with('error', 'User(s) not found' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users));
+            return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users).' not found.');
     }
 
     public function acceptInvitation(Request $request)
