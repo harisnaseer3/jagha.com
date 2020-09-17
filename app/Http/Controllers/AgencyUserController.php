@@ -52,10 +52,31 @@ class AgencyUserController extends Controller
     {
         $user = Auth::user()->getAuthIdentifier();
         $current_agency_users = User::select('id','email','name','phone')->whereIn('id',DB::table('agency_users')->select('user_id')->where('agency_id','=',$id)->pluck('user_id')->toArray())->get();
+        $status = '';
+        $agency_data = Agency::where('id', '=', $id)->first();
+        $data = '{"name":"' . $agency_data->title . '","id":' . $agency_data->id . '}';
+        $user_status = [];
 
+        $status_checks = DB::table('notifications')->select('read_at', 'notifiable_id')
+            ->where('data', '=', $data)->get();
+        foreach ($status_checks as $status_check) {
+            if ($status_check->read_at == null) {
+                $status = 'pending';
+            } else if (DB::table('agency_users')->where('user_id', '=', $status_check->notifiable_id)->exists()) {
+                $status = 'accepted';
+            } else {
+                $status = 'rejected';
+            }
+            $user_status[] = [
+                'user_id' => $status_check->notifiable_id,
+                'user_email' => User::select('email')->where('id', '=', $status_check->notifiable_id)->first()->email,
+                'status' => $status
+            ];
+        }
 
 
         $data = [
+            'users_status' => $user_status,
             'agency' => (new AgencyController)->getAgencyById($id),
             'counts' => (new AgencyController)->getAgencyListingCount($user),
             'recent_properties' => (new FooterController)->footerContent()[0],
@@ -130,9 +151,7 @@ class AgencyUserController extends Controller
 
         $user = Auth::user()->getAuthIdentifier();
         $user_status = [];
-//        if (count($users) > 0) {
-//            $data = '{"name":"' . $agency_data->title . '","id":' . $agency_data->id . '}';
-//            foreach ($users as $notified_user) {
+
             $status = '';
             $status_checks = DB::table('notifications')->select('read_at', 'notifiable_id')
                 ->where('data', '=', $data)->get();
@@ -150,7 +169,6 @@ class AgencyUserController extends Controller
                     'status' => $status
                 ];
             }
-//        }
         $data = [
             'users_status' => $user_status,
             'agency' => (new AgencyController)->getAgencyById($agency),
