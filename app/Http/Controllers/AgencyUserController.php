@@ -48,7 +48,7 @@ class AgencyUserController extends Controller
     public function addUsers($id)
     {
         $user = Auth::user()->getAuthIdentifier();
-        $current_agency_users = User::select('id','email')->whereIn('id',DB::table('agency_users')->select('user_id')->where('agency_id','=',$id)->pluck('user_id')->toArray())->get();
+        $current_agency_users = User::select('id','email','name','phone')->whereIn('id',DB::table('agency_users')->select('user_id')->where('agency_id','=',$id)->pluck('user_id')->toArray())->get();
 
         $data = [
             'agency' => (new AgencyController)->getAgencyById($id),
