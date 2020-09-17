@@ -182,11 +182,11 @@ class AgencyUserController extends Controller
 
 
         if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
-            return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users).' not found.');
+            return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users).' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
         else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
             return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
         else if (count($users) == 0) #if no users found
-            return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users).' not found.');
+            return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users).' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
     }
 
     public function acceptInvitation(Request $request)
