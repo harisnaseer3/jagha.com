@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use App\Models\Dashboard\User;
+use App\Models\UserInvite;
 use App\Notifications\AddAgencyUser;
+use App\Notifications\Property\PropertyActivatedNotification;
+use App\Notifications\SendMailToJoinNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,6 +53,7 @@ class AgencyUserController extends Controller
         $user = Auth::user()->getAuthIdentifier();
         $current_agency_users = User::select('id','email','name','phone')->whereIn('id',DB::table('agency_users')->select('user_id')->where('agency_id','=',$id)->pluck('user_id')->toArray())->get();
 
+
         $data = [
             'agency' => (new AgencyController)->getAgencyById($id),
             'counts' => (new AgencyController)->getAgencyListingCount($user),
@@ -66,19 +70,31 @@ class AgencyUserController extends Controller
         $users = [];
         $user_emails = $request->input('email');
         $user_ids = $request->input('id');
+        $agency_data = Agency::where('id', '=', $agency_id)->first();
         foreach ($user_emails as $user_email) {
             if ($user_email) {
-                $users[] = User::select('id')->where('email', '=', $user_email)->first();
+                if (User::select('id')->where('email', '=', $user_email)->first()) {
+                    $users[] = User::select('id')->where('email', '=', $user_email)->first();
+                } else {
+                    DB::table('user_invites')
+                        ->updateOrInsert(
+                            ['email' => $user_email],
+                            ['email' => $user_email]
+                        );
+                    $new_user = UserInvite::where('email', '=', $user_email)->first();
+                    Notification::send($new_user, new SendMailToJoinNotification($agency_data));
+                }
             }
         }
         foreach ($user_ids as $user_id) {
             if ($user_id) {
-                $users[] = User::select('id')->where('id', '=', $user_id)->first();
+                if (User::select('id')->where('id', '=', $user_id)->first())
+                    $users[] = User::select('id')->where('id', '=', $user_id)->first();
             }
         }
+        if (count($users) > 0)
+            Notification::send($users, new AddAgencyUser($agency_data));
 
-        $agency_data = Agency::where('id', '=', $agency_id)->first();
-        Notification::send($users, new AddAgencyUser($agency_data));
         $user = Auth::user()->getAuthIdentifier();
 
         $data = [
@@ -95,9 +111,11 @@ class AgencyUserController extends Controller
     public function acceptInvitation(Request $request)
     {
         if ($request->ajax()) {
-            if (User::where('id', $request->user_id)->exists() && Agency::where('id', $request->agency_id)->exists()) {
-                if (!(DB::table('agency_users')->where('agency_id', $request->agency_id)->where('user_id', $request->user_id)->first())) {
-                    DB::table('agency_users')->insert(['agency_id' => $request->agency_id, 'user_id' => $request->user_id]);
+            if (Agency::where('id', $request->agency_id)->exists()) {
+                if (User::where('id', $request->user_id)->exists()) {
+                    if (!(DB::table('agency_users')->where('agency_id', $request->agency_id)->where('user_id', $request->user_id)->first())) {
+                        DB::table('agency_users')->insert(['agency_id' => $request->agency_id, 'user_id' => $request->user_id]);
+                    }
                 }
             }
             auth()->user()
