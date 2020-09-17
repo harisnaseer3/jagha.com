@@ -156,7 +156,35 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        @if(isset($users_status) && count($users_status) > 0)
+                                            <div class="row mt-3">
+                                                <div class="col-md-12">
+                                                    <div><h6> Agency Invitation Status</h6></div>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-md table-bordered" id="agency-users-table">
+                                                            <thead class="theme-blue color-white">
+                                                            <tr>
+                                                                <th>Sr</th>
+                                                                <th>AboutPakistan ID</th>
+                                                                <th>Email Address</th>
+                                                                <th>Status</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($users_status as $key => $value)
+                                                                <tr>
+                                                                    <td>{{$key + 1}}</td>
+                                                                    <td>{{$value['user_id']}}</td>
+                                                                    <td>{{$value['user_email']}}</td>
+                                                                    <td>{{ucwords($value['status'])}}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
