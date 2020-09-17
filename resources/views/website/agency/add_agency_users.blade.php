@@ -32,7 +32,6 @@
                                 <div class="card card-gray ">
                                     <div class="card-header theme-blue color-white">
                                         Agency Users
-
                                     </div>
                                     <div class="card-body">
                                         <h6> Agency Information</h6>
@@ -69,30 +68,30 @@
                                         </div>
                                         <h6 class="mt-2"> Registered Users</h6>
 
-                                                <table class="table table-md table-bordered">
-                                                    <thead class="theme-blue color-white">
+                                        <table class="table table-md table-bordered">
+                                            <thead class="theme-blue color-white">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>AboutPakistan ID</th>
+                                                <th>Name</th>
+                                                <th>Email Address</th>
+                                                <th>Phone</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @if(isset($current_agency_users) && count($current_agency_users) > 0)
+                                                @foreach($current_agency_users as $agency_user)
                                                     <tr>
-                                                        <th>#</th>
-                                                        <th>AboutPakistan ID</th>
-                                                        <th>Name</th>
-                                                        <th>Email Address</th>
-                                                        <th>Phone</th>
+                                                        <td>{{$loop->iteration}}</td>
+                                                        <td>{{$agency_user->id}}</td>
+                                                        <td>{{$agency_user->name}}</td>
+                                                        <td>{{$agency_user->email}}</td>
+                                                        <td>{{$agency_user->phone}}</td>
                                                     </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @if(isset($current_agency_users) && count($current_agency_users) > 0)
-                                                        @foreach($current_agency_users as $agency_user)
-                                                            <tr>
-                                                                <td>{{$loop->iteration}}</td>
-                                                                <td>{{$agency_user->id}}</td>
-                                                                <td>{{$agency_user->name}}</td>
-                                                                <td>{{$agency_user->email}}</td>
-                                                                <td>{{$agency_user->phone}}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif
-                                                    </tbody>
-                                                </table>
+                                                @endforeach
+                                            @endif
+                                            </tbody>
+                                        </table>
                                         <div class="card">
                                             <div class="card-header bg-secondary color-white">
                                                 Add User
@@ -105,7 +104,7 @@
                                                                 <div class="radio">
                                                                     <label class="radio-inline control-label">
                                                                         <input type="radio" name="user_add_by" value="Id" class="mb-2 mr-2" checked="checked"> By AboutPakistan ID
-                                                                        <input type="number" min="2" class="form-control form-control-md mr-3 ml-3"  id="user-id" name="user-id"/>
+                                                                        <input type="number" min="2" class="form-control form-control-md mr-3 ml-3" id="user-id" name="user-id"/>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -129,7 +128,7 @@
                                                 </div>
                                                 <div class="row mb-2">
                                                     <div class="col-md-12">
-                                                    <div id="error-message" style="display:none; color:red;"></div>
+                                                        <div id="error-message" style="display:none; color:red;"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,8 +193,6 @@
             </div>
         </div>
     </div>
-
-
     @include('website.includes.footer')
 @endsection
 
@@ -204,15 +201,14 @@
         (function ($) {
             $(document).ready(function () {
                 const logged_in_user ={{Auth::user()->getAuthIdentifier()}};
-                const logged_in_email ='{{Auth::user()->email}}';
-                $('input[type=radio][name=user_add_by]').change(function() {
+                const logged_in_email = '{{Auth::user()->email}}';
+                $('input[type=radio][name=user_add_by]').change(function () {
                     if (this.value === 'Id') {
                         $("#user-id").attr("readonly", false);
                         $("#user-mail").attr("readonly", true);
                         $('#error-message').slideUp();
                         $('#user-mail').val('');
-                    }
-                    else if (this.value === 'Email') {
+                    } else if (this.value === 'Email') {
                         $("#user-mail").attr("readonly", false);
                         $("#user-id").attr("readonly", true);
                         $('#error-message').slideUp();
@@ -236,7 +232,7 @@
 
                     let rowCount = $('#agency-users-table tbody tr').length;
                     console.log(rowCount);
-                    if (rowCount === 1){
+                    if (rowCount === 1) {
 
                         $('#agency-users-table').slideUp();
                         $(".user-submit").addClass("d-none");
@@ -254,13 +250,13 @@
                         $('#error-message').html('* AboutPakistan ID is required').slideDown();
                         return;
                     }
-                    if(id.val() == logged_in_user) {
+                    if (id.val() == logged_in_user) {
 
                         $('#error-message').html('* Specify ID other than your ID').slideDown();
                         id.val('');
                         return;
                     }
-                    if(email.val() === logged_in_email) {
+                    if (email.val() === logged_in_email) {
 
                         $('#error-message').html('* Specify email other than your email').slideDown();
                         email.val('');
@@ -272,17 +268,14 @@
                         $('#error-message').html('* Email Address is required.').slideDown();
                         return;
                     }
-                    if(email.val() !== '' && IsEmail(email.val()) === false)
-                    {
+                    if (email.val() !== '' && IsEmail(email.val()) === false) {
                         e.preventDefault();
                         $('#error-message').html('* Incorrect email format').slideDown();
                         return;
 
-                    }
-                    else {
+                    } else {
                         $('#error-message').slideUp();
                     }
-
 
 
                     const html =
@@ -301,6 +294,7 @@
                     id.val('');
                     email.val('');
                 });
+
                 function IsEmail(email) {
                     var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
                     return regex.test(email);
