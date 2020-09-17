@@ -47,7 +47,7 @@ class SendMailToJoinNotification extends Notification
         return (new MailMessage)
             ->subject('Invitation to Join About Pakistan Property Portal!!')
             ->greeting('Greetings!')
-            ->line("Agency named {$agency_title} wants to add you as an agent on About Pakistan Property Portal.Click on the following Register button to Sign up on the About Pakistan Property Portal")
+            ->line("Agency named {$agency_title} wants to add you as an agent on About Pakistan Property Portal.Click on the following Register button to SignUp on the About Pakistan Property Portal.")
             ->action('Register', route('register'));
     }
 
