@@ -1,11 +1,11 @@
 @component('mail::message')
 # Greetings
 
-MR. {{ $name }}, hope your are doing good.
-A {{ $visitor }}, view your property and sent you an email.
+Mr. {{ $name }}, hope your are doing good.
+A {{ $visitor }}, has recently viewed your property and sent you an email.
 
 # Message
-{{ $message }}
+{{ html_entity_decode($message, ENT_HTML5) }}
 
 
 # Contact Details of the visitor

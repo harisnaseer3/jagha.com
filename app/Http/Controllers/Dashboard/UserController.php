@@ -110,7 +110,8 @@ class UserController extends Controller
 //        $user->user_roles = $roles;
 //        return view('user.edit', ['table_name' => 'users', 'user' => $user, 'roles' => Role::all()]);
         return view('website.account.profile',
-            ['user' => $user,
+            ['notifications' => Auth()->user()->unreadNotifications,
+                'user' => $user,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
@@ -208,7 +209,9 @@ class UserController extends Controller
     public function editPassword()
     {
         $data = [
-            'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]
+            'notifications' => Auth()->user()->unreadNotifications,
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
         return view('website.account.password', $data);
     }
@@ -237,6 +240,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
+
             return redirect()->route('user.password.update')->withErrors($validator->errors())->with('error', 'Error updating password, Resolve following error(s).');
         }
 
