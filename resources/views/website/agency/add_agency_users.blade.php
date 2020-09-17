@@ -105,7 +105,7 @@
                                                                 <div class="radio">
                                                                     <label class="radio-inline control-label">
                                                                         <input type="radio" name="user_add_by" value="Id" class="mb-2 mr-2" checked="checked"> By AboutPakistan ID
-                                                                        <input type="text" class="form-control form-control-md mr-3 ml-3"  id="user-id" name="user-id"/>
+                                                                        <input type="number" min="2" class="form-control form-control-md mr-3 ml-3"  id="user-id" name="user-id"/>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -203,16 +203,20 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+                const logged_in_user ={{Auth::user()->getAuthIdentifier()}};
+                const logged_in_email ='{{Auth::user()->email}}';
                 $('input[type=radio][name=user_add_by]').change(function() {
                     if (this.value === 'Id') {
                         $("#user-id").attr("readonly", false);
                         $("#user-mail").attr("readonly", true);
                         $('#error-message').slideUp();
+                        $('#user-mail').val('');
                     }
                     else if (this.value === 'Email') {
                         $("#user-mail").attr("readonly", false);
                         $("#user-id").attr("readonly", true);
                         $('#error-message').slideUp();
+                        $('#id').val('');
                     }
                 });
 
@@ -229,7 +233,10 @@
                     e.preventDefault();
                     $(this).closest('tr').remove();
 
-                    if ($('#agency-users-table tbody').html() === ''){
+
+                    let rowCount = $('#agency-users-table tbody tr').length;
+                    console.log(rowCount);
+                    if (rowCount === 1){
 
                         $('#agency-users-table').slideUp();
                         $(".user-submit").addClass("d-none");
@@ -247,15 +254,36 @@
                         $('#error-message').html('* AboutPakistan ID is required').slideDown();
                         return;
                     }
+                    if(id.val() == logged_in_user) {
+
+                        $('#error-message').html('* Specify ID other than your ID').slideDown();
+                        id.val('');
+                        return;
+                    }
+                    if(email.val() === logged_in_email) {
+
+                        $('#error-message').html('* Specify email other than your email').slideDown();
+                        email.val('');
+                        return;
+                    }
 
                     if (type.val() === 'Email' && email.val() === '') {
 
                         $('#error-message').html('* Email Address is required.').slideDown();
                         return;
                     }
+                    if(email.val() !== '' && IsEmail(email.val()) === false)
+                    {
+                        e.preventDefault();
+                        $('#error-message').html('* Incorrect email format').slideDown();
+                        return;
+
+                    }
                     else {
                         $('#error-message').slideUp();
                     }
+
+
 
                     const html =
                         '<tr>' +
@@ -273,6 +301,10 @@
                     id.val('');
                     email.val('');
                 });
+                function IsEmail(email) {
+                    var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                    return regex.test(email);
+                }
             });
         })(jQuery);
 
