@@ -53,6 +53,7 @@ class AgencyUserController extends Controller
         $user = Auth::user()->getAuthIdentifier();
         $current_agency_users = User::select('id', 'email')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
 
+
         $data = [
             'agency' => (new AgencyController)->getAgencyById($id),
             'counts' => (new AgencyController)->getAgencyListingCount($user),
@@ -61,50 +62,108 @@ class AgencyUserController extends Controller
             'current_agency_users' => $current_agency_users
         ];
         return view('website.agency.add_agency_users', $data);
+
     }
 
     public function storeAgencyUsers(Request $request, string $agency)
     {
+        $current_agency_users = User::select('id', 'email')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $agency)->pluck('user_id')->toArray())->get();
+
         $agency_id = $agency;
         $users = [];
         $user_emails = $request->input('email');
         $user_ids = $request->input('id');
         $agency_data = Agency::where('id', '=', $agency_id)->first();
+        $new_email_users = [];
+        $new_id_users = [];
+        $existing_email_user = [];
+        $existing_id_user = [];
+        $data = '{"name":"' . $agency_data->title . '","id":' . $agency_data->id . '}';
+
         foreach ($user_emails as $user_email) {
             if ($user_email) {
                 if (User::select('id')->where('email', '=', $user_email)->first()) {
-                    $users[] = User::select('id')->where('email', '=', $user_email)->first();
+                    if (DB::table('notifications')
+                        ->where('notifiable_id', '=', User::select('id')->where('email', '=', $user_email)->first()->id)
+                        ->where('data', '=', $data)->exists()) {
+                        $existing_email_user[] = $user_email;
+                    } else {
+                        $existing_email_user[] = $user_email;
+                        $users[] = User::select('id', 'email')->where('email', '=', $user_email)->first();
+                    }
+
                 } else {
+                    $new_email_users[] = $user_email;
                     DB::table('user_invites')
                         ->updateOrInsert(
                             ['email' => $user_email],
                             ['email' => $user_email]
                         );
                     $new_user = UserInvite::where('email', '=', $user_email)->first();
+                    //  send mail to new user
                     Notification::send($new_user, new SendMailToJoinNotification($agency_data));
                 }
             }
         }
         foreach ($user_ids as $user_id) {
             if ($user_id) {
-                if (User::select('id')->where('id', '=', $user_id)->first())
-                    $users[] = User::select('id')->where('id', '=', $user_id)->first();
+                if (User::select('id')->where('id', '=', $user_id)->first()) {
+                    if (DB::table('notifications')
+                        ->where('notifiable_id', '=', $user_id)
+                        ->where('data', '=', $data)->exists()) {
+                        $existing_id_user[] = $user_id;
+                    } else {
+                        $existing_id_user[] = $user_id;
+                        $users[] = User::select('id', 'email')->where('id', '=', $user_id)->first();
+                    }
+                } else {
+                    $new_id_users[] = $user_id;
+                }
             }
         }
-        if (count($users) > 0)
+        if (count($users) > 0) {
+            //            send notification to user profile
             Notification::send($users, new AddAgencyUser($agency_data));
+        }
+
 
         $user = Auth::user()->getAuthIdentifier();
-
+        $user_status = [];
+//        if (count($users) > 0) {
+//            $data = '{"name":"' . $agency_data->title . '","id":' . $agency_data->id . '}';
+//            foreach ($users as $notified_user) {
+            $status = '';
+            $status_checks = DB::table('notifications')->select('read_at', 'notifiable_id')
+                ->where('data', '=', $data)->get();
+            foreach ($status_checks as $status_check) {
+                if ($status_check->read_at == null) {
+                    $status = 'pending';
+                } else if (DB::table('agency_users')->where('user_id', '=', $status_check->notifiable_id)->exists()) {
+                    $status = 'accepted';
+                } else {
+                    $status = 'rejected';
+                }
+                $user_status[] = [
+                    'user_id' => $status_check->notifiable_id,
+                    'user_email' => User::select('email')->where('id', '=', $status_check->notifiable_id)->first()->email,
+                    'status' => $status
+                ];
+            }
+//        }
         $data = [
+            'users_status' => $user_status,
             'agency' => (new AgencyController)->getAgencyById($agency),
             'counts' => (new AgencyController)->getAgencyListingCount($user),
+            'current_agency_users' => $current_agency_users,
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ];
-//        return view('website.agency.add_agency_users', $data);
-        return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users');
-
+        if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
+            return view('website.agency.add_agency_users', $data)->with('success', 'Agency invitation has been sent to users' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) not found' . ' ' . implode(',', $new_id_users) . ' ' . implode(',', $new_email_users));
+        else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
+            return view('website.agency.add_agency_users', $data)->with('success', 'Agency invitation has been sent to user(s).');
+        else if (count($users) == 0) #if no users found
+            return view('website.agency.add_agency_users', $data)->with('error', 'User(s) not found' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users));
     }
 
     public function acceptInvitation(Request $request)
