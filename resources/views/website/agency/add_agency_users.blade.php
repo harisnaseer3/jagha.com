@@ -67,6 +67,32 @@
                                                 <strong>Website:</strong>{{$agency->website}}
                                             </div>
                                         </div>
+                                        <h6 class="mt-2"> Registered Users</h6>
+
+                                                <table class="table table-md table-bordered">
+                                                    <thead class="theme-blue color-white">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>AboutPakistan ID</th>
+                                                        <th>Name</th>
+                                                        <th>Email Address</th>
+                                                        <th>Phone</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @if(isset($current_agency_users) && count($current_agency_users) > 0)
+                                                        @foreach($current_agency_users as $agency_user)
+                                                            <tr>
+                                                                <td>{{$loop->iteration}}</td>
+                                                                <td>{{$agency_user->id}}</td>
+                                                                <td>{{$agency_user->name}}</td>
+                                                                <td>{{$agency_user->email}}</td>
+                                                                <td>{{$agency_user->phone}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                    </tbody>
+                                                </table>
                                         <div class="card">
                                             <div class="card-header bg-secondary color-white">
                                                 Add User
@@ -79,7 +105,7 @@
                                                                 <div class="radio">
                                                                     <label class="radio-inline control-label">
                                                                         <input type="radio" name="user_add_by" value="Id" class="mb-2 mr-2" checked="checked"> By AboutPakistan ID
-                                                                        <input type="text" class="form-control form-control-md mr-3 ml-3" id="user-id" name="user-id"/>
+                                                                        <input type="text" class="form-control form-control-md mr-3 ml-3"  id="user-id" name="user-id"/>
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -87,17 +113,23 @@
                                                                 <div class="radio">
                                                                     <label class="radio-inline control-label">
                                                                         <input type="radio" name="user_add_by" value="Email" class="mb-2 mr-2"> By Email Address
-                                                                        <input type="email" class="form-control form-control-md  ml-3" id="user-mail" name="user-mail"/>
+                                                                        <input type="email" class="form-control form-control-md  ml-3" readonly id="user-mail" name="user-mail"/>
                                                                     </label>
                                                                 </div>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
+
                                                 <div class="row mb-3">
-                                                    <div class="col-md-5">
+                                                    <div class="col-md-12">
                                                         <a href="#" class="btn btn-sm btn-primary" id="add_user">Add User</a>
                                                         <a href="#" class="btn btn-sm btn-warning " id="clear">Clear</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-md-12">
+                                                    <div id="error-message" style="display:none; color:red;"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,7 +138,7 @@
                                             <div class="col-md-12">
                                                 <div class="table-responsive">
                                                     {{ Form::open(['route' => ['agencies.store-agency-users', $agency->id], 'method' => 'post', 'role' => 'form']) }}
-                                                    <table class="table table-md table-bordered" id="agency-users-table">
+                                                    <table class="table table-md table-bordered" id="agency-users-table" style="display:none;">
                                                         <thead class="theme-blue color-white">
                                                         <tr>
                                                             <th>Type</th>
@@ -116,23 +148,15 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @if(isset($current_agency_users) && count($current_agency_users) > 0)
-                                                            @foreach($current_agency_users as $agency_user)
-                                                            <tr>
-                                                                <td></td>
-                                                                <td>{{$agency_user->id}}</td>
-                                                                <td>{{$agency_user->email}}</td>
-                                                                <td></td>
-                                                            </tr>
-                                                            @endforeach
-                                                        @endif
                                                         </tbody>
+
                                                     </table>
-                                                    {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn ml-1 mb-1 user-submit']) }}
+                                                    {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md d-none search-submit-btn ml-1 mb-1 user-submit']) }}
                                                     {{ Form::close() }}
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -151,15 +175,37 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+                $('input[type=radio][name=user_add_by]').change(function() {
+                    if (this.value === 'Id') {
+                        $("#user-id").attr("readonly", false);
+                        $("#user-mail").attr("readonly", true);
+                        $('#error-message').slideUp();
+                    }
+                    else if (this.value === 'Email') {
+                        $("#user-mail").attr("readonly", false);
+                        $("#user-id").attr("readonly", true);
+                        $('#error-message').slideUp();
+                    }
+                });
 
                 $('#clear').on('click', function (e) {
+                    $('#agency-users-table').slideUp();
                     $("#agency-users-table tbody").empty();
+                    $(".user-submit").addClass("d-none");
+
                     id.val('');
                     email.val('');
+
                 });
                 $('#agency-users-table tbody').on('click', '.user-delete', function (e) {
                     e.preventDefault();
                     $(this).closest('tr').remove();
+
+                    if ($('#agency-users-table tbody').html() === ''){
+
+                        $('#agency-users-table').slideUp();
+                        $(".user-submit").addClass("d-none");
+                    }
                 });
                 // runs on add payment button click
                 $('#add_user').on('click', function (e) {
@@ -170,12 +216,17 @@
                     const email = $('#user-mail');
 
                     if (type.val() === 'Id' && id.val() === '') {
-                        alert('AboutPakistan Id is required');
+                        $('#error-message').html('* AboutPakistan ID is required').slideDown();
                         return;
                     }
+
                     if (type.val() === 'Email' && email.val() === '') {
-                        alert('Email Address is required.');
+
+                        $('#error-message').html('* Email Address is required.').slideDown();
                         return;
+                    }
+                    else {
+                        $('#error-message').slideUp();
                     }
 
                     const html =
@@ -186,7 +237,8 @@
                         '  <td><button class="btn btn-danger btn-sm user-delete"><i class="fas fa-trash-alt"></i></button> </td>' +
                         '</tr>';
 
-                    $('#agency-users-table').find('tbody').append(html);
+                    $('#agency-users-table').slideDown().find('tbody').append(html);
+                    $(".user-submit").removeClass("d-none");
 
                     //Reset Fields
                     $("input[name=user_add_by][value=Id]").prop('checked', true);
