@@ -190,7 +190,7 @@ class AgencyUserController extends Controller
        else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
             return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
        else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
-           return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+           return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
 
     }
 
