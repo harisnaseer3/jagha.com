@@ -186,8 +186,7 @@ class PropertyController extends Controller
             array_push($agency_ids,$ids->agency_id);
         }
 
-        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('user_id', '=', Auth::user()->getAuthIdentifier())
-            ->where('status', '=', 'verified')->get();
+        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
 
         $agencies = [];
         foreach ($agencies_data as $agency) {
@@ -530,8 +529,7 @@ class PropertyController extends Controller
         foreach ($agencies_ids as $ids) {
             array_push($agency_ids,$ids->agency_id);
         }
-        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('user_id', '=', $property->user_id)
-            ->where('status', '=', 'verified')->get();
+        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
 
         $agencies = [];
         foreach ($agencies_data as $agency) {
