@@ -1755,3 +1755,6 @@ hr.solid {
 .info-box-number {
     font-size: 2em;
 }
+.proper-case{
+    text-transform: capitalize !important;
+}
