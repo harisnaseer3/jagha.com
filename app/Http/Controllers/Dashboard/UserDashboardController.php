@@ -33,14 +33,14 @@ class UserDashboardController extends Controller
 
         $user = (new User)->where('id','=',Auth::user()->getAuthIdentifier())->first();
         $agencies = count((new Agency)->where('status', '=', 'verified')->whereIn('id', DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->pluck('agency_id')->toArray())->get());
-        $active_properties = (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'active')->get();
+        $active_properties = (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'active');
         $deleted_properties = count((new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'deleted')->get());
         $pending_properties = count((new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'pending')->get());
         return view('website.user-dashboard.dashboard',
             [
                 'user' => $user,
                 'agencies' => $agencies,
-                'active_properties' => $active_properties,
+                'active_properties' => $active_properties->paginate(10),
                 'pending_properties' => $pending_properties,
                 'deleted_properties' => $deleted_properties,
                 'notifications' => Auth()->user()->unreadNotifications,
