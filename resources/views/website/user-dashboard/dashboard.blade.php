@@ -46,7 +46,7 @@
                                 {{--                                </div>--}}
                                 @include('website.layouts.user_notification')
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
+                                    <div class="col-lg-3 col-md-4 col-sm-12">
                                         <div class="team-2">
                                             <div class="team-photo">
                                                 <img src="{{asset('img/logo/dummy-logo.png')}}" alt="agent-2" class="img-fluid">
@@ -68,73 +68,89 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-9 col-md-6 col-sm-12">
+                                    <div class="col-lg-9 col-md-8 col-sm-12">
                                         <div class="row">
-                                            <div class="col-sm-3">
-                                                <div class="panel panel-success">
-                                                    <div class="panel-heading"><h3 class="panel-title">User Account Stats</h3></div>
-                                                    <div class="panel-body"> Nulla porttitor accumsan tincidunt.</div>
+                                            <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-success"><i class="fas fa-hospital"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Active Properties</span>
+                                                    <span class="info-box-number"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <div class="panel panel-success">
-                                                    <div class="panel-heading"><h3 class="panel-title">User Account Stats</h3></div>
-                                                    <div class="panel-body"> Nulla porttitor accumsan tincidunt.</div>
+                                            </div>
+                                            <div class="col-sm-6 col-md-6 col-lg-3">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon bg-warning"><i class="fas fa-hospital"></i></span>
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text"> Pending Properties</span>
+                                                        <span class="info-box-number"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <div class="panel panel-success">
-                                                    <div class="panel-heading"><h3 class="panel-title">User Account Stats</h3></div>
-                                                    <div class="panel-body"> Nulla porttitor accumsan tincidunt.</div>
+                                            <div class="col-sm-6 col-md-6 col-lg-3">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon bg-danger"><i class="fas fa-hospital"></i></span>
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text"> Deleted Properties</span>
+                                                        <span class="info-box-number"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <div class="panel panel-success">
-                                                    <div class="panel-heading"><h3 class="panel-title">User Account Stats</h3></div>
-                                                    <div class="panel-body"> Nulla porttitor accumsan tincidunt.</div>
+                                            <div class="col-sm-6 col-md-6 col-lg-3">
+                                                <div class="info-box">
+                                                    <span class="info-box-icon bg-info"><i class="fas fa-hospital"></i></span>
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text"> Agency Users</span>
+                                                        <span class="info-box-number"></span>
+                                                    </div>
                                                 </div>
                                             </div>
+
+
+
+                                        </div>
+                                        <div><h6>Property Listing</h6></div>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-bordered">
+                                                <thead class="theme-blue text-white">
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Type</td>
+                                                    <td>Location</td>
+                                                    <td>Price (PKR)</td>
+                                                    <td>Area</td>
+                                                    <td>Purpose</td>
+                                                    <td>Status</td>
+                                                    <td>Views</td>
+                                                    <td>Listed Date</td>
+                                                    <td>Controls</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Type</td>
+                                                    <td>Location</td>
+                                                    <td>Price (PKR)</td>
+                                                    <td>Area</td>
+                                                    <td>Purpose</td>
+                                                    <td>Status</td>
+                                                    <td>Views</td>
+                                                    <td>Listed Date</td>
+                                                    <td>Controls</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                </div>
-                                <div><h6>Property Listing</h6></div>
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-bordered">
-                                        <thead class="theme-blue text-white">
-                                        <tr>
-                                            <td>ID</td>
-                                            <td>Type</td>
-                                            <td>Location</td>
-                                            <td>Price (PKR)</td>
-                                            <td>Area</td>
-                                            <td>Purpose</td>
-                                            <td>Status</td>
-                                            <td>Views</td>
-                                            <td>Listed Date</td>
-                                            <td>Controls</td>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>ID</td>
-                                            <td>Type</td>
-                                            <td>Location</td>
-                                            <td>Price (PKR)</td>
-                                            <td>Area</td>
-                                            <td>Purpose</td>
-                                            <td>Status</td>
-                                            <td>Views</td>
-                                            <td>Listed Date</td>
-                                            <td>Controls</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                                    </div>
+                                </div>
+
         </div>
     </div>
 
