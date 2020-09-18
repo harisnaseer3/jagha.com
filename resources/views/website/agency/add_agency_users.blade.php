@@ -74,6 +74,7 @@
                                                 <th>#</th>
                                                 <th>AboutPakistan ID</th>
                                                 <th>Name</th>
+                                                <th>Role</th>
                                                 <th>Email Address</th>
                                                 <th>Phone</th>
                                             </tr>
@@ -85,6 +86,7 @@
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>{{$agency_user->id}}</td>
                                                         <td>{{$agency_user->name}}</td>
+                                                        <td>@if($agency_user->id === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()) Agency Owner @endif</td>
                                                         <td>{{$agency_user->email}}</td>
                                                         <td>{{$agency_user->phone}}</td>
                                                     </tr>
@@ -160,7 +162,7 @@
                                                 <div class="col-md-12">
                                                     <div><h6> Agency Invitation Status</h6></div>
                                                     <div class="table-responsive">
-                                                        <table class="table table-md table-bordered" id="agency-users-table">
+                                                        <table class="table table-md table-bordered">
                                                             <thead class="theme-blue color-white">
                                                             <tr>
                                                                 <th>Sr</th>
@@ -175,7 +177,7 @@
                                                                     <td>{{$key + 1}}</td>
                                                                     <td>{{$value['user_id']}}</td>
                                                                     <td>{{$value['user_email']}}</td>
-                                                                    <td>{{ucwords($value['status'])}}</td>
+                                                                    <td style=" @if($value['status'] === 'pending') color:orange; @elseif($value['status'] === 'accepted') color:green; @elseif($value['status'] === 'rejected') color:red; @endif ">{{ucwords($value['status'])}}</td>
                                                                 </tr>
                                                             @endforeach
                                                             </tbody>
@@ -293,6 +295,8 @@
                     $("input[name=user_add_by][value=Id]").prop('checked', true);
                     id.val('');
                     email.val('');
+                    $("#user-mail").attr("readonly", true);
+                    $("#user-id").attr("readonly", false);
                 });
 
                 function IsEmail(email) {
