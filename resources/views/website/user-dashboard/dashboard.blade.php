@@ -110,7 +110,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($active_properties as $property)
+                                                @forelse($active_properties as $property)
                                                     <tr>
                                                         <td>{{$property->id}}</td>
                                                         <td>{{$property->type}}</td>
@@ -141,7 +141,11 @@
                                                                 <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                             </a></td>
                                                     </tr>
-                                                @endforeach
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                    </tr>
+                                                @endforelse
                                                 </tbody>
                                             </table>
                                         </div>
