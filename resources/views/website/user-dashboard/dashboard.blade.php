@@ -33,7 +33,9 @@
                                                 @endif
                                             </div>
                                             <div class="team-details">
-                                                <h6 class="proper-case">{{ucwords($user->roles[0]->name)}}</h6>
+                                                @if(count($user->roles) > 0)
+                                                    <h6 class="proper-case">{{ucwords($user->roles[0]->name)}}</h6>
+                                                @endif
                                                 <h5><a href="#">{{ucwords($user->name)}}</a></h5>
                                                 <div class="contact">
                                                     <p>
@@ -149,6 +151,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                        {{ $active_properties->links() }}
                                     </div>
                                 </div>
                             </div>
