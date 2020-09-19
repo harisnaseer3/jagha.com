@@ -74,8 +74,6 @@ class AgencyUserController extends Controller
                 'status' => $status
             ];
         }
-
-
         $data = [
             'users_status' => $user_status,
             'agency' => (new AgencyController)->getAgencyById($id),
@@ -85,7 +83,6 @@ class AgencyUserController extends Controller
             'current_agency_users' => $current_agency_users
         ];
         return view('website.agency.add_agency_users', $data);
-
     }
 
     public function storeAgencyUsers(Request $request, string $agency)

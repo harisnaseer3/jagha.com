@@ -520,7 +520,7 @@
                 let agency = $(this).closest('#email-contact-form').find('input[name=agency]').val();
                 // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
                 let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
-                let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + title + ' </a>';
+                let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + property_link + ' </a>';
                 let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>.';
                 let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + '<br><br> Please contact me at your earliest by phone or by email.';
                 phone = $(this).closest('.contact-container').find('input[name=phone]').val();
