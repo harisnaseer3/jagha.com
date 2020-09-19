@@ -81,12 +81,17 @@
                                             </thead>
                                             <tbody>
                                             @if(isset($current_agency_users) && count($current_agency_users) > 0)
+
                                                 @foreach($current_agency_users as $agency_user)
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
                                                         <td>{{$agency_user->id}}</td>
                                                         <td>{{$agency_user->name}}</td>
-                                                        <td>@if($agency_user->id === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()) Agency Owner @endif</td>
+                                                        @if($agency->user_id === $agency_user->id)
+                                                            <td>Agency CEO</td>
+                                                        @elseif(count($agency_user->roles) > 0)
+                                                            <td>{{$agency_user->roles[0]->name}}</td>
+                                                        @endif
                                                         <td>{{$agency_user->email}}</td>
                                                         <td>{{$agency_user->phone}}</td>
                                                     </tr>
