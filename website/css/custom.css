@@ -1746,6 +1746,8 @@ hr.solid {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: large;
+    padding-bottom: 2%;
 }
 .info-box .info-box-number {
 
@@ -1758,3 +1760,18 @@ hr.solid {
 .proper-case{
     text-transform: capitalize !important;
 }
+.fa-home:before {
+    color: white;
+}
+@media (max-width: 1439px) and (min-width: 768px) {
+    .info-box .info-box-text, .info-box .progress-description {
+        font-size:small;
+    }
+}
+.team-1 {
+    background-color: white;
+}
+.image-padding {
+    padding: 20px;
+}
+

@@ -21,79 +21,108 @@
                             <div class="m-4">
                                 @include('website.layouts.user_notification')
                                 <div class="row">
-                                    <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <div class="team-2">
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Active Properties</span>
+                                                    <span class="info-box-number">{{count($active_properties)}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Pending Properties</span>
+                                                    <span class="info-box-number">{{$pending_properties}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Deleted Properties</span>
+                                                    <span class="info-box-number">{{$deleted_properties}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 col-lg-3">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Total Agencies</span>
+                                                    <span class="info-box-number">{{$agencies}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+
+
+
+
+                                <div class="row">
+{{--                                    <div class="col-md-4 col-sm-12 col-lg-2">--}}
+{{--                                        <div class="team-2">--}}
+{{--                                            <div class="team-photo">--}}
+{{--                                                @if(isset($user->image) && $user->image != null)--}}
+{{--                                                    <img src="{{ asset('thumbnails/user_images/'.explode('.',$user->image)[0].'-450x350.webp')}}"--}}
+{{--                                                         alt="{{$user->name}}" title="{{$user->name}}" class="img-fluid" aria-label="user photo">--}}
+{{--                                                @else--}}
+{{--                                                    <img src="{{asset('img/logo/dummy-logo.png')}}"--}}
+{{--                                                         alt="{{$user->name}}" title="{{$user->name}}" class="img-fluid" aria-label="user photo">--}}
+{{--                                                @endif--}}
+{{--                                            </div>--}}
+{{--                                            <div class="team-details">--}}
+{{--                                                @if(count($user->roles) > 0)--}}
+{{--                                                    <h6 class="proper-case">{{ucwords($user->roles[0]->name)}}</h6>--}}
+{{--                                                @endif--}}
+{{--                                                <h5><a href="#">{{ucwords($user->name)}}</a></h5>--}}
+{{--                                                <div class="contact">--}}
+{{--                                                    <p>--}}
+{{--                                                        <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>{{$user->email}}</a>--}}
+{{--                                                    </p>--}}
+{{--                                                    @if($user->cell !== null)--}}
+{{--                                                        <p>--}}
+{{--                                                            <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>{{$user->cell}}</a>--}}
+{{--                                                        </p>--}}
+{{--                                                    @endif--}}
+{{--                                                    @if($user->phone !== null)--}}
+{{--                                                        <p>--}}
+{{--                                                            <a href="#"><i class="fa fa-phone"></i>{{$user->phone}}</a>--}}
+{{--                                                        </p>--}}
+{{--                                                    @endif--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+                                    <div class="col-lg-2 col-md-4 col-sm-6">
+                                        <div class="team-1">
                                             <div class="team-photo">
                                                 @if(isset($user->image) && $user->image != null)
-                                                    <img src="{{ asset('thumbnails/user_images/'.explode('.',$user->image)[0].'-450x350.webp')}}"
-                                                         alt="{{$user->name}}" title="{{$user->name}}" class="img-fluid" aria-label="user photo">
-                                                @else
-                                                    <img src="{{asset('img/logo/dummy-logo.png')}}"
-                                                         alt="{{$user->name}}" title="{{$user->name}}" class="img-fluid" aria-label="user photo">
-                                                @endif
+                                                                                                    <img src="{{ asset('thumbnails/user_images/'.explode('.',$user->image)[0].'-450x350.webp')}}"
+                                                                                                         alt="{{$user->name}}" title="{{$user->name}}" class="img-fluid image-padding rounded-circle" aria-label="user photo">
+                                                                                                @else
+                                                                                                    <img src="{{asset('img/logo/profile.png')}}"
+                                                                                                         alt="{{$user->name}}" title="{{$user->name}}" class="img-fluid image-padding rounded-circle" aria-label="user photo">
+                                                                                                @endif
                                             </div>
                                             <div class="team-details">
-                                                @if(count($user->roles) > 0)
-                                                    <h6 class="proper-case">{{ucwords($user->roles[0]->name)}}</h6>
-                                                @endif
-                                                <h5><a href="#">{{ucwords($user->name)}}</a></h5>
-                                                <div class="contact">
-                                                    <p>
-                                                        <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o"></i>{{$user->email}}</a>
-                                                    </p>
-                                                    @if($user->cell !== null)
-                                                        <p>
-                                                            <a href="tel:+554XX-634-7071"> <i class="fa fa-phone"></i>{{$user->cell}}</a>
-                                                        </p>
-                                                    @endif
-                                                    @if($user->phone !== null)
-                                                        <p>
-                                                            <a href="#"><i class="fa fa-phone"></i>{{$user->phone}}</a>
-                                                        </p>
-                                                    @endif
-                                                </div>
+                                                <h5><a href="agent-detail.html">Martin Smith</a></h5>
+                                                <h6>Web Developer</h6>
+                                                <ul class="social-list clearfix">
+                                                    <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                                    <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                                                    <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                                                    <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-success"><i class="fas fa-hospital"></i></span>
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text"> Active Properties</span>
-                                                        <span class="info-box-number">{{count($active_properties)}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-warning"><i class="fas fa-hospital"></i></span>
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text"> Pending Properties</span>
-                                                        <span class="info-box-number">{{$pending_properties}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-danger"><i class="fas fa-hospital"></i></span>
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text"> Deleted Properties</span>
-                                                        <span class="info-box-number">{{$deleted_properties}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                                <div class="info-box">
-                                                    <span class="info-box-icon bg-info"><i class="fas fa-hospital"></i></span>
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text"> Total Agencies</span>
-                                                        <span class="info-box-number">{{$agencies}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="col-md-8 col-sm-12 col-lg-10">
+
+
                                         <div><h6>Property Listing</h6></div>
                                         <div class="table-responsive">
                                             <table class="table table-sm table-bordered">
@@ -157,10 +186,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
             </div>
         </div>
     </div>
+        </div>
+
 
     <!-- Footer start -->
     @include('website.includes.footer')
