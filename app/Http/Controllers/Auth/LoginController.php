@@ -55,7 +55,7 @@ class LoginController extends Controller
 
         if ($validator->passes()) {
             if (auth()->attempt(array('email' => $request->input('email'),
-                'password' => $request->input('password')), true)) {
+                'password' => $request->input('password')), $request->remember)) {
                 $user = [
                     'name' => Auth::user()->name,
                     'id' => Auth::user()->getAuthIdentifier(),
