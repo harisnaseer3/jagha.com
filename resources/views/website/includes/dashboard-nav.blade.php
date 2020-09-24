@@ -292,26 +292,54 @@
                             {{ Form::close() }}
                         </li>
                         <li class="nav-item user-dropdown">
-                            @if(\Illuminate\Support\Facades\Auth::check())
+                            @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-3"></i>
-                                        @if(\Illuminate\Support\Facades\Auth::check())
-                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::user()->id}})</span>
+                                        @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
+                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('web')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('web')->user()->id}})</span>
                                         @endif
+
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())}}"><i
+                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
-                                        {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i class="fa fa-building-o mr-2"></i>Property Management</a>--}}
+                                        {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
+                                        {{--                                                class="fa fa-building-o mr-2"></i>Property Management</a>--}}
                                         <a class="dropdown-item"
                                            href="{{route('properties.listings',
-                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
                                             <i class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
+                                                class="far fa-sign-out mr-2"></i>Logout</a>
+                                        {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
+                                    </div>
+                                </div>
+                            @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
+                                       aria-expanded="false">
+                                        <i class="fas fa-user mr-3"></i>
+                                        @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})</span>
+                                        @endif
+
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier())}}"><i
+                                                class="far fa-user-cog mr-2"></i>Manage Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
+                                        {{--                                                class="fa fa-building-o mr-2"></i>Property Management</a>--}}
+                                        <a class="dropdown-item"
+                                           href="{{route('properties.listings',
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
+                                            <i class="fa fa-building-o mr-2"></i>Property Management</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{route('accounts.admin-logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
                                         {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                     </div>
