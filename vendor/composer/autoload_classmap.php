@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AdminSeeder' => $baseDir . '/database/seeds/AdminSeeder.php',
     'AgencyPerformanceSeeder' => $baseDir . '/database/seeds/AgencyPerformanceSeeder.php',
     'AgencySeeder' => $baseDir . '/database/seeds/AgencySeeder.php',
     'AgencyUserSeeder' => $baseDir . '/database/seeds/AgencyUserSeeder.php',
@@ -18,6 +19,7 @@ return array(
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Helpers\\Helper' => $baseDir . '/app/Helpers/Helper.php',
     'App\\Http\\Controllers\\AccountController' => $baseDir . '/app/Http/Controllers/AccountController.php',
+    'App\\Http\\Controllers\\AdminAuth\\AuthController' => $baseDir . '/app/Http/Controllers/AdminAuth/AuthController.php',
     'App\\Http\\Controllers\\AgencyCityController' => $baseDir . '/app/Http/Controllers/AgencyCityController.php',
     'App\\Http\\Controllers\\AgencyController' => $baseDir . '/app/Http/Controllers/AgencyController.php',
     'App\\Http\\Controllers\\AgencyPerformanceController' => $baseDir . '/app/Http/Controllers/AgencyPerformanceController.php',
@@ -55,6 +57,7 @@ return array(
     'App\\Http\\Controllers\\SocialAuthFacebookController' => $baseDir . '/app/Http/Controllers/SocialAuthFacebookController.php',
     'App\\Http\\Controllers\\SubscriberController' => $baseDir . '/app/Http/Controllers/SubscriberController.php',
     'App\\Http\\Controllers\\Support\\SupportController' => $baseDir . '/app/Http/Controllers/Support/SupportController.php',
+    'App\\Http\\Controllers\\UserInviteController' => $baseDir . '/app/Http/Controllers/UserInviteController.php',
     'App\\Http\\Controllers\\VideoController' => $baseDir . '/app/Http/Controllers/VideoController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
@@ -70,6 +73,7 @@ return array(
     'App\\Listeners\\SendMailToAgentListener' => $baseDir . '/app/Listeners/SendMailToAgentListener.php',
     'App\\Mail\\ContactAgentMail' => $baseDir . '/app/Mail/ContactAgentMail.php',
     'App\\Models\\Account' => $baseDir . '/app/Models/Account.php',
+    'App\\Models\\Admin' => $baseDir . '/app/Models/Admin.php',
     'App\\Models\\Agency' => $baseDir . '/app/Models/Agency.php',
     'App\\Models\\AgencyPerformance' => $baseDir . '/app/Models/AgencyPerformance.php',
     'App\\Models\\Blog' => $baseDir . '/app/Models/Blog.php',

@@ -11,8 +11,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 justify-content-center">
-                      
-                          
+
+
                           <a href="{{url('/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
                                 <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Login with Facebook</a>
 
@@ -68,6 +68,7 @@
                                 </div>
                             </form>
                             <a href="{{route('register')}}" class="btn btn-block btn-outline sign-in text-bold color-black font-size-14 sign-card">Register to Become a Member</a>
+                            <a href="{{route('admin.login')}}" class="btn btn-block btn-outline sign-in text-bold color-black font-size-14 sign-card">Login As Admin</a>
                         </div>
                     </div>
                 </div>

@@ -616,6 +616,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
     );
 
     public static $classMap = array (
+        'AdminSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminSeeder.php',
         'AgencyPerformanceSeeder' => __DIR__ . '/../..' . '/database/seeds/AgencyPerformanceSeeder.php',
         'AgencySeeder' => __DIR__ . '/../..' . '/database/seeds/AgencySeeder.php',
         'AgencyUserSeeder' => __DIR__ . '/../..' . '/database/seeds/AgencyUserSeeder.php',
@@ -628,6 +629,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Helpers\\Helper' => __DIR__ . '/../..' . '/app/Helpers/Helper.php',
         'App\\Http\\Controllers\\AccountController' => __DIR__ . '/../..' . '/app/Http/Controllers/AccountController.php',
+        'App\\Http\\Controllers\\AdminAuth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminAuth/AuthController.php',
         'App\\Http\\Controllers\\AgencyCityController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyCityController.php',
         'App\\Http\\Controllers\\AgencyController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyController.php',
         'App\\Http\\Controllers\\AgencyPerformanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyPerformanceController.php',
@@ -665,6 +667,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
         'App\\Http\\Controllers\\SocialAuthFacebookController' => __DIR__ . '/../..' . '/app/Http/Controllers/SocialAuthFacebookController.php',
         'App\\Http\\Controllers\\SubscriberController' => __DIR__ . '/../..' . '/app/Http/Controllers/SubscriberController.php',
         'App\\Http\\Controllers\\Support\\SupportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Support/SupportController.php',
+        'App\\Http\\Controllers\\UserInviteController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserInviteController.php',
         'App\\Http\\Controllers\\VideoController' => __DIR__ . '/../..' . '/app/Http/Controllers/VideoController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -680,6 +683,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
         'App\\Listeners\\SendMailToAgentListener' => __DIR__ . '/../..' . '/app/Listeners/SendMailToAgentListener.php',
         'App\\Mail\\ContactAgentMail' => __DIR__ . '/../..' . '/app/Mail/ContactAgentMail.php',
         'App\\Models\\Account' => __DIR__ . '/../..' . '/app/Models/Account.php',
+        'App\\Models\\Admin' => __DIR__ . '/../..' . '/app/Models/Admin.php',
         'App\\Models\\Agency' => __DIR__ . '/../..' . '/app/Models/Agency.php',
         'App\\Models\\AgencyPerformance' => __DIR__ . '/../..' . '/app/Models/AgencyPerformance.php',
         'App\\Models\\Blog' => __DIR__ . '/../..' . '/app/Models/Blog.php',

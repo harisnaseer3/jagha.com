@@ -205,7 +205,12 @@ class AccountController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
+        return redirect()->route('home');
+    }
+    public function adminLogout()
+    {
+        Auth::guard('admin')->logout();
         return redirect()->route('home');
     }
 }

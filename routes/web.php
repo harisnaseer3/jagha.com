@@ -102,6 +102,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
         Route::get('/logout', 'AccountController@logout')->name('accounts.logout');
+        Route::get('/admin-logout', 'AccountController@adminLogout')->name('accounts.admin-logout');
 
         Route::get('/roles', 'AccountController@editRoles')->name('user_roles.edit');
         Route::match(['put', 'patch'], '/roles', 'AccountController@updateRoles')->name('user_roles.update');
@@ -142,6 +143,8 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
     Route::resource('/locations', 'LocationController');
     Route::resource('/cities', 'CityController');
 });
+Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
+Route::post('admin-login', ['as'=>'admin-login','uses'=>'AdminAuth\AuthController@adminLoginPost']);
 
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');

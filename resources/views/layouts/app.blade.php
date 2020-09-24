@@ -20,11 +20,6 @@
 
 <div class="wrapper">
 
-    <!-- Navbar -->
-@include('includes.navbar')
-
-<!-- Main Sidebar Container -->
-@include('includes.sidebar')
 
 <!-- Content Wrapper. Contains page content -->
 @yield('content')
