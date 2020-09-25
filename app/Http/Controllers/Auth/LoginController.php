@@ -31,10 +31,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
-//    protected $redirectTo = url()->full();
 
-//    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -57,9 +55,9 @@ class LoginController extends Controller
             if (auth()->attempt(array('email' => $request->input('email'),
                 'password' => $request->input('password')), $request->remember)) {
                 $user = [
-                    'name' => Auth::user()->name,
-                    'id' => Auth::user()->getAuthIdentifier(),
-                    'email'=>Auth::user()->email
+                    'name' => Auth::guard('web')->user()->name,
+                    'id' => Auth::guard('web')->user()->getAuthIdentifier(),
+                    'email' => Auth::guard('web')->user()->email
                 ];
                 return response()->json(['data' => 'success', 'user' => $user]);
             }

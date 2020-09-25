@@ -1,6 +1,5 @@
 <?php
 
-use App\Mail\ContactAgentMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +50,6 @@ Route::get('partners-{city}/{slug}_{agency}', 'AgencyController@show')->name('ag
 Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
 Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
-
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::resource('properties', 'PropertyController')->except(['index', 'show']);
     Route::resource('images', 'ImageController')->only(['destroy']);
@@ -101,8 +99,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
-        Route::get('/logout', 'AccountController@logout')->name('accounts.logout');
-        Route::get('/admin-logout', 'AccountController@adminLogout')->name('accounts.admin-logout');
+        Route::get('/logout', 'AccountController@userLogout')->name('accounts.logout');
 
         Route::get('/roles', 'AccountController@editRoles')->name('user_roles.edit');
         Route::match(['put', 'patch'], '/roles', 'AccountController@updateRoles')->name('user_roles.update');
@@ -119,8 +116,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 //    ajax call to change status by the user
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('change.property.status');
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('change.agency.status');
-});
 
+});
 
 Route::group(['prefix' => 'properties'], function () {
     Route::get('/search', 'PropertyController@search')->name('properties.search');
@@ -132,8 +129,8 @@ Route::group(['prefix' => 'properties'], function () {
 Auth::routes();
 //only logged in user can view following
 Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' => 'auth'], function () {
-    Route::get('/', 'DashboardController@index');
-    Route::get('/logout', 'DashboardController@logout');
+//    Route::get('/', 'DashboardController@index');
+//    Route::get('/logout', 'DashboardController@logout');
 
     Route::group(['prefix' => 'admin', 'middleware' => 'can:manage-users'], function () {
         Route::resource('/users', 'UserController')->only(['index', 'show', 'destroy']); // admin is not allowed other methods
@@ -143,8 +140,24 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
     Route::resource('/locations', 'LocationController');
     Route::resource('/cities', 'CityController');
 });
+// admin routes
 Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
-Route::post('admin-login', ['as'=>'admin-login','uses'=>'AdminAuth\AuthController@adminLoginPost']);
+Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
+
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:admin'], function () {
+    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
+        ->name('admin.properties.listings')
+        ->where([
+            'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
+            'purpose' => '(all|sale|rent|wanted|super_hot_listing|hot_listing|magazine_listing)',
+            'admin' => '(\d+|all)',
+            'sort' => '(id|type|location|price|expiry|views|image_count)',
+            'order' => '(asc|desc)',
+            'page' => '\d+',
+        ]);
+    Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
+});
+
 
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');

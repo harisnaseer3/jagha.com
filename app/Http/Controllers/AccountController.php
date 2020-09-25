@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Dashboard\Role;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,8 +20,15 @@ class AccountController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('guest')->except(['logout', 'userLogout']);
     }
+
+    /**
+     * Create a new authentication controller instance.
+     *
+     * @return void
+     */
+
 
     public function index()
     {
@@ -202,15 +210,16 @@ class AccountController extends Controller
             return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error updating setting. Try again.');
         }
     }
+//
+//    public function logout()
+//    {
+//        Auth::guard('web')->logout();
+//        return redirect()->route('home');
+//    }
 
-    public function logout()
+    public function userLogout()
     {
         Auth::guard('web')->logout();
-        return redirect()->route('home');
-    }
-    public function adminLogout()
-    {
-        Auth::guard('admin')->logout();
-        return redirect()->route('home');
+        return redirect(route('home'));
     }
 }
