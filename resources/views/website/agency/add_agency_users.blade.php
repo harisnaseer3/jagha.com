@@ -91,6 +91,8 @@
                                                             <td>Agency CEO</td>
                                                         @elseif(count($agency_user->roles) > 0)
                                                             <td>{{$agency_user->roles[0]->name}}</td>
+                                                        @else
+                                                            <td></td>
                                                         @endif
                                                         <td>{{$agency_user->email}}</td>
                                                         <td>{{$agency_user->phone}}</td>

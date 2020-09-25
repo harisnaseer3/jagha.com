@@ -117,8 +117,7 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-//show properties of agency
-//TODO: change property method
+
     public function show(string $city, string $slug, string $agency)
     {
         $properties = (new Property)

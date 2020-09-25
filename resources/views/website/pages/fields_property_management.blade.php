@@ -53,10 +53,10 @@
                 isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         @endif
 
-        @if(Auth::user()->hasRole('Admin'))
-            {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-               isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
-        @endif
+{{--        @if(Auth::guard('web')->user()->hasRole('Admin'))--}}
+{{--            {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],--}}
+{{--               isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}--}}
+{{--        @endif--}}
         <div class="selection-hide" style="display: none">
             {{ Form::bsSelect2('bedrooms', ['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10+'=>'10+'],
                    isset($property->bedrooms) ? strtolower($property->bedrooms) : null, [ 'placeholder' => 'Select Bedrooms']) }}

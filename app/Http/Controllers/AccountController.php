@@ -145,21 +145,14 @@ class AccountController extends Controller
             if (!is_null($role_id)) {
                 DB::table('property_role_user')
                     ->updateOrInsert(['user_id' => Auth::guard('web')->user()->getAuthIdentifier()],
-                        ['user_id' => Auth::guard('web')->user()->getAuthIdentifier(), 'role_id' => $role_id]);
+                        ['user_id' => Auth::guard('web')->user()->getAuthIdentifier(), 'property_role_id' => $role_id]);
             }
-
-//            return view('website.account.roles',
-//                ['role' => !empty($role) ? $role : null,
-//                    'recent_properties' => (new FooterController)->footerContent()[0],
-//                    'footer_agencies' => (new FooterController)->footerContent()[1]
-//                ])->with('success', 'User roles have been saved.');
             return redirect()->route('user_roles.update',
                 ['role' => !empty($role) ? $role : null,
                     'recent_properties' => (new FooterController)->footerContent()[0],
                     'footer_agencies' => (new FooterController)->footerContent()[1]
                 ])->with('success', 'User roles have been saved.');
         } catch (Throwable $e) {
-//            $role = DB::table('property_role_user')->select('role_id')->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())->pluck('role_id')->toArray();
             return redirect()->back()->withInput()->with('error', 'Error updating setting. Try again.');
         }
     }
