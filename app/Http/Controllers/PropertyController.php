@@ -13,6 +13,7 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
+use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -183,7 +184,7 @@ class PropertyController extends Controller
         $agency_ids = [];
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->toArray();
         foreach ($agencies_ids as $ids) {
-            array_push($agency_ids,$ids->agency_id);
+            array_push($agency_ids, $ids->agency_id);
         }
 
         $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
@@ -527,7 +528,7 @@ class PropertyController extends Controller
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', $property->user_id)->get()->toArray();
 
         foreach ($agencies_ids as $ids) {
-            array_push($agency_ids,$ids->agency_id);
+            array_push($agency_ids, $ids->agency_id);
         }
         $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
 
@@ -778,6 +779,14 @@ class PropertyController extends Controller
      */
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page)
     {
+        if (Auth::guard('admin')->user()) {
+            $data = [
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1],
+
+            ];
+            return view('website.admin-pages.listings', $data);
+        }
         // TODO: implement code where status is rejected_images or rejected_videos, remove after
         if (in_array($status, ['rejected_images', 'rejected_videos'])) {
             return abort(404, 'Missing implementation');

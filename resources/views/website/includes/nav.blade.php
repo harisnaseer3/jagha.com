@@ -321,7 +321,7 @@
                                         {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
                                         {{--                                                class="fa fa-building-o mr-2"></i>Property Management</a>--}}
                                         <a class="dropdown-item"
-                                           href="{{route('properties.listings',
+                                           href="{{route('admin.properties.listings',
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
                                             <i class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
