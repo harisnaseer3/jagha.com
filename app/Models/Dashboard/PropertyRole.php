@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @mixin Builder
  */
-class Role extends Model
+class PropertyRole extends Model
 {
     use SoftDeletes;
 
-    public $table = 'roles';
+    public $table = 'property_roles';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';

@@ -5,7 +5,7 @@ use App\Models\Dashboard\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use \App\Models\Dashboard\Role;
+use \App\Models\Dashboard\PropertyRole;
 
 class UserSeeder extends Seeder
 {
@@ -20,10 +20,10 @@ class UserSeeder extends Seeder
         (new User)->truncate();
         DB::table('role_user')->truncate();
 
-        $adminRole = (new Role)->where('name', '=', 'Admin')->first();
-//        $adminRole = (new Role)->where('name', '=', 'admin')->first();
-//        $propertyAgentRole = (new Role)->where('name', '=', 'property_agent')->first();
-//        $genericUserRole = (new Role)->where('name', '=', 'user')->first();
+        $adminRole = (new PropertyRole)->where('name', '=', 'Admin')->first();
+//        $adminRole = (new PropertyRole)->where('name', '=', 'admin')->first();
+//        $propertyAgentRole = (new PropertyRole)->where('name', '=', 'property_agent')->first();
+//        $genericUserRole = (new PropertyRole)->where('name', '=', 'user')->first();
 
         $admin = (new User)->create([
             'name' => 'admin',
