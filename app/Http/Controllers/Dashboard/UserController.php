@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\Agency;
-use App\Models\Dashboard\Role;
+use App\Models\Dashboard\PropertyRole;
 use App\Models\Dashboard\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +49,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create', ['table_name' => 'users', 'roles' => Role::all()]);
+        return view('user.create', ['table_name' => 'users', 'roles' => PropertyRole::all()]);
     }
 
     /**
@@ -109,7 +109,7 @@ class UserController extends Controller
 //        $roles = [];
 //        foreach ($user_roles as $role) $roles[] = $role->getAttributes()['name'];
 //        $user->user_roles = $roles;
-//        return view('user.edit', ['table_name' => 'users', 'user' => $user, 'roles' => Role::all()]);
+//        return view('user.edit', ['table_name' => 'users', 'user' => $user, 'roles' => PropertyRole::all()]);
         return view('website.account.profile',
             ['notifications' => Auth()->user()->unreadNotifications,
                 'user' => $user,

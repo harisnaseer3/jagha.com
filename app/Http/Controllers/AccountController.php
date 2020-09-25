@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use App\Models\Dashboard\Role;
+use App\Models\Dashboard\PropertyRole;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class AccountController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout', 'userLogout']);
+        $this->middleware('auth')->except(['logout', 'userLogout']);
     }
 
     /**
@@ -106,7 +106,7 @@ class AccountController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function editRoles(Request $request, Role $role)
+    public function editRoles(Request $request, PropertyRole $role)
     {
 //        dd(Auth::user()->roles);
 //        dd(Auth::user()->roles->count()>0);
@@ -115,7 +115,7 @@ class AccountController extends Controller
         return view('website.account.roles',
             [
                 'notifications' => Auth()->user()->unreadNotifications,
-                'role' => Auth::user()->roles->count() > 0 ? Auth::user()->roles[0]->name : null,
+                'role' => Auth::guard('web')->user()->roles->count() > 0 ? Auth::guard('web')->user()->roles[0]->name : null,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
@@ -136,16 +136,16 @@ class AccountController extends Controller
 
 
         $role_id = '';
-        if (DB::table('roles')->select('id', 'name')->where('name', '=', $role)->first())
-            $role_id = DB::table('roles')->select('id')->where('name', '=', $role)->first()->id;
+        if (DB::table('property_roles')->select('id', 'name')->where('name', '=', $role)->first())
+            $role_id = DB::table('property_roles')->select('id')->where('name', '=', $role)->first()->id;
         else
-            $role_id = DB::table('roles')->insertGetId(['name' => $role]);
-        DB::table('role_user')->where('user_id', '=', Auth::user()->getAuthIdentifier())->delete();
+            $role_id = DB::table('property_roles')->insertGetId(['name' => $role]);
+        DB::table('property_role_user')->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())->delete();
         try {
             if (!is_null($role_id)) {
-                DB::table('role_user')
-                    ->updateOrInsert(['user_id' => Auth::user()->getAuthIdentifier()],
-                        ['user_id' => Auth::user()->getAuthIdentifier(), 'role_id' => $role_id]);
+                DB::table('property_role_user')
+                    ->updateOrInsert(['user_id' => Auth::guard('web')->user()->getAuthIdentifier()],
+                        ['user_id' => Auth::guard('web')->user()->getAuthIdentifier(), 'role_id' => $role_id]);
             }
 
 //            return view('website.account.roles',
@@ -159,14 +159,14 @@ class AccountController extends Controller
                     'footer_agencies' => (new FooterController)->footerContent()[1]
                 ])->with('success', 'User roles have been saved.');
         } catch (Throwable $e) {
-//            $role = DB::table('role_user')->select('role_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->pluck('role_id')->toArray();
+//            $role = DB::table('property_role_user')->select('role_id')->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())->pluck('role_id')->toArray();
             return redirect()->back()->withInput()->with('error', 'Error updating setting. Try again.');
         }
     }
 
     public function editSettings(Account $account)
     {
-        $account = (new Account)->select('*')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
+        $account = (new Account)->select('*')->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())->first();
         return view('website.account.settings', [
             'notifications' => Auth()->user()->unreadNotifications,
             'table_name' => 'accounts',
@@ -183,8 +183,8 @@ class AccountController extends Controller
             return redirect()->route('settings.update', $account)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
         }
         try {
-            $account = (new Account)->updateOrCreate(['user_id' => Auth::user()->getAuthIdentifier()], [
-                'user_id' => Auth::user()->getAuthIdentifier(),
+            $account = (new Account)->updateOrCreate(['user_id' => Auth::guard('web')->user()->getAuthIdentifier()], [
+                'user_id' => Auth::guard('web')->user()->getAuthIdentifier(),
                 'message_signature' => $request->input('message_signature'),
                 'email_notification' => $request->input('email_notification'),
                 'newsletter' => $request->input('newsletter'),
@@ -213,7 +213,7 @@ class AccountController extends Controller
 //
 //    public function logout()
 //    {
-//        Auth::guard('web')->logout();
+//        Auth::guard('web')->guard('web')->logout();
 //        return redirect()->route('home');
 //    }
 

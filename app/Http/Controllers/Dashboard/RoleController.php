@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dashboard\Role;
+use App\Models\Dashboard\PropertyRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +21,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        return view('role.index', ['table_name' => 'roles', 'table_data_values' => Role::all('id', 'name')]);
+        return view('role.index', ['table_name' => 'roles', 'table_data_values' => PropertyRole::all('id', 'name')]);
     }
 
     public function create()
@@ -31,15 +31,15 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), Role::$rules);
+        $validator = Validator::make($request->all(), PropertyRole::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
-            (New Role)->updateOrCreate(['name' => $request->input('name')], [
+            (New PropertyRole)->updateOrCreate(['name' => $request->input('name')], [
                 'name' => lcfirst(str_replace(' ', '_', $request->input('name'))),
             ]);
-            return view('role.index', ['table_name' => 'roles', 'table_data_values' => Role::all('id', 'name')]);
+            return view('role.index', ['table_name' => 'roles', 'table_data_values' => PropertyRole::all('id', 'name')]);
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'No record stored, try again!');
         }
@@ -47,7 +47,7 @@ class RoleController extends Controller
 
     public function destroy(Request $request)
     {
-        $role = (new Role)->find($request->input('record_id'));
+        $role = (new PropertyRole)->find($request->input('record_id'));
 
         if ($role->exists) {
             try {
