@@ -10,18 +10,7 @@
 
 @section('content')
     @include('website.includes.dashboard-nav')
-    <!-- Top header start -->
-    <div class="sub-banner">
-        <div class="container">
-            <div class="page-name">
-                <h1>Property Management</h1>
-            </div>
-        </div>
-    </div>
-    <!-- Submit Property start -->
-    <div>hi</div>
-    <!-- Footer start -->
-    @include('website.includes.footer')
+
 @endsection
 
 @section('script')

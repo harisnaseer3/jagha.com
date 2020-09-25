@@ -64,7 +64,7 @@ class AuthController extends Controller
 
     public function adminLogin()
     {
-        return view('layouts/admin-login');
+        return view('website.admin-pages.admin-login');
     }
 
 
@@ -76,7 +76,7 @@ class AuthController extends Controller
         ]);
         if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             $user = auth()->guard('admin')->user();
-            return redirect()->route('home');
+            return redirect()->route('admin.dashboard');
         } else {
             return back()->with('error', 'your username and password are wrong.');
         }
@@ -85,6 +85,6 @@ class AuthController extends Controller
     public function adminLogout()
     {
         Auth::guard('admin')->logout();
-        return redirect()->route('home');
+        return redirect()->route('admin.login');
     }
 }
