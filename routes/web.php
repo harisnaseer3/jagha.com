@@ -144,7 +144,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
 Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
 Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
 
-Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
         ->name('admin.properties.listings')
         ->where([
@@ -155,6 +155,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth:admin'], function (
             'order' => '(asc|desc)',
             'page' => '\d+',
         ]);
+    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
+    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
+
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
 });
 

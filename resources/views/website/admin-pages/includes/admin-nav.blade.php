@@ -246,65 +246,35 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav header-ml">
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
-                                Homes
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="{{route('admin.dashboard')}}">
+                                Dashboard
                             </a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing', ['type'=>'plots'])}}">
-                                Plots
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="{{route('admin.manage-users')}}">
+                                User Management
                             </a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/commercial/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
-                                Commercial</a>
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="{{route('aboutpakistan.support')}}">
+                                Roles & Permissions</a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('blogs.index')}}">
-                                Blogs</a>
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                            <a class="nav-link" href="#">
+                                Property Management</a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('agents.listing')}}">
-                                Partners</a>
+                        {{--                        @if(Auth::user()->hasRole('Admin'))--}}
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                            <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
+                               href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
+                                Agency Listing</a>
                         </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
-                        <li class="nav-item">
-                            {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                            <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="ref-id" autocomplete="false">
-                            <small id="property_id-error" class="help-block text-red"></small>
-                            <i class="fa fa-search ml-1"></i>
-                            {{ Form::close() }}
-                        </li>
                         <li class="nav-item user-dropdown">
-                            @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
-                                <div class="dropdown">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
-                                       aria-expanded="false">
-                                        <i class="fas fa-user mr-3"></i>
-                                        @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
-                                           <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('web')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('web')->user()->id}})</span>
-                                        @endif
-
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
-                                                class="far fa-user-cog mr-2"></i>Manage Profile</a>
-                                                <div class="dropdown-divider"></div>
-{{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
-{{--                                                class="fa fa-building-o mr-2"></i>Property Management</a>--}}
-                                        <a class="dropdown-item"
-                                           href="{{route('properties.listings',
-                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
-                                            <i class="fa fa-building-o mr-2"></i>Property Management</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
-                                                class="far fa-sign-out mr-2"></i>Logout</a>
-{{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
-                                    </div>
-                                </div>
-                                @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                            @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
                                        aria-expanded="false">
@@ -317,7 +287,6 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{route('accounts.admin-logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
-                                        {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                     </div>
                                 </div>
                             @else
@@ -330,5 +299,8 @@
                     </ul>
                 </div>
             </nav>
-@include('website.layouts.sign-in-modal')
+        </div>
+    </div>
+</div>
+
 

@@ -21,6 +21,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1",
+        "spatie/laravel-permission": "^3.17",
         "spatie/schema-org": "^2.14",
         "webpatser/laravel-uuid": "^3.0"
     },
