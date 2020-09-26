@@ -14,10 +14,12 @@ class AdminSeeder extends Seeder
     public function run()
     {
 
-        $admin = (new Admin)->create([
+        $admin_id = DB::table('admins')->insertGetId([
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password')
         ]);
+        $current_admin = Admin::find($admin_id);
+        $current_admin->assignRole('Super Admin');
     }
 }
