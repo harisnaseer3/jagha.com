@@ -155,11 +155,25 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'order' => '(asc|desc)',
             'page' => '\d+',
         ]);
-    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
-    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
-    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
 
+//    Route::resource('properties', 'PropertyController')->except(['index', 'show']);
+
+    Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit');
+    Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update');
+    Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy');
+
+    Route::delete('images/{image}', 'ImageController@destroy')->name('admin-images-destroy');
+    Route::delete('floorPlans/{floorPlan}', 'FloorPlanController@destroy')->name('admin-floorPlans-destroy');
+    Route::delete('videos/{video}', 'VideoController@destroy')->name('admin-videos-destroy');
+
+    Route::get('/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard');
+    Route::get('/manage-users', 'Admin\UserManagementController@index')->name('admin.manage-users');
+    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
+
+//    ajax-call
+
+    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status');
 });
 
 

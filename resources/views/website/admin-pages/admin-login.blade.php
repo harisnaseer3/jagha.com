@@ -18,16 +18,16 @@
             <div class="login-box" style="max-width: 500px;!important;">
                 <div class="align-self-center pad-0">
                     <div class="form-section clearfix">
-                        <h3>Login As  Admin</h3>
+                        <h3>Login As Admin</h3>
 
                         <div class="clearfix"></div>
                         @include('website.layouts.flash-message')
-                        <form  role="form" method="POST" action="{{ route('admin-login') }}">
+                        <form role="form" method="POST" action="{{ route('admin-login') }}">
                             {!! csrf_field() !!}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label class="control-label">E-Mail Address</label>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                        <label class="control-label">E-Mail Address</label>
 
                                         <input type="email" class="form-control mb-2" name="email" value="{{ old('email') }}">
                                         @if ($errors->has('email'))
@@ -35,26 +35,21 @@
                                         <strong style="color:red;">{{ $errors->first('email') }}</strong>
                                     </span>
                                         @endif
-
+                                    </div>
                                 </div>
-
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                    <label class="control-label">Password</label>
-
-
-                                    <input type="password" class="form-control mb-2" name="password">
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
+                                <div class="col-md-12">
+                                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                        <label class="control-label">Password</label>
+                                        <input type="password" class="form-control mb-2" name="password">
+                                        @if ($errors->has('password'))
+                                            <span class="help-block">
                                         <strong style="color:red;">{{ $errors->first('password') }}</strong>
                                     </span>
-                                    @endif
-
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
 
@@ -67,10 +62,10 @@
                             </div>
                         </form>
                     </div>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 @endsection

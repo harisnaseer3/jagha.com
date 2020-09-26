@@ -10,7 +10,6 @@
 
 @section('content')
     @include('website.admin-pages.includes.admin-nav')
-
 @endsection
 
 @section('script')
