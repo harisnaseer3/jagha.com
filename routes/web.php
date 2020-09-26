@@ -157,6 +157,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         ]);
     Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
     Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
+    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
 
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
 });
