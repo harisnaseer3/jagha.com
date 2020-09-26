@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Admin;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,7 +19,18 @@ class UserManagementController extends Controller
 
     public function index()
     {
-        return view('website.admin-pages.admin-dashboard');
+
+        $admins = Admin::getAllAdmins();
+        return view('website.admin-pages.manage-users', [
+            'admins' => $admins,
+        ]);
+    }
+    public function showAdminRegisterForm()
+    {
+        $roles = \Spatie\Permission\Models\Role::all();
+        return view('website.admin-pages.register', [
+            'roles' => $roles
+        ]);
     }
 
 
