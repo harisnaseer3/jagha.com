@@ -12,17 +12,9 @@
 @endsection
 
 @section('content')
-    @include('website.includes.dashboard-nav')
+    @include('website.admin-pages.includes.admin-nav')
     <!-- Top header start -->
-    <div class="sub-banner">
-        <div class="container">
-            <div class="page-name">
-                <h1>Agency Management</h1>
-            </div>
-        </div>
-    </div>
-
-
+    <div style="min-height:90px"></div>
     <!-- Submit Property start -->
     <div class="submit-property">
         <div class="container-fluid container-padding">

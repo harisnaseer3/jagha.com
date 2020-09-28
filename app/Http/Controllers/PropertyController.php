@@ -834,29 +834,7 @@ class PropertyController extends Controller
         if (!in_array($page, [10, 15, 30, 50])) {
             $page = 10;
         }
-        $data = [
-            'params' => [
-                'status' => $status,
-                'purpose' => $purpose,
-                'user' => $user,
-                'sort' => $sort,
-                'order' => $order,
-                'page' => $page,
-            ],
-            'notifications' => Auth()->user()->unreadNotifications,
-            'counts' => $this->getPropertyListingCount($user),
-            'listings' => [
-                'all' => $this->_listings($status, $user)->orderBy($sort, $order)->paginate($page),
-                'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->paginate($page),
-                'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->paginate($page),
-                'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->paginate($page),
-                'super_hot' => $this->_listings($status, $user)->where('super_hot_listing', true)->orderBy($sort, $order)->paginate($page),
-                'hot' => $this->_listings($status, $user)->where('hot_listing', true)->orderBy($sort, $order)->paginate($page),
-                'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
-            ],
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
-        ];
+
         if (Auth::guard('admin')->user()) {
             $data = [
                 'params' => [
@@ -881,6 +859,29 @@ class PropertyController extends Controller
             ];
             return view('website.admin-pages.listings', $data);
         }
+        $data = [
+            'params' => [
+                'status' => $status,
+                'purpose' => $purpose,
+                'user' => $user,
+                'sort' => $sort,
+                'order' => $order,
+                'page' => $page,
+            ],
+            'notifications' => Auth()->user()->unreadNotifications,
+            'counts' => $this->getPropertyListingCount($user),
+            'listings' => [
+                'all' => $this->_listings($status, $user)->orderBy($sort, $order)->paginate($page),
+                'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->paginate($page),
+                'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->paginate($page),
+                'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->paginate($page),
+                'super_hot' => $this->_listings($status, $user)->where('super_hot_listing', true)->orderBy($sort, $order)->paginate($page),
+                'hot' => $this->_listings($status, $user)->where('hot_listing', true)->orderBy($sort, $order)->paginate($page),
+                'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
+            ],
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1]
+        ];
         return view('website.pages.listings', $data);
     }
 

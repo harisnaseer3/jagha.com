@@ -9,22 +9,16 @@
 @endsection
 
 @section('content')
-    @include('website.includes.dashboard-nav')
+    @include('website.admin-pages.includes.admin-nav')
     <!-- Top header start -->
-    <div class="sub-banner">
-        <div class="container">
-            <div class="page-name">
-                <h1>Agency Listings</h1>
-            </div>
-        </div>
-    </div>
+    <div style="min-height:90px"></div>
+
     <!-- Submit Property start -->
     <div class="submit-property">
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
-
                         <div class="tab-pane fade show active" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -36,7 +30,6 @@
 
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('admin-agencies-create')}}">Add New Agency</a></div>
-
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
                                             <div class="my-4">
@@ -72,7 +65,7 @@
                                                                 </td>
                                                             @endif
                                                             <td>
-                                                                <a type="button" href="{{route('agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary
+                                                                <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="Add user in agency">
@@ -145,7 +138,7 @@
                                                                 </td>
                                                             @endif
                                                             <td>
-                                                                <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}" class="btn btn-sm btn-primary
+                                                                <a type="button" href="{{route('agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="Add user in agency">
@@ -221,7 +214,7 @@
                                                                 </td>
                                                             @endif
                                                             <td>
-                                                                <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}" class="btn btn-sm btn-primary
+                                                                <a type="button" href="{{route('agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary
                                                                 {{$params['status'] == 'deleted_agencies' ? 'anchor-disable':'' }}
                                                                     " data-toggle-1="tooltip"
                                                                    data-placement="bottom" title="Add user in agency">
@@ -261,7 +254,6 @@
                                                 {{ $listings['featured']->links() }}
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

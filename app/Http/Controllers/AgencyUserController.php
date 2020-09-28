@@ -45,7 +45,10 @@ class AgencyUserController extends Controller
 
     public function addUsers($id)
     {
-        $user = Auth::guard('web')->user()->getAuthIdentifier();
+        if (Auth::guard('admin')->user())
+            $user = Auth::guard('admin')->user()->getAuthIdentifier();
+        else
+            $user = Auth::user()->getAuthIdentifier();
         $current_agency_users = User::select('id', 'email', 'name', 'phone')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
         $status = '';
         $agency_data = Agency::where('id', '=', $id)->first();
@@ -69,14 +72,23 @@ class AgencyUserController extends Controller
                 'status' => $status
             ];
         }
-        $data = [
-            'users_status' => $user_status,
-            'agency' => (new AgencyController)->getAgencyById($id),
-            'counts' => (new AgencyController)->getAgencyListingCount($user),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
-            'current_agency_users' => $current_agency_users
-        ];
+        if (Auth::guard('admin')->user()) {
+            $data = [
+                'users_status' => $user_status,
+                'agency' => (new AgencyController)->getAgencyById($id),
+                'counts' => (new AgencyController)->getAgencyListingCount($user),
+                'current_agency_users' => $current_agency_users
+            ];
+            return view('website.admin-pages.agency.add_agency_users', $data);
+        } else
+            $data = [
+                'users_status' => $user_status,
+                'agency' => (new AgencyController)->getAgencyById($id),
+                'counts' => (new AgencyController)->getAgencyListingCount($user),
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1],
+                'current_agency_users' => $current_agency_users
+            ];
         return view('website.agency.add_agency_users', $data);
     }
 

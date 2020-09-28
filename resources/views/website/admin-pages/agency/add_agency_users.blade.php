@@ -11,13 +11,8 @@
 @section('content')
     @include('website.includes.dashboard-nav')
     <!-- Top header start -->
-    <div class="sub-banner">
-        <div class="container">
-            <div class="page-name">
-                <h1>Agency Users</h1>
-            </div>
-        </div>
-    </div>
+{{--    <div style="min-height:90px"></div>--}}
+
     <div class="submit-property">
         <div class="container-fluid container-padding">
             <div class="row">
@@ -202,7 +197,6 @@
             </div>
         </div>
     </div>
-    @include('website.includes.footer')
 @endsection
 
 @section('script')
