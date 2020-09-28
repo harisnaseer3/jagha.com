@@ -35,22 +35,17 @@ class AgencyUserController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store($agency)
+
+    public function store($agency, $user_id = '')
     {
         DB::table('agency_users')->insert([
-            ['agency_id' => $agency->id, 'user_id' => Auth::user()->getAuthIdentifier()],
+            ['agency_id' => $agency->id, 'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier()],
         ]);
     }
 
     public function addUsers($id)
     {
-        $user = Auth::user()->getAuthIdentifier();
+        $user = Auth::guard('web')->user()->getAuthIdentifier();
         $current_agency_users = User::select('id', 'email', 'name', 'phone')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
         $status = '';
         $agency_data = Agency::where('id', '=', $id)->first();
@@ -150,7 +145,7 @@ class AgencyUserController extends Controller
         }
 
 
-        $user = Auth::user()->getAuthIdentifier();
+        $user = Auth::guard('web')->user()->getAuthIdentifier();
         $user_status = [];
 
         $status = '';
@@ -184,10 +179,10 @@ class AgencyUserController extends Controller
             return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
         else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
             return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
-       else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
+        else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
             return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
-       else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
-           return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+        else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
+            return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
 
     }
 

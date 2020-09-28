@@ -550,6 +550,16 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
+        if (Auth::guard('admin')->user()) {
+            return view('website.admin-pages.portfolio',
+                [
+                    'agencies' => $agencies,
+                    'property' => $property,
+                    'property_types' => $property_types,
+                    'counts' => $counts,
+                ]);
+        }
+
         return view('website.pages.portfolio',
             [
                 'agencies' => $agencies,
@@ -557,7 +567,10 @@ class PropertyController extends Controller
                 'property_types' => $property_types,
                 'counts' => $counts,
                 'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]]);
+                'footer_agencies' => (new FooterController)->footerContent()[1]
+            ]);
+
+
     }
 
     public function update(Request $request, Property $property)
@@ -678,6 +691,10 @@ class PropertyController extends Controller
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 
+            if (Auth::guard('admin')->user())
+                return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10', 'recent_properties' => (new FooterController)->footerContent()[0],
+                    'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
+
             return redirect()->route('properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10', 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
@@ -687,7 +704,7 @@ class PropertyController extends Controller
 
     public function destroy(Request $request)
     {
-        $user_id = Auth::user()->getAuthIdentifier();
+//        $user_id = Auth::user()->getAuthIdentifier();
         $property = (new Property)->where('id', '=', $request->input('record_id'))->first();
         $status_before_update = $property->status;
         if ($property->exists) {
@@ -732,7 +749,9 @@ class PropertyController extends Controller
             ->whereNull('properties.deleted_at');
 //            dd(Auth::user()->hasRole('Admin'));
         // user
-        if (!Auth::user()->hasRole('Admin')) {
+//        TODO: based on property role admin
+//        if (!Auth::user()->hasRole('Admin')) {
+        if (!Auth::guard('admin')->user()) {
             if (empty($user)) {
                 $user = Auth::user()->getAuthIdentifier();
             } elseif ($user === 'all') {
@@ -779,14 +798,6 @@ class PropertyController extends Controller
      */
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page)
     {
-        if (Auth::guard('admin')->user()) {
-            $data = [
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1],
-
-            ];
-            return view('website.admin-pages.listings', $data);
-        }
         // TODO: implement code where status is rejected_images or rejected_videos, remove after
         if (in_array($status, ['rejected_images', 'rejected_videos'])) {
             return abort(404, 'Missing implementation');
@@ -846,7 +857,30 @@ class PropertyController extends Controller
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
         ];
+        if (Auth::guard('admin')->user()) {
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $this->getPropertyListingCount($user),
+                'listings' => [
+                    'all' => $this->_listings($status, $user)->orderBy($sort, $order)->paginate($page),
+                    'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->paginate($page),
+                    'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->paginate($page),
+                    'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->paginate($page),
+                    'super_hot' => $this->_listings($status, $user)->where('super_hot_listing', true)->orderBy($sort, $order)->paginate($page),
+                    'hot' => $this->_listings($status, $user)->where('hot_listing', true)->orderBy($sort, $order)->paginate($page),
+                    'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
+                ],
 
+            ];
+            return view('website.admin-pages.listings', $data);
+        }
         return view('website.pages.listings', $data);
     }
 
