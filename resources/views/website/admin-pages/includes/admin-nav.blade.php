@@ -260,15 +260,16 @@
                             <a class="nav-link" href="{{route('aboutpakistan.support')}}">
                                 Roles & Permissions</a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item hide-nav navbar-li">
+                            <?php $route_params = ['status' => 'active', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+
+                            <a class="nav-link" href="{{route('admin.properties.listings', array_merge($route_params, ['purpose' => 'sale']))}}">
                                 Property Management</a>
                         </li>
-                        {{--                        @if(Auth::user()->hasRole('Admin'))--}}
-                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
-                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                        <li class="nav-item hide-nav navbar-li">
+                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
-                               href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
+                               href="{{route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
                                 Agency Listing</a>
                         </li>
                     </ul>

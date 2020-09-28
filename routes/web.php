@@ -155,16 +155,58 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'order' => '(asc|desc)',
             'page' => '\d+',
         ]);
+
     Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
     Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
+    Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
     Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
     Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit');
     Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit');
     Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update');
     Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy');
-    Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
-});
+    Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit');
+    Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update');
+    Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy');
 
+    Route::delete('images/{image}', 'ImageController@destroy')->name('admin-images-destroy');
+    Route::delete('floorPlans/{floorPlan}', 'FloorPlanController@destroy')->name('admin-floorPlans-destroy');
+    Route::delete('videos/{video}', 'VideoController@destroy')->name('admin-videos-destroy');
+
+
+    Route::get('agencies/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'AgencyController@listings')
+        ->name('admin.agencies.listings')
+        ->where([
+            'status' => '(verified_agencies|pending_agencies|expired_agencies|rejected_agencies|deleted_agencies)',
+            'purpose' => '(all|featured|key)',
+            'user' => '(\d+)',
+            'sort' => '(id|type|location)',
+            'order' => '(asc|desc)',
+            'page' => '\d+',
+        ]);
+    Route::get('agencies/create', 'AgencyController@create')->name('admin-agencies-create');
+    Route::post('/agencies', 'AgencyController@store')->name('admin-agencies-store');
+
+    Route::get('agencies/{agency}/edit', 'AgencyController@edit')->name('admin-agencies-edit');
+    Route::put('agencies/{agency}', 'AgencyController@update')->name('admin-agencies-update');
+    Route::delete('agencies/{agency}', 'AgencyController@destroy')->name('admin-agencies-destroy');
+
+
+    Route::get('agencies/{agency}/add-users', 'AgencyUserController@addUsers')
+        ->name('admin.agencies.add-users');
+
+    Route::post('agencies/{agency}/add-users', 'AgencyUserController@storeAgencyUsers')
+        ->name('admin.agencies.store-agency-users');
+
+    Route::post('agencies/accept-invitation', 'AgencyUserController@acceptInvitation')
+        ->name('admin.agencies.accept_invitation');
+
+    Route::post('agencies/reject-invitation', 'AgencyUserController@rejectInvitation')
+        ->name('admin.agencies.reject_invitation');
+
+//    ajax-call
+
+    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status');
+});
 
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');

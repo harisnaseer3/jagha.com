@@ -117,8 +117,6 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
-//show properties of agency
-//TODO: change property method
     public function show(string $city, string $slug, string $agency)
     {
         $properties = (new Property)
@@ -189,11 +187,18 @@ class AgencyController extends Controller
     {
         $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
 
-        return view('website.agency_profile.agency_create',
+        if (Auth::guard('admin')->user()) {
+            return view('website.admin-pages.agency_profile.agency_create',
+                ['table_name' => 'users',
+                    'counts' => $counts,
+                    'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+        } else
 
-            ['table_name' => 'users',
-                'counts' => $counts,
-                'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+            return view('website.agency_profile.agency_create',
+
+                ['table_name' => 'users',
+                    'counts' => $counts,
+                    'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
     public function store(Request $request)
@@ -218,10 +223,14 @@ class AgencyController extends Controller
         }
 
         try {
-
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $user_id = '';
+
+            if ($request->has('user_id')) {
+                $user_id = $request->input('user_id');
+            }
             $agency = (new Agency)->Create([
-                'user_id' => Auth::user()->getAuthIdentifier(),
+                'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier(),
                 'city_id' => $city->id,
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
@@ -243,20 +252,32 @@ class AgencyController extends Controller
             if ($request->hasFile('upload_new_picture')) {
                 $this->storeAgencyLogo($request->file('upload_new_picture'), $agency);
             }
-            (new AgencyUserController())->store($agency);
+            (new AgencyUserController())->store($agency, $user_id);
+
             (new AgencyCityController())->store($agency);
+
             if ($request->has('status') && $request->input('status') === 'active') {
                 $this->insertIntoCounterTable();
             }
 //            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
-            return redirect()->route('agencies.listings', [
-                'status' => 'pending_agencies',
-                'purpose' => 'all',
-                'user' => Auth::user()->getAuthIdentifier(),
-                'sort' => 'id',
-                'order' => 'asc',
-                'page' => 10,
-            ])->with('success', 'Agency profile has been saved.');
+            if (Auth::guard('admin')->user()) {
+                return redirect()->route('admin.agencies.listings', [
+                    'status' => 'pending_agencies',
+                    'purpose' => 'all',
+                    'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
+                    'sort' => 'id',
+                    'order' => 'asc',
+                    'page' => 10,
+                ])->with('success', 'Agency profile has been saved.');
+            } else
+                return redirect()->route('agencies.listings', [
+                    'status' => 'pending_agencies',
+                    'purpose' => 'all',
+                    'user' => Auth::user()->getAuthIdentifier(),
+                    'sort' => 'id',
+                    'order' => 'asc',
+                    'page' => 10,
+                ])->with('success', 'Agency profile has been saved.');
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
@@ -414,47 +435,23 @@ class AgencyController extends Controller
         }
     }
 
-
-//    call store agency a new when user register himself and agency
-    public function newUserStoreAgency(Request $request)
-    {
-        try {
-            $agency = (new Agency)->Create([
-                'user_id' => Auth::user()->getAuthIdentifier(),
-                'city' => json_encode(explode(',', $request->input('agency-cities'))),
-                'title' => $request->input('agency-email'),
-                'description' => $request->input('agency-description'),
-                'phone' => $request->input('agency-phone'),
-                'cell' => $request->input('agency-cell'),
-                'fax' => $request->input('agency-fax'),
-                'address' => $request->input('agency-address'),
-                'zip_code' => $request->input('agency-zip_code'),
-                'country' => $request->input('agency-country'),
-                'email' => $request->input('agency-email'),
-                'website' => $request->input('agency-website'),
-            ]);
-            (new AgencyUserController())->store($agency);
-
-        } catch (Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Error updating record of agency, Resolve following error(s).');
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Agency $agency
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function edit(Agency $agency)
     {
-        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
-
         $city = $agency->city->name;
         $agency->city = $city;
 
-        if (Auth::user()->hasRole('admin')) {
+        if (Auth::guard('admin')->user()) {
+            $counts = $this->getAgencyListingCount(Auth::guard('admin')->user()->getAuthIdentifier());
+            return view('website.admin-pages.agency_profile.agency',
+                ['table_name' => 'users',
+                    'counts' => $counts,
+                    'agency' => $agency
+                ]
+            );
+        } else {
+            $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
             return view('website.agency_profile.agency',
+
                 ['table_name' => 'users',
                     'counts' => $counts,
                     'agency' => $agency,
@@ -462,16 +459,6 @@ class AgencyController extends Controller
                     'footer_agencies' => (new FooterController)->footerContent()[1]]
             );
         }
-//        $agency_id = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
-//        $agency = (new Agency)->select('*')->where('id', '=', $agency_id->agency_id)->first();
-        return view('website.agency_profile.agency',
-
-            ['table_name' => 'users',
-                'counts' => $counts,
-                'agency' => $agency,
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]]
-        );
     }
 
     public function update(Request $request, Agency $agency)
@@ -542,6 +529,16 @@ class AgencyController extends Controller
             }
             if ($status_before_update === 'verified' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 $this->deleteFromCounterTable();
+            if (Auth::guard('admin')->user()) {
+                return redirect()->route('admin.agencies.listings', [
+                    'status' => 'pending_agencies',
+                    'purpose' => 'all',
+                    'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
+                    'sort' => 'id',
+                    'order' => 'asc',
+                    'page' => 10,
+                ])->with('success', 'Agency profile has been updated.');
+            }
             return redirect()->route('agencies.listings', [
                 'status' => 'pending_agencies',
                 'purpose' => 'all',
@@ -551,7 +548,6 @@ class AgencyController extends Controller
                 'page' => 10,
             ])->with('success', 'Agency profile has been updated.');
         } catch (Throwable $e) {
-//            dd($e->getMessage());
             return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }
     }
@@ -629,7 +625,7 @@ class AgencyController extends Controller
 
         // user is admin who can see this listing
 
-        if (!Auth::user()->hasRole('Admin')) {
+        if (!Auth::guard('admin')->user()) {
             if (empty($user)) {
                 $user = Auth::user()->getAuthIdentifier();
             } elseif ($user === 'all') {
@@ -661,8 +657,6 @@ class AgencyController extends Controller
                 }
             }
         }
-
-
         return $listings->where('status', '=', $status);
     }
 
@@ -706,21 +700,24 @@ class AgencyController extends Controller
         $all = $this->_listings(explode("_", $status)[0], $user);
         $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
         $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
-
-//        dd((int)($all->count() / 10));
-
-//        if ($request->has('page') && $request->input('page') > ceil($all->count() / 10)) {
-//            $lastPage = ceil((int)$all->count() / 10);
-//            $request->merge(['page' => (int)$lastPage]);
-//        }
-//        if ($request->has('page') && $request->input('page') > ceil($key->count() / 10)) {
-//            $lastPage = (int)($all->count() / 10);
-//            $request->merge(['page' => (int)$lastPage]);
-//        }
-//        if ($request->has('page') && $request->input('page') > ceil($featured->count() / 10)) {
-//            $lastPage = ceil((int)$featured->count() / 10);
-//            $request->merge(['page' => (int)$lastPage]);
-//        }
+        if (Auth::guard('admin')->user()) {
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $this->getAgencyListingCount($user),
+                'listings' => [
+                    'all' => $all->orderBy($sort, $order)->paginate($page),
+                    'key' => $key->orderBy($sort, $order)->paginate($page),
+                    'featured' => $featured->orderBy($sort, $order)->paginate($page),
+                ]];
+            return view('website.admin-pages.agency.agency_listings', $data);
+        }
         $data = [
             'params' => [
                 'status' => $status,
