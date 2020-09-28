@@ -21,6 +21,7 @@ class CreateAdminsTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->enum('is_active', ['0', '1'])->default('1');
+            $table->enum('is_super', ['0', '1'])->default('0');
             $table->timestamps();
         });
     }

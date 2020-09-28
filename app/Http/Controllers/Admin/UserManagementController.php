@@ -79,6 +79,18 @@ class UserManagementController extends Controller
         $current_admin = Admin::updateAdmin($input, $id);
         return redirect()->route('admin.manage-users');
     }
+    public function adminDestroy($admin)
+    {
+        $current_admin = Admin::getAdminById($admin);
+        if (empty($current_admin)) {
+//            Flash::error(__('messages.not_found', ['model' => __('admin')]));
+            return redirect()->route('admin.manage-users');
+        }
+        $deleted_admin = Admin::destroy($current_admin->id);
+//        Flash::success(__('messages.deleted', ['model' => __('admin')]));
+        return redirect()->route('admin.manage-users');
+    }
+
 
 
 }
