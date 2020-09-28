@@ -22,17 +22,17 @@
             <div class="card-header">Add Admin</div>
 
             <div class="card-body">
-                <form method="POST" action=""
+                <form method="POST" action="{{route('registration.submit')}}"
                       aria-label="{{ __('Register') }}">
                     @csrf
                     <div class="form-group row" id="admin_role">
                         <div class="col-md-6">
                             {!! Form::label('role', __('Role') ) !!} <span class="text-danger">*</span>
-                            <select name="role" class="form-control form-control-sm select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true" id="select-admin-role">
-                                <option value selected disabled>@lang('models/user_management.select_role')</option>
+                            <select name="role" class="form-control form-control-sm" style="width: 100%;" tabindex="-1" aria-hidden="true" id="select-admin-role">
+                                <option value selected disabled>Select Role</option>
                                 @foreach($roles as $role)
-                                    @if($role->name !== 'super-admin')
-                                    <option value="{{$role->name}}"> @if(app()->getLocale() === 'ar') {{$role->name_ar}} @else {{$role->name_en}}  @endif</option>
+                                    @if($role->name !== 'Super Admin')
+                                    <option value="{{$role->name}}">{{$role->name}}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div id="nameHelp" class="form-text text-gray">{{ __('crud.for_example') }} {{ __('models/user_management.sample_name') }}</div>
+{{--                            <div id="nameHelp" class="form-text text-gray">{{ __('crud.for_example') }} {{ __('models/user_management.sample_name') }}</div>--}}
                         </div>
                     </div>
 
@@ -75,7 +75,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <div id="emailHelp" class="form-text text-gray">{{ __('crud.for_example') }} {{ __('models/user_management.sample_email') }}</div>
+{{--                            <div id="emailHelp" class="form-text text-gray">{{ __('crud.for_example') }} {{ __('models/user_management.sample_email') }}</div>--}}
                         </div>
                     </div>
 
@@ -94,7 +94,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <div id="passwordHelp" class="form-text text-gray">{{ __('models/user_management.sample_password') }}</div>
+{{--                            <div id="passwordHelp" class="form-text text-gray">{{ __('models/user_management.sample_password') }}</div>--}}
                         </div>
                     </div>
 

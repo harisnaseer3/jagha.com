@@ -156,7 +156,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'page' => '\d+',
         ]);
 
-
+    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
+    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
+    Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
+    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
+    Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit');
+    Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit');
+    Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update');
+    Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy');
     Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit');
     Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update');
     Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy');
@@ -196,16 +203,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('agencies/reject-invitation', 'AgencyUserController@rejectInvitation')
         ->name('admin.agencies.reject_invitation');
 
-    Route::get('/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard');
-    Route::get('/manage-users', 'Admin\UserManagementController@index')->name('admin.manage-users');
-    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
-    Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
-
 //    ajax-call
 
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status');
 });
-
 
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
