@@ -158,7 +158,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
     Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
     Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
-
+    Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit');
+    Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit');
+    Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update');
+    Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy');
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
 });
 

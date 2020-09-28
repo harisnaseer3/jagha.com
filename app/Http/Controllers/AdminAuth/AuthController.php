@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AdminAuth;
 
 
-use App\Admin;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
@@ -52,7 +52,7 @@ class AuthController extends Controller
      * @param array $data
      * @return User
      */
-    protected function create(array $data)
+    public function create(array $data)
     {
         return Admin::create([
             'name' => $data['name'],

@@ -36,6 +36,11 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @if(count($admins) === 0)
+                                <tr>
+                                    <td colspan="5">No Admins Found</td>
+                                </tr>
+                                @else
                             @foreach($admins as $admin)
                                 <tr>
                                     <td>{{$admin->name}}</td>
@@ -46,15 +51,16 @@
                                         @endforeach
                                     </td>
                                     <td>
-{{--                                        {!! Form::open(['route' => ['admins.destroy',   app()->getLocale(),  $admin->id], 'method' => 'delete']) !!}--}}
+                                        {!! Form::open(['route' => ['admins.destroy',  $admin->id], 'method' => 'delete']) !!}
                                         <div class='btn-group'>
-                                            <a href="#" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>
+                                            <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>
                                             {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('crud.are_you_sure').'")']) !!}
                                         </div>
-{{--                                        {!! Form::close() !!}--}}
+                                        {!! Form::close() !!}
                                     </td>
                                 </tr>
                             @endforeach
+                            @endif
 
                             </tbody>
                         </table>
