@@ -35,16 +35,11 @@ class AgencyUserController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store($agency)
+
+    public function store($agency, $user_id = '')
     {
         DB::table('agency_users')->insert([
-            ['agency_id' => $agency->id, 'user_id' => Auth::guard('web')->user()->getAuthIdentifier()],
+            ['agency_id' => $agency->id, 'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier()],
         ]);
     }
 
