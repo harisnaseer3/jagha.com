@@ -246,32 +246,43 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav header-ml">
+                        @can('Manage Dashboard')
+
                         <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link" href="{{route('admin.dashboard')}}">
                                 Dashboard
                             </a>
                         </li>
+                        @endcan
+                            @can('Manage Users')
                         <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link" href="{{route('admin.manage-users')}}">
                                 User Management
                             </a>
                         </li>
+                            @endcan
+                            @can('Manage Roles and Permissions')
                         <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link" href="{{route('admin.manage-roles-permissions')}}">
                                 Roles & Permissions</a>
                         </li>
+                            @endcan
+                            @can('Manage Property')
                         <li class="nav-item hide-nav navbar-li">
                             <?php $route_params = ['status' => 'active', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
 
                             <a class="nav-link" href="{{route('admin.properties.listings', array_merge($route_params, ['purpose' => 'sale']))}}">
                                 Property Management</a>
                         </li>
+                            @endcan
+                            @can('Manage Agency')
                         <li class="nav-item hide-nav navbar-li">
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
                                href="{{route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
                                 Agency Listing</a>
                         </li>
+                                @endcan
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item user-dropdown">

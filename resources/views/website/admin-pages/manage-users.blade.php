@@ -57,7 +57,7 @@
                                             {!! Form::open(['route' => ['admins.destroy',  $admin->id], 'method' => 'delete']) !!}
                                             <div class='btn-group'>
                                                 <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>
-                                                {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('crud.are_you_sure').'")']) !!}
+                                                {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('Are you sure?').'")']) !!}
                                             </div>
                                             {!! Form::close() !!}
                                         </td>
