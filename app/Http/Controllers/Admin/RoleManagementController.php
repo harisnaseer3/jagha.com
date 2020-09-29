@@ -23,7 +23,12 @@ class RoleManagementController extends Controller
 
     public function index()
     {
-        return view('website.admin-pages.manage-roles-permissions');
+        $admin = new Admin();
+        $roles = Role::orderByDesc('id')->get();
+        return view('website.admin-pages.manage-roles-permissions', [
+            'roles' => $roles,
+            'admin' => $admin,
+        ]);
     }
 
 }

@@ -3,6 +3,7 @@ namespace App\Models;
 
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -64,6 +65,20 @@ protected $hidden = [
             $current_admin->update();
         } catch (\Exception $e) {
         }
+    }
+    public function getAdminsByRole($role)
+    {
+        return (new Admin)
+            ->whereHas('roles', function (Builder $query) use ($role) {
+                return $query->where('name', $role);
+            })
+            ->get()
+            ->pluck('name', 'email')
+            ->toArray();
+    }
+    public function getPermissionsByRole($role_name)
+    {
+        return Role::findByName($role_name)->permissions->map->only('name');
     }
 
 
