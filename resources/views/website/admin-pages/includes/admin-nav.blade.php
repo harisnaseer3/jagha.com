@@ -257,7 +257,7 @@
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="{{route('aboutpakistan.support')}}">
+                            <a class="nav-link" href="{{route('admin.manage-roles-permissions')}}">
                                 Roles & Permissions</a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
