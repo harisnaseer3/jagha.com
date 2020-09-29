@@ -156,8 +156,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'page' => '\d+',
         ]);
 
-    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
-    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
+    Route::get('/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard');
+    Route::get('/manage-users', 'Admin\UserManagementController@index')->name('admin.manage-users');
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
     Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
     Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit');
@@ -204,7 +204,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         ->name('admin.agencies.reject_invitation');
 
 //    ajax-call
-
+    Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status');
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status');
 });
 

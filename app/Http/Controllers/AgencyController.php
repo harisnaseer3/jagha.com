@@ -700,6 +700,7 @@ class AgencyController extends Controller
         $all = $this->_listings(explode("_", $status)[0], $user);
         $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
         $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
+
         if (Auth::guard('admin')->user()) {
             $data = [
                 'params' => [
@@ -717,27 +718,29 @@ class AgencyController extends Controller
                     'featured' => $featured->orderBy($sort, $order)->paginate($page),
                 ]];
             return view('website.admin-pages.agency.agency_listings', $data);
+        } else {
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $this->getAgencyListingCount($user),
+                'listings' => [
+                    'all' => $all->orderBy($sort, $order)->paginate($page),
+                    'key' => $key->orderBy($sort, $order)->paginate($page),
+                    'featured' => $featured->orderBy($sort, $order)->paginate($page),
+                ],
+                'notifications' => Auth()->user()->unreadNotifications,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]
+            ];
+            return view('website.agency.agency_listings', $data);
         }
-        $data = [
-            'params' => [
-                'status' => $status,
-                'purpose' => $purpose,
-                'user' => $user,
-                'sort' => $sort,
-                'order' => $order,
-                'page' => $page,
-            ],
-            'counts' => $this->getAgencyListingCount($user),
-            'listings' => [
-                'all' => $all->orderBy($sort, $order)->paginate($page),
-                'key' => $key->orderBy($sort, $order)->paginate($page),
-                'featured' => $featured->orderBy($sort, $order)->paginate($page),
-            ],
-            'notifications' => Auth()->user()->unreadNotifications,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
-        ];
-        return view('website.agency.agency_listings', $data);
+
     }
 
 
