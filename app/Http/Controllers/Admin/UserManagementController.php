@@ -19,6 +19,7 @@ class UserManagementController extends Controller
     {
         $this->middleware('auth:admin');
     }
+
     protected function validator(array $data, $id, $model)
     {
         return Validator::make($data, [
@@ -29,12 +30,12 @@ class UserManagementController extends Controller
 
     public function index()
     {
-
         $admins = Admin::getAllAdmins();
         return view('website.admin-pages.manage-users', [
             'admins' => $admins,
         ]);
     }
+
     public function showAdminRegisterForm()
     {
         $roles = \Spatie\Permission\Models\Role::all();
@@ -42,14 +43,16 @@ class UserManagementController extends Controller
             'roles' => $roles
         ]);
     }
+
     public function registration(Request $request)
     {
         $input = $request->input();
         $register = new AuthController();
-         $admin = $register->create($input);
-            $admin->assignRole($input['role']);
-        return redirect()->route('admin.manage-users');
+        $admin = $register->create($input);
+        $admin->assignRole($input['role']);
+        return redirect()->route('admin.manage-users')->with('success', 'Admin created successfully.');
     }
+
     public function editAdmin($id)
     {
         $current_admin = Admin::getAdminById($id);
@@ -59,8 +62,7 @@ class UserManagementController extends Controller
         }
         $roles = Role::all();
         if (empty($current_admin)) {
-            Flash::error(__('messages.not_found', ['model' => __('admin')]));
-            return redirect()->route('admin.manage-users');
+            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
         }
         return view('website.admin-pages.edit-admin', [
             'admin' => $current_admin,
@@ -68,29 +70,30 @@ class UserManagementController extends Controller
             'roles' => $roles
         ]);
     }
+
     public function updateAdmin($id, Request $request)
     {
         $this->validator($request->all(), $id, 'admins')->validate();
         $current_admin = Admin::getAdminById($id);
         if (empty($current_admin)) {
-            return redirect()->route('admin.manage-users');
+            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
         }
         $input = $request->all();
         $current_admin = Admin::updateAdmin($input, $id);
-        return redirect()->route('admin.manage-users');
+        return redirect()->route('admin.manage-users')->with('success', 'Admin updated successfully.');
     }
+
     public function adminDestroy($admin)
     {
         $current_admin = Admin::getAdminById($admin);
         if (empty($current_admin)) {
 //            Flash::error(__('messages.not_found', ['model' => __('admin')]));
-            return redirect()->route('admin.manage-users');
+            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
         }
         $deleted_admin = Admin::destroy($current_admin->id);
 //        Flash::success(__('messages.deleted', ['model' => __('admin')]));
-        return redirect()->route('admin.manage-users');
+        return redirect()->route('admin.manage-users')->with('success', 'Admin deleted successfully.');
     }
-
 
 
 }
