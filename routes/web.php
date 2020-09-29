@@ -205,7 +205,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         ->name('admin.agencies.reject_invitation');
 
 //    ajax-call
-
+    Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status');
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status');
 });
 

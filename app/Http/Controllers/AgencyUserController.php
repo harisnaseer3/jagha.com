@@ -45,7 +45,10 @@ class AgencyUserController extends Controller
 
     public function addUsers($id)
     {
-        $user = Auth::guard('web')->user()->getAuthIdentifier();
+        if (Auth::guard('admin')->user())
+            $user = Auth::guard('admin')->user()->getAuthIdentifier();
+        else
+            $user = Auth::user()->getAuthIdentifier();
         $current_agency_users = User::select('id', 'email', 'name', 'phone')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
         $status = '';
         $agency_data = Agency::where('id', '=', $id)->first();
@@ -69,14 +72,23 @@ class AgencyUserController extends Controller
                 'status' => $status
             ];
         }
-        $data = [
-            'users_status' => $user_status,
-            'agency' => (new AgencyController)->getAgencyById($id),
-            'counts' => (new AgencyController)->getAgencyListingCount($user),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
-            'current_agency_users' => $current_agency_users
-        ];
+        if (Auth::guard('admin')->user()) {
+            $data = [
+                'users_status' => $user_status,
+                'agency' => (new AgencyController)->getAgencyById($id),
+                'counts' => (new AgencyController)->getAgencyListingCount($user),
+                'current_agency_users' => $current_agency_users
+            ];
+            return view('website.admin-pages.agency.add_agency_users', $data);
+        } else
+            $data = [
+                'users_status' => $user_status,
+                'agency' => (new AgencyController)->getAgencyById($id),
+                'counts' => (new AgencyController)->getAgencyListingCount($user),
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1],
+                'current_agency_users' => $current_agency_users
+            ];
         return view('website.agency.add_agency_users', $data);
     }
 
@@ -122,7 +134,6 @@ class AgencyUserController extends Controller
                 }
             }
         }
-
         foreach ($user_ids as $user_id) {
             if ($user_id) {
                 if (User::select('id')->where('id', '=', $user_id)->first()) {
@@ -144,8 +155,12 @@ class AgencyUserController extends Controller
             Notification::send($users, new AddAgencyUser($agency_data));
         }
 
+        if (Auth::guard('admin')->user())
+            $user = Auth::guard('admin')->user()->getAuthIdentifier();
 
-        $user = Auth::guard('web')->user()->getAuthIdentifier();
+        else
+            $user = Auth::guard('web')->user()->getAuthIdentifier();
+
         $user_status = [];
 
         $status = '';
@@ -166,24 +181,39 @@ class AgencyUserController extends Controller
                 'status' => $status
             ];
         }
-        $data = [
-            'users_status' => $user_status,
-            'agency' => (new AgencyController)->getAgencyById($agency),
-            'counts' => (new AgencyController)->getAgencyListingCount($user),
-            'current_agency_users' => $current_agency_users,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
-        ];
-
+        if (Auth::guard('admin')->user())
+            $data = [
+                'users_status' => $user_status,
+                'agency' => (new AgencyController)->getAgencyById($agency),
+                'counts' => (new AgencyController)->getAgencyListingCount($user),
+                'current_agency_users' => $current_agency_users,
+            ];
         if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
-            return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+            return redirect()->route('admin.agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
         else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
-            return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
+            return redirect()->route('admin.agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
         else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
-            return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
+            return redirect()->route('admin.agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
         else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
-            return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
-
+            return redirect()->route('admin.agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+        else {
+            $data = [
+                'users_status' => $user_status,
+                'agency' => (new AgencyController)->getAgencyById($agency),
+                'counts' => (new AgencyController)->getAgencyListingCount($user),
+                'current_agency_users' => $current_agency_users,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1],
+            ];
+            if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
+                return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+            else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
+                return redirect()->route('agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
+            else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
+                return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
+            else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
+                return redirect()->route('agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+        }
     }
 
     public function acceptInvitation(Request $request)
