@@ -318,11 +318,11 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
+{{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
     <script>
         (function ($) {
             $(document).ready(function () {
-                $('[data-toggle-1="tooltip"]').tooltip();
+                // $('[data-toggle-1="tooltip"]').tooltip();
 
                 function changePropertyStatus(status, id) {
                     jQuery.ajaxSetup({

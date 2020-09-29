@@ -17,7 +17,9 @@
     </section>
     <div class="content">
         <div class="clearfix"></div>
-        <div class="alert-container"></div>
+        <div class="alert-container mx-5">
+            @include('website.layouts.flash-message')
+        </div>
         <div class="clearfix"></div>
         <div class="row mx-4 mt-2">
 
@@ -26,7 +28,8 @@
                     <div class="card-header">Manage Admins
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped table-bordered table-responsive-sm" id="admins-table" lang="{{ app()->getLocale() }}" {{ app()->getLocale() === 'ar' ? 'dir=rtl style=text-align:right;' : '' }}>
+                        <table class="table table-striped table-bordered table-responsive-sm" id="admins-table"
+                               lang="{{ app()->getLocale() }}" {{ app()->getLocale() === 'ar' ? 'dir=rtl style=text-align:right;' : '' }}>
                             <thead>
                             <tr>
                                 <th>{{ __('Name') }}</th>
@@ -40,26 +43,26 @@
                                 <tr>
                                     <td colspan="5">No Admins Found</td>
                                 </tr>
-                                @else
-                            @foreach($admins as $admin)
-                                <tr>
-                                    <td>{{$admin->name}}</td>
-                                    <td>{{$admin->email}}</td>
-                                    <td>
-                                        @foreach($admin->roles as $admin_role)
-                                         {{$admin_role->name}}
-                                        @endforeach
-                                    </td>
-                                    <td>
-                                        {!! Form::open(['route' => ['admins.destroy',  $admin->id], 'method' => 'delete']) !!}
-                                        <div class='btn-group'>
-                                            <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>
-                                            {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('crud.are_you_sure').'")']) !!}
-                                        </div>
-                                        {!! Form::close() !!}
-                                    </td>
-                                </tr>
-                            @endforeach
+                            @else
+                                @foreach($admins as $admin)
+                                    <tr>
+                                        <td>{{$admin->name}}</td>
+                                        <td>{{$admin->email}}</td>
+                                        <td>
+                                            @foreach($admin->roles as $admin_role)
+                                                {{$admin_role->name}}
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {!! Form::open(['route' => ['admins.destroy',  $admin->id], 'method' => 'delete']) !!}
+                                            <div class='btn-group'>
+                                                <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>
+                                                {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('crud.are_you_sure').'")']) !!}
+                                            </div>
+                                            {!! Form::close() !!}
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @endif
 
                             </tbody>
