@@ -36,21 +36,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
-                                    @foreach($notifications as $notification)
-                                        <div>
-                                            <div class="alert alert-success alert-block">
-                                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                                <div>
-                                                    Agency named <strong> {{$notification->data['name']}}</strong> wants to add you as an agent. Do you accept the invitation ?
-                                                    <a class="btn-accept btn-sm btn-success" data-id="{{$notification->id}}"
-                                                       data-agency="{{$notification->data['id']}}"
-                                                       data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
-                                                       href="javascript:void(0)">Accept</a>
-                                                    <a class="btn-reject btn-sm btn-danger" data-id="{{$notification->id}}" href="javascript:void(0)">Reject</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                    @include('website.layouts.user_notification')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></div>
                                         <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
@@ -727,103 +713,7 @@
                                                 {{ $listings['hot']->links() }}
                                             </div>
                                         </div>
-                                        {{--                                        <div class="tab-pane fade" id="listings-magazine" role="tabpanel" aria-labelledby="listings-magazine-tab">--}}
-                                        {{--                                            <h6>Magazine Listings</h6>--}}
-                                        {{--                                            <div class="my-4">--}}
-                                        {{--                                                <div class="table-responsive">--}}
-                                        {{--                                                    <table class="table table-sm table-bordered">--}}
-                                        {{--                                                        <thead class="theme-blue text-white">--}}
-                                        {{--                                                        <tr>--}}
-                                        {{--                                                            <td>ID</td>--}}
-                                        {{--                                                            <td>Type</td>--}}
-                                        {{--                                                            <td>Location</td>--}}
-                                        {{--                                                            <td>Price (PKR)</td>--}}
-                                        {{--                                                            <td>Listed Date</td>--}}
-                                        {{--                                                            @if($params['status'] == 'active')--}}
-                                        {{--                                                                <td>Activation Date</td>--}}
-                                        {{--                                                            @endif--}}
-                                        {{--                                                            <td>Package Stats</td>--}}
 
-                                        {{--                                                            <td>Status Controls</td>--}}
-                                        {{--                                                            <td>Controls</td>--}}
-                                        {{--                                                        </tr>--}}
-                                        {{--                                                        </thead>--}}
-                                        {{--                                                        <tbody>--}}
-                                        {{--                                                        @forelse($listings['magazine'] as $magazine_listing)--}}
-                                        {{--                                                            <tr>--}}
-                                        {{--                                                                <td>{{ $magazine_listing->id }}</td>--}}
-                                        {{--                                                                <td>{{ $magazine_listing->type }}</td>--}}
-                                        {{--                                                                <td>{{ $magazine_listing->location }}, {{$magazine_listing->city}}</td>--}}
-                                        {{--                                                                <td class="text-right pr-3">{{ $magazine_listing->price }}</td>--}}
-                                        {{--                                                                <td>{{ (new \Illuminate\Support\Carbon($magazine_listing->listed_date))->format('Y-m-d') }}</td>--}}
-                                        {{--                                                                @if($params['status'] == 'active')--}}
-                                        {{--                                                                    <td>--}}
-                                        {{--                                                                        {{ (new \Illuminate\Support\Carbon($magazine_listing->activated_at))->format('Y-m-d') }}--}}
-                                        {{--                                                                        <br>--}}
-                                        {{--                                                                        Expired--}}
-                                        {{--                                                                        in {{(new \Illuminate\Support\Carbon($magazine_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}--}}
-                                        {{--                                                                        days--}}
-                                        {{--                                                                    </td>--}}
-                                        {{--                                                                @endif--}}
-                                        {{--                                                                <td>{{ $magazine_listing->quota_used }}</td>--}}
-                                        {{--                                                                <td>--}}
-                                        {{--                                                                    <form>--}}
-                                        {{--                                                                        <input type="radio" name="status" value="boost" disabled data-id="{{ $magazine_listing->id }}"> <label for="active">Boost</label>--}}
-                                        {{--                                                                        @if($magazine_listing->status === 'active')--}}
-                                        {{--                                                                            <input type="radio" name="status" value="reactive"--}}
-                                        {{--                                                                                   {{$magazine_listing->status === 'active'? 'disabled':'' }}--}}
-                                        {{--                                                                                   {{$magazine_listing->status === 'edited'? '':'disabled' }}--}}
-                                        {{--                                                                                   data-id="{{ $magazine_listing->id }}">--}}
-                                        {{--                                                                            <label for="active">Reactive</label>--}}
-                                        {{--                                                                        @endif--}}
-                                        {{--                                                                        <input type="radio" name="status" value="expired"--}}
-                                        {{--                                                                               {{$magazine_listing->status === 'expired'? 'checked':'' }}--}}
-                                        {{--                                                                               {{$magazine_listing->status === 'edited'? 'disabled':'' }}--}}
-                                        {{--                                                                               {{$magazine_listing->status === 'sold'? 'checked':'' }}--}}
-                                        {{--                                                                               data-id="{{ $magazine_listing->id }}" {{$magazine_listing->status === 'expired'? 'checked':'' }}>--}}
-                                        {{--                                                                        <label for="expired">Expired</label>--}}
-
-                                        {{--                                                                        <input type="radio" name="status" value="sold"--}}
-                                        {{--                                                                               data-id="{{ $magazine_listing->id }}"--}}
-                                        {{--                                                                            {{$magazine_listing->status === 'sold'? 'checked':'' }}--}}
-                                        {{--                                                                            {{$magazine_listing->status === 'edited'? 'disabled':'' }}--}}
-                                        {{--                                                                        >--}}
-                                        {{--                                                                        <label for="sold">Sold</label>--}}
-                                        {{--                                                                    </form>--}}
-
-                                        {{--                                                                </td>--}}
-                                        {{--                                                                <td>--}}
-                                        {{--                                                                    <a type="button" href="{{route('properties.edit', $magazine_listing->id)}}"--}}
-                                        {{--                                                                       class="btn btn-sm btn-warning {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"--}}
-                                        {{--                                                                       data-placement="bottom" title="edit">--}}
-                                        {{--                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>--}}
-                                        {{--                                                                    </a>--}}
-                                        {{--                                                                    <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"--}}
-                                        {{--                                                                       data-placement="bottom" title="delete"--}}
-                                        {{--                                                                       data-toggle="modal" data-target="#delete" data-record-id="{{$magazine_listing->id}}">--}}
-                                        {{--                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>--}}
-                                        {{--                                                                    </a>--}}
-                                        {{--                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"--}}
-                                        {{--                                                                       data-toggle-1="tooltip" data-placement="bottom"--}}
-                                        {{--                                                                       title="restore"--}}
-                                        {{--                                                                       href="javascript:void(0)"--}}
-                                        {{--                                                                       data-record-id="{{$magazine_listing->id}}">--}}
-                                        {{--                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>--}}
-                                        {{--                                                                    </a>--}}
-                                        {{--                                                                </td>--}}
-                                        {{--                                                            </tr>--}}
-                                        {{--                                                        @empty--}}
-                                        {{--                                                            <tr>--}}
-                                        {{--                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>--}}
-                                        {{--                                                            </tr>--}}
-                                        {{--                                                        @endforelse--}}
-                                        {{--                                                        </tbody>--}}
-                                        {{--                                                    </table>--}}
-                                        {{--                                                </div>--}}
-
-                                        {{--                                                {{ $listings['magazine']->links() }}--}}
-                                        {{--                                            </div>--}}
-                                        {{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>
@@ -986,6 +876,7 @@
                         }
                     });
                 }
+
                 $('.restore-btn').on('click', function () {
                     let id = $(this).attr('data-record-id');
                     changePropertyStatus('pending', id);
