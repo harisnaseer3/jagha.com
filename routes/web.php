@@ -154,20 +154,20 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'sort' => '(id|type|location|price|expiry|views|image_count)',
             'order' => '(asc|desc)',
             'page' => '\d+',
-        ]);
+        ])->middleware(['permission:Manage Property']);
 
-    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard');
-    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users');
-    Route::get('/manage-roles-permissions','Admin\RoleManagementController@index')->name('admin.manage-roles-permissions');
+    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard')->middleware(['permission:Manage Dashboard']);
+    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users')->middleware(['permission:Manage Users']);
+    Route::get('/manage-roles-permissions','Admin\RoleManagementController@index')->name('admin.manage-roles-permissions')->middleware(['permission:Manage Roles and Permissions']);
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
-    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form');
-    Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit');
-    Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit');
-    Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update');
-    Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy');
-    Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit');
-    Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update');
-    Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy');
+    Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form')->middleware(['permission:Manage Users']);
+    Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit')->middleware(['permission:Manage Users']);
+    Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit')->middleware(['permission:Manage Users']);
+    Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update')->middleware(['permission:Manage Users']);
+    Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy')->middleware(['permission:Manage Users']);
+    Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit')->middleware(['permission:Manage Property']);
+    Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update')->middleware(['permission:Manage Property']);
+    Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy')->middleware(['permission:Manage Property']);
 
     Route::delete('images/{image}', 'ImageController@destroy')->name('admin-images-destroy');
     Route::delete('floorPlans/{floorPlan}', 'FloorPlanController@destroy')->name('admin-floorPlans-destroy');
@@ -183,30 +183,30 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'sort' => '(id|type|location)',
             'order' => '(asc|desc)',
             'page' => '\d+',
-        ]);
-    Route::get('agencies/create', 'AgencyController@create')->name('admin-agencies-create');
-    Route::post('/agencies', 'AgencyController@store')->name('admin-agencies-store');
+        ])->middleware(['permission:Manage Agency']);
+    Route::get('agencies/create', 'AgencyController@create')->name('admin-agencies-create')->middleware(['permission:Manage Agency']);
+    Route::post('/agencies', 'AgencyController@store')->name('admin-agencies-store')->middleware(['permission:Manage Agency']);
 
-    Route::get('agencies/{agency}/edit', 'AgencyController@edit')->name('admin-agencies-edit');
-    Route::put('agencies/{agency}', 'AgencyController@update')->name('admin-agencies-update');
-    Route::delete('agencies/{agency}', 'AgencyController@destroy')->name('admin-agencies-destroy');
+    Route::get('agencies/{agency}/edit', 'AgencyController@edit')->name('admin-agencies-edit')->middleware(['permission:Manage Agency']);
+    Route::put('agencies/{agency}', 'AgencyController@update')->name('admin-agencies-update')->middleware(['permission:Manage Agency']);
+    Route::delete('agencies/{agency}', 'AgencyController@destroy')->name('admin-agencies-destroy')->middleware(['permission:Manage Agency']);
 
 
     Route::get('agencies/{agency}/add-users', 'AgencyUserController@addUsers')
-        ->name('admin.agencies.add-users');
+        ->name('admin.agencies.add-users')->middleware(['permission:Manage Agency']);
 
     Route::post('agencies/{agency}/add-users', 'AgencyUserController@storeAgencyUsers')
-        ->name('admin.agencies.store-agency-users');
+        ->name('admin.agencies.store-agency-users')->middleware(['permission:Manage Agency']);
 
     Route::post('agencies/accept-invitation', 'AgencyUserController@acceptInvitation')
-        ->name('admin.agencies.accept_invitation');
+        ->name('admin.agencies.accept_invitation')->middleware(['permission:Manage Agency']);
 
     Route::post('agencies/reject-invitation', 'AgencyUserController@rejectInvitation')
-        ->name('admin.agencies.reject_invitation');
+        ->name('admin.agencies.reject_invitation')->middleware(['permission:Manage Agency']);
 
 //    ajax-call
-    Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status');
-    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status');
+    Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);
+    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status')->middleware(['permission:Manage Property']);
 });
 
 //Facebook Login
