@@ -11,7 +11,7 @@
 @section('content')
     @include('website.includes.dashboard-nav')
     <!-- Top header start -->
-{{--    <div style="min-height:90px"></div>--}}
+    {{--    <div style="min-height:90px"></div>--}}
 
     <div class="submit-property">
         <div class="container-fluid container-padding">
@@ -140,7 +140,7 @@
                                         <div class="row mt-3">
                                             <div class="col-md-12">
                                                 <div class="table-responsive">
-                                                    {{ Form::open(['route' => ['agencies.store-agency-users', $agency->id], 'method' => 'post', 'role' => 'form']) }}
+                                                    {{ Form::open(['route' => ['admin.agencies.store-agency-users', $agency->id], 'method' => 'post', 'role' => 'form']) }}
                                                     <table class="table table-md table-bordered" id="agency-users-table" style="display:none;">
                                                         <thead class="theme-blue color-white">
                                                         <tr>
@@ -203,8 +203,18 @@
     <script>
         (function ($) {
             $(document).ready(function () {
-                const logged_in_user ={{Auth::user()->getAuthIdentifier()}};
-                const logged_in_email = '{{Auth::user()->email}}';
+                let logged_in_user = 0
+                let logged_in_email = '';
+
+                if ({{Auth::guard('admin')->user()->getAuthIdentifier()}}) {
+                    logged_in_user = {{Auth::guard('admin')->user()->getAuthIdentifier()}}
+                        logged_in_email = '{{Auth::guard('admin')->user()->email}}';
+                } else {
+                    logged_in_user = {{Auth::user()->getAuthIdentifier()}}
+                        logged_in_email = '{{Auth::user()->email}}';
+                }
+
+
                 $('input[type=radio][name=user_add_by]').change(function () {
                     if (this.value === 'Id') {
                         $("#user-id").attr("readonly", false);

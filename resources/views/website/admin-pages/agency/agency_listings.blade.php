@@ -77,13 +77,23 @@
                                                                    data-placement="bottom" title="Edit Agency">
                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                 </a>
+                                                                {{--                                                                <a type="button" class="btn btn-sm btn-danger--}}
+                                                                {{--                                                                {{$params['status'] == 'deleted_agencies' ?' anchor-disable':''}}--}}
+                                                                {{--                                                                    " data-placement="bottom" title="Delete Agency"--}}
+                                                                {{--                                                                   data-toggle="modal" data-target="#delete"--}}
+                                                                {{--                                                                   data-record-id="{{$all_listing->id}}">--}}
+                                                                {{--                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>--}}
+                                                                {{--                                                                </a>--}}
+
                                                                 <a type="button" class="btn btn-sm btn-danger
-                                                                {{$params['status'] == 'deleted_agencies' ?' anchor-disable':''}}
-                                                                    "  data-placement="bottom" title="Delete Agency"
-                                                                   data-toggle="modal" data-target="#delete"
-                                                                   data-record-id="{{$all_listing->id}}">
-                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                    {{$params['status'] == 'deleted_agencies' ?' anchor-disable':''}}"
+                                                                   data-toggle-1="tooltip"
+                                                                   data-placement="bottom" title="delete"
+                                                                   data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
+                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                 </a>
+
+
                                                                 <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted_agencies' ?'':'anchor-disable'}}"
                                                                    data-toggle-1="tooltip" data-placement="bottom"
                                                                    title="restore"
@@ -267,11 +277,16 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
+    {{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
     <script>
         (function ($) {
             $(document).ready(function () {
-                $('[data-toggle-1="tooltip"]').tooltip();
+                $('#delete').on('show.bs.modal', function (event) {
+                    let record_id = $(event.relatedTarget).data('record-id');
+                    $(this).find('.modal-body #record-id').val(record_id);
+                });
+
+                // $('[data-toggle-1="tooltip"]').tooltip();
 
                 function changePropertyStatus(status, id) {
                     jQuery.ajaxSetup({
@@ -281,7 +296,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin + '/property' + '/dashboard/agency-change-status',
+                        url: window.location.origin + '/property' + '/admin/agency-change-status',
                         data: {'id': id, 'status': status},
                         dataType: 'json',
                         success: function (data) {
@@ -319,10 +334,6 @@
                     }
                 });
 
-                $('#delete').on('show.bs.modal', function (event) {
-                    let record_id = $(event.relatedTarget).data('record-id');
-                    $(this).find('.modal-body #record-id').val(record_id);
-                });
                 //TODO: if page url change then change following accordingly
                 $(document).on('click', '#listings-tab a', function () {
                     var tab = $(this).attr('href').split('#');
@@ -355,7 +366,7 @@
                 });
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin + '/property' + '/dashboard/agencies/accept-invitation',
+                    url: window.location.origin + '/property' + '/admin/agencies/accept-invitation',
                     data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
                     dataType: 'json',
                     success: function (data) {
@@ -385,7 +396,7 @@
                 });
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin + '/property' + '/dashboard/agencies/reject-invitation',
+                    url: window.location.origin + '/property' + '/admin/agencies/reject-invitation',
                     data: {'notification_id': notification_id},
                     dataType: 'json',
                     success: function (data) {
