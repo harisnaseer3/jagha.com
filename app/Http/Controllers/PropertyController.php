@@ -571,8 +571,6 @@ class PropertyController extends Controller
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
-
-
     }
 
     public function update(Request $request, Property $property)
@@ -692,6 +690,7 @@ class PropertyController extends Controller
             }
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
+
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 

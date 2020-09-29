@@ -839,37 +839,6 @@
                         changePropertyStatus(status_value, id);
                     }
                 });
-                $('.mark-as-read').on('click', function () {
-                    let alert = $(this);
-                    let notification_id = alert.attr('data-id');
-
-                    jQuery.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    jQuery.ajax({
-                        type: 'post',
-                        url: window.location.origin + '/property' + '/dashboard/agencies/reject-invitation',
-                        data: {'notification_id': notification_id},
-                        dataType: 'json',
-                        success: function (data) {
-                            // console.log(data);
-                            if (data.status === 200) {
-                                alert.closest('.alert').remove();
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log(xhr);
-                            console.log(status);
-                            console.log(error);
-                        },
-                        complete: function (url, options) {
-
-                        }
-                    });
-                });
-
             });
         })(jQuery);
     </script>

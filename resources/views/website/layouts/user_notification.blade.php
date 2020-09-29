@@ -1,10 +1,21 @@
 @foreach($notifications as $notification)
     <div>
-        @if(isset($notification->data['status']))
+        @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
             <div class="alert alert-block mark-as-read" style="background-color:  #ffe14d">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <div style="color: black;">
                     Status of Property having Reference <strong> {{$notification->data['title']}} </strong> has been changed to
+                    <strong>{{ucwords($notification->data['status'])}}</strong> by the Admin.
+                    <a class="btn-read btn-sm btn-outline-info mr-auto" href="javascript:void(0)"
+                       data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                       data-id={{$notification->data['id']}}> Mark as read</a>
+                </div>
+            </div>
+        @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
+            <div class="alert alert-block mark-as-read" style="background-color:  #ffe14d">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <div style="color: black;">
+                    Status of Agency named <strong> {{$notification->data['title']}} </strong> has been changed to
                     <strong>{{ucwords($notification->data['status'])}}</strong> by the Admin.
                     <a class="btn-read btn-sm btn-outline-info mr-auto" href="javascript:void(0)"
                        data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"

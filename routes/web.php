@@ -117,6 +117,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('change.property.status');
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('change.agency.status');
 
+//    read notification about property
+    Route::post('/property-notification', 'NotificationController@ReadPropertyStatus');
+    Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
+
+
+
 });
 
 Route::group(['prefix' => 'properties'], function () {
@@ -156,9 +162,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'page' => '\d+',
         ])->middleware(['permission:Manage Property']);
 
-    Route::get('/dashboard','Admin\AdminDashboardController@index')->name('admin.dashboard')->middleware(['permission:Manage Dashboard']);
-    Route::get('/manage-users','Admin\UserManagementController@index')->name('admin.manage-users')->middleware(['permission:Manage Users']);
-    Route::get('/manage-roles-permissions','Admin\RoleManagementController@index')->name('admin.manage-roles-permissions')->middleware(['permission:Manage Roles and Permissions']);
+    Route::get('/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard')->middleware(['permission:Manage Dashboard']);
+    Route::get('/manage-users', 'Admin\UserManagementController@index')->name('admin.manage-users')->middleware(['permission:Manage Users']);
+    Route::get('/manage-roles-permissions', 'Admin\RoleManagementController@index')->name('admin.manage-roles-permissions')->middleware(['permission:Manage Roles and Permissions']);
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
     Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form')->middleware(['permission:Manage Users']);
     Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit')->middleware(['permission:Manage Users']);

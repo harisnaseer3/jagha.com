@@ -6,23 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Notifiable;
 
-
-class PropertyStatusChange extends Notification
+class AgencyStatusChange extends Notification
 {
     use Queueable;
 
-    private $property;
+    private $agency;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($property)
+    public function __construct($agency)
     {
-        $this->property = $property;
+        $this->agency = $agency;
     }
 
     /**
@@ -45,11 +43,10 @@ class PropertyStatusChange extends Notification
     public function toArray($notifiable)
     {
         return [
-            'type' => 'property',
-            'title' => $this->property->title,
-            'id' => $this->property->id,
-            'status' => $this->property->status,
-            'reference' => $this->property->reference,
+            'type' => 'agency',
+            'title' => $this->agency->title,
+            'id' => $this->agency->id,
+            'status' => $this->agency->status,
         ];
     }
 }

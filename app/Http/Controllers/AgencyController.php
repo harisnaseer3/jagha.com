@@ -8,6 +8,8 @@ use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Models\PropertyType;
+use App\Notifications\AgencyStatusChange;
+use App\Notifications\PropertyStatusChange;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -529,6 +531,10 @@ class AgencyController extends Controller
             }
             if ($status_before_update === 'verified' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 $this->deleteFromCounterTable();
+
+            $user = User::where('id', '=', $agency->user_id)->first();
+            $user->notify(new AgencyStatusChange($agency));
+
             if (Auth::guard('admin')->user()) {
                 return redirect()->route('admin.agencies.listings', [
                     'status' => 'pending_agencies',
