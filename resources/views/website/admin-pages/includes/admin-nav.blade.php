@@ -292,7 +292,8 @@
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-3"></i>
                                         @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
-                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})</span>
+                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})  <a class="dropdown-item" href="{{route('accounts.admin-logout')}}"><i
+                                                        class="far fa-sign-out mr-2"></i>Logout</a></span>
                                         @endif
 
                                     </a>
