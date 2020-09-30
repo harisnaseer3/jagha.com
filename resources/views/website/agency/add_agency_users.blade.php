@@ -81,7 +81,6 @@
                                             </thead>
                                             <tbody>
                                             @if(isset($current_agency_users) && count($current_agency_users) > 0)
-
                                                 @foreach($current_agency_users as $agency_user)
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>

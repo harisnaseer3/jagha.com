@@ -8,11 +8,13 @@ use App\Models\Account;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
+use App\Models\Dashboard\User;
 use App\Models\FloorPlan;
 use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
+use App\Notifications\PropertyStatusChange;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Exception;
@@ -569,8 +571,6 @@ class PropertyController extends Controller
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
-
-
     }
 
     public function update(Request $request, Property $property)
@@ -688,6 +688,9 @@ class PropertyController extends Controller
                 event(new NewPropertyActivatedEvent($property));
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
             }
+            $user = User::where('id', '=', $property->user_id)->first();
+            $user->notify(new PropertyStatusChange($property));
+
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 
@@ -695,8 +698,10 @@ class PropertyController extends Controller
                 return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10', 'recent_properties' => (new FooterController)->footerContent()[0],
                     'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
 
-            return redirect()->route('properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10', 'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
+            return redirect()->route('properties.listings',
+                ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10',
+                    'recent_properties' => (new FooterController)->footerContent()[0],
+                    'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
@@ -711,6 +716,9 @@ class PropertyController extends Controller
             try {
                 $property->status = 'deleted';
                 $property->save();
+
+                $user = User::where('id', '=', $property->user_id)->first();
+                $user->notify(new PropertyStatusChange($property));
 
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
                 $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();

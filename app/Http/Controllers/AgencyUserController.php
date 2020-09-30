@@ -241,7 +241,6 @@ class AgencyUserController extends Controller
 
     public function rejectInvitation(Request $request)
     {
-
         if ($request->ajax()) {
             auth()->user()
                 ->unreadNotifications

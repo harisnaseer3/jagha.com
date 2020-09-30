@@ -28,7 +28,7 @@
                              data-parent="#accordionListings">
                             <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
                                 @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === $status)
-                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
 
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"  href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}" role="tab"
                                        aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
@@ -48,7 +48,7 @@
                                            aria-controls="listings-hot" aria-selected="{{ $params['purpose'] === 'hot' ? 'true' : 'false' }}">Hot Listing ({{ $counts[$status]['hot'] }})</a>
                                     @endif
                                 @else
-                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
                                     <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
                                     <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale
                                         ({{ $counts[$status]['sale'] }})</a>

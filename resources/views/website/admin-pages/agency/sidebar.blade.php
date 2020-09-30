@@ -42,7 +42,7 @@
                                    role="tab" aria-controls="listings-featured" aria-selected="{{ $params['purpose'] === 'featured' ? 'true' : 'false' }}">Featured Agencies
                                     ({{ $counts['verified']['featured']}})</a>
                             @else
-                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
                                 <a class="nav-link side-link-style" href="{{ route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
                                 <a class="nav-link side-link-style" href="{{ route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'key'])) }}">Key Agencies (0)</a>
                                 <a class="nav-link side-link-style" href="{{ route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'featured'])) }}">Featured Agencies (0)</a>
@@ -62,7 +62,7 @@
                                     {{ucfirst($status)}}({{ $counts[$status]['all'] }})
                                 </a>
                             @else
-                                <?php $route_params = ['status' => $status . '_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+                                <?php $route_params = ['status' => $status . '_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
                                 <a href="{{ route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}"
                                    class="{{ $params['status'] === $status.'_agency' ? '' : 'collapsed' }} {{ $params['status'] === $status.'_agencies' ? 'text-white' : '' }}" role="button"
                                    aria-expanded="{{ $params['status'] === ucfirst($status).'Agency' ? 'true' : 'false' }}">
