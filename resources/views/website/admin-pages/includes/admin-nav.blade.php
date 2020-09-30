@@ -280,7 +280,7 @@
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
                                href="{{route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
-                                Agency Listing</a>
+                                Agency Management</a>
                         </li>
                                 @endcan
                     </ul>
