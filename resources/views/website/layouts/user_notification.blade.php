@@ -4,8 +4,9 @@
             <div class="alert alert-block mark-as-read" style="background-color:  #ffe14d">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <div style="color: black;">
-                    Status of Property having Reference <strong> {{$notification->data['title']}} </strong> has been changed to
-                    <strong>{{ucwords($notification->data['status'])}}</strong> by the Admin.
+                    Status of Property ID = <strong> {{$notification->data['id']}} </strong> having Reference <strong> {{$notification->data['reference']}} </strong>
+                    has been changed to
+                    <strong>{{ucwords($notification->data['status'])}}</strong> by Property Admin.
                     <a class="btn-read btn-sm btn-outline-info mr-auto" href="javascript:void(0)"
                        data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
                        data-id={{$notification->data['id']}}> Mark as read</a>
@@ -15,8 +16,8 @@
             <div class="alert alert-block mark-as-read" style="background-color:  #ffe14d">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <div style="color: black;">
-                    Status of Agency named <strong> {{$notification->data['title']}} </strong> has been changed to
-                    <strong>{{ucwords($notification->data['status'])}}</strong> by the Admin.
+                    Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to
+                    <strong>{{ucwords($notification->data['status'])}}</strong> by Agency Admin.
                     <a class="btn-read btn-sm btn-outline-info mr-auto" href="javascript:void(0)"
                        data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
                        data-id={{$notification->data['id']}}> Mark as read</a>

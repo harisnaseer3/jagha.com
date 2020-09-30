@@ -717,6 +717,9 @@ class PropertyController extends Controller
                 $property->status = 'deleted';
                 $property->save();
 
+                $user = User::where('id', '=', $property->user_id)->first();
+                $user->notify(new PropertyStatusChange($property));
+
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
                 $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
                 $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];

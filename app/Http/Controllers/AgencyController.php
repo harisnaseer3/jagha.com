@@ -562,16 +562,18 @@ class AgencyController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Agency $agency
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
-        $user_id = Auth::user()->getAuthIdentifier();
         $agency = (new Agency)->where('id', '=', $request->input('record_id'))->first();
         if ($agency->exists) {
             try {
                 $agency->status = 'deleted';
                 $agency->save();
+
+                $user = User::where('id', '=', $agency->user_id)->first();
+                $user->notify(new AgencyStatusChange($agency));
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {
