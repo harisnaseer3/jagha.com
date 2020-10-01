@@ -28,14 +28,15 @@
                     <div class="form-group row" id="admin_role">
                         <div class="col-md-6">
                             {!! Form::label('role', __('Role') ) !!} <span class="text-danger">*</span>
-                            <select name="role" class="form-control form-control-sm" style="width: 100%;" tabindex="-1" aria-hidden="true" id="select-admin-role">
-                                <option value selected disabled>Select Role</option>
+
                                 @foreach($roles as $role)
                                     @if($role->name !== 'Super Admin')
-                                    <option value="{{$role->name}}">{{$role->name}}</option>
+                                    <label class="checkbox-inline ml-2">
+                                        <input type="checkbox" name="role[]" value="{{$role->name}}"> {{$role->name}}
+                                    </label>
                                     @endif
                                 @endforeach
-                            </select>
+
                         </div>
                     </div>
 

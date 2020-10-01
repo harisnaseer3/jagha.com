@@ -47,9 +47,10 @@ class UserManagementController extends Controller
     public function registration(Request $request)
     {
         $input = $request->input();
+        $roles = $input['role'];
         $register = new AuthController();
         $admin = $register->create($input);
-        $admin->assignRole($input['role']);
+        $admin->assignRole($roles);
         return redirect()->route('admin.manage-users')->with('success', 'Admin created successfully.');
     }
 
