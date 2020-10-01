@@ -30,6 +30,11 @@ class Property extends Model
         'super_hot_listing' => 'boolean',
         'hot_listing' => 'boolean',
         'magazine_listing' => 'boolean',
+        'basic_listing' => 'boolean',
+        'bronze_listing' => 'boolean',
+        'silver_listing' => 'boolean',
+        'golden_listing' => 'boolean',
+        'platinum_listing' => 'boolean',
         'is_active' => 'boolean',
     ];
 
@@ -65,7 +70,7 @@ class Property extends Model
         'premium_listing',
         'super_hot_listing',
         'hot_listing',
-        'magazine_listing',
+        'magazine_listing', 'basic_listing', 'bronze_listing', 'silver_listing', 'golden_listing', 'platinum_listing',
         'contact_person',
         'phone',
         'cell',
@@ -75,7 +80,8 @@ class Property extends Model
         'visits',
         'activated_at',
         'click_through_rate',
-        'status'
+        'status',
+        'reviewed_by'
     ];
     public static $rules = [
         'city' => 'required',

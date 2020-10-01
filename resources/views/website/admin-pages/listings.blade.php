@@ -40,6 +40,10 @@
                                                             <td>Listed Date</td>
                                                             @if($params['status'] == 'active')
                                                                 <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
                                                             @endif
                                                             <td>Package Stats</td>
                                                             @if($params['status'] != 'deleted')
@@ -67,22 +71,21 @@
                                                                         Expired in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                         days
                                                                     </td>
+                                                                    <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
                                                                 @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+
                                                                 <td>{{ $all_listing->quota_used }}</td>
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
-                                                                    @if($params['status'] === 'pending')
-                                                                        <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                for="active">Activate</label>
-                                                                        @elseif($params['status'] === 'sold')
+                                                                        @if($params['status'] === 'sold')
                                                                             Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
                                                                         @else
                                                                             <form>
-                                                                                @if($params['status'] != 'expired')
-                                                                                    <input type="radio" name="status" value="boost" disabled data-id="{{ $all_listing->id }}"> <label
-                                                                                        for="active">Boost</label>
-                                                                                @endif
                                                                                 @if($params['status'] != 'active')
                                                                                     <input type="radio" name="status" value="reactive"
                                                                                            {{$all_listing->status === 'active'? 'disabled':'' }}
@@ -90,6 +93,8 @@
                                                                                     <label for="active">Reactive</label>
                                                                                 @endif
                                                                                 @if($params['status'] != 'expired')
+                                                                                    <input type="radio" name="status" value="boost" disabled data-id="{{ $all_listing->id }}"> <label
+                                                                                        for="active">Boost</label>
                                                                                     <input type="radio" name="status" value="expired"
                                                                                            {{$all_listing->status === 'expired'? 'checked':'' }}
                                                                                            {{$all_listing->status === 'edited'? 'disabled':'' }}
@@ -97,46 +102,53 @@
                                                                                            data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
                                                                                     <label for="expired">Expired</label>
                                                                                 @endif
-
                                                                                 @if($params['status'] != 'sold')
                                                                                     <input type="radio" name="status" value="sold"
-                                                                                           data-id="{{ $all_listing->id }}"
-                                                                                        {{$all_listing->status === 'sold'? 'checked':'' }}
-                                                                                        {{$all_listing->status === 'edited'? 'disabled':'' }}
-                                                                                    >
+                                                                                           data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}{{$all_listing->status === 'edited'? 'disabled':'' }}>
                                                                                     <label for="sold">Sold</label>
                                                                                 @endif
                                                                             </form>
                                                                         @endif
-
                                                                     </td>
                                                                 @endif
                                                                 <td>
-                                                                    <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
                                                                             {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
-                                                                       {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
-                                                                           "
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
+                                                                               "
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                            {{--                                                                    </a>--}}
+                                                                            <a type="button" class="btn btn-sm btn-danger
                                                                         {{$params['status'] == 'deleted' ?' anchor-disable':''}}" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$all_listing->id}}">
-                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$all_listing->id}}">
-                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
+                                                                               data-placement="bottom" title="delete"
+                                                                               data-toggle="modal" data-target="#delete"
+                                                                               data-record-id="{{$all_listing->id}}">
+                                                                                <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                            </a>
+                                                                            <a type="button"
+                                                                               class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                               data-toggle-1="tooltip" data-placement="bottom"
+                                                                               title="restore"
+                                                                               href="javascript:void(0)"
+                                                                               data-record-id="{{$all_listing->id}}">
+                                                                                <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                            </a>
+                                                                    @endif
                                                                 </td>
-
                                                             </tr>
                                                         @empty
                                                             <tr>
@@ -168,6 +180,10 @@
                                                             <td>Listed Date</td>
                                                             @if($params['status'] == 'active')
                                                                 <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
                                                             @endif
                                                             <td>Package Stats</td>
                                                             @if($params['status'] != 'deleted')
@@ -191,16 +207,16 @@
                                                                         Expired in {{(new \Illuminate\Support\Carbon($sale_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                         days
                                                                     </td>
+                                                                    <td>@if(isset($sale_listing->reviewed_by)) {{ucwords($sale_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($sale_listing->reviewed_by)) {{ucwords($sale_listing->reviewed_by)}}@endif</td>
                                                                 @endif
                                                                 <td>{{ $sale_listing->quota_used }}</td>
                                                                 @if($params['status'] != 'deleted')
-                                                                    <td>
-                                                                    @if($params['status'] === 'pending')
-                                                                        <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                for="active">Activate</label>
-                                                                        @elseif($params['status'] === 'sold')
-                                                                            Property Sold
+                                                                    <td> @if($params['status'] === 'sold') Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
                                                                         @else
                                                                             <form>
                                                                                 <input type="radio" name="status" value="boost" disabled data-id="{{ $sale_listing->id }}"> <label
@@ -217,37 +233,47 @@
                                                                                 <label for="expired">Expired</label>
 
                                                                                 <input type="radio" name="status" value="sold"
-                                                                                       data-id="{{ $sale_listing->id }}"
-                                                                                    {{$sale_listing->status === 'sold'? 'checked':'' }}
-                                                                                    {{$sale_listing->status === 'edited'? 'disabled':'' }}
-                                                                                >
+                                                                                       data-id="{{ $sale_listing->id }}" {{$sale_listing->status === 'sold'? 'checked':'' }}
+                                                                                    {{$sale_listing->status === 'edited'? 'disabled':'' }} >
                                                                                 <label for="sold">Sold</label>
                                                                             </form>
                                                                         @endif
                                                                     </td>
                                                                 @endif
                                                                 <td>
-                                                                    <a type="button" href="{{route('admin-properties-edit', $sale_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'anchor-disable':''}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button"
-                                                                       class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?'anchor-disable':''}}" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$sale_listing->id}}">
-                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                    <a type="button"
-                                                                       class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$sale_listing->id}}">
-                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $sale_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('admin-properties-edit', $sale_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'anchor-disable':''}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button"
+                                                                           class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?'anchor-disable':''}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete"
+                                                                           data-record-id="{{$sale_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button"
+                                                                           class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$sale_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         @empty
@@ -280,6 +306,10 @@
                                                             <td>Listed Date</td>
                                                             @if($params['status'] == 'active')
                                                                 <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
                                                             @endif
                                                             <td>Package Stats</td>
                                                             @if($params['status'] != 'deleted')
@@ -303,16 +333,19 @@
                                                                         Expired in {{(new \Illuminate\Support\Carbon($rent_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                         days
                                                                     </td>
+                                                                    <td>@if(isset($rent_listing->reviewed_by)) {{ucwords($rent_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($rent_listing->reviewed_by)) {{ucwords($rent_listing->reviewed_by)}}@endif</td>
                                                                 @endif
                                                                 <td>{{ $rent_listing->quota_used }}</td>
                                                                 {{--                                                            <td>{{ $rent_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
-                                                                    <td>@if($params['status'] === 'pending')
-                                                                        <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                for="active">Activate</label>
-                                                                        @elseif($params['status'] === 'sold')
+                                                                    <td>
+                                                                        @if($params['status'] === 'sold')
                                                                             Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
                                                                         @else
                                                                             <form>
                                                                                 <input type="radio" name="status" value="boost" disabled data-id="{{ $rent_listing->id }}"> <label
@@ -330,34 +363,44 @@
 
                                                                                 <input type="radio" name="status" value="sold"
                                                                                        data-id="{{ $rent_listing->id }}"
-                                                                                    {{$rent_listing->status === 'sold'? 'checked':'' }}
-                                                                                    {{$rent_listing->status === 'edited'? 'disabled':'' }}
-                                                                                >
+                                                                                    {{$rent_listing->status === 'sold'? 'checked':'' }} {{$rent_listing->status === 'edited'? 'disabled':'' }}>
                                                                                 <label for="sold">Sold</label>
                                                                             </form>
                                                                         @endif
                                                                     </td>
                                                                 @endif
                                                                 <td>
-                                                                    <a type="button" href="{{route('admin-properties-edit', $rent_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning {{$params['status'] == 'deleted' ?'anchor-disable':''}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'anchor-disable':''}}" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$rent_listing->id}}">
-                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$rent_listing->id}}">
-                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $rent_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('admin-properties-edit', $rent_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning {{$params['status'] == 'deleted' ?'anchor-disable':''}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'anchor-disable':''}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete"
+                                                                           data-record-id="{{$rent_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$rent_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         @empty
@@ -389,6 +432,10 @@
                                                             <td>Listed Date</td>
                                                             @if($params['status'] == 'active')
                                                                 <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
                                                             @endif
                                                             <td>Package Stats</td>
                                                             @if($params['status'] != 'deleted')
@@ -412,17 +459,19 @@
                                                                         Expired in {{(new \Illuminate\Support\Carbon($wanted_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                         days
                                                                     </td>
+                                                                    <td>@if(isset($wanted_listing->reviewed_by)) {{ucwords($wanted_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($wanted_listing->reviewed_by)) {{ucwords($wanted_listing->reviewed_by)}}@endif</td>
                                                                 @endif
                                                                 <td>{{ $wanted_listing->quota_used }}</td>
                                                                 {{--                                                            <td>{{ $wanted_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
                                                                     <td>
-                                                                    @if($params['status'] === 'pending')
-                                                                        <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                for="active">Activate</label>
-                                                                        @elseif($params['status'] === 'sold')
+                                                                        @if($params['status'] === 'sold')
                                                                             Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
                                                                         @else
                                                                             <form>
                                                                                 <input type="radio" name="status" value="boost" disabled data-id="{{ $wanted_listing->id }}"> <label
@@ -440,33 +489,43 @@
 
                                                                                 <input type="radio" name="status" value="sold"
                                                                                        data-id="{{ $wanted_listing->id }}"
-                                                                                    {{$wanted_listing->status === 'sold'? 'checked':'' }}
-                                                                                    {{$wanted_listing->status === 'edited'? 'disabled':'' }}
-                                                                                >
+                                                                                    {{$wanted_listing->status === 'sold'? 'checked':'' }} {{$wanted_listing->status === 'edited'? 'disabled':'' }} >
                                                                                 <label for="sold">Sold</label>
                                                                             </form>@endif
                                                                     </td>
                                                                 @endif
                                                                 <td>
-                                                                    <a type="button" href="{{route('admin-properties-edit', $wanted_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$wanted_listing->id}}">
-                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$wanted_listing->id}}">
-                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $wanted_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('admin-properties-edit', $wanted_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete"
+                                                                           data-record-id="{{$wanted_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$wanted_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         @empty
@@ -484,8 +543,8 @@
                                                 {{ $listings['wanted']->links() }}
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="listings-super_hot" role="tabpanel" aria-labelledby="listings-super_hot-tab">
-                                            <h6>Super Hot Listings</h6>
+                                        <div class="tab-pane fade" id="listings-basic" role="tabpanel" aria-labelledby="listings-basic-tab">
+                                            <h6>Basic Listings</h6>
                                             <div class="my-4">
                                                 <div class="table-responsive">
                                                     <table class="table table-sm table-bordered">
@@ -498,190 +557,96 @@
                                                             <td>Listed Date</td>
                                                             @if($params['status'] == 'active')
                                                                 <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
                                                             @endif
                                                             <td>Package Stats</td>
-                                                            @if($params['status'] != 'deleted')
-                                                                <td>Status Controls</td>
-                                                            @endif
-                                                            <td>Controls</td>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @forelse($listings['super_hot'] as $super_hot_listing)
-                                                            <tr>
-                                                                <td>{{ $super_hot_listing->id }}</td>
-                                                                <td>{{ $super_hot_listing->type }}</td>
-                                                                <td>{{ $super_hot_listing->location }}, {{$super_hot_listing->city}}</td>
-                                                                <td class="text-right pr-3">{{ $super_hot_listing->price}}</td>
-                                                                <td>{{ (new \Illuminate\Support\Carbon($super_hot_listing->listed_date))->format('Y-m-d') }}</td>
-                                                                @if($params['status'] == 'active')
-                                                                    <td>
-                                                                        {{ (new \Illuminate\Support\Carbon($super_hot_listing->activated_at))->format('Y-m-d') }}
-                                                                        <br>
-                                                                        Expired
-                                                                        in {{(new \Illuminate\Support\Carbon($super_hot_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
-                                                                        days
-                                                                    </td>
-                                                                @endif
-                                                                <td>{{ $super_hot_listing->quota_used }}</td>
-                                                                {{--                                                            <td>{{ $super_hot_listing->image_views }}</td>--}}
-                                                                @if($params['status'] != 'deleted')
-                                                                    <td>@if($params['status'] === 'pending')
-                                                                        <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                for="active">Activate</label>
-                                                                        @elseif($params['status'] === 'sold')
-                                                                            Property Sold
-                                                                        @else
-                                                                            <form>
-                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $super_hot_listing->id }}"> <label
-                                                                                    for="active">Boost</label>
-                                                                                <input type="radio" name="status" value="reactive"
-                                                                                       {{$super_hot_listing->status === 'active'? 'disabled':'' }}
-                                                                                       data-id="{{ $super_hot_listing->id }}">
-                                                                                <label for="active">Reactive</label>
-                                                                                <input type="radio" name="status" value="expired"
-                                                                                       {{$super_hot_listing->status === 'expired'? 'checked':'' }}
-                                                                                       {{$super_hot_listing->status === 'edited'? 'disabled':'' }}
-                                                                                       {{$super_hot_listing->status === 'sold'? 'checked':'' }}
-                                                                                       data-id="{{ $super_hot_listing->id }}" {{$super_hot_listing->status === 'expired'? 'checked':'' }}>
-                                                                                <label for="expired">Expired</label>
-
-                                                                                <input type="radio" name="status" value="sold"
-                                                                                       data-id="{{ $super_hot_listing->id }}"
-                                                                                    {{$super_hot_listing->status === 'sold'? 'checked':'' }}
-                                                                                    {{$super_hot_listing->status === 'edited'? 'disabled':'' }}
-                                                                                >
-                                                                                <label for="sold">Sold</label>
-                                                                            </form>@endif
-
-                                                                    </td>@endif
-                                                                <td>
-                                                                    <a type="button" href="{{route('admin-properties-edit', $super_hot_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$super_hot_listing->id}}">
-                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$super_hot_listing->id}}">
-                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        @empty
-                                                            <tr>
-                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
-                                                            </tr>
-                                                        @endforelse
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                @if($params['status'] === 'edited')
-                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
-                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
-                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>@endif
-                                                {{ $listings['super_hot']->links() }}
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="listings-hot" role="tabpanel" aria-labelledby="listings-hot-tab">
-                                            <h6>Hot Listings</h6>
-                                            <div class="my-4">
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm table-bordered">
-                                                        <thead class="theme-blue text-white">
-                                                        <tr>
-                                                            <td>ID</td>
-                                                            <td>Type</td>
-                                                            <td>Location</td>
-                                                            <td>Price (PKR)</td>
-                                                            <td>Listed Date</td>
-                                                            @if($params['status'] == 'active')
-                                                                <td>Activation Date</td>
-                                                            @endif
-                                                            <td>Package Stats</td>
-                                                            @if($params['status'] != 'deleted')
+                                                            @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
                                                                 <td>Status Controls</td>@endif
                                                             <td>Controls</td>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @forelse($listings['hot'] as $hot_listing)
+                                                        @forelse($listings['basic'] as $basic_listing)
                                                             <tr>
-                                                                <td>{{ $hot_listing->id }}</td>
-                                                                <td>{{ $hot_listing->type }}</td>
-                                                                <td>{{ $hot_listing->location }}, {{$hot_listing->city}}</td>
-                                                                <td class="text-right pr-3">{{ $hot_listing->price }}</td>
-                                                                <td>{{ (new \Illuminate\Support\Carbon($hot_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                <td>{{ $basic_listing->id }}</td>
+                                                                <td>{{ $basic_listing->type }}</td>
+                                                                <td>{{ $basic_listing->location }}, {{$basic_listing->city}}</td>
+                                                                <td class="text-right pr-3">{{ $basic_listing->price }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($basic_listing->listed_date))->format('Y-m-d') }}</td>
                                                                 @if($params['status'] == 'active')
                                                                     <td>
-                                                                        {{ (new \Illuminate\Support\Carbon($hot_listing->activated_at))->format('Y-m-d') }}
+                                                                        {{ (new \Illuminate\Support\Carbon($basic_listing->activated_at))->format('Y-m-d') }}
                                                                         <br>
-                                                                        Expired in {{(new \Illuminate\Support\Carbon($hot_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
+                                                                        Expired in {{(new \Illuminate\Support\Carbon($basic_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                         days
                                                                     </td>
+                                                                    <td>@if(isset($basic_listing->reviewed_by)) {{ucwords($basic_listing->reviewed_by)}}@endif</td>
                                                                 @endif
-                                                                <td>{{ $hot_listing->quota_used }}</td>
-                                                                {{--                                                            <td>{{ $hot_listing->image_views }}</td>--}}
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($basic_listing->reviewed_by)) {{ucwords($basic_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                <td>{{ $basic_listing->quota_used }}</td>
+                                                                {{--                                                            <td>{{ $basic_listing->image_views }}</td>--}}
                                                                 @if($params['status'] != 'deleted')
-                                                                    <td>@if($params['status'] === 'pending')
-                                                                        <!-- Pending for Verification -->
-                                                                            <input type="radio" name="status" value="active" data-id="{{ $all_listing->id }}"> <label
-                                                                                for="active">Activate</label>
-                                                                        @elseif($params['status'] === 'sold')
+                                                                    <td> @if($params['status'] === 'sold')
                                                                             Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
                                                                         @else
                                                                             <form>
-                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $hot_listing->id }}"> <label
+                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $basic_listing->id }}"> <label
                                                                                     for="active">Boost</label>
                                                                                 <input type="radio" name="status" value="reactive"
-                                                                                       {{$hot_listing->status === 'active'? 'disabled':'' }}
-                                                                                       data-id="{{ $hot_listing->id }}">
+                                                                                       {{$basic_listing->status === 'active'? 'disabled':'' }}
+                                                                                       data-id="{{$basic_listing->id }}">
                                                                                 <label for="active">Reactive</label>
                                                                                 <input type="radio" name="status" value="expired"
-                                                                                       {{$hot_listing->status === 'expired'? 'checked':'' }}
-                                                                                       {{$hot_listing->status === 'edited'? 'disabled':'' }}
-                                                                                       {{$hot_listing->status === 'sold'? 'checked':'' }}
-                                                                                       data-id="{{ $hot_listing->id }}" {{$hot_listing->status === 'expired'? 'checked':'' }}>
+                                                                                       {{$basic_listing->status === 'expired'? 'checked':'' }}
+                                                                                       {{$basic_listing->status === 'edited'? 'disabled':'' }}
+                                                                                       {{$basic_listing->status === 'sold'? 'checked':'' }}
+                                                                                       data-id="{{ $basic_listing->id }}" {{$basic_listing->status === 'expired'? 'checked':'' }}>
                                                                                 <label for="expired">Expired</label>
 
                                                                                 <input type="radio" name="status" value="sold"
-                                                                                       data-id="{{ $hot_listing->id }}"
-                                                                                    {{$hot_listing->status === 'sold'? 'checked':'' }}
-                                                                                    {{$hot_listing->status === 'edited'? 'disabled':'' }}
-                                                                                >
+                                                                                       data-id="{{ $basic_listing->id }}"
+                                                                                    {{$basic_listing->status === 'sold'? 'checked':'' }} {{$basic_listing->status === 'edited'? 'disabled':'' }}>
                                                                                 <label for="sold">Sold</label>
                                                                             </form>@endif
                                                                     </td>@endif
-
                                                                 <td>
-                                                                    <a type="button" href="{{route('admin-properties-edit', $hot_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
-                                                                       data-toggle="modal" data-target="#delete" data-record-id="{{$hot_listing->id}}">
-                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$hot_listing->id}}">
-                                                                        <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $basic_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('properties.edit', $basic_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete" data-record-id="{{$basic_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$basic_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         @empty
@@ -697,10 +662,499 @@
                                                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
                                                     <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                 @endif
-                                                {{ $listings['hot']->links() }}
+                                                {{ $listings['basic']->links() }}
                                             </div>
                                         </div>
+                                        <div class="tab-pane fade" id="listings-bronze" role="tabpanel" aria-labelledby="listings-bronze-tab">
+                                            <h6>Bronze Listings</h6>
+                                            <div class="my-4">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead class="theme-blue text-white">
+                                                        <tr>
+                                                            <td>ID</td>
+                                                            <td>Type</td>
+                                                            <td>Location</td>
+                                                            <td>Price (PKR)</td>
+                                                            <td>Listed Date</td>
+                                                            @if($params['status'] == 'active')
+                                                                <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
+                                                            @endif
+                                                            <td>Package Stats</td>
+                                                            @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
+                                                                <td>Status Controls</td>@endif
+                                                            <td>Controls</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @forelse($listings['bronze'] as $bronze_listing)
+                                                            <tr>
+                                                                <td>{{ $bronze_listing->id }}</td>
+                                                                <td>{{ $bronze_listing->type }}</td>
+                                                                <td>{{ $bronze_listing->location }}, {{$bronze_listing->city}}</td>
+                                                                <td class="text-right pr-3">{{ $bronze_listing->price }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($bronze_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                @if($params['status'] == 'active')
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($bronze_listing->activated_at))->format('Y-m-d') }}
+                                                                        <br>
+                                                                        Expired in {{(new \Illuminate\Support\Carbon($bronze_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
+                                                                        days
+                                                                    </td>
+                                                                    <td>@if(isset($bronze_listing->reviewed_by)) {{ucwords($bronze_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($bronze_listing->reviewed_by)) {{ucwords($bronze_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                <td>{{ $bronze_listing->quota_used }}</td>
+                                                                {{--                                                            <td>{{ $bronze_listing->image_views }}</td>--}}
+                                                                @if($params['status'] != 'deleted')
+                                                                    <td>@if($params['status'] === 'sold')
+                                                                            Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
+                                                                        @else
+                                                                            <form>
+                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $bronze_listing->id }}"> <label
+                                                                                    for="active">Boost</label>
+                                                                                <input type="radio" name="status" value="reactive"
+                                                                                       {{$bronze_listing->status === 'active'? 'disabled':'' }}
+                                                                                       data-id="{{$bronze_listing->id }}">
+                                                                                <label for="active">Reactive</label>
+                                                                                <input type="radio" name="status" value="expired"
+                                                                                       {{$bronze_listing->status === 'expired'? 'checked':'' }}
+                                                                                       {{$bronze_listing->status === 'edited'? 'disabled':'' }}
+                                                                                       {{$bronze_listing->status === 'sold'? 'checked':'' }}
+                                                                                       data-id="{{ $bronze_listing->id }}" {{$bronze_listing->status === 'expired'? 'checked':'' }}>
+                                                                                <label for="expired">Expired</label>
 
+                                                                                <input type="radio" name="status" value="sold"
+                                                                                       data-id="{{ $bronze_listing->id }}"
+                                                                                    {{$bronze_listing->status === 'sold'? 'checked':'' }}{{$bronze_listing->status === 'edited'? 'disabled':'' }}>
+                                                                                <label for="sold">Sold</label>
+                                                                            </form>@endif
+                                                                    </td>@endif
+
+                                                                <td>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $bronze_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('properties.edit', $bronze_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete" data-record-id="{{$bronze_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$bronze_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            </tr>
+                                                        @endforelse
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @if($params['status'] === 'edited')
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                @endif
+                                                {{ $listings['bronze']->links() }}
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="listings-silver" role="tabpanel" aria-labelledby="listings-silver-tab">
+                                            <h6>Silver Listings</h6>
+                                            <div class="my-4">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead class="theme-blue text-white">
+                                                        <tr>
+                                                            <td>ID</td>
+                                                            <td>Type</td>
+                                                            <td>Location</td>
+                                                            <td>Price (PKR)</td>
+                                                            <td>Listed Date</td>
+                                                            @if($params['status'] == 'active')
+                                                                <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
+                                                            @endif
+                                                            <td>Package Stats</td>
+                                                            @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
+                                                                <td>Status Controls</td>@endif
+                                                            <td>Controls</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @forelse($listings['silver'] as $silver_listing)
+                                                            <tr>
+                                                                <td>{{ $silver_listing->id }}</td>
+                                                                <td>{{ $silver_listing->type }}</td>
+                                                                <td>{{ $silver_listing->location }}, {{$silver_listing->city}}</td>
+                                                                <td class="text-right pr-3">{{ $silver_listing->price }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($silver_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                @if($params['status'] == 'active')
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($silver_listing->activated_at))->format('Y-m-d') }}
+                                                                        <br>
+                                                                        Expired in {{(new \Illuminate\Support\Carbon($silver_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
+                                                                        days
+                                                                    </td>
+                                                                    <td>@if(isset($silver_listing->reviewed_by)) {{ucwords($silver_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($silver_listing->reviewed_by)) {{ucwords($silver_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                <td>{{ $silver_listing->quota_used }}</td>
+                                                                {{--                                                            <td>{{ $silver_listing->image_views }}</td>--}}
+                                                                @if($params['status'] != 'deleted')
+                                                                    <td>@if($params['status'] === 'sold')
+                                                                            Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
+                                                                        @else
+                                                                            <form>
+                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $silver_listing->id }}"> <label
+                                                                                    for="active">Boost</label>
+                                                                                <input type="radio" name="status" value="reactive"
+                                                                                       {{$silver_listing->status === 'active'? 'disabled':'' }}
+                                                                                       data-id="{{$silver_listing->id }}">
+                                                                                <label for="active">Reactive</label>
+                                                                                <input type="radio" name="status" value="expired"
+                                                                                       {{$silver_listing->status === 'expired'? 'checked':'' }}
+                                                                                       {{$silver_listing->status === 'edited'? 'disabled':'' }}
+                                                                                       {{$silver_listing->status === 'sold'? 'checked':'' }}
+                                                                                       data-id="{{ $silver_listing->id }}" {{$silver_listing->status === 'expired'? 'checked':'' }}>
+                                                                                <label for="expired">Expired</label>
+
+                                                                                <input type="radio" name="status" value="sold"
+                                                                                       data-id="{{ $silver_listing->id }}"
+                                                                                    {{$silver_listing->status === 'sold'? 'checked':'' }}{{$silver_listing->status === 'edited'? 'disabled':'' }}>
+                                                                                <label for="sold">Sold</label>
+                                                                            </form>@endif
+                                                                    </td>@endif
+
+                                                                <td>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $silver_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('properties.edit', $silver_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete" data-record-id="{{$silver_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$silver_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            </tr>
+                                                        @endforelse
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @if($params['status'] === 'edited')
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                @endif
+                                                {{ $listings['silver']->links() }}
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="listings-golden" role="tabpanel" aria-labelledby="listings-golden-tab">
+                                            <h6>Golden Listings</h6>
+                                            <div class="my-4">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead class="theme-blue text-white">
+                                                        <tr>
+                                                            <td>ID</td>
+                                                            <td>Type</td>
+                                                            <td>Location</td>
+                                                            <td>Price (PKR)</td>
+                                                            <td>Listed Date</td>
+                                                            @if($params['status'] == 'active')
+                                                                <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
+                                                            @endif
+                                                            <td>Package Stats</td>
+                                                            @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
+                                                                <td>Status Controls</td>@endif
+                                                            <td>Controls</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @forelse($listings['golden'] as $golden_listing)
+                                                            <tr>
+                                                                <td>{{ $golden_listing->id }}</td>
+                                                                <td>{{ $golden_listing->type }}</td>
+                                                                <td>{{ $golden_listing->location }}, {{$golden_listing->city}}</td>
+                                                                <td class="text-right pr-3">{{ $golden_listing->price }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($golden_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                @if($params['status'] == 'active')
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($golden_listing->activated_at))->format('Y-m-d') }}
+                                                                        <br>
+                                                                        Expired in {{(new \Illuminate\Support\Carbon($golden_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
+                                                                        days
+                                                                    </td>
+                                                                    <td>@if(isset($golden_listing->reviewed_by)) {{ucwords($golden_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($golden_listing->reviewed_by)) {{ucwords($golden_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                <td>{{ $golden_listing->quota_used }}</td>
+                                                                {{--                                                            <td>{{ $golden_listing->image_views }}</td>--}}
+                                                                @if($params['status'] != 'deleted')
+                                                                    <td>@if($params['status'] === 'sold')
+                                                                            Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
+                                                                        @else
+                                                                            <form>
+                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $golden_listing->id }}"> <label
+                                                                                    for="active">Boost</label>
+                                                                                <input type="radio" name="status" value="reactive"
+                                                                                       {{$golden_listing->status === 'active'? 'disabled':'' }}
+                                                                                       data-id="{{$golden_listing->id }}">
+                                                                                <label for="active">Reactive</label>
+                                                                                <input type="radio" name="status" value="expired"
+                                                                                       {{$golden_listing->status === 'expired'? 'checked':'' }}
+                                                                                       {{$golden_listing->status === 'edited'? 'disabled':'' }}
+                                                                                       {{$golden_listing->status === 'sold'? 'checked':'' }}
+                                                                                       data-id="{{ $golden_listing->id }}" {{$golden_listing->status === 'expired'? 'checked':'' }}>
+                                                                                <label for="expired">Expired</label>
+
+                                                                                <input type="radio" name="status" value="sold"
+                                                                                       data-id="{{ $golden_listing->id }}"
+                                                                                    {{$golden_listing->status === 'sold'? 'checked':'' }}  {{$golden_listing->status === 'edited'? 'disabled':'' }}>
+                                                                                <label for="sold">Sold</label>
+                                                                            </form>@endif
+                                                                    </td>@endif
+
+                                                                <td>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $golden_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('properties.edit', $golden_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete" data-record-id="{{$golden_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$golden_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            </tr>
+                                                        @endforelse
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @if($params['status'] === 'edited')
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                @endif
+                                                {{ $listings['golden']->links() }}
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="listings-platinum" role="tabpanel" aria-labelledby="listings-platinum-tab">
+                                            <h6>Platinum Listings</h6>
+                                            <div class="my-4">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm table-bordered">
+                                                        <thead class="theme-blue text-white">
+                                                        <tr>
+                                                            <td>ID</td>
+                                                            <td>Type</td>
+                                                            <td>Location</td>
+                                                            <td>Price (PKR)</td>
+                                                            <td>Listed Date</td>
+                                                            @if($params['status'] == 'active')
+                                                                <td>Activation Date</td>
+                                                                <td>Activated By</td>
+                                                            @endif
+                                                            @if($params['status'] == 'rejected')
+                                                                <td>Rejected By</td>
+                                                            @endif
+                                                            <td>Package Stats</td>
+                                                            @if($params['status'] != 'deleted')
+                                                                <td>Status Controls</td>@endif
+                                                            <td>Controls</td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @forelse($listings['platinum'] as $platinum_listing)
+                                                            <tr>
+                                                                <td>{{ $platinum_listing->id }}</td>
+                                                                <td>{{ $platinum_listing->type }}</td>
+                                                                <td>{{ $platinum_listing->location }}, {{$platinum_listing->city}}</td>
+                                                                <td class="text-right pr-3">{{ $platinum_listing->price }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($platinum_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                @if($params['status'] == 'active')
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($platinum_listing->activated_at))->format('Y-m-d') }}
+                                                                        <br>Expired in {{(new \Illuminate\Support\Carbon($platinum_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}} days
+                                                                    </td>
+                                                                    <td>@if(isset($platinum_listing->reviewed_by)) {{ucwords($platinum_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                @if($params['status'] == 'rejected')
+                                                                    <td>@if(isset($platinum_listing->reviewed_by)) {{ucwords($platinum_listing->reviewed_by)}}@endif</td>
+                                                                @endif
+                                                                <td>{{ $platinum_listing->quota_used }}</td>
+                                                                {{--                                                            <td>{{ $platinum_listing->image_views }}</td>--}}
+                                                                @if($params['status'] != 'deleted')
+                                                                    <td>@if($params['status'] === 'sold')
+                                                                            Property Sold
+                                                                        @elseif($params['status'] === 'pending')
+                                                                            <span class="pending-status">Pending</span>
+                                                                        @else
+                                                                            <form>
+                                                                                <input type="radio" name="status" value="boost" disabled data-id="{{ $platinum_listing->id }}"> <label
+                                                                                    for="active">Boost</label>
+                                                                                <input type="radio" name="status" value="reactive"
+                                                                                       {{$platinum_listing->status === 'active'? 'disabled':'' }}
+                                                                                       data-id="{{$platinum_listing->id }}">
+                                                                                <label for="active">Reactive</label>
+                                                                                <input type="radio" name="status" value="expired"
+                                                                                       {{$platinum_listing->status === 'expired'? 'checked':'' }}
+                                                                                       {{$platinum_listing->status === 'edited'? 'disabled':'' }}
+                                                                                       {{$platinum_listing->status === 'sold'? 'checked':'' }}
+                                                                                       data-id="{{ $platinum_listing->id }}" {{$platinum_listing->status === 'expired'? 'checked':'' }}>
+                                                                                <label for="expired">Expired</label>
+
+                                                                                <input type="radio" name="status" value="sold"
+                                                                                       data-id="{{ $platinum_listing->id }}"
+                                                                                    {{$platinum_listing->status === 'sold'? 'checked':'' }}{{$platinum_listing->status === 'edited'? 'disabled':'' }}>
+                                                                                <label for="sold">Sold</label>
+                                                                            </form>@endif
+                                                                    </td>@endif
+
+                                                                <td>
+                                                                    @if($params['status'] === 'pending')
+                                                                        <a type="button" href="{{route('admin-properties-edit', $platinum_listing->id)}}"
+                                                                           class="btn btn-sm btn-info
+                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                           {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Verify and Activate">
+                                                                            Verify & Activate
+                                                                            <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{route('properties.edit', $platinum_listing->id)}}"
+                                                                           class="btn btn-sm btn-warning  {{$params['status'] == 'deleted' ?'':'anchor-disable'}} {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="edit">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger {{$params['status'] == 'deleted' ?'':'anchor-disable'}}" data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="delete"
+                                                                           data-toggle="modal" data-target="#delete" data-record-id="{{$platinum_listing->id}}">
+                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'anchor-disable':''}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="restore"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$platinum_listing->id}}">
+                                                                            <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            </tr>
+                                                        @endforelse
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @if($params['status'] === 'edited')
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> Please check reactive button for verification of changes</div>
+                                                @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
+                                                    <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
+                                                @endif
+                                                {{ $listings['platinum']->links() }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

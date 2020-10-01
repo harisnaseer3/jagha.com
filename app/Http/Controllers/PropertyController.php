@@ -355,6 +355,8 @@ class PropertyController extends Controller
                 'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
                 'status' => $request->has('status') ? $request->has('status') : 'pending',
+                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
+                'basic_listing' => 1,
                 'contact_person' => $request->input('contact_person'),
                 'phone' => $request->input('phone'),
                 'cell' => $request->input('mobile'),
@@ -662,6 +664,8 @@ class PropertyController extends Controller
                 'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
                 'status' => $request->has('status') ? $request->input('status') : 'edited',
+                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
+                'basic_listing' => 1,
                 'contact_person' => $request->input('contact_person'),
                 'phone' => $request->input('phone'),
                 'cell' => $request->input('mobile'),
@@ -749,13 +753,12 @@ class PropertyController extends Controller
         $listings = (new Property)
             ->select('properties.id', 'sub_type AS type', 'properties.expired_at',
                 'properties.status', 'locations.name AS location', 'cities.name as city',
-                'properties.activated_at', 'properties.expired_at',
+                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by',
                 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"),
                 DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->whereNull('properties.deleted_at');
-//            dd(Auth::user()->hasRole('Admin'));
         // user
 //        TODO: based on property role admin
 //        if (!Auth::user()->hasRole('Admin')) {
@@ -859,9 +862,12 @@ class PropertyController extends Controller
                     'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->paginate($page),
                     'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->paginate($page),
                     'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->paginate($page),
-                    'super_hot' => $this->_listings($status, $user)->where('super_hot_listing', true)->orderBy($sort, $order)->paginate($page),
-                    'hot' => $this->_listings($status, $user)->where('hot_listing', true)->orderBy($sort, $order)->paginate($page),
-                    'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
+                    'basic' => $this->_listings($status, $user)->where('basic_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                    'silver' => $this->_listings($status, $user)->where('silver_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                    'bronze' => $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                    'golden' => $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                    'platinum' => $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+
                 ],
 
             ];
@@ -885,7 +891,13 @@ class PropertyController extends Controller
                 'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->paginate($page),
                 'super_hot' => $this->_listings($status, $user)->where('super_hot_listing', true)->orderBy($sort, $order)->paginate($page),
                 'hot' => $this->_listings($status, $user)->where('hot_listing', true)->orderBy($sort, $order)->paginate($page),
-                'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
+                'basic' => $this->_listings($status, $user)->where('basic_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                'silver' => $this->_listings($status, $user)->where('silver_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                'bronze' => $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                'golden' => $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+                'platinum' => $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
+
+//                'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
             ],
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
@@ -910,9 +922,13 @@ class PropertyController extends Controller
             $counts[$status]['wanted'] = $this->_listings($status, $user)->where('purpose', '=', 'wanted')->count();
 
             if ($status === 'active') {
-                $counts[$status]['super_hot'] = $this->_listings($status, $user)->where('super_hot_listing', true)->count();
-                $counts[$status]['hot'] = $this->_listings($status, $user)->where('hot_listing', true)->count();
-                $counts[$status]['magazine'] = $this->_listings($status, $user)->where('magazine_listing', true)->count();
+//                $counts[$status]['super_hot'] = $this->_listings($status, $user)->where('super_hot_listing', true)->count();
+//                $counts[$status]['hot'] = $this->_listings($status, $user)->where('hot_listing', true)->count();
+                $counts[$status]['basic'] = $this->_listings($status, $user)->where('basic_listing', '=', 1)->count();
+                $counts[$status]['silver'] = $this->_listings($status, $user)->where('silver_listing', '=', 1)->count();
+                $counts[$status]['bronze'] = $this->_listings($status, $user)->where('bronze_listing', '=', 1)->count();
+                $counts[$status]['golden'] = $this->_listings($status, $user)->where('golden_listing', '=', 1)->count();
+                $counts[$status]['platinum'] = $this->_listings($status, $user)->where('platinum_listing', '=', 1)->count();
             }
         }
         return $counts;

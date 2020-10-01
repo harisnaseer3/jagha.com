@@ -177,7 +177,20 @@
                         $('.price-block').slideDown();
                     }
                 });
+                $('#status').on('change', function (e) {
+                    let rejection_input = $('[name=rejection_reason]');
+                    let rejection_div = $('#reason-of-rejection');
 
+                    if ($("#status option:selected").text() === 'Rejected') {
+                        console.log(rejection_input);
+                        rejection_input.attr('required', 'required').attr('disable', 'false');
+                        rejection_div.slideDown();
+                    } else {
+                        rejection_input.removeAttr('required').attr('disable', 'true');
+                        rejection_input.val('');
+                        rejection_div.slideUp();
+                    }
+                });
             });
         })(jQuery);
     </script>

@@ -52,10 +52,6 @@
             {{ Form::bsSelect2('unit',  ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
                 isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         @endif
-
-        {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
-
         <div class="selection-hide" style="display: none">
             {{ Form::bsSelect2('bedrooms', ['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10+'=>'10+'],
                    isset($property->bedrooms) ? strtolower($property->bedrooms) : null, [ 'placeholder' => 'Select Bedrooms']) }}
@@ -157,6 +153,16 @@
         {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : null,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}
         {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. 0211234567']) }}
         {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : null, ['required' => true]) }}
+    </div>
+
+
+    <div class="card-header theme-blue text-white text-capitalize">Property Status</div>
+    <div class="card-body">
+        {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','rejected' => 'Rejected','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
+          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
+        <div id="reason-of-rejection" style="display: none">
+            {{ Form::bsText('rejection_reason', null,['required'=> 'true']) }}
+        </div>
     </div>
     <div class="card-footer">
         {{form::bsHidden('data-index',isset($property->id)? $property->id : null)}}
