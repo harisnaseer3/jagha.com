@@ -4,12 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Models\Admin;
+use App\Models\Dashboard\User;
+use App\Models\UserInvite;
+use App\Notifications\registerNotification;
+use App\Notifications\SendMailToJoinNotification;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AdminAuth\AuthController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Notification;
 
 
 class UserManagementController extends Controller
@@ -48,10 +54,34 @@ class UserManagementController extends Controller
     {
         $input = $request->input();
         $roles = $input['role'];
-        $register = new AuthController();
-        $admin = $register->create($input);
-        $admin->assignRole($roles);
-        return redirect()->route('admin.manage-users')->with('success', 'Admin created successfully.');
+        $current_user = User::findUserByEmail($input['email']);
+
+        if(!empty($current_user))
+        {
+            $input['name'] = $current_user->name;
+            $input['password'] = $current_user->password;
+            $input['remember_token'] = $current_user->remember_token;
+            $register = new AuthController();
+            $admin = $register->create($input);
+            $admin->assignRole($roles);
+
+
+            return redirect()->route('admin.manage-users')->with('success', 'Admin created successfully.');
+        }
+        else {
+            $new_email_users[] = $input['email'];
+            DB::table('user_invites')
+                ->updateOrInsert(
+                    ['email' => $input['email']],
+                    ['email' => $input['email']]
+                );
+            $new_user = UserInvite::where('email', '=', $input['email'])->first();
+            //  send mail to new user
+            Notification::send($new_user, new RegisterNotification($roles));
+            return redirect()->route('admin.manage-users')->with('success', 'Invitation to join property portal has been successfully send.');
+
+        }
+
     }
 
     public function editAdmin($id)
@@ -59,7 +89,7 @@ class UserManagementController extends Controller
         $current_admin = Admin::getAdminById($id);
         $admin_role = '';
         if (count($current_admin->roles) > 0) {
-            $admin_role = $current_admin->roles[0]->name;
+            $admin_roles = $current_admin->roles;
         }
         $roles = Role::all();
         if (empty($current_admin)) {
@@ -67,7 +97,7 @@ class UserManagementController extends Controller
         }
         return view('website.admin-pages.edit-admin', [
             'admin' => $current_admin,
-            'admin_role' => $admin_role,
+            'admin_role' => $admin_roles,
             'roles' => $roles
         ]);
     }

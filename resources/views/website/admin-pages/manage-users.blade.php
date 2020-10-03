@@ -35,13 +35,14 @@
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('E-Mail Address') }}</th>
                                 <th>{{ __('Role') }}</th>
+                                <th>{{ __('Status') }}</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             @if(count($admins) === 0)
                                 <tr>
-                                    <td colspan="5">No Admins Found</td>
+                                    <td colspan="6">No Admins Found</td>
                                 </tr>
                             @else
                                 @foreach($admins as $admin)
@@ -53,6 +54,7 @@
                                                 {{$admin_role->name}}
                                             @endforeach
                                         </td>
+                                        <td>@if($admin->is_active === '1') Active @else Inactive @endif</td>
                                         <td>
                                             {!! Form::open(['route' => ['admins.destroy',  $admin->id], 'method' => 'delete']) !!}
                                             <div class='btn-group'>
