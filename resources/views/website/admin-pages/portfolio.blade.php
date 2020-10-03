@@ -177,12 +177,20 @@
                         $('.price-block').slideDown();
                     }
                 });
+                let radios = $('[name=property_package]')
+
+                radios.prop("disabled", true);
+
+                let rejection_input = $('[name=rejection_reason]');
+                let rejection_div = $('#reason-of-rejection');
+                if ($("#status option:selected").text() === 'Rejected') {
+                    rejection_input.attr('required', 'required').attr('disable', 'false');
+                    rejection_div.slideDown();
+                }
+
                 $('#status').on('change', function (e) {
-                    let rejection_input = $('[name=rejection_reason]');
-                    let rejection_div = $('#reason-of-rejection');
 
                     if ($("#status option:selected").text() === 'Rejected') {
-                        console.log(rejection_input);
                         rejection_input.attr('required', 'required').attr('disable', 'false');
                         rejection_div.slideDown();
                     } else {

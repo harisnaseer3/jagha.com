@@ -14,6 +14,7 @@ use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Video;
+use App\Notifications\PropertyRejectionMail;
 use App\Notifications\PropertyStatusChange;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
@@ -264,7 +265,6 @@ class PropertyController extends Controller
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
             }
         }
-
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -317,10 +317,6 @@ class PropertyController extends Controller
             $max_id = $max_id + 1;
 
             $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
-
-//            $agency = DB::table('agency_users')
-//                ->select('agency_users.agency_id AS id')
-//                ->where('user_id', '=', $user_id)->first();
             $agency = '';
             if ($request->input('agency')) {
                 $agency = DB::table('agencies')->select('id')->where('title', '=', $request->input('agency'))->where('user_id', '=', $user_id)->first();
@@ -333,7 +329,7 @@ class PropertyController extends Controller
                 'location_id' => $location['location_id'],
                 'agency_id' => $agency != '' ? $agency->id : null,
                 'purpose' => $request->input('purpose'),
-                'sub_purpose' => $request->input('wanted_for') ? $request->has('wanted_for') : null,
+                'sub_purpose' => $request->has('wanted_for') ? $request->input('wanted_for') : null,
                 'type' => $request->input('property_type'),
                 'sub_type' => $subtype,
                 'title' => $request->input('property_title'),
@@ -349,12 +345,12 @@ class PropertyController extends Controller
                 'area_in_new_marla' => $area_values['new_marla'],
                 'area_in_kanal' => $area_values['kanal'],
                 'area_in_new_kanal' => $area_values['new_kanal'],
-                'bedrooms' => $request->has('bedrooms') ? $request->has('bedrooms') : 0,
-                'bathrooms' => $request->has('bathrooms') ? $request->has('bathrooms') : 0,
+                'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
+                'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
-                'status' => $request->has('status') ? $request->has('status') : 'pending',
+                'status' => $request->has('status') ? $request->input('status') : 'pending',
                 'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
                 'basic_listing' => 1,
                 'contact_person' => $request->input('contact_person'),
@@ -384,7 +380,7 @@ class PropertyController extends Controller
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
             }
 
-            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully');
+            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.');
         } catch (Exception $e) {
 //            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
@@ -590,6 +586,16 @@ class PropertyController extends Controller
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
             }
         }
+        if ($request->has('status') && $request->input('status') == 'rejected') {
+            if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
+                return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
+            } else {
+//                TODO: send an email to property user with reason of rejection
+                $reason = $request->input('rejection_reason');
+                $property_user = User::where('id', '=', $property->user_id)->first();
+                $property_user->notify(new PropertyRejectionMail($property, $reason));
+            }
+        }
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -647,7 +653,7 @@ class PropertyController extends Controller
                 'sub_type' => $subtype,
                 'title' => $request->input('property_title'),
                 'description' => $request->input('description'),
-                'price' => $request->input('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                'price' => $request->has('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
                 'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
                 'land_area' => $request->input('land_area'),
                 'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
@@ -658,8 +664,8 @@ class PropertyController extends Controller
                 'area_in_new_marla' => $area_values['new_marla'],
                 'area_in_kanal' => $area_values['kanal'],
                 'area_in_new_kanal' => $area_values['new_kanal'],
-                'bedrooms' => $request->has('bedrooms') ? $request->has('bedrooms') : 0,
-                'bathrooms' => $request->has('bathrooms') ? $request->has('bathrooms') : 0,
+                'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
+                'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
@@ -671,6 +677,7 @@ class PropertyController extends Controller
                 'cell' => $request->input('mobile'),
                 'fax' => $request->input('fax'),
                 'email' => $request->input('contact_email'),
+                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
             ]);
 
             if ($request->hasFile('image')) {
@@ -753,7 +760,7 @@ class PropertyController extends Controller
         $listings = (new Property)
             ->select('properties.id', 'sub_type AS type', 'properties.expired_at',
                 'properties.status', 'locations.name AS location', 'cities.name as city',
-                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by',
+                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by','properties.basic_listing','properties.bronze_listing','properties.silver_listing','properties.golden_listing','properties.platinum_listing',
                 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"),
                 DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')

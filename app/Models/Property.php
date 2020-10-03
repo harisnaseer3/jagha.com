@@ -81,7 +81,8 @@ class Property extends Model
         'activated_at',
         'click_through_rate',
         'status',
-        'reviewed_by'
+        'reviewed_by',
+        'rejection_reason'
     ];
     public static $rules = [
         'city' => 'required',
@@ -102,7 +103,8 @@ class Property extends Model
         'fax' => 'nullable|regex:/\+92-\d{2}\\d{7}/', // +92-211234567
         'contact_person' => 'required|max:225',
         'contact_email' => 'required|email',
-        'video_link' => 'nullable|url'
+        'video_link' => 'nullable|url',
+        'rejection_reason' => 'nullable|string'
     ];
 
     /**

@@ -188,8 +188,8 @@ h6 {
 
 /* Select2 end */
 
-#sidebar-property-management .card-header+.list-group .list-group-item:first-child,
-#sidebar-property-management .card-header+.list-group .list-group-item:last-child,
+#sidebar-property-management .card-header + .list-group .list-group-item:first-child,
+#sidebar-property-management .card-header + .list-group .list-group-item:last-child,
 #accordionListings .card,
 #accordionListings .card-header:first-child {
     border-radius: 0;
@@ -361,10 +361,10 @@ h6 {
     text-transform: capitalize !important;
 }
 
-.was-validated :valid~.valid-feedback,
-.was-validated :valid~.valid-tooltip,
-.is-valid~.valid-feedback,
-.is-valid~.valid-tooltip {
+.was-validated :valid ~ .valid-feedback,
+.was-validated :valid ~ .valid-tooltip,
+.is-valid ~ .valid-feedback,
+.is-valid ~ .valid-tooltip {
     display: block;
 }
 
@@ -403,51 +403,51 @@ textarea.form-control.is-valid {
     box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);
 }
 
-.was-validated .form-check-input:valid~.form-check-label,
-.form-check-input.is-valid~.form-check-label {
+.was-validated .form-check-input:valid ~ .form-check-label,
+.form-check-input.is-valid ~ .form-check-label {
     color: #38c172;
 }
 
-.was-validated .form-check-input:valid~.valid-feedback,
-.was-validated .form-check-input:valid~.valid-tooltip,
-.form-check-input.is-valid~.valid-feedback,
-.form-check-input.is-valid~.valid-tooltip {
+.was-validated .form-check-input:valid ~ .valid-feedback,
+.was-validated .form-check-input:valid ~ .valid-tooltip,
+.form-check-input.is-valid ~ .valid-feedback,
+.form-check-input.is-valid ~ .valid-tooltip {
     display: block;
 }
 
-.was-validated .custom-control-input:valid~.custom-control-label,
-.custom-control-input.is-valid~.custom-control-label {
+.was-validated .custom-control-input:valid ~ .custom-control-label,
+.custom-control-input.is-valid ~ .custom-control-label {
     color: #38c172;
 }
 
-.was-validated .custom-control-input:valid~.custom-control-label::before,
-.custom-control-input.is-valid~.custom-control-label::before {
+.was-validated .custom-control-input:valid ~ .custom-control-label::before,
+.custom-control-input.is-valid ~ .custom-control-label::before {
     border-color: #38c172;
 }
 
-.was-validated .custom-control-input:valid:checked~.custom-control-label::before,
-.custom-control-input.is-valid:checked~.custom-control-label::before {
+.was-validated .custom-control-input:valid:checked ~ .custom-control-label::before,
+.custom-control-input.is-valid:checked ~ .custom-control-label::before {
     border-color: #5cd08d;
     background-color: #5cd08d;
 }
 
-.was-validated .custom-control-input:valid:focus~.custom-control-label::before,
-.custom-control-input.is-valid:focus~.custom-control-label::before {
+.was-validated .custom-control-input:valid:focus ~ .custom-control-label::before,
+.custom-control-input.is-valid:focus ~ .custom-control-label::before {
     box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);
 }
 
-.was-validated .custom-control-input:valid:focus:not(:checked)~.custom-control-label::before,
-.custom-control-input.is-valid:focus:not(:checked)~.custom-control-label::before {
+.was-validated .custom-control-input:valid:focus:not(:checked) ~ .custom-control-label::before,
+.custom-control-input.is-valid:focus:not(:checked) ~ .custom-control-label::before {
     border-color: #38c172;
 }
 
-.was-validated .custom-file-input:valid~.custom-file-label,
-.custom-file-input.is-valid~.custom-file-label {
+.was-validated .custom-file-input:valid ~ .custom-file-label,
+.custom-file-input.is-valid ~ .custom-file-label {
     border-color: #38c172;
 }
 
-.was-validated .custom-file-input:valid:focus~.custom-file-label,
-.custom-file-input.is-valid:focus~.custom-file-label {
+.was-validated .custom-file-input:valid:focus ~ .custom-file-label,
+.custom-file-input.is-valid:focus ~ .custom-file-label {
     border-color: #38c172;
     box-shadow: 0 0 0 0.2rem rgba(56, 193, 114, 0.25);
 }
@@ -475,10 +475,10 @@ textarea.form-control.is-valid {
     border-radius: 0.25rem;
 }
 
-.was-validated :invalid~.invalid-feedback,
-.was-validated :invalid~.invalid-tooltip,
-.is-invalid~.invalid-feedback,
-.is-invalid~.invalid-tooltip {
+.was-validated :invalid ~ .invalid-feedback,
+.was-validated :invalid ~ .invalid-tooltip,
+.is-invalid ~ .invalid-feedback,
+.is-invalid ~ .invalid-tooltip {
     display: block;
 }
 
@@ -517,51 +517,51 @@ textarea.form-control.is-invalid {
     box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);
 }
 
-.was-validated .form-check-input:invalid~.form-check-label,
-.form-check-input.is-invalid~.form-check-label {
+.was-validated .form-check-input:invalid ~ .form-check-label,
+.form-check-input.is-invalid ~ .form-check-label {
     color: #e3342f;
 }
 
-.was-validated .form-check-input:invalid~.invalid-feedback,
-.was-validated .form-check-input:invalid~.invalid-tooltip,
-.form-check-input.is-invalid~.invalid-feedback,
-.form-check-input.is-invalid~.invalid-tooltip {
+.was-validated .form-check-input:invalid ~ .invalid-feedback,
+.was-validated .form-check-input:invalid ~ .invalid-tooltip,
+.form-check-input.is-invalid ~ .invalid-feedback,
+.form-check-input.is-invalid ~ .invalid-tooltip {
     display: block;
 }
 
-.was-validated .custom-control-input:invalid~.custom-control-label,
-.custom-control-input.is-invalid~.custom-control-label {
+.was-validated .custom-control-input:invalid ~ .custom-control-label,
+.custom-control-input.is-invalid ~ .custom-control-label {
     color: #e3342f;
 }
 
-.was-validated .custom-control-input:invalid~.custom-control-label::before,
-.custom-control-input.is-invalid~.custom-control-label::before {
+.was-validated .custom-control-input:invalid ~ .custom-control-label::before,
+.custom-control-input.is-invalid ~ .custom-control-label::before {
     border-color: #e3342f;
 }
 
-.was-validated .custom-control-input:invalid:checked~.custom-control-label::before,
-.custom-control-input.is-invalid:checked~.custom-control-label::before {
+.was-validated .custom-control-input:invalid:checked ~ .custom-control-label::before,
+.custom-control-input.is-invalid:checked ~ .custom-control-label::before {
     border-color: #e9605c;
     background-color: #e9605c;
 }
 
-.was-validated .custom-control-input:invalid:focus~.custom-control-label::before,
-.custom-control-input.is-invalid:focus~.custom-control-label::before {
+.was-validated .custom-control-input:invalid:focus ~ .custom-control-label::before,
+.custom-control-input.is-invalid:focus ~ .custom-control-label::before {
     box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);
 }
 
-.was-validated .custom-control-input:invalid:focus:not(:checked)~.custom-control-label::before,
-.custom-control-input.is-invalid:focus:not(:checked)~.custom-control-label::before {
+.was-validated .custom-control-input:invalid:focus:not(:checked) ~ .custom-control-label::before,
+.custom-control-input.is-invalid:focus:not(:checked) ~ .custom-control-label::before {
     border-color: #e3342f;
 }
 
-.was-validated .custom-file-input:invalid~.custom-file-label,
-.custom-file-input.is-invalid~.custom-file-label {
+.was-validated .custom-file-input:invalid ~ .custom-file-label,
+.custom-file-input.is-invalid ~ .custom-file-label {
     border-color: #e3342f;
 }
 
-.was-validated .custom-file-input:invalid:focus~.custom-file-label,
-.custom-file-input.is-invalid:focus~.custom-file-label {
+.was-validated .custom-file-input:invalid:focus ~ .custom-file-label,
+.custom-file-input.is-invalid:focus ~ .custom-file-label {
     border-color: #e3342f;
     box-shadow: 0 0 0 0.2rem rgba(227, 52, 47, 0.25);
 }
@@ -851,6 +851,7 @@ textarea.form-control.is-invalid {
     .container {
         max-width: 1150px;
     }
+
     /*.call-email-container {*/
     /*    margin-top: 55px;*/
     /*}*/
@@ -869,9 +870,11 @@ textarea.form-control.is-invalid {
     .container {
         max-width: 960px;
     }
+
     .grid-area {
         display: none !important;
     }
+
     .area-md {
         width: 100% !important;
         text-align: center !important;
@@ -1112,6 +1115,7 @@ footer {
     .partners .slick-next {
         right: 357px;
     }
+
     .partners .slick-prev {
         left: 357px;
     }
@@ -1128,22 +1132,26 @@ footer {
         width: 25px;
         height: 25px;
     }
+
     #featured-agency-slider .slick-prev {
         left: -4px;
         margin-top: 15px;
         width: 25px;
         height: 25px;
     }
+
     .partners .slick-next {
         right: 26%;
         width: 25px;
         height: 25px;
     }
+
     .partners .slick-prev {
         left: 26%;
         width: 25px;
         height: 25px;
     }
+
     .service-box {
         margin-left: 10%;
         margin-right: 10%;
@@ -1391,9 +1399,11 @@ span.post-head-cat,
 .color-white {
     color: white;
 }
+
 .theme-blue {
     background-color: #007BFF;
 }
+
 .theme-dark-blue {
 
     color: #2238D8;
@@ -1403,9 +1413,11 @@ span.post-head-cat,
 .theme-grey {
     background-color: #444;
 }
+
 .secondary-grey {
-   background-color: #85898c;
+    background-color: #85898c;
 }
+
 @media (min-width: 1024px) {
     .content-area {
         padding-top: 190px;
@@ -1517,7 +1529,7 @@ tabbing-box .nav-tabs .nav-item.show .nav-link,
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show>.nav-link {
+.nav-pills .show > .nav-link {
     color: white !important;
     background-color: #2238D8;
 }
@@ -1562,6 +1574,7 @@ tabbing-box .nav-tabs .nav-item.show .nav-link,
     .property-box-2 .price-ratings-box {
         right: 15px;
     }
+
     .property-box-2 .listing-time {
         right: 15px;
     }
@@ -1686,18 +1699,22 @@ hr.solid {
     margin-bottom: 15px !important;
     color: #2238D8 !important;
 }
+
 .line-height {
     line-height: 1.2rem;
 }
+
 .container-padding {
     padding-left: 15px;
     padding-right: 15px;
 }
+
 .side-link-style {
     font-size: 12px;
     font-weight: 500;
 }
-.nav-pills .nav-link.active, .nav-pills .show>.side-link-style {
+
+.nav-pills .nav-link.active, .nav-pills .show > .side-link-style {
     color: white !important;
     background-color: #007BFF;
 }
@@ -1707,8 +1724,9 @@ hr.solid {
     cursor: default;
     opacity: 0.5;
 }
+
 .info-box {
-    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
     border-radius: .25rem;
     background: #fff;
     display: -ms-flexbox;
@@ -1718,6 +1736,7 @@ hr.solid {
     padding: .5rem;
     position: relative;
 }
+
 .info-box .info-box-icon {
     border-radius: .25rem;
     -ms-flex-align: center;
@@ -1730,17 +1749,21 @@ hr.solid {
     text-align: center;
     width: 70px;
 }
-.bg-info, .bg-info>a {
-    color: #fff!important;
+
+.bg-info, .bg-info > a {
+    color: #fff !important;
 }
+
 .bg-info {
-    background-color: #17a2b8!important;
+    background-color: #17a2b8 !important;
 }
+
 .info-box .info-box-content {
     -ms-flex: 1;
     flex: 1;
     padding: 5px 10px;
 }
+
 .info-box .info-box-text, .info-box .progress-description {
     display: block;
     overflow: hidden;
@@ -1749,29 +1772,60 @@ hr.solid {
     font-size: large;
     padding-bottom: 2%;
 }
+
 .info-box .info-box-number {
 
     display: block;
     font-weight: 700;
 }
+
 .info-box-number {
     font-size: 2em;
 }
-.proper-case{
+
+.proper-case {
     text-transform: capitalize !important;
 }
+
 .fa-home:before {
     color: white;
 }
+
 @media (max-width: 1439px) and (min-width: 768px) {
     .info-box .info-box-text, .info-box .progress-description {
-        font-size:small;
+        font-size: small;
     }
 }
+
 .team-1 {
     background-color: white;
 }
+
 .image-padding {
     padding: 20px;
 }
 
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
+.pending-status{
+    background-color: #ffc107;
+    border: 2px;
+    padding: 2px;
+    font-size: 14px;
+    text-align: center;
+}
+.rejected-status{
+    background-color: red;
+    border: 2px;
+    padding: 2px;
+    font-size: 14px;
+    text-align: center;
+}
+.sold-status{
+    background-color: limegreen;
+    border: 2px;
+    padding: 2px;
+    font-size: 14px;
+    text-align: center;
+}

@@ -64,7 +64,12 @@ class LoginController extends Controller
                     'id' => Auth::guard('web')->user()->getAuthIdentifier(),
                     'email' => Auth::guard('web')->user()->email
                 ];
-                return response()->json(['data' => 'success', 'user' => $user]);
+                if ($request->ajax()) {
+                    return response()->json(['data' => 'success', 'user' => $user]);
+                } else {
+                    return redirect()->route('home');
+                }
+
             }
             return response()->json(['error' => $validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
         }
