@@ -177,7 +177,28 @@
                         $('.price-block').slideDown();
                     }
                 });
+                let radios = $('[name=property_package]')
 
+                radios.prop("disabled", true);
+
+                let rejection_input = $('[name=rejection_reason]');
+                let rejection_div = $('#reason-of-rejection');
+                if ($("#status option:selected").text() === 'Rejected') {
+                    rejection_input.attr('required', 'required').attr('disable', 'false');
+                    rejection_div.slideDown();
+                }
+
+                $('#status').on('change', function (e) {
+
+                    if ($("#status option:selected").text() === 'Rejected') {
+                        rejection_input.attr('required', 'required').attr('disable', 'false');
+                        rejection_div.slideDown();
+                    } else {
+                        rejection_input.removeAttr('required').attr('disable', 'true');
+                        rejection_input.val('');
+                        rejection_div.slideUp();
+                    }
+                });
             });
         })(jQuery);
     </script>

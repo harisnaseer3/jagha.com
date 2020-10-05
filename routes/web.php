@@ -64,7 +64,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         ->name('properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
-            'purpose' => '(all|sale|rent|wanted|super_hot_listing|hot_listing|magazine_listing)',
+            'purpose' => '(all|sale|rent|wanted|basic_listing|silver_listing|bronze_listing|golden_listing|platinum_listing)',
             'user' => '(\d+|all)',
             'sort' => '(id|type|location|price|expiry|views|image_count)',
             'order' => '(asc|desc)',
@@ -122,7 +122,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
 
 
-
 });
 
 Route::group(['prefix' => 'properties'], function () {
@@ -155,7 +154,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         ->name('admin.properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
-            'purpose' => '(all|sale|rent|wanted|super_hot_listing|hot_listing|magazine_listing)',
+            'purpose' => '(all|sale|rent|wanted|basic|silver|bronze|golden|platinum)',
             'admin' => '(\d+|all)',
             'sort' => '(id|type|location|price|expiry|views|image_count)',
             'order' => '(asc|desc)',

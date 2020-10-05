@@ -30,6 +30,11 @@ class Property extends Model
         'super_hot_listing' => 'boolean',
         'hot_listing' => 'boolean',
         'magazine_listing' => 'boolean',
+        'basic_listing' => 'boolean',
+        'bronze_listing' => 'boolean',
+        'silver_listing' => 'boolean',
+        'golden_listing' => 'boolean',
+        'platinum_listing' => 'boolean',
         'is_active' => 'boolean',
     ];
 
@@ -65,7 +70,7 @@ class Property extends Model
         'premium_listing',
         'super_hot_listing',
         'hot_listing',
-        'magazine_listing',
+        'magazine_listing', 'basic_listing', 'bronze_listing', 'silver_listing', 'golden_listing', 'platinum_listing',
         'contact_person',
         'phone',
         'cell',
@@ -75,7 +80,9 @@ class Property extends Model
         'visits',
         'activated_at',
         'click_through_rate',
-        'status'
+        'status',
+        'reviewed_by',
+        'rejection_reason'
     ];
     public static $rules = [
         'city' => 'required',
@@ -96,7 +103,8 @@ class Property extends Model
         'fax' => 'nullable|regex:/\+92-\d{2}\\d{7}/', // +92-211234567
         'contact_person' => 'required|max:225',
         'contact_email' => 'required|email',
-        'video_link' => 'nullable|url'
+        'video_link' => 'nullable|url',
+        'rejection_reason' => 'nullable|string'
     ];
 
     /**

@@ -52,10 +52,6 @@
             {{ Form::bsSelect2('unit',  ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
                 isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         @endif
-
-        {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
-
         <div class="selection-hide" style="display: none">
             {{ Form::bsSelect2('bedrooms', ['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10+'=>'10+'],
                    isset($property->bedrooms) ? strtolower($property->bedrooms) : null, [ 'placeholder' => 'Select Bedrooms']) }}
@@ -72,7 +68,7 @@
 
         </div>
     </div>
-    <div class="card-header theme-blue text-white">Property Details</div>
+    <div class="card-header theme-blue text-white">Property Images and Videos</div>
     <div class="card-body">
         @if(isset($property) and !$property->image->isEmpty())
             <div class="row border-bottom my-2">
@@ -158,6 +154,33 @@
         {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. 0211234567']) }}
         {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : null, ['required' => true]) }}
     </div>
+
+    <div class="card-header theme-blue text-white text-capitalize">Property Package</div>
+    <div class="card-body">
+        @if($property->basic_listing)
+            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
+        @elseif($property->bronze_listing)
+            {{ Form::bsRadio('property_package','Bronze', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
+        @elseif($property->silver_listing)
+            {{ Form::bsRadio('property_package','Silver', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
+        @elseif($property->golden_listing)
+            {{ Form::bsRadio('property_package','Golden', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
+        @elseif($property->platinum_listing)
+            {{ Form::bsRadio('property_package','Platinum', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
+        @else
+            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
+        @endif
+
+    </div>
+    <div class="card-header theme-blue text-white text-capitalize">Property Status</div>
+    <div class="card-body">
+        {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','uploaded' => 'Uploaded','rejected' => 'Rejected','hidden' => 'Hidden', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
+          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
+        <div id="reason-of-rejection" style="display: none">
+            {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null,['required'=> 'true']) }}
+        </div>
+    </div>
+
     <div class="card-footer">
         {{form::bsHidden('data-index',isset($property->id)? $property->id : null)}}
         {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}

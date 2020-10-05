@@ -30,7 +30,8 @@
                                 @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === $status)
                                     <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
 
-                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"  href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}" role="tab"
+                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"
+                                       href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}" role="tab"
                                        aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab" data-toggle="pill" href="#listings-sale" role="tab"
                                        aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale ({{ $counts[$status]['sale'] }})</a>
@@ -40,12 +41,34 @@
                                        role="tab"
                                        aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted ({{ $counts[$status]['wanted'] }})</a>
                                     @if ($status === 'active')
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'super_hot_listing' ? 'active' : '' }}" id="listings-super_hot-tab" data-toggle="pill" href="#listings-super_hot"
-                                           role="tab" aria-controls="listings-super_hot" aria-selected="{{ $params['purpose'] === 'super_hot' ? 'true' : 'false' }}">Super Hot Listing
-                                            ({{ $counts[$status]['super_hot'] }})</a>
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'hot_listing' ? 'active' : '' }}" id="listings-hot-tab" data-toggle="pill" href="#listings-hot"
+                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'basic' ? 'active' : '' }}" id="listings-basic-tab" data-toggle="pill"
+                                           href="#listings-basic"
                                            role="tab"
-                                           aria-controls="listings-hot" aria-selected="{{ $params['purpose'] === 'hot' ? 'true' : 'false' }}">Hot Listing ({{ $counts[$status]['hot'] }})</a>
+                                           aria-controls="listings-basic" aria-selected="{{ $params['purpose'] === 'basic' ? 'true' : 'false' }}">Basic Listing ({{ $counts[$status]['basic'] }})
+                                        </a>
+                                            <a class="nav-link side-link-style {{ $params['purpose'] === 'bronze' ? 'active' : '' }}" id="listings-bronze-tab" data-toggle="pill"
+                                               href="#listings-bronze"
+                                               role="tab"
+                                               aria-controls="listings-bronze" aria-selected="{{ $params['purpose'] === 'bronze' ? 'true' : 'false' }}">Bronze Listing ({{ $counts[$status]['bronze'] }})
+                                            </a>
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'silver' ? 'active' : '' }}" id="listings-silver-tab" data-toggle="pill"
+                                           href="#listings-silver"
+                                           role="tab"
+                                           aria-controls="listings-silver" aria-selected="{{ $params['purpose'] === 'silver' ? 'true' : 'false' }}">Silver Listing ({{ $counts[$status]['silver'] }})
+                                        </a>
+
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'golden' ? 'active' : '' }}" id="listings-golden-tab" data-toggle="pill"
+                                           href="#listings-golden"
+                                           role="tab"
+                                           aria-controls="listings-golden" aria-selected="{{ $params['purpose'] === 'golden' ? 'true' : 'false' }}">Golden Listing ({{ $counts[$status]['golden'] }})
+                                        </a>
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'platinum' ? 'active' : '' }}" id="listings-platinum-tab" data-toggle="pill"
+                                           href="#listings-platinum"
+                                           role="tab"
+                                           aria-controls="listings-platinum" aria-selected="{{ $params['purpose'] === 'platinum' ? 'true' : 'false' }}">Platinum Listing
+                                            ({{ $counts[$status]['platinum'] }})
+                                        </a>
+
                                     @endif
                                 @else
                                     <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
@@ -57,10 +80,16 @@
                                     <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted
                                         ({{ $counts[$status]['wanted'] }})</a>
                                     @if ($status === 'active')
-                                        <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'super_hot_listing'])) }}">Super Hot Listing
-                                            ({{ $counts[$status]['super_hot'] }})</a>
-                                        <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'hot_listing'])) }}">Hot Listing
-                                            ({{ $counts[$status]['hot'] }})</a>
+                                            <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'basic'])) }}">Basic Listing
+                                            ({{ $counts[$status]['basic'] }})</a>
+                                        <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'bronze'])) }}">Bronze Listing
+                                            ({{ $counts[$status]['bronze'] }})</a>
+                                        <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'silver'])) }}">Silver Listing
+                                            ({{ $counts[$status]['silver'] }})</a>
+                                        <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'golden'])) }}">Golden Listing
+                                            ({{ $counts[$status]['golden'] }})</a>
+                                        <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'platinum'])) }}">Platinum Listing
+                                            ({{ $counts[$status]['platinum'] }})</a>
                                     @endif
                                 @endif
                             </div>
@@ -71,11 +100,11 @@
         </li>
     </ul>
 
-{{--    <div class="card-header theme-grey text-white">Tools</div>--}}
-{{--    <ul class="list-group">--}}
-{{--        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->--}}
-{{--        <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a--}}
-{{--                href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">--}}
-{{--                @if ($current_route_name === 'properties.edit') Edit Advertisement @else Add New Advertisement @endif</a></li>--}}
-{{--    </ul>--}}
+    {{--    <div class="card-header theme-grey text-white">Tools</div>--}}
+    {{--    <ul class="list-group">--}}
+    {{--        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->--}}
+    {{--        <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a--}}
+    {{--                href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">--}}
+    {{--                @if ($current_route_name === 'properties.edit') Edit Advertisement @else Add New Advertisement @endif</a></li>--}}
+    {{--    </ul>--}}
 </div>
