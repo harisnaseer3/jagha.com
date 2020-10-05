@@ -12,7 +12,7 @@
     @include('website.admin-pages.includes.admin-nav')
     <section class="content-header">
         <h1 class="ml-5">
-            <a class="btn btn-primary" href="#">Add Role</a>
+{{--            <a class="btn btn-primary" href="#">Add Role</a>--}}
         </h1>
     </section>
     <div class="content">
@@ -34,7 +34,7 @@
                                 <th>{{__('Role')}}</th>
                                 <th>{{__('Admin')}}</th>
                                 <th>{{__('Permission')}}</th>
-                                <th>{{__('Action')}}</th>
+{{--                                <th>{{__('Action')}}</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -62,7 +62,7 @@
                                                 @endforelse
                                             </ul>
                                         </td>
-                                        <td></td>
+{{--                                        <td></td>--}}
                                     </tr>
                                 @endif
                             @endforeach
