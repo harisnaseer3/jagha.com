@@ -86,8 +86,8 @@
                                         </div>
                                         <div class="card-header theme-blue text-white text-capitalize">Agency Status</div>
                                         <div class="card-body">
-                                            {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
+                                            {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted'],
+                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
                                         </div>
                                         <div class="card-footer">
                                             {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
@@ -135,6 +135,7 @@
                     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
                 });
                 $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+
             });
         })(jQuery);
     </script>

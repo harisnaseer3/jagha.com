@@ -87,11 +87,11 @@
                                         <div class="card-header theme-blue text-white text-capitalize">Agency Status</div>
                                         <div class="card-body">
                                             {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
+                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
+                                            <div id="reason-of-rejection" style="display: none">
+                                                {{ Form::bsText('rejection_reason',isset($agency->rejection_reason)? $agency->rejection_reason:null,['required'=> 'true']) }}
+                                            </div>
                                         </div>
-
-
-
                                         <div class="card-footer">
                                             {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                         </div>
@@ -139,6 +139,25 @@
                     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
                 });
                 $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+                let rejection_input = $('[name=rejection_reason]');
+                let rejection_div = $('#reason-of-rejection');
+                console.log('here');
+                if ($("#status option:selected").text() === 'Rejected') {
+                    rejection_input.attr('required', 'required').attr('disable', 'false');
+                    rejection_div.slideDown();
+                }
+
+                $('#status').on('change', function (e) {
+
+                    if ($("#status option:selected").text() === 'Rejected') {
+                        rejection_input.attr('required', 'required').attr('disable', 'false');
+                        rejection_div.slideDown();
+                    } else {
+                        rejection_input.removeAttr('required').attr('disable', 'true');
+                        rejection_input.val('');
+                        rejection_div.slideUp();
+                    }
+                });
 
             });
         })(jQuery);

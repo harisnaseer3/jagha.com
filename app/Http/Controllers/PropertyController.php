@@ -725,6 +725,8 @@ class PropertyController extends Controller
         $status_before_update = $property->status;
         if ($property->exists) {
             try {
+                if (Auth::guard('admin')->user())
+                    $property->reviewed_by = Auth::guard('admin')->user()->name;
                 $property->status = 'deleted';
                 $property->save();
 
@@ -760,7 +762,7 @@ class PropertyController extends Controller
         $listings = (new Property)
             ->select('properties.id', 'sub_type AS type', 'properties.expired_at',
                 'properties.status', 'locations.name AS location', 'cities.name as city',
-                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by','properties.basic_listing','properties.bronze_listing','properties.silver_listing','properties.golden_listing','properties.platinum_listing',
+                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing', 'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
                 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"),
                 DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
