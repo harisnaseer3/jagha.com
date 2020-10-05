@@ -25,6 +25,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::create(['guard_name' => 'admin', 'name' => 'Manage Roles and Permissions']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Manage Property']);
         Permission::create(['guard_name' => 'admin', 'name' => 'Manage Agency']);
+        Permission::create(['guard_name' => 'admin', 'name' => 'Manage Packages']);
 
 
 
