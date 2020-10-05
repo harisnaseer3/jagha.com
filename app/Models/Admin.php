@@ -60,8 +60,17 @@ protected $hidden = [
     {
         $current_admin = (new Admin)->find($id);
         try {
-            $current_admin->is_active = '0';
+            if($current_admin->is_active === '1')
+            {
+                $current_admin->is_active = '0';
+            }
+            elseif($current_admin->is_active === '0')
+            {
+                $current_admin->is_active = '1';
+            }
+
             $current_admin->update();
+            return $current_admin->is_active;
         } catch (\Exception $e) {
         }
     }

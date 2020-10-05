@@ -121,9 +121,16 @@ class UserManagementController extends Controller
 //            Flash::error(__('messages.not_found', ['model' => __('admin')]));
             return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
         }
-        $deleted_admin = Admin::destroy($current_admin->id);
-//        Flash::success(__('messages.deleted', ['model' => __('admin')]));
-        return redirect()->route('admin.manage-users')->with('success', 'Admin deleted successfully.');
+        $admin_status = Admin::destroy($current_admin->id);
+        if($admin_status === '1')
+        {
+            return redirect()->route('admin.manage-users')->with('success', 'Admin activated successfully.');
+        }
+        elseif($admin_status === '0')
+        {
+            return redirect()->route('admin.manage-users')->with('success', 'Admin deactived successfully.');
+
+        }
     }
 
 
