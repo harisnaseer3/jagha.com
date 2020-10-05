@@ -81,6 +81,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Property')->using('App\Favorite')->withTimestamps();
     }
+    public static function findUserByEmail($email)
+    {
+        return User::where('email','=',$email)->first();
+
+    }
 
 //    public function agencies()
     public function agency()

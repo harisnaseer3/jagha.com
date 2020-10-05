@@ -37,9 +37,8 @@ protected $hidden = [
 
     public static function getAllAdmins()
     {
-        $condition = ['is_active' => '1'];
-        $condition += ['is_super' => '0'];
-        return (new Admin)->select(['id', 'name', 'email'])->where($condition)->with('roles:name')->get();
+        $condition = ['is_super' => '0'];
+        return (new Admin)->select(['id', 'name', 'email','is_active'])->where($condition)->with('roles:name')->get();
     }
     public static function getAdminById($id)
     {
@@ -61,8 +60,17 @@ protected $hidden = [
     {
         $current_admin = (new Admin)->find($id);
         try {
-            $current_admin->is_active = '0';
+            if($current_admin->is_active === '1')
+            {
+                $current_admin->is_active = '0';
+            }
+            elseif($current_admin->is_active === '0')
+            {
+                $current_admin->is_active = '1';
+            }
+
             $current_admin->update();
+            return $current_admin->is_active;
         } catch (\Exception $e) {
         }
     }

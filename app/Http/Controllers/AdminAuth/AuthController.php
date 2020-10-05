@@ -57,7 +57,7 @@ class AuthController extends Controller
         return Admin::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => $data['password'],
         ]);
     }
 
@@ -76,7 +76,7 @@ class AuthController extends Controller
         ]);
         if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             $user = auth()->guard('admin')->user();
-            return redirect()->route('admin.manage-users');
+            return redirect()->route('admin.dashboard');
         } else {
             return back()->with('error', 'your username and password are wrong.');
         }

@@ -35,13 +35,14 @@
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('E-Mail Address') }}</th>
                                 <th>{{ __('Role') }}</th>
+                                <th>{{ __('Status') }}</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             @if(count($admins) === 0)
                                 <tr>
-                                    <td colspan="5">No Admins Found</td>
+                                    <td colspan="6">No Admins Found</td>
                                 </tr>
                             @else
                                 @foreach($admins as $admin)
@@ -53,12 +54,19 @@
                                                 {{$admin_role->name}}
                                             @endforeach
                                         </td>
+                                        <td>@if($admin->is_active === '1') Active @else Inactive @endif</td>
                                         <td>
-                                            {!! Form::open(['route' => ['admins.destroy',  $admin->id], 'method' => 'delete']) !!}
+                                            {!! Form::open(['route' => ['admins.destroy', $admin->id], 'method' => 'delete']) !!}
+                                            @if($admin->is_active === '0')
                                             <div class='btn-group'>
-                                                <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>
-                                                {!! Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('Are you sure?').'")']) !!}
+{{--                                                <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>--}}
+                                                {!! Form::button('Activate', ['type' => 'submit', 'class' => 'btn btn-success btn-sm', 'onclick' => 'return confirm("'.__('Are you sure you want to activate admin account?').'")']) !!}
                                             </div>
+                                            @elseif($admin->is_active === '1')
+                                                <div class='btn-group'>
+                                                    {!! Form::button('Deactivate', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('Are you sure you want to deactivate admin account?').'")']) !!}
+                                                </div>
+                                            @endif
                                             {!! Form::close() !!}
                                         </td>
                                     </tr>

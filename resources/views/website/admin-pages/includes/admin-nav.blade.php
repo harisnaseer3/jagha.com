@@ -283,6 +283,13 @@
                                     Agency Management</a>
                             </li>
                         @endcan
+                            @can('Manage Packages')
+                                <li class="nav-item hide-nav navbar-li">
+                                    <a class="nav-link" href="#">
+                                        Packages Management
+                                        </a>
+                                </li>
+                            @endcan
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item user-dropdown">
@@ -293,7 +300,7 @@
                                         <i class="fas fa-user mr-3"></i>
                                         @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
                                             <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})
-{{--                                                <a class="dropdown-item" href="{{route('accounts.admin-logout')}}">--}}
+{{--                                                <a  href="{{route('accounts.admin-logout')}}">--}}
 {{--                                                    <i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                             </span>
                                         @endif
