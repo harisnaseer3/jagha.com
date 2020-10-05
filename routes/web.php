@@ -64,7 +64,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         ->name('properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
-            'purpose' => '(all|sale|rent|wanted|basic_listing|silver_listing|bronze_listing|golden_listing|platinum_listing)',
+            'purpose' => '(all|sale|rent|wanted|basic|silver|bronze|golden|platinum)',
             'user' => '(\d+|all)',
             'sort' => '(id|type|location|price|expiry|views|image_count)',
             'order' => '(asc|desc)',

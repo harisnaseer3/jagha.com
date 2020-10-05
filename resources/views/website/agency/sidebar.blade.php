@@ -33,16 +33,20 @@
                     <div id="collapseListingVerifiedAgency" class="collapse {{ $params['status'] === 'verified_agencies' ? 'show' : '' }}" aria-labelledby="headingListingVerifiedAgency"
                          data-parent="#accordionListings">
                         <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
+                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+
                             @if ($params['status'] === 'verified_agencies')
-                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab" data-toggle="pill" href="#listings-all" role="tab"
+                                <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"
+                                   href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}" role="tab"
                                    aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
-                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'key' ? 'active' : '' }}" id="listings-key-tab" data-toggle="pill" href="#listings-key" role="tab"
+                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'key' ? 'active' : '' }}" id="listings-key-tab"
+                                   href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'key'])) }}" role="tab"
                                    aria-controls="listings-key" aria-selected="{{ $params['purpose'] === 'key' ? 'true' : 'false' }}"> Key Agencies ({{ $counts['verified']['key']}})</a>
-                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'featured' ? 'active' : '' }}" id="listings-featured-tab" data-toggle="pill" href="#listings-featured"
+                                <a class="nav-link  side-link-style {{ $params['purpose'] === 'featured' ? 'active' : '' }}" id="listings-featured-tab"
+                                   href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'featured'])) }}"
                                    role="tab" aria-controls="listings-featured" aria-selected="{{ $params['purpose'] === 'featured' ? 'true' : 'false' }}">Featured Agencies
                                     ({{ $counts['verified']['featured']}})</a>
                             @else
-                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                                 <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
                                 <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'key'])) }}">Key Agencies (0)</a>
                                 <a class="nav-link side-link-style" href="{{ route('agencies.listings', array_merge($route_params, ['purpose' => 'featured'])) }}">Featured Agencies (0)</a>
