@@ -8,6 +8,7 @@ use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Models\PropertyType;
+use App\Notifications\AgencyRejectionMail;
 use App\Notifications\AgencyStatusChange;
 use App\Notifications\PropertyStatusChange;
 use Illuminate\Http\Request;
@@ -223,14 +224,13 @@ class AgencyController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error storing record, Resolve following error(s).');
         }
-
         try {
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
             $user_id = '';
-
             if ($request->has('user_id')) {
                 $user_id = $request->input('user_id');
             }
+
             $agency = (new Agency)->Create([
                 'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier(),
                 'city_id' => $city->id,
@@ -246,7 +246,10 @@ class AgencyController extends Controller
                 'website' => $request->input('website'),
                 'ceo_name' => $request->input('name'),
                 'ceo_designation' => $request->input('designation'),
-                'ceo_message' => $request->input('about_CEO')
+                'ceo_message' => $request->input('about_CEO'),
+                'status' => $request->has('status') ? $request->input('status') : 'pending',
+                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null
+
             ]);
             if ($request->hasFile('upload_new_logo')) {
                 $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
@@ -258,7 +261,7 @@ class AgencyController extends Controller
 
             (new AgencyCityController())->store($agency);
 
-            if ($request->has('status') && $request->input('status') === 'active') {
+            if ($request->has('status') && $request->input('status') === 'verified') {
                 $this->insertIntoCounterTable();
             }
 //            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
@@ -500,6 +503,17 @@ class AgencyController extends Controller
         if ($validator->fails()) {
             return redirect()->route('agencies.edit', $agency)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
         }
+
+        if ($request->has('status') && $request->input('status') == 'rejected') {
+            if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
+                return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
+            } else {
+//                TODO: send an email to property user with reason of rejection
+                $reason = $request->input('rejection_reason');
+                $agency_user = User::where('id', '=', $agency->user_id)->first();
+                $agency_user->notify(new AgencyRejectionMail($agency, $reason));
+            }
+        }
         try {
             $status_before_update = $agency->status;
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
@@ -518,10 +532,13 @@ class AgencyController extends Controller
                 'country' => $request->input('country'),
                 'email' => $request->input('email'),
                 'website' => $request->input('website'),
-                'status' => $request->has('status') ? $request->has('status') : 'pending',
+                'status' => $request->has('status') ? $request->input('status') : 'pending',
                 'ceo_name' => $request->input('name'),
                 'ceo_designation' => $request->input('designation'),
-                'ceo_message' => $request->input('about_CEO')
+                'ceo_message' => $request->input('about_CEO'),
+                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null,
+                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
+
             ]);
             if ($request->hasFile('upload_new_logo')) {
                 $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
@@ -529,8 +546,12 @@ class AgencyController extends Controller
             if ($request->hasFile('upload_new_picture')) {
                 $this->storeAgencyCeoImage($request->file('upload_new_picture'), $agency);
             }
+
             if ($status_before_update === 'verified' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 $this->deleteFromCounterTable();
+            if ($request->has('status') && $request->input('status') === 'verified') {
+                $this->insertIntoCounterTable();
+            }
 
             $user = User::where('id', '=', $agency->user_id)->first();
             $user->notify(new AgencyStatusChange($agency));
@@ -569,6 +590,8 @@ class AgencyController extends Controller
         $agency = (new Agency)->where('id', '=', $request->input('record_id'))->first();
         if ($agency->exists) {
             try {
+                if (Auth::guard('admin')->user())
+                    $agency->reviewed_by = Auth::guard('admin')->user()->name;
                 $agency->status = 'deleted';
                 $agency->save();
 
@@ -625,7 +648,7 @@ class AgencyController extends Controller
         $listings = (new Agency)
 //            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
             ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.address', 'agencies.website', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
-                'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+                'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.reviewed_by', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
                 'agencies.created_at')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
@@ -748,7 +771,6 @@ class AgencyController extends Controller
             ];
             return view('website.agency.agency_listings', $data);
         }
-
     }
 
 

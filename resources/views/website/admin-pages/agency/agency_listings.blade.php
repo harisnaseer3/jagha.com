@@ -50,6 +50,8 @@
                                                             <td>Verified By</td>
                                                         @elseif($params['status'] == 'deleted_agencies')
                                                             <td>Deleted By</td>
+                                                        @elseif($params['status'] == 'rejected_agencies')
+                                                            <td>Rejected By</td>
                                                         @endif
                                                         <td>Controls</td>
                                                     </tr>
@@ -74,13 +76,20 @@
                                                                 </td>
                                                             @elseif($params['status'] == 'deleted_agencies')
                                                                 <td>
-                                                                    <div class="rejected-status"><strong>deleted</strong></div>
+                                                                    <div class="rejected-status"><strong>Delete</strong></div>
                                                                 </td>
+                                                            @elseif($params['status'] == 'rejected_agencies')
+                                                                <td>
+                                                                    <div class="rejected-status"><strong>Reject</strong></div>
+                                                                </td>
+
                                                             @endif
                                                             @if($params['status'] == 'verified_agencies')
-                                                                <td></td>
+                                                                <td>{{ucwords($all_listing->reviewed_by)}}</td>
                                                             @elseif($params['status'] == 'deleted_agencies')
-                                                                <td></td>
+                                                                <td>{{ucwords($all_listing->reviewed_by)}}</td>
+                                                            @elseif($params['status'] == 'rejected_agencies')
+                                                                <td>{{ucwords($all_listing->reviewed_by)}}</td>
                                                             @endif
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
@@ -185,7 +194,7 @@
                                                             @endif
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
-                                                                    <a type="button" href="{{route('agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
+                                                                    <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
@@ -280,7 +289,7 @@
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
 
-                                                                    <a type="button" href="{{route('agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
+                                                                    <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
@@ -355,9 +364,6 @@
                         success: function (data) {
                             // console.log(data);
                             if (data.status === 200) {
-                                // console.log(data.location);
-                                // console.log(data.city);
-                                // console.log(data.status);
                                 window.location.reload(true);
                             }
                         },
@@ -369,7 +375,6 @@
                         complete: function (url, options) {
 
                         }
-
                     });
                 }
 
