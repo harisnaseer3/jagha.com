@@ -43,7 +43,6 @@
                                                                     <td>Activation Date</td>
                                                                     <td>Activated By</td>
                                                                     <td>Boost</td>
-                                                                    <td>Package</td>
                                                                 @endif
                                                                 @if($params['status'] == 'rejected')
                                                                     <td>Rejected By</td>
@@ -73,9 +72,7 @@
                                                                             <span>Boost Count : 0</span>
                                                                             <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a>
                                                                         </td>
-                                                                        <td>
 
-                                                                        </td>
                                                                     @endif
                                                                     @if($params['status'] == 'rejected' || $params['status'] == 'deleted' )
                                                                         <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>

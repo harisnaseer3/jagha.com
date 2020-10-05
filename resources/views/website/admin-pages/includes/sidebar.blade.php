@@ -33,37 +33,40 @@
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"
                                        href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}" role="tab"
                                        aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
-                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab" data-toggle="pill" href="#listings-sale" role="tab"
+                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab"
+                                       href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}" role="tab"
                                        aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale ({{ $counts[$status]['sale'] }})</a>
-                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab" data-toggle="pill" href="#listings-rent" role="tab"
+                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab"
+                                       href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}" role="tab"
                                        aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent ({{ $counts[$status]['rent'] }})</a>
-                                    <a class="nav-link side-link-style{{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab" data-toggle="pill" href="#listings-wanted"
+                                    <a class="nav-link side-link-style {{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab"
+                                       href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}"
                                        role="tab"
                                        aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted ({{ $counts[$status]['wanted'] }})</a>
                                     @if ($status === 'active')
-                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'basic' ? 'active' : '' }}" id="listings-basic-tab" data-toggle="pill"
-                                           href="#listings-basic"
+                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'basic' ? 'active' : '' }}" id="listings-basic-tab"
+                                           href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'basic'])) }}"
                                            role="tab"
                                            aria-controls="listings-basic" aria-selected="{{ $params['purpose'] === 'basic' ? 'true' : 'false' }}">Basic Listing ({{ $counts[$status]['basic'] }})
                                         </a>
-                                            <a class="nav-link side-link-style {{ $params['purpose'] === 'bronze' ? 'active' : '' }}" id="listings-bronze-tab" data-toggle="pill"
-                                               href="#listings-bronze"
+                                            <a class="nav-link side-link-style {{ $params['purpose'] === 'bronze' ? 'active' : '' }}" id="listings-bronze-tab"
+                                               href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'bronze'])) }}"
                                                role="tab"
                                                aria-controls="listings-bronze" aria-selected="{{ $params['purpose'] === 'bronze' ? 'true' : 'false' }}">Bronze Listing ({{ $counts[$status]['bronze'] }})
                                             </a>
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'silver' ? 'active' : '' }}" id="listings-silver-tab" data-toggle="pill"
-                                           href="#listings-silver"
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'silver' ? 'active' : '' }}" id="listings-silver-tab"
+                                           href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'silver'])) }}"
                                            role="tab"
                                            aria-controls="listings-silver" aria-selected="{{ $params['purpose'] === 'silver' ? 'true' : 'false' }}">Silver Listing ({{ $counts[$status]['silver'] }})
                                         </a>
 
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'golden' ? 'active' : '' }}" id="listings-golden-tab" data-toggle="pill"
-                                           href="#listings-golden"
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'golden' ? 'active' : '' }}" id="listings-golden-tab"
+                                           href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'golden'])) }}"
                                            role="tab"
                                            aria-controls="listings-golden" aria-selected="{{ $params['purpose'] === 'golden' ? 'true' : 'false' }}">Golden Listing ({{ $counts[$status]['golden'] }})
                                         </a>
-                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'platinum' ? 'active' : '' }}" id="listings-platinum-tab" data-toggle="pill"
-                                           href="#listings-platinum"
+                                        <a class="nav-link side-link-style {{ $params['purpose'] === 'platinum' ? 'active' : '' }}" id="listings-platinum-tab"
+                                           href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'platinum'])) }}"
                                            role="tab"
                                            aria-controls="listings-platinum" aria-selected="{{ $params['purpose'] === 'platinum' ? 'true' : 'false' }}">Platinum Listing
                                             ({{ $counts[$status]['platinum'] }})

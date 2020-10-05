@@ -48,8 +48,7 @@
                                                isset($agency->country)? ucwords($agency->country): 'Pakistan', ['required' => true, 'placeholder' => 'Select country']) }}
                                             {{ Form::bsEmail('email', null, ['required' => true, 'data-default' => 'Please provide an e-mail address for your agency. This e-mail can be different from your account e-mail.']) }}
                                             {{ Form::bsText('website', isset($agency->website)? $agency->website : null,['data-default' => 'Please provide your website like www.aboutpakistan.com']) }}
-                                            {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-                                               isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
+
                                             @if(isset($agency->logo))
                                                 <div class="form-group row">
                                                     <div class="col-sm-4 col-md-2 col-form-label col-form-label-sm">Company Logo</div>
@@ -85,7 +84,11 @@
                                             <div class="mt-2"><span style="color:red">*</span>Above details will be updated in all property listings</div>
 
                                         </div>
-
+                                        <div class="card-header theme-blue text-white text-capitalize">Agency Status</div>
+                                        <div class="card-body">
+                                            {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
+                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status']) }}
+                                        </div>
                                         <div class="card-footer">
                                             {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                         </div>

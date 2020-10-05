@@ -24,11 +24,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
-                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="my-4">
-                                Dashboard
-                            </div>
-                        </div>
                         <div class="tab-pane fade show active" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -41,7 +36,7 @@
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Add New Agency</a></div>
 
-                                        <div class="tab-pane fade show active" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
+                                        <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
@@ -71,8 +66,8 @@
                                                             <td>{{ $all_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
                                                             @if($params['status'] == 'pending_agencies')
-                                                                <td><input type="radio" name="status" value="verified" data-id="{{ $all_listing->id }}">
-                                                                    <label for="active">Activate</label>
+                                                                <td>
+                                                                    <div class="pending-status"><strong>Pending</strong></div>
                                                                 </td>
                                                             @endif
                                                             <td>
@@ -114,7 +109,7 @@
                                                 {{ $listings['all']->links() }}
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="listings-key" role="tabpanel" aria-labelledby="listings-key-tab">
+                                        <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'key'? 'active show' : '' }}" id="listings-key" role="tabpanel" aria-labelledby="listings-key-tab">
                                             <h6>Key Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
@@ -144,8 +139,8 @@
                                                             <td>{{ $key_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
                                                             @if($params['status'] == 'pending_agencies')
-                                                                <td><input type="radio" name="status" value="verified" data-id="{{ $key_listing->id }}">
-                                                                    <label for="active">Activate</label>
+                                                                <td>
+                                                                    <div class="pending-status"><strong>Pending</strong></div>
                                                                 </td>
                                                             @endif
                                                             <td>
@@ -190,7 +185,7 @@
                                                 {{ $listings['key']->links() }}
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="listings-featured" role="tabpanel" aria-labelledby="listings-featured-tab">
+                                        <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'featured'? 'active show' : '' }}" id="listings-featured" role="tabpanel" aria-labelledby="listings-featured-tab">
                                             <h6>Featured Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
@@ -220,8 +215,8 @@
                                                             <td>{{ $featured_listing->phone }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>
                                                             @if($params['status'] == 'pending_agencies')
-                                                                <td><input type="radio" name="status" value="verified" data-id="{{ $featured_listing->id }}">
-                                                                    <label for="active">Activate</label>
+                                                                <td>
+                                                                    <div class="pending-status"><strong>Pending</strong></div>
                                                                 </td>
                                                             @endif
                                                             <td>
@@ -270,41 +265,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
-                            <div class="my-4">
-                                Message Center
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
-                            <div class="my-4">
-                                My Accounts &amp; Profiles
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                            <div class="my-4">
-                                Reports
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_staff" role="tabpanel" aria-labelledby="agency_staff-tab">
-                            <div class="my-4">
-                                Agency Staff
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
-                            <div class="my-4">
-                                Clients &amp; Leads
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_website" role="tabpanel" aria-labelledby="agency_website-tab">
-                            <div class="my-4">
-                                Agency Website
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
-                            <div class="my-4">
-                                Advertise
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -318,7 +278,7 @@
 @endsection
 
 @section('script')
-{{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
+    {{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
     <script>
         (function ($) {
             $(document).ready(function () {
