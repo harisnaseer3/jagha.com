@@ -13,15 +13,18 @@ class AgencyLogController extends Controller
         (new AgencyLog)->create([
             'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier(),
             'admin_name' => Auth::guard('admin')->user()->name,
-            'agnecy_id' => $agency->id,
+            'agency_id' => $agency->id,
             'status' => $agency->status,
             'rejection_reason' => $agency->rejection_reason,
         ]);
     }
 
-    public function show(AgencyLog $agencyLog)
+    public function show()
     {
-        //
+        $data = [
+            'data' => AgencyLog::all()
+        ];
+        return route('admin.dashboard', $data);
     }
 
 

@@ -25,9 +25,8 @@ class Agency extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'user_id','city_id', 'title', 'description', 'phone', 'zip_code', 'cell', 'fax', 'address', 'country', 'email', 'website', 'ceo_name', 'ceo_designation',
-        'ceo_message','ceo_image','status','featured_listing','key_listing'
-    ];
+        'user_id', 'city_id', 'title', 'description', 'phone', 'zip_code', 'cell', 'fax', 'address', 'country', 'email', 'website', 'ceo_name', 'ceo_designation',
+        'ceo_message', 'ceo_image', 'status', 'featured_listing', 'key_listing', 'rejection_reason', 'reviewed_by'];
     public static $rules = [
         'city' => 'required|string',
         'company_title' => 'required|string|max:255',
@@ -57,6 +56,7 @@ class Agency extends Model
         return $this->hasMany('App\Models\AgencyImage');
 
     }
+
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id');
