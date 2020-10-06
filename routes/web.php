@@ -181,6 +181,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::delete('floorPlans/{floorPlan}', 'FloorPlanController@destroy')->name('admin-floorPlans-destroy');
     Route::delete('videos/{video}', 'VideoController@destroy')->name('admin-videos-destroy');
 
+    Route::post('/search-id', 'AgencyController@adminAgencySearch')->name('admin.agency.search.id');
 
     Route::get('agencies/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'AgencyController@listings')
         ->name('admin.agencies.listings')
