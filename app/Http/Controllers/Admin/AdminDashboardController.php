@@ -22,7 +22,11 @@ class AdminDashboardController extends Controller
 
     public function index()
     {
-        return view('website.admin-pages.admin-dashboard');
+        $admin = Auth::guard('admin')->user();
+
+        return view('website.admin-pages.admin-dashboard',[
+            'admin' => $admin
+        ]);
     }
 
 

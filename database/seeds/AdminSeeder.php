@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin.com',
             'is_super' => '1',
-            'password' => Hash::make('ybD5Vg9S-E')
+            'password' => Hash::make('hV1uQ9aV6nY4tG7')
         ]);
         $current_admin = Admin::find($admin_id);
         $current_admin->assignRole('Super Admin');
