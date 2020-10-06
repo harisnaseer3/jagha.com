@@ -1,5 +1,5 @@
-<div id="site" class="left relative" >
-    <div id="site-wrap" class="left relative" >
+<div id="site" class="left relative">
+    <div id="site-wrap" class="left relative">
         <div id="fly-wrap">
             <div class="fly-wrap-out">
                 <div class="fly-side-wrap">
@@ -209,26 +209,26 @@
                                         </div><!--nav-menu-in-->
 
                                         <div class="nav-right-wrap relative">
-{{--                                            <a class="ml-auto" href="{{route('accounts.admin-logout')}}"><span class="nav-soc-but color-white"> <i class="far fa-2x fa-sign-out mr-2 "></i><strong class="color-white">Logout</strong></span></a>--}}
+                                            {{--                                            <a class="ml-auto" href="{{route('accounts.admin-logout')}}"><span class="nav-soc-but color-white"> <i class="far fa-2x fa-sign-out mr-2 "></i><strong class="color-white">Logout</strong></span></a>--}}
 
-                                                                                        <a href="mailto:info@aboutpakistan.com" target="_blank" rel="noopener noreferrer" title="Email us at info@aboutpakistan.com">
-                                                                                            <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>
-                                                                                        </a>
-                                                                                        <a href="https://www.facebook.com/aboutpk1" target="_blank" title="Visit About Pakistan Facebook">
-                                                                                            <span class="nav-soc-but"><i class="fab fa-facebook-f"></i></span>
-                                                                                        </a>
-                                                                                        <a href="https://twitter.com/aboutpk_" target="_blank" title="Visit About Pakistan Twitter">
-                                                                                            <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>
-                                                                                        </a>
-                                                                                        <a href="https://www.linkedin.com/company/aboutpakistan" target="_blank" title="Visit About Pakistan Linkedin">
-                                                                                            <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
-                                                                                        </a>
-                                                                                        <a href="https://www.instagram.com/aboutpk1/?igshid=19bpcgb38304h" target="_blank" title="Visit About Pakistan Instagram">
-                                                                                            <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
-                                                                                        </a>
-                                                                                        <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
-                                                                                            <span class="nav-soc-but"><i class="fab fa-youtube"></i></span>
-                                                                                        </a>
+                                            <a href="mailto:info@aboutpakistan.com" target="_blank" rel="noopener noreferrer" title="Email us at info@aboutpakistan.com">
+                                                <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>
+                                            </a>
+                                            <a href="https://www.facebook.com/aboutpk1" target="_blank" title="Visit About Pakistan Facebook">
+                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i></span>
+                                            </a>
+                                            <a href="https://twitter.com/aboutpk_" target="_blank" title="Visit About Pakistan Twitter">
+                                                <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>
+                                            </a>
+                                            <a href="https://www.linkedin.com/company/aboutpakistan" target="_blank" title="Visit About Pakistan Linkedin">
+                                                <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
+                                            </a>
+                                            <a href="https://www.instagram.com/aboutpk1/?igshid=19bpcgb38304h" target="_blank" title="Visit About Pakistan Instagram">
+                                                <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
+                                            </a>
+                                            <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
+                                                <span class="nav-soc-but"><i class="fab fa-youtube"></i></span>
+                                            </a>
 
                                         </div><!--nav-right-wrap-->
                                     </div><!--nav-menu-out-->

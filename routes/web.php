@@ -150,6 +150,9 @@ Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.lo
 Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+
+    Route::post('/search-id', 'PropertyController@adminPropertySearch')->name('admin.property.search.id');
+
     Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
         ->name('admin.properties.listings')
         ->where([

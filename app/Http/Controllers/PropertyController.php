@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NewPropertyActivatedEvent;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Models\Account;
+use App\Models\Admin;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
@@ -707,8 +708,7 @@ class PropertyController extends Controller
             (new PropertyLogController())->store($property);
 
             if (Auth::guard('admin')->user())
-                return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10', 'recent_properties' => (new FooterController)->footerContent()[0],
-                    'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
+                return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
 
             return redirect()->route('properties.listings',
                 ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10',
@@ -817,8 +817,34 @@ class PropertyController extends Controller
      * @param string order      optional    asc|desc
      * @param string page       optional    10|15|30|50
      */
-    public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page)
+    public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
     {
+        if ($request->has('id')) {
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => 'admin',
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $this->getPropertyListingCount($user),
+                'listings' => [
+                    'all' => $this->_listings($status, $user)->orderBy($sort, $order)->where('properties.id', '=', $request->property_id)->paginate($page),
+                    'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'basic' => $this->_listings($status, $user)->where('basic_listing', '=', 1)->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'silver' => $this->_listings($status, $user)->where('silver_listing', '=', 1)->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'bronze' => $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'golden' => $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                    'platinum' => $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
+                ],
+            ];
+            return view('website.admin-pages.listings', $data);
+        }
+
         // TODO: implement code where status is rejected_images or rejected_videos, remove after
         if (in_array($status, ['rejected_images', 'rejected_videos'])) {
             return abort(404, 'Missing implementation');
@@ -845,6 +871,7 @@ class PropertyController extends Controller
             elseif ($sort === 'expiry') $sort = 'created_at';
         }
 
+
         // order -> ascending or descending
         $order = strtolower($order);
         if (!in_array($order, ['asc', 'desc'])) {
@@ -856,7 +883,9 @@ class PropertyController extends Controller
             $page = 10;
         }
 
+
         if (Auth::guard('admin')->user()) {
+
             $data = [
                 'params' => [
                     'status' => $status,
@@ -877,9 +906,7 @@ class PropertyController extends Controller
                     'bronze' => $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
                     'golden' => $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
                     'platinum' => $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->paginate($page),
-
                 ],
-
             ];
             return view('website.admin-pages.listings', $data);
         }
@@ -1422,5 +1449,21 @@ class PropertyController extends Controller
         } else {
             return "not found";
         }
+    }
+
+    public function adminPropertySearch(Request $request)
+    {
+        $property = (new Property)->where('id', '=', $request->property_id)->first();
+        if (!$property)
+            return redirect()->back()->withInput()->with('error', 'Property not found.');
+        else {
+            $status = lcfirst($property->status);
+            $purpose = lcfirst($property->purpose);
+
+            return redirect()->route('admin.properties.listings',
+                ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
+                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'id' => $request->property_id]);
+        }
+
     }
 }
