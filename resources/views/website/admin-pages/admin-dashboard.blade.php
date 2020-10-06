@@ -103,10 +103,10 @@
                             </div>
                             <div class="col-lg-10 col-md-8 col-sm-6">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-12 mb-4">
                                         <div class="card">
-                                            <div class="card-header">
-                                                <strong>Property Log</strong>
+                                            <div class="card-header theme-blue text-white">
+                                              Property Log
                                             </div>
                                             <div class="card-body">
 
@@ -140,10 +140,11 @@
                                     </div>
                                         </div>
                                     </div>
+
                                     <div class="col-12">
                                         <div class="card">
-                                            <div class="card-header">
-                                               <strong>Agency Log</strong>
+                                            <div class="card-header theme-blue text-white">
+                                            Agency Log
                                             </div>
                                             <div class="card-body">
                                                 <table id="agency-log" class="display" style="width: 100%">
