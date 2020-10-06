@@ -9,6 +9,8 @@
 @endsection
 
 @section('content')
+    <div id="site" class="left relative" >
+        <div id="site-wrap" class="left relative" >
     @include('website.admin-pages.includes.admin-nav')
     <section class="content-header">
         <h1 class="ml-5">
@@ -79,6 +81,8 @@
                 </div>
             </div>
 
+        </div>
+    </div>
         </div>
     </div>
 

@@ -115,8 +115,5 @@ body {
     margin-bottom: 20px;
     width: 100%;
 }
-#site, #site-wrap {
-    overflow: unset !important;
-    width: 100%;
-}
+
 
