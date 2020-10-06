@@ -19,9 +19,12 @@ class AgencyLogController extends Controller
         ]);
     }
 
-    public function show(AgencyLog $agencyLog)
+    public function show()
     {
-        //
+        $data = [
+            'data' => AgencyLog::all()
+        ];
+        return route('admin.dashboard', $data);
     }
 
 

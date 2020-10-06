@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Admin;
+use App\Http\Controllers\PropertyLogController;
+use App\Models\AgencyLog;
+use App\Models\PropertyLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
@@ -24,8 +26,10 @@ class AdminDashboardController extends Controller
     {
         $admin = Auth::guard('admin')->user();
 
-        return view('website.admin-pages.admin-dashboard',[
-            'admin' => $admin
+        return view('website.admin-pages.admin-dashboard', [
+            'admin' => $admin,
+            'property_log' => PropertyLog::all(),
+            'agency_log' => AgencyLog::all(),
         ]);
     }
 

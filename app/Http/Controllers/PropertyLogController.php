@@ -27,7 +27,7 @@ class PropertyLogController extends Controller
     }
 
 
-    public function show(PropertyLog $propertyLog)
+    public function show()
     {
 
     }
