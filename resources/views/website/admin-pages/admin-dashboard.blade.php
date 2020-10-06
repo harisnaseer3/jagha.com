@@ -11,6 +11,104 @@
 @section('content')
     @include('website.admin-pages.includes.admin-nav')
 
+    <!-- Submit Property start -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tab-content" id="ListingsTabContent">
+                        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+                            <div class="m-4">
+
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                        <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Active Properties</span>
+                                                    <span class="info-box-number"></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                        <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Pending Properties</span>
+                                                    <span class="info-box-number"></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                        <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Deleted Properties</span>
+                                                    <span class="info-box-number"></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                        <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text"> Total Agencies</span>
+                                                    <span class="info-box-number"></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-4 col-sm-6">
+                                        <div class="team-1">
+                                            <div class="team-photo">
+                                                @if(isset($admin->image) && $admin->image != null)
+                                                    <img src="{{ asset('thumbnails/user_images/'.explode('.',$admin->image)[0].'-450x350.webp')}}"
+                                                         alt="{{$admin->name}}" title="{{$admin->name}}" class="img-fluid image-padding rounded-circle" aria-label="user photo">
+                                                @else
+                                                    <img src="{{asset('img/logo/profile.png')}}"
+                                                         alt="{{$admin->name}}" title="{{$admin->name}}" class="img-fluid image-padding rounded-circle" aria-label="user photo">
+                                                @endif
+                                            </div>
+                                            <div class="team-details">
+                                                @if(count($admin->roles) > 0)
+                                                    <h6 class="proper-case">{{ucwords($admin->roles[0]->name)}}</h6>
+                                                @endif
+                                                <h5><a href="#">{{ucwords($admin->name)}}</a></h5>
+                                                <div class="contact">
+                                                    <p class="m-0">
+                                                        <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o mr-1"></i> {{$admin->email}}</a>
+                                                    </p>
+                                                    @if($admin->cell !== null)
+                                                        <p class="m-0">
+                                                            <a href="tel:+554XX-634-7071"> <i class="fa fa-phone mr-1"></i>{{$admin->cell}}</a>
+                                                        </p>
+                                                    @endif
+                                                    @if($admin->phone !== null)
+                                                        <p class="m-0">
+                                                            <a href="#"><i class="fa fa-phone mr-1"></i>{{$admin->phone}}</a>
+                                                        </p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+     
+
 @endsection
 
 @section('script')
