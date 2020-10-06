@@ -6,6 +6,8 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+
 @endsection
 
 @section('content')
@@ -26,13 +28,23 @@
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
-                                        {{--                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></div>--}}
+                                        <div
+                                            class="float-right">
+                                            {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
+                                            <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
+                                                   autocomplete="false" required>
+                                            <i class="fa fa-search ml-1"></i>
+                                            {{ Form::close() }}
+                                        </div>
                                         @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
+
                                             <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="listings-{{$option}}"
                                                  role="tabpanel" aria-labelledby="listings-{{$option}}-tab">
                                                 <h6>{{ucwords($option)}} Listings</h6>
                                                 <div class="my-4">
                                                     <div class="table-responsive">
+                                                        {{--                                                        <table class="table table-sm table-bordered">--}}
+                                                        {{--                                                        <table class="property-listing {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'display' : '' }}" style="width: 100%">--}}
                                                         <table class="table table-sm table-bordered">
                                                             <thead class="theme-blue text-white">
                                                             <tr>
@@ -68,13 +80,14 @@
                                                                     @endif
                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
                                                                     @if($params['status'] == 'active')
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <br>Expired in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}} days </td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <br>Expired
+                                                                            in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}} days
+                                                                        </td>
                                                                         <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
                                                                         <td>
                                                                             <span>Boost Count : 0</span>
                                                                             <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a>
                                                                         </td>
-
                                                                     @endif
                                                                     @if($params['status'] == 'rejected' || $params['status'] == 'deleted' )
                                                                         <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
@@ -149,7 +162,7 @@
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                                    <td colspan="10" class="p-4 text-center">No Listings Found!</td>
                                                                 </tr>
                                                             @endforelse
                                                             </tbody>
@@ -179,9 +192,36 @@
 @endsection
 
 @section('script')
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+
     <script>
         (function ($) {
             $(document).ready(function () {
+
+                // function validate()
+                // {
+                //     console.log('called');
+                //     let value = $('#property_id').val();
+                //     var letterNumber = /[0-9 ]+/;
+                //     if((value.match(letterNumber)))
+                //     {
+                //         return true;
+                //     }
+                //     else
+                //     {
+                //         alert('Please Enter numeric value in search bar');
+                //         return false;
+                //     }
+                // }
+                $('.property-listing').DataTable(
+                    {
+                        "paging": false,
+                        "scrollY": false,
+                        // "ordering": false,
+                        // "info":     false
+                    }
+                );
+
                 $('#delete').on('show.bs.modal', function (event) {
                     let record_id = $(event.relatedTarget).data('record-id');
                     $(this).find('.modal-body #record-id').val(record_id);
@@ -305,6 +345,8 @@
                         changePropertyStatus(status_value, id);
                     }
                 });
+
+
             });
         })(jQuery);
     </script>
