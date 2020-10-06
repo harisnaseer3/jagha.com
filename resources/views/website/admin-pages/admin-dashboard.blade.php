@@ -101,88 +101,86 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-2 col-md-4 col-sm-6">
-                                <div class="">
-                                    <h5>Property Log</h5>
-                                    <table id="property-log" class="display" style="width: 100%">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Admin ID</th>
-                                            <th>Name</th>
-                                            <th>Property ID</th>
-                                            <th>Status</th>
-                                            <th>Rejection Reason</th>
-                                            <th>Date/Time</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($property_log as $property)
+                            <div class="col-lg-10 col-md-8 col-sm-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <strong>Property Log</strong>
+                                            </div>
+                                            <div class="card-body">
+
+                                        <table id="property-log" class="display" style="width: 100%">
+                                            <thead>
                                             <tr>
-                                                <td>{{$property->id}}</td>
-                                                <td>{{$property->admin_id}}</td>
-                                                <td>{{ucwords($property->admin_name)}}</td>
-                                                <td>{{$property->property_id}}</td>
-                                                <td>{{ucwords($property->status)}}</td>
-                                                <td>{{$property->rejection_reason}}</td>
-                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->format('Y-m-d') }}</td>
+                                                <th>ID</th>
+                                                <th>Admin ID</th>
+                                                <th>Name</th>
+                                                <th>Property ID</th>
+                                                <th>Status</th>
+                                                <th>Rejection Reason</th>
+                                                <th>Date/Time</th>
                                             </tr>
-                                        @endforeach
-                                        </tbody>
-                                        {{--                                        <tfoot>--}}
-                                        {{--                                        <tr>--}}
-                                        {{--                                            <th>Name</th>--}}
-                                        {{--                                            <th>Position</th>--}}
-                                        {{--                                            <th>Office</th>--}}
-                                        {{--                                            <th>Age</th>--}}
-                                        {{--                                            <th>Start date</th>--}}
-                                        {{--                                            <th>Salary</th>--}}
-                                        {{--                                        </tr>--}}
-                                        {{--                                        </tfoot>--}}
-                                    </table>
-                                </div>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($property_log as $property)
+                                                <tr>
+                                                    <td>{{$property->id}}</td>
+                                                    <td>{{$property->admin_id}}</td>
+                                                    <td>{{ucwords($property->admin_name)}}</td>
+                                                    <td>{{$property->property_id}}</td>
+                                                    <td>{{ucwords($property->status)}}</td>
+                                                    <td>{{$property->rejection_reason}}</td>
+                                                    <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->format('Y-m-d') }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                               <strong>Agency Log</strong>
+                                            </div>
+                                            <div class="card-body">
+                                                <table id="agency-log" class="display" style="width: 100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Admin ID</th>
+                                                        <th>Name</th>
+                                                        <th>Agency ID</th>
+                                                        <th>Status</th>
+                                                        <th>Rejection Reason</th>
+                                                        <th>Date/Time</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($agency_log as $agency)
+                                                        <tr>
+                                                            <td>{{$agency->id}}</td>
+                                                            <td>{{$agency->admin_id}}</td>
+                                                            <td>{{ucwords($agency->admin_name)}}</td>
+                                                            <td>{{$agency->property_id}}</td>
+                                                            <td>{{ucwords($agency->status)}}</td>
+                                                            <td>{{$agency->rejection_reason}}</td>
+                                                            <td>{{ (new \Illuminate\Support\Carbon($agency->created_at))->format('Y-m-d') }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
                             </div>
-                            <div class="col-lg-2 col-md-4 col-sm-6">
-                                <div class="">
-                                    <h5>Agency Log</h5>
-                                    <table id="agency-log" class="display" style="width: 100%">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Admin ID</th>
-                                            <th>Name</th>
-                                            <th>Agency ID</th>
-                                            <th>Status</th>
-                                            <th>Rejection Reason</th>
-                                            <th>Date/Time</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($agency_log as $agency)
-                                            <tr>
-                                                <td>{{$agency->id}}</td>
-                                                <td>{{$agency->admin_id}}</td>
-                                                <td>{{ucwords($agency->admin_name)}}</td>
-                                                <td>{{$agency->property_id}}</td>
-                                                <td>{{ucwords($agency->status)}}</td>
-                                                <td>{{$agency->rejection_reason}}</td>
-                                                <td>{{ (new \Illuminate\Support\Carbon($agency->created_at))->format('Y-m-d') }}</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                        {{--                                        <tfoot>--}}
-                                        {{--                                        <tr>--}}
-                                        {{--                                            <th>Name</th>--}}
-                                        {{--                                            <th>Position</th>--}}
-                                        {{--                                            <th>Office</th>--}}
-                                        {{--                                            <th>Age</th>--}}
-                                        {{--                                            <th>Start date</th>--}}
-                                        {{--                                            <th>Salary</th>--}}
-                                        {{--                                        </tr>--}}
-                                        {{--                                        </tfoot>--}}
-                                    </table>
-                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
