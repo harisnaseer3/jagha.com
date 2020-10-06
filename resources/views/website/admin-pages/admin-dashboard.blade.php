@@ -11,6 +11,8 @@
 @endsection
 
 @section('content')
+    <div id="site" class="left relative" >
+        <div id="site-wrap" class="left relative" >
     @include('website.admin-pages.includes.admin-nav')
 
     <!-- Submit Property start -->
@@ -20,52 +22,52 @@
                 <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                     <div class="m-4">
 
-                        <div class="row">
-                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text"> Active Properties</span>
-                                            <span class="info-box-number"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text"> Pending Properties</span>
-                                            <span class="info-box-number"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text"> Deleted Properties</span>
-                                            <span class="info-box-number"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>
-                                        <div class="info-box-content">
-                                            <span class="info-box-text"> Total Agencies</span>
-                                            <span class="info-box-number"></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+{{--                        <div class="row">--}}
+{{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
+{{--                                <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
+{{--                                    <div class="info-box">--}}
+{{--                                        <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>--}}
+{{--                                        <div class="info-box-content">--}}
+{{--                                            <span class="info-box-text"> Active Properties</span>--}}
+{{--                                            <span class="info-box-number"></span>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
+{{--                                <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
+{{--                                    <div class="info-box">--}}
+{{--                                        <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>--}}
+{{--                                        <div class="info-box-content">--}}
+{{--                                            <span class="info-box-text"> Pending Properties</span>--}}
+{{--                                            <span class="info-box-number"></span>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
+{{--                                <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
+{{--                                    <div class="info-box">--}}
+{{--                                        <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>--}}
+{{--                                        <div class="info-box-content">--}}
+{{--                                            <span class="info-box-text"> Deleted Properties</span>--}}
+{{--                                            <span class="info-box-number"></span>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
+{{--                                <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
+{{--                                    <div class="info-box">--}}
+{{--                                        <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>--}}
+{{--                                        <div class="info-box-content">--}}
+{{--                                            <span class="info-box-text"> Total Agencies</span>--}}
+{{--                                            <span class="info-box-number"></span>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="row">
                             <div class="col-lg-2 col-md-4 col-sm-6">
                                 <div class="team-1">
@@ -103,10 +105,11 @@
                             </div>
                             <div class="col-lg-10 col-md-8 col-sm-6">
                                 <div class="row">
-                                    <div class="col-12">
+                                    @can('Manage Property')
+                                    <div class="col-12 mb-4">
                                         <div class="card">
-                                            <div class="card-header">
-                                                <strong>Property Log</strong>
+                                            <div class="card-header theme-blue text-white">
+                                              Property Log
                                             </div>
                                             <div class="card-body">
 
@@ -140,10 +143,12 @@
                                     </div>
                                         </div>
                                     </div>
+                                    @endcan
+                                        @can('Manage Agency')
                                     <div class="col-12">
                                         <div class="card">
-                                            <div class="card-header">
-                                               <strong>Agency Log</strong>
+                                            <div class="card-header theme-blue text-white">
+                                            Agency Log
                                             </div>
                                             <div class="card-body">
                                                 <table id="agency-log" class="display" style="width: 100%">
@@ -178,6 +183,7 @@
 
                                         </div>
                                     </div>
+                                            @endcan
                             </div>
                             </div>
 
@@ -186,6 +192,8 @@
                 </div>
             </div>
 
+        </div>
+    </div>
         </div>
     </div>
 

@@ -54,6 +54,7 @@ class PermissionsTableSeeder extends Seeder
         // Creating roles
         $role1 = Role::create(['guard_name' => 'admin', 'name' => 'Property Manager']);
         $role2 = Role::create(['guard_name' => 'admin', 'name' => 'Agency Manager']);
+        $role3 = Role::create(['guard_name' => 'admin', 'name' => 'Users Administrator']);
 
         // Creating SuperAdmin role and allotting all permissions
         $super_role = Role::create(['guard_name' => 'admin', 'name' => 'Super Admin']);
@@ -61,6 +62,7 @@ class PermissionsTableSeeder extends Seeder
 
         $role1->givePermissionTo(['Manage Dashboard','Manage Property']);
         $role2->givePermissionTo(['Manage Dashboard','Manage Agency']);
+        $role3->givePermissionTo(['Manage Dashboard','Manage Users','Manage Roles and Permissions']);
 
 
     }

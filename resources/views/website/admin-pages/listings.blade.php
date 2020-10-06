@@ -11,6 +11,8 @@
 @endsection
 
 @section('content')
+    <div id="site" class="left relative" >
+        <div id="site-wrap" class="left relative" >
     @include('website.admin-pages.includes.admin-nav')
     <div style="min-height:90px"></div>
     <div class="submit-property">
@@ -182,6 +184,8 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
     @include('website.admin-pages.layouts.delete-modal', array('route'=>'properties'))

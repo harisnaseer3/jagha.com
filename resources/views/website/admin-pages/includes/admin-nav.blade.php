@@ -1,5 +1,4 @@
-<div id="site" class="left relative">
-    <div id="site-wrap" class="left relative">
+
         <div id="fly-wrap">
             <div class="fly-wrap-out">
                 <div class="fly-side-wrap">
@@ -321,7 +320,5 @@
                 </div>
             </nav>
         </div>
-    </div>
-</div>
 
 
