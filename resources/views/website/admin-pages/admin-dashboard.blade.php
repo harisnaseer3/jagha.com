@@ -11,6 +11,8 @@
 @endsection
 
 @section('content')
+    <div id="site" class="left relative" >
+        <div id="site-wrap" class="left relative" >
     @include('website.admin-pages.includes.admin-nav')
 
     <!-- Submit Property start -->
@@ -187,6 +189,8 @@
                 </div>
             </div>
 
+        </div>
+    </div>
         </div>
     </div>
 
