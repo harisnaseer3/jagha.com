@@ -31,6 +31,12 @@
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('admin-agencies-create')}}">Add New Agency</a></div>
+                                        <div class="">{{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
+                                        <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
+                                               autocomplete="false" required>
+                                        <i class="fa fa-search ml-1"></i>
+                                        {{ Form::close() }}
+
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
                                              aria-labelledby="listings-all-tab">
                                             <h6>All Listings</h6>
