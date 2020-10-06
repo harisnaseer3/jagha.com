@@ -154,7 +154,9 @@
                         rejection_div.slideDown();
                     } else {
                         rejection_input.removeAttr('required').attr('disable', 'true');
+                        console.log(rejection_input.val());
                         rejection_input.val('');
+                        console.log(rejection_input.val());
                         rejection_div.slideUp();
                     }
                 });

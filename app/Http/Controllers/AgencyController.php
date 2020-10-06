@@ -498,14 +498,17 @@ class AgencyController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('agencies.edit', $agency)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
+            if (Auth::guard('admin')->user())
+                return redirect()->route('admin-agencies-edit', $agency)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
+            else
+                return redirect()->route('agencies.edit', $agency)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
+
         }
 
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
             } else {
-//                TODO: send an email to property user with reason of rejection
                 $reason = $request->input('rejection_reason');
                 $agency_user = User::where('id', '=', $agency->user_id)->first();
                 $agency_user->notify(new AgencyRejectionMail($agency, $reason));
@@ -515,9 +518,7 @@ class AgencyController extends Controller
             $status_before_update = $agency->status;
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
-
-            (new Agency)::where('id', $agency->id)->update([
-//                'user_id' => Auth::user()->getAuthIdentifier(),
+            $agency = (new Agency)->updateOrCreate(['id' => $agency->id], [
                 'city_id' => $city->id,
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
@@ -533,9 +534,8 @@ class AgencyController extends Controller
                 'ceo_name' => $request->input('name'),
                 'ceo_designation' => $request->input('designation'),
                 'ceo_message' => $request->input('about_CEO'),
-                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null,
                 'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
-
+                'rejection_reason' => $request->input('rejection_reason')
             ]);
             if ($request->hasFile('upload_new_logo')) {
                 $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
@@ -551,9 +551,13 @@ class AgencyController extends Controller
             }
 
             $user = User::where('id', '=', $agency->user_id)->first();
+
             $user->notify(new AgencyStatusChange($agency));
             if (Auth::guard('admin')->user()) {
+//                dd($request->has('rejection_reason') && $request->input('status') == 'rejected' ? $request->input('rejection_reason') : null);
+
                 (new AgencyLogController())->store($agency);
+
                 return redirect()->route('admin.agencies.listings', [
                     'status' => 'pending_agencies',
                     'purpose' => 'all',
@@ -574,7 +578,10 @@ class AgencyController extends Controller
             }
 
         } catch (Throwable $e) {
-            return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
+            if (Auth::guard('admin')->user())
+                return redirect()->route('admin-agencies-edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
+            else
+                return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }
     }
 
@@ -741,7 +748,6 @@ class AgencyController extends Controller
                     'key' => $key->orderBy($sort, $order)->paginate($page),
                     'featured' => $featured->orderBy($sort, $order)->paginate($page),
                 ]];
-            dd('here');
             return view('website.admin-pages.agency.agency_listings', $data);
         } else {
             $data = [

@@ -119,13 +119,18 @@
 
                                                                     @endif
                                                                 @elseif($params['status'] == 'deleted_agencies')
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="restore"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$all_listing->id}}">
-                                                                        Review & Restore<span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                    <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}" class="btn btn-sm btn-success color-black restore-btn"
+                                                                       data-toggle-1="tooltip"
+                                                                       data-placement="bottom" title="Edit Agency">
+                                                                        Review & Restore<span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                     </a>
+{{--                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn"--}}
+{{--                                                                       data-toggle-1="tooltip" data-placement="bottom"--}}
+{{--                                                                       title="restore"--}}
+{{--                                                                       href="javascript:void(0)"--}}
+{{--                                                                       data-record-id="{{$all_listing->id}}">--}}
+{{--                                                                        Review & Restore<span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>--}}
+{{--                                                                    </a>--}}
                                                                 @endif
                                                             </td>
                                                         </tr>
