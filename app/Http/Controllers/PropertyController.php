@@ -495,7 +495,6 @@ class PropertyController extends Controller
 
         (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($data);
 
-
         //similar properties criteria same city, type and subtype
         $similar_properties = $this->listingFrontend()
             ->where([
@@ -704,6 +703,8 @@ class PropertyController extends Controller
 
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+
+            (new PropertyLogController())->store($property);
 
             if (Auth::guard('admin')->user())
                 return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10', 'recent_properties' => (new FooterController)->footerContent()[0],
@@ -1399,20 +1400,24 @@ class PropertyController extends Controller
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
             $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
             $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+
             if ($request->status == 'sold' || $request->status == 'expired') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+                if (Auth::guard('admin')->user()) {
+                    (new PropertyLogController())->store($property);
+                }
             }
-            if ($request->status === 'active') {
-                $dt = Carbon::now();
-                $property->activated_at = $dt;
-
-                $expiry = $dt->addMonths(3)->toDateTimeString();
-                $property->expired_at = $expiry;
-                $property->save();
-
-                event(new NewPropertyActivatedEvent($property));
-                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
-            }
+//            if ($request->status === 'active') {
+//                $dt = Carbon::now();
+//                $property->activated_at = $dt;
+//
+//                $expiry = $dt->addMonths(3)->toDateTimeString();
+//                $property->expired_at = $expiry;
+//                $property->save();
+//
+//                event(new NewPropertyActivatedEvent($property));
+//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
+//            }
             return response()->json(['status' => 200]);
         } else {
             return "not found";

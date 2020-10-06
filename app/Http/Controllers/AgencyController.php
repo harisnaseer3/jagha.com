@@ -22,11 +22,6 @@ use function GuzzleHttp\Promise\all;
 
 class AgencyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
-     */
     public function index()
     {
         (new MetaTagController())->addMetaTagsOnPartnersListing();
@@ -204,90 +199,6 @@ class AgencyController extends Controller
                     'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
     }
 
-    public function store(Request $request)
-    {
-        if ($request->hasFile('upload_new_logo')) {
-            $error_msg = $this->_imageValidation('upload_new_logo');
-            if ($error_msg !== null && count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
-            }
-        }
-
-        if ($request->hasFile('upload_new_picture')) {
-            $error_msg = $this->_imageValidation('upload_new_picture');
-            if ($error_msg !== null && count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
-            }
-        }
-        $validator = Validator::make($request->all(), Agency::$rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error storing record, Resolve following error(s).');
-        }
-        try {
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-            $user_id = '';
-            if ($request->has('user_id')) {
-                $user_id = $request->input('user_id');
-            }
-
-            $agency = (new Agency)->Create([
-                'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier(),
-                'city_id' => $city->id,
-                'title' => $request->input('company_title'),
-                'description' => $request->input('description'),
-                'phone' => $request->input('phone'),
-                'cell' => $request->input('cell'),
-                'fax' => $request->input('fax'),
-                'address' => $request->input('address'),
-                'zip_code' => $request->input('zip_code'),
-                'country' => $request->input('country'),
-                'email' => $request->input('email'),
-                'website' => $request->input('website'),
-                'ceo_name' => $request->input('name'),
-                'ceo_designation' => $request->input('designation'),
-                'ceo_message' => $request->input('about_CEO'),
-                'status' => $request->has('status') ? $request->input('status') : 'pending',
-                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null
-
-            ]);
-            if ($request->hasFile('upload_new_logo')) {
-                $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
-            }
-            if ($request->hasFile('upload_new_picture')) {
-                $this->storeAgencyLogo($request->file('upload_new_picture'), $agency);
-            }
-            (new AgencyUserController())->store($agency, $user_id);
-
-            (new AgencyCityController())->store($agency);
-
-            if ($request->has('status') && $request->input('status') === 'verified') {
-                $this->insertIntoCounterTable();
-            }
-//            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
-            if (Auth::guard('admin')->user()) {
-                return redirect()->route('admin.agencies.listings', [
-                    'status' => 'pending_agencies',
-                    'purpose' => 'all',
-                    'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
-                    'sort' => 'id',
-                    'order' => 'asc',
-                    'page' => 10,
-                ])->with('success', 'Agency profile has been saved.');
-            } else
-                return redirect()->route('agencies.listings', [
-                    'status' => 'pending_agencies',
-                    'purpose' => 'all',
-                    'user' => Auth::user()->getAuthIdentifier(),
-                    'sort' => 'id',
-                    'order' => 'asc',
-                    'page' => 10,
-                ])->with('success', 'Agency profile has been saved.');
-        } catch (Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
-        }
-    }
-
     public function listingFeaturedPartners(Request $request)
     {
         $agencies = $this->_listingFrontend()
@@ -440,6 +351,92 @@ class AgencyController extends Controller
         }
     }
 
+    public function store(Request $request)
+    {
+        if ($request->hasFile('upload_new_logo')) {
+            $error_msg = $this->_imageValidation('upload_new_logo');
+            if ($error_msg !== null && count($error_msg)) {
+                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
+            }
+        }
+
+        if ($request->hasFile('upload_new_picture')) {
+            $error_msg = $this->_imageValidation('upload_new_picture');
+            if ($error_msg !== null && count($error_msg)) {
+                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
+            }
+        }
+        $validator = Validator::make($request->all(), Agency::$rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator->errors())->with('error', 'Error storing record, Resolve following error(s).');
+        }
+        try {
+            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $user_id = '';
+            if ($request->has('user_id')) {
+                $user_id = $request->input('user_id');
+            }
+
+            $agency = (new Agency)->Create([
+                'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier(),
+                'city_id' => $city->id,
+                'title' => $request->input('company_title'),
+                'description' => $request->input('description'),
+                'phone' => $request->input('phone'),
+                'cell' => $request->input('cell'),
+                'fax' => $request->input('fax'),
+                'address' => $request->input('address'),
+                'zip_code' => $request->input('zip_code'),
+                'country' => $request->input('country'),
+                'email' => $request->input('email'),
+                'website' => $request->input('website'),
+                'ceo_name' => $request->input('name'),
+                'ceo_designation' => $request->input('designation'),
+                'ceo_message' => $request->input('about_CEO'),
+                'status' => $request->has('status') ? $request->input('status') : 'pending',
+                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null
+
+            ]);
+            if ($request->hasFile('upload_new_logo')) {
+                $this->storeAgencyLogo($request->file('upload_new_logo'), $agency);
+            }
+            if ($request->hasFile('upload_new_picture')) {
+                $this->storeAgencyLogo($request->file('upload_new_picture'), $agency);
+            }
+            (new AgencyUserController())->store($agency, $user_id);
+
+            (new AgencyCityController())->store($agency);
+
+            if ($request->has('status') && $request->input('status') === 'verified') {
+                $this->insertIntoCounterTable();
+            }
+
+//            return redirect()->route('agencies.update', $agency)->with('success', 'Your information has been saved.');
+            if (Auth::guard('admin')->user()) {
+                (new AgencyLogController())->store($agency);
+                return redirect()->route('admin.agencies.listings', [
+                    'status' => 'pending_agencies',
+                    'purpose' => 'all',
+                    'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
+                    'sort' => 'id',
+                    'order' => 'asc',
+                    'page' => 10,
+                ])->with('success', 'Agency profile has been saved.');
+            } else
+                return redirect()->route('agencies.listings', [
+                    'status' => 'pending_agencies',
+                    'purpose' => 'all',
+                    'user' => Auth::user()->getAuthIdentifier(),
+                    'sort' => 'id',
+                    'order' => 'asc',
+                    'page' => 10,
+                ])->with('success', 'Agency profile has been saved.');
+        } catch (Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
+        }
+    }
+
     public function edit(Agency $agency)
     {
         $city = $agency->city->name;
@@ -555,8 +552,8 @@ class AgencyController extends Controller
 
             $user = User::where('id', '=', $agency->user_id)->first();
             $user->notify(new AgencyStatusChange($agency));
-
             if (Auth::guard('admin')->user()) {
+                (new AgencyLogController())->store($agency);
                 return redirect()->route('admin.agencies.listings', [
                     'status' => 'pending_agencies',
                     'purpose' => 'all',
@@ -565,26 +562,22 @@ class AgencyController extends Controller
                     'order' => 'asc',
                     'page' => 10,
                 ])->with('success', 'Agency profile has been updated.');
+            } else {
+                return redirect()->route('agencies.listings', [
+                    'status' => 'pending_agencies',
+                    'purpose' => 'all',
+                    'user' => Auth::user()->getAuthIdentifier(),
+                    'sort' => 'id',
+                    'order' => 'asc',
+                    'page' => 10,
+                ])->with('success', 'Agency profile has been updated.');
             }
-            return redirect()->route('agencies.listings', [
-                'status' => 'pending_agencies',
-                'purpose' => 'all',
-                'user' => Auth::user()->getAuthIdentifier(),
-                'sort' => 'id',
-                'order' => 'asc',
-                'page' => 10,
-            ])->with('success', 'Agency profile has been updated.');
+
         } catch (Throwable $e) {
             return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Agency $agency
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function destroy(Request $request)
     {
         $agency = (new Agency)->where('id', '=', $request->input('record_id'))->first();
@@ -748,6 +741,7 @@ class AgencyController extends Controller
                     'key' => $key->orderBy($sort, $order)->paginate($page),
                     'featured' => $featured->orderBy($sort, $order)->paginate($page),
                 ]];
+            dd('here');
             return view('website.admin-pages.agency.agency_listings', $data);
         } else {
             $data = [
@@ -772,7 +766,6 @@ class AgencyController extends Controller
             return view('website.agency.agency_listings', $data);
         }
     }
-
 
     public function storeAgencyLogo($logo, $agency)
     {
@@ -844,7 +837,9 @@ class AgencyController extends Controller
     {
         if ($request->ajax()) {
 
-            (new Agency)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+            $agency = (new Agency)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+            if (Auth::guard('admin')->user())
+                (new AgencyLogController())->store($agency);
 
             return response()->json(['status' => 200]);
         } else {
