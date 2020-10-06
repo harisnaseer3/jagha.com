@@ -105,6 +105,7 @@
                             </div>
                             <div class="col-lg-10 col-md-8 col-sm-6">
                                 <div class="row">
+                                    @can('Manage Property')
                                     <div class="col-12 mb-4">
                                         <div class="card">
                                             <div class="card-header theme-blue text-white">
@@ -142,7 +143,8 @@
                                     </div>
                                         </div>
                                     </div>
-
+                                    @endcan
+                                        @can('Manage Agency')
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header theme-blue text-white">
@@ -181,6 +183,7 @@
 
                                         </div>
                                     </div>
+                                            @endcan
                             </div>
                             </div>
 
