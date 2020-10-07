@@ -30,18 +30,15 @@
                                             {{--                                    @include('website.layouts.user_notification')--}}
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
-                                                <div class="pull-right">
-                                                    <span>{{ Form::open(['route' => ['admin.agency.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
+                                                    <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-agencies-create')}}">Add New Agency</a></span>
+                                                <span class="pull-right">{{ Form::open(['route' => ['admin.agency.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                                                     <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="agency_id" id="property_id"
                                                            autocomplete="false" required>
                                                     <i class="fa fa-search ml-1"></i>
                                                     {{ Form::close() }}</span>
-                                                    <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-agencies-create')}}">Add New Agency</a></span>
-
-                                                </div>
                                                 <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
                                                      aria-labelledby="listings-all-tab">
-                                                    <h6>All Listings</h6>
+                                                    <h6 class="pull-left">All Listings</h6>
                                                     <div class="my-4">
                                                         <table class="table table-sm table-bordered">
                                                             <thead class="theme-blue text-white">

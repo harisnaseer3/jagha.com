@@ -18,6 +18,7 @@ class CreatePropertyLogsTable extends Migration
             $table->id();
             $table->foreignId('admin_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('property_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('property_title', 255);
             $table->string('admin_name', 255);
             $table->string('status', 255);
             $table->string('rejection_reason', 255)->nullable();

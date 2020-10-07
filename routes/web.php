@@ -16,6 +16,8 @@ Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
 Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
 
+Route::post('/search-ref', 'PropertyController@userPropertySearch')->name('property.search.ref');
+
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
 Route::get('key-partners', 'AgencyController@listingKeyPartners')->name('key-partners');
@@ -148,10 +150,9 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
 // admin routes
 Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
 Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
-
+Route::post('/search-id', 'PropertyController@adminPropertySearch')->name('admin.property.search.id');
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
-    Route::post('/search-id', 'PropertyController@adminPropertySearch')->name('admin.property.search.id');
 
     Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
         ->name('admin.properties.listings')
