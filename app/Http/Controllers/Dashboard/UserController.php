@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
+use App\Models\Admin;
 use App\Models\Agency;
 use App\Models\Dashboard\PropertyRole;
 use App\Models\Dashboard\User;
@@ -249,6 +250,15 @@ class UserController extends Controller
         $user = Auth::user();
         $user->password = Hash::make($request->get('new_password'));
         $user->save();
+
+        $user_email = $user->email;
+        $admin = Admin::getAdminByEmail($user_email);
+        if(!empty($admin))
+        {
+            $updated_password = Admin::updateAdminPassword($admin->id,$user->password);
+
+        }
+
         return redirect()->route('user.password.update')->with('success', 'Your password is updated');
     }
 }
