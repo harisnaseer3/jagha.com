@@ -761,7 +761,7 @@ class PropertyController extends Controller
     {
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Property)
-            ->select('properties.id', 'sub_type AS type', 'properties.expired_at',
+            ->select('properties.id', 'sub_type AS type', 'properties.expired_at', 'properties.reference',
                 'properties.status', 'locations.name AS location', 'cities.name as city',
                 'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing', 'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
                 'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"),
@@ -831,7 +831,7 @@ class PropertyController extends Controller
                 ],
                 'counts' => $this->getPropertyListingCount($user),
                 'listings' => [
-                    'all' => $this->_listings($status, $user)->orderBy($sort, $order)->where('properties.id', '=', $request->property_id)->paginate($page),
+                    'all' => $this->_listings($status, $user)->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
                     'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
                     'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
                     'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where('properties.id', '=', $request->id)->paginate($page),
@@ -843,6 +843,36 @@ class PropertyController extends Controller
                 ],
             ];
             return view('website.admin-pages.listings', $data);
+        } else if ($request->has('reference')) {
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'notifications' => Auth()->user()->unreadNotifications,
+                'counts' => $this->getPropertyListingCount($user),
+                'listings' => [
+                    'all' => $this->_listings($status, $user)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'sale' => $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'rent' => $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'wanted' => $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'basic' => $this->_listings($status, $user)->where('basic_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'silver' => $this->_listings($status, $user)->where('silver_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'bronze' => $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'golden' => $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                    'platinum' => $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
+                ],
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]
+            ];
+            if ($data['listings']['all'])
+                return redirect()->back()->withInput()->with('error', 'Property not found.');
+
+            return view('website.pages.listings', $data);
         }
 
         // TODO: implement code where status is rejected_images or rejected_videos, remove after
@@ -1465,5 +1495,22 @@ class PropertyController extends Controller
                     'sort' => 'id', 'order' => 'asc', 'page' => 50, 'id' => $request->property_id]);
         }
 
+    }
+
+    public function userPropertySearch(Request $request)
+    {
+        if ($request->input('property_ref') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('property_ref'))) {
+            $property = (new Property)->where('reference', '=', $request->property_ref)->first();
+            if (!$property)
+                return redirect()->back()->withInput()->with('error', 'Property not found.');
+            else {
+                $status = lcfirst($property->status);
+                $purpose = lcfirst($property->purpose);
+                return redirect()->route('properties.listings',
+                    ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
+                        'sort' => 'id', 'order' => 'asc', 'page' => 50, 'reference' => $request->property_ref]);
+            }
+        } else
+            return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
     }
 }

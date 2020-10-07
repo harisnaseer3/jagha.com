@@ -18,6 +18,7 @@ class CreateAgencyLogsTable extends Migration
             $table->id();
             $table->foreignId('admin_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('agency_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('agency_title', 225);
             $table->string('admin_name', 255);
             $table->string('status', 255);
             $table->string('rejection_reason', 255)->nullable();
@@ -29,7 +30,7 @@ class CreateAgencyLogsTable extends Migration
         DB::statement('ALTER TABLE `agency_logs`
             CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
             CHANGE `updated_at` `updated_at` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL DEFAULT NULL');
-}
+    }
 
     /**
      * Reverse the migrations.

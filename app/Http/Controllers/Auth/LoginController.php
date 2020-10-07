@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 
 class LoginController extends Controller
@@ -71,9 +72,19 @@ class LoginController extends Controller
                 }
 
             }
-            return response()->json(['error' => $validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
+            if ($request->ajax())
+                return response()->json(['error' => $validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
+            else
+                throw ValidationException::withMessages([
+                    $this->username() => [trans('auth.failed')],
+                ]);
         }
-        return response()->json(['error' => $validator->errors()->all()]);
+        if ($request->ajax())
+            return response()->json(['error' => $validator->errors()->all()]);
+        else
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+            ]);
     }
 
 //    public function logout(Request $request)

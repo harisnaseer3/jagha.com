@@ -28,8 +28,7 @@
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div
-                                            class="float-right">
+                                        <div class="float-right">
                                             {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                                             <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
                                                    autocomplete="false" required>

@@ -705,8 +705,30 @@ class AgencyController extends Controller
         return $counts;
     }
 
-    public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page)
+    public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
     {
+        if ($request->has('id')) {
+            $all = $this->_listings(explode("_", $status)[0], $user);
+            $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
+            $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $this->getAgencyListingCount($user),
+                'listings' => [
+                    'all' => $all->orderBy($sort, $order)->where('agencies.id', '=', $request->id)->paginate($page),
+                    'key' => $key->orderBy($sort, $order)->where('agencies.id', '=', $request->id)->paginate($page),
+                    'featured' => $featured->orderBy($sort, $order)->where('agencies.id', '=', $request->id)->paginate($page),
+                ]
+            ];
+            return view('website.admin-pages.agency.agency_listings', $data);
+        }
         // listing of status
         $status = strtolower($status);
 
@@ -773,7 +795,8 @@ class AgencyController extends Controller
         }
     }
 
-    public function storeAgencyLogo($logo, $agency)
+    public
+    function storeAgencyLogo($logo, $agency)
     {
         $filename = rand(0, 99);
         $extension = 'webp';
@@ -830,7 +853,8 @@ class AgencyController extends Controller
 
     }
 
-    public function deleteFromCounterTable()
+    public
+    function deleteFromCounterTable()
     {
         $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
         $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
@@ -851,6 +875,27 @@ class AgencyController extends Controller
         } else {
             return "not found";
         }
+    }
+
+    public function adminAgencySearch(Request $request)
+    {
+        $agency = (new Agency)->where('id', '=', $request->agency_id)->first();
+        if (!$agency)
+            return redirect()->back()->withInput()->with('error', 'Agency not found.');
+        else {
+            $status = lcfirst($agency->status);
+            return redirect()->route('admin.agencies.listings', [
+                'status' => $status.'_agencies',
+                'purpose' => 'all',
+                'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
+                'sort' => 'id',
+                'order' => 'asc',
+                'page' => 10,
+                'id' => $request->agency_id
+            ]);
+
+        }
+
     }
 
 }

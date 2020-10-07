@@ -24,11 +24,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
-                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="my-4">
-                                Dashboard
-                            </div>
-                        </div>
+
                         <div class="tab-pane fade show active" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -38,18 +34,24 @@
                                     @include('website.layouts.flash-message')
                                     @include('website.layouts.user_notification')
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></div>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></span>
+                                        <span class="pull-right">{{ Form::open(['route' => ['property.search.ref'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;']) }}
+                                                    <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_ref" id="property_ref"
+                                                           autocomplete="false" required>
+                                                    <i class="fa fa-search ml-1"></i>
+                                                    {{ Form::close() }}</span>
                                         @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                             <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="{{"listings-".$option}}"
                                                  role="tabpanel"
                                                  aria-labelledby="{{"listings-".$option."-tab"}}">
-                                                <h6>{{ucwords($option)}} Listings</h6>
+                                                <h6 class="pull-left">{{ucwords($option)}} Listings</h6>
                                                 <div class="my-4">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
                                                             <thead class="theme-blue text-white">
                                                             <tr>
                                                                 <td>ID</td>
+                                                                <td>Reference</td>
                                                                 <td>Type</td>
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
@@ -68,6 +70,7 @@
                                                             @forelse($listings[$option] as $all_listing)
                                                                 <tr>
                                                                     <td>{{ $all_listing->id }}</td>
+                                                                    <td>{{ $all_listing->reference}}</td>
                                                                     <td>{{ $all_listing->type }}</td>
                                                                     <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
                                                                     @if($all_listing->price != '0')
@@ -90,7 +93,8 @@
                                                                     @if($params['status'] != 'deleted')
                                                                         <td>
                                                                             @if($params['status'] === 'sold')
-                                                                                <div class="sold-status"><strong>Property Sold</strong></div>                                                                            @else
+                                                                                <div class="sold-status"><strong>Property Sold</strong>
+                                                                                </div>                                                                            @else
                                                                                 <form>
                                                                                     @if($params['status'] != 'expired')
 
