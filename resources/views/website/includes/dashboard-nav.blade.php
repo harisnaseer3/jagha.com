@@ -284,13 +284,13 @@
                         {{--                        </li>--}}
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
-                        <li class="nav-item">
-                            {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                            <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_id" id="ref-id" autocomplete="false">
-                            <small id="property_id-error" class="help-block text-red"></small>
-                            <i class="fa fa-search ml-1"></i>
-                            {{ Form::close() }}
-                        </li>
+{{--                        <li class="nav-item">--}}
+{{--                            {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}--}}
+{{--                            <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_id" id="ref-id" autocomplete="false">--}}
+{{--                            <small id="property_id-error" class="help-block text-red"></small>--}}
+{{--                            <i class="fa fa-search ml-1"></i>--}}
+{{--                            {{ Form::close() }}--}}
+{{--                        </li>--}}
                         <li class="nav-item user-dropdown">
                             @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                                 <div class="dropdown">

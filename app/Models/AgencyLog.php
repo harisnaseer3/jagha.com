@@ -17,6 +17,7 @@ class AgencyLog extends Model
     public $fillable = [
         'admin_id',
         'agency_id',
+        'agency_title',
         'status',
         'admin_name',
         'rejection_reason',
