@@ -14,6 +14,7 @@ class AgencyLogController extends Controller
             'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier(),
             'admin_name' => Auth::guard('admin')->user()->name,
             'agency_id' => $agency->id,
+            'agency_title' => $agency->title,
             'status' => $agency->status,
             'rejection_reason' => $agency->rejection_reason,
         ]);

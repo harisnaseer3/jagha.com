@@ -1457,12 +1457,16 @@ class PropertyController extends Controller
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
             $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
             $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+            $user = User::where('id', '=', $property->user_id)->first();
+            $user->notify(new PropertyStatusChange($property));
 
             if ($request->status == 'sold' || $request->status == 'expired') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+
                 if (Auth::guard('admin')->user()) {
                     (new PropertyLogController())->store($property);
                 }
+
             }
 //            if ($request->status === 'active') {
 //                $dt = Carbon::now();

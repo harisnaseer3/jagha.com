@@ -21,6 +21,7 @@ class PropertyLogController extends Controller
             'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier(),
             'admin_name' => Auth::guard('admin')->user()->name,
             'property_id' => $property->id,
+            'property_title' => $property->title,
             'status' => $property->status,
             'rejection_reason' => $property->rejection_reason,
         ]);

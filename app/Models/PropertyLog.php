@@ -16,6 +16,7 @@ class PropertyLog extends Model
     public $fillable = [
         'admin_id',
         'property_id',
+        'property_title',
         'status',
         'admin_name',
         'rejection_reason',
