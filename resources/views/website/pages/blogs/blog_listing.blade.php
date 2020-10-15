@@ -128,7 +128,7 @@
                     });
                     jQuery.ajax({
                         type: 'get',
-                        url: window.location.origin + '/property/load-more-data',
+                        url: window.location.origin + '/load-more-data',
                         data: {
                             id: $('#blog-list').data('index')
                         },
@@ -204,7 +204,7 @@
                         event.preventDefault();
                         jQuery.ajax({
                             type: 'post',
-                            url: window.location.origin + '/property' + '/login',
+                            url: window.location.origin  + '/login',
                             data: form.serialize(),
                             dataType: 'json',
                             success: function (data) {
@@ -225,7 +225,7 @@
                                     html += '<span class="mr-1"> Logged in as <span>'+ user_name + ' (ID: ' + user_id + ')';
                                     html += '</a>' +
                                         '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                                    html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                                    html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                         '                     <div class="dropdown-divider"></div>' +
                                         '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                                     html += '</div>' + '</div>';

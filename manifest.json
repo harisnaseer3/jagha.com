@@ -1,0 +1,26 @@
+{
+  "name": "About Pakistan",
+  "short_name": "About Pakistan",
+  "theme_color": "#004600",
+  "background_color": "#ffffff",
+  "start_url": "/",
+  "orientation": "portrait",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "images/logo-with-text-350x66.png",
+      "type": "image/png",
+      "sizes": "350x66"
+    },
+    {
+      "src": "images/logo.png",
+      "type": "image/png",
+      "sizes": "54x48"
+    },
+    {
+      "src": "favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "128x128"
+    }
+  ]
+}

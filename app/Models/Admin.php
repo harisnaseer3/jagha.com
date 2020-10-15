@@ -71,7 +71,7 @@ class Admin extends Authenticatable
       return  DB::table('admins')
             ->where('id',$id)
             ->update(['password' => $password]);
-      
+
 
     }
 

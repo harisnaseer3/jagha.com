@@ -194,7 +194,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin + '/property' + '/dashboard/property-notification',
+                        url: window.location.origin  + '/dashboard/property-notification',
                         data: {'notification_id': notification_id},
                         dataType: 'json',
                         success: function (data) {

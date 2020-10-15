@@ -4,7 +4,7 @@
         //TODO: change base url when upload to server
 
         // let baseurl = 'http://127.0.0.1/Property/public';
-        let baseurl = window.location.origin + '/property';
+        let baseurl = window.location.origin;
 
         let page_link = '',
             purpose = '',
@@ -56,7 +56,7 @@
     function search2Withparams() {
         //TODO: change base url when upload to server
         // let baseurl = 'http://127.0.0.1/Property/public';
-        let baseurl = window.location.origin + '/property';
+        let baseurl = window.location.origin;
 
         let purpose = '',
             type = '',
@@ -113,7 +113,7 @@
         jQuery.ajax({
             type: 'post',
             // url: 'http://127.0.0.1/Property/public/searchWithID',
-            url: window.location.origin + '/property/searchWithID',
+            url: window.location.origin + '/searchWithID',
             data: {id: id},
             // dataType: 'json',
             success: function (data) {
@@ -139,7 +139,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: task === 'add' ? window.location.origin + '/property/dashboard/properties/' + id + '/favorites' : window.location.origin + '/property/dashboard/properties/' + id + '/favorites/1',
+            url: task === 'add' ? window.location.origin + '/dashboard/properties/' + id + '/favorites' : window.location.origin + '/dashboard/properties/' + id + '/favorites/1',
             dataType: 'json',
             success: function (data) {
             },
@@ -162,7 +162,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url: window.location.origin + '/property/locations',
+            url: window.location.origin + '/locations',
             data: {city: city},
             dataType: 'json',
             success: function (data) {
@@ -513,7 +513,7 @@
                 event.preventDefault();
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin + '/property' + '/login',
+                    url: window.location.origin + '/login',
                     data: form.serialize(),
                     dataType: 'json',
                     success: function (data) {
@@ -534,12 +534,12 @@
                             html += '<span class="mr-1"> Logged in as <span>' + user_name + ' (ID: ' + user_id + ')';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                            html += '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                            html += '<a class="dropdown-item" href=" ' + window.location.origin  + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                 '                     <div class="dropdown-divider"></div>' +
-                                // '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
-                                '<a class="dropdown-item" href=" ' + window.location.origin + '/property' + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
+                                // '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
+                                '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
-                                '                          <a class="dropdown-item" href="' + window.location.origin + '/property' + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
+                                '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
 
                             user_dropdown.html(html);
