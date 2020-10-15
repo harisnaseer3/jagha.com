@@ -393,7 +393,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin + '/property' + '/subscribe',
+                        url: window.location.origin + '/subscribe',
                         data: {
                             email: $('#subscribe').val()
                         },
@@ -499,7 +499,7 @@
                         });
                         jQuery.ajax({
                             type: 'post',
-                            url: window.location.origin + '/property' + '/contactAgent',
+                            url: window.location.origin  + '/contactAgent',
                             data: form.serialize(),
                             dataType: 'json',
                             success: function (data) {

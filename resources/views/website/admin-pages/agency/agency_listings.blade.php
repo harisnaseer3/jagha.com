@@ -375,7 +375,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin + '/property' + '/admin/agency-change-status',
+                        url: window.location.origin  + '/admin/agency-change-status',
                         data: {'id': id, 'status': status},
                         dataType: 'json',
                         success: function (data) {
@@ -441,7 +441,7 @@
                 });
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin + '/property' + '/admin/agencies/accept-invitation',
+                    url: window.location.origin  + '/admin/agencies/accept-invitation',
                     data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
                     dataType: 'json',
                     success: function (data) {
@@ -471,7 +471,7 @@
                 });
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin + '/property' + '/admin/agencies/reject-invitation',
+                    url: window.location.origin  + '/admin/agencies/reject-invitation',
                     data: {'notification_id': notification_id},
                     dataType: 'json',
                     success: function (data) {

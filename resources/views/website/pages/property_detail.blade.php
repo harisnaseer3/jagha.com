@@ -596,7 +596,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin + '/property' + '/contactAgent',
+                        url: window.location.origin  + '/contactAgent',
                         data: form.serialize(),
                         dataType: 'json',
                         success: function (data) {
