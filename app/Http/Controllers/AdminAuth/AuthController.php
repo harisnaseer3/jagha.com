@@ -70,15 +70,25 @@ class AuthController extends Controller
 
     public function adminLoginPost(Request $request)
     {
+
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
         ]);
+         $admin = Admin::getAdminByEmail($request->input('email'));
+          if(!empty($admin) && $admin->is_active === '0')
+          {
+              return back()->with('error', 'Your account has been deactivated');
+          }
+
         if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+
             $user = auth()->guard('admin')->user();
+
             return redirect()->route('admin.dashboard');
-        } else {
-            return back()->with('error', 'your username and password are wrong.');
+        }
+        else {
+            return back()->with('error', 'Your username and password are wrong.');
         }
     }
 
