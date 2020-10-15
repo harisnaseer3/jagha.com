@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddManageAdminsPermission' => $baseDir . '/database/seeds/AddManageAdminsPermission.php',
     'AdminSeeder' => $baseDir . '/database/seeds/AdminSeeder.php',
     'AgencyLogSeeder' => $baseDir . '/database/seeds/AgencyLogSeeder.php',
     'AgencyPerformanceSeeder' => $baseDir . '/database/seeds/AgencyPerformanceSeeder.php',
@@ -26,6 +27,7 @@ return array(
     'App\\Http\\Controllers\\Admin\\UserManagementController' => $baseDir . '/app/Http/Controllers/Admin/UserManagementController.php',
     'App\\Http\\Controllers\\AgencyCityController' => $baseDir . '/app/Http/Controllers/AgencyCityController.php',
     'App\\Http\\Controllers\\AgencyController' => $baseDir . '/app/Http/Controllers/AgencyController.php',
+    'App\\Http\\Controllers\\AgencyLogController' => $baseDir . '/app/Http/Controllers/AgencyLogController.php',
     'App\\Http\\Controllers\\AgencyPerformanceController' => $baseDir . '/app/Http/Controllers/AgencyPerformanceController.php',
     'App\\Http\\Controllers\\AgencyUserController' => $baseDir . '/app/Http/Controllers/AgencyUserController.php',
     'App\\Http\\Controllers\\Api\\IndexPageController' => $baseDir . '/app/Http/Controllers/Api/IndexPageController.php',

@@ -101,6 +101,11 @@ class User extends Authenticatable
         }
         return false;
     }
+    public static function getAllUsers()
+    {
+
+        return (new User)->select(['id', 'name', 'email', 'is_active','phone','cell','fax','address','zip_code','country','community_nick','about_yourself'])->get();
+    }
 
     public function hasRole($role)
     {

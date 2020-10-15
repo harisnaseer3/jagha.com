@@ -255,10 +255,10 @@
                                 </a>
                             </li>
                         @endcan
-                        @can('Manage Users')
+                        @can('Manage Admins')
                             <li class="nav-item hide-nav navbar-li">
-                                <a class="nav-link" href="{{route('admin.manage-users')}}">
-                                    User Management
+                                <a class="nav-link" href="{{route('admin.manage-admins')}}">
+                                   Admin Management
                                 </a>
                             </li>
                         @endcan
@@ -268,6 +268,13 @@
                                     Roles & Permissions</a>
                             </li>
                         @endcan
+                            @can('Manage Users')
+                                <li class="nav-item hide-nav navbar-li">
+                                    <a class="nav-link" href="{{route('admin.manage-users')}}">
+                                        User Management
+                                    </a>
+                                </li>
+                            @endcan
                         @can('Manage Property')
                             <li class="nav-item hide-nav navbar-li">
                                 <?php $route_params = ['status' => 'active', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>

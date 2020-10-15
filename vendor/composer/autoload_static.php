@@ -622,6 +622,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
     );
 
     public static $classMap = array (
+        'AddManageAdminsPermission' => __DIR__ . '/../..' . '/database/seeds/AddManageAdminsPermission.php',
         'AdminSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminSeeder.php',
         'AgencyLogSeeder' => __DIR__ . '/../..' . '/database/seeds/AgencyLogSeeder.php',
         'AgencyPerformanceSeeder' => __DIR__ . '/../..' . '/database/seeds/AgencyPerformanceSeeder.php',
@@ -642,6 +643,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
         'App\\Http\\Controllers\\Admin\\UserManagementController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/UserManagementController.php',
         'App\\Http\\Controllers\\AgencyCityController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyCityController.php',
         'App\\Http\\Controllers\\AgencyController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyController.php',
+        'App\\Http\\Controllers\\AgencyLogController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyLogController.php',
         'App\\Http\\Controllers\\AgencyPerformanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyPerformanceController.php',
         'App\\Http\\Controllers\\AgencyUserController' => __DIR__ . '/../..' . '/app/Http/Controllers/AgencyUserController.php',
         'App\\Http\\Controllers\\Api\\IndexPageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/IndexPageController.php',

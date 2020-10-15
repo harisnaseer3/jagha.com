@@ -166,7 +166,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
         ])->middleware(['permission:Manage Property']);
 
     Route::get('/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard')->middleware(['permission:Manage Dashboard']);
-    Route::get('/manage-users', 'Admin\UserManagementController@index')->name('admin.manage-users')->middleware(['permission:Manage Users']);
+    Route::get('/manage-admins', 'Admin\UserManagementController@index')->name('admin.manage-admins')->middleware(['permission:Manage Admins']);
+    Route::get('/manage-users', 'Admin\UserManagementController@getUsers')->name('admin.manage-users')->middleware(['permission:Manage Users']);
     Route::get('/manage-roles-permissions', 'Admin\RoleManagementController@index')->name('admin.manage-roles-permissions')->middleware(['permission:Manage Roles and Permissions']);
     Route::get('/admin-logout', 'AdminAuth\AuthController@adminLogout')->name('accounts.admin-logout');
     Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form')->middleware(['permission:Manage Users']);
