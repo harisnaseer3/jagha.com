@@ -32,9 +32,9 @@
                                     <div class="col-8">
                                         <p><i class="fa fa-map-marker mr-1 mt-1 fa-2x" aria-hidden="true"></i>{{$agency->city}}</p>
                                         <p>
-                                            @if($agency->phone == null || preg_match('/\+92$/', $agency->phone))
+                                            @if($agency->cell == null || preg_match('/\+92$/', $agency->cell))
                                             @else
-                                                <i class="fa fa-phone mr-1 fa-2x" aria-hidden="true"></i>{{explode('-+92',$agency->phone)[0]}}
+                                                <i class="fa fa-phone mr-1 fa-2x" aria-hidden="true"></i>{{explode('-+92',$agency->cell)[0]}}
                                             @endif
                                         </p>
                                     </div>

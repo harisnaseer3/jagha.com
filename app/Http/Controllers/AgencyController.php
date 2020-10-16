@@ -795,8 +795,7 @@ class AgencyController extends Controller
         }
     }
 
-    public
-    function storeAgencyLogo($logo, $agency)
+    public function storeAgencyLogo($logo, $agency)
     {
         $filename = rand(0, 99);
         $extension = 'webp';
@@ -853,8 +852,7 @@ class AgencyController extends Controller
 
     }
 
-    public
-    function deleteFromCounterTable()
+    public function deleteFromCounterTable()
     {
         $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
         $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
@@ -885,7 +883,7 @@ class AgencyController extends Controller
         else {
             $status = lcfirst($agency->status);
             return redirect()->route('admin.agencies.listings', [
-                'status' => $status.'_agencies',
+                'status' => $status . '_agencies',
                 'purpose' => 'all',
                 'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
                 'sort' => 'id',
