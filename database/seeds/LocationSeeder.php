@@ -43,7 +43,7 @@ class LocationSeeder extends Seeder
             'Azam Nagar',
             'Azam Town',
             'Azeemabad',
-            '  Karachi',
+            'Karachi',
             'Baldia Town',
             'Baloch Colony',
             'Bangladesh Colony',
@@ -77,7 +77,5 @@ class LocationSeeder extends Seeder
                 'is_active' => '1',
             ]);
         }
-
-
     }
 }

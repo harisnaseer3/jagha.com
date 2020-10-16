@@ -234,6 +234,7 @@ return array(
     'Carbon\\Traits\\Units' => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Units.php',
     'Carbon\\Traits\\Week' => $vendorDir . '/nesbot/carbon/src/Carbon/Traits/Week.php',
     'Carbon\\Translator' => $vendorDir . '/nesbot/carbon/src/Carbon/Translator.php',
+    'CityPopularLocationSeeder' => $baseDir . '/database/seeds/CityPopularLocationSeeder.php',
     'CitySeeder' => $baseDir . '/database/seeds/CitySeeder.php',
     'ClientSeeder' => $baseDir . '/database/seeds/ClientSeeder.php',
     'Collective\\Html\\Componentable' => $vendorDir . '/laravelcollective/html/src/Componentable.php',

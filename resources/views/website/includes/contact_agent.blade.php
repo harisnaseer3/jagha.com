@@ -61,14 +61,14 @@
                         <tbody>
                         <tr>
                             <td class="w-30">Mobile</td>
-                            <td class="w-70 font-weight-bold">{{ $property->phone !== null ? $property->cell: '-'}}</td>
+                            <td class="w-70 font-weight-bold">{{ $property->cell !== null ? $property->cell: '-'}}</td>
                         </tr>
                         <tr>
                             <td>Phone No</td>
                             @if($property->phone !== null)
                                 <td class="font-weight-bold">{{$property->phone}}</td>
-                            @elseif($property->agency_phone !== null)
-                                <td class="font-weight-bold">{{$property->phone}}</td>
+                            @elseif($property->agency_cell !== null)
+                                <td class="font-weight-bold">{{$property->agency_cell}}</td>
                             @else
                                 <td class="font-weight-bold">-</td>
                             @endif
@@ -93,7 +93,7 @@
                     <div class="text-center">
                         <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
                         <div class="m-3" style="font-size: 14px">Message sent successfully</div>
-                        <div class="mb-2 line-height">Add <span class="theme-dark-blue">sales@aboutpakistan.com </span> to your white list to get email from us.</div>
+                        <div class="mb-2 line-height">Add <span class="theme-dark-blue">info@aboutpakistan.com </span> to your white list to get email from us.</div>
                         <button class="btn btn-email" data-dismiss="modal">Dismiss</button>
                     </div>
                 </div>

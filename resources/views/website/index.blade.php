@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
 @section('content')
-    @include('website.includes.nav') 
+    @include('website.includes.nav')
     <!-- Banner start -->
     <div class="container-fluid">
     @include('website.includes.index-page-banner')
@@ -33,8 +33,6 @@
     </div>
     <!-- Footer start -->
     @include('website.includes.footer')
-
-
     <div class="fly-to-top back-to-top">
         <i class="fa fa-angle-up fa-3"></i>
         <span class="to-top-text">To Top</span>

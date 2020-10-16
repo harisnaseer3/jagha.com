@@ -85,7 +85,7 @@ class PropertyController extends Controller
 
         // Popular posts based upon max views
         $featured_properties = $this->listingfrontend()
-            ->where('properties.premium_listing', '=', 1)
+            ->where('properties.platinum_listing', '=', 1)
             ->orderBy('views', 'DESC')
             ->limit(10)
             ->get();
@@ -430,6 +430,15 @@ class PropertyController extends Controller
         }
         if ($area_unit === 'Square Meters') {
             $area_in_sqft = $area * 10.7639;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
+        }
+        if ($area_unit === 'Square Yards') {
+            $area_in_sqft = $area * 9;
             $area_in_marla = $area_in_sqft / 272;
             $area_in_new_marla = $area_in_sqft / 225;
             $area_in_sqyd = $area_in_sqft / 9;
@@ -1311,12 +1320,17 @@ class PropertyController extends Controller
         $properties = $this->listingFrontend()
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
+
         if ($location !== null) $properties->where('location_id', '=', $location->id);
+
         $properties->where('properties.purpose', '=', $data['purpose']);
+//        dd($properties->get());
+//        dd($data['purpose']);
 
 
         if ($data['type'] !== '' && $data['type'] !== null) $properties->where('properties.type', '=', $data['type']);
         if ($data['subtype'] !== null && $data['subtype'] !== '') $properties->where('properties.sub_type', '=', str_replace('-', ' ', $data['subtype']));
+
 
         if ($data['beds']) $properties->where('properties.bedrooms', '=', $data['beds']);
 

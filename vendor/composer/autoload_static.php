@@ -850,6 +850,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
         'Carbon\\Traits\\Units' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Units.php',
         'Carbon\\Traits\\Week' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Traits/Week.php',
         'Carbon\\Translator' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Translator.php',
+        'CityPopularLocationSeeder' => __DIR__ . '/../..' . '/database/seeds/CityPopularLocationSeeder.php',
         'CitySeeder' => __DIR__ . '/../..' . '/database/seeds/CitySeeder.php',
         'ClientSeeder' => __DIR__ . '/../..' . '/database/seeds/ClientSeeder.php',
         'Collective\\Html\\Componentable' => __DIR__ . '/..' . '/laravelcollective/html/src/Componentable.php',

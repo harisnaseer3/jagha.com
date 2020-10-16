@@ -5,6 +5,7 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}">
 @endsection
 
 @section('css_library')
@@ -52,8 +53,6 @@
                                             <h2 style="font-weight: 400; font-size:20px;">
                                                 @if($property->price != 0)
                                                     <span aria-label="currency"> PKR </span> <span aria-label="price"> {{Helper::getPriceInWords($property->price)}}</span>
-                                                    {{--                                                @else--}}
-                                                    {{--                                                    <span aria-label="price"> Call Us to Get More Details </span>--}}
                                                 @endif
                                             </h2>
                                             <h6 class="color-555" style="font-weight: 400; font-size:14px;"><i class="fa fa-map-marker"></i> {{ $property->location }}, {{ $property->city }}</h6>
@@ -61,9 +60,6 @@
                                         <div class="pull-right">
                                             @if($property->price != 0)
                                                 <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
-                                                {{--                                            @else--}}
-                                                {{--                                                <h3><span class="text-right"> <span aria-label="currency">  Call Us to Get More Details </span></span></h3>--}}
-
                                             @endif
 
                                             <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
@@ -74,48 +70,9 @@
                             </div>
                         @if(!empty($images))
                             <!-- main slider carousel items -->
-                                <div class="carousel-inner">
-                                    @foreach($images as $key => $value)
-                                        <div class="{{ $key===0 ? 'active' : '' }} item carousel-item" data-slide-number="{{$key}}">
-                                            <img src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-750x600.webp')}}" class="img-fluid" alt="{{$property->title}}"
-                                                 title="{{$property->title}}"
-                                            />
-                                            <div class="price-ratings-box">
-                                                @if(\Illuminate\Support\Facades\Auth::guest())
-                                                    <div class="favorite-property ratings" style="font-size: 20px;">
-                                                        <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite">
-                                                            <i class="fal fa-heart empty-heart"></i>
-                                                        </a>
-                                                    </div>
-                                                @else
-                                                    <div class="favorite-property ratings" style="font-size: 20px;">
-                                                        <a href="javascript:void(0);"
-                                                           style="color: black; display: {{$is_favorite? 'none': 'block'}} ;" class="favorite" data-id="{{$property->id}}">
-                                                            <i class="fal fa-heart empty-heart"></i>
-                                                        </a>
-                                                        <a href="javascript:void(0);"
-                                                           style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="remove-favorite" data-id="{{$property->id}}">
-                                                            <i class="fas fa-heart filled-heart" style="color: red;"></i>
-                                                        </a>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <!-- main slider carousel nav controls -->
-                                <ul class="carousel-indicators smail-properties list-inline nav nav-justified">
-                                    @foreach($images as $key => $value)
-                                        <li class="list-inline-item {{$key===0?'active':''}}">
-                                            <a id="{{'carousel-selector-'.strval((intval($key)+1))}}" class="{{$key===0?'selected':'' }}" data-slide-to="{{$key}}"
-                                               data-target="#propertiesDetailsSlider">
-                                                <img src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-200x200.webp')}}" class="img-fluid" alt="properties-small"
-                                                />
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                @include('website.includes.property_detail_images')
+                            @else
+                                <img src="{{asset("/img/logo/dummy-logo.png")}}" alt="{{$property->title}}" title="{{$property->title}}"/>
                             @endif
                         </div>
 
@@ -130,14 +87,14 @@
                                 <li class="nav-item li-detail-page text-transform mr-1">
                                     <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" aria-controls="2" aria-selected="true">Location & Nearby</a>
                                 </li>
-                                @if(count($similar_properties) > 3)
-                                    <li class="nav-item li-detail-page text-transform mr-1">
-                                        <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Similar Properties</a>
-                                    </li>
-                                @endif
                                 @if(!empty($video))
                                     <li class="nav-item li-detail-page text-transform">
-                                        <a class="nav-link" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Video</a>
+                                        <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Video</a>
+                                    </li>
+                                @endif
+                                @if(count($similar_properties) > 3)
+                                    <li class="nav-item li-detail-page text-transform mr-1">
+                                        <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>
                                     </li>
                                 @endif
                             </ul>
@@ -208,7 +165,7 @@
                                                 <ul class="amenities custom-amenities">
                                                     {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
-{{--                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id'&& $key !== 'agency')--}}
+                                                        {{--                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id'&& $key !== 'agency')--}}
                                                         @if(!(in_array($value, ['0',  'null', 'no', 'None', null]))&& !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency'])))
                                                             <li class="mb-5 pt-1">
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
@@ -233,14 +190,9 @@
                                 @include('website.includes.location_and_nearby')
                             </div>
                         </div>
-                        @if (count($similar_properties) > 3)
-                            <div class="tab-pane" id="three" role="tabpanel" aria-labelledby="3-tab">
-                                @include('website.includes.similar_properties')
-                            </div>
-                        @endif
 
                         @if(!empty(array_filter($video)))
-                            <div class="tab-pane " id="four" role="tabpanel" aria-labelledby="4-tab">
+                            <div class="tab-pane " id="three" role="tabpanel" aria-labelledby="3-tab">
                                 <div class="inside-properties mb-50">
                                     <h3 class="heading-2">
                                         Property Video
@@ -254,6 +206,11 @@
                                         <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$video[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
                                     @endif
                                 </div>
+                            </div>
+                        @endif
+                        @if (count($similar_properties) > 3)
+                            <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
+                                @include('website.includes.similar_properties')
                             </div>
                         @endif
                     </div>
@@ -331,24 +288,25 @@
 
 @section('script')
     <script>
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '639361382871128',
-                autoLogAppEvents: true,
-                xfbml: true,
-                version: 'v8.0'
-            });
-        };
+        // window.fbAsyncInit = function () {
+        //     FB.init({
+        //         appId: '639361382871128',
+        //         autoLogAppEvents: true,
+        //         xfbml: true,
+        //         version: 'v8.0'
+        //     });
+        // };
     </script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>
+    {{--    <script src="https://apis.google.com/js/platform.js" async defer></script>--}}
+    {{--    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>--}}
+    {{--    <div id="fb-root"></div>--}}
+    {{--    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>--}}
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="http://malsup.github.io/jquery.cycle2.js"></script>
-    <script src="http://malsup.github.io/jquery.cycle2.carousel.js"></script>
+    <script src="{{asset('website/js/jssor.slider-28.0.0.min.js')}}"></script>
+    {{--    <script src="http://malsup.github.io/jquery.cycle2.js"></script>--}}
+    {{--    <script src="http://malsup.github.io/jquery.cycle2.carousel.js"></script>--}}
     <script>
         let map;
         let service;
@@ -364,26 +322,20 @@
             map = '';
             service = '';
             _markers = [];
-
             let place;
-
             if (value === 'school') place = 'school college and university';
             else if (value === 'park') place = 'park';
             else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
             else if (value === 'restaurant') place = 'restaurant and cafe'
-
             get_location = new google.maps.LatLng(latitude, longitude);
             infowindow = new google.maps.InfoWindow();
-
             map = new google.maps.Map(
                 document.getElementById(value), {center: get_location, zoom: 15});
-
             var request = {
                 location: get_location,
                 radius: '500',
                 query: place,
             };
-
             service = new google.maps.places.PlacesService(map);
             service.textSearch(request, callback);
 
@@ -394,7 +346,6 @@
                     }
                     const markerCluster = new MarkerClusterer(map, _markers,
                         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
                 }
             }
         }
@@ -423,7 +374,6 @@
                     return $(this).each(function () {
                         let rating = $(this).data("rating");
                         rating = rating > 5 ? 5 : rating
-
                         const numStars = $(this).data("numStars");
                         const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
                         const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
@@ -432,9 +382,7 @@
                     });
                 }
                 $('.stars').stars();
-
                 $('select option:first-child').css('cursor', 'default').prop('disabled', true);
-
                 $('.select2').select2({
                     language: '{{app()->getLocale()}}',
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
@@ -444,7 +392,6 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
-
                 $('.property-type-select2').on('change', function (e) {
                     const selectedValue = $(this).val();
                     $('[id^=property_subtype-]').attr('disable', 'true').slideUp();
@@ -459,7 +406,6 @@
                         });
                     });
                 });
-
                 if ($('.properties-amenities ').find('li').length === 0)
                     $('.properties-amenities').hide();
                 //    description show more and less
@@ -467,9 +413,7 @@
                 let text = $('.description');
                 let textHeight = text[0].scrollHeight; // the real height of the element
                 let button = $(".button");
-
                 text.css({"max-height": defaultHeight, "overflow": "hidden"});
-
                 button.on("click", function () {
                     var newHeight = 0;
                     if (text.hasClass("active")) {
@@ -491,7 +435,6 @@
                     let textHeight2 = text2[0].scrollHeight; // the real height of the element
                     let button2 = $(".button2");
                     text2.css({"max-height": defaultHeight, "overflow": "hidden"});
-
                     button2.on("click", function () {
                         let newHeight2 = 0;
                         if (text2.hasClass("active")) {
@@ -525,7 +468,6 @@
                 let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + '<br><br> Please contact me at your earliest by phone or by email.';
                 phone = $(this).closest('.contact-container').find('input[name=phone]').val();
                 let editable_div = $('.editable-div');
-
                 // editable_div.html(message);
                 $('input[name=message]').val(editable_div.html());
                 editable_div.click(function () {
@@ -537,7 +479,6 @@
                     $('.selected').val(property).attr('name', 'property');
                 else if (!(agency === undefined))
                     $('.selected').val(agency).attr('name', 'agency');
-
                 call_btn.text('Call');
             });
             let call_btn = $('.agent-call');
@@ -622,6 +563,7 @@
         })
         (jQuery);
     </script>
+    <script type="text/javascript">jssor_1_slider_init(); </script>
     <script src="{{asset('website/js/markerclusterer.js')}}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
     <script src="{{asset('website/js/script-custom.js')}}"></script>

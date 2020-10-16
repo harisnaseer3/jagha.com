@@ -19,7 +19,7 @@ class CreateAgenciesTable extends Migration
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('city_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('title', 225);
-            $table->string('description', 4096);
+            $table->string('description', 1024);
             $table->string('phone', 32)->nullable();
             $table->string('cell', 32)->nullable();
             $table->string('fax', 32)->nullable();
@@ -37,6 +37,8 @@ class CreateAgenciesTable extends Migration
             $table->boolean('featured_listing')->default(false);
             $table->boolean('key_listing')->default(false);
             $table->boolean('is_active')->default(true);
+            $table->string('reviewed_by', 255)->nullable();
+            $table->string('rejection_reason', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

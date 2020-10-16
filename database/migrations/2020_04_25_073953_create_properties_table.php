@@ -29,6 +29,7 @@ class CreatePropertiesTable extends Migration
             $table->string('title', 255);
             $table->string('description', 6144);
             $table->bigInteger('price', false, true);
+            $table->unsignedTinyInteger('call_for_inquiry', false)->default(0);;
             $table->decimal('land_area', 12, 2, true);
             $table->enum('area_unit', ['Square Feet', 'Square Yards', 'Square Meters', 'Marla', 'Kanal']);
             $table->decimal('area_in_sqft', 12, 2, true);
@@ -47,7 +48,13 @@ class CreatePropertiesTable extends Migration
             $table->boolean('super_hot_listing')->default(false);
             $table->boolean('hot_listing')->default(false);
             $table->boolean('magazine_listing')->default(false);
+            $table->unsignedTinyInteger('basic_listing')->default(0);
+            $table->unsignedTinyInteger('bronze_listing')->default(0);
+            $table->unsignedTinyInteger('silver_listing')->default(0);
+            $table->unsignedTinyInteger('golden_listing')->default(0);
+            $table->unsignedTinyInteger('platinum_listing')->default(0);
             $table->string('contact_person', 255)->nullable();
+            $table->string('reviewed_by', 255)->nullable();
             $table->string('phone', 32)->nullable()->nullable();
             $table->string('cell', 32)->nullable()->nullable();
             $table->string('fax', 32)->nullable();
@@ -57,7 +64,9 @@ class CreatePropertiesTable extends Migration
             $table->unsignedBigInteger('visits')->default(0);
             $table->decimal('click_through_rate')->default(0);
             $table->enum('status', ['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected'])->default('pending');
+            $table->string('rejection_reason', 255)->nullable();
             $table->boolean('is_active')->default(true);
+            $table->dateTime('expired_at');
             $table->softDeletes();
             $table->timestamps();
         });
