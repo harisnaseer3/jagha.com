@@ -1,2 +1,7 @@
 *.sqlite
 *.sqlite-journal
+/database/images
+/database/json
+/database/dumped json files
+/database/json
+/database/ready to dumped

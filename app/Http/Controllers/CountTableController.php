@@ -290,7 +290,13 @@ class CountTableController extends Controller
     public function _insertion_in_count_tables($city, $location, $property)
     {
         // insertion in count tables
-        DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->increment('property_count');
+        if (isset($property->agency_id)) {
+            if (DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->exists())
+                DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->increment('property_count');
+            else
+                DB::table('property_count_by_agencies')->insert(['agency_id' => $property->agency_id, 'property_count' => 1]);
+        }
+
 
         if (DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->exists())
             DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->increment('property_count');
@@ -316,6 +322,7 @@ class CountTableController extends Controller
             increment('property_count');
         else
             DB::table('property_count_by_property_purposes')->insert(['city_id' => $city->id, 'city_name' => $city->name, 'location_id' => $location['location_id'], 'location_name' => $location['location_name'], 'property_type' => $property->type, 'property_sub_type' => $property->sub_type, 'property_purpose' => $property->purpose, 'property_count' => 1]);
+
 
         $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
         $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
