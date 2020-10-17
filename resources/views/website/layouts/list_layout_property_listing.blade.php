@@ -41,7 +41,7 @@
                 <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                     <img src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                          alt="{{$property->sub_type}} for {{$property->purpose}}"
-                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo">
+                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='http://localhost/img/logo/dummy-logo.png'">
                     @if($property->premium_listing == 1)
                         <div class="listing-badges"><span aria-label="premium label" class="featured">Premium</span></div>
                     @elseif($property->super_hot_listing == 1)
@@ -158,7 +158,7 @@
                     <!-- <li class="property-agency-logo">
                         @if(isset($property->logo))
 
-                        <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}" title="{{$property->agency}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
+                        <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}"  alt="{{$property->agency}}" title="{{$property->agency}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                         @endif
                         </li>    -->
                     </ul>
@@ -187,7 +187,7 @@
 {{--                            {{dd($property->logo)}}--}}
                             @if($property->agency)
                                 @if(isset($property->logo))
-                                    <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}"
+                                    <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}" onerror="this.src='http://localhost/img/logo/dummy-logo.png'"
                                          data-toggle="popover" data-trigger="hover" title="{{$property->agency}}" data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>

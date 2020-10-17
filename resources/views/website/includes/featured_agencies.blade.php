@@ -26,7 +26,7 @@
                                                'agency'=> $agency->id ,
                                                ])}}">
                                             <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{$agency->title}}"
-                                                 class="img-fluid featured-agency-image" style="height:53px; width: 60px ;">
+                                                 class="img-fluid featured-agency-image" onerror="this.src='http://localhost/img/logo/dummy-logo.png'" style="height:53px; width: 60px ;">
                                         </a>
                                     </div>
                                     <div class="col-8">

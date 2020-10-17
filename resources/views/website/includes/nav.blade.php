@@ -133,7 +133,7 @@
                                         <span></span>
                                     </div><!--fly-but-wrap-->
                                     <div class="nav-logo left">
-                                        <a itemprop="url" href="/property"><img
+                                        <a itemprop="url" href="/index.php"><img
                                                 itemprop="logo"
                                                 src="{{asset('img/logo/logo-with-text.png')}}"
                                                 alt="About Pakistan" data-rjs="2"/></a>
@@ -148,7 +148,7 @@
                                                 <div class="menu-main-menu-container">
                                                     <ul id="menu-main-menu-1" class="menu">
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
-                                                            <a href="/index.php">Home</a></li>
+                                                            <a href="https://www.aboutpakistan.com">Home</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
                                                             <a href="/blog/index.php"
                                                                aria-current="page">Blog</a>

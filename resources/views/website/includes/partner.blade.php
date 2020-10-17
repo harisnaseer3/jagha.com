@@ -18,7 +18,7 @@
                                                ])}}">
                                 <img src="{{asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp')}}" alt="{{strtoupper($agency->title)}}" width="50%" height="50%"
                                      class="img-fluid"
-                                     title="{{strtoupper($agency->title)}}">
+                                     title="{{strtoupper($agency->title)}}" onerror="this.src='http://localhost/img/logo/dummy-logo.png'">
                             </a>
                         @else
                             <a href="{{route('agents.ads.listing',
