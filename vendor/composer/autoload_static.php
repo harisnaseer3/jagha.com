@@ -622,6 +622,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
     );
 
     public static $classMap = array (
+        'AddManageAdminsPermission' => __DIR__ . '/../..' . '/database/seeds/AddManageAdminsPermission.php',
         'AdminSeeder' => __DIR__ . '/../..' . '/database/seeds/AdminSeeder.php',
         'AgencyLogSeeder' => __DIR__ . '/../..' . '/database/seeds/AgencyLogSeeder.php',
         'AgencyPerformanceSeeder' => __DIR__ . '/../..' . '/database/seeds/AgencyPerformanceSeeder.php',

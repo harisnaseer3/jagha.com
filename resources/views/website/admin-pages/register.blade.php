@@ -70,7 +70,7 @@
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Register') }}
                             </button>
-                            <a href="{{ route('admin.manage-users')}}"
+                            <a href="{{ route('admin.manage-admins')}}"
                                class="btn btn-danger">Cancel</a>
                         </div>
                     </div>

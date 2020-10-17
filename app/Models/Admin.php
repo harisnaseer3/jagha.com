@@ -47,6 +47,12 @@ class Admin extends Authenticatable
     {
         return (new Admin)->select(['id', 'name', 'email'])->findOrFail($id);
     }
+    public static function getSuperAdmin()
+    {
+        $condition = ['is_super' => '1'];
+        return (new Admin)->where($condition)->first();
+    }
+
 
     public static function getAdminByEmail($email)
     {

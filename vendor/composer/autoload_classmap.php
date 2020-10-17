@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddManageAdminsPermission' => $baseDir . '/database/seeds/AddManageAdminsPermission.php',
     'AdminSeeder' => $baseDir . '/database/seeds/AdminSeeder.php',
     'AgencyLogSeeder' => $baseDir . '/database/seeds/AgencyLogSeeder.php',
     'AgencyPerformanceSeeder' => $baseDir . '/database/seeds/AgencyPerformanceSeeder.php',

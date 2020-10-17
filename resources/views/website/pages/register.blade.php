@@ -23,7 +23,7 @@
                         <div class="clearfix"></div>
                         @include('website.layouts.flash-message')
 
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('register') }}" class="validatedForm">
                             @csrf
                             <div class="form-group form-box">
                                 <input id="name" type="text" class="form-control input-text @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name"
@@ -151,6 +151,7 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
+
                 // $('#delete-image').on('show.bs.modal', function (event) {
                 //     let record_id = $(event.relatedTarget).data('record-id');
                 //     $(this).find('.modal-body #image-record-id').val(record_id);

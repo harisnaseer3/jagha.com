@@ -79,8 +79,8 @@
                                                                     @endif
                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
                                                                     @if($params['status'] == 'active')
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <br>Expired
-                                                                            in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}} days
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <p>Will Expire
+                                                                                in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}} days </p>
                                                                         </td>
                                                                         <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
                                                                         <td>
@@ -104,6 +104,12 @@
                                                                             <div class="rejected-status"><strong>Rejected</strong></div>
                                                                         @else
                                                                             <form>
+                                                                                @if($params['status'] == 'active')
+                                                                                    <input type="radio" name="status" value="active"
+                                                                                           {{$all_listing->status === 'active'? 'checked':'' }}
+                                                                                           data-id="{{ $all_listing->id }}">
+                                                                                    <label for="active">Active</label>
+                                                                                @endif
                                                                                 @if($params['status'] != 'active')
                                                                                     <input type="radio" name="status" value="reactive"
                                                                                            {{$all_listing->status === 'active'? 'disabled':'' }}

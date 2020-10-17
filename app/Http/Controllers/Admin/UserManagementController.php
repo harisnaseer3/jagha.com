@@ -37,8 +37,15 @@ class UserManagementController extends Controller
     public function index()
     {
         $admins = Admin::getAllAdmins();
-        return view('website.admin-pages.manage-users', [
+        return view('website.admin-pages.manage-admins', [
             'admins' => $admins,
+        ]);
+    }
+    public function getUsers()
+    {
+        $users = User::getAllUsers();
+        return view('website.admin-pages.manage-users', [
+            'users' => $users,
         ]);
     }
 
@@ -66,7 +73,7 @@ class UserManagementController extends Controller
             $admin->assignRole($roles);
 
 
-            return redirect()->route('admin.manage-users')->with('success', 'Admin created successfully.');
+            return redirect()->route('admin.manage-admins')->with('success', 'Admin created successfully.');
         }
         else {
             $new_email_users[] = $input['email'];
@@ -78,7 +85,7 @@ class UserManagementController extends Controller
             $new_user = UserInvite::where('email', '=', $input['email'])->first();
             //  send mail to new user
             Notification::send($new_user, new RegisterNotification($roles));
-            return redirect()->route('admin.manage-users')->with('success', 'Invitation to join property portal has been successfully send.');
+            return redirect()->route('admin.manage-admins')->with('success', 'Invitation to join property portal has been successfully send.');
 
         }
 
@@ -93,7 +100,7 @@ class UserManagementController extends Controller
         }
         $roles = Role::all();
         if (empty($current_admin)) {
-            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
+            return redirect()->route('admin.manage-admins')->with('error', 'Something went wrong. Admin not found');
         }
         return view('website.admin-pages.edit-admin', [
             'admin' => $current_admin,
@@ -107,11 +114,11 @@ class UserManagementController extends Controller
         $this->validator($request->all(), $id, 'admins')->validate();
         $current_admin = Admin::getAdminById($id);
         if (empty($current_admin)) {
-            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
+            return redirect()->route('admin.manage-admins')->with('error', 'Something went wrong. Admin not found');
         }
         $input = $request->all();
         $current_admin = Admin::updateAdmin($input, $id);
-        return redirect()->route('admin.manage-users')->with('success', 'Admin updated successfully.');
+        return redirect()->route('admin.manage-admins')->with('success', 'Admin updated successfully.');
     }
 
     public function adminDestroy($admin)
@@ -119,16 +126,16 @@ class UserManagementController extends Controller
         $current_admin = Admin::getAdminById($admin);
         if (empty($current_admin)) {
 //            Flash::error(__('messages.not_found', ['model' => __('admin')]));
-            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. Admin not found');
+            return redirect()->route('admin.manage-admins')->with('error', 'Something went wrong. Admin not found');
         }
         $admin_status = Admin::destroy($current_admin->id);
         if($admin_status === '1')
         {
-            return redirect()->route('admin.manage-users')->with('success', 'Admin activated successfully.');
+            return redirect()->route('admin.manage-admins')->with('success', 'Admin activated successfully.');
         }
         elseif($admin_status === '0')
         {
-            return redirect()->route('admin.manage-users')->with('success', 'Admin deactived successfully.');
+            return redirect()->route('admin.manage-admins')->with('success', 'Admin deactived successfully.');
 
         }
     }
