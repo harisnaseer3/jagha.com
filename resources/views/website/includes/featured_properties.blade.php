@@ -22,7 +22,7 @@
                                     @if($feature_property->image != null)
                                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
-                                             title="{{$feature_property->title}}"/>
+                                             title="{{$feature_property->title}}" onerror="this.src='http://localhost/img/logo/dummy-logo.png'"/>
                                     @else
                                         <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                                     @endif
