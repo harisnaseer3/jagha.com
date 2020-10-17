@@ -35,7 +35,6 @@ class PropertyController extends Controller
 
     function listingFrontend()
     {
-
         return (new Property)
             ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
@@ -142,7 +141,7 @@ class PropertyController extends Controller
     {
 //        on a specific limit if last page greater than first page return to page 1
         $properties = $this->listingfrontend()
-            ->where('properties.premium_listing', '=', 1);
+            ->where('properties.platinum_listing', '=', 1);
 
         $sort = '';
         $limit = '';
