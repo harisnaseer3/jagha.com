@@ -16,7 +16,6 @@ class FooterController extends Controller
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
-            ->orderBy('created_at', 'DESC')
             ->limit(7)
             ->get();
 
