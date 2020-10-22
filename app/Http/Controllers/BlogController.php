@@ -181,6 +181,11 @@ class BlogController extends Controller
                         INNER JOIN `wp_postmeta` AS pm2 ON `pm1`.`meta_value` = `pm2`.`post_id` AND `pm2`.`meta_key` = \'_wp_attached_file\'
                 ) `t2` ON `t1`.`id` = `t2`.`id`
                 ORDER BY `t1`.`post_date` DESC LIMIT 9');
-        return $blogs;
+        $data['view'] = View('website.components.main-page-blogs',
+            [
+                'blogs' => $blogs
+            ])->render();
+
+        return $data;
     }
 }
