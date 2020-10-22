@@ -152,6 +152,7 @@
     <script>
         (function ($) {
             $(document).ready(function () {
+
                 $('[data-toggle="tooltip"]').tooltip();
                 var paused = false,
 
@@ -202,8 +203,62 @@
             });
         })(jQuery);
     </script>
+
     <script src="{{asset('website/js/popper.min.js')}}"></script>
     <script src="{{asset('website/js/script-custom.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
+{{--    <script>--}}
+{{--        (function ($) {--}}
+{{--            $.get('/get-feature-properties',  // url--}}
+{{--                function (data, textStatus, jqXHR) {  // success callback--}}
+{{--                    $('#feature-container').html(data.view);--}}
+{{--                    // Slick Sliders--}}
+{{--                    $('.slick-carousel').each(function() {--}}
+{{--                        var slider = $(this);--}}
+{{--                        $(this).slick({--}}
+{{--                            infinite: true,--}}
+{{--                            dots: false,--}}
+{{--                            arrows: false,--}}
+{{--                            centerMode: true,--}}
+{{--                            centerPadding: '0'--}}
+{{--                        });--}}
+
+{{--                        $(this).closest('.slick-slider-area').find('.slick-prev').on("click", function() {--}}
+{{--                            slider.slick('slickPrev');--}}
+{{--                        });--}}
+{{--                        $(this).closest('.slick-slider-area').find('.slick-next').on("click", function() {--}}
+{{--                            slider.slick('slickNext');--}}
+{{--                        });--}}
+{{--                    });--}}
+{{--                });--}}
+{{--        })(jQuery);--}}
+{{--    </script>--}}
+{{--    <script src="{{asset('website/js/slick.min.js')}}"></script>--}}
+{{--    <script>--}}
+{{--     $(document).on('.slick-carousel',function(e){--}}
+{{--         // Slick Sliders--}}
+{{--         $('.slick-carousel').each(function() {--}}
+{{--             var slider = $(this);--}}
+{{--             $(this).slick({--}}
+{{--                 infinite: true,--}}
+{{--                 dots: false,--}}
+{{--                 arrows: false,--}}
+{{--                 centerMode: true,--}}
+{{--                 centerPadding: '0'--}}
+{{--             });--}}
+
+{{--             $(this).closest('.slick-slider-area').find('.slick-prev').on("click", function() {--}}
+{{--                 slider.slick('slickPrev');--}}
+{{--             });--}}
+{{--             $(this).closest('.slick-slider-area').find('.slick-next').on("click", function() {--}}
+{{--                 slider.slick('slickNext');--}}
+{{--             });--}}
+{{--         });--}}
+
+{{--     });--}}
+
+
+
+{{--    </script>--}}
 
 @endsection

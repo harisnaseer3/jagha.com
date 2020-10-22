@@ -17,6 +17,7 @@ Route::post('/login-status', 'PropertyController@userLoginStatus')->name('user-s
 
 Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
+Route::get('/get-feature-properties', 'PropertyController@getFeaturedProperties')->name('property.feature-properties');
 
 Route::post('/search-ref', 'PropertyController@userPropertySearch')->name('property.search.ref');
 
