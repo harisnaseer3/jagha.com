@@ -98,48 +98,50 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
 
         // Popular posts based upon max views
-//        $featured_properties = $this->listingfrontend()
-//            ->where('properties.platinum_listing', '=', 1)
-//            ->orderBy('views', 'DESC')
-//            ->limit(10)
-//            ->get();
+        $featured_properties = $this->listingfrontend()
+            ->where('properties.platinum_listing', '=', 1)
+            ->orderBy('views', 'DESC')
+            ->limit(10)
+            ->get();
 
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
+        $footer_content = (new FooterController)->footerContent();
+        $popular_locations =  (new CountTableController())->popularLocations();
 
         $data = [
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
-//            'featured_properties' => $featured_properties,
+            'featured_properties' => $featured_properties,
             'key_agencies' => (new AgencyController())->keyAgencies(),
             'featured_agencies' => (new AgencyController())->FeaturedAgencies(),
-            'popular_cities_homes_on_sale' => (new CountTableController())->popularLocations()['popular_cities_homes_on_sale'],
-            'popular_cities_plots_on_sale' => (new CountTableController())->popularLocations()['popular_cities_plots_on_sale'],
+            'popular_cities_homes_on_sale' =>$popular_locations['popular_cities_homes_on_sale'],
+            'popular_cities_plots_on_sale' => $popular_locations['popular_cities_plots_on_sale'],
             'city_wise_homes_data' => [
-                'karachi' => (new CountTableController())->popularLocations()['city_wise_homes_data']['karachi'],
-                'peshawar' => (new CountTableController())->popularLocations()['city_wise_homes_data']['peshawar'],
-                'lahore' => (new CountTableController())->popularLocations()['city_wise_homes_data']['lahore'],
-                'Islamabad/Rawalpindi' => (new CountTableController())->popularLocations()['city_wise_homes_data']['rawalpindi/Islamabad']
+                'karachi' => $popular_locations['city_wise_homes_data']['karachi'],
+                'peshawar' => $popular_locations['city_wise_homes_data']['peshawar'],
+                'lahore' => $popular_locations['city_wise_homes_data']['lahore'],
+                'Islamabad/Rawalpindi' => $popular_locations['city_wise_homes_data']['rawalpindi/Islamabad']
             ],
             'city_wise_plots_data' => [
-                'karachi' => (new CountTableController())->popularLocations()['city_wise_plots_data']['karachi'],
-                'peshawar' => (new CountTableController())->popularLocations()['city_wise_plots_data']['peshawar'],
-                'lahore' => (new CountTableController())->popularLocations()['city_wise_plots_data']['lahore'],
-                'Islamabad/Rawalpindi' => (new CountTableController())->popularLocations()['city_wise_plots_data']['rawalpindi/Islamabad']
+                'karachi' => $popular_locations['city_wise_plots_data']['karachi'],
+                'peshawar' => $popular_locations['city_wise_plots_data']['peshawar'],
+                'lahore' => $popular_locations['city_wise_plots_data']['lahore'],
+                'Islamabad/Rawalpindi' => $popular_locations['city_wise_plots_data']['rawalpindi/Islamabad']
             ],
             'city_wise_commercial_data' => [
-                'karachi' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['karachi'],
-                'peshawar' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['peshawar'],
-                'lahore' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['lahore'],
-                'Islamabad/Rawalpindi' => (new CountTableController())->popularLocations()['city_wise_commercial_data']['rawalpindi/Islamabad']
+                'karachi' => $popular_locations['city_wise_commercial_data']['karachi'],
+                'peshawar' => $popular_locations['city_wise_commercial_data']['peshawar'],
+                'lahore' => $popular_locations['city_wise_commercial_data']['lahore'],
+                'Islamabad/Rawalpindi' => $popular_locations['city_wise_commercial_data']['rawalpindi/Islamabad']
             ],
-            'popular_cities_commercial_on_sale' => (new CountTableController())->popularLocations()['popular_cities_commercial_on_sale'],
-            'popular_cities_property_on_rent' => (new CountTableController())->popularLocations()['popular_cities_property_on_rent'],
+            'popular_cities_commercial_on_sale' => $popular_locations['popular_cities_commercial_on_sale'],
+            'popular_cities_property_on_rent' => $popular_locations['popular_cities_property_on_rent'],
             'property_types' => $property_types,
             'blogs' => (new BlogController)->recentBlogsOnMainPage(),
             'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
         ];
         return view('website.index', $data);
     }
