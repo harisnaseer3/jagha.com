@@ -323,12 +323,7 @@ class CountTableController extends Controller
         else
             DB::table('property_count_by_property_purposes')->insert(['city_id' => $city->id, 'city_name' => $city->name, 'location_id' => $location['location_id'], 'location_name' => $location['location_name'], 'property_type' => $property->type, 'property_sub_type' => $property->sub_type, 'property_purpose' => $property->purpose, 'property_count' => 1]);
 
-
-        $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
-        $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
-        $cities_count = DB::table('cities')->select(DB::raw('COUNT(id) AS city_count'))->get();
-        DB::table('total_property_count')->update(['property_count' => $property_count[0]->property_count, 'agency_count' => $agency_count[0]->agency_count, 'city_count' => $cities_count[0]->city_count]);
-
+        $this->updateTotalPropertyCount();
     }
 
     public function _on_deletion_insertion_in_count_tables($city, $location, $property)
@@ -343,10 +338,19 @@ class CountTableController extends Controller
         DB::table('property_count_by_property_purposes')->where('city_id', '=', $city->id)->where('location_id', '=', $location['location_id'])->
         where('property_type', '=', $property->type)->where('property_sub_type', '=', $property->sub_type)->where('property_purpose', '=', $property->purpose)->
         decrement('property_count');
-        $property_count = DB::table('properties')->select(DB::raw('COUNT(id) AS property_count'))->where('status', '=', 'active')->get();
-        $agency_count = DB::table('agencies')->select(DB::raw('COUNT(id) AS agency_count'))->where('status', '=', 'verified')->get();
-        $cities_count = DB::table('cities')->select(DB::raw('COUNT(id) AS city_count'))->get();
-        DB::table('total_property_count')->update(['property_count' => $property_count[0]->property_count, 'agency_count' => $agency_count[0]->agency_count, 'city_count' => $cities_count[0]->city_count]);
+        $this->updateTotalPropertyCount();
+    }
+
+    public function updateTotalPropertyCount()
+    {
+        $property_count = DB::table('properties')->where('status', '=', 'active')->count();
+        $agency_count = DB::table('agencies')->where('status', '=', 'verified')->count();
+        $sale_count = (new \App\Models\Property())->where('purpose', '=', 'Sale')->where('status', '=', 'active')->count();
+        $rent_count = (new \App\Models\Property())->where('purpose', '=', 'Rent')->where('status', '=', 'active')->count();
+//        $cities_count = DB::table('cities')->count();
+
+        DB::table('total_property_count')->update(['property_count' => $property_count, 'sale_property_count' => $sale_count, 'rent_property_count' => $rent_count, 'agency_count' => $agency_count]);
+
     }
 
     public function getCitiesCount()
