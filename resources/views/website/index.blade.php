@@ -214,6 +214,11 @@
                     $('#popular-properties-container').html(data.view);
 
                 });
+            $.get('/get-main-page-blogs',  // url
+                function (data, textStatus, jqXHR) {  // success callback
+                    $('#main-page-blogs-container').html(data.view);
+
+                });
         })(jQuery);
     </script>
 
