@@ -74,6 +74,21 @@ class PropertyController extends Controller
         else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
         return $properties;
     }
+    public function getFeaturedProperties(){
+
+        $featured_properties = $this->listingfrontend()
+            ->where('properties.platinum_listing', '=', 1)
+            ->orderBy('views', 'DESC')
+            ->limit(10)
+            ->get();
+        $data['view'] = View('website.components.feature_properties',
+            [
+                'featured_properties' => $featured_properties
+            ])->render();
+
+        return $data;
+
+    }
 
 //    display data on index page
     public function index()
@@ -83,11 +98,11 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
 
         // Popular posts based upon max views
-        $featured_properties = $this->listingfrontend()
-            ->where('properties.platinum_listing', '=', 1)
-            ->orderBy('views', 'DESC')
-            ->limit(10)
-            ->get();
+//        $featured_properties = $this->listingfrontend()
+//            ->where('properties.platinum_listing', '=', 1)
+//            ->orderBy('views', 'DESC')
+//            ->limit(10)
+//            ->get();
 
         $properties_to_sale = DB::table('properties')->select(DB::raw('COUNT(id) AS sale_property_count'))
             ->where('purpose', '=', 'sale')->where('status', '=', 'active')->get();
@@ -102,7 +117,7 @@ class PropertyController extends Controller
             'rent_property_count' => $properties_to_rent,
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
-            'featured_properties' => $featured_properties,
+//            'featured_properties' => $featured_properties,
             'key_agencies' => (new AgencyController())->keyAgencies(),
             'featured_agencies' => (new AgencyController())->FeaturedAgencies(),
             'popular_cities_homes_on_sale' => (new CountTableController())->popularLocations()['popular_cities_homes_on_sale'],
