@@ -104,17 +104,10 @@ class PropertyController extends Controller
 //            ->limit(10)
 //            ->get();
 
-        $properties_to_sale = DB::table('properties')->select(DB::raw('COUNT(id) AS sale_property_count'))
-            ->where('purpose', '=', 'sale')->where('status', '=', 'active')->get();
-        $properties_to_rent = DB::table('properties')->select(DB::raw('COUNT(id) AS rent_property_count'))
-            ->where('purpose', '=', 'rent')->where('status', '=', 'active')->get();
-
         // property count table
-        $total_count = DB::table('total_property_count')->select('property_count', 'agency_count', 'city_count')->get()->all();
+        $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
 
         $data = [
-            'sale_property_count' => $properties_to_sale,
-            'rent_property_count' => $properties_to_rent,
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
 //            'featured_properties' => $featured_properties,
