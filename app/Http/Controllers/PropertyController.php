@@ -1523,4 +1523,15 @@ class PropertyController extends Controller
         } else
             return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
     }
+
+    public function userLoginStatus()
+    {
+        if (\Illuminate\Support\Facades\Auth::user())
+            return response()->json(['status' => 200, 'user-status' => 'logged in']);
+        else
+            return response()->json(['status' => 200, 'user-status' => 'logged out']);
+
+
+    }
+
 }
