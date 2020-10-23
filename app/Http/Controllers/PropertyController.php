@@ -1553,4 +1553,5 @@ class PropertyController extends Controller
         } else
             return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
     }
+
 }

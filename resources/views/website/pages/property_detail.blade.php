@@ -182,7 +182,6 @@
                             </div>
                         </div>
                         <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
-
                         </div>
                         <div>
                             <div class="location mb-30">
@@ -398,14 +397,14 @@
                     $('#property_subtype-' + selectedValue).attr('disable', 'true').slideDown();
                 });
                 // TODO: Change this method of scroll
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        document.querySelector(this.getAttribute('href')).scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    });
-                });
+                // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                //     anchor.addEventListener('click', function (e) {
+                //         e.preventDefault();
+                //         document.querySelector(this.getAttribute('href')).scrollIntoView({
+                //             behavior: 'smooth'
+                //         });
+                //     });
+                // });
                 if ($('.properties-amenities ').find('li').length === 0)
                     $('.properties-amenities').hide();
                 //    description show more and less
@@ -537,7 +536,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin  + '/contactAgent',
+                        url: window.location.origin + '/contactAgent',
                         data: form.serialize(),
                         dataType: 'json',
                         success: function (data) {
@@ -560,6 +559,27 @@
                     });
                 }
             });
+            $('.price-ratings-box').on('click', function () {
+                let user_status_string = '{{\Illuminate\Support\Facades\Auth::user()}}';
+                let fav_icon_class = $('.price-ratings-box');
+                console.log(user_status_string);
+                if ('{{\Illuminate\Support\Facades\Auth::user()}}' == null || '{{\Illuminate\Support\Facades\Auth::user()}}' == '') {
+                    console.log('inside logout');
+                    let html = '<div class="favorite-property ratings" style="font-size: 20px;">' +
+                        ' <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite"><i class="fal fa-heart empty-heart"></i></a>' +
+                        ' </div>';
+                    fav_icon_class.html('');
+                    fav_icon_class.html(html);
+                } else if ('{{\Illuminate\Support\Facades\Auth::user()}}' !== null) {
+                    let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
+                            '<a href="javascript:void(0);" style="color: black; display : block" class="remove-favorite" data-id="{{$property->id}}">' +
+                        '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
+                        '</a>' +
+                        '</div>';
+                    fav_icon_class.html('');
+                    fav_icon_class.html(html);
+                }
+           });
         })
         (jQuery);
     </script>

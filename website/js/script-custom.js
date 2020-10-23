@@ -502,7 +502,7 @@
         });
 
         $('#sign-in-btn').click(function (event) {
-            console.log(form.serialize())
+            // console.log(form.serialize())
             if (form.valid()) {
                 event.preventDefault();
                 jQuery.ajaxSetup({
