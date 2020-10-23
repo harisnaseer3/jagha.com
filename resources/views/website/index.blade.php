@@ -8,7 +8,7 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
 @endsection
 @section('content')
     @include('website.includes.nav')
@@ -48,7 +48,5 @@
     <script src="{{asset('website/js/index-page.js')}}" defer></script>
     <script src="{{asset('website/js/popper.min.js')}}" defer></script>
     <script src="{{asset('website/js/script-custom.js')}}" defer></script>
-
-
 
 @endsection
