@@ -4,7 +4,7 @@
 @endsection
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}">
 @endsection
 
@@ -560,24 +560,14 @@
                 }
             });
             $('.price-ratings-box').on('click', function () {
-                let user_status_string = '{{\Illuminate\Support\Facades\Auth::user()}}';
-                let fav_icon_class = $('.price-ratings-box');
-                console.log(user_status_string);
-                if ('{{\Illuminate\Support\Facades\Auth::user()}}' == null || '{{\Illuminate\Support\Facades\Auth::user()}}' == '') {
-                    console.log('inside logout');
-                    let html = '<div class="favorite-property ratings" style="font-size: 20px;">' +
-                        ' <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite"><i class="fal fa-heart empty-heart"></i></a>' +
-                        ' </div>';
-                    fav_icon_class.html('');
-                    fav_icon_class.html(html);
-                } else if ('{{\Illuminate\Support\Facades\Auth::user()}}' !== null) {
+                  if ('{{\Illuminate\Support\Facades\Auth::guard('web')->user()}}' !== null && '{{\Illuminate\Support\Facades\Auth::guard('web')->user()}}' !== '') {
                     let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
                             '<a href="javascript:void(0);" style="color: black; display : block" class="remove-favorite" data-id="{{$property->id}}">' +
                         '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
                         '</a>' +
                         '</div>';
-                    fav_icon_class.html('');
-                    fav_icon_class.html(html);
+                    $(this).html('');
+                    $(this).html(html);
                 }
            });
         })

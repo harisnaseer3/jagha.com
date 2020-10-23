@@ -105,7 +105,7 @@
                 <img data-u="thumb" src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-200x200.webp')}}" alt="{{$property->title}}" title="{{$property->title}}"
                      onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"/>
                 <div class="price-ratings-box">
-                    @if(\Illuminate\Support\Facades\Auth::guest())
+                    @if(\Illuminate\Support\Facades\Auth::guard('web')->guest())
                         <div class="favorite-property ratings" style="font-size: 20px;">
                             <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite">
                                 <i class="fal fa-heart empty-heart"></i>
