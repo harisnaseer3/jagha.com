@@ -42,14 +42,12 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-    <script src="http://malsup.github.io/jquery.cycle2.js"></script>
-    <script src="http://malsup.github.io/jquery.cycle2.carousel.js"></script>
-    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('website/js/rangeslider.js')}}"></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
+    <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
+    <script src="{{asset('website/js/rangeslider.js')}}" defer></script>
     <script>
-        $.fn.cycle.defaults.autoSelector = '#agency-slider';
-        $.fn.cycle.defaults.autoSelector = '#featured-agency-slider';
+        // $.fn.cycle.defaults.autoSelector = '#agency-slider';
+        // $.fn.cycle.defaults.autoSelector = '#featured-agency-slider';
         (function ($) {
             $.fn.countTo = function (options) {
                 options = options || {};
@@ -206,7 +204,7 @@
 
     <script src="{{asset('website/js/popper.min.js')}}"></script>
     <script src="{{asset('website/js/script-custom.js')}}"></script>
-    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
+
     <script>
         (function ($) {
             $.get('/get-popular-places',  // url
