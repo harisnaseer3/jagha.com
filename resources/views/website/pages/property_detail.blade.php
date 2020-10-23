@@ -560,63 +560,26 @@
                 }
             });
             $('.price-ratings-box').on('click', function () {
-                console.log('click on the data');
-                jQuery.ajax({
-                    type: 'post',
-                    url: window.location.origin + '/login-status',
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-                        if (data.status == 200) {
-                            if (data.user_status == 'logged out') {
-                                let html = '<div class="favorite-property ratings" style="font-size: 20px;">' +
-                                    ' <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite"><i class="fal fa-heart empty-heart"></i></a>' +
-                                    ' </div>';
-                                $('.price-ratings-box').html('');
-                                $('.price-ratings-box').html(html);
-                            } else if (data.user_status == 'logged in') {
-
-                                let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
-                                    '<a href="javascript:void(0);" style="color: white; display: {{$is_favorite? 'none': 'block'}} ;" class="favorite" data-id="{{$property->id}}"> <i class="fal fa-heart empty-heart"></i>' +
-                                    '</a>' +
-                                    '<a href="javascript:void(0);" style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="remove-favorite" data-id="{{$property->id}}">' +
-                                    '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
-                                    '</a>' +
-                                    '</div>';
-                                $('.price-ratings-box').html('');
-                                $('.price-ratings-box').html(html);
-                            }
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        event.preventDefault();
-
-                        console.log(error);
-                        console.log(status);
-                        console.log(xhr);
-                    },
-                    complete: function (url, options) {
-                    }
-                });
-                {{--$html = '@if(\\Illuminate\\Support\\Facades\\Auth::guest())' +--}}
-                {{--    '                        <div class="favorite-property ratings" style="font-size: 20px;">' +--}}
-                {{--    '                            <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite">' +--}}
-                {{--    '                                <i class="fal fa-heart empty-heart"></i>' +--}}
-                {{--    '                            </a>' +--}}
-                {{--    '                        </div>' +--}}
-                {{--    '                    @else' +--}}
-                {{--    '                        <div class="favorite-property ratings" style="font-size: 20px;">' +--}}
-                {{--    '                            <a href="javascript:void(0);"' +--}}
-                {{--    '                               style="color: white; display: {{$is_favorite? \'none\': \'block\'}} ;" class="favorite" data-id="{{$property->id}}">' +--}}
-                {{--    '                                <i class="fal fa-heart empty-heart"></i>' +--}}
-                {{--    '                            </a>' +--}}
-                {{--    '                            <a href="javascript:void(0);"' +--}}
-                {{--    '                               style="color: black; display : {{$is_favorite? \'block\': \'none\'}};" class="remove-favorite" data-id="{{$property->id}}">' +--}}
-                {{--    '                                <i class="fas fa-heart filled-heart" style="color: red;"></i>' +--}}
-                {{--    '                            </a>' +--}}
-                {{--    '                        </div>' +--}}
-                {{--    '                    @endif'--}}
-            });
+                let user_status_string = '{{\Illuminate\Support\Facades\Auth::user()}}';
+                let fav_icon_class = $('.price-ratings-box');
+                console.log(user_status_string);
+                if ('{{\Illuminate\Support\Facades\Auth::user()}}' == null || '{{\Illuminate\Support\Facades\Auth::user()}}' == '') {
+                    console.log('inside logout');
+                    let html = '<div class="favorite-property ratings" style="font-size: 20px;">' +
+                        ' <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite"><i class="fal fa-heart empty-heart"></i></a>' +
+                        ' </div>';
+                    fav_icon_class.html('');
+                    fav_icon_class.html(html);
+                } else if ('{{\Illuminate\Support\Facades\Auth::user()}}' !== null) {
+                    let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
+                            '<a href="javascript:void(0);" style="color: black; display : block" class="remove-favorite" data-id="{{$property->id}}">' +
+                        '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
+                        '</a>' +
+                        '</div>';
+                    fav_icon_class.html('');
+                    fav_icon_class.html(html);
+                }
+           });
         })
         (jQuery);
     </script>

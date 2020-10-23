@@ -13,8 +13,6 @@ Route::get('/resetForm', 'PropertyController@resetFrom');
 Route::post('/validation', 'AgencyController@validateFrom')->name('validation');
 Route::post('/subscribe', 'SubscriberController@store')->name('subscribe');
 Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
-Route::post('/login-status', 'PropertyController@userLoginStatus')->name('user-status');
-
 Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
 Route::get('/get-feature-properties', 'PropertyController@getFeaturedProperties')->name('property.feature-properties');
