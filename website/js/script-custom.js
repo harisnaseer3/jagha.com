@@ -1,9 +1,6 @@
 (function ($) {
 
     function searchWithparams() {
-        //TODO: change base url when upload to server
-
-        // let baseurl = 'http://127.0.0.1/Property/public';
         let baseurl = window.location.origin;
 
         let page_link = '',
@@ -30,8 +27,6 @@
         beds = $('[name = bedrooms]').val();
         subtype = $('[name^= property_subtype-' + type + ']').val();
         location = $('#location').val();
-        // console.log(purpose, type, city, beds, min_price, max_price, min_area, max_area, area_unit,subtype);
-
         page_link = baseurl + '/'
         if (subtype == null) page_link += type.toLowerCase();
         else page_link += subtype.replace(/ /g, '-').toLowerCase();
@@ -40,7 +35,6 @@
             page_link += 'sale';
         else page_link += purpose.toLowerCase();
         page_link += '/' + city.replace(/ /g, '-').toLowerCase() + '?';
-        // in some location there is a desh(-) sign replace it with (_) and then on server side replace it (-) again
         if (location !== '') page_link += 'location=' + location.replace(/-/g, '_').replace(/ /g, '-').toLowerCase();
         if (min_price !== '0' && min_price !== null) page_link += '&min_price=' + min_price;
         if (max_price !== 'Any' && max_price !== null) page_link += '&max_price=' + max_price;
@@ -49,13 +43,10 @@
         if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
         page_link += '&area_unit=' + area_unit.replace(' ', '-').toLowerCase();
         page_link += '&sort=newest';
-        // console.log(page_link);
         window.location.href = page_link;
     }
 
     function search2Withparams() {
-        //TODO: change base url when upload to server
-        // let baseurl = 'http://127.0.0.1/Property/public';
         let baseurl = window.location.origin;
 
         let purpose = '',
@@ -89,7 +80,6 @@
             page_link += 'sale';
         else page_link += purpose.toLowerCase();
         page_link += '/' + city.replace(/ /g, '-').toLowerCase() + '?';
-        // in some location there is a desh(-) sign replace it with (_) and then on server side replace it (-) again
         if (location !== '') page_link += 'location=' + location.replace(/-/g, '_').replace(/ /g, '-').toLowerCase();
         if (min_price !== '0' && min_price !== null) page_link += '&min_price=' + min_price;
         if (max_price !== 'Any' && max_price !== null) page_link += '&max_price=' + max_price;
@@ -98,24 +88,19 @@
         if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
         page_link += '&area_unit=' + area_unit.replace(' ', '-').toLowerCase();
         page_link += '&sort=newest';
-        // console.log(area_unit, page_link);
         window.location.href = page_link;
     }
 
     function searchWithId(id) {
-        //TODO: how make a dynamic url in ajax to call this function from any page
         jQuery.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        //change url when shifted to server
         jQuery.ajax({
             type: 'post',
-            // url: 'http://127.0.0.1/Property/public/searchWithID',
             url: window.location.origin + '/searchWithID',
             data: {id: id},
-            // dataType: 'json',
             success: function (data) {
                 if (data.status === 200) {
                     location.assign(data.data);
@@ -145,8 +130,6 @@
             },
             error: function (xhr, status, error) {
                 console.log(error);
-                // console.log(xhr);
-                // console.log(status);
             },
             complete: function (url, options) {
             }
@@ -154,7 +137,6 @@
     }
 
     function getCityLocations(city) {
-        // console.log('function call', city);
         jQuery.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -219,7 +201,6 @@
 
     }
 
-    //    change values of min and max area selectors
     function addAreaOptions(end, options) {
         $('#select-max-area option').remove();
         $('#search2-select-max-area option').remove();
@@ -320,7 +301,6 @@
             searchWithId($('#ref-id').val());
         });
 
-        //Main Search form submission
 
         $('.index-form').submit(function (event) {
             event.preventDefault();
@@ -332,21 +312,18 @@
             search2Withparams();
         });
 
-        // add property to fav
         $('.favorite').on('click', function (e) {
             $(this).hide();
             addFavorite($(this).data('id'), $(this), 'add');
             $(this).next().show();
         });
 
-        // remove property from fav
         $('.remove-favorite').on('click', function (e) {
             $(this).hide();
             addFavorite($(this).data('id'), $(this), 'delete');
             $(this).prev().show();
         });
 
-        //    index page form subtype selection
         let property_type = $('.property-type-select2');
         property_type.on('change', function (e) {
             const selectedValue = $(this).val();
@@ -368,13 +345,11 @@
             selectedValue = $('#search2-property-type').val();
             getCityLocations($('#search2-city option:selected').val());
         }
-        //display property sub type options on page load
         $('[id^=search2-property_subtype-]').hide();
         $('[id^=-property_subtype-]').hide();
         $('#search2-property_subtype-' + selectedValue).toggle();
         $('#property_subtype-' + selectedValue).toggle();
 
-        //    change values of min and max price selectors
         function addPriceOptions(end) {
             let options = ['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000', '5,000,000,000']
             $('#select-max-price option').remove();
@@ -387,7 +362,6 @@
                 max_value.append('<option value=' + options[i] + '>' + options[i] + '</option>');
             }
             for (let i = end + 1; i < options.length; i++) {
-                // max_value.append('<option value=' + options[i] + '>' + options[i] + '</option>');
                 max_value2.append('<option value=' + options[i] + '>' + options[i] + '</option>');
             }
         }
@@ -411,9 +385,6 @@
         $('.reset-search-option').on('click', function () {
             $('#location').val('');
             $('input[name=area_unit]').val('Marla');
-            // $('.min-area-label').text('MIN AREA');
-            // $('.max-area-label').text('MAX AREA (Marla)');
-
             $('.index-form').trigger('reset');
             $('.custom-select').data('index', '0').trigger('change');
 
@@ -423,7 +394,6 @@
 
         });
 
-        // call rest form from banner lg view
         $('.reset-search-banner2, #reset-search-banner2lg').on('click', function () {
 
             $.each($('.custom-select'), function (index, value) {
@@ -453,8 +423,6 @@
             $('#search2-location').val('');
             $('#location').val('');
         });
-
-        //on max and min area btn find btn store values of area min and area max price min
 
         $(document.body).on("change", "[name=max_area]", function () {
             let data2 = $(this).val();
@@ -517,9 +485,7 @@
                     data: form.serialize(),
                     dataType: 'json',
                     success: function (data) {
-                        // console.log(data);
                         if (data.data) {
-                            // console.log(data.user);
                             $('.error-tag').hide();
                             $('#exampleModalCenter').modal('hide');
                             let user_dropdown = $('.user-dropdown')
@@ -536,14 +502,12 @@
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin  + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                 '                     <div class="dropdown-divider"></div>' +
-                                // '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
                                 '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
 
                             user_dropdown.html(html);
-                            // console.log(data.user.email);
 
                             if ($('.user-name').length > 0) {
                                 $('input[name=name]').val(data.user.name);
@@ -558,46 +522,16 @@
                     error: function (xhr, status, error) {
                         event.preventDefault();
 
-                        console.log(error);
-                        console.log(status);
-                        console.log(xhr);
+                        // console.log(error);
+                        // console.log(status);
+                        // console.log(xhr);
                     },
                     complete: function (url, options) {
                     }
                 });
             }
         });
-        // $('.logout-btn').on('click', function (event) {
-        //     console.log($('meta[name="csrf-token"]').attr('content'));
-        //     jQuery.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-        //     event.preventDefault();
-        //     jQuery.ajax({
-        //         type: 'POST',
-        //         url: window.location.origin + '/property' + '/logout',
-        //         success: function (data) {
-        //             console.log(data.data);
-        //             let user_dropdown = $('.user-dropdown')
-        //             user_dropdown.html('');
-        //             let html2 = '<a class="nav-link " data-toggle="modal" data-target="#exampleModalCenter"  href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">'+
-        //                 '<i class="fas fa-user mr-3"></i>' +
-        //                 '</a> ';
-        //             user_dropdown.html(html2);
-        //         },
-        //         error: function (xhr, status, error) {
-        //             event.preventDefault();
-        //
-        //             // console.log(error);
-        //             // console.log(status);
-        //             // console.log(xhr);
-        //         },
-        //         complete: function (url, options) {
-        //         }
-        //     });
-        // });
+
     });
 })
 (jQuery);

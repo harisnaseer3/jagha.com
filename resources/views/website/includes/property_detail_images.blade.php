@@ -98,14 +98,14 @@
         {{--        <img style="margin-top:-19px;position:relative;top:50%;width:38px;height:38px;" src="{{asset('img/img/spin.svg')}}"/>--}}
     </div>
     <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:980px;height:380px;overflow:hidden;">
-        @foreach($images as $key => $value)
+        @foreach($property->images as $key => $value)
             <div>
-                <img data-u="image" src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-750x600.webp')}}" alt="{{$property->title}}" title="{{$property->title}}"
+                <img data-u="image" src="{{asset('thumbnails/properties/'.explode('.',$value->name)[0].'-750x600.webp')}}" alt="{{$property->title}}" title="{{$property->title}}"
                      onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"/>
-                <img data-u="thumb" src="{{asset('thumbnails/properties/'.explode('.',$value)[0].'-200x200.webp')}}" alt="{{$property->title}}" title="{{$property->title}}"
+                <img data-u="thumb" src="{{asset('thumbnails/properties/'.explode('.',$value->name)[0].'-200x200.webp')}}" alt="{{$property->title}}" title="{{$property->title}}"
                      onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"/>
                 <div class="price-ratings-box">
-                    @if(\Illuminate\Support\Facades\Auth::guest())
+                    @if(\Illuminate\Support\Facades\Auth::guard('web')->guest())
                         <div class="favorite-property ratings" style="font-size: 20px;">
                             <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite">
                                 <i class="fal fa-heart empty-heart"></i>

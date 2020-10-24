@@ -47,12 +47,13 @@ class AgencyController extends Controller
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
             ->groupBy('cities.name')->orderBy('agency_count', 'DESC')->get();
 //        dd($normal_agencies);
+        $footer_content = (new FooterController)->footerContent();
         $data = [
             'normal_agencies' => $normal_agencies,
             'featured_agencies' => $featured_agencies,
             'key_agencies' => $key_agencies,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
         ];
 
         return view('website.pages.all_cities_listing_wrt_agency', $data);
@@ -106,11 +107,13 @@ class AgencyController extends Controller
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
+        $footer_content = (new FooterController)->footerContent();
+
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
         ];
         return view('website.pages.agency_listing', $data);
     }
@@ -168,13 +171,14 @@ class AgencyController extends Controller
         }
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
+        $footer_content = (new FooterController)->footerContent();
 
         $data = [
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
 
         ];
         return view('website.pages.property_listing', $data);
@@ -184,19 +188,20 @@ class AgencyController extends Controller
     public function create()
     {
         $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
+        $footer_content = (new FooterController)->footerContent();
 
         if (Auth::guard('admin')->user()) {
             return view('website.admin-pages.agency_profile.agency_create',
                 ['table_name' => 'users',
                     'counts' => $counts,
-                    'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+                    'recent_properties' => $footer_content[0], 'footer_agencies' => $footer_content[1]]);
         } else
 
             return view('website.agency_profile.agency_create',
 
                 ['table_name' => 'users',
                     'counts' => $counts,
-                    'recent_properties' => (new FooterController)->footerContent()[0], 'footer_agencies' => (new FooterController)->footerContent()[1]]);
+                    'recent_properties' => $footer_content[0], 'footer_agencies' => $footer_content[1]]);
     }
 
     public function listingFeaturedPartners(Request $request)
@@ -228,13 +233,13 @@ class AgencyController extends Controller
         }
 
         $agencies = $agencies->orderBy('agencies.created_at', $sort === 'newest' ? 'DESC' : 'ASC');
-
+        $footer_content = (new FooterController)->footerContent();
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
             'agencies_count' => $agencyCount,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
 
         ];
         return view('website.pages.agency_listing', $data);
@@ -272,12 +277,13 @@ class AgencyController extends Controller
 
 
         $property_types = (new PropertyType)->all();
+        $footer_content = (new FooterController)->footerContent();
 
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
 
         ];
         return view('website.pages.agency_listing', $data);
@@ -312,13 +318,13 @@ class AgencyController extends Controller
 
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
-
+        $footer_content = (new FooterController)->footerContent();
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),
             'agencies_count' => $agencyCount,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
 
         ];
         return view('website.pages.agency_listing', $data);
@@ -452,13 +458,14 @@ class AgencyController extends Controller
             );
         } else {
             $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
+            $footer_content= (new FooterController)->footerContent();
             return view('website.agency_profile.agency',
 
                 ['table_name' => 'users',
                     'counts' => $counts,
                     'agency' => $agency,
-                    'recent_properties' => (new FooterController)->footerContent()[0],
-                    'footer_agencies' => (new FooterController)->footerContent()[1]]
+                    'recent_properties' => $footer_content[0],
+                    'footer_agencies' => $footer_content[1]]
             );
         }
     }
@@ -772,6 +779,7 @@ class AgencyController extends Controller
                 ]];
             return view('website.admin-pages.agency.agency_listings', $data);
         } else {
+            $footer_content = (new FooterController)->footerContent();
             $data = [
                 'params' => [
                     'status' => $status,
@@ -788,8 +796,8 @@ class AgencyController extends Controller
                     'featured' => $featured->orderBy($sort, $order)->paginate($page),
                 ],
                 'notifications' => Auth()->user()->unreadNotifications,
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
             ];
             return view('website.agency.agency_listings', $data);
         }
