@@ -38,12 +38,13 @@ class BlogController extends Controller
                 ) `t2` ON `t1`.`id` = `t2`.`id`
                 ORDER BY `t1`.`post_date` DESC LIMIT 9');
 
+        $footer_content = (new FooterController())->footerContent();
         $data = [
             'results' => $result,
             'blog_organization' => (new MetaTagController())->addScriptJsonldOnBlogOrganization(),
             'blog_website' => (new MetaTagController())->addscriptJsonldWebsite(),
-            'recent_properties' => (new FooterController())->footerContent()[0],
-            'footer_agencies' => (new FooterController())->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
         ];
         return view('website.pages.blogs.blog_listing', $data);
     }
@@ -85,14 +86,14 @@ class BlogController extends Controller
                         INNER JOIN `wp_postmeta` AS pm1 ON `wp_posts`.`id` = `pm1`.`post_id` AND `pm1`.`meta_key` = \'_thumbnail_id\'
                         INNER JOIN `wp_postmeta` AS pm2 ON `pm1`.`meta_value` = `pm2`.`post_id` AND `pm2`.`meta_key` = \'_wp_attached_file\'
                 ) `t2` ON `t1`.`id` = `t2`.`id` WHERE `t1`.`id`  <> :id ORDER BY `t1`.`post_date` DESC LIMIT 3', ['id' => $id]);
-
+        $footer_content = (new FooterController)->footerContent();
         $data = [
             'result' => $result,
             'tags' => (new MetaTagController)->addMetaTagsOnDetailBlog($result),
             'blog_organization' => (new MetaTagController)->addScriptJsonldOnBlogOrganization(),
             'similar_results' => $similar_result,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
         ];
         return view('website.pages.blogs.blog_detail', $data);
     }
@@ -129,7 +130,7 @@ class BlogController extends Controller
                         '<div class="col-lg-4 col-md-6">' .
                         '     <div class="blog-3">' .
                         '       <div class="blog-photo">' .
-                        '           <a href="' . route('blogs.show', [\Illuminate\Support\Str::slug($value->post_title),$value->id]) . '"><img src="' . asset('img/blogs/' . $value->image) . '" alt="blog" class="img-fluid"></a>' .
+                        '           <a href="' . route('blogs.show', [\Illuminate\Support\Str::slug($value->post_title), $value->id]) . '"><img src="' . asset('img/blogs/' . $value->image) . '" alt="blog" class="img-fluid"></a>' .
                         '       <div class="date-box">' .
                         '          <span>' . date_format(date_create($value->post_date), "d") . '</span>' . date_format(date_create($value->post_date), "M") .
                         '       </div>' .
@@ -143,7 +144,7 @@ class BlogController extends Controller
                         '        </ul>' .
                         '    </div>' .
                         '   <div class="caption detail blog-detail" >' .
-                        '   <h4 ><a href ="' . route('blogs.show', [\Illuminate\Support\Str::slug($value->post_title),$value->id]) . '" >' . \Illuminate\Support\Str::limit(strip_tags($value->post_title), 69, $end = '...') . '</a></h4>' .
+                        '   <h4 ><a href ="' . route('blogs.show', [\Illuminate\Support\Str::slug($value->post_title), $value->id]) . '" >' . \Illuminate\Support\Str::limit(strip_tags($value->post_title), 69, $end = '...') . '</a></h4>' .
                         '      <p>' . \Illuminate\Support\Str::limit(strip_tags($value->post_content), 74, $end = '...') . '</p>' .
                         '    </div>' .
                         ' </div >' .

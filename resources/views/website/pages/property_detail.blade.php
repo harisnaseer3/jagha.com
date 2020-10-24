@@ -3,14 +3,9 @@
     {!! SEO::generate(true) !!}
 @endsection
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}">
-@endsection
-
-@section('css_library')
-    <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
-    <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}" async defer>
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}"  async defer>
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}"  async defer>
 @endsection
 
 @section('content')
@@ -68,7 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @if(!empty($images))
+                        @if(!empty($property->images))
                             <!-- main slider carousel items -->
                                 @include('website.includes.property_detail_images')
                             @else
@@ -87,7 +82,7 @@
                                 <li class="nav-item li-detail-page text-transform mr-1">
                                     <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" aria-controls="2" aria-selected="true">Location & Nearby</a>
                                 </li>
-                                @if(!empty($video))
+                                @if(!empty($property->video))
                                     <li class="nav-item li-detail-page text-transform">
                                         <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Video</a>
                                     </li>
@@ -190,19 +185,19 @@
                             </div>
                         </div>
 
-                        @if(!empty(array_filter($video)))
+                        @if(!empty($property->video))
                             <div class="tab-pane " id="three" role="tabpanel" aria-labelledby="3-tab">
                                 <div class="inside-properties mb-50">
                                     <h3 class="heading-2">
                                         Property Video
                                     </h3>
                                     {{-- TODO: apply check on video link restict user to add video of following 3rd party --}}
-                                    @if($video[0]['host'] === 'Youtube')
-                                        <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$video[0]['name'])[1])[0]}}></iframe>
-                                    @elseif($video[0]['host'] === 'Vimeo')
-                                        <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$video[0]['name'])[1]}}></iframe>
+                                    @if($property->video[0]['host'] === 'Youtube')
+                                        <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]['name'])[1])[0]}}></iframe>
+                                    @elseif($property->video[0]['host'] === 'Vimeo')
+                                        <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]['name'])[1]}}></iframe>
                                     @else
-                                        <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$video[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
+                                        <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
                                     @endif
                                 </div>
                             </div>
@@ -286,296 +281,12 @@
 @endsection
 
 @section('script')
-    <script>
-        // window.fbAsyncInit = function () {
-        //     FB.init({
-        //         appId: '639361382871128',
-        //         autoLogAppEvents: true,
-        //         xfbml: true,
-        //         version: 'v8.0'
-        //     });
-        // };
-    </script>
-    {{--    <script src="https://apis.google.com/js/platform.js" async defer></script>--}}
-    {{--    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>--}}
-    {{--    <div id="fb-root"></div>--}}
-    {{--    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0" nonce="sYBlILm7"></script>--}}
-    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('website/js/jssor.slider-28.0.0.min.js')}}"></script>
-    {{--    <script src="http://malsup.github.io/jquery.cycle2.js"></script>--}}
-    {{--    <script src="http://malsup.github.io/jquery.cycle2.carousel.js"></script>--}}
-    <script>
-        let map;
-        let service;
-        var infowindow;
-        var get_location;
-        let image;
-        let _markers = [];
-        let container = $('#school');
-        var latitude = container.data('lat');
-        var longitude = container.data('lng');
-
-        function initMap(value) {
-            map = '';
-            service = '';
-            _markers = [];
-            let place;
-            if (value === 'school') place = 'school college and university';
-            else if (value === 'park') place = 'park';
-            else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
-            else if (value === 'restaurant') place = 'restaurant and cafe'
-            get_location = new google.maps.LatLng(latitude, longitude);
-            infowindow = new google.maps.InfoWindow();
-            map = new google.maps.Map(
-                document.getElementById(value), {center: get_location, zoom: 15});
-            var request = {
-                location: get_location,
-                radius: '500',
-                query: place,
-            };
-            service = new google.maps.places.PlacesService(map);
-            service.textSearch(request, callback);
-
-            function callback(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    for (let i = 0; i < results.length; i++) {
-                        createMarker(results[i], value);
-                    }
-                    const markerCluster = new MarkerClusterer(map, _markers,
-                        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-                }
-            }
-        }
-
-        function createMarker(place, value) {
-            var marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-                icon: {url: '../website/img/marker/' + value + '.png', scaledSize: new google.maps.Size(45, 45)},
-            });
-            _markers.push(marker);
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(place.name);
-                infowindow.open(map, this);
-            });
-        }
-
-        (function ($) {
-            $(document).ready(function () {
-                $('.map-canvas').on('click', function () {
-                    initMap($(this).data('value'));
-                });
-                $('[data-toggle="tooltip"]').tooltip();
-                $('[data-toggle="popover"]').popover({trigger: "hover"});
-                $.fn.stars = function () {
-                    return $(this).each(function () {
-                        let rating = $(this).data("rating");
-                        rating = rating > 5 ? 5 : rating
-                        const numStars = $(this).data("numStars");
-                        const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
-                        const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
-                        const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
-                        $(this).html(`${fullStar}${halfStar}${noStar}`);
-                    });
-                }
-                $('.stars').stars();
-                $('select option:first-child').css('cursor', 'default').prop('disabled', true);
-                $('.select2').select2({
-                    language: '{{app()->getLocale()}}',
-                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
-                });
-                $('.select2bs4').select2({
-                    language: '{{app()->getLocale()}}',
-                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
-                    theme: 'bootstrap4',
-                });
-                $('.property-type-select2').on('change', function (e) {
-                    const selectedValue = $(this).val();
-                    $('[id^=property_subtype-]').attr('disable', 'true').slideUp();
-                    $('#property_subtype-' + selectedValue).attr('disable', 'true').slideDown();
-                });
-                // TODO: Change this method of scroll
-                // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                //     anchor.addEventListener('click', function (e) {
-                //         e.preventDefault();
-                //         document.querySelector(this.getAttribute('href')).scrollIntoView({
-                //             behavior: 'smooth'
-                //         });
-                //     });
-                // });
-                if ($('.properties-amenities ').find('li').length === 0)
-                    $('.properties-amenities').hide();
-                //    description show more and less
-                let defaultHeight = 50; // height when "closed"
-                let text = $('.description');
-                let textHeight = text[0].scrollHeight; // the real height of the element
-                let button = $(".button");
-                text.css({"max-height": defaultHeight, "overflow": "hidden"});
-                button.on("click", function () {
-                    var newHeight = 0;
-                    if (text.hasClass("active")) {
-                        newHeight = defaultHeight;
-                        button.text('Read More');
-                        text.removeClass("active");
-                    } else {
-                        newHeight = textHeight;
-                        button.text('Read Less');
-                        text.addClass("active");
-                    }
-                    text.animate({
-                        "max-height": newHeight
-                    }, 500);
-                });
-                let features = $('.features-list');
-                if (features.length > 0) {
-                    let text2 = features;
-                    let textHeight2 = text2[0].scrollHeight; // the real height of the element
-                    let button2 = $(".button2");
-                    text2.css({"max-height": defaultHeight, "overflow": "hidden"});
-                    button2.on("click", function () {
-                        let newHeight2 = 0;
-                        if (text2.hasClass("active")) {
-                            newHeight2 = defaultHeight;
-                            button2.text('Show More');
-                            text2.removeClass("active");
-                        } else {
-                            newHeight2 = textHeight2;
-                            button2.text('Show Less');
-                            text2.addClass("active");
-                        }
-                        text2.animate({
-                            "max-height": newHeight2
-                        }, 500);
-                    });
-                }
-            });
-            let phone = '';
-            let form = $('#email-contact-form');
-            $("input[name='phone']").keyup(function () {
-                $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-            });
-            $('.btn-email').click(function (e) {
-                let property = $(this).closest('#email-contact-form').find('input[name=property]').val();
-                let title = $(this).closest('#email-contact-form').find('input[name=title]').val();
-                let agency = $(this).closest('#email-contact-form').find('input[name=agency]').val();
-                // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
-                let property_link = $(this).closest('.contact-container').find('.property-description').find('a').attr('href');
-                let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + property_link + ' </a>';
-                let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>.';
-                let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + '<br><br> Please contact me at your earliest by phone or by email.';
-                phone = $(this).closest('.contact-container').find('input[name=phone]').val();
-                let editable_div = $('.editable-div');
-                // editable_div.html(message);
-                $('input[name=message]').val(editable_div.html());
-                editable_div.click(function () {
-                    if (editable_div.html() !== '') {
-                        $('input[name=message]').val(editable_div.html());
-                    }
-                });
-                if (!(property === undefined))
-                    $('.selected').val(property).attr('name', 'property');
-                else if (!(agency === undefined))
-                    $('.selected').val(agency).attr('name', 'agency');
-                call_btn.text('Call');
-            });
-            let call_btn = $('.agent-call');
-            call_btn.on('click', function () {
-                call_btn.attr('href', 'tel:' + phone).text(phone);
-            });
-            $.validator.addMethod("regx", function (value, element, regexpr) {
-                return regexpr.test(value);
-            }, "Please enter a valid value. (03001234567)");
-            form.validate({
-                rules: {
-                    name: {
-                        required: true,
-                    },
-                    phone: {
-                        required: true,
-                        regx: /^\+92-3\d{2}\d{7}$/,
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    message: {
-                        required: true,
-                    },
-                },
-                messages: {},
-                errorElement: 'small',
-                errorClass: 'help-block text-red',
-                submitHandler: function (form) {
-                    form.preventDefault();
-                },
-                invalidHandler: function (event, validator) {
-                    // 'this' refers to the form
-                    const errors = validator.numberOfInvalids();
-                    if (errors) {
-                        let error_tag = $('div.error.text-red');
-                        error_tag.hide();
-                        const message = errors === 1
-                            ? 'You missed 1 field. It has been highlighted'
-                            : 'You missed ' + errors + ' fields. They have been highlighted';
-                        $('div.error.text-red span').html(message);
-                        error_tag.show();
-                    } else {
-                        $('div.error.text-red').hide();
-                    }
-                }
-            });
-            $('#send-mail').click(function (event) {
-                if (form.valid()) {
-                    event.preventDefault();
-                    jQuery.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    jQuery.ajax({
-                        type: 'post',
-                        url: window.location.origin + '/contactAgent',
-                        data: form.serialize(),
-                        dataType: 'json',
-                        success: function (data) {
-                            if (data.status === 200) {
-                                // console.log(data.data);
-                                form.trigger("reset");
-                                $('#EmailModelCenter').modal('hide');
-                                $('#EmailConfirmModel').modal('show');
-                            } else {
-                                // console.log(data.data);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            // console.log(error);
-                            // console.log(status);
-                            // console.log(xhr);
-                        },
-                        complete: function (url, options) {
-                        }
-                    });
-                }
-            });
-            $('.price-ratings-box').on('click', function () {
-                  if ('{{\Illuminate\Support\Facades\Auth::guard('web')->user()}}' !== null && '{{\Illuminate\Support\Facades\Auth::guard('web')->user()}}' !== '') {
-                    let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
-                            '<a href="javascript:void(0);" style="color: black; display : block" class="remove-favorite" data-id="{{$property->id}}">' +
-                        '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
-                        '</a>' +
-                        '</div>';
-                    $(this).html('');
-                    $(this).html(html);
-                }
-           });
-        })
-        (jQuery);
-    </script>
-    <script type="text/javascript">jssor_1_slider_init(); </script>
-    <script src="{{asset('website/js/markerclusterer.js')}}"></script>
+    <script src="{{asset('website/js/detail-page.js')}}"></script>
+    <script type="text/javascript" defer>jssor_1_slider_init();  </script>
+    <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
-    <script src="{{asset('website/js/script-custom.js')}}"></script>
-
+    <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
 @endsection

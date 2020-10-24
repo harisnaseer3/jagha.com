@@ -425,13 +425,14 @@ class CountTableController extends Controller
             abort(404);
 
         (new MetaTagController())->addMetaTags();
+        $footer_content = (new FooterController)->footerContent();
 
         $data = [
             'type' => $result_type,
             'purpose' => $result_purpose,
             'cities' => $cities,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
         ];
         return view('website.pages.all_cities_listing_wrt_property', $data);
     }
@@ -450,11 +451,12 @@ class CountTableController extends Controller
             ->orderBy('property_count', 'DESC')
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
             ->get();
+        $footer_content = (new FooterController)->footerContent();
         $data = [
             'type' => $type,
             'properties' => $properties,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
         ];
         return view('website.pages.property_count_by_city', $data);
 

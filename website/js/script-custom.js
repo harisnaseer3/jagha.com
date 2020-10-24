@@ -522,16 +522,16 @@
                     error: function (xhr, status, error) {
                         event.preventDefault();
 
-                        console.log(error);
-                        console.log(status);
-                        console.log(xhr);
+                        // console.log(error);
+                        // console.log(status);
+                        // console.log(xhr);
                     },
                     complete: function (url, options) {
                     }
                 });
             }
         });
-       
+
     });
 })
 (jQuery);

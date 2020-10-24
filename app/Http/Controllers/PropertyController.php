@@ -184,18 +184,21 @@ class PropertyController extends Controller
             $sort_area = request()->input('area_sort');
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
-            $lastPage = ceil((int)$properties->count() / $limit);
+        $property_count = $properties->count();
+        if (request()->has('page') && request()->input('page') > ceil( $property_count / $limit)) {
+            $lastPage = ceil((int)$property_count / $limit);
             request()->merge(['page' => (int)$lastPage]);
         }
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
+        $footer_content = (new FooterController)->footerContent();
+
         $data = [
             'params' => request()->all(),
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
         ];
         return view('website.pages.property_listing', $data);
     }
@@ -219,14 +222,15 @@ class PropertyController extends Controller
         foreach ($agencies_data as $agency) {
             $agencies = array_merge($agencies, [$agency->title => $agency->title]);
         }
+        $footer_content = (new FooterController)->footerContent();
 
         return view('website.pages.portfolio',
             ['default_area_unit' => $unit,
                 'agencies' => $agencies,
                 'property_types' => $property_types,
                 'counts' => $counts,
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]]);
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]]);
     }
 
     private function _imageValidation($type)
@@ -498,11 +502,11 @@ class PropertyController extends Controller
         $property->views = $views + 1;
         $property->save();
 
-        $agency = (new Agency)->where('id', '=', $property->agency_id)->first();
+//        $agency = (new Agency)->where('id', '=', $property->agency_id)->first();
 
-        $images = (new Image)->select('images.name')->where('images.property_id', '=', $property->id)->pluck('name')->toArray();
-        $video = (new Video)->select('name', 'host')->where('property_id', '=', $property->id)->whereNull('deleted_at')->get()->toArray();
-        $floor_plans = (new FloorPlan)->select('name', 'title')->where('floor_plans.property_id', '=', $property->id)->get()->toArray();
+//        $images = (new Image)->select('images.name')->where('images.property_id', '=', $property->id)->pluck('name')->toArray();
+//        $video = (new Video)->select('name', 'host')->where('property_id', '=', $property->id)->whereNull('deleted_at')->get()->toArray();
+//        $floor_plans = (new FloorPlan)->select('name', 'title')->where('floor_plans.property_id', '=', $property->id)->get()->toArray();
         $is_favorite = false;
 
         if (Auth::check()) {
@@ -513,19 +517,17 @@ class PropertyController extends Controller
                 ])->exists();
         }
         $property_types = (new PropertyType)->all();
+        $property->city = $property->city->name;
+        $property->location = $property->location->name;
+//        dd($property->images);
 
-        $data = (new Property)
-            ->select('properties.reference', 'properties.id', 'purpose', 'sub_purpose', 'sub_type', 'type', 'title', 'description', 'price', 'land_area', 'area_unit', 'bedrooms', 'bathrooms',
-                'features', 'premium_listing', 'super_hot_listing', 'hot_listing', 'magazine_listing', 'contact_person', 'phone', 'cell', 'fax', 'email', 'views', 'status',
-                'properties.created_at', 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'properties.favorites', 'properties.latitude',
-                'properties.longitude', 'property_count_by_agencies.property_count AS agency_property_count')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftJoin('property_count_by_agencies', 'properties.agency_id', '=', 'property_count_by_agencies.agency_id')
-            ->where('properties.id', '=', $property->id)
-            ->whereNull('properties.deleted_at')->first();
+//        $data = (new Property)
+//            ->select( 'property_count_by_agencies.property_count AS agency_property_count')
+//            ->leftJoin('property_count_by_agencies', 'properties.agency_id', '=', 'property_count_by_agencies.agency_id')
+//            ->where('properties.id', '=', $property->id)->first();
 
-        (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($data);
+
+        (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
 
         //similar properties criteria same city, type and subtype
         $similar_properties = $this->listingFrontend()
@@ -537,19 +539,22 @@ class PropertyController extends Controller
             ])
             ->whereNull('properties.deleted_at')->get();
 
-        $aggregates = $this->_getPropertyAggregates();
+//        $aggregates = $this->_getPropertyAggregates();
+        $footer_content = (new FooterController)->footerContent();
+//        dd($property->images);
+
         return view('website.pages.property_detail', [
-            'property' => $data,
-            'images' => $images,
-            'video' => $video,
-            'floor_plans' => $floor_plans,
+            'property' => $property,
+//            'images' => $images,
+//            'video' => $video,
+//            'floor_plans' => $floor_plans,
             'is_favorite' => $is_favorite,
-            'agency' => $agency,
+//            'agency' => $agency,
             'similar_properties' => $similar_properties,
             'property_types' => $property_types,
-            'aggregates' => $aggregates,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+//            'aggregates' => $aggregates,
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
         ]);
     }
 
@@ -590,6 +595,8 @@ class PropertyController extends Controller
                     'counts' => $counts,
                 ]);
         }
+        $footer_content = (new FooterController)->footerContent();
+
 
         return view('website.pages.portfolio',
             [
@@ -597,8 +604,8 @@ class PropertyController extends Controller
                 'property' => $property,
                 'property_types' => $property_types,
                 'counts' => $counts,
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]
+                'recent_properties' => $footer_content()[0],
+                'footer_agencies' => $footer_content()[1]
             ]);
     }
 
@@ -737,14 +744,16 @@ class PropertyController extends Controller
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 
             (new PropertyLogController())->store($property);
+            $footer_content = (new FooterController)->footerContent();
+
 
             if (Auth::guard('admin')->user())
                 return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
 
             return redirect()->route('properties.listings',
                 ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10',
-                    'recent_properties' => (new FooterController)->footerContent()[0],
-                    'footer_agencies' => (new FooterController)->footerContent()[1]])->with('success', 'Property updated successfully');
+                    'recent_properties' => $footer_content[0],
+                    'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
@@ -850,6 +859,8 @@ class PropertyController extends Controller
      */
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
     {
+        $footer_content = (new FooterController)->footerContent();
+
         if ($request->has('id')) {
             $data = [
                 'params' => [
@@ -897,8 +908,8 @@ class PropertyController extends Controller
                     'golden' => $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
                     'platinum' => $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->where('properties.reference', '=', $request->reference)->paginate($page),
                 ],
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
             ];
             if ($data['listings']['all'])
                 return redirect()->back()->withInput()->with('error', 'Property not found.');
@@ -971,6 +982,7 @@ class PropertyController extends Controller
             ];
             return view('website.admin-pages.listings', $data);
         }
+        $footer_content = (new FooterController)->footerContent();
         $data = [
             'params' => [
                 'status' => $status,
@@ -997,8 +1009,8 @@ class PropertyController extends Controller
 
 //                'magazine' => $this->_listings($status, $user)->where('magazine_listing', true)->orderBy($sort, $order)->paginate($page),
             ],
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
         ];
         return view('website.pages.listings', $data);
     }
@@ -1092,21 +1104,24 @@ class PropertyController extends Controller
             $sort_area = request()->input('area_sort');
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $property_count = $properties->count();
 
-        if ($request->has('page') && $request->input('page') > ceil($properties->count() / $limit)) {
-            $lastPage = ceil((int)$properties->count() / $limit);
+        if ($request->has('page') && $request->input('page') > ceil($property_count/ $limit)) {
+            $lastPage = ceil((int)$property_count/ $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
         (new MetaTagController())->addMetaTags();
 
         $property_types = (new PropertyType)->all();
+        $footer_content = (new FooterController)->footerContent();
+
 
         $data = [
             'params' => $request->all(),
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
 
         ];
         return view('website.pages.property_listing', $data);
@@ -1237,20 +1252,23 @@ class PropertyController extends Controller
             $sort_area = request()->input('area_sort');
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $property_count = $properties->count();
 
-        if ($request->has('page') && $request->input('page') > ceil($properties->count() / $limit)) {
-            $lastPage = ceil((int)$properties->count() / $limit);
+        if ($request->has('page') && $request->input('page') > ceil($property_count / $limit)) {
+            $lastPage = ceil((int)$property_count / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
+        $footer_content = (new FooterController)->footerContent();
+
         $data = [
             'params' => $request->all(),
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
         ];
         return view('website.pages.property_listing', $data);
 
@@ -1292,22 +1310,24 @@ class PropertyController extends Controller
             $sort_area = request()->input('area_sort');
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $property_count = $properties->count();
 
-        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
-            $lastPage = ceil((int)$properties->count() / $limit);
+        if (request()->has('page') && request()->input('page') > ceil( $property_count/ $limit)) {
+            $lastPage = ceil((int)$property_count/ $limit);
             request()->merge(['page' => (int)$lastPage]);
         }
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
         $property_types = (new PropertyType)->all();
+        $footer_content = (new FooterController)->footerContent();
 
         $data = [
             'params' => request()->all(),
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1]
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
         ];
         return view('website.pages.property_listing', $data);
     }
@@ -1332,10 +1352,9 @@ class PropertyController extends Controller
             return (['error' => $validator->errors()]);
         }
         $location = '';
-
         $city = (new City)->select('id', 'name')->where('name', '=', $data['city'])->first();
 
-        if ($data['location'] !== null)
+        if ($data['location'] !== null && $data['location'] !== '')
             $location = (new Location)->select('id')->where('city_id', '=', $city->id)->where('name', '=', $data['location'])->first();
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
@@ -1343,7 +1362,7 @@ class PropertyController extends Controller
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
 
-        if ($location !== null) $properties->where('location_id', '=', $location->id);
+        if ($location !== null && $location !== '') $properties->where('location_id', '=', $location->id);
 
         $properties->where('properties.purpose', '=', $data['purpose']);
 //        dd($properties->get());
@@ -1404,7 +1423,7 @@ class PropertyController extends Controller
     public function searchWithID(Request $request)
     {
         /*validate request params */
-        if ($request->input('id') != null && preg_match('$(2020-)\d{8}$', $request->input('id'))) {
+        if ($request->input('id') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('id'))) {
             $property = (new Property)->where('reference', '=', strtoupper($request->input('id')))->first();
             if ($property) {
                 return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
@@ -1419,6 +1438,8 @@ class PropertyController extends Controller
     {
         $city = str_replace('_', ' ', $city);
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
+        $footer_content = (new FooterController)->footerContent();
+
         if ($city) {
             $properties = $this->listingFrontend();
             $properties->where('properties.city_id', '=', $city->id);
@@ -1440,9 +1461,10 @@ class PropertyController extends Controller
                 $sort_area = request()->input('area_sort');
 
             $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+            $property_count = $properties->count();
 
-            if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
-                $lastPage = ceil((int)$properties->count() / $limit);
+            if (request()->has('page') && request()->input('page') > ceil( $property_count/ $limit)) {
+                $lastPage = ceil((int)$property_count / $limit);
                 request()->merge(['page' => (int)$lastPage]);
             }
 
@@ -1453,8 +1475,8 @@ class PropertyController extends Controller
                 'params' => request()->all(),
                 'property_types' => $property_types,
                 'properties' => $properties->paginate($limit),
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
             ];
         } else {
             $properties = (new Property)->newCollection();
@@ -1465,8 +1487,8 @@ class PropertyController extends Controller
                 'params' => ['sort' => 'newest'],
                 'property_types' => $property_types,
                 'properties' => $properties,
-                'recent_properties' => (new FooterController)->footerContent()[0],
-                'footer_agencies' => (new FooterController)->footerContent()[1]
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
             ];
         }
         return view('website.pages.property_listing', $data);
