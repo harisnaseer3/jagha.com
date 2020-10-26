@@ -4389,6 +4389,7 @@ class ComposerStaticInit572bb2837f5d4157948c00f617e799e5
         'PropertyCountByLocationSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByLocationSeeder.php',
         'PropertyCountByPropertyPurposeSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByPropertyPurposeSeeder.php',
         'PropertyCountByPropertyTypeSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByPropertyTypeSeeder.php',
+        'PropertyCountByStatusAndPurposeSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyCountByStatusAndPurposeSeeder.php',
         'PropertyLogSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyLogSeeder.php',
         'PropertyRolesSeeder' => __DIR__ . '/../..' . '/database/seeds/PropertyRolesSeeder.php',
         'PropertySeeder' => __DIR__ . '/../..' . '/database/seeds/PropertySeeder.php',

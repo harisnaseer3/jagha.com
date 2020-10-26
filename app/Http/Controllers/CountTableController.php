@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -296,6 +297,16 @@ class CountTableController extends Controller
             else
                 DB::table('property_count_by_agencies')->insert(['agency_id' => $property->agency_id, 'property_count' => 1]);
         }
+//        TODO : testing pending
+        $listing_types = ['basic_listing', 'silver_listing', 'bronze_listing', 'golden_listing', 'platinum_listing'];
+        foreach ($listing_types as $listing_type) {
+            if ($property->$listing_type)
+                if (DB::table('property_count_by_status_and_purposes')->where('status', '=', $property->status)->where('purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+                    ->where('listing_type', '=', $listing_type)->exists()) {
+                    DB::table('property_count_by_status_and_purposes')->where('status', '=', $property->status)->where('purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+                        ->where('listing_type', '=', $listing_type)->increment('property_count');
+                }
+        }
 
 
         if (DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->exists())
@@ -328,6 +339,15 @@ class CountTableController extends Controller
 
     public function _on_deletion_insertion_in_count_tables($city, $location, $property)
     {
+        $listing_types = ['basic_listing', 'silver_listing', 'bronze_listing', 'golden_listing', 'platinum_listing'];
+        foreach ($listing_types as $listing_type) {
+            if ($property->$listing_type)
+                if (DB::table('property_count_by_status_and_purposes')->where('status', '=', $property->status)->where('purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+                    ->where('listing_type', '=', $listing_type)->exists()) {
+                    DB::table('property_count_by_status_and_purposes')->where('status', '=', $property->status)->where('purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+                        ->where('listing_type', '=', $listing_type)->decrement('property_count');
+                }
+        }
         // insertion in count tables
         DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->decrement('property_count');
 
@@ -355,7 +375,7 @@ class CountTableController extends Controller
 
     public function getCitiesCount()
     {
-        $cities_count = $popular_cities_houses_on_sale = DB::table('property_count_by_cities')
+        $cities_count = DB::table('property_count_by_cities')
             ->select('property_count AS count', 'city_name AS city')->get();
         return $cities_count;
     }

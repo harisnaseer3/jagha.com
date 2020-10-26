@@ -42,12 +42,14 @@
                     <img src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                          alt="{{$property->sub_type}} for {{$property->purpose}}"
                          title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='http://localhost/img/logo/dummy-logo.png'">
-                    @if($property->premium_listing == 1)
-                        <div class="listing-badges"><span aria-label="premium label" class="featured">Premium</span></div>
-                    @elseif($property->super_hot_listing == 1)
-                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Super Hot</span></div>
-                    @elseif($property->hot_listing  == 1)
-                        <div class="listing-badges"><span aria-label="hot label" class="featured">Hot</span></div>
+                    @if($property->platinum_listing == 1)
+                        <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>
+                    @elseif($property->golden_listing == 1)
+                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>
+                    @elseif($property->silver_listing  == 1)
+                        <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>
+                    @elseif($property->bronze_listing  == 1)
+                        <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>
                     @endif
                     <div class="listing-time opening" aria-label="purpose label">For {{ $property->purpose }}</div>
                     <div class="price-ratings-box">
@@ -60,7 +62,6 @@
                                 <span class="color-white" aria-label="currency"></span> <span class="color-white" aria-label="price">Call Us for Price Details</span>
                             </p>
                         @endif
-
                         <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}" data-num-stars="5" aria-label="rating"></div>
                     </div>
                 </a>
