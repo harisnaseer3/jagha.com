@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PropertyCountByStatusAndPurposeSeeder extends Seeder
 {
@@ -17,20 +18,41 @@ class PropertyCountByStatusAndPurposeSeeder extends Seeder
         foreach ($purposes as $purpose) {
             foreach ($statuses as $status) {
                 foreach ($listing_types as $listing_type) {
-                    $data = DB::table('properties')
-                        ->select(DB::raw('COUNT(properties.id) AS count'))
-                        ->where('properties.status', '=', $status)
-                        ->where('properties.purpose', '=', $purpose)
-                        ->where('user_id', '=', 1)
-                        ->where($listing_type, '=', 1)
-                        ->get();
-                    DB::table('property_count_by_status_and_purposes')->insert([
-                        'user_id' => 1,
-                        'listing_type' => $listing_type,
-                        'property_purpose' => $purpose,
-                        'property_status' => $status,
-                        'property_count' => $data[0]->count,
-                    ]);
+                    if ($status == 'active') {
+                        $data = DB::table('properties')
+                            ->select(DB::raw('COUNT(properties.id) AS count'))
+                            ->where('properties.status', '=', $status)
+                            ->where('properties.purpose', '=', $purpose)
+                            ->where('user_id', '=', 1)
+                            ->where($listing_type, '=', 1)
+                            ->get();
+                        DB::table('property_count_by_status_and_purposes')->insert([
+                            'user_id' => 1,
+                            'listing_type' => $listing_type,
+                            'property_purpose' => $purpose,
+                            'property_status' => $status,
+                            'property_count' => $data[0]->count,
+                        ]);
+                    }
+                    else if($listing_type == 'basic_listing'){
+                        $data = DB::table('properties')
+                            ->select(DB::raw('COUNT(properties.id) AS count'))
+                            ->where('properties.status', '=', $status)
+                            ->where('properties.purpose', '=', $purpose)
+                            ->where('user_id', '=', 1)
+                            ->where('basic_listing', '=', 1)
+                            ->get();
+                        DB::table('property_count_by_status_and_purposes')->insert([
+                            'user_id' => 1,
+                            'listing_type' => 'basic_listing',
+                            'property_purpose' => $purpose,
+                            'property_status' => $status,
+                            'property_count' => $data[0]->count,
+                        ]);
+                    }
+                    else
+
+                        continue;
                 }
             }
         }
