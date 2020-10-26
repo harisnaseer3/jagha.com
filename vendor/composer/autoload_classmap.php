@@ -3757,6 +3757,7 @@ return array(
     'PropertyCountByLocationSeeder' => $baseDir . '/database/seeds/PropertyCountByLocationSeeder.php',
     'PropertyCountByPropertyPurposeSeeder' => $baseDir . '/database/seeds/PropertyCountByPropertyPurposeSeeder.php',
     'PropertyCountByPropertyTypeSeeder' => $baseDir . '/database/seeds/PropertyCountByPropertyTypeSeeder.php',
+    'PropertyCountByStatusAndPurposeSeeder' => $baseDir . '/database/seeds/PropertyCountByStatusAndPurposeSeeder.php',
     'PropertyLogSeeder' => $baseDir . '/database/seeds/PropertyLogSeeder.php',
     'PropertyRolesSeeder' => $baseDir . '/database/seeds/PropertyRolesSeeder.php',
     'PropertySeeder' => $baseDir . '/database/seeds/PropertySeeder.php',
