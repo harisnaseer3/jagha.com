@@ -2,6 +2,7 @@
     <div class="container">
         <div class="main-title">
             <h2><a class="hover-color" href="{{route('featured-partners',['sort'=>'newest'])}}" title="Featured Partners">Our Featured Partners</a></h2></div>
+        <div id="ajax-loader-partner" class="ajax-loader"></div>
         <div class="slick-slider-area" id="agency-slider">
             <div class="row slick-carousel" id="featured-agencies-section" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
                  data-cycle-carousel-horizontal="true"

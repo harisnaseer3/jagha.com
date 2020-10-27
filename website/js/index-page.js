@@ -142,19 +142,10 @@
             theme: 'bootstrap4',
         });
     });
-    $.get('/get-popular-places',  // url
-        function (data, textStatus, jqXHR) {  // success callback
-            $('#popular-properties-container').html(data.view);
-
-        });
-    $.get('/get-main-page-blogs',  // url
-        function (data, textStatus, jqXHR) {  // success callback
-            $('#main-page-blogs-container').html(data.view);
-
-        });
     $.get('/get-featured-properties',  // url
         function (data, textStatus, jqXHR) {  // success callback
             let slider = $('#featured-properties-section');
+            $('#ajax-loader-properties').hide();
             slider.slick('unslick');
             slider.html('');
             slider.html(data.view);
@@ -162,22 +153,14 @@
             )
             $('[data-toggle="tooltip"]').tooltip();
         });
-    $.get('/get-key-partners',  // url
-        function (data, textStatus, jqXHR) {  // success callback
-            let slider = $('#feature-agency-row-1');
-            slider.slick('unslick');
-            slider.html('');
-            slider.html(data.view);
-            slider.slick({arrows: false, slidesToShow: 5, rows: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 3}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
-            )
-        });
     $.get('/get-featured-partners',  // url
         function (data, textStatus, jqXHR) {  // success callback
             let slider = $('#featured-agencies-section');
+            $('#ajax-loader-partner').hide();
             slider.slick('unslick');
             slider.html('');
             slider.html(data.view);
-            slider.slick({centerMode: true,arrows: false, slidesToShow: 5, responsive: [{breakpoint: 1024, settings: {slidesToShow: 5}}, {breakpoint: 768, settings: {slidesToShow: 3}}]}
+            slider.slick({centerMode: true, arrows: false, slidesToShow: 5, responsive: [{breakpoint: 1024, settings: {slidesToShow: 5}}, {breakpoint: 768, settings: {slidesToShow: 3}}]}
             )
             var paused = false,
                 agency_interval = setInterval(function () {
@@ -215,5 +198,26 @@
 
             });
         });
+    $.get('/get-key-partners',  // url
+        function (data, textStatus, jqXHR) {  // success callback
+            let slider = $('#feature-agency-row-1');
+            $('#ajax-loader-key-partner').hide();
+            slider.slick('unslick');
+            slider.html('');
+            slider.html(data.view);
+            slider.slick({arrows: false, slidesToShow: 5, rows: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 3}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+            )
+        });
+    $.get('/get-popular-places',  // url
+        function (data, textStatus, jqXHR) {  // success callback
+            $('#ajax-loader-popular-places').hide();
+            $('#popular-properties-container').html(data.view);
 
+        });
+    $.get('/get-main-page-blogs',  // url
+        function (data, textStatus, jqXHR) {  // success callback
+            $('#ajax-loader-blogs').hide();
+            $('#main-page-blogs-container').html(data.view);
+
+        });
 })(jQuery);

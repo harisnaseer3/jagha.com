@@ -62,7 +62,6 @@
                                         </a>
                                     </li>
                                 @endforeach
-
                             </ul>
                         </div><!--blog-widget-wrap-->
 
