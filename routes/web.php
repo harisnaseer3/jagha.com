@@ -18,7 +18,8 @@ Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
 Route::get('/get-feature-properties', 'PropertyController@getFeaturedProperties')->name('property.feature-properties');
 Route::get('/get-popular-places', 'PropertyController@getPopularPlaces')->name('property.popular-places');
-Route::get('/get-main-page-blogs','BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
+Route::get('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
+Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
 
 Route::post('/search-ref', 'PropertyController@userPropertySearch')->name('property.search.ref');
 

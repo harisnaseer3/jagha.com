@@ -3,7 +3,7 @@
     {!! SEO::generate(true) !!}
 @endsection
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}" async defer>
+{{--    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}" async defer>--}}
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}"  async defer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}"  async defer>
 @endsection
@@ -214,33 +214,34 @@
                         <!-- Advanced search start -->
                         @include('website.includes.contact_agent')
                         <hr>
-                        @if(!empty($agency))
+{{--                        @if(!empty($agency))--}}
+                        @if($property->agency)
                             <div class="sidebar widget mb-2 none-992">
-                                <h3 class="sidebar-title">{{ucwords($agency->title)}} </h3>
+                                <h3 class="sidebar-title">{{ucwords($property->agency->title)}} </h3>
                                 <div class="s-border"></div>
                                 <div class="m-border"></div>
                                 <div class="row">
-                                    @if($agency->logo !==null)
+                                    @if($property->agency->logo !==null)
                                         <div class="col-sm-6 text-center">
-                                            <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                                                 alt="{{ucwords($agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$agency->title}}" data-placement="bottom"
+                                            <img src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                                                 alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}" data-placement="bottom"
                                                  data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
-                                    <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
+                                    <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
-                                    <div>{{$agency->description}}</div>'>
+                                    <div>{{$property->agency->description}}</div>'>
                                         </div>
                                     @endif
                                     <div class="col-sm-6 mt-1">
                                         <div style="font-size: 1rem">
-                                            @if($agency->status === 'verified')
+                                            @if($property->agency->status === 'verified')
                                                 <div class="mb-3">
                                                     <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                                          title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                                          title="{{$property->agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
                                                             class="far fa-shield-check"></i></span>
                                                 </div>
                                             @endif
-                                            @if($agency->featured_listing === 1)
+                                            @if($property->agency->featured_listing === 1)
                                                 <div class="mb-3">
                                                 <span class="premium-badge" style="color:#ffcc00;">
                                                     <i class="fas fa-star"></i>
@@ -248,7 +249,7 @@
                                                 </span>
                                                 </div>
                                             @endif
-                                            @if($agency->key_listing === 1)
+                                            @if($property->agency->key_listing === 1)
                                                 <div class="mb-3">
                                                 <span class="premium-badge" style="color:#ffcc00;">
                                                     <i class="fas fa-star"></i>
@@ -256,8 +257,8 @@
                                                 </span>
                                                 </div>
                                             @endif
-                                            @if($agency->ceo_name !== null)
-                                                <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$agency->ceo_name}} </span></div>
+                                            @if($property->agency->ceo_name !== null)
+                                                <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$property->agency->ceo_name}} </span></div>
                                             @endif
                                         </div>
                                     </div>
@@ -284,9 +285,10 @@
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/jssor.slider-28.0.0.min.js')}}"></script>
-    <script src="{{asset('website/js/detail-page.js')}}"></script>
     <script type="text/javascript" defer>jssor_1_slider_init();  </script>
     <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
     <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
+    <script src="{{asset('website/js/detail-page.js')}}"></script>
+
 @endsection
