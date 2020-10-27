@@ -61,7 +61,7 @@ class AgencyController extends Controller
 
     function _listingFrontend()
     {
-        return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+        return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing', 'agencies.status',
             'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
             'property_count_by_agencies.property_count AS count')
             ->where('agencies.status', '=', 'verified')

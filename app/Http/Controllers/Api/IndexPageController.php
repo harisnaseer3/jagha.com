@@ -30,4 +30,12 @@ class IndexPageController extends Controller
             ['key_agencies' => $key_agencies])->render();
         return $data;
     }
+
+    function getFeaturedAgencies()
+    {
+        $featured_agencies = (new AgencyController())->FeaturedAgencies();
+        $data['view'] = View('website.components.featured_agencies',
+            ['featured_agencies' => $featured_agencies])->render();
+        return $data;
+    }
 }
