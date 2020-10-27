@@ -25,5 +25,4 @@ class DetailPageController extends Controller
         return $data;
     }
 
-
 }

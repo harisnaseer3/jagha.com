@@ -3,9 +3,9 @@
     {!! SEO::generate(true) !!}
 @endsection
 @section('css')
-{{--    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}" async defer>--}}
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}"  async defer>
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}"  async defer>
+    {{--    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}" async defer>--}}
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}" async defer>
 @endsection
 
 @section('content')
@@ -87,11 +87,11 @@
                                         <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Video</a>
                                     </li>
                                 @endif
-                                @if(count($similar_properties) > 3)
+{{--                                @if(count($similar_properties) > 3)--}}
                                     <li class="nav-item li-detail-page text-transform mr-1">
                                         <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>
                                     </li>
-                                @endif
+{{--                                @endif--}}
                             </ul>
                         </div>
                         <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
@@ -202,11 +202,9 @@
                                 </div>
                             </div>
                         @endif
-                        @if (count($similar_properties) > 3)
-                            <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
-                                @include('website.includes.similar_properties')
-                            </div>
-                        @endif
+                        <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
+                            @include('website.includes.similar_properties')
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
@@ -214,7 +212,7 @@
                         <!-- Advanced search start -->
                         @include('website.includes.contact_agent')
                         <hr>
-{{--                        @if(!empty($agency))--}}
+                        {{--                        @if(!empty($agency))--}}
                         @if($property->agency)
                             <div class="sidebar widget mb-2 none-992">
                                 <h3 class="sidebar-title">{{ucwords($property->agency->title)}} </h3>
@@ -223,9 +221,11 @@
                                 <div class="row">
                                     @if($property->agency->logo !==null)
                                         <div class="col-sm-6 text-center">
-                                            <img src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                                                 alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}" data-placement="bottom"
-                                                 data-html='true' data-content='
+                                            <img
+                                                src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                                                alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
+                                                data-placement="bottom"
+                                                data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
