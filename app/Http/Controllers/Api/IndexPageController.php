@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PropertyController;
 
@@ -19,6 +20,14 @@ class IndexPageController extends Controller
         $data['view'] = View('website.components.similar_properties',
             ['similar_properties' => $featured_properties])->render();
 
+        return $data;
+    }
+
+    function getKeyAgencies()
+    {
+        $key_agencies = (new AgencyController)->keyAgencies();
+        $data['view'] = View('website.components.key_agencies',
+            ['key_agencies' => $key_agencies])->render();
         return $data;
     }
 }

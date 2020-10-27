@@ -133,13 +133,6 @@ class PropertyController extends Controller
 
         $property_types = (new PropertyType)->all();
 
-        // Popular posts based upon max views
-        $featured_properties = $this->listingfrontend()
-            ->where('properties.platinum_listing', '=', 1)
-            ->orderBy('views', 'DESC')
-            ->limit(10)
-            ->get();
-
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
         $footer_content = (new FooterController)->footerContent();
@@ -147,8 +140,7 @@ class PropertyController extends Controller
         $data = [
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
-            'featured_properties' => $featured_properties,
-            'key_agencies' => (new AgencyController())->keyAgencies(),
+//            'key_agencies' => (new AgencyController())->keyAgencies(),
             'featured_agencies' => (new AgencyController())->FeaturedAgencies(),
             'property_types' => $property_types,
             'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),

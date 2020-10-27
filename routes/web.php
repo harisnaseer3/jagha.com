@@ -21,6 +21,7 @@ Route::get('/get-popular-places', 'PropertyController@getPopularPlaces')->name('
 Route::get('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
+Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 
 Route::post('/search-ref', 'PropertyController@userPropertySearch')->name('property.search.ref');
 

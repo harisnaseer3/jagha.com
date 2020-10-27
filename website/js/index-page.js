@@ -163,4 +163,13 @@
             slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
             )
         });
+    $.get('/get-key-partners',  // url
+        function (data, textStatus, jqXHR) {  // success callback
+            let slider = $('#feature-agency-row-1');
+            slider.slick('unslick');
+            slider.html('');
+            slider.html(data.view);
+            slider.slick({arrows: false, slidesToShow: 5, rows: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 3}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+            )
+        });
 })(jQuery);
