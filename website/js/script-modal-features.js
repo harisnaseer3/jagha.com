@@ -8,7 +8,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url:  window.location.origin + '/property' + '/features',
+            url:  window.location.origin + '/features',
             data: {name: selectedValue},
             dataType: 'json',
             success: function (data) {
@@ -39,7 +39,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url:  window.location.origin + '/property' + '/features',
+            url:  window.location.origin + '/features',
             data: {name: selectedValue, 'index': property_index},
             dataType: 'json',
             success: function (data) {
