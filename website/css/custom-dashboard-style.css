@@ -19,7 +19,6 @@ body {
     font-size: inherit;
 }
 
-/* Select2 start */
 .select2-container--default .select2-selection--single {
     display: inline-block;
     width: 100%;
@@ -58,7 +57,6 @@ body {
     direction: rtl;
 }
 
-/* Select2 end */
 
 #sidebar-property-management .card-header + .list-group .list-group-item:first-child,
 #sidebar-property-management .card-header + .list-group .list-group-item:last-child,
@@ -115,5 +113,3 @@ body {
     margin-bottom: 20px;
     width: 100%;
 }
-
-
