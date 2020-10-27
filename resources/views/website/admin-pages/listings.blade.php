@@ -67,6 +67,8 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
+
+                                                            @if($listings[$option] !== null)
                                                             @forelse($listings[$option] as $all_listing)
                                                                 <tr>
                                                                     <td>{{ $all_listing->id }}</td>
@@ -170,6 +172,7 @@
                                                                     <td colspan="10" class="p-4 text-center">No Listings Found!</td>
                                                                 </tr>
                                                             @endforelse
+                                                                @endif
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -178,7 +181,9 @@
                                                     @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
                                                         <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                     @endif
+                                                    @if($listings[$option] != null)
                                                     {{ $listings[$option]->links() }}
+                                                        @endif
                                                 </div>
                                             </div>
                                         @endforeach
