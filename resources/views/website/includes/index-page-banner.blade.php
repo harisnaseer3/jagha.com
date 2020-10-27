@@ -172,7 +172,7 @@
                                 <div class="main-title">
                                     <!-- <div class="slider"></div> -->
                                     <div class="slick-slider-area" id="popular-city-slider">
-                                        <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next"
+                                        <div class="row slick-carousel" id="popular-cities-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next"
                                              data-cycle-prev="slick-prev"
                                              data-cycle-carousel-horizontal="true"
                                              data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1440,"settings":{"slidesToShow": 3}}, {"breakpoint": 1024,"settings":{"slidesToShow": 2}}]}'>

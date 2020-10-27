@@ -7,6 +7,7 @@
         <div class="slick-slider-area" aria-label="popular properties">
             <div class="row slick-carousel" id="featured-properties-section"
                  data-slick='{"slidesToShow": 4, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+                <div class="page_loader"></div>
             </div>
 
             <div class="slick-btn">
