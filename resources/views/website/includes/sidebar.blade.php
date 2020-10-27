@@ -22,7 +22,7 @@
                         <div class="card-header {{ $params['status'] === $status ? 'secondary-grey' : '' }}" id="headingListing{{ ucfirst($status) }}">
                             <a href="#collapseListing{{ ucfirst($status) }}" class="{{ $params['status'] === $status ? '' : 'collapsed' }} {{ $params['status'] === $status ? 'text-white' : '' }}"
                                role="button" data-toggle="collapse" aria-expanded="{{ $params['status'] === $status ? 'true' : 'false' }}" aria-controls="collapseExample">{{ ucfirst($status) }}
-                                ({{ $counts[$status]['all'] }})</a>
+                                ({{ $counts[$status]['all'] == null ? 0 : $counts[$status]['all']}})</a>
                         </div>
                         <div id="collapseListing{{ ucfirst($status) }}" class="collapse {{ $params['status'] === $status ? 'show' : '' }}" aria-labelledby="headingListing{{ ucfirst($status) }}"
                              data-parent="#accordionListings">
@@ -34,41 +34,41 @@
                                        aria-controls="listings-all" aria-selected="{{ $params['purpose'] === 'all' ? 'true' : 'false' }}">All Listings</a>
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'sale' ? 'active' : '' }}" id="listings-sale-tab"
                                        href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}" role="tab"
-                                       aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale ({{ $counts[$status]['sale'] }})</a>
+                                       aria-controls="listings-sale" aria-selected="{{ $params['purpose'] === 'sale' ? 'true' : 'false' }}">For Sale ({{ $counts[$status]['sale'] == null ? 0:$counts[$status]['sale']}})</a>
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'rent' ? 'active' : '' }}" id="listings-rent-tab"
                                        href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}" role="tab"
-                                       aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent ({{ $counts[$status]['rent'] }})</a>
+                                       aria-controls="listings-rent" aria-selected="{{ $params['purpose'] === 'rent' ? 'true' : 'false' }}">For Rent ({{ $counts[$status]['rent']  == null ? 0:$counts[$status]['rent']}})</a>
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'wanted' ? 'active' : '' }}" id="listings-wanted-tab"
                                        href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}"
                                        role="tab"
-                                       aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted ({{ $counts[$status]['wanted'] }})</a>
+                                       aria-controls="listings-wanted" aria-selected="{{ $params['purpose'] === 'wanted' ? 'true' : 'false' }}">Wanted ({{ $counts[$status]['wanted']  == null ? 0:$counts[$status]['wanted']  }})</a>
                                     @if ($status === 'active')
                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'basic' ? 'active' : '' }}" id="listings-basic-tab"
                                            href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'basic'])) }}"
                                            role="tab"
-                                           aria-controls="listings-basic" aria-selected="{{ $params['purpose'] === 'basic' ? 'true' : 'false' }}">Basic Listing ({{ $counts[$status]['basic'] }})
+                                           aria-controls="listings-basic" aria-selected="{{ $params['purpose'] === 'basic' ? 'true' : 'false' }}">Basic Listing ({{ $counts[$status]['basic']  == null ? 0:$counts[$status]['basic']}})
                                         </a>
                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'bronze' ? 'active' : '' }}" id="listings-bronze-tab"
                                            href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'bronze'])) }}"
                                            role="tab"
-                                           aria-controls="listings-bronze" aria-selected="{{ $params['purpose'] === 'bronze' ? 'true' : 'false' }}">Bronze Listing ({{ $counts[$status]['bronze'] }})
+                                           aria-controls="listings-bronze" aria-selected="{{ $params['purpose'] === 'bronze' ? 'true' : 'false' }}">Bronze Listing ({{ $counts[$status]['bronze']  == null ? 0:$counts[$status]['bronze'] }})
                                         </a>
                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'silver' ? 'active' : '' }}" id="listings-silver-tab"
                                            href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'silver'])) }}"
                                            role="tab"
-                                           aria-controls="listings-silver" aria-selected="{{ $params['purpose'] === 'silver' ? 'true' : 'false' }}">Silver Listing ({{ $counts[$status]['silver'] }})
+                                           aria-controls="listings-silver" aria-selected="{{ $params['purpose'] === 'silver' ? 'true' : 'false' }}">Silver Listing ({{ $counts[$status]['silver']  == null ? 0:$counts[$status]['silver']  }})
                                         </a>
 
                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'golden' ? 'active' : '' }}" id="listings-golden-tab"
                                            href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'golden'])) }}"
                                            role="tab"
-                                           aria-controls="listings-golden" aria-selected="{{ $params['purpose'] === 'golden' ? 'true' : 'false' }}">Golden Listing ({{ $counts[$status]['golden'] }})
+                                           aria-controls="listings-golden" aria-selected="{{ $params['purpose'] === 'golden' ? 'true' : 'false' }}">Golden Listing ({{ $counts[$status]['golden']  == null ? 0: $counts[$status]['golden']  }})
                                         </a>
                                         <a class="nav-link side-link-style {{ $params['purpose'] === 'platinum' ? 'active' : '' }}" id="listings-platinum-tab"
                                            href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'platinum'])) }}"
                                            role="tab"
                                            aria-controls="listings-platinum" aria-selected="{{ $params['purpose'] === 'platinum' ? 'true' : 'false' }}">Platinum Listing
-                                            ({{ $counts[$status]['platinum'] }})
+                                            ({{ $counts[$status]['platinum']  == null ? 0 :$counts[$status]['platinum'] }})
                                         </a>
 
                                     @endif
@@ -76,22 +76,22 @@
                                     <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                                     <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
                                     <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale
-                                        ({{ $counts[$status]['sale'] }})</a>
+                                        ({{ $counts[$status]['sale']  == null ? 0:$counts[$status]['sale'] }})</a>
                                     <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'rent'])) }}">For Rent
-                                        ({{ $counts[$status]['rent'] }})</a>
+                                        ({{ $counts[$status]['rent']  == null ? 0: $counts[$status]['rent']}})</a>
                                     <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'wanted'])) }}">Wanted
-                                        ({{ $counts[$status]['wanted'] }})</a>
+                                        ({{ $counts[$status]['wanted'] == null ? 0:  $counts[$status]['wanted']}})</a>
                                     @if ($status === 'active')
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'basic'])) }}">Basic Listing
-                                            ({{ $counts[$status]['basic'] }})</a>
+                                            ({{ $counts[$status]['basic']  == null ? 0:$counts[$status]['basic']  }})</a>
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'bronze'])) }}">Bronze Listing
-                                            ({{ $counts[$status]['bronze'] }})</a>
+                                            ({{ $counts[$status]['bronze']  == null ? 0:$counts[$status]['bronze'] }})</a>
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'silver'])) }}">Silver Listing
-                                            ({{ $counts[$status]['silver'] }})</a>
+                                            ({{ $counts[$status]['silver']  == null ? 0:$counts[$status]['silver'] }})</a>
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'golden'])) }}">Golden Listing
-                                            ({{ $counts[$status]['golden'] }})</a>
+                                            ({{ $counts[$status]['golden']  == null ? 0:$counts[$status]['golden'] }})</a>
                                         <a class="nav-link side-link-style" href="{{ route('properties.listings', array_merge($route_params, ['purpose' => 'platinum'])) }}">Platinum Listing
-                                            ({{ $counts[$status]['platinum'] }})</a>
+                                            ({{ $counts[$status]['platinum']  == null ? 0:$counts[$status]['platinum'] }})</a>
                                     @endif
                                 @endif
                             </div>
