@@ -16,9 +16,9 @@ class PropertyCountByStatusAndPurpose extends Migration
         Schema::create('property_count_by_status_and_purposes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('property_purpose', 225);
-            $table->string('property_status', 255);
-            $table->string('property_count', 255);
+            $table->string('property_purpose', 225)->index();
+            $table->string('property_status', 255)->index();
+            $table->integer('property_count')->unsigned()->index();
             $table->string('listing_type', 255);
 
 

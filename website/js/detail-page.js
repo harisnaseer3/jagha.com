@@ -1,4 +1,3 @@
-
 (function ($) {
     let map;
     let service;
@@ -54,6 +53,7 @@
             infowindow.open(map, this);
         });
     }
+
     $(document).ready(function () {
         $('.map-canvas').on('click', function () {
             initMap($(this).data('value'));
@@ -252,5 +252,18 @@
             $(this).html(html);
         }
     });
+    $.get('/get-similar-properties', {'property': $('#email-contact-form').find('input[name=property]').val()},  // url
+        function (data, textStatus, jqXHR) {  // success callback
+            let slider = $('.slick-carousel');
+            let similar_properties = $('#similar-properties-section');
+            slider.slick('unslick');
+
+            similar_properties.html('');
+            similar_properties.html(data.view);
+
+            slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+            )
+
+        });
 })
 (jQuery);
