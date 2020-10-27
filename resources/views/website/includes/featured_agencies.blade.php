@@ -2,6 +2,8 @@
     <div class="container content-area-12">
         <div class="main-title">
             <h2><a class="hover-color" href="{{route('key-partners',['sort'=>'newest'])}}" title="Key Partners">Key Partners</a></h2></div>
+        <div id="ajax-loader-key-partner" class="ajax-loader"></div>
+
         <!-- <div class="slider"></div> -->
         <div class="slick-slider-area" id="featured-agency-slider">
             <div class="row slick-carousel" id="feature-agency-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev" data-pause= "hover"
