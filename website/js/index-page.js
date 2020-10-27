@@ -77,6 +77,7 @@
     function formatter(value, settings) {
         return value.toFixed(settings.decimals);
     }
+
     // custom formatting example
     $('.count-number').data('countToOptions', {
         formatter: function (value, options) {
@@ -92,6 +93,7 @@
         options = $.extend({}, options || {}, $this.data('countToOptions') || {});
         $this.countTo(options);
     }
+
     $(document).ready(function () {
 
         $('[data-toggle="tooltip"]').tooltip();
@@ -151,5 +153,14 @@
         function (data, textStatus, jqXHR) {  // success callback
             $('#main-page-blogs-container').html(data.view);
 
+        });
+    $.get('/get-featured-properties',  // url
+        function (data, textStatus, jqXHR) {  // success callback
+            let slider = $('#featured-properties-section');
+            slider.slick('unslick');
+            slider.html('');
+            slider.html(data.view);
+            slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+            )
         });
 })(jQuery);

@@ -46,7 +46,7 @@ class AgencyController extends Controller
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
             ->groupBy('cities.name')->orderBy('agency_count', 'DESC')->get();
-//        dd($normal_agencies);
+
         $footer_content = (new FooterController)->footerContent();
         $data = [
             'normal_agencies' => $normal_agencies,

@@ -151,7 +151,6 @@ class PropertyController extends Controller
             'key_agencies' => (new AgencyController())->keyAgencies(),
             'featured_agencies' => (new AgencyController())->FeaturedAgencies(),
             'property_types' => $property_types,
-//            'blogs' => (new BlogController)->recentBlogsOnMainPage(),
             'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
             'recent_properties' => $footer_content[0],
             'footer_agencies' => $footer_content[1],
