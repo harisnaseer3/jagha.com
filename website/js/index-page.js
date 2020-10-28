@@ -142,6 +142,27 @@
             theme: 'bootstrap4',
         });
     });
+
+    function addFavorite(id, selector, task) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: task === 'add' ? window.location.origin + '/dashboard/properties/' + id + '/favorites' : window.location.origin + '/dashboard/properties/' + id + '/favorites/1',
+            dataType: 'json',
+            success: function (data) {
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            },
+            complete: function (url, options) {
+            }
+        });
+    }
+
     $.get('/get-featured-properties',  // url
         function (data, textStatus, jqXHR) {  // success callback
             let slider = $('#featured-properties-section');
@@ -151,7 +172,21 @@
             slider.html(data.view);
             slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
             )
+
             $('[data-toggle="tooltip"]').tooltip();
+            $('.favorite').on('click', function (e) {
+                console.log('data');
+                $(this).hide();
+                addFavorite($(this).data('id'), $(this), 'add');
+                $(this).next().show();
+            });
+
+            $('.remove-favorite').on('click', function (e) {
+                console.log('remove data');
+                $(this).hide();
+                addFavorite($(this).data('id'), $(this), 'delete');
+                $(this).prev().show();
+            });
         });
     $.get('/get-featured-partners',  // url
         function (data, textStatus, jqXHR) {  // success callback
