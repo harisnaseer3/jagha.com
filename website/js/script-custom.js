@@ -500,7 +500,7 @@
                             html += '<span class="mr-1"> Logged in as <span>' + user_name + ' (ID: ' + user_id + ')';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                            html += '<a class="dropdown-item" href=" ' + window.location.origin  + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                            html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                 '                     <div class="dropdown-divider"></div>' +
                                 '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
@@ -513,6 +513,11 @@
                                 $('input[name=name]').val(data.user.name);
                                 $('input[name=email]').val(data.user.email)
                             }
+                            // if ($('.fav-section').length > 0) {
+                            //     $('.fav-section').html('');
+                            //     $('.fav-section').html('');
+                            //
+                            // }
                             // window.location.reload(true);
                         } else if (data.error) {
                             $('div.help-block small').html(data.error.password);

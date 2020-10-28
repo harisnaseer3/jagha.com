@@ -3,17 +3,19 @@
         <div class="property-box-3" aria-label="listing link">
             <a href="{{$feature_property->property_detail_path()}}" class="property-img" title="{{$feature_property->title}}">
                 <div class="property-thumbnail">
-                    @if($feature_property->premium_listing == 1)
-                        <div class="tag feature-tag">Premium</div>
-                    @elseif($feature_property->hot_listing == 1)
-                        <div class="tag feature-tag">HOT</div>
-                    @elseif($feature_property->super_hot_listing == 1)
-                        <div class="tag feature-tag">SUPER HOT</div>
+                    @if($feature_property->platinum_listing)
+                        <div class="tag feature-tag">Platinum</div>
+                    @elseif($feature_property->silver_listing)
+                        <div class="tag feature-tag">Silver</div>
+                    @elseif($feature_property->golden_listing)
+                        <div class="tag feature-tag">Golden</div>
+                    @elseif($feature_property->bronze_listing)
+                        <div class="tag feature-tag">Bronze</div>
                     @endif
                     @if($feature_property->image != null)
                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
-                             title="{{$feature_property->title}}" onerror="this.src='http://localhost/img/logo/dummy-logo.png'"/>
+                             title="{{$feature_property->title}}" onerror="this.src='{{asset('img/logo/dummy-logo.png')}}'"/>
                     @else
                         <img class="d-block w-100" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                     @endif
@@ -93,7 +95,7 @@
 
                 </ul>
                 <div class="footer clearfix">
-                    <ul class="float-right">
+                    <ul class="float-right" class="fav-section">
                         @if(\Illuminate\Support\Facades\Auth::check())
                             <li>
                                 <div class="favorite-property" style="font-size: 20px;">
