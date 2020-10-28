@@ -475,7 +475,7 @@
                 event.preventDefault();
                 jQuery.ajaxSetup({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('input[name="_token"]').attr('content')
                     }
                 });
                 event.preventDefault();

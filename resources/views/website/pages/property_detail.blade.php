@@ -63,11 +63,13 @@
                                     </div>
                                 </div>
                             </div>
-                        @if(!empty($property->images))
+                        @if(!$property->images->isEmpty())
                             <!-- main slider carousel items -->
                                 @include('website.includes.property_detail_images')
                             @else
-                                <img src="{{asset("/img/logo/dummy-logo.png")}}" alt="{{$property->title}}" title="{{$property->title}}"/>
+                                <div style="text-align: center">
+                                    <img src="{{asset("/img/logo/dummy-logo.png")}}" alt="{{$property->title}}" title="{{$property->title}}"/>
+                                </div>
                             @endif
                         </div>
 
@@ -87,11 +89,11 @@
                                         <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Video</a>
                                     </li>
                                 @endif
-{{--                                @if(count($similar_properties) > 3)--}}
-                                    <li class="nav-item li-detail-page text-transform mr-1">
-                                        <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>
-                                    </li>
-{{--                                @endif--}}
+                                {{--                                @if(count($similar_properties) > 3)--}}
+                                <li class="nav-item li-detail-page text-transform mr-1">
+                                    <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>
+                                </li>
+                                {{--                                @endif--}}
                             </ul>
                         </div>
                         <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
