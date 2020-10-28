@@ -41,7 +41,7 @@
                 <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                     <img src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                          alt="{{$property->sub_type}} for {{$property->purpose}}"
-                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='http://localhost/img/logo/dummy-logo.png'">
+                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
                     @if($property->platinum_listing == 1)
                         <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>
                     @elseif($property->golden_listing == 1)
