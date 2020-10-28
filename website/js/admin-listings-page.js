@@ -52,9 +52,7 @@
             if (form.valid()) {
                 event.preventDefault();
                 jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
+                    headers: {'X-CSRF-TOKEN': $('input[name="_token"]').attr('content')}
                 });
                 event.preventDefault();
                 jQuery.ajax({

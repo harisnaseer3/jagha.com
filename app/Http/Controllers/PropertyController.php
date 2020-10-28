@@ -140,8 +140,6 @@ class PropertyController extends Controller
         $data = [
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
-//            'key_agencies' => (new AgencyController())->keyAgencies(),
-//            'featured_agencies' => (new AgencyController())->FeaturedAgencies(),
             'property_types' => $property_types,
             'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
             'recent_properties' => $footer_content[0],

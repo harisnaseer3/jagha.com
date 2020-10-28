@@ -385,7 +385,7 @@ class CountTableController extends Controller
     public function getCitiesCount()
     {
         $cities_count = DB::table('property_count_by_cities')
-            ->select('property_count AS count', 'city_name AS city')->get();
+            ->select('property_count AS count', 'city_name AS city')->orderBy('property_count','DESC')->limit(10)->get();
         return $cities_count;
     }
 
