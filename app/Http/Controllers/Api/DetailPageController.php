@@ -19,10 +19,15 @@ class DetailPageController extends Controller
                 ['properties.type', '=', $property->type],
                 ['properties.sub_type', '=', $property->sub_type],
             ])->limit(10)->get();
-        $data['view'] = View('website.components.similar_properties',
-            ['similar_properties' => $similar_properties])->render();
+        if ($similar_properties->isEmpty()) {
+            return $data = 'not available';
+        } else {
+            $data['view'] = View('website.components.similar_properties',
+                ['similar_properties' => $similar_properties])->render();
 
-        return $data;
+            return $data;
+        }
+
     }
 
 }

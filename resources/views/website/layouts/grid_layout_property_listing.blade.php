@@ -171,7 +171,12 @@
                         {{ Form::hidden('property',$property->id)}}
                     @endif
                     <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModel2'.$property->reference}}" aria-label="Call">Call</a></div>
+                    @if($property->email !== null)
                     <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                    @else
+                        <div class="col-sm-6 p-1"  data-toggle="tooltip" data-placement="top" data-html="true" title= "<div>Currently not available</div>"><a class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+
+                    @endif
                 </div>
                 <div class="footer clearfix" style="line-height: 30px;">
                     <ul class="float-right">

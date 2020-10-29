@@ -47,5 +47,5 @@
     <script src="{{asset('website/js/rangeslider.js')}}" defer></script>
     <script src="{{asset('website/js/index-page.js')}}" defer></script>
     <script src="{{asset('website/js/popper.min.js')}}" defer></script>
-    <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
+    <script src="{{asset('website/js/script-custom.js')}}" defer></script>
 @endsection

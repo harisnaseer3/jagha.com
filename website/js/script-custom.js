@@ -513,11 +513,46 @@
                                 $('input[name=name]').val(data.user.name);
                                 $('input[name=email]').val(data.user.email)
                             }
-                            // if ($('.fav-section').length > 0) {
-                            //     $('.fav-section').html('');
-                            //     $('.fav-section').html('');
-                            //
-                            // }
+                            if ($('.fav-section-index').length > 0) {
+                                $.get('/get-featured-properties',  // url
+                                    function (data, textStatus, jqXHR) {  // success callback
+                                        let slider = $('#featured-properties-section');
+                                        slider.slick('unslick');
+                                        slider.html('');
+                                        slider.html(data.view);
+                                        slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+                                        )
+
+                                        $('[data-toggle="tooltip"]').tooltip();
+                                        $('.favorite').on('click', function (e) {
+                                            // console.log('data');
+                                            $(this).hide();
+                                            addFavorite($(this).data('id'), $(this), 'add');
+                                            $(this).next().show();
+                                        });
+
+                                        $('.remove-favorite').on('click', function (e) {
+                                            // console.log('remove data');
+                                            $(this).hide();
+                                            addFavorite($(this).data('id'), $(this), 'delete');
+                                            $(this).prev().show();
+                                        });
+                                    });
+                            }
+                            if ($('.fav-section-detail').length > 0) {
+                                $.get('/get-similar-properties', {'property': $('#email-contact-form').find('input[name=property]').val()},  // url
+                                    function (data, textStatus, jqXHR) {  // success callback
+                                        let slider = $('.slick-carousel');
+                                        let similar_properties = $('#similar-properties-section');
+                                        slider.slick('unslick');
+
+                                        similar_properties.html('');
+                                        similar_properties.html(data.view);
+
+                                        slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+                                        )
+                                    });
+                            }
                             // window.location.reload(true);
                         } else if (data.error) {
                             $('div.help-block small').html(data.error.password);

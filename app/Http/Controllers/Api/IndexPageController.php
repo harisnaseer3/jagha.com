@@ -17,8 +17,8 @@ class IndexPageController extends Controller
             ->limit(10)
             ->get();
 
-        $data['view'] = View('website.components.similar_properties',
-            ['similar_properties' => $featured_properties])->render();
+        $data['view'] = View('website.components.feature_properties',
+            ['featured_properties' => $featured_properties])->render();
 
         return $data;
     }

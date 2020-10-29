@@ -87,10 +87,16 @@
                     @endif
                     <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModel2'.$agency->id}}" aria-label="Call">Call</a>
                     </div>
-                    <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                    @if($agency->email !== null)
+                        <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                    @else
+                        <div class="col-sm-6 p-1"  data-toggle="tooltip" data-placement="top" data-html="true" title= "<div>Currently not available</div>"><a class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+
+                    @endif
                 </div>
             </div>
         </div>
+
         <div class="modal fade" id="{{'CallModel2'.$agency->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
                 <div class="modal-content">
@@ -133,23 +139,23 @@
                 </div>
             </div>
         </div>
-{{--        <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
-{{--            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
-{{--                <div class="modal-content">--}}
-{{--                    <!--Body-->--}}
-{{--                    <div class="modal-body">--}}
-{{--                        <div class="container">--}}
-{{--                            <div class="text-center">--}}
-{{--                                <i class="fas fa-check-circle fa-3x" style="color: #28a745;"></i>--}}
-{{--                                <div class="m-3" style="font-size: 14px">Message sent successfully</div>--}}
-{{--                                <div class="mb-2 line-height">Add email@aboutpakistan.com to your white list to get email from us.</div>--}}
-{{--                                <button class="btn btn-email" data-dismiss="modal">Dismiss</button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        {{--        <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
+        {{--            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
+        {{--                <div class="modal-content">--}}
+        {{--                    <!--Body-->--}}
+        {{--                    <div class="modal-body">--}}
+        {{--                        <div class="container">--}}
+        {{--                            <div class="text-center">--}}
+        {{--                                <i class="fas fa-check-circle fa-3x" style="color: #28a745;"></i>--}}
+        {{--                                <div class="m-3" style="font-size: 14px">Message sent successfully</div>--}}
+        {{--                                <div class="mb-2 line-height">Add email@aboutpakistan.com to your white list to get email from us.</div>--}}
+        {{--                                <button class="btn btn-email" data-dismiss="modal">Dismiss</button>--}}
+        {{--                            </div>--}}
+        {{--                        </div>--}}
+        {{--                    </div>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
     @endforeach
 </div>
 

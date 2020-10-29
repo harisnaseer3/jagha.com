@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-
 class LoginController extends Controller
 {
     /*
@@ -66,6 +65,8 @@ class LoginController extends Controller
                     'email' => Auth::guard('web')->user()->email
                 ];
                 if ($request->ajax()) {
+                    session()->forget('fav-key');
+                    session()->put('fav-key', $user['id']);
                     return response()->json(['data' => 'success', 'user' => $user]);
                 } else {
                     return redirect()->route('home');
@@ -75,16 +76,12 @@ class LoginController extends Controller
             if ($request->ajax())
                 return response()->json(['error' => $validator->getMessageBag()->add('password', 'Invalid email or password. Please Try again!')]);
             else
-                throw ValidationException::withMessages([
-                    $this->username() => [trans('auth.failed')],
-                ]);
+                throw ValidationException::withMessages([$this->username() => [trans('auth.failed')]]);
         }
         if ($request->ajax())
             return response()->json(['error' => $validator->errors()->all()]);
         else
-            throw ValidationException::withMessages([
-                $this->username() => [trans('auth.failed')],
-            ]);
+            throw ValidationException::withMessages([$this->username() => [trans('auth.failed')]]);
     }
 
 //    public function logout(Request $request)

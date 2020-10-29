@@ -90,9 +90,9 @@
                                     </li>
                                 @endif
                                 {{--                                @if(count($similar_properties) > 3)--}}
-                                <li class="nav-item li-detail-page text-transform mr-1">
-                                    <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>
-                                </li>
+{{--                                <li class="nav-item li-detail-page text-transform mr-1">--}}
+{{--                                    <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>--}}
+{{--                                </li>--}}
                                 {{--                                @endif--}}
                             </ul>
                         </div>
@@ -290,7 +290,7 @@
     <script type="text/javascript" defer>jssor_1_slider_init();  </script>
     <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
-    <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
+    <script src="{{asset('website/js/script-custom.js')}}" defer></script>
     <script src="{{asset('website/js/detail-page.js')}}"></script>
 
 @endsection
