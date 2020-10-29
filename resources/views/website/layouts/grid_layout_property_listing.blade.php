@@ -79,7 +79,8 @@
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>
                         <img class="d-block w-100"
-                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"
+                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
+                             onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"
                              alt="{{$property->sub_type}} for {{$property->purpose}}"
                              title="{{$property->sub_type}} for {{$property->purpose}}">
                     </a>
@@ -132,16 +133,16 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal</div>
                            </div>'><i class="fas fa-arrows-alt"></i>
-{{--                                <span>--}}
-{{--                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.--}}
-{{--                                    @endif--}}
-{{--                                </span>--}}
+                                {{--                                <span>--}}
+                                {{--                                    @if(str_replace('-',' ',request()->query('area_unit')) === 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} New Kanal--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) === 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.--}}
+                                {{--                                    @endif--}}
+                                {{--                                </span>--}}
                             </li>
                         @elseif(isset($property->land_area))
                             <li aria-label="land area" data-toggle="tooltip" data-placement="right" data-html="true"
@@ -172,9 +173,10 @@
                     @endif
                     <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModel2'.$property->reference}}" aria-label="Call">Call</a></div>
                     @if($property->email !== null)
-                    <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                     @else
-                        <div class="col-sm-6 p-1"  data-toggle="tooltip" data-placement="top" data-html="true" title= "<div>Currently not available</div>"><a class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+                        <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                                class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
 
                     @endif
                 </div>
@@ -207,14 +209,18 @@
                     </ul>
                     <div class="days">
                         @if($property->contact_person != '' || $property->agent!= '' )
-                            <a>
-                                <i class="fa fa-user"></i>
+                            <a><i class="fa fa-user"></i>
+                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{$property->contact_person}}</div>">
                                 {{ $property->contact_person != ''? \Illuminate\Support\Str::limit($property->contact_person, 20, $end='...'):\Illuminate\Support\Str::limit($property->agent, 20, $end='...') }}
+                                </span>
                             </a>
                         @else
-                            <a>
-                                <i class="fa fa-user"></i>
+                            <a><i class="fa fa-user"></i>
+                                @if($property->user_nick_name !== '')
+                                    <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{$property->user_nick_name}}</div>">
                                 {{ $property->user_nick_name != ''? \Illuminate\Support\Str::limit($property->user_nick_name, 20, $end='...'):\Illuminate\Support\Str::limit($property->user_name, 20, $end='...') }}
+                                </span>
+                                @endif
                             </a>
                         @endif
                     </div>
