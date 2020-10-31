@@ -130,16 +130,16 @@
                            </div>'>
                             @if(request()->query('area_unit') != null)
                                 <i class="fas fa-arrows-alt"></i>
-{{--                                <span>--}}
-{{--                                    @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} Kanal--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M--}}
-{{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.--}}
-{{--                                    @endif--}}
-{{--                                </span>--}}
+                                {{--                                <span>--}}
+                                {{--                                    @if(str_replace('-',' ',request()->query('area_unit')) == 'new marla (225 sqft)'){{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'new kanal (16 marla)'){{ number_format($property->area_in_new_kanal,2) }} Kanal--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'marla'){{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft)--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'kanal'){{ number_format($property->area_in_kanal,2) }} Kanal--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square feet'){{ number_format($property->area_in_sqft,2) }} Sq.F.--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square meters'){{ number_format($property->area_in_sqm,2) }} Sq.M--}}
+                                {{--                                    @elseif(str_replace('-',' ',request()->query('area_unit')) == 'square yards'){{ number_format($property->area_in_sqyd,2) }} Sq.Yd.--}}
+                                {{--                                    @endif--}}
+                                {{--                                </span>--}}
                                 <span> {{ number_format($property->land_area,2) }}
                                     @if($property->area_unit == 'Square Meters') Sq.M.
                                     @elseif($property->area_unit == 'Square Feet')Sq.F.
@@ -185,10 +185,11 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3 partner-logo-style" style="height:70px;">
-{{--                            {{dd($property->logo)}}--}}
+                            {{--                            {{dd($property->logo)}}--}}
                             @if($property->agency)
                                 @if(isset($property->logo))
-                                    <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}" onerror="this.src='http://localhost/img/logo/dummy-logo.png'"
+                                    <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}"
+                                         onerror="this.src='http://localhost/img/logo/dummy-logo.png'"
                                          data-toggle="popover" data-trigger="hover" title="{{$property->agency}}" data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
@@ -211,7 +212,13 @@
                         </a>
                     </div> -->
                         <div class="col-sm-6 p-1"><a class="btn btn-block mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</a></div>
-                        <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        @if($property->email != null)
+                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                        @else
+                            <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                                    class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+
+                        @endif
                     </div>
                 </div>
                 <div class="footer clearfix">
@@ -234,18 +241,28 @@
                                     </a>
                                 </div>
                             </li>
-                        @else
-                            <li>
-                                <div class="favorite-property font-20">
-                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">
-                                        <i class="fal fa-heart empty-heart"></i>
-                                    </a>
-                                </div>
-                            </li>
+{{--                        @else--}}
+{{--                            <li>--}}
+{{--                                <div class="favorite-property font-20">--}}
+{{--                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">--}}
+{{--                                        <i class="fal fa-heart empty-heart"></i>--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
                         @endif
                     </ul>
                     <div class="pull-left days">
-                        <a><i class="fa fa-user"></i> {{ $property->contact_person != ''? $property->contact_person: $property->agent }}</a>
+                        <a><i class="fa fa-user"></i>
+                            @if($property->contact_person != '')
+                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{$property->contact_person}}</div>">
+                                    {{count(explode(',',$property->contact_person)) > 1 ? \Illuminate\Support\Str::limit(explode(',',$property->contact_person)[0], 20, $end='..').'..' : \Illuminate\Support\Str::limit(explode(',',$property->contact_person)[0], 20, $end='...')}}
+                                </span>
+                            @else
+                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{$property->agent}}</div>">
+                                    {{count(explode(',',$property->agent)) > 1 ? \Illuminate\Support\Str::limit(explode(',',$property->agent)[0], 20, $end='..').'..' : \Illuminate\Support\Str::limit(explode(',',$property->agent)[0], 20, $end='...')}}
+                                </span>
+                            @endif
+                        </a>
                     </div>
                     <div class="pull-right">
                         <a aria-label="Listing creation date"><i class="flaticon-time"></i>
@@ -297,9 +314,9 @@
                             <tr>
                                 <td>Agent</td>
                                 @if($property->contact_person != '' || $property->agent!= '' )
-                                    <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person:$property->agent}}</td>
+                                    <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person : $property->agent}}</td>
                                 @else
-                                    <td class="font-weight-bold">{{ $property->user_nick_name != ''? $property->user_nick_name:$property->user_name}}</td>
+                                    <td class="font-weight-bold">{{ $property->user_nick_name != ''? $property->user_nick_name : $property->user_name}}</td>
 
                                 @endif
 

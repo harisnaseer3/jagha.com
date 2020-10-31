@@ -175,14 +175,14 @@
 
             $('[data-toggle="tooltip"]').tooltip();
             $('.favorite').on('click', function (e) {
-                console.log('data');
+                // console.log('data');
                 $(this).hide();
                 addFavorite($(this).data('id'), $(this), 'add');
                 $(this).next().show();
             });
 
             $('.remove-favorite').on('click', function (e) {
-                console.log('remove data');
+                // console.log('remove data');
                 $(this).hide();
                 addFavorite($(this).data('id'), $(this), 'delete');
                 $(this).prev().show();

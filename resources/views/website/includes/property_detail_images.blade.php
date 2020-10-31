@@ -104,7 +104,7 @@
                      onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"/>
                 <img data-u="thumb" src="{{asset('thumbnails/properties/'.explode('.',$value->name)[0].'-200x200.webp')}}" alt="{{$property->title}}" title="{{$property->title}}"
                      onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"/>
-                <div class="price-ratings-box">
+                <div class="price-ratings-box detail-page-fav" data-id="{{$property->id}}">
                     @if(\Illuminate\Support\Facades\Auth::guard('web')->guest())
                         <div class="favorite-property ratings" style="font-size: 20px;">
                             <a data-toggle="modal" data-target="#exampleModalCenter" style="color: white;" class="favourite">
@@ -114,17 +114,16 @@
                     @else
                         <div class="favorite-property ratings" style="font-size: 20px;">
                             <a href="javascript:void(0);"
-                               style="color: white; display: {{$is_favorite? 'none': 'block'}} ;" class="favorite" data-id="{{$property->id}}">
+                               style="color: white; display: {{$is_favorite? 'none': 'block'}} ;" class="detail-favorite" data-id="{{$property->id}}">
                                 <i class="fal fa-heart empty-heart"></i>
                             </a>
                             <a href="javascript:void(0);"
-                               style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="remove-favorite" data-id="{{$property->id}}">
+                               style="color: black; display : {{$is_favorite? 'block': 'none'}};" class="detail-remove-favorite" data-id="{{$property->id}}">
                                 <i class="fas fa-heart filled-heart" style="color: red;"></i>
                             </a>
                         </div>
                     @endif
                 </div>
-
             </div>
         @endforeach
     </div>

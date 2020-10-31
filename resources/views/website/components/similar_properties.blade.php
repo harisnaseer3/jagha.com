@@ -89,17 +89,17 @@
 
                 </ul>
                 <div class="footer clearfix">
-                    <ul class="float-right">
-                        @if(\Illuminate\Support\Facades\Auth::check())
+                    <ul class="float-right fav-section-detail">
+                        @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                             <li>
                                 <div class="favorite-property" style="font-size: 20px;">
                                     <a href="javascript:void(0);" title="Add to favorite"
-                                       style="display: {{$feature_property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()? 'none':'block' }}"
+                                       style="display: {{$feature_property->user_favorite === \Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier()? 'none':'block' }}"
                                        class="favorite" data-id="{{$feature_property->id}}">
                                         <i class="fal fa-heart empty-heart color-black"></i>
                                     </a>
                                     <a href="javascript:void(0);" title="Add to favorite"
-                                       style="display : {{$feature_property->user_favorite === \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier() ? 'block':'none'}}"
+                                       style="display : {{$feature_property->user_favorite === \Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier() ? 'block':'none'}}"
                                        class="remove-favorite color-black" data-id="{{$feature_property->id}}">
                                         <i class="fas fa-heart filled-heart color-red"></i>
                                     </a>

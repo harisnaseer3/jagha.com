@@ -241,28 +241,56 @@
             });
         }
     });
-    $('.price-ratings-box').on('click', function () {
-        if ('{{\Illuminate\Support\Facades\Auth::guard(\'web\')->user()}}' !== null && '{{\Illuminate\Support\Facades\Auth::guard(\'web\')->user()}}' !== '') {
-            let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
-                '<a href="javascript:void(0);" style="color: black; display : block" class="remove-favorite" data-id="{{$property->id}}">' +
-                '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
-                '</a>' +
-                '</div>';
-            $(this).html('');
-            $(this).html(html);
-        }
-    });
+    function addFavorite(id, selector, task) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: task === 'add' ? window.location.origin + '/dashboard/properties/' + id + '/favorites' : window.location.origin + '/dashboard/properties/' + id + '/favorites/1',
+            dataType: 'json',
+            success: function (data) {
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            },
+            complete: function (url, options) {
+            }
+        });
+    }
     $.get('/get-similar-properties', {'property': $('#email-contact-form').find('input[name=property]').val()},  // url
         function (data, textStatus, jqXHR) {  // success callback
-            let slider = $('.slick-carousel');
-            let similar_properties = $('#similar-properties-section');
-            slider.slick('unslick');
+            $('.ajax-loader').hide();
+            if (data !== 'not available') {
+                $('.display-data').show();
+                let slider = $('.slick-carousel');
+                let similar_properties = $('#similar-properties-section');
+                slider.slick('unslick');
 
-            similar_properties.html('');
-            similar_properties.html(data.view);
+                similar_properties.html('');
+                similar_properties.html(data.view);
 
-            slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
-            )
+                slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+                )
+                $('.detail-tab-style').append('<li class="nav-item li-detail-page text-transform mr-1">'+
+                    '<a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a></li>');
+                $('[data-toggle="tooltip"]').tooltip();
+                $('.favorite').on('click', function (e) {
+                    // console.log('data');
+                    $(this).hide();
+                    addFavorite($(this).data('id'), $(this), 'add');
+                    $(this).next().show();
+                });
+
+                $('.remove-favorite').on('click', function (e) {
+                    // console.log('remove data');
+                    $(this).hide();
+                    addFavorite($(this).data('id'), $(this), 'delete');
+                    $(this).prev().show();
+                });
+            }
 
         });
 })
