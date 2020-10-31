@@ -168,6 +168,66 @@
         });
     }
 
+    function getDetailPropertyFavData(user, property) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'post',
+            url: window.location.origin + '/propertyFavorite',
+            data: {property: property},
+            dataType: 'json',
+            success: function (data) {
+                if (data.status === 200) {
+                    let html = '<div class="favorite-property ratings" style="font-size: 20px;">';
+                    if (data.data === user) {
+                        html += '<a href="javascript:void(0);" style="color: white; display: none" class="detail-favorite" data-id="' + property + '">' +
+                            '<i class="fal fa-heart empty-heart"></i>' +
+                            '</a>' +
+                            '<a href="javascript:void(0);" style="color: black; display :block"  class="detail-remove-favorite" data-id="' + property + '">' +
+                            '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
+                            '</a>' +
+                            '</div>';
+                    } else if (data.data === 'not available') {
+                        html += '<a href="javascript:void(0);" style="color: white; display:block"  class="detail-favorite" data-id="' + property + '">' +
+                            '<i class="fal fa-heart empty-heart"></i>' +
+                            '</a>' +
+                            '<a href="javascript:void(0);" style="color: black; display :none" class="detail-remove-favorite" data-id="' + property + '">' +
+                            '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
+                            '</a>' +
+                            '</div>';
+                    }
+                    let section = $('.detail-page-fav')
+                    section.html('');
+                    section.html(html);
+
+                    $('.detail-favorite').on('click', function (e) {
+                        let require_btn = $('.detail-favorite');
+                        require_btn.hide();
+                        addFavorite($(this).data('id'), $(this), 'add');
+                        require_btn.next().show();
+                    });
+                    $('.detail-remove-favorite').on('click', function (e) {
+                        let require_btn = $('.detail-remove-favorite');
+                        require_btn.hide();
+                        addFavorite($(this).data('id'), $(this), 'delete');
+                        require_btn.prev().show();
+                    });
+
+                }
+            },
+            error: function (xhr, status, error) {
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
+            },
+            complete: function (url, options) {
+            }
+        });
+    }
+
     function search2AreaUnitOption(area_options, area_short_form, min_options, max_options) {
         let search2_min_html =
             '                       <div class="form-group">' +
@@ -322,6 +382,19 @@
             $(this).hide();
             addFavorite($(this).data('id'), $(this), 'delete');
             $(this).prev().show();
+        });
+
+        $('.detail-favorite').on('click', function (e) {
+            let require_btn = $('.detail-favorite');
+            require_btn.hide();
+            addFavorite($(this).data('id'), $(this), 'add');
+            require_btn.next().show();
+        });
+        $('.detail-remove-favorite').on('click', function (e) {
+            let require_btn = $('.detail-remove-favorite');
+            require_btn.hide();
+            addFavorite($(this).data('id'), $(this), 'delete');
+            require_btn.prev().show();
         });
 
         let property_type = $('.property-type-select2');
@@ -514,11 +587,14 @@
                                 $('input[name=email]').val(data.user.email)
                             }
                             if ($('.fav-section-index').length > 0) {
+                                let slider = $('#featured-properties-section');
+                                slider.html('');
+                                $('#ajax-loader-properties').show();
                                 $.get('/get-featured-properties',  // url
                                     function (data, textStatus, jqXHR) {  // success callback
-                                        let slider = $('#featured-properties-section');
                                         slider.slick('unslick');
-                                        slider.html('');
+                                        $('#ajax-loader-properties').hide();
+
                                         slider.html(data.view);
                                         slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
                                         )
@@ -540,10 +616,16 @@
                                     });
                             }
                             if ($('.fav-section-detail').length > 0) {
+                                let similar_properties = $('#similar-properties-section');
+                                $('.display-data').hide();
+                                similar_properties.html('');
+                                $('.ajax-loader').show();
+                                $('#ajax-loader-properties').show();
                                 $.get('/get-similar-properties', {'property': $('#email-contact-form').find('input[name=property]').val()},  // url
                                     function (data, textStatus, jqXHR) {  // success callback
                                         let slider = $('.slick-carousel');
-                                        let similar_properties = $('#similar-properties-section');
+                                        $('.display-data').show();
+                                        $('#ajax-loader-properties').hide();
                                         slider.slick('unslick');
 
                                         similar_properties.html('');
@@ -551,9 +633,15 @@
 
                                         slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
                                         )
+
                                     });
                             }
-                            // window.location.reload(true);
+                            if ($('.detail-page-fav').length > 0) {
+                                let page = $('.detail-page-fav');
+                                let key = page.attr('data-id');
+                                page.html('<i class="fa fa-spinner fa-spin"></i>');
+                                getDetailPropertyFavData(user_id, key);
+                            }
                         } else if (data.error) {
                             $('div.help-block small').html(data.error.password);
                             $('.error-tag').show();

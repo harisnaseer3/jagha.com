@@ -65,8 +65,6 @@ class LoginController extends Controller
                     'email' => Auth::guard('web')->user()->email
                 ];
                 if ($request->ajax()) {
-                    session()->forget('fav-key');
-                    session()->put('fav-key', $user['id']);
                     return response()->json(['data' => 'success', 'user' => $user]);
                 } else {
                     return redirect()->route('home');

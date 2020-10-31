@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\PropertyController;
 use App\Models\Property;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DetailPageController extends Controller
 {
@@ -24,10 +25,22 @@ class DetailPageController extends Controller
         } else {
             $data['view'] = View('website.components.similar_properties',
                 ['similar_properties' => $similar_properties])->render();
-
             return $data;
         }
 
+    }
+
+    function getPropertyFavoriteUser(Request $request)
+    {
+        if ($request->ajax()) {
+            $property_id = $request->input('property');
+            $result = DB::table('favorites')->select('user_id')->where('property_id', '=', $property_id)->get()->pluck('user_id');
+            if(!$result->isEmpty())
+                return response()->json(['data' => $result[0], 'status' => 200]);
+            else
+                return response()->json(['data' => 'not available', 'status' => 200]);
+
+        }
     }
 
 }

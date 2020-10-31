@@ -15,6 +15,7 @@
     @include('website.includes.banner2')
     @include('website.includes.search2')
     <div class="properties-details-page content-area-7">
+        <div class="spinner-border text-primary"></div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-12 col-xs-12">

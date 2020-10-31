@@ -34,28 +34,29 @@
 @endif
 <!-- Property section start -->
 <div class="row property-section">
-    @foreach($properties as $property)
+@foreach($properties as $property)
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="property-box">
                 <div class="property-thumbnail">
                     <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                         <div class="listing-badges">
-                            @if($property->premium_listing == 1)
-                                <span class="featured bg-red" aria-label="premium label">Premium</span>
-                            @elseif($property->super_hot_listing == 1)
-                                <span class="featured bg-red" aria-label="super hot label">Super Hot</span>
-
-                            @elseif($property->hot_listing  == 1)
-                                <span class="featured" aria-label="hot label">Hot</span>
+                            @if($property->platinum_listing == 1)
+                                <span class="featured bg-red" aria-label="premium label">Platinum</span>
+                            @elseif($property->silver_listing == 1)
+                                <span class="featured bg-red" aria-label="super hot label">Silver</span>
+                            @elseif($property->bronze_listing  == 1)
+                                <span class="featured" aria-label="hot label">Bronze</span>
+                            @elseif($property->golden_listing  == 1)
+                                <span class="featured" aria-label="hot label">Golden</span>
                             @endif
-                            @if(isset($property->featured_listing)  && $property->featured_listing)
+                            @if(isset($property->featured_listing)  && $property->featured_listing == 1)
                                 <span class="featured float-right tag-padding" style="background-color: #555">
                                     <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
                                         <span class="color-white">FEATURED PARTNER</span>
                                     </span>
                                 </span>
                             @endif
-                            @if(isset($property->key_listing)  && $property->key_listing)
+                            @if(isset($property->key_listing)  && $property->key_listing == 1)
                                 <span class="featured float-right tag-padding" style="background-color: #555">
                                     <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
                                         <span class="color-white">KEY PARTNER</span>
@@ -197,14 +198,14 @@
                                     </a>
                                 </div>
                             </li>
-                        @else
-                            <li>
-                                <div class="favorite-property font-20">
-                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">
-                                        <i class="fal fa-heart empty-heart"></i>
-                                    </a>
-                                </div>
-                            </li>
+{{--                        @else--}}
+{{--                            <li>--}}
+{{--                                <div class="favorite-property font-20">--}}
+{{--                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">--}}
+{{--                                        <i class="fal fa-heart empty-heart"></i>--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
                         @endif
                     </ul>
                     <div class="days">

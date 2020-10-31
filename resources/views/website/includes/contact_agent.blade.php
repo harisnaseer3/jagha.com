@@ -26,7 +26,11 @@
             {{ Form::hidden('property',$property->id)}}
         @endif
         <div class="text-center">
-            {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
+            @if($property->email == null)
+                <button class="btn btn-block mt-2 btn-email disabled" data-toggle="tooltip" data-placement="top" data-html="true" title ="<div>Currently not available</div>" >Email</button>
+            @else
+                {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
+            @endif
         </div>
         {{ Form::close() }}
         <button class="btn btn-block mt-2 btn-call" data-toggle="modal" data-target="#CallModel">Call</button>

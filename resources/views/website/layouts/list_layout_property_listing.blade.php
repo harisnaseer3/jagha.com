@@ -241,14 +241,14 @@
                                     </a>
                                 </div>
                             </li>
-                        @else
-                            <li>
-                                <div class="favorite-property font-20">
-                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">
-                                        <i class="fal fa-heart empty-heart"></i>
-                                    </a>
-                                </div>
-                            </li>
+{{--                        @else--}}
+{{--                            <li>--}}
+{{--                                <div class="favorite-property font-20">--}}
+{{--                                    <a data-toggle="modal" data-target="#exampleModalCenter" class="favourite color-black" title="Add to favorite">--}}
+{{--                                        <i class="fal fa-heart empty-heart"></i>--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
                         @endif
                     </ul>
                     <div class="pull-left days">

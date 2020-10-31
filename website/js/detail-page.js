@@ -241,17 +241,6 @@
             });
         }
     });
-    $('.price-ratings-box').on('click', function () {
-        if ('{{\Illuminate\Support\Facades\Auth::guard(\'web\')->user()}}' !== null && '{{\Illuminate\Support\Facades\Auth::guard(\'web\')->user()}}' !== '') {
-            let html = ' <div class="favorite-property ratings" style="font-size: 20px;">' +
-                '<a href="javascript:void(0);" style="color: black; display : block" class="remove-favorite" data-id="{{$property->id}}">' +
-                '<i class="fas fa-heart filled-heart" style="color: red;"></i>' +
-                '</a>' +
-                '</div>';
-            $(this).html('');
-            $(this).html(html);
-        }
-    });
     function addFavorite(id, selector, task) {
         jQuery.ajaxSetup({
             headers: {
