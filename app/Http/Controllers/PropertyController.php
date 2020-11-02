@@ -560,8 +560,8 @@ class PropertyController extends Controller
                 'property' => $property,
                 'property_types' => $property_types,
                 'counts' => $counts,
-                'recent_properties' => $footer_content()[0],
-                'footer_agencies' => $footer_content()[1]
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' =>  $footer_content[1]
             ]);
     }
 
