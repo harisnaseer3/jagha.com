@@ -385,6 +385,7 @@ class PropertyController extends Controller
             if ($request->filled('video_link')) {
                 (new VideoController)->store($request, $property);
             }
+            (new CountTableController)->_insert_in_status_purpose_table($property);
             // insertion in count tables when property status is active
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
@@ -398,7 +399,6 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.');
         } catch (Exception $e) {
-        //   dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -688,6 +688,8 @@ class PropertyController extends Controller
             if ($request->filled('video_link')) {
                 (new VideoController)->update($request, $property);
             }
+            (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
+            (new CountTableController)->_insert_in_status_purpose_table($property);
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
                 $property->activated_at = $dt;
@@ -743,6 +745,8 @@ class PropertyController extends Controller
 
                 if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                     (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+                (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
+                (new CountTableController)->_insert_in_status_purpose_table($property);
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {
@@ -1523,14 +1527,21 @@ class PropertyController extends Controller
     public function changePropertyStatus(Request $request)
     {
         if ($request->ajax()) {
-            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
 
+            $property = (new Property)->WHERE('id', '=', $request->id)->first();
+            (new CountTableController)->_delete_in_status_purpose_table($property, $property->status);
+
+            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
             $property = (new Property)->WHERE('id', '=', $request->id)->first();
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
             $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
             $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
+
+
+
+            (new CountTableController)->_insert_in_status_purpose_table($property);
 
             if ($request->status == 'sold' || $request->status == 'expired') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);

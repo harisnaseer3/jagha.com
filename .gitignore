@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor
 /thumbnails
+/property_media
 .env
 .env.backup
 .phpunit.result.cache
