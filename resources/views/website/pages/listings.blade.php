@@ -184,10 +184,10 @@
             </div>
         </div>
     </div>
+    @include('website.layouts.delete-modal', array('route'=>'properties'))
 
     <!-- Footer start -->
     @include('website.includes.footer')
-    @include('website.layouts.delete-modal', array('route'=>'properties'))
 @endsection
 
 @section('script')

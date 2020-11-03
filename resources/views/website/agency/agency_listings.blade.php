@@ -314,5 +314,5 @@
 @endsection
 
 @section('script')
-    <script src="{{asset('website/js/agency-listing.js')}}" defer></script>
+    <script src="{{asset('website/js/agency-listings-page.js')}}" defer></script>
 @endsection
