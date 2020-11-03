@@ -181,22 +181,23 @@ class AgencyUserController extends Controller
                 'status' => $status
             ];
         }
-        if (Auth::guard('admin')->user())
+        if (Auth::guard('admin')->user()) {
             $data = [
                 'users_status' => $user_status,
                 'agency' => (new AgencyController)->getAgencyById($agency),
                 'counts' => (new AgencyController)->getAgencyListingCount($user),
                 'current_agency_users' => $current_agency_users,
             ];
-        if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
-            return redirect()->route('admin.agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
-        else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
-            return redirect()->route('admin.agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
-        else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
-            return redirect()->route('admin.agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
-        else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
-            return redirect()->route('admin.agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
-        else {
+            if (count($users) > 0 && (count($new_email_users) > 0 || count($new_id_users) > 0))  #if few users found and some are not found
+                return redirect()->route('admin.agencies.add-users', $data)->with('success', 'Agency invitation has been sent to users.' . ' ' . implode(', ', $existing_id_user) . ' ' . implode(', ', $existing_email_user))->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+            else if (count($users) > 0 && (count($new_email_users) == 0 && count($new_id_users) == 0)) #if all users found
+                return redirect()->route('admin.agencies.add-users', $data)->with('success', 'Agency invitation has been sent to user(s).');
+            else if (count($users) == 0 && (count($already_in_notification_by_id) > 0 || count($already_in_notification_by_email) > 0)) #if no users are repeated
+                return redirect()->route('admin.agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $new_id_users) . ' ' . implode(', ', $new_email_users) . 'already member(s) of the agency.');
+            else if (count($users) == 0 && count($already_in_notification_by_id) == 0 && count($already_in_notification_by_email) == 0) #if no users found
+                return redirect()->route('admin.agencies.add-users', $data)->with('error', 'User(s) with ID/Email' . ' ' . implode(', ', $already_in_notification_by_id) . ' ' . implode(', ', $already_in_notification_by_email) . ' not found. An invitation to join About Pakistan Property Portal has been sent to Email.');
+
+        } else {
             $data = [
                 'users_status' => $user_status,
                 'agency' => (new AgencyController)->getAgencyById($agency),
