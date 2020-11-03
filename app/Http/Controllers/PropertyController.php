@@ -699,12 +699,13 @@ class PropertyController extends Controller
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 
-            (new PropertyLogController())->store($property);
+
             $footer_content = (new FooterController)->footerContent();
 
-
-            if (Auth::guard('admin')->user())
+            if (Auth::guard('admin')->user()){
+                (new PropertyLogController())->store($property);
                 return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
+            }
 
             return redirect()->route('properties.listings',
                 ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10',
