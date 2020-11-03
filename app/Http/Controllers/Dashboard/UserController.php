@@ -165,7 +165,7 @@ class UserController extends Controller
                 foreach ($files as $file) {
                     $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
 
-                    Storage::put('public/user_images/' . $updated_path, fopen($request->file('upload_new_picture'), 'r+'));
+                    Storage::put('user_images/' . $updated_path, fopen($request->file('upload_new_picture'), 'r+'));
                     $thumbnailpath = ('thumbnails/user_images/' . $updated_path);
 
                     $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {

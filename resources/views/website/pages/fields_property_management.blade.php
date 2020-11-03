@@ -78,10 +78,12 @@
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
-        @if(isset($property) and !$property->image->isEmpty())
+        @if(isset($property) and !$property->image->isEmpty())	
+		
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Images</div>
                 @foreach($property->image as $available_image)
+	
                     <div class="col-md-4 col-sm-6 my-2">
                         <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
                             <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-image" data-record-id="{{$available_image->id}}"
@@ -126,7 +128,7 @@
             {{ Form::bsText('video link', null, ['required' => false]) }}
         @endif
 
-        @if(isset($property) and !$property->floor_plan->isEmpty())
+        @if(isset($property) and !$property->floor_plan->isEmpty()))
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Floor Plans</div>
                 @foreach($property->floor_plan as $available_image)

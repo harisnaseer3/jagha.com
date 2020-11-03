@@ -398,7 +398,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.');
         } catch (Exception $e) {
-//            dd($e->getMessage());
+        //   dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -516,6 +516,7 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+
         $agency_ids = [];
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', $property->user_id)->get()->toArray();
 
@@ -533,9 +534,13 @@ class PropertyController extends Controller
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
-        $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
-        $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
-        $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
+      //  $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
+	  $property->image = $property->images;
+       
+       // $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
+        $property->video = $property->videos;
+        $property->floor_plan = $property->floor_plans;
+       // $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
         if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
             $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
         }
@@ -712,6 +717,7 @@ class PropertyController extends Controller
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
+			//dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }

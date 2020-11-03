@@ -50,7 +50,7 @@ class FloorPlanController extends Controller
 
             foreach ($files as $file) {
                 $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
-                Storage::put('public/floor_plans/' . $filenametostore, fopen($file_name, 'r+'));
+                Storage::put('floor_plans/' . $filenametostore, fopen($file_name, 'r+'));
 
                 //Resize image here
                 $thumbnailpath = ('thumbnails/floor_plans/' . $updated_path);
@@ -114,7 +114,7 @@ class FloorPlanController extends Controller
 
             foreach ($files as $file) {
                 $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
-                Storage::put('public/floor_plans/' . $filenametostore, fopen($file_name, 'r+'));
+                Storage::put('floor_plans/' . $filenametostore, fopen($file_name, 'r+'));
 
                 //Resize image here
                 $thumbnailpath = ('thumbnails/floor_plans/' . $updated_path);
