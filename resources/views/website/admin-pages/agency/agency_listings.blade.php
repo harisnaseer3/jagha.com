@@ -356,5 +356,6 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('website/js/admin-agency-listings.js')}}" defer></script>
 @endsection
