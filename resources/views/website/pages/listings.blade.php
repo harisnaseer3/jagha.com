@@ -191,5 +191,6 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('website/js/listings-page.js')}}" defer></script>
 @endsection
