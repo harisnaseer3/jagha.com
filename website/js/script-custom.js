@@ -541,14 +541,13 @@
                 }
             }
         });
-
         $('#sign-in-btn').click(function (event) {
             // console.log(form.serialize())
             if (form.valid()) {
                 event.preventDefault();
                 jQuery.ajaxSetup({
                     headers: {
-                        'X-CSRF-TOKEN': $('input[name="_token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
                 event.preventDefault();
@@ -659,7 +658,6 @@
                 });
             }
         });
-
     });
 })
 (jQuery);

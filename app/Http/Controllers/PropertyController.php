@@ -533,6 +533,7 @@ class PropertyController extends Controller
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
+
         $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
         $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
