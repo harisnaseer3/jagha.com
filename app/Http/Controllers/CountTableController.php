@@ -302,14 +302,43 @@ class CountTableController extends Controller
             $listing_type = 'golden_listing';
         elseif ($property->platinum_listing)
             $listing_type = 'platinum_listing';
-        if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)->where('property_purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
-            ->where('listing_type', '=', $listing_type)->exists()) {
-            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)->where('property_purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+
+        if (Auth::guard('web')->user()) {
+            if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                ->where('property_purpose', '=', $property->purpose)->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())
+                ->where('listing_type', '=', $listing_type)->exists()) {
+                DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                    ->where('property_purpose', '=', $property->purpose)
+                    ->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())
+                    ->where('listing_type', '=', $listing_type)->increment('property_count');
+            } else {
+                DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
+                    'user_id' => Auth::guard('web')->user()->getAuthIdentifier(), 'listing_type' => $listing_type, 'property_count' => 1]);
+            }
+            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('user_id', '=', 1)
                 ->where('listing_type', '=', $listing_type)->increment('property_count');
-        } else {
-            DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
-                'user_id' => Auth::user()->getAuthIdentifier(), 'listing_type' => $listing_type, 'property_count' => 1]);
         }
+        if (Auth::guard('admin')->user()) {
+            if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('user_id', '=', $property->user_id)
+                ->where('listing_type', '=', $listing_type)->exists()) {
+                DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                    ->where('property_purpose', '=', $property->purpose)
+                    ->where('user_id', '=', $property->user_id)
+                    ->where('listing_type', '=', $listing_type)->increment('property_count');
+            } else {
+                DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
+                    'user_id' => $property->user_id, 'listing_type' => $listing_type, 'property_count' => 1]);
+            }
+            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('user_id', '=', 1)
+                ->where('listing_type', '=', $listing_type)->increment('property_count');
+        }
+
     }
 
     public function _delete_in_status_purpose_table($property, $status)
@@ -325,11 +354,20 @@ class CountTableController extends Controller
             $listing_type = 'golden_listing';
         elseif ($property->platinum_listing)
             $listing_type = 'platinum_listing';
-        if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)->where('property_purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
+
+        if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)->where('property_purpose', '=', $property->purpose)
+            ->where('user_id', '=', $property->user_id)
             ->where('listing_type', '=', $listing_type)->exists()) {
-            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)->where('property_purpose', '=', $property->purpose)->where('user_id', '=', Auth::user()->getAuthIdentifier())
-                ->where('listing_type', '=', $listing_type)->decrement('property_count');
+            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('user_id', '=', $property->user_id)
+                ->where('listing_type', '=', $listing_type)->where('property_count', '>', 0)->decrement('property_count');
         }
+
+        DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)
+            ->where('property_purpose', '=', $property->purpose)
+            ->where('user_id', '=', 1)
+            ->where('listing_type', '=', $listing_type)->where('property_count', '>', 0)->decrement('property_count');
     }
 
     public function _insertion_in_count_tables($city, $location, $property)
