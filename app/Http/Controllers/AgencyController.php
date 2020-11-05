@@ -526,8 +526,8 @@ class AgencyController extends Controller
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
             $agency = (new Agency)->updateOrCreate(['id' => $agency->id], [
-                'city_id' => $city->id,
-                'title' => $request->input('company_title'),
+//                'city_id' => $city->id,
+//                'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
                 'cell' => $request->input('cell'),

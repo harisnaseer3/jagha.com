@@ -562,7 +562,7 @@ class PropertyController extends Controller
                 'property_types' => $property_types,
                 'counts' => $counts,
                 'recent_properties' => $footer_content[0],
-                'footer_agencies' =>  $footer_content[1]
+                'footer_agencies' => $footer_content[1]
             ]);
     }
 
@@ -635,46 +635,44 @@ class PropertyController extends Controller
                 $agency = DB::table('agencies')->select('id')->
                 where('title', '=', $request->input('agency'))->where('user_id', '=', $property->user_id)->first();
             }
-
-            $property = (new Property)->updateOrCreate(['id' => $property->id], [
-                'reference' => $property->reference,
-                'user_id' => $property->user_id,
-                'city_id' => $city->id,
-                'location_id' => $location['location_id'],
-                'agency_id' => $agency != '' ? $agency->id : $property->agency_id,
-                'purpose' => $request->input('purpose'),
-                'sub_purpose' => $request->has('wanted_for') ? $request->has('wanted_for') : null,
-                'type' => $request->input('property_type'),
-                'sub_type' => $subtype,
-                'title' => $request->input('property_title'),
-                'description' => $request->input('description'),
-                'price' => $request->has('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
-                'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
-                'land_area' => $request->input('land_area'),
-                'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
-                'area_in_sqft' => $area_values['sqft'],
-                'area_in_sqyd' => $area_values['sqyd'],
-                'area_in_sqm' => $area_values['sqm'],
-                'area_in_marla' => $area_values['marla'],
-                'area_in_new_marla' => $area_values['new_marla'],
-                'area_in_kanal' => $area_values['kanal'],
-                'area_in_new_kanal' => $area_values['new_kanal'],
-                'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
-                'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
-                'features' => $request->has('features') ? json_encode($json_features) : null,
-                'status' => $request->has('status') ? $request->input('status') : 'edited',
-                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
-                'basic_listing' => 1,
-                'contact_person' => $request->input('contact_person'),
-                'phone' => $request->input('phone'),
-                'cell' => $request->input('mobile'),
-                'fax' => $request->input('fax'),
-                'email' => $request->input('contact_email'),
-                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
-            ]);
-
+                $property = (new Property)->updateOrCreate(['id' => $property->id], [
+//                    'reference' => $property->reference,
+//                    'user_id' => $property->user_id,
+//                    'city_id' => $city->id,
+//                    'location_id' => $location['location_id'],
+//                    'agency_id' => $agency != '' ? $agency->id : $property->agency_id,
+//                    'purpose' => $request->input('purpose'),
+//                    'sub_purpose' => $request->has('wanted_for') ? $request->has('wanted_for') : null,
+//                    'type' => $request->input('property_type'),
+//                    'sub_type' => $subtype,
+//                    'title' => $request->input('property_title'),
+                    'description' => $request->input('description'),
+                    'price' => $request->has('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                    'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
+                    'land_area' => $request->input('land_area'),
+                    'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
+                    'area_in_sqft' => $area_values['sqft'],
+                    'area_in_sqyd' => $area_values['sqyd'],
+                    'area_in_sqm' => $area_values['sqm'],
+                    'area_in_marla' => $area_values['marla'],
+                    'area_in_new_marla' => $area_values['new_marla'],
+                    'area_in_kanal' => $area_values['kanal'],
+                    'area_in_new_kanal' => $area_values['new_kanal'],
+                    'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
+                    'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'features' => $request->has('features') ? json_encode($json_features) : null,
+                    'status' => $request->has('status') ? $request->input('status') : 'edited',
+                    'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
+                    'basic_listing' => 1,
+                    'contact_person' => $request->input('contact_person'),
+                    'phone' => $request->input('phone'),
+                    'cell' => $request->input('mobile'),
+                    'fax' => $request->input('fax'),
+                    'email' => $request->input('contact_email'),
+                    'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
+                ]);
             if ($request->hasFile('image')) {
                 (new ImageController)->update($request, $property);
             }
@@ -698,14 +696,12 @@ class PropertyController extends Controller
             }
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
-
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 
-
             $footer_content = (new FooterController)->footerContent();
 
-            if (Auth::guard('admin')->user()){
+            if (Auth::guard('admin')->user()) {
                 (new PropertyLogController())->store($property);
                 return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
             }
@@ -715,6 +711,8 @@ class PropertyController extends Controller
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
+            dd($e->getMessage());
+
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }
@@ -745,6 +743,7 @@ class PropertyController extends Controller
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {
+                dd($e->getMessage());
                 return redirect()->back()->with('error', 'Error deleting record, please try again');
             }
         }
@@ -1533,7 +1532,6 @@ class PropertyController extends Controller
             $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
-
 
 
             (new CountTableController)->_insert_in_status_purpose_table($property);
