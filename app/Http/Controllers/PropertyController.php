@@ -711,8 +711,6 @@ class PropertyController extends Controller
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
-            dd($e->getMessage());
-
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }
@@ -743,7 +741,6 @@ class PropertyController extends Controller
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {
-                dd($e->getMessage());
                 return redirect()->back()->with('error', 'Error deleting record, please try again');
             }
         }
