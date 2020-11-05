@@ -1,39 +1,38 @@
 (function ($) {
-    function getCityLocations(city) {
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'get',
-            url: window.location.origin + '/locations',
-            data: {city: city},
-            dataType: 'json',
-            success: function (data) {
-                let locations = data.data
-                // console.log(data.data);
-                if (!jQuery.isEmptyObject({locations})) {
-
-                    let add_select =  $("#add_location");
-                    add_select.empty();
-                    for (let [index, options] of locations.entries()) {
-                        add_select.append($('<option>', {value: index + 1, text: options.name}));
-                    }
-                    $('.fa-spinner').hide();
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(error);
-                console.log(status);
-                console.log(xhr);
-            },
-            complete: function (url, options) {
-            }
-        });
-    }
-
     $(document).ready(function () {
+        function getCityLocations(city) {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/locations',
+                data: {city: city},
+                dataType: 'json',
+                success: function (data) {
+                    let locations = data.data
+                    // console.log(data.data);
+                    if (!jQuery.isEmptyObject({locations})) {
+                        let add_select = $("#add_location");
+                        add_select.empty();
+                        for (let [index, options] of locations.entries()) {
+                            add_select.append($('<option>', {value: index + 1, text: options.name}));
+                        }
+                        $('.fa-spinner').hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                    console.log(status);
+                    console.log(xhr);
+                },
+                complete: function (url, options) {
+                }
+            });
+        }
+
         $('select option:first-child').prop('disabled', true);
 
         (function priceInWords() {
@@ -76,7 +75,7 @@
                     valStr += (valStr ? ', ' : '') + val;
                 }
                 helpEl.html('PKR ' + valStr);
-                // console.log(valStr);
+                console.log(valStr);
             }
 
         })();
@@ -162,6 +161,28 @@
             } else {
                 $('[name=all_inclusive_price]').attr('required', 'required').attr('disable', 'false');
                 $('.price-block').slideDown();
+            }
+        });
+        let radios = $('[name=property_package]')
+
+        radios.prop("disabled", true);
+
+        let rejection_input = $('[name=rejection_reason]');
+        let rejection_div = $('#reason-of-rejection');
+        if ($("#status option:selected").text() === 'Rejected') {
+            rejection_input.attr('required', 'required').attr('disable', 'false');
+            rejection_div.slideDown();
+        }
+
+        $('#status').on('change', function (e) {
+
+            if ($("#status option:selected").text() === 'Rejected') {
+                rejection_input.attr('required', 'required').attr('disable', 'false');
+                rejection_div.slideDown();
+            } else {
+                rejection_input.removeAttr('required').attr('disable', 'true');
+                rejection_input.val('');
+                rejection_div.slideUp();
             }
         });
         $('#add_city').on('select2:select', function (e) {
