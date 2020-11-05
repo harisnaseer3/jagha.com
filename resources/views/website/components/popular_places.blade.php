@@ -76,7 +76,7 @@
                             </h6>
                         </li>
                     @endforeach
-                    <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=>2])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
+{{--                    <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=>2])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>--}}
 
                 </ul>
             </div>
