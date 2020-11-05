@@ -1414,8 +1414,9 @@ class PropertyController extends Controller
 
         $area_column_wrt_unit = '';
 
-        if ($data['area_unit'] === 'Marla') $area_column_wrt_unit = 'area_in_marla';
-        if ($data['area_unit'] === 'New Marla (225 Sqft)') $area_column_wrt_unit = 'area_in_new_marla';
+//        if ($data['area_unit'] === 'Marla') $area_column_wrt_unit = 'area_in_marla';
+//        if ($data['area_unit'] === 'New Marla (225 Sqft)') $area_column_wrt_unit = 'area_in_new_marla';
+        if ($data['area_unit'] === 'Marla') $area_column_wrt_unit = 'area_in_new_marla';
         if ($data['area_unit'] === 'Kanal') $area_column_wrt_unit = 'area_in_kanal';
         if ($data['area_unit'] === 'New Kanal (16 Marla)') $area_column_wrt_unit = 'area_in_new_kanal';
         if ($data['area_unit'] === 'Square Feet') $area_column_wrt_unit = 'area_in_sqft';
