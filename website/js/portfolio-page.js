@@ -18,7 +18,7 @@
                     let add_select =  $("#add_location");
                     add_select.empty();
                     for (let [index, options] of locations.entries()) {
-                        add_select.append($('<option>', {value: index + 1, text: options.name}));
+                        add_select.append($('<option>', {value: options.name, text: options.name}));
                     }
                     $('.fa-spinner').hide();
                 }
