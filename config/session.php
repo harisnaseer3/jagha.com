@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'file'),
+    'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'encrypt' => false,
+    'encrypt' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -166,7 +166,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE', null),
+    'secure' => env('SESSION_SECURE_COOKIE', true),
 
     /*
     |--------------------------------------------------------------------------

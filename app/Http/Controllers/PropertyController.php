@@ -534,6 +534,7 @@ class PropertyController extends Controller
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
+
       //  $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
 	  $property->image = $property->images;
        
@@ -541,6 +542,7 @@ class PropertyController extends Controller
         $property->video = $property->videos;
         $property->floor_plan = $property->floor_plans;
        // $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
+
         if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
             $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
         }
