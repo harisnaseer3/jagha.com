@@ -49,6 +49,7 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/portfolio-page.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}" defer></script>
