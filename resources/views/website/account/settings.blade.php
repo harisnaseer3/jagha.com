@@ -68,7 +68,7 @@
                                             {{ Form::bsText('default_currency', isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)', ['required' => true, 'readonly' => 'readonly']) }}
 
 
-                                            {{ Form::bsSelect2('default_area_unit', ['Old Marla (272 sqft)' => 'Old Marla (272 sqft)','New Marla (225 sqft)' => 'New Marla (225 sqft)', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
+                                            {{ Form::bsSelect2('default_area_unit', ['Marla' => 'Marla', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
                                             isset($account->default_area_unit)?$account->default_area_unit:'Square Feet', ['required' => true]) }}
                                             {{--                                            {{ Form::bsSelect2('default_language', ['English' => 'English'], ['English' => 'English'], ['required' => true]) }}--}}
                                             {{ Form::bsText('default_language', isset($account->default_language)?$account->default_language:'English', ['required' => true, 'readonly' => 'readonly']) }}

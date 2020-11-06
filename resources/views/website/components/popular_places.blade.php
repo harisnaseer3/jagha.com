@@ -64,7 +64,8 @@
                 <h4 class="font-16 color-555 pb-1">Rentals</h4>
                 <ul>
                     @foreach($popular_cities_property_on_rent as $key => $property_data)
-                        <li><h6 class="custom-font">
+                        <li>
+                            <h6 class="custom-font">
                                 <a href="{{route('sale.property.search',['sub_type' => strtolower(str_replace(' ','-',$property_data->property_sub_type)),'city' => lcfirst($property_data->city_name),
                                                 'purpose'=>lcfirst($property_data->property_purpose), 'sort'=>'newest','limit'=>15])}}"
                                    title="{{$property_data->property_sub_type.'s'}} in {{$property_data->city_name}}">
@@ -77,7 +78,6 @@
                         </li>
                     @endforeach
                     <li><a href="{{route('cities.listings',['type'=> 1,'purpose'=>2])}}" class="more-popular-cities font-weight-bold" title="View All Cities">View all Cities</a></li>
-
                 </ul>
             </div>
         </div>
