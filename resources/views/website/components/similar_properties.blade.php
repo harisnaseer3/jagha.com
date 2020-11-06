@@ -37,8 +37,7 @@
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($feature_property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqyd,2) }} Sq.Yd.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqm,2) }} Sq.M.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_marla,2) }} Marla </div>
-                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} Marla</div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
                             <span class="font-size-14 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
@@ -63,8 +62,7 @@
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($feature_property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqyd,2) }} Sq.Yd.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_sqm,2) }} Sq.M.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_marla,2) }} Marla </div>
-                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+                           <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} Marla </div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
                         <i class="fas fa-arrows-alt"></i>

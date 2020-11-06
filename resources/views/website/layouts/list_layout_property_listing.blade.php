@@ -76,8 +76,8 @@
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft) </div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
                            </div>'>
                             @if($property->price != 0)
@@ -124,8 +124,8 @@
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_marla,2) }} Old Marla (272 sqft) </div>
-                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} New Marla (225 sqft)</div>
+
+                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
                            </div>'>
                             @if(request()->query('area_unit') != null)
