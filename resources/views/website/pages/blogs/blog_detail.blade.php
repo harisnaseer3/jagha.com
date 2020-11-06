@@ -102,7 +102,7 @@
     </div><!--fly-fade-->
 @endsection
 
-
+<script src="{{asset('website/js/cookie.min.js')}}" defer></script>
 @section('script')
     <script>
         $(document).ready(function () {

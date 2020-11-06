@@ -274,5 +274,6 @@
     {{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
     <script src="{{asset('website/js/listing-page.js')}}"></script>
     <script src="{{asset('website/js/script-custom.min.js')}}"></script>
+    <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
 
 @endsection
