@@ -146,6 +146,10 @@
                         </div>
                     @endif
 
+                        @if( request()->segment(1) != 'featured-properties')
+                            @include('website.includes.locations_count_card')
+                        @endif
+
                 <!-- Listing -->
                     <div class="page-list-layout">
                         @include('website.layouts.list_layout_property_listing')
@@ -254,6 +258,12 @@
 @endsection
 
 @section('script')
+    <script>
+        $('#close-icon').click(function () {
+            $(this).text($(this).text() === 'close' ? 'open' : 'close');
+            $("#locations-card").slideToggle();
+        });
+    </script>
 
     {{--    <script>--}}
     {{--        window.fbAsyncInit = function () {--}}
@@ -274,5 +284,6 @@
     {{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
     <script src="{{asset('website/js/listing-page.js')}}"></script>
     <script src="{{asset('website/js/script-custom.min.js')}}"></script>
+
 
 @endsection
