@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dashboard\City;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -542,5 +543,27 @@ class CountTableController extends Controller
         ];
         return view('website.pages.property_count_by_city', $data);
 
+    }
+
+    public function getLocationsCount(string $type, string $purpose, string $city)
+    {
+        $footer_content = (new FooterController)->footerContent();
+
+        $city_data = City::select('id', 'name')->where('name', '=', $city)->first();
+        $city_id = $city_data->id;
+        $city_name = $city_data->name;
+
+        $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type];
+
+        $location_data['count'] = DB::table('property_count_by_property_purposes')->select('location_name', 'property_count', 'property_sub_type')->where($condition)->orderBy('property_count', 'DESC')->get();
+        $location_data['purpose'] = $purpose;
+        $location_data['type'] = $type;
+        $location_data['city'] = $city_name;
+        $data = [
+            'locations_data' => $location_data,
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
+        ];
+        return view('website.pages.all_locations_in_city', $data);
     }
 }

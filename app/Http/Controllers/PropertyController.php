@@ -1159,8 +1159,7 @@ class PropertyController extends Controller
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
-        $location_city = City::select('id','name')->where('name', '=', $city)->first();
-
+        $location_city = City::select('id','name')->where('name', '=', str_replace('-', ' ', $city))->first();
 
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
             count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page')) {
@@ -1293,6 +1292,7 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
+
 
 
        $location_data = $this->_getLocationsWiseCount($purpose,$sub_type,$location_city->id,$location_city->name, $type);
