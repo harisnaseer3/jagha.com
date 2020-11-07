@@ -12,7 +12,7 @@ use Laravel\Passport\HasApiTokens;
 /**
  * @mixin Builder
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
