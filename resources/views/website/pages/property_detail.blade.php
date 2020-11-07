@@ -293,5 +293,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
     <script src="{{asset('website/js/script-custom.js')}}" defer></script>
     <script src="{{asset('website/js/detail-page.js')}}"></script>
+    <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
 
 @endsection

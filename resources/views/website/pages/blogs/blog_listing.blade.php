@@ -112,4 +112,5 @@
 @section('script')
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
     <script src="{{asset('website/js/blog-page.js')}}" defer></script>
+    <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
 @endsection

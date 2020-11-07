@@ -15,6 +15,26 @@
 
 @yield('content')
 
+<div class="fixed-bottom p-4">
+    <div class="toast bg-dark w-100 mw-100 color-white" role="alert" style="display: none">
+        <div class="toast-body p-3 d-flex flex-column">
+            <h4 class="color-white">Our website uses cookies</h4>
+            <p class="color-white">
+                This website use cookies, which are necessary for its functioning.
+                You can accept the use of cookies by clicking on Accept button or by continuing to browse.
+            </p>
+            <div class="ml-auto">
+{{--                <button type="button" class="btn btn-outline-light mr-3" id="btnDeny">--}}
+{{--                    Deny--}}
+{{--                </button>--}}
+                <button type="button" class="btn btn-light" id="btnAccept">
+                    Accept
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @include('website.includes.scripts')
 </body>
 </html>

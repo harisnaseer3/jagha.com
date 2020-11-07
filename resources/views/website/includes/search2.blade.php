@@ -135,9 +135,9 @@
                                     <label class="search2-input-label" for="search2-bedrooms">AREA UNIT</label>
                                     <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-input-area-unit" style="width: 100%;" tabindex="-1" aria-hidden="true"
                                             aria-describedby="unit-error" aria-invalid="false" name="search2-unit">
-                                        @foreach(['Marla','Square Feet','Square Yards','Square Meters','Kanal'] as $key => $unit)
+                                        @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key => $unit)
                                             <option value="{{$unit}}"
-                                                    {{ucwords(str_replace('-', ' ', request()->query('area_unit'))) === $unit? 'selected' : ''}}
+                                                    {{ucwords(str_replace('-', ' ', request()->query('area_unit'))) === $unit || $unit == 'Marla'? 'selected' : ''}}
                                                     data-index="{{$unit}}"> {{$unit}}
                                             </option>
                                         @endforeach
