@@ -66,7 +66,7 @@
 {{--                                                @foreach(['Marla','New Marla (225 Sqft)','Square Feet','Square Yards','Square Meters','Kanal'] as $key=>$option)--}}
 {{--                                                    <option {{$option === 'Marla'? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>--}}
 {{--                                                @endforeach--}}
-                                                @foreach(['Marla','Square Feet','Square Yards','Square Meters','Kanal'] as $key=>$option)
+                                                @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key=>$option)
                                                     <option {{$option === 'Marla'? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
                                                 @endforeach
                                             </select>
