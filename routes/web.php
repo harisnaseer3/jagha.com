@@ -61,7 +61,7 @@ Route::get('partners-{city}/{slug}_{agency}', 'AgencyController@show')->name('ag
 Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
 Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
-Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth','verified']], function () {
     Route::resource('properties', 'PropertyController')->except(['index', 'show']);
     Route::resource('images', 'ImageController')->only(['destroy']);
     Route::resource('floorPlans', 'FloorPlanController')->only(['destroy']);
@@ -142,9 +142,9 @@ Route::group(['prefix' => 'properties'], function () {
 });
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 //only logged in user can view following
-Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' => 'auth'], function () {
+Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' => ['auth','verified']], function () {
 //    Route::get('/', 'DashboardController@index');
 //    Route::get('/logout', 'DashboardController@logout');
 
