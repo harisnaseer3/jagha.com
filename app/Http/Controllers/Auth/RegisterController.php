@@ -8,6 +8,7 @@ use App\Models\Agency;
 use App\Providers\RouteServiceProvider;
 use App\Models\Dashboard\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,7 +37,15 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+
+    protected function redirectTo()
+    {
+        $userName = Auth::user()->getAuthIdentifier();
+        //use your own route
+        return route('user.dashboard');
+    }
+
+
 
     /**
      * Create a new controller instance.
