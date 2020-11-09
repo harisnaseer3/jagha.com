@@ -146,9 +146,7 @@
                         </div>
                     @endif
                     @if( request()->segment(1) != 'featured-properties')
-                        @if($locations_data['count']->isNotEmpty())
                             @include('website.includes.locations_count_card')
-                        @endif
                     @endif
 
                 <!-- Listing -->
