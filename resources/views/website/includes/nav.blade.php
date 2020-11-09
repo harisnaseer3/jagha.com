@@ -5,22 +5,22 @@
                 <div class="fly-side-wrap">
                     <ul class="fly-bottom-soc left relative">
                         <li class="fb-soc">
-                            <a href="https://www.facebook.com/aboutpk1" target="_blank" title="Visit About Pakistan Facebook">
+                            <a href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook">
                                 <i class="fab fa-facebook-square icon-padding"></i>
                             </a>
                         </li>
                         <li class="twit-soc">
-                            <a href="https://twitter.com/aboutpk_" target="_blank" title="Visit About Pakistan Twitter">
+                            <a href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Twitter">
                                 <i class="fab fa-twitter icon-padding"></i>
                             </a>
                         </li>
                         <li class="link-soc">
-                            <a href="https://www.linkedin.com/company/aboutpakistan" target="_blank" title="Visit About Pakistan Linkedin">
+                            <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
                                 <i class="fab fa-linkedin in icon-padding"></i>
                             </a>
                         </li>
                         <li class="insta-soc">
-                            <a href="https://www.instagram.com/aboutpk1/?igshid=19bpcgb38304h" target="_blank" title="Visit About Pakistan Instagram">
+                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                 <i class="fab fa-instagram  icon-padding"></i>
                             </a>
                         </li>
@@ -38,77 +38,81 @@
                                 <ul id="menu-main-menu" class="menu">
                                     <li id="menu-item-2457"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
-                                        <a href="/index.php">Home</a></li>
+                                        <a href="https://www.aboutpakistan.com">Home</a></li>
                                     <li id="menu-item-2519"
                                         class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                        <a href="/blog" aria-current="page">Blog</a>
+                                        <a href="https://aboutpakistan.com/blog" aria-current="page">Blog</a>
                                         <ul class="sub-menu">
                                             <li id="menu-item-2518"
                                                 class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                <a href="/blog/category/pakistan/">Pakistan</a>
+                                                <a href="https://aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
                                             </li>
                                             <li id="menu-item-2517"
                                                 class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                <a href="/blog/category/medical/">Medical</a>
+                                                <a href="https://aboutpakistan.com/blog/category/medical/">Medical</a>
                                             </li>
                                             <li id="menu-item-2516"
                                                 class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                <a href="/blog/category/travel/">Travel</a>
+                                                <a href="https://aboutpakistan.com/blog/category/travel/">Travel</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li id="menu-item-10"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
-                                        <a href="/news">News</a>
+                                        <a href="https://aboutpakistan.com/news">News</a>
                                         <ul class="sub-menu">
                                             <li id="menu-item-2508"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                <a href="/news/category/pakistan/">Pakistan</a>
+                                                <a href="https://aboutpakistan.com/news/category/pakistan/">Pakistan</a>
                                             </li>
                                             <li id="menu-item-2469"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
-                                                <a href="/news/category/sports/">Sports</a>
+                                                <a href="https://aboutpakistan.com/news/category/sports/">Sports</a>
                                             </li>
                                             <li id="menu-item-2509"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
-                                                <a href="/news/category/business/">Business</a>
+                                                <a href="https://aboutpakistan.com/news/category/business/">Business</a>
                                             </li>
                                             <li id="menu-item-2510"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
-                                                <a href="/news/category/entertainment/">Entertainment</a>
+                                                <a href="https://aboutpakistan.com/news/category/entertainment/">Entertainment</a>
                                             </li>
                                             <li id="menu-item-2511"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
-                                                <a href="/news/category/fashion/">Fashion</a>
+                                                <a href="https://aboutpakistan.com/news/category/fashion/">Fashion</a>
                                             </li>
                                             <li id="menu-item-2512"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
-                                                <a href="/news/category/technology/">Technology</a>
+                                                <a href="https://aboutpakistan.com/news/category/technology/">Technology</a>
                                             </li>
                                             <li id="menu-item-2513"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2513">
-                                                <a href="/news/category/education/">Education</a>
+                                                <a href="https://aboutpakistan.com/news/category/education/">Education</a>
                                             </li>
                                             <li id="menu-item-2514"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2514">
-                                                <a href="/news/category/international/">International</a>
+                                                <a href="https://aboutpakistan.com/news/category/international/">International</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li id="menu-item-11"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
-                                        <a href="/medical">Medical</a></li>
+                                        <a href="https://aboutpakistan.com/medical">Medical</a></li>
                                     <li id="menu-item-12"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
-                                        <a href="/mobile-packages">Mobile Packages</a>
+                                        <a href="https://aboutpakistan.com/mobile-packages">Mobile Packages</a>
                                     </li>
                                     <li id="menu-item-13"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
-                                        <a href="/about-us.php">About Us</a>
+                                        <a href="https://aboutpakistan.com/about-us.php">About Us</a>
                                     </li>
                                     <li id="menu-item-14"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                        <a href="/contact-us.php">Contact Us</a>
+                                        <a href="https://aboutpakistan.com/contact-us.php">Contact Us</a>
+                                    </li>
+                                    <li id="menu-item-15"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518" >
+                                        <a style="color:#444444;" href="/">Property</a>
                                     </li>
                                 </ul>
                             </div>
@@ -133,7 +137,7 @@
                                         <span></span>
                                     </div><!--fly-but-wrap-->
                                     <div class="nav-logo left">
-                                        <a itemprop="url" href="/index.php"><img
+                                        <a itemprop="url" href="https://www.aboutpakistan.com"><img
                                                 itemprop="logo"
                                                 src="{{asset('img/logo/logo-with-text.png')}}"
                                                 alt="About Pakistan" data-rjs="2"/></a>
@@ -150,59 +154,61 @@
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
                                                             <a href="https://www.aboutpakistan.com">Home</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                                            <a href="/blog/index.php"
+                                                            <a href="https://aboutpakistan.com/blog"
                                                                aria-current="page">Blog</a>
                                                             <ul class="sub-menu">
                                                                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                                    <a href="/blog/category/pakistan/">Pakistan</a>
+                                                                    <a href="https://aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                                    <a href="/blog/category/medical/">Medical</a>
+                                                                    <a href="https://aboutpakistan.com/blog/category/medical/">Medical</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                                    <a href="/blog/category/travel/">Travel</a>
+                                                                    <a href="https://aboutpakistan.com/blog/category/travel/">Travel</a>
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
-                                                            <a href="/news/index.php">News</a>
+                                                            <a href="https://aboutpakistan.com/news">News</a>
                                                             <ul class="sub-menu">
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                                    <a href="/news/category/pakistan/">Pakistan</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/pakistan/">Pakistan</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
-                                                                    <a href="/news/category/sports/">Sports</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/sports/">Sports</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
-                                                                    <a href="/news/category/business/">Business</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/business/">Business</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
-                                                                    <a href="/news/category/entertainment/">Entertainment</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/entertainment/">Entertainment</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
-                                                                    <a href="/news/category/fashion/">Fashion</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/fashion/">Fashion</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
-                                                                    <a href="/news/category/technology/">Technology</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/technology/">Technology</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2513">
-                                                                    <a href="/news/category/education/">Education</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/education/">Education</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2514">
-                                                                    <a href="/news/category/international/">International</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/international/">International</a>
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
-                                                            <a href="/medical">Medical</a>
+                                                            <a href="https://aboutpakistan.com/medical">Medical</a>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
-                                                            <a href="/mobile-packages">Mobile
+                                                            <a href="https://aboutpakistan.com/mobile-packages">Mobile
                                                                 Packages</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
-                                                            <a href="/about-us.php">About Us</a></li>
+                                                            <a href="https://aboutpakistan.com/about-us.php">About Us</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                                            <a href="/contact-us.php">Contact Us</a></li>
+                                                            <a href="https://aboutpakistan.com/contact-us.php">Contact Us</a></li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
+                                                            <a style="color:#000000;" href="/">Property</a></li>
                                                     </ul>
                                                 </div>
                                             </nav>
@@ -212,19 +218,19 @@
                                             <a href="mailto:info@aboutpakistan.com" target="_blank" rel="noopener noreferrer" title="Email us at info@aboutpakistan.com">
                                                 <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>
                                             </a>
-                                            <a href="https://www.facebook.com/aboutpk1" target="_blank" title="Visit About Pakistan Facebook">
-                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i></span>
+                                            <a href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook">
+                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i>
                                             </a>
-                                            <a href="https://twitter.com/aboutpk_" target="_blank" title="Visit About Pakistan Twitter">
+                                            <a href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Twitter">
                                                 <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>
                                             </a>
-                                            <a href="https://www.linkedin.com/company/aboutpakistan" target="_blank" title="Visit About Pakistan Linkedin">
+                                            <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
                                                 <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
                                             </a>
-                                            <a href="https://www.instagram.com/aboutpk1/?igshid=19bpcgb38304h" target="_blank" title="Visit About Pakistan Instagram">
+                                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank"  title="Visit About Pakistan Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>
-                                            <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
+                                            <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank"  title="Visit About Pakistan Youtube">
                                                 <span class="nav-soc-but"><i class="fab fa-youtube"></i></span>
                                             </a>
 
