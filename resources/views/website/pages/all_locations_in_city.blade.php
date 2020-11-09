@@ -9,9 +9,7 @@
 @endsection
 
 @section('content')
-
     @include('website.includes.nav')
-
     <!-- Properties section body start -->
     <div class="properties-section content-area pt-3">
         <div class="container">
@@ -21,24 +19,19 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="all-cities-header">
-                                {{ucwords($type)}} for Sale in All Cities of Pakistan</h1>
+                                All locations of {{ucfirst($locations_data['type'])}} for {{ucfirst($locations_data['purpose'])}} in {{$locations_data['city']}}</h1>
                         </div>
                         <div class="card-body">
-                        @if($properties)
-                                <div class="row">
-                                    @foreach($properties as  $property)
-                                        <div class="col-sm-3 my-2">
-                                            <a href="{{route('sale.property.search', ['sub_type' => lcfirst($property->property_type),
-                                                                                      'city' => lcfirst($property->city_name) ,
-                                                                                      'purpose'=>lcfirst($property->property_purpose), 'sort'=>'newest','limit'=>15])}}"
-                                               title="{{$property->property_type}}  in {{$property->city_name}}"
-                                               class="breadcrumb-link">
-                                                {{$property->city_name}} ({{$property->property_count}})
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
+                            <div class="row">
+                                @foreach($locations_data['count'] as $location)
+                                    <div class="col-sm-6  mb-3">
+                                        <a href="{{route('search.houses.plots',['type'=>lcfirst($locations_data['type']),'city' => lcfirst($locations_data['city']), 'location'=> str_replace(' ', '-',str_replace('-','_',$location->location_name)), 'sort'=>'newest','limit'=>15])}}"
+                                           class="breadcrumb-link">
+                                            {{ \Illuminate\Support\Str::limit($location->location_name , 40, $end='...')}} ({{$location->property_count}})
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -82,9 +82,10 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                                 style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
                                 name="property_area_unit" id="property-area-unit">
                             <option disabled>Select unit</option>
-                            @foreach(['Marla','Square Feet','Square Yards','Square Meters','Kanal'] as $key=>$option)
+                            @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key=>$option)
                                 <option
-                                    {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
+                                    {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option || $option == 'Marla'? 'selected' : '' }}
+                                    value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
                             @endforeach
                         </select>
                     </div>

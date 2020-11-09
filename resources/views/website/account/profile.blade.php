@@ -55,7 +55,7 @@
                                     @include('website.layouts.user_notification')
                                     @include('website.layouts.flash-message')
 
-                                    {{ Form::open(['route' => ['users.update',\Illuminate\Support\Facades\Auth::user()->id], 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
+                                    {{ Form::open(['route' => ['users.update',\Illuminate\Support\Facades\Auth::guard('web')->user()->id], 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">User Profile</div>
                                         <div class="card-body">

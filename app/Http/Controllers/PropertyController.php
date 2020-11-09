@@ -1060,6 +1060,25 @@ class PropertyController extends Controller
         return $counts;
     }
 
+    private function _getLocationsWiseCount(string $purpose, string $sub_type, int $city_id,string $city_name, string $type)
+    {
+        if($type === '')
+        {
+            if (in_array($sub_type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) $type = 'homes';
+            elseif (in_array($sub_type,['Residential Plot', 'Commercial Plot', 'Agricultural Land', 'Industrial Land', 'Plot File', 'Plot Form'])) $type = 'plots';
+            elseif (in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
+                $type = 'commercial';
+
+        }
+        $condition = ['city_id'=> $city_id , 'property_purpose' => $purpose , 'property_type'=> $type];
+
+        $location_data['count'] =  DB::table('property_count_by_property_purposes')->select('location_name','property_count','property_sub_type')->where($condition)->orderBy('property_count','DESC')->limit(50)->get();
+        $location_data['purpose'] = $purpose;
+        $location_data['type'] = $type;
+        $location_data['city'] = $city_name;
+        return $location_data;
+    }
+
     private function _getPropertyAggregates()
     {
         // fetch count of properties by city
@@ -1147,6 +1166,8 @@ class PropertyController extends Controller
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
+        $location_city = City::select('id','name')->where('name', '=', str_replace('-', ' ', $city))->first();
+
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
             count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page')) {
 //            to handle the request for city name
@@ -1279,9 +1300,14 @@ class PropertyController extends Controller
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
 
+
+
+       $location_data = $this->_getLocationsWiseCount($purpose,$sub_type,$location_city->id,$location_city->name, $type);
+
         $data = [
             'params' => $request->all(),
             'property_types' => $property_types,
+            'locations_data' => $location_data,
             'properties' => $properties->paginate($limit),
             'recent_properties' => $footer_content[0],
             'footer_agencies' => $footer_content[1]

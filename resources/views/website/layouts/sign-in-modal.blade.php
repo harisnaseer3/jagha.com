@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <a href="{{route('register')}}" class="btn btn-block btn-outline sign-in text-bold color-black font-size-14 sign-card">Register to Become a Member</a>
+                            <a href="{{route('register')}}" class="btn btn-block sign-in login-btn color-black sign-card">Register to Become a Member</a>
                         </div>
                     </div>
                 </div>

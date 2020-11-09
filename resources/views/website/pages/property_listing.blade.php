@@ -145,6 +145,11 @@
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @endif
+                    @if( request()->segment(1) != 'featured-properties')
+                        @if($locations_data['count']->isNotEmpty())
+                            @include('website.includes.locations_count_card')
+                        @endif
+                    @endif
 
                 <!-- Listing -->
                     <div class="page-list-layout">
@@ -254,6 +259,12 @@
 @endsection
 
 @section('script')
+    <script>
+        $('#close-icon').click(function () {
+            $(this).text($(this).text() === 'close' ? 'open' : 'close');
+            $("#locations-card").slideToggle();
+        });
+    </script>
 
     {{--    <script>--}}
     {{--        window.fbAsyncInit = function () {--}}
@@ -274,5 +285,7 @@
     {{--    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>--}}
     <script src="{{asset('website/js/listing-page.js')}}"></script>
     <script src="{{asset('website/js/script-custom.min.js')}}"></script>
+    <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
+
 
 @endsection

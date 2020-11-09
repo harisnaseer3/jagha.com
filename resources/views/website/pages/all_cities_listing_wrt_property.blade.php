@@ -101,4 +101,5 @@
 @section('script')
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
     <script src="{{asset('website/js/all-cities-page.js')}}" defer></script>
+    <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
 @endsection

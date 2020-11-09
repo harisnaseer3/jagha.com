@@ -12,17 +12,17 @@ use Laravel\Passport\HasApiTokens;
 /**
  * @mixin Builder
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var arrayserv
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_active', 'roles'
+        'name', 'email', 'password', 'is_active', 'roles','cell'
     ];
 
     /**

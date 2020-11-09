@@ -8,6 +8,7 @@ use App\Models\Agency;
 use App\Providers\RouteServiceProvider;
 use App\Models\Dashboard\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,7 +37,15 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+
+    protected function redirectTo()
+    {
+        $userName = Auth::user()->getAuthIdentifier();
+        //use your own route
+        return route('user.dashboard');
+    }
+
+
 
     /**
      * Create a new controller instance.
@@ -60,6 +69,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+            'cell' => ['required','regex:/\+92-3\d{2}\d{7}/'], // +92-3001234567
         ]);
     }
 
@@ -75,6 +85,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'cell'=>$data['cell']
         ]);
     }
 }
