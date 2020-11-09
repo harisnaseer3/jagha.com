@@ -233,3 +233,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 Route::get('/callback', 'SocialAuthFacebookController@callback');
+
