@@ -51,6 +51,7 @@ Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAll
         'purpose' => '(1|2)',
         'type' => '(1|2|3|4)',
     ]);
+Route::get('/{type}-locations-for-{purpose}/{city}','CountTableController@getLocationsCount')->name('all.locations');
 
 //agents
 Route::get('/partners/', 'AgencyController@index')->name('agents.listing');

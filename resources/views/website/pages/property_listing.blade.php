@@ -145,10 +145,11 @@
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @endif
-
-                        @if( request()->segment(1) != 'featured-properties')
+                    @if( request()->segment(1) != 'featured-properties')
+                        @if($locations_data['count']->isNotEmpty())
                             @include('website.includes.locations_count_card')
                         @endif
+                    @endif
 
                 <!-- Listing -->
                     <div class="page-list-layout">
