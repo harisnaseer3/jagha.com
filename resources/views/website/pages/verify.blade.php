@@ -1,10 +1,11 @@
 @extends('website.layouts.app')
-@section('title', 'Login')
 
-@section('css')
-    {{--        <script src="{{ asset('js/app.js') }}" defer></script>--}}
+@section('css_library')
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
+    <link rel="stylesheet" type="text/css" href="{{asset('website/cssverification.css')}}" async defer>
 
 @endsection
+
 
 <!-- Contact section start -->
 
@@ -14,23 +15,27 @@
             <div class="row login-box">
                 <div class="col-lg-6 align-self-center pad-0">
                     <div class="form-section align-self-center">
-                        <h3>{{ __('Verify Your Email Address') }}</h3>
+                        <h3 class="color-blue">{{ __('Verify Your Email Address') }}</h3>
 
                         <div class="clearfix"></div>
 
                         @if (session('resent'))
-                            <div class="alert alert-success" role="alert">
+                            <div class="alert alert-success line-height" role="alert">
                                 {{ __('A fresh verification link has been sent to your email address.') }}
                             </div>
                         @endif
-                        {{ __('Before proceeding, please check your email for a verification link.') }}
-                        {{ __('If you did not receive the email') }},
+                        <div class="mb-3 line-height font-16">{{ __('Before proceeding, please check your email for a verification link.') }}</div>
+                        <div class="mb-3 line-height color-red font-14"> {{ __('If you did not receive the email.') }} </div>
 
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
 
                             @csrf
+
                             <div class="form-group clearfix mb-0">
-                                <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                                <button type="submit" class="btn-md btn-theme btn-block" id="reg-form-submit">
+                                    {{ __('click here to request another') }}
+                                </button>
+{{--                                <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.--}}
 
                             </div>
                         </form>

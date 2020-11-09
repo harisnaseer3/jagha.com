@@ -46,6 +46,17 @@
                                     </span>
                                 @enderror
                             </div>
+                            <div class="form-group form-box">
+                                <input id="cell" type="tel" class="form-control input-text mb-2 @error('cell') is-invalid @enderror" name="cell" value="{{ old('cell') }}" required
+                                       autocomplete="cell" placeholder="Cell Number">
+
+                                @error('cell')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong style="color: #e3342f">{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                             <div class="form-group form-box clearfix">
                                 <input id="password" type="password" class="form-control input-text mb-2  @error('password') is-invalid @enderror" name="password" required autocomplete="new-password"
                                        placeholder="Password">
@@ -74,5 +85,19 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+                $("input[name='cell']").keyup(function () {
+                    $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+                });
+            });
+        })(jQuery);
+
+    </script>
+
 @endsection
 
