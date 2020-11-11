@@ -14,7 +14,7 @@
                             <a href="{{url('/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
                                 <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Login with Facebook</a>
 
-                            <a href="javascript:void(0)" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
+                            <a href="{{url('google/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
                                 <img class="mr-4" src="{{asset('img\google-icon.png')}}" alt="" aria-label="google-login">Continue with Google</a>
                             <p class="text-center">OR</p>
 
