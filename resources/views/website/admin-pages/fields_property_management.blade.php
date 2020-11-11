@@ -34,8 +34,6 @@
 
             {{ Form::bsSelect2('location', [], null, ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
             <div class="text-center"><span><i class="fa fa-spinner fa-spin" style="font-size:20px; display:none"></i></span></div>
-
-
         @endif
     </div>
 

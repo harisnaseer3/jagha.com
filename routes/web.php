@@ -161,13 +161,15 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
 Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
 Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
 Route::post('/search-id', 'PropertyController@adminPropertySearch')->name('admin.property.search.id');
+Route::post('/search-city', 'PropertyController@adminPropertyCitySearch')->name('admin.property.search.city');
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 
     Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
         ->name('admin.properties.listings')
         ->where([
-            'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
+            'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos|all)',
             'purpose' => '(all|sale|rent|wanted|basic|silver|bronze|golden|platinum)',
             'admin' => '(\d+|all)',
             'sort' => '(id|type|location|price|expiry|views|image_count)',
@@ -194,11 +196,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::delete('videos/{video}', 'VideoController@destroy')->name('admin-videos-destroy');
 
     Route::post('/search-id', 'AgencyController@adminAgencySearch')->name('admin.agency.search.id');
+    Route::post('/search-agency', 'AgencyController@adminAgencyCitySearch')->name('admin.agency.search.city');
 
     Route::get('agencies/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'AgencyController@listings')
         ->name('admin.agencies.listings')
         ->where([
-            'status' => '(verified_agencies|pending_agencies|expired_agencies|rejected_agencies|deleted_agencies)',
+            'status' => '(verified_agencies|pending_agencies|expired_agencies|rejected_agencies|deleted_agencies|all_agencies)',
             'purpose' => '(all|featured|key)',
             'user' => '(\d+)',
             'sort' => '(id|type|location)',
