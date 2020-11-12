@@ -37,13 +37,13 @@ class RegisterController extends Controller
      *
      * @var string
      */
-
-    protected function redirectTo()
-    {
-        $userName = Auth::user()->getAuthIdentifier();
-        //use your own route
-        return route('user.dashboard');
-    }
+    protected $redirectTo = '/';
+//    protected function redirectTo()
+//    {
+//        $userName = Auth::user()->getAuthIdentifier();
+//        //use your own route
+//        return route('user.dashboard');
+//    }
 
 
 

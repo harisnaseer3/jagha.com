@@ -641,7 +641,7 @@ class PropertyController extends Controller
                 $agency = DB::table('agencies')->select('id')->
                 where('title', '=', $request->input('agency'))->where('user_id', '=', $property->user_id)->first();
             }
-                $property = (new Property)->updateOrCreate(['id' => $property->id], [
+            $property = (new Property)->updateOrCreate(['id' => $property->id], [
 //                    'reference' => $property->reference,
 //                    'user_id' => $property->user_id,
 //                    'city_id' => $city->id,
@@ -652,33 +652,33 @@ class PropertyController extends Controller
 //                    'type' => $request->input('property_type'),
 //                    'sub_type' => $subtype,
 //                    'title' => $request->input('property_title'),
-                    'description' => $request->input('description'),
-                    'price' => $request->has('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
-                    'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
-                    'land_area' => $request->input('land_area'),
-                    'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
-                    'area_in_sqft' => $area_values['sqft'],
-                    'area_in_sqyd' => $area_values['sqyd'],
-                    'area_in_sqm' => $area_values['sqm'],
-                    'area_in_marla' => $area_values['marla'],
-                    'area_in_new_marla' => $area_values['new_marla'],
-                    'area_in_kanal' => $area_values['kanal'],
-                    'area_in_new_kanal' => $area_values['new_kanal'],
-                    'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
-                    'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
-                    'features' => $request->has('features') ? json_encode($json_features) : null,
-                    'status' => $request->has('status') ? $request->input('status') : 'edited',
-                    'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
-                    'basic_listing' => 1,
-                    'contact_person' => $request->input('contact_person'),
-                    'phone' => $request->input('phone'),
-                    'cell' => $request->input('mobile'),
-                    'fax' => $request->input('fax'),
-                    'email' => $request->input('contact_email'),
-                    'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
-                ]);
+                'description' => $request->input('description'),
+                'price' => $request->has('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
+                'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
+                'land_area' => $request->input('land_area'),
+                'area_unit' => ucwords(implode(' ', explode('_', $request->input('unit')))),
+                'area_in_sqft' => $area_values['sqft'],
+                'area_in_sqyd' => $area_values['sqyd'],
+                'area_in_sqm' => $area_values['sqm'],
+                'area_in_marla' => $area_values['marla'],
+                'area_in_new_marla' => $area_values['new_marla'],
+                'area_in_kanal' => $area_values['kanal'],
+                'area_in_new_kanal' => $area_values['new_kanal'],
+                'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
+                'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'features' => $request->has('features') ? json_encode($json_features) : null,
+                'status' => $request->has('status') ? $request->input('status') : 'edited',
+                'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
+                'basic_listing' => 1,
+                'contact_person' => $request->input('contact_person'),
+                'phone' => $request->input('phone'),
+                'cell' => $request->input('mobile'),
+                'fax' => $request->input('fax'),
+                'email' => $request->input('contact_email'),
+                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
+            ]);
             if ($request->hasFile('image')) {
                 (new ImageController)->update($request, $property);
             }
@@ -768,7 +768,7 @@ class PropertyController extends Controller
 
     }
 
-    private function _listings(string $status, string $user)
+    private function _listings(string $status, string $user, $city = '')
     {
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Property)
@@ -815,7 +815,12 @@ class PropertyController extends Controller
                 }
             }
         }
-        return $listings->where('status', '=', $status);
+        if ($status == 'all') {
+            return $listings;
+        } else {
+            return $listings->where('status', '=', $status);
+
+        }
     }
 
     /*
@@ -874,6 +879,35 @@ class PropertyController extends Controller
     {
         $property_count = $this->getPropertyListingCount($user);
         $footer_content = (new FooterController)->footerContent();
+        if ($request->has('city')) {
+            $city = (new City)->select('id')->where('name', '=', str_replace('-',' ',$request->city))->first();
+            $condition = ['properties.city_id' => $city->id];
+            $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => 'admin',
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $property_count,
+                'listings' => [
+                    'all' => $result['all'],
+                    'sale' => $result['sale'],
+                    'rent' => $result['rent'],
+                    'wanted' => $result['wanted'],
+                    'basic' => $result['basic'],
+                    'silver' => $result['silver'],
+                    'bronze' => $result['bronze'],
+                    'golden' => $result['golden'],
+                    'platinum' => $result['platinum'],
+                ],
+            ];
+
+            return view('website.admin-pages.listings', $data);
+        }
 
         if ($request->has('id')) {
             $condition = ['properties.id' => $request->input('id')];
@@ -1060,19 +1094,18 @@ class PropertyController extends Controller
         return $counts;
     }
 
-    private function _getLocationsWiseCount(string $purpose, string $sub_type, int $city_id,string $city_name, string $type)
+    private function _getLocationsWiseCount(string $purpose, string $sub_type, int $city_id, string $city_name, string $type)
     {
-        if($type === '')
-        {
+        if ($type === '') {
             if (in_array($sub_type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) $type = 'homes';
-            elseif (in_array($sub_type,['Residential Plot', 'Commercial Plot', 'Agricultural Land', 'Industrial Land', 'Plot File', 'Plot Form'])) $type = 'plots';
+            elseif (in_array($sub_type, ['Residential Plot', 'Commercial Plot', 'Agricultural Land', 'Industrial Land', 'Plot File', 'Plot Form'])) $type = 'plots';
             elseif (in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
                 $type = 'commercial';
 
         }
-        $condition = ['city_id'=> $city_id , 'property_purpose' => $purpose , 'property_type'=> $type];
+        $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type];
 
-        $location_data['count'] =  DB::table('property_count_by_property_purposes')->select('location_name','property_count','property_sub_type')->where($condition)->orderBy('property_count','DESC')->limit(50)->get();
+        $location_data['count'] = DB::table('property_count_by_property_purposes')->select('location_name', 'property_count', 'property_sub_type')->where($condition)->orderBy('property_count', 'DESC')->limit(50)->get();
         $location_data['purpose'] = $purpose;
         $location_data['type'] = $type;
         $location_data['city'] = $city_name;
@@ -1166,7 +1199,7 @@ class PropertyController extends Controller
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
     public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
-        $location_city = City::select('id','name')->where('name', '=', str_replace('-', ' ', $city))->first();
+        $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
 
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
             count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page')) {
@@ -1301,8 +1334,7 @@ class PropertyController extends Controller
         $footer_content = (new FooterController)->footerContent();
 
 
-
-       $location_data = $this->_getLocationsWiseCount($purpose,$sub_type,$location_city->id,$location_city->name, $type);
+        $location_data = $this->_getLocationsWiseCount($purpose, $sub_type, $location_city->id, $location_city->name, $type);
 
         $data = [
             'params' => $request->all(),
@@ -1607,6 +1639,20 @@ class PropertyController extends Controller
         }
 
     }
+
+    public function adminPropertyCitySearch(Request $request)
+    {
+        $city = (new City)->select('id')->where('name', '=', $request->city)->first();
+        if (is_null($city))
+            return redirect()->back()->withInput()->with('error', 'No Properties found in '.$request->city.'.');
+        else {
+            return redirect()->route('admin.properties.listings',
+                ['status' => 'all', 'purpose' => 'all', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
+                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ','-',$request->city)]);
+        }
+
+    }
+
 
     public function userPropertySearch(Request $request)
     {

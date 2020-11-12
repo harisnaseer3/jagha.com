@@ -458,7 +458,7 @@ class AgencyController extends Controller
             );
         } else {
             $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
-            $footer_content= (new FooterController)->footerContent();
+            $footer_content = (new FooterController)->footerContent();
             return view('website.agency_profile.agency',
 
                 ['table_name' => 'users',
@@ -695,7 +695,12 @@ class AgencyController extends Controller
                 }
             }
         }
-        return $listings->where('status', '=', $status);
+        if ($status == 'all') {
+            return $listings;
+        } else {
+            return $listings->where('status', '=', $status);
+        }
+
     }
 
     public function getAgencyListingCount(string $user)
@@ -714,7 +719,30 @@ class AgencyController extends Controller
 
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
     {
-        if ($request->has('id')) {
+        if ($request->has('city')) {
+            $city = (new City)->select('id')->where('name', '=', str_replace('-', ' ', $request->city))->first();
+            $all = $this->_listings(explode("_", $status)[0], $user);
+            $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
+            $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $this->getAgencyListingCount($user),
+                'listings' => [
+                    'all' => $all->orderBy($sort, $order)->where('agencies.city_id', '=', $city->id)->paginate($page),
+                    'key' => $key->orderBy($sort, $order)->where('agencies.city_id', '=', $city->id)->paginate($page),
+                    'featured' => $featured->orderBy($sort, $order)->where('agencies.city_id', '=', $city->id)->paginate($page),
+                ]
+            ];
+            return view('website.admin-pages.agency.agency_listings', $data);
+
+        } elseif ($request->has('id')) {
             $all = $this->_listings(explode("_", $status)[0], $user);
             $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
             $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
@@ -899,7 +927,24 @@ class AgencyController extends Controller
                 'page' => 10,
                 'id' => $request->agency_id
             ]);
+        }
+    }
 
+    public function adminAgencyCitySearch(Request $request)
+    {
+        $city = (new City)->select('id')->where('name', '=', $request->city)->first();
+        if (is_null($city))
+            return redirect()->back()->withInput()->with('error', 'No Agencies found in ' . $request->city . '.');
+        else {
+            return redirect()->route('admin.agencies.listings', [
+                'status' => 'all_agencies',
+                'purpose' => 'all',
+                'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
+                'sort' => 'id',
+                'order' => 'asc',
+                'page' => 10,
+                'city' => str_replace(' ', '-', $request->city)
+            ]);
         }
 
     }
