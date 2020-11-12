@@ -19,6 +19,7 @@ class DetailPageController extends Controller
                 ['properties.city_id', '=', $property->city_id],
                 ['properties.type', '=', $property->type],
                 ['properties.sub_type', '=', $property->sub_type],
+                ['properties.purpose', '=', $property->purpose],
             ])->limit(10)->get();
         if ($similar_properties->isEmpty()) {
             return $data = 'not available';

@@ -237,3 +237,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 Route::get('/callback', 'SocialAuthFacebookController@callback');
 
+//google login
+Route::get('google/redirect', 'SocialAuthGoogleController@redirect');
+Route::get('google/callback', 'SocialAuthGoogleController@callback');
+

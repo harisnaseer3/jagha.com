@@ -15,22 +15,24 @@
 
 @yield('content')
 
-<div class="fixed-bottom p-4">
+<div class="fixed-bottom p-2">
     <div class="toast bg-dark w-100 mw-100 color-white" role="alert" style="display: none">
-        <div class="toast-body p-3 d-flex flex-column">
-            <h4 class="color-white">Our website uses cookies</h4>
-            <p class="color-white">
-                This website use cookies, which are necessary for its functioning.
-                You can accept the use of cookies by clicking on Accept button or by continuing to browse.
-            </p>
-            <div class="ml-auto">
-{{--                <button type="button" class="btn btn-outline-light mr-3" id="btnDeny">--}}
-{{--                    Deny--}}
-{{--                </button>--}}
-                <button type="button" class="btn btn-light" id="btnAccept">
-                    Accept
-                </button>
+        <div class="toast-body p-2 d-flex flex-column">
+            {{--            <h4 class="color-white">Cookies</h4>--}}
+            <div class="color-white">
+                <span class="mr-auto color-white" style="line-height: 1rem">
+                We use cookies for a number of reasons, such as keeping Our Site reliable and secure, providing social media features and to analyse how our Site is used. By clicking on the "Accept" button or by continue to use you consent to the usage these cookies on your device.
+                </span>
+                <span class="float-right pt-1"><a type="button ml-auto" class="btn btn-light" id="btnAccept">Accept</a></span>
             </div>
+            {{--            <div class="ml-auto">--}}
+            {{--                <button type="button" class="btn btn-outline-light mr-3" id="btnDeny">--}}
+            {{--                    Deny--}}
+            {{--                </button>--}}
+            {{--                <button type="button" class="btn btn-light" id="btnAccept">--}}
+            {{--                    Accept--}}
+            {{--                </button>--}}
+            {{--            </div>--}}
         </div>
     </div>
 </div>
