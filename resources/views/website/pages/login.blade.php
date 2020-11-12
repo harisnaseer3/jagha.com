@@ -18,11 +18,19 @@
                 <div class="align-self-center pad-0">
                     <div class="form-section align-self-center">
                         <h3>Sign into your account</h3>
-                        <div class="btn-section clearfix">
-                            <a href="{{ route('login') }}" class="link-btn active btn-1 active-bg">Login</a>
-                            <a href="{{ route('register') }}" class="link-btn btn-2 default-bg">Register</a>
+{{--                        <div class="btn-section clearfix">--}}
+{{--                            <a href="{{ route('login') }}" class="link-btn active btn-1 active-bg">Login</a>--}}
+{{--                            <a href="{{ route('register') }}" class="link-btn btn-2 default-bg">Register</a>--}}
+{{--                        </div>--}}
+                        <div class="mb-4">
+                            <a href="{{url('/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
+                                <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Login with Facebook</a>
+
+                            <a href="{{url('google/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
+                                <img class="mr-4" src="{{asset('img\google-icon.png')}}" alt="" aria-label="google-login">Login with Google</a>
                         </div>
                         <div class="clearfix"></div>
+
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group form-box">
