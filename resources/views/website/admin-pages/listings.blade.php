@@ -6,6 +6,11 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}" async derfer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
+    <style>
+
+
+    </style>
+
 @endsection
 
 @section('content')
@@ -26,7 +31,7 @@
                                         <div class="col-md-9">
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
-                                                <div>
+
                                                     <div class="float-right">
                                                         {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                                                         <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
@@ -35,10 +40,11 @@
                                                         {{ Form::close() }}
                                                     </div>
                                                     {{ Form::open(['route' => ['admin.property.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-property-city']) }}
+                                                    <div class ="row mb-3">
                                                     <div class="col-lg-3 col-md-6 col-sm-6 col-6">
-                                                        <div class="form-group">
-                                                            <div class="index-page-select p-0">
-                                                                <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible city-select2" id="search2-city"
+                                                        <div class="input-group-sm select2-bootstrap-append">
+{{--                                                            <div class="index-page-select p-0">--}}
+                                                                <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible city-select2 select2-single" id="search2-city"
                                                                         style="width: 100%; border: 0" tabindex="-1"
                                                                         aria-hidden="true" aria-describedby="city-error" aria-invalid="false" name="city" required>
                                                                     <option value selected disabled data-index="0">Select city</option>
@@ -51,12 +57,16 @@
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
-                                                                <button class="btn btn-primary search-submit-btn float-right" type="Submit"><i class="fa fa-search ml-1"></i></button>
+{{--                                                                <button class="btn btn-primary search-submit-btn float-right" type="Submit"><i class="fa fa-search ml-1"></i></button>--}}
+{{--                                                            </div>--}}
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-primary search-submit-btn" type="Submit"><i class="fa fa-search ml-1"></i></button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     {{ Form::close() }}
                                                 </div>
+
                                                 @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                                     <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="listings-{{$option}}"
                                                          role="tabpanel" aria-labelledby="listings-{{$option}}-tab">
@@ -243,6 +253,7 @@
                     placeholder: 'Select City',
                     allowClear: true
                 });
+         
             });
         })(jQuery);
     </script>
