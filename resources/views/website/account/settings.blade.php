@@ -63,14 +63,11 @@
 
                                         <div class="card-header theme-blue text-white text-capitalize">General Settings</div>
                                         <div class="card-body">
-                                            {{--                                            {{ Form::bsSelect2('default_currency', ['Brazil (BRL)' => 'Brazil (BRL)', 'Canada (CAD)' => 'Canada (CAD)', 'EU (EUR)' => 'EU (EUR)', 'Kuwait (KWD)' => 'Kuwait (KWD)', 'Pakistan (PKR)' => 'Pakistan (PKR)', 'Qatar (QAR)' => 'Qatar (QAR)', 'Saudi Arabia (SAR)' => 'Saudi Arabia (SAR)', 'Turkey (TRY)' => 'Turkey (TRY)', 'United Arab Emirates (AED)' => 'United Arab Emirates (AED)', 'United Kingdom (GBP)' => 'United Kingdom (GBP)', 'United States of America (USD)' => 'United States of America (USD)'],--}}
-                                            {{--                                                isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)',['required' => true]) }}--}}
                                             {{ Form::bsText('default_currency', isset($account->default_currency)?$account->default_currency:'Pakistan (PKR)', ['required' => true, 'readonly' => 'readonly']) }}
 
 
-                                            {{ Form::bsSelect2('default_area_unit', ['Marla' => 'Marla', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
+                                            {{ Form::bsSelect2('default_area_unit', ['Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Marla' => 'Marla', 'Kanal'=>'Kanal'],
                                             isset($account->default_area_unit)?$account->default_area_unit:'Square Feet', ['required' => true]) }}
-                                            {{--                                            {{ Form::bsSelect2('default_language', ['English' => 'English'], ['English' => 'English'], ['required' => true]) }}--}}
                                             {{ Form::bsText('default_language', isset($account->default_language)?$account->default_language:'English', ['required' => true, 'readonly' => 'readonly']) }}
 
                                         </div>

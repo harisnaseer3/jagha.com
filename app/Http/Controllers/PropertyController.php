@@ -226,41 +226,36 @@ class PropertyController extends Controller
     {
         if ($type == 'image') {
             $error_msg = [];
-            $allowed_height = 600;
-            $allowed_width = 750;
+//            $allowed_height = 600;
+//            $allowed_width = 750;
 
             if (count(request()->file('image')) > 60) {
                 $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
                 return $error_msg;
             }
             foreach (request()->file('image') as $index => $file) {
-                $width = getimagesize($file)[0];
-                $height = getimagesize($file)[1];
-                if ($height == $allowed_height && $width == $allowed_width) {
-                    continue;
-                } else {
-                    $error_msg['image.' . $index] = 'image' . ($index + 1) . ' has invalid image dimensions';
+                $mime = $file->getMimeType();
+//                dd($mime);
+                $supported_mime_types = ['image/png','image/jpeg','image/jpg'];
+                if (!in_array($mime, $supported_mime_types)) {
+                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
                 }
-
             }
             return $error_msg;
         }
         if ($type == 'floor_plans') {
             $error_msg = [];
-            $allowed_height = 400;
-            $allowed_width = 750;
-
+//            $allowed_height = 400;
+//            $allowed_width = 750;
             if (count(request()->file('floor_plans')) > 2) {
                 $error_msg['floor_plans.' . 0] = 'Only 2 ' . ' floor plans are allowed to upload.';
                 return $error_msg;
             }
             foreach (request()->file('floor_plans') as $index => $file) {
-                $width = getimagesize($file)[0];
-                $height = getimagesize($file)[1];
-                if ($height == $allowed_height && $width == $allowed_width) {
-                    continue;
-                } else {
-                    $error_msg['floor_plans.' . $index] = 'floor_plans' . ($index + 1) . ' has invalid image dimensions';
+                $mime = $file->getMimeType();
+                $supported_mime_types = ['image/png','image/jpeg','image/jpg'];
+                if (!in_array($mime, $supported_mime_types)) {
+                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
                 }
             }
             return $error_msg;
@@ -415,7 +410,7 @@ class PropertyController extends Controller
         $area_in_kanal = 0;
         $area_in_new_kanal = 0;
 
-        if ($area_unit === 'New Marla (225 sqft)') {
+        if ($area_unit === 'Marla') {
             $area_in_sqft = $area * 225;
             $area_in_marla = $area_in_sqft / 272;
             $area_in_new_marla = $area_in_sqft / 225;
@@ -424,16 +419,16 @@ class PropertyController extends Controller
             $area_in_kanal = $area_in_sqft / 5440;
             $area_in_new_kanal = $area_in_sqft / 4500;
         }
-        if ($area_unit === 'Old Marla (272 sqft)') {
-            $area_in_sqft = $area * 272;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 5440;
+//        if ($area_unit === 'Old Marla (272 sqft)') {
+//            $area_in_sqft = $area * 272;
+//            $area_in_marla = $area_in_sqft / 272;
+//            $area_in_new_marla = $area_in_sqft / 225;
+//            $area_in_sqyd = $area_in_sqft / 9;
+//            $area_in_sqm = $area_in_sqft / 10.7639;
+//            $area_in_kanal = $area_in_sqft / 5440;
+//            $area_in_new_kanal = $area_in_sqft / 5440;
 //            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
+//        }
         if ($area_unit === 'Square Feet') {
             $area_in_sqft = $area;
             $area_in_marla = $area_in_sqft / 272;

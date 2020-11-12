@@ -96,8 +96,8 @@ class Property extends Model
         'call_for_price_inquiry' => 'numeric',
         'land_area' => 'required|numeric',
         'unit' => 'required',
-        'image.*' => 'image|mimes:jpeg,png,jpg|max:256',
-        'floor_plans.*' => 'image|mimes:jpeg,png,jpg|max:256',
+        'image.*' => 'image|max:256',
+        'floor_plans.*' => 'image|max:256',
         'phone' => 'nullable|regex:/\+92-\d{2}\d{7}/', // +92-511234567
         'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
         'fax' => 'nullable|regex:/\+92-\d{2}\\d{7}/', // +92-211234567
