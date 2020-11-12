@@ -41,74 +41,74 @@
                                         <a href="https://www.aboutpakistan.com">Home</a></li>
                                     <li id="menu-item-2519"
                                         class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                        <a href="https://www.aboutpakistan.com/blog" aria-current="page">Blog</a>
+                                        <a href="https://aboutpakistan.com/blog" aria-current="page">Blog</a>
                                         <ul class="sub-menu">
                                             <li id="menu-item-2518"
                                                 class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                <a href="https://www.aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
+                                                <a href="https://aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
                                             </li>
                                             <li id="menu-item-2517"
                                                 class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                <a href="https://www.aboutpakistan.com/blog/category/medical/">Medical</a>
+                                                <a href="https://aboutpakistan.com/blog/category/medical/">Medical</a>
                                             </li>
                                             <li id="menu-item-2516"
                                                 class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                <a href="https://www.aboutpakistan.com/blog/category/travel/">Travel</a>
+                                                <a href="https://aboutpakistan.com/blog/category/travel/">Travel</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li id="menu-item-10"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
-                                        <a href="https://www.aboutpakistan.com/news">News</a>
+                                        <a href="https://aboutpakistan.com/news">News</a>
                                         <ul class="sub-menu">
                                             <li id="menu-item-2508"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                <a href="https://www.aboutpakistan.com/news/category/pakistan/">Pakistan</a>
+                                                <a href="https://aboutpakistan.com/news/category/pakistan/">Pakistan</a>
                                             </li>
                                             <li id="menu-item-2469"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
-                                                <a href="https://www.aboutpakistan.com/news/category/sports/">Sports</a>
+                                                <a href="https://aboutpakistan.com/news/category/sports/">Sports</a>
                                             </li>
                                             <li id="menu-item-2509"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
-                                                <a href="https://www.aboutpakistan.com/news/category/business/">Business</a>
+                                                <a href="https://aboutpakistan.com/news/category/business/">Business</a>
                                             </li>
                                             <li id="menu-item-2510"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
-                                                <a href="https://www.aboutpakistan.com/news/category/entertainment/">Entertainment</a>
+                                                <a href="https://aboutpakistan.com/news/category/entertainment/">Entertainment</a>
                                             </li>
                                             <li id="menu-item-2511"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
-                                                <a href="https://www.aboutpakistan.com/news/category/fashion/">Fashion</a>
+                                                <a href="https://aboutpakistan.com/news/category/fashion/">Fashion</a>
                                             </li>
                                             <li id="menu-item-2512"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
-                                                <a href="https://www.aboutpakistan.com/news/category/technology/">Technology</a>
+                                                <a href="https://aboutpakistan.com/news/category/technology/">Technology</a>
                                             </li>
                                             <li id="menu-item-2513"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2513">
-                                                <a href="https://www.aboutpakistan.com/news/category/education/">Education</a>
+                                                <a href="https://aboutpakistan.com/news/category/education/">Education</a>
                                             </li>
                                             <li id="menu-item-2514"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2514">
-                                                <a href="https://www.aboutpakistan.com/news/category/international/">International</a>
+                                                <a href="https://aboutpakistan.com/news/category/international/">International</a>
                                             </li>
                                         </ul>
                                     </li>
                                     <li id="menu-item-11"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
-                                        <a href="https://www.aboutpakistan.com/medical">Medical</a></li>
+                                        <a href="https://aboutpakistan.com/medical">Medical</a></li>
                                     <li id="menu-item-12"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
-                                        <a href="https://www.aboutpakistan.com/mobile-packages">Mobile Packages</a>
+                                        <a href="https://aboutpakistan.com/mobile-packages">Mobile Packages</a>
                                     </li>
                                     <li id="menu-item-13"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
-                                        <a href="https://www.aboutpakistan.com/about-us.php">About Us</a>
+                                        <a href="https://aboutpakistan.com/about-us.php">About Us</a>
                                     </li>
                                     <li id="menu-item-14"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                        <a href="https://www.aboutpakistan.com/contact-us.php">Contact Us</a>
+                                        <a href="https://aboutpakistan.com/contact-us.php">Contact Us</a>
                                     </li>
                                     <li id="menu-item-15"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
@@ -154,59 +154,59 @@
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
                                                             <a href="https://www.aboutpakistan.com">Home</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                                            <a href="https://www.aboutpakistan.com/blog"
+                                                            <a href="https://aboutpakistan.com/blog"
                                                                aria-current="page">Blog</a>
                                                             <ul class="sub-menu">
                                                                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                                    <a href="https://www.aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
+                                                                    <a href="https://aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                                    <a href="https://www.aboutpakistan.com/blog/category/medical/">Medical</a>
+                                                                    <a href="https://aboutpakistan.com/blog/category/medical/">Medical</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                                    <a href="https://www.aboutpakistan.com/blog/category/travel/">Travel</a>
+                                                                    <a href="https://aboutpakistan.com/blog/category/travel/">Travel</a>
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
-                                                            <a href="https://www.aboutpakistan.com/news">News</a>
+                                                            <a href="https://aboutpakistan.com/news">News</a>
                                                             <ul class="sub-menu">
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/pakistan/">Pakistan</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/pakistan/">Pakistan</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/sports/">Sports</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/sports/">Sports</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/business/">Business</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/business/">Business</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/entertainment/">Entertainment</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/entertainment/">Entertainment</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/fashion/">Fashion</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/fashion/">Fashion</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/technology/">Technology</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/technology/">Technology</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2513">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/education/">Education</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/education/">Education</a>
                                                                 </li>
                                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2514">
-                                                                    <a href="https://www.aboutpakistan.com/news/category/international/">International</a>
+                                                                    <a href="https://aboutpakistan.com/news/category/international/">International</a>
                                                                 </li>
                                                             </ul>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
-                                                            <a href="https://www.aboutpakistan.com/medical">Medical</a>
+                                                            <a href="https://aboutpakistan.com/medical">Medical</a>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
-                                                            <a href="https://www.aboutpakistan.com/mobile-packages">Mobile
+                                                            <a href="https://aboutpakistan.com/mobile-packages">Mobile
                                                                 Packages</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
-                                                            <a href="https://www.aboutpakistan.com/about-us.php">About Us</a></li>
+                                                            <a href="https://aboutpakistan.com/about-us.php">About Us</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                                            <a href="https://www.aboutpakistan.com/contact-us.php">Contact Us</a></li>
+                                                            <a href="https://aboutpakistan.com/contact-us.php">Contact Us</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
                                                             <a style="color:#000000;" href="/">Property</a></li>
                                                     </ul>
@@ -299,28 +299,28 @@
 {{--                        </li>--}}
                         <li class="nav-item user-dropdown">
 
-                            @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                            @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-3"></i>
-                                        @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
-                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})</span>
+                                        @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
+                                            <span class="mr-1"> Logged in as {{\Illuminate\Support\Facades\Auth::guard('web')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('web')->user()->id}})</span>
                                         @endif
 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier())}}"><i
+                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
                                         {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
                                         {{--                                                class="fa fa-building-o mr-2"></i>Property Management</a>--}}
                                         <a class="dropdown-item"
                                            href="{{route('properties.listings',
-                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
                                             <i class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{route('accounts.admin-logout')}}"><i
+                                        <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
                                         {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                     </div>
@@ -337,3 +337,4 @@
             </nav>
 @include('website.layouts.sign-in-modal')
 
+                                                                                                                                        
