@@ -36,7 +36,7 @@
                                     <tr>
                                         <th>{{ __('Name') }}</th>
                                         <th>{{ __('E-Mail Address') }}</th>
-                                        <th>{{ __('Role') }}</th>
+                                        <th>{{ __('Role(s)') }}</th>
                                         <th>{{ __('Status') }}</th>
                                         <th>Action</th>
                                     </tr>
@@ -53,7 +53,8 @@
                                                 <td>{{$admin->email}}</td>
                                                 <td>
                                                     @foreach($admin->roles as $admin_role)
-                                                        {{$admin_role->name}}
+                                                        <li class="mb-2">{{$admin_role->name}}</li>
+
                                                     @endforeach
                                                 </td>
                                                 <td>@if($admin->is_active === '1') Active @else Inactive @endif</td>
