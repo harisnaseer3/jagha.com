@@ -17,7 +17,7 @@ class SocialAuthGoogleController extends Controller
     /**
      * Return a callback method from google api.
      *
-     * @return callback URL from google
+     * @return callable|\Illuminate\Http\RedirectResponse
      */
     public function callback(SocialGoogleAccountService $service)
     {
