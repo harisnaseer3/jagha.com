@@ -332,26 +332,20 @@ class AgencyController extends Controller
 
     private function _imageValidation($type)
     {
+        $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
         if ($type == 'upload_new_logo') {
             $error_msg = [];
-            $allowed_height = 256;
-            $allowed_width = 256;
-
-            $width = getimagesize(request()->file('upload_new_logo'))[0];
-            $height = getimagesize(request()->file('upload_new_logo'))[1];
-            if ($height < $allowed_height && $width < $allowed_width) {
-                $error_msg['upload_new_logo'] = 'upload_new_logo has invalid image dimensions';
+            $mime = request()->file('upload_new_logo')->getMimeType();
+            if (!in_array($mime, $supported_mime_types)) {
+                $error_msg['image'] = ' image must be a file of type: jpeg, png, jpg';
             }
             return $error_msg;
+
         } else if ($type == 'upload_new_picture') {
             $error_msg = [];
-            $allowed_height = 256;
-            $allowed_width = 256;
-
-            $width = getimagesize(request()->file('upload_new_picture'))[0];
-            $height = getimagesize(request()->file('upload_new_picture'))[1];
-            if ($height < $allowed_height && $width < $allowed_width) {
-                $error_msg['upload_new_picture'] = 'upload_new_picture has invalid image dimensions';
+            $mime = request()->file('upload_new_logo')->getMimeType();
+            if (!in_array($mime, $supported_mime_types)) {
+                $error_msg['image'] = ' image must be a file of type: jpeg, png, jpg';
             }
             return $error_msg;
         }
