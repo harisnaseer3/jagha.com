@@ -32,7 +32,7 @@
                                 @foreach($roles as $role)
                                     @if($role->name !== 'Super Admin')
                                     <label class="checkbox-inline ml-2">
-                                        <input type="checkbox" name="role[]" value="{{$role->name}}"> {{$role->name}}
+                                        <input type="checkbox" class="admin_role" name="role[]" value="{{$role->name}}"> {{$role->name}}
                                     </label>
                                     @endif
                                 @endforeach
@@ -64,16 +64,17 @@
 
 
 
-
+                    <div class="mt-2 mb-2"><span style="color:red">* Please select atleast one role to enable register option. </span></div>
                     <div class="form-group row mb-0">
-                        <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary" id="submit-button" disabled >
                                 {{ __('Register') }}
                             </button>
                             <a href="{{ route('admin.manage-admins')}}"
                                class="btn btn-danger">Cancel</a>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -84,6 +85,23 @@
 
 @endsection
 
-@section('page_script')
+@section('script')
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+
+                $('.admin_role').change(function() {
+                    if ($('input[name="role[]"]:checked').length > 0) {
+                        $('#submit-button').prop('disabled', false);
+                    }
+                    else {
+                        $('#submit-button').prop('disabled', true);
+
+                    }
+                });
+
+            });
+        })(jQuery);
+    </script>
 @endsection
 
