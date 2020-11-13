@@ -1,4 +1,4 @@
-<div class="banner" id="banner">
+<div class="banner main-page-banner" id="banner">
     <div id="bannerCarousole" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item banner-max-height active">

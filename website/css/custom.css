@@ -1344,7 +1344,7 @@ span.post-head-cat,
 
 @media (min-width: 1024px) {
     .content-area {
-        padding-top: 190px;
+        padding-top: 280px;
     }
 }
 
@@ -1813,3 +1813,29 @@ hr.solid {
     border-radius: 9999px;
     background-color: #4299e1;
 }
+.navbar-light {
+    position: fixed;
+    z-index: 10000;
+    margin-top: 50px;
+    width: 100%;
+
+}
+#main-nav-wrap {
+position: fixed;
+}
+
+.detail-page-banner {
+    padding-top: 102px;
+    padding-bottom: 12px;
+}
+.main-page-banner {
+    padding-top: 92px;
+}
+.cities-margin{
+    margin-top: 100px;
+}
+.admin-margin {
+    margin-top: 100px;
+}
+
+
