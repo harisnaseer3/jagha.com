@@ -83,9 +83,19 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                                 name="property_area_unit" id="property-area-unit">
                             <option disabled>Select unit</option>
                             @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key=>$option)
-                                <option
-                                    {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option || $option == 'Marla'? 'selected' : '' }}
-                                    value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
+                                @if(ucwords(str_replace('-',' ', request()->query('area_unit'))) == $option)
+                                    <option selected value={{str_replace(' ','-',$option)}} data-index={{$key}}>
+                                        {{$option}}
+                                    </option>
+                                @elseif(request()->query('area_unit') == '' && $option == 'Marla')
+                                    <option selected value={{str_replace(' ','-',$option)}} data-index={{$key}}>
+                                        {{$option}}
+                                    </option>
+                                @else
+                                    <option value={{str_replace(' ','-',$option)}} data-index={{$key}}>
+                                        {{$option}}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
