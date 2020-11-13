@@ -16,7 +16,7 @@
         @include('website.admin-pages.includes.admin-nav')
 
         <!-- Submit Property start -->
-            <div class="row">
+            <div class="row admin-margin">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
                         <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">

@@ -10,7 +10,7 @@
 
 @section('content')
     @include('website.admin-pages.includes.admin-nav')
-    <section class="content-header">
+    <section class="content-header ">
     </section>
 
     <div class="content" lang="{{ app()->getLocale() }}" {{ app()->getLocale() === 'ar' ? 'dir=rtl style=text-align:right;' : '' }}>
@@ -18,7 +18,7 @@
         <div class="alert-container"></div>
         <div class="clearfix"></div>
 
-        <div class="card mx-4 mt-4 ">
+        <div class="card mx-4 admin-margin">
             <div class="card-header">Add Admin</div>
 
             <div class="card-body">
