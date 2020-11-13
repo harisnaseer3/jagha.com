@@ -33,7 +33,7 @@
                     <div id="collapseListingVerifiedAgency" class="collapse {{ $params['status'] === 'verified_agencies' ? 'show' : '' }}" aria-labelledby="headingListingVerifiedAgency"
                          data-parent="#accordionListings">
                         <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
-                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
+                            <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 200]; ?>
 
                             @if ($params['status'] === 'verified_agencies')
                                 <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"
@@ -66,7 +66,7 @@
                                     {{ucfirst($status)}}({{ $counts[$status]['all'] }})
                                 </a>
                             @else
-                                <?php $route_params = ['status' => $status . '_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
+                                <?php $route_params = ['status' => $status . '_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 200]; ?>
                                 <a href="{{ route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all'])) }}"
                                    class="{{ $params['status'] === $status.'_agency' ? '' : 'collapsed' }} {{ $params['status'] === $status.'_agencies' ? 'text-white' : '' }}" role="button"
                                    aria-expanded="{{ $params['status'] === ucfirst($status).'Agency' ? 'true' : 'false' }}">

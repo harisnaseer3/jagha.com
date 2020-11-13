@@ -243,7 +243,8 @@
             '                               <label class="search2-input-label max-area-label" for="search2-select-max-area">MAX AREA</label>' +
             '                               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" ' +
             'id="search2-select-max-area" style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_area">';
-        if (sessionStorage.getItem('max_area') === 'any') search2_max_html += '   <option value="Any" selected>Any</option>';
+        if (sessionStorage.getItem('max_area') === 'any')
+            search2_max_html += '   <option value="Any" selected>Any</option>';
         else search2_max_html += '   <option value="Any" >Any</option>';
         search2_max_html += max_options;
         search2_max_html += '                   </select>' +
@@ -299,13 +300,17 @@
             area_short_form = 'kanal';
         }
         $.each(area_options, function (idx, val) {
-            if (idx + 1 < area_options.length)
-                if (sessionStorage.getItem('min_area') === val) min_options += '<option value="' + val + '" data-index="' + (idx + 1) + '" selected>' + val + '</option>'
-            min_options += '<option value="' + val + '" data-index="' + (idx + 1) + '">' + val + '</option>'
+            // if (idx + 1 < area_options.length)
+            if (sessionStorage.getItem('min_area') === val)
+                min_options += '<option value="' + val + '" data-index="' + (idx + 1) + '" selected>' + val + '</option>'
+            else
+                min_options += '<option value="' + val + '" data-index="' + (idx + 1) + '">' + val + '</option>'
         });
         $.each(area_options, function (index, value) {
-            if (sessionStorage.getItem('max_area') === value) max_options += '<option value="' + value + '" data-index="' + (index + 1) + '" selected>' + value + '</option>'
-            max_options += '<option value="' + value + '" data-index="' + (index + 1) + '">' + value + '</option>'
+            if (sessionStorage.getItem('max_area') === value)
+                max_options += '<option value="' + value + '" data-index="' + (index + 1) + '" selected>' + value + '</option>'
+            else
+                max_options += '<option value="' + value + '" data-index="' + (index + 1) + '">' + value + '</option>'
         });
         let formatted_unit = area_unit.toLowerCase().replace(' ', '_');
         let html = '';
@@ -316,8 +321,11 @@
             '           <div class="index-page-select">' +
             '               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="select-min-area"' +
             '                       style="width: 100%;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_area">';
-        if (sessionStorage.getItem('min_area') === '0') html += '   <option data-index="0" value="0" selected>0</option>';
-        else html += '  <option data-index="0" value="0">0</option>';
+        if (sessionStorage.getItem('min_area') === '0')
+            html += '   <option data-index="0" value="0" selected>0</option>';
+        else
+            html += '  <option data-index="0" value="0">0</option>';
+
         html += min_options;
         html += '        </select>' +
             '               </div>' +
@@ -327,7 +335,8 @@
             '           <div class="index-page-select">' +
             '               <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="select-max-area" ' +
             'style="width: 100%; border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_area">';
-        if (sessionStorage.getItem('max_area') === 'any') html += '   <option data-index="0" value="Any" selected>Any</option>';
+        if (sessionStorage.getItem('max_area') === 'any')
+            html += '   <option data-index="0" value="Any" selected>Any</option>';
         else html += '   <option data-index="0" value="Any" >Any</option>';
         html += max_options;
         html +=
@@ -350,28 +359,29 @@
         });
     }
 
-    function setCookie(name,value,days) {
+    function setCookie(name, value, days) {
         var expires = "";
         if (days) {
             var date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
-        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
+
     function getCookie(name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(';');
-        for(var i=0;i < ca.length;i++) {
+        for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0) ==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
         }
         return null;
     }
 
     function eraseCookie(name) {
-        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
     function cookieConsent() {
@@ -380,7 +390,7 @@
         }
     }
 
-    $('#btnDeny').click(()=>{
+    $('#btnDeny').click(() => {
         eraseCookie('allowCookies')
         $('.toast').toast('hide')
     })
@@ -536,8 +546,14 @@
             let data1 = $(this).val();
             sessionStorage.setItem('min_area', data1);
         });
-
+        $(document.body).on("change", "[name=property_area_unit]", function () {
+            areaUnitOptions($(this).val().replace(/-/g, " "));
+        });
+        $(document.body).on("change", "[name=search2-unit]", function () {
+            areaUnitOptions($(this).val().replace(/-/g, " "));
+        });
         areaUnitOptions('Marla');
+
 
         let form = $('#sign-in-card');
         form.validate({
@@ -683,8 +699,8 @@
             }
         });
 
-        $('#btnAccept').click(()=>{
-            setCookie('allowCookies','1',7)
+        $('#btnAccept').click(() => {
+            setCookie('allowCookies', '1', 7)
             $('.toast').hide();
         })
         cookieConsent()

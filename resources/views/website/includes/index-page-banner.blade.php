@@ -56,6 +56,11 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-lg-2 col-sm-4 col-8 search-col middle-col-2 border-right">
+                                        <div class="label-container"><label class="input-label" for="location">LOCATION</label></div>
+                                        <input type="text" class="index-page-text-area" id="location" name="location" list="locations" style="color: #555;">
+                                        <datalist id="locations" class="location-datalist"></datalist>
+                                    </div>
                                     <div class="col-lg-2 col-sm-1 col-2 search-col border-right">
                                         <div class="label-container"><label class="input-label" for="property-purpose">AREA UNIT</label></div>
                                         <div class="index-page-select" style="font-weight:800; font-size:14px">
@@ -63,19 +68,14 @@
                                                     style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
                                                     name="property_area_unit" id="property-area-unit">
                                                 <option disabled>Select unit</option>
-{{--                                                @foreach(['Marla','New Marla (225 Sqft)','Square Feet','Square Yards','Square Meters','Kanal'] as $key=>$option)--}}
-{{--                                                    <option {{$option === 'Marla'? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>--}}
-{{--                                                @endforeach--}}
+                                                {{--                                                @foreach(['Marla','New Marla (225 Sqft)','Square Feet','Square Yards','Square Meters','Kanal'] as $key=>$option)--}}
+                                                {{--                                                    <option {{$option === 'Marla'? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>--}}
+                                                {{--                                                @endforeach--}}
                                                 @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key=>$option)
                                                     <option {{$option === 'Marla'? 'selected' : '' }} value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-2 col-sm-4 col-8 search-col middle-col-2 border-right">
-                                        <div class="label-container"><label class="input-label" for="location">LOCATION</label></div>
-                                        <input type="text" class="index-page-text-area" id="location" name="location" list="locations" style="color: #555;">
-                                        <datalist id="locations" class="location-datalist"></datalist>
                                     </div>
                                     <div class="col-lg-2 col-sm-1 col-4 search-col index-search">
                                         <button class="btn button-theme btn-search btn-block" type="submit">
