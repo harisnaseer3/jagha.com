@@ -6,6 +6,7 @@ use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountTableController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertySearchController;
 
 
 class IndexPageController extends Controller
@@ -45,7 +46,7 @@ class IndexPageController extends Controller
 
     function getFeaturedProperties()
     {
-        $featured_properties = (new PropertyController)->listingfrontend()
+        $featured_properties = (new PropertySearchController)->listingfrontend()
             ->where('properties.platinum_listing', '=', 1)
             ->orderBy('views', 'DESC')
             ->limit(10)
