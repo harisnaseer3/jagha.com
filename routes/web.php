@@ -18,7 +18,7 @@ Route::get('/load-more-data', 'BlogController@more_data');
 Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
 Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
-Route::get('/get-popular-places', 'PropertyController@getPopularPlaces')->name('property.popular-places');
+Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');
 Route::get('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
 Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');

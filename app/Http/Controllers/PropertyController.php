@@ -32,7 +32,6 @@ use Throwable;
 
 class PropertyController extends Controller
 {
-
     function listingFrontend()
     {
         return (new Property)
@@ -86,40 +85,6 @@ class PropertyController extends Controller
         $data['view'] = View('website.components.feature_properties',
             [
                 'featured_properties' => $featured_properties
-            ])->render();
-
-        return $data;
-
-    }
-
-    public function getPopularPlaces()
-    {
-
-        $popular_locations = (new CountTableController())->popularLocations();
-        $data['view'] = View('website.components.popular_places',
-            [
-                'popular_cities_homes_on_sale' => $popular_locations['popular_cities_homes_on_sale'],
-                'popular_cities_plots_on_sale' => $popular_locations['popular_cities_plots_on_sale'],
-                'city_wise_homes_data' => [
-                    'karachi' => $popular_locations['city_wise_homes_data']['karachi'],
-                    'peshawar' => $popular_locations['city_wise_homes_data']['peshawar'],
-                    'lahore' => $popular_locations['city_wise_homes_data']['lahore'],
-                    'Islamabad/Rawalpindi' => $popular_locations['city_wise_homes_data']['rawalpindi/Islamabad']
-                ],
-                'city_wise_plots_data' => [
-                    'karachi' => $popular_locations['city_wise_plots_data']['karachi'],
-                    'peshawar' => $popular_locations['city_wise_plots_data']['peshawar'],
-                    'lahore' => $popular_locations['city_wise_plots_data']['lahore'],
-                    'Islamabad/Rawalpindi' => $popular_locations['city_wise_plots_data']['rawalpindi/Islamabad']
-                ],
-                'city_wise_commercial_data' => [
-                    'karachi' => $popular_locations['city_wise_commercial_data']['karachi'],
-                    'peshawar' => $popular_locations['city_wise_commercial_data']['peshawar'],
-                    'lahore' => $popular_locations['city_wise_commercial_data']['lahore'],
-                    'Islamabad/Rawalpindi' => $popular_locations['city_wise_commercial_data']['rawalpindi/Islamabad']
-                ],
-                'popular_cities_commercial_on_sale' => $popular_locations['popular_cities_commercial_on_sale'],
-                'popular_cities_property_on_rent' => $popular_locations['popular_cities_property_on_rent'],
             ])->render();
 
         return $data;
@@ -1700,7 +1665,6 @@ class PropertyController extends Controller
         }
 
     }
-
 
     public function userPropertySearch(Request $request)
     {
