@@ -5,19 +5,14 @@ namespace App\Http\Controllers;
 use App\Events\NewPropertyActivatedEvent;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Models\Account;
-use App\Models\Admin;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
-use App\Models\FloorPlan;
-use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
-use App\Models\Video;
 use App\Notifications\PropertyRejectionMail;
 use App\Notifications\PropertyStatusChange;
-use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -26,80 +21,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Throwable;
 
 
 class PropertyController extends Controller
 {
-//    function listingFrontend()
-//    {
-//        return (new Property)
-//            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-//                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-//                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-//                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
-//                'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
-//                'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
-//                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
-//                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description',
-//                'property_count_by_agencies.property_count AS agency_property_count',
-//                'users.community_nick AS user_nick_name', 'users.name AS user_name')
-//            ->where('properties.status', '=', 'active')
-//            ->whereNull('properties.deleted_at')
-//            ->leftJoin('images as p', function ($q) {
-//                $q->on('p.property_id', '=', 'properties.id')
-//                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-//            })
-//            ->join('locations', 'properties.location_id', '=', 'locations.id')
-//            ->join('cities', 'properties.city_id', '=', 'cities.id')
-//            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-//            ->leftJoin('favorites as f', function ($f) {
-//                $f->on('properties.id', '=', 'f.property_id')
-//                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-//            })
-//            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id')
-//            ->join('users', 'properties.user_id', '=', 'users.id');
-//    }
-//
-//    function sortPropertyListing($sort, $sort_area, $properties)
-//    {
-//        if ($sort_area === 'higher_area') $properties->orderBy('area_in_sqft', 'DESC');
-//        else if ($sort_area === 'lower_area') $properties->orderBy('area_in_sqft', 'ASC');
-//
-//        if ($sort === 'newest') $properties->orderBy('created_at', 'DESC');
-//        else if ($sort === 'oldest') $properties->orderBy('created_at', 'ASC');
-//        else if ($sort === 'high_price') $properties->orderBy('price', 'DESC');
-//        else if ($sort === 'low_price') $properties->orderBy('price', 'ASC');
-//        return $properties;
-//    }
-
-    //    display data on index page
-    public function index()
-    {
-        (new MetaTagController())->addMetaTags();
-
-        $property_types = (new PropertyType)->all();
-
-        // property count table
-        $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
-        $footer_content = (new FooterController)->footerContent();
-
-        $data = [
-            'total_count' => $total_count,
-            'cities_count' => (new CountTableController())->getCitiesCount(),
-            'property_types' => $property_types,
-            'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
-            'recent_properties' => $footer_content[0],
-            'footer_agencies' => $footer_content[1],
-        ];
-        return view('website.index', $data);
-    }
 
 //    list all featured properties
     public function featuredProperties()
     {
-//        on a specific limit if last page greater than first page return to page 1
         $properties = (new PropertySearchController)->listingfrontend()
             ->where('properties.platinum_listing', '=', 1);
 
@@ -140,6 +70,75 @@ class PropertyController extends Controller
         return view('website.pages.property_listing', $data);
     }
 
+    /* function call from top header (nav bar)*/
+    public function getPropertyListing(Request $request, string $type)
+    {
+        $properties = (new PropertySearchController)->listingFrontend()
+            ->where('properties.type', '=', $type);
+
+        $sort = '';
+        $limit = '';
+        $sort_area = '';
+
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
+
+        if (request()->input('limit') !== null) {
+            $limit = request()->input('limit');
+        } else
+            $limit = '15';
+
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+
+        $properties = (new PropertySearchController)->sortPropertyListing($sort, $sort_area, $properties);
+        $property_count = $properties->count();
+
+        if ($request->has('page') && $request->input('page') > ceil($property_count / $limit)) {
+            $lastPage = ceil((int)$property_count / $limit);
+            $request->merge(['page' => (int)$lastPage]);
+        }
+        (new MetaTagController())->addMetaTags();
+
+        $property_types = (new PropertyType)->all();
+        $footer_content = (new FooterController)->footerContent();
+
+
+        $data = [
+            'params' => $request->all(),
+            'property_types' => $property_types,
+            'properties' => $properties->paginate($limit),
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
+
+        ];
+        return view('website.pages.property_listing', $data);
+    }
+
+    //    display data on index page
+    public function index()
+    {
+        (new MetaTagController())->addMetaTags();
+
+        $property_types = (new PropertyType)->all();
+
+        // property count table
+        $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
+        $footer_content = (new FooterController)->footerContent();
+
+        $data = [
+            'total_count' => $total_count,
+            'cities_count' => (new CountTableController())->getCitiesCount(),
+            'property_types' => $property_types,
+            'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1],
+        ];
+        return view('website.index', $data);
+    }
+
     public function create()
     {
         $unit = (new Account)->select('default_area_unit')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
@@ -170,42 +169,6 @@ class PropertyController extends Controller
                 'counts' => $counts,
                 'recent_properties' => $footer_content[0],
                 'footer_agencies' => $footer_content[1]]);
-    }
-
-    private function _imageValidation($type)
-    {
-        if ($type == 'image') {
-            $error_msg = [];
-            if (count(request()->file('image')) > 60) {
-                $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
-                return $error_msg;
-            }
-            foreach (request()->file('image') as $index => $file) {
-                $mime = $file->getMimeType();
-                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
-                if (!in_array($mime, $supported_mime_types)) {
-                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
-                }
-            }
-            return $error_msg;
-        }
-        if ($type == 'floor_plans') {
-            $error_msg = [];
-//            $allowed_height = 400;
-//            $allowed_width = 750;
-            if (count(request()->file('floor_plans')) > 2) {
-                $error_msg['floor_plans.' . 0] = 'Only 2 ' . ' floor plans are allowed to upload.';
-                return $error_msg;
-            }
-            foreach (request()->file('floor_plans') as $index => $file) {
-                $mime = $file->getMimeType();
-                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
-                if (!in_array($mime, $supported_mime_types)) {
-                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
-                }
-            }
-            return $error_msg;
-        }
     }
 
     public function store(Request $request)
@@ -344,85 +307,7 @@ class PropertyController extends Controller
         }
     }
 
-//    calculate area value for different units
-    public function calculateArea($area_unit, $land_area)
-    {
-        $area = number_format($land_area, 2, '.', '');
-        $area_in_sqft = 0;
-        $area_in_sqyd = 0;
-        $area_in_sqm = 0;
-        $area_in_marla = 0;
-        $area_in_new_marla = 0;
-        $area_in_kanal = 0;
-        $area_in_new_kanal = 0;
-
-        if ($area_unit === 'Marla') {
-            $area_in_sqft = $area * 225;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-//        if ($area_unit === 'Old Marla (272 sqft)') {
-//            $area_in_sqft = $area * 272;
-//            $area_in_marla = $area_in_sqft / 272;
-//            $area_in_new_marla = $area_in_sqft / 225;
-//            $area_in_sqyd = $area_in_sqft / 9;
-//            $area_in_sqm = $area_in_sqft / 10.7639;
-//            $area_in_kanal = $area_in_sqft / 5440;
-//            $area_in_new_kanal = $area_in_sqft / 5440;
-//            $area_in_new_kanal = $area_in_sqft / 4500;
-//        }
-        if ($area_unit === 'Square Feet') {
-            $area_in_sqft = $area;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        if ($area_unit === 'Square Meters') {
-            $area_in_sqft = $area * 10.7639;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        if ($area_unit === 'Square Yards') {
-            $area_in_sqft = $area * 9;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        if ($area_unit === 'Kanal') {
-            $area_in_sqft = $area * 5440;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        return [
-            'new_marla' => $area_in_new_marla,
-            'sqft' => $area_in_sqft,
-            'sqyd' => $area_in_sqyd,
-            'sqm' => $area_in_sqm,
-            'marla' => $area_in_marla,
-            'kanal' => $area_in_kanal,
-            'new_kanal' => $area_in_new_kanal];
-
-    }
-
-    //    Display detailed page of property
+    // Display detailed page of property
     public function show($slug, Property $property)
     {
         if ($slug !== Str::slug($property->location->name) . '-' . Str::slug($property->title) . '-' . $property->reference)
@@ -688,530 +573,118 @@ class PropertyController extends Controller
         return redirect()->back()->with('error', 'Record not found');
     }
 
-    /*
-     * Display the specified resource under various categories like Active, Edited, Pending, Expired, Uploaded, Hidden, Deleted, Rejected, Rejected Images, Rejected Videos
-     *
-     * @param string status     required    active|edited|pending|expired|uploaded|hidden|deleted|rejected|rejected_images|rejected_videos
-     * @param string user       optional    id|all
-     */
 
-    private function listingsCount($status, $user)
+//    calculate area value for different units
+    public function calculateArea($area_unit, $land_area)
     {
-        $condition = ['property_status' => $status, 'user_id' => $user];
-        return DB::table('property_count_by_status_and_purposes')->select(DB::raw('sum(property_count) as count'))->where($condition);
+        $area = number_format($land_area, 2, '.', '');
+        $area_in_sqft = 0;
+        $area_in_sqyd = 0;
+        $area_in_sqm = 0;
+        $area_in_marla = 0;
+        $area_in_new_marla = 0;
+        $area_in_kanal = 0;
+        $area_in_new_kanal = 0;
 
-    }
-
-    private function _listings(string $status, string $user, $city = '')
-    {
-        // TODO: make migration for handling quota_used and image_views
-        $listings = (new Property)
-            ->select('properties.id', 'sub_type AS type', 'properties.expired_at', 'properties.reference',
-                'properties.status', 'locations.name AS location', 'cities.name as city',
-                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing', 'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-                'price', 'properties.created_at AS listed_date', DB::raw("'0' AS quota_used"),
-                DB::raw("'0' AS image_views"))
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->whereNull('properties.deleted_at');
-        // user
-//        TODO: based on property role admin
-//        if (!Auth::user()->hasRole('Admin')) {
-        if (!Auth::guard('admin')->user()) {
-            if (empty($user)) {
-                $user = Auth::user()->getAuthIdentifier();
-            } elseif ($user === 'all') {
-                // listing of all users of the agency
-                $listings->whereIn('properties.user_id', DB::table('agency_users')
-                    ->select('agency_users.user_id')
-                    ->where('agency_id', '=', DB::table('agencies')
-                        ->join('agency_users', 'agencies.id', '=', 'agency_users.agency_id')
-                        ->select('agencies.id')
-                        ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->value('agencies.id'))
-                    ->pluck('agency_users.user_id'));
-            } else {
-                if (intval($user) === Auth::user()->getAuthIdentifier()) {
-                    // listing of logged in user
-                    $listings->where('properties.user_id', '=', $user);
-                } else {
-                    $agency_users = DB::table('agency_users')
-                        ->select('agency_users.user_id')->where('agency_id', '=', DB::table('agency_users')
-                            ->select('agency_id')
-                            ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->value('agency_id'));
-
-                    // check if user is member of the agency
-                    if ($agency_users->count() === 0) {
-                        return redirect()->back(302)->withInput()->withErrors(['message', 'Invalid user provided.']);
-                    }
-
-                    // listing of user who is member of the agency
-                    $listings->whereIn('properties.user_id', $agency_users->get()->toArray());
-                }
-            }
+        if ($area_unit === 'Marla') {
+            $area_in_sqft = $area * 225;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
         }
-        if ($status == 'all') {
-            return $listings;
-        } else {
-            return $listings->where('status', '=', $status);
-
+//        if ($area_unit === 'Old Marla (272 sqft)') {
+//            $area_in_sqft = $area * 272;
+//            $area_in_marla = $area_in_sqft / 272;
+//            $area_in_new_marla = $area_in_sqft / 225;
+//            $area_in_sqyd = $area_in_sqft / 9;
+//            $area_in_sqm = $area_in_sqft / 10.7639;
+//            $area_in_kanal = $area_in_sqft / 5440;
+//            $area_in_new_kanal = $area_in_sqft / 5440;
+//            $area_in_new_kanal = $area_in_sqft / 4500;
+//        }
+        if ($area_unit === 'Square Feet') {
+            $area_in_sqft = $area;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
         }
-    }
-
-    /*
-     * Display the specified resource under various categories like Active, Edited, Pending, Expired, Uploaded, Hidden, Deleted, Rejected, Rejected Images, Rejected Videos
-     *
-     * @param string status     required    active|edited|pending|expired|uploaded|hidden|deleted|rejected|rejected_images|rejected_videos
-     * @param string purpose    required    all|sale|rent|wanted|super_hot_listing|hot_listing|magazine_listing
-     * @param string user       optional    id|all
-     * @param string sort       optional    id|type|location|price|expiry|views|image_count
-     * @param string order      optional    asc|desc
-     * @param string page       optional    10|15|30|50
-     */
-
-    private function _getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page)
-    {
-        $all = null;
-        $sale = null;
-        $rent = null;
-        $wanted = null;
-        $golden = null;
-        $silver = null;
-        $basic = null;
-        $bronze = null;
-        $platinum = null;
-        if ($purpose === 'all') {
-            $all = $this->_listings($status, $user)->where($condition)->orderBy($sort, $order)->paginate($page);
+        if ($area_unit === 'Square Meters') {
+            $area_in_sqft = $area * 10.7639;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
         }
-        if ($purpose === 'sale') {
-            $sale = $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->where($condition)->paginate($page);
+        if ($area_unit === 'Square Yards') {
+            $area_in_sqft = $area * 9;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
         }
-        if ($purpose === 'rent') {
-            $rent = $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where($condition)->paginate($page);
+        if ($area_unit === 'Kanal') {
+            $area_in_sqft = $area * 5440;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5440;
+            $area_in_new_kanal = $area_in_sqft / 4500;
         }
-        if ($purpose === 'wanted') {
-            $wanted = $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where($condition)->paginate($page);
-        }
-        if ($purpose === 'golden') {
-            $golden = $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
-        }
-        if ($purpose === 'silver') {
-            $silver = $this->_listings($status, $user)->where('silver_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
-        }
-        if ($purpose === 'basic') {
-            $basic = $this->_listings($status, $user)->where('basic_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
-        }
-        if ($purpose === 'bronze') {
-            $bronze = $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
-        }
-        if ($purpose === 'platinum') {
-            $platinum = $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
-        }
-        return ['all' => $all, 'sale' => $sale, 'rent' => $rent, 'wanted' => $wanted, 'golden' => $golden, 'platinum' => $platinum, 'silver' => $silver, 'basic' => $basic, 'bronze' => $bronze];
-    }
-
-    public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
-    {
-        $property_count = $this->getPropertyListingCount($user);
-        $footer_content = (new FooterController)->footerContent();
-        if ($request->has('city')) {
-            $city = (new City)->select('id')->where('name', '=', str_replace('-', ' ', $request->city))->first();
-            $condition = ['properties.city_id' => $city->id];
-            $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
-            $data = [
-                'params' => [
-                    'status' => $status,
-                    'purpose' => $purpose,
-                    'user' => 'admin',
-                    'sort' => $sort,
-                    'order' => $order,
-                    'page' => $page,
-                ],
-                'counts' => $property_count,
-                'listings' => [
-                    'all' => $result['all'],
-                    'sale' => $result['sale'],
-                    'rent' => $result['rent'],
-                    'wanted' => $result['wanted'],
-                    'basic' => $result['basic'],
-                    'silver' => $result['silver'],
-                    'bronze' => $result['bronze'],
-                    'golden' => $result['golden'],
-                    'platinum' => $result['platinum'],
-                ],
-            ];
-
-            return view('website.admin-pages.listings', $data);
-        }
-
-        if ($request->has('id')) {
-            $condition = ['properties.id' => $request->input('id')];
-            $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
-            $data = [
-                'params' => [
-                    'status' => $status,
-                    'purpose' => $purpose,
-                    'user' => 'admin',
-                    'sort' => $sort,
-                    'order' => $order,
-                    'page' => $page,
-                ],
-                'counts' => $property_count,
-                'listings' => [
-                    'all' => $result['all'],
-                    'sale' => $result['sale'],
-                    'rent' => $result['rent'],
-                    'wanted' => $result['wanted'],
-                    'basic' => $result['basic'],
-                    'silver' => $result['silver'],
-                    'bronze' => $result['bronze'],
-                    'golden' => $result['golden'],
-                    'platinum' => $result['platinum'],
-                ],
-            ];
-
-            return view('website.admin-pages.listings', $data);
-        } else if ($request->has('reference')) {
-            $condition = ['properties.reference' => $request->input('reference')];
-            $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
-            $data = [
-                'params' => [
-                    'status' => $status,
-                    'purpose' => $purpose,
-                    'user' => $user,
-                    'sort' => $sort,
-                    'order' => $order,
-                    'page' => $page,
-                ],
-                'notifications' => Auth()->user()->unreadNotifications,
-                'counts' => $property_count,
-                'listings' => [
-                    'all' => $result['all'],
-                    'sale' => $result['sale'],
-                    'rent' => $result['rent'],
-                    'wanted' => $result['wanted'],
-                    'basic' => $result['basic'],
-                    'silver' => $result['silver'],
-                    'bronze' => $result['bronze'],
-                    'golden' => $result['golden'],
-                    'platinum' => $result['platinum'],
-                ],
-                'recent_properties' => $footer_content[0],
-                'footer_agencies' => $footer_content[1]
-            ];
-            if ($data['listings']['all'])
-                return redirect()->back()->withInput()->with('error', 'Property not found.');
-
-            return view('website.pages.listings', $data);
-        }
-
-        // TODO: implement code where status is rejected_images or rejected_videos, remove after
-        if (in_array($status, ['rejected_images', 'rejected_videos'])) {
-            return abort(404, 'Missing implementation');
-        }
-
-        // listing of status
-        $status = strtolower($status);
-        if (!in_array($status, ['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold', 'rejected_images', 'rejected_videos'])) {
-            return redirect()->back(302)->withInput()->withErrors(['message', 'Invalid status provided.']);
-        }
-
-        // sort by field
-        $sort = strtolower($sort);
-        if (!in_array($sort, ['id', 'type', 'location', 'price', 'expiry', 'views', 'image_count'])) {
-            $sort = 'id';
-        } elseif ($sort === 'image_count') {
-            // TODO: find image count and make it part of query
-            // $listings->join('images', 'properties.id', '=', 'images.properties.id');
-            $sort = 'id';
-        } else {
-            if ($sort === 'id') $sort = 'properties.id';
-            elseif ($sort === 'type') $sort = 'sub_type';
-            elseif ($sort === 'location') $sort = 'locations.name';
-            elseif ($sort === 'expiry') $sort = 'created_at';
-        }
-
-
-        // order -> ascending or descending
-        $order = strtolower($order);
-        if (!in_array($order, ['asc', 'desc'])) {
-            $order = 'asc';
-        }
-
-        // pagination
-        if (!in_array($page, [10, 15, 30, 50, 200])) {
-            $page = 10;
-        }
-
-        if (Auth::guard('admin')->user()) {
-            $condition = [];
-            $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
-
-            $data = [
-                'params' => [
-                    'status' => $status,
-                    'purpose' => $purpose,
-                    'user' => $user,
-                    'sort' => $sort,
-                    'order' => $order,
-                    'page' => $page,
-                ],
-                'counts' => $property_count,
-                'listings' => [
-                    'all' => $result['all'],
-                    'sale' => $result['sale'],
-                    'rent' => $result['rent'],
-                    'wanted' => $result['wanted'],
-                    'basic' => $result['basic'],
-                    'silver' => $result['silver'],
-                    'bronze' => $result['bronze'],
-                    'golden' => $result['golden'],
-                    'platinum' => $result['platinum'],
-                ],
-            ];
-
-            return view('website.admin-pages.listings', $data);
-        }
-        $condition = [];
-        $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
-        $data = [
-            'params' => [
-                'status' => $status,
-                'purpose' => $purpose,
-                'user' => $user,
-                'sort' => $sort,
-                'order' => $order,
-                'page' => $page,
-            ],
-            'notifications' => Auth()->user()->unreadNotifications,
-            'counts' => $property_count,
-            'listings' => [
-                'all' => $result['all'],
-                'sale' => $result['sale'],
-                'rent' => $result['rent'],
-                'wanted' => $result['wanted'],
-                'basic' => $result['basic'],
-                'silver' => $result['silver'],
-                'bronze' => $result['bronze'],
-                'golden' => $result['golden'],
-                'platinum' => $result['platinum'],
-            ],
-            'recent_properties' => $footer_content[0],
-            'footer_agencies' => $footer_content[1]
-        ];
-        return view('website.pages.listings', $data);
-    }
-
-    /*
-     * Count specified resource under various categories like Active, Edited, Pending, Expired, Uploaded, Hidden, Deleted, Rejected, Rejected Images, Rejected Videos
-     *
-     * @param string user       optional    id|all
-     * @param string sort       optional    id|type|location|price|expiry|views|image_count
-     * @param string order      optional    asc|desc
-     */
-    public function getPropertyListingCount(string $user)
-    {
-        $counts = [];
-        foreach (['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold'] as $status) {
-            $counts[$status]['all'] = $this->listingsCount($status, $user)->first()->count;
-            $counts[$status]['sale'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'sale')->first()->count;
-            $counts[$status]['rent'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'rent')->first()->count;
-            $counts[$status]['wanted'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'wanted')->first()->count;
-
-            if ($status === 'active') {
-                $counts[$status]['basic'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'basic_listing')->first()->count;
-                $counts[$status]['silver'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'silver_listing')->first()->count;
-                $counts[$status]['bronze'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'bronze_listing')->first()->count;
-                $counts[$status]['golden'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'golden_listing')->first()->count;
-                $counts[$status]['platinum'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'platinum_listing')->first()->count;
-            }
-        }
-        return $counts;
-    }
-
-
-
-    private function _getPropertyAggregates()
-    {
-        // fetch count of properties by city
-        $cities = (new Property)
-            ->select('cities.name AS city_name', DB::raw('COUNT(properties.id) AS count'))
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->where('properties.status', '=', 'active')
-            ->groupBy('properties.city_id')
-            ->orderBy('cities.id')
-            ->get();
-
-        // fetch min/max land_area, count of properties on rent/sale/wanted, count of homes/plots/commercial properties
-        $properties_area_range = DB::table('properties')
-            ->select(DB::raw('MIN(land_area) AS min_area'), DB::raw('MAX(land_area) AS max_area'))
-            ->where('status', '=', 'active')
-            ->first();
-        $properties_rent_count = DB::table('properties')->where('purpose', '=', 'Rent')->where('status', '=', 'active')->count();
-        $properties_sale_count = DB::table('properties')->where('purpose', '=', 'Sale')->where('status', '=', 'active')->count();
-        $properties_wanted_count = DB::table('properties')->where('purpose', '=', 'Wanted')->where('status', '=', 'active')->count();
-        $properties_homes_count = DB::table('properties')->where('type', '=', 'Homes')->where('status', '=', 'active')->count();
-        $properties_plots_count = DB::table('properties')->where('type', '=', 'Plots')->where('status', '=', 'active')->count();
-        $properties_commercial_count = DB::table('properties')->where('type', '=', 'Commercial')->where('status', '=', 'active')->count();
-
         return [
-            'cities' => $cities,
-            'min_area' => $properties_area_range->min_area,
-            'max_area' => $properties_area_range->max_area,
-            'rent_count' => $properties_rent_count,
-            'sale_count' => $properties_sale_count,
-            'wanted_count' => $properties_wanted_count,
-            'homes_count' => $properties_homes_count,
-            'plots_count' => $properties_plots_count,
-            'commercial_count' => $properties_commercial_count,
-        ];
+            'new_marla' => $area_in_new_marla,
+            'sqft' => $area_in_sqft,
+            'sqyd' => $area_in_sqyd,
+            'sqm' => $area_in_sqm,
+            'marla' => $area_in_marla,
+            'kanal' => $area_in_kanal,
+            'new_kanal' => $area_in_new_kanal];
+
     }
 
-    /* function call from top header (nav bar)*/
-    public function getPropertyListing(Request $request, string $type)
+    private function _imageValidation($type)
     {
-        $properties = (new PropertySearchController)->listingFrontend()
-            ->where('properties.type', '=', $type);
-
-        $sort = '';
-        $limit = '';
-        $sort_area = '';
-
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
-
-        if (request()->input('limit') !== null) {
-            $limit = request()->input('limit');
-        } else
-            $limit = '15';
-
-        if (request()->input('area_sort') !== null)
-            $sort_area = request()->input('area_sort');
-
-        $properties = (new PropertySearchController)->sortPropertyListing($sort, $sort_area, $properties);
-        $property_count = $properties->count();
-
-        if ($request->has('page') && $request->input('page') > ceil($property_count / $limit)) {
-            $lastPage = ceil((int)$property_count / $limit);
-            $request->merge(['page' => (int)$lastPage]);
-        }
-        (new MetaTagController())->addMetaTags();
-
-        $property_types = (new PropertyType)->all();
-        $footer_content = (new FooterController)->footerContent();
-
-
-        $data = [
-            'params' => $request->all(),
-            'property_types' => $property_types,
-            'properties' => $properties->paginate($limit),
-            'recent_properties' => $footer_content[0],
-            'footer_agencies' => $footer_content[1],
-
-        ];
-        return view('website.pages.property_listing', $data);
-    }
-
-    //  ajax calls
-    public function getAreaValue(Request $request)
-    {
-        if ($request->ajax()) {
-            $result = (new Property)->select('land_area')->WHERE('area_unit', '=', $request->area_unit)->distinct()->inRandomOrder()->orderBy('land_area', 'ASC')->limit(8)->get()->toArray();
-            return response()->json(['data' => $result, 'status' => 200]);
-        } else {
-            return "not found";
-        }
-    }
-
-//    ajax to change status by the user
-    public function changePropertyStatus(Request $request)
-    {
-        if ($request->ajax()) {
-
-            $property = (new Property)->WHERE('id', '=', $request->id)->first();
-            (new CountTableController)->_delete_in_status_purpose_table($property, $property->status);
-
-            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
-            $property = (new Property)->WHERE('id', '=', $request->id)->first();
-            $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
-            $user = User::where('id', '=', $property->user_id)->first();
-            $user->notify(new PropertyStatusChange($property));
-
-
-            (new CountTableController)->_insert_in_status_purpose_table($property);
-
-            if ($request->status == 'sold' || $request->status == 'expired') {
-                (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
-
-                if (Auth::guard('admin')->user()) {
-                    (new PropertyLogController())->store($property);
+        if ($type == 'image') {
+            $error_msg = [];
+            if (count(request()->file('image')) > 60) {
+                $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
+                return $error_msg;
+            }
+            foreach (request()->file('image') as $index => $file) {
+                $mime = $file->getMimeType();
+                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
+                if (!in_array($mime, $supported_mime_types)) {
+                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
                 }
-
             }
-//            if ($request->status === 'active') {
-//                $dt = Carbon::now();
-//                $property->activated_at = $dt;
-//
-//                $expiry = $dt->addMonths(3)->toDateTimeString();
-//                $property->expired_at = $expiry;
-//                $property->save();
-//
-//                event(new NewPropertyActivatedEvent($property));
-//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
-//            }
-            return response()->json(['status' => 200]);
-        } else {
-            return "not found";
+            return $error_msg;
         }
-    }
-
-    public function adminPropertySearch(Request $request)
-    {
-        $property = (new Property)->where('id', '=', $request->property_id)->first();
-        if (!$property)
-            return redirect()->back()->withInput()->with('error', 'Property not found.');
-        else {
-            $status = lcfirst($property->status);
-            $purpose = lcfirst($property->purpose);
-
-            return redirect()->route('admin.properties.listings',
-                ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
-                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'id' => $request->property_id]);
-        }
-
-    }
-
-    public function adminPropertyCitySearch(Request $request)
-    {
-        $city = (new City)->select('id')->where('name', '=', $request->city)->first();
-        if (is_null($city))
-            return redirect()->back()->withInput()->with('error', 'No Properties found in ' . $request->city . '.');
-        else {
-            return redirect()->route('admin.properties.listings',
-                ['status' => 'all', 'purpose' => 'all', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
-                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ', '-', $request->city)]);
-        }
-
-    }
-
-    public function userPropertySearch(Request $request)
-    {
-        if ($request->input('property_ref') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('property_ref'))) {
-            $property = (new Property)->where('reference', '=', $request->property_ref)->first();
-            if (!$property)
-                return redirect()->back()->withInput()->with('error', 'Property not found.');
-            else {
-                $status = lcfirst($property->status);
-                $purpose = lcfirst($property->purpose);
-                return redirect()->route('properties.listings',
-                    ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
-                        'sort' => 'id', 'order' => 'asc', 'page' => 50, 'reference' => $request->property_ref]);
+        if ($type == 'floor_plans') {
+            $error_msg = [];
+//            $allowed_height = 400;
+//            $allowed_width = 750;
+            if (count(request()->file('floor_plans')) > 2) {
+                $error_msg['floor_plans.' . 0] = 'Only 2 ' . ' floor plans are allowed to upload.';
+                return $error_msg;
             }
-        } else
-            return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
+            foreach (request()->file('floor_plans') as $index => $file) {
+                $mime = $file->getMimeType();
+                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
+                if (!in_array($mime, $supported_mime_types)) {
+                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
+                }
+            }
+            return $error_msg;
+        }
     }
-
 }

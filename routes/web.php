@@ -8,7 +8,7 @@ Route::get('/', 'PropertyController@index')->name('home');
 //ajax calls
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 
-Route::get('/areaUnit', 'PropertyController@getAreaValue');
+Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
 Route::get('/features', 'FeatureController@getFeatures');
 Route::get('/resetForm', 'PropertyController@resetFrom');
 Route::post('/validation', 'AgencyController@validateFrom')->name('validation');
@@ -25,7 +25,7 @@ Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
 
 
-Route::post('/search-ref', 'PropertyController@userPropertySearch')->name('property.search.ref');
+Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
@@ -73,7 +73,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('/favorites', 'FavoriteController@store')->name('properties.favorites.store');
         Route::get('/favorites/{user}', 'FavoriteController@destroy')->name('properties.favorites.destroy');
     });
-    Route::get('listings/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
+    Route::get('listings/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyBackendListingController@listings')
         ->name('properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
@@ -127,7 +127,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     });
 
 //    ajax call to change status by the user
-    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('change.property.status');
+    Route::post('/change-status', 'PropertyAjaxCallController@changePropertyStatus')->name('change.property.status');
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('change.agency.status');
 
 //    read notification about property
@@ -161,13 +161,13 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
 // admin routes
 Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
 Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
-Route::post('/search-id', 'PropertyController@adminPropertySearch')->name('admin.property.search.id');
-Route::post('/search-city', 'PropertyController@adminPropertyCitySearch')->name('admin.property.search.city');
+Route::post('/search-id', 'PropertyAjaxCallController@adminPropertySearch')->name('admin.property.search.id');
+Route::post('/search-city', 'PropertyAjaxCallController@adminPropertyCitySearch')->name('admin.property.search.city');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 
-    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
+    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyBackendListingController@listings')
         ->name('admin.properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos|all)',
