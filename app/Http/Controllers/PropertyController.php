@@ -236,7 +236,7 @@ class PropertyController extends Controller
             foreach (request()->file('image') as $index => $file) {
                 $mime = $file->getMimeType();
 //                dd($mime);
-                $supported_mime_types = ['image/png','image/jpeg','image/jpg'];
+                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
                 if (!in_array($mime, $supported_mime_types)) {
                     $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
                 }
@@ -253,7 +253,7 @@ class PropertyController extends Controller
             }
             foreach (request()->file('floor_plans') as $index => $file) {
                 $mime = $file->getMimeType();
-                $supported_mime_types = ['image/png','image/jpeg','image/jpg'];
+                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
                 if (!in_array($mime, $supported_mime_types)) {
                     $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
                 }
@@ -868,7 +868,7 @@ class PropertyController extends Controller
         $property_count = $this->getPropertyListingCount($user);
         $footer_content = (new FooterController)->footerContent();
         if ($request->has('city')) {
-            $city = (new City)->select('id')->where('name', '=', str_replace('-',' ',$request->city))->first();
+            $city = (new City)->select('id')->where('name', '=', str_replace('-', ' ', $request->city))->first();
             $condition = ['properties.city_id' => $city->id];
             $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
             $data = [
@@ -992,7 +992,7 @@ class PropertyController extends Controller
         }
 
         // pagination
-        if (!in_array($page, [10, 15, 30, 50,200])) {
+        if (!in_array($page, [10, 15, 30, 50, 200])) {
             $page = 10;
         }
 
@@ -1093,7 +1093,11 @@ class PropertyController extends Controller
         }
         $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type];
 
-        $location_data['count'] = DB::table('property_count_by_property_purposes')->select('location_name', 'property_count', 'property_sub_type')->where($condition)->orderBy('property_count', 'DESC')->limit(50)->get();
+//        $location_data['count'] = DB::table('property_count_by_property_purposes')->select('location_name', 'property_count', 'property_sub_type')->where($condition)->orderBy('property_count', 'DESC')->limit(50)->get();
+        $location_data['count'] = DB::table('property_count_by_property_purposes')->select(DB::raw('SUM(property_count) as property_count'), 'location_name', 'property_type')
+            ->where($condition)
+            ->groupBy('location_name', 'property_type')
+            ->orderBy('property_count', 'DESC')->limit(50)->get();
         $location_data['purpose'] = $purpose;
         $location_data['type'] = $type;
         $location_data['city'] = $city_name;
@@ -1339,8 +1343,9 @@ class PropertyController extends Controller
     /* search function for houses at different locations*/
     /* locations are going to be fixed  we use like or regexp to find that location*/
 
-    public function searchForHousesAndPlots(string $type, string $city, string $location, string $purpose = 'sale')
+    public function searchForHousesAndPlots(string $type, string $city, string $location)
     {
+        $purpose = 'sale';
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
 
         $clean_location = str_replace('_', '-', str_replace('-', ' ', str_replace('BY', '/', $location)));
@@ -1348,6 +1353,61 @@ class PropertyController extends Controller
         /*change this part to locate some fix locations in location table */
         $location_data = Location::select('id')->where('city_id', '=', $city->id)
             ->where('name', 'REGEXP', $clean_location)->get()->toArray();
+
+        $properties = $this->listingFrontend();
+
+        if ($city !== null) $properties->where('properties.city_id', '=', $city->id);
+        if ($type !== '') $properties->where('properties.type', '=', $type);
+        $properties->where('properties.purpose', '=', $purpose);
+        $properties->whereIn('properties.location_id', $location_data);
+        $sort = '';
+        $limit = '';
+        $sort_area = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
+
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $property_count = $properties->count();
+
+        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+            $lastPage = ceil((int)$property_count / $limit);
+            request()->merge(['page' => (int)$lastPage]);
+        }
+
+        (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
+
+        $property_types = (new PropertyType)->all();
+        $footer_content = (new FooterController)->footerContent();
+
+        $data = [
+            'params' => request()->all(),
+            'property_types' => $property_types,
+            'properties' => $properties->paginate($limit),
+            'recent_properties' => $footer_content[0],
+            'footer_agencies' => $footer_content[1]
+        ];
+        return view('website.pages.property_listing', $data);
+    }
+
+    public function searchPropertyWithLocationName(string $type, string $purpose, string $city, string $location)
+    {
+        $city = City::select('id', 'name')->where('name', '=', $city)->first();
+
+        $clean_location = str_replace('_', '-', str_replace('-', ' ', str_replace('BY', '/', $location)));
+
+        /*change this part to locate some fix locations in location table */
+        $location_data = Location::select('id')->where('city_id', '=', $city->id)
+            ->where('name', '=', $clean_location)->get()->toArray();
 
         $properties = $this->listingFrontend();
 
@@ -1632,11 +1692,11 @@ class PropertyController extends Controller
     {
         $city = (new City)->select('id')->where('name', '=', $request->city)->first();
         if (is_null($city))
-            return redirect()->back()->withInput()->with('error', 'No Properties found in '.$request->city.'.');
+            return redirect()->back()->withInput()->with('error', 'No Properties found in ' . $request->city . '.');
         else {
             return redirect()->route('admin.properties.listings',
                 ['status' => 'all', 'purpose' => 'all', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
-                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ','-',$request->city)]);
+                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ', '-', $request->city)]);
         }
 
     }

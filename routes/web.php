@@ -46,6 +46,7 @@ Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertyController@searchWithAr
 Route::get('/cities-{city}', 'PropertyController@searchInCities')->name('cities.sale.property');
 Route::get('/agents-{city}', 'AgencyController@ListingCityAgencies')->name('agencies.citywise.listing');
 Route::get('{type}_for_sale/{city}/{location}', 'PropertyController@searchForHousesAndPlots')->name('search.houses.plots');
+Route::get('{type}_for_{purpose}/{city}/location/{location}', 'PropertyController@searchPropertyWithLocationName')->name('search.property.at.location');
 Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAllCities')->name('cities.listings')
     ->where([
         'purpose' => '(1|2)',
