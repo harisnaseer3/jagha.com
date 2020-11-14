@@ -28,7 +28,7 @@
                              data-parent="#accordionListings">
                             <div class="nav flex-column nav-pills" id="listings-tab" role="tablist" aria-orientation="vertical">
                                 @if (\Illuminate\Support\Facades\Request::segment($listings_segment_index) === 'listings' && $params['status'] === $status)
-                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
+                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 200]; ?>
 
                                     <a class="nav-link side-link-style {{ $params['purpose'] === 'all' ? 'active' : '' }}" id="listings-all-tab"
                                        href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}" role="tab"
@@ -74,7 +74,7 @@
 
                                     @endif
                                 @else
-                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
+                                    <?php $route_params = ['status' => $status, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 200]; ?>
                                     <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'all'])) }}">All Listings</a>
                                     <a class="nav-link side-link-style" href="{{ route('admin.properties.listings', array_merge($route_params, ['purpose' => 'sale'])) }}">For Sale
                                         ({{ $counts[$status]['sale'] == null ? 0 : $counts[$status]['sale'] }})</a>

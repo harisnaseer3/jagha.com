@@ -11,9 +11,9 @@
 @section('content')
     @include('website.includes.nav')
     <!-- Properties section body start -->
-    <div class="properties-section content-area pt-3">
+    <div class="properties-section content-area">
         <div class="container">
-            <div class="row">
+            <div class="row count-margin">
                 <div class="col-lg-9 col-md-12 pb-3">
                     <!-- Listing -->
                     <div class="card">

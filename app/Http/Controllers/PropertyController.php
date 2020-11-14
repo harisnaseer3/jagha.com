@@ -999,7 +999,7 @@ class PropertyController extends Controller
         }
 
         // pagination
-        if (!in_array($page, [10, 15, 30, 50])) {
+        if (!in_array($page, [10, 15, 30, 50,200])) {
             $page = 10;
         }
 

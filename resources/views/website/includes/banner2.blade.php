@@ -75,6 +75,13 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                         </select>
                     </div>
                 </div>
+                <div class="col-lg-2 col-sm-4 col-8 search-col middle-col-2" style="border-right:1px solid #ced4da;">
+                    <div class="label-container"><label class="input-label" for="location">LOCATION</label></div>
+                    <input type="text" class="index-page-text-area" id="location" name="location" list="locations"
+                           value="{{ucwords(str_replace('-',' ',request()->query('location')))}}"
+                           style="color: #555;">
+                    <datalist id="locations" class="location-datalist"></datalist>
+                </div>
                 <div class="col-lg-2 col-sm-1 col-2 search-col border-right">
                     <div class="label-container"><label class="input-label" for="property-purpose">AREA UNIT</label></div>
                     <div class="index-page-select" style="font-weight:800; font-size:14px">
@@ -83,19 +90,22 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                                 name="property_area_unit" id="property-area-unit">
                             <option disabled>Select unit</option>
                             @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key=>$option)
-                                <option
-                                    {{ucwords(str_replace('-',' ',request()->query('area_unit'))) == $option || $option == 'Marla'? 'selected' : '' }}
-                                    value={{str_replace(' ','-',$option)}} data-index={{$key}}>{{$option}}</option>
+                                @if(ucwords(str_replace('-',' ', request()->query('area_unit'))) == $option)
+                                    <option selected value={{str_replace(' ','-',$option)}} data-index={{$key}}>
+                                        {{$option}}
+                                    </option>
+                                @elseif(request()->query('area_unit') == '' && $option == 'Marla')
+                                    <option selected value={{str_replace(' ','-',$option)}} data-index={{$key}}>
+                                        {{$option}}
+                                    </option>
+                                @else
+                                    <option value={{str_replace(' ','-',$option)}} data-index={{$key}}>
+                                        {{$option}}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
-                </div>
-                <div class="col-lg-2 col-sm-4 col-8 search-col middle-col-2" style="border-right:1px solid #ced4da;">
-                    <div class="label-container"><label class="input-label" for="location">LOCATION</label></div>
-                    <input type="text" class="index-page-text-area" id="location" name="location" list="locations"
-                           value="{{ucwords(str_replace('-',' ',request()->query('location')))}}"
-                           style="color: #555;">
-                    <datalist id="locations" class="location-datalist"></datalist>
                 </div>
                 <div class="col-lg-2 col-sm-1 col-4 search-col">
                     <button class="btn button-theme btn-search btn-block" type="submit">

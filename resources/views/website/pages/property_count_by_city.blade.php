@@ -15,7 +15,7 @@
     <!-- Properties section body start -->
     <div class="properties-section content-area pt-3">
         <div class="container">
-            <div class="row">
+            <div class="row cities-margin">
                 <div class="col-lg-9 col-md-12 pb-3">
                     <!-- Listing -->
                     <div class="card">

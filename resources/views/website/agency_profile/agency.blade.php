@@ -28,21 +28,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="portfolioTabContent">
-                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="my-4">
-                                Dashboard
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
-                            <div class="my-4">
-                                Property Management
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
-                            <div class="my-4">
-                                Message Center
-                            </div>
-                        </div>
                         <div class="tab-pane fade show active" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -115,31 +100,6 @@
                                     </div>
                                     {{ Form::close() }}
                                 </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                            <div class="my-4">
-                                Reports
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_staff" role="tabpanel" aria-labelledby="agency_staff-tab">
-                            <div class="my-4">
-                                Agency Staff
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
-                            <div class="my-4">
-                                Clients &amp; Leads
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_website" role="tabpanel" aria-labelledby="agency_website-tab">
-                            <div class="my-4">
-                                Agency Website
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
-                            <div class="my-4">
-                                Advertise
                             </div>
                         </div>
                     </div>

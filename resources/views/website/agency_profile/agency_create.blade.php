@@ -30,21 +30,6 @@
                 <div class="col-md-12">
 
                     <div class="tab-content" id="portfolioTabContent">
-                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="my-4">
-                                Dashboard
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
-                            <div class="my-4">
-                                Property Management
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
-                            <div class="my-4">
-                                Message Center
-                            </div>
-                        </div>
                         <div class="tab-pane fade show active" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -67,9 +52,9 @@
                                             {{ Form::bsTel('cell', isset($agency->cell)? $agency->cell : null, ['data-default' => 'E.g. 03001234567']) }}
                                             {{ Form::bsTel('fax', isset($agency->fax)? $agency->fax : null, ['data-default' => 'E.g. 0211234567']) }}
 
-                                            {{ Form::bsSelect2('address', [], null, ['required' => true, 'placeholder' => 'Select Address','id' => 'add_location']) }}
+{{--                                            {{ Form::bsSelect2('address', [], null, ['required' => true, 'placeholder' => 'Select Address','id' => 'add_location']) }}--}}
 
-{{--                                            {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}--}}
+                                            {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}
                                             {{ Form::bsText('zip_code', isset($agency->zip_code)? $agency->zip_code : null,['data-default' => 'Postal code must be of 5 digits']) }}
                                             {{ Form::bsSelect2('country', ['Afghanistan' => 'Afghanistan', 'Albania' => 'Albania', 'Algeria' => 'Algeria', 'American Samoa' => 'American Samoa', 'Andorra' => 'Andorra', 'Angola' => 'Angola', 'Anguilla' => 'Anguilla', 'Antarctica' => 'Antarctica', 'Antigua and Barbuda' => 'Antigua and Barbuda', 'Argentina' => 'Argentina', 'Armenia' => 'Armenia', 'Aruba' => 'Aruba', 'Australia' => 'Australia', 'Austria' => 'Austria', 'Azerbaijan' => 'Azerbaijan', 'Bahamas' => 'Bahamas', 'Bahrain' => 'Bahrain', 'Bangladesh' => 'Bangladesh', 'Barbados' => 'Barbados', 'Belarus' => 'Belarus', 'Belgium' => 'Belgium', 'Belize' => 'Belize', 'Benin' => 'Benin', 'Bermuda' => 'Bermuda', 'Bhutan' => 'Bhutan', 'Bolivia' => 'Bolivia', 'Bosnia and Herzegoviegovina' => 'Bosnia and Herzegoviegovina', 'Botswana' => 'Botswana', 'Bouvet Island' => 'Bouvet Island', 'Brazil' => 'Brazil', 'British Indian Ocean Territory' => 'British Indian Ocean Territory', 'Brunei Darussalam' => 'Brunei Darussalam', 'Bulgaria' => 'Bulgaria', 'Burkina Faso' => 'Burkina Faso', 'Burundi' => 'Burundi', 'Cambodia' => 'Cambodia', 'Cameroon' => 'Cameroon', 'Canada' => 'Canada', 'Cape Verde' => 'Cape Verde', 'Cayman Islands' => 'Cayman Islands', 'Central African Republic' => 'Central African Republic', 'Chad' => 'Chad', 'Chile' => 'Chile', 'China' => 'China', 'Colombia' => 'Colombia', 'Comoros' => 'Comoros', 'Congo' => 'Congo', 'Cook Islands' => 'Cook Islands', 'Costa Rica' => 'Costa Rica', 'Cote D Ivoire' => 'Cote D Ivoire', 'Croatia' => 'Croatia', 'Cuba' => 'Cuba', 'Cyprus' => 'Cyprus', 'Czech Republic' => 'Czech Republic', 'Denmark' => 'Denmark', 'Djibouti' => 'Djibouti', 'Dominica' => 'Dominica', 'Dominican Republic' => 'Dominican Republic', 'Ecuador' => 'Ecuador', 'Egypt' => 'Egypt', 'El Salvador' => 'El Salvador', 'Equatorial Guinea' => 'Equatorial Guinea', 'Eritrea' => 'Eritrea', 'Estonia' => 'Estonia', 'Ethiopia' => 'Ethiopia', 'Falkland Islands (Malvinas)' => 'Falkland Islands (Malvinas)', 'Faroe Islands' => 'Faroe Islands', 'Fiji' => 'Fiji', 'Finland' => 'Finland', 'France' => 'France', 'French Guiana' => 'French Guiana', 'French Polynesia' => 'French Polynesia', 'French Southern Terri Territories' => 'French Southern Terri Territories', 'Gabon' => 'Gabon', 'Gambia' => 'Gambia', 'Georgia' => 'Georgia', 'Germany' => 'Germany', 'Ghana' => 'Ghana', 'Gibraltar' => 'Gibraltar', 'Greece' => 'Greece', 'Greenland' => 'Greenland', 'Grenada' => 'Grenada', 'Guadeloupe' => 'Guadeloupe', 'Guam' => 'Guam', 'Guatemala' => 'Guatemala', 'Guinea' => 'Guinea', 'Guinea-Bissau' => 'Guinea-Bissau', 'Guyana' => 'Guyana', 'Haiti' => 'Haiti', 'Heard Island and McDonald Islands' => 'Heard Island and McDonald Islands', 'Holy See (Vatican City State)' => 'Holy See (Vatican City State)', 'Honduras' => 'Honduras', 'Hong Kong' => 'Hong Kong', 'Hungary' => 'Hungary', 'Iceland' => 'Iceland', 'India' => 'India', 'Indonesia' => 'Indonesia', 'Iran' => 'Iran', 'Iraq' => 'Iraq', 'Ireland' => 'Ireland', 'Italy' => 'Italy', 'Jamaica' => 'Jamaica', 'Japan' => 'Japan', 'Jordan' => 'Jordan', 'Kazakhstan' => 'Kazakhstan', 'Kenya' => 'Kenya', 'Kiribati' => 'Kiribati', 'Korea' => 'Korea', 'Kuwait' => 'Kuwait', 'Kyrgyzstan' => 'Kyrgyzstan', 'Latvia' => 'Latvia', 'Lebanon' => 'Lebanon', 'Lesotho' => 'Lesotho', 'Liberia' => 'Liberia', 'Libyan Arab Jamahiriya' => 'Libyan Arab Jamahiriya', 'Liechtenstein' => 'Liechtenstein', 'Lithuania' => 'Lithuania', 'Luxembourg' => 'Luxembourg', 'Macau' => 'Macau', 'Macedonia' => 'Macedonia', 'Madagascar' => 'Madagascar', 'Malawi' => 'Malawi', 'Malaysia' => 'Malaysia', 'Maldives' => 'Maldives', 'Mali' => 'Mali', 'Malta' => 'Malta', 'Marshall Islands' => 'Marshall Islands', 'Martinique' => 'Martinique', 'Mauritania' => 'Mauritania', 'Mauritius' => 'Mauritius', 'Mayotte' => 'Mayotte', 'Mexico' => 'Mexico', 'Micronesia' => 'Micronesia', 'Moldova' => 'Moldova', 'Monaco' => 'Monaco', 'Mongolia' => 'Mongolia', 'Montserrat' => 'Montserrat', 'Morocco' => 'Morocco', 'Mozambique' => 'Mozambique', 'Myanmar' => 'Myanmar', 'Namibia' => 'Namibia', 'Nauru' => 'Nauru', 'Nepal' => 'Nepal', 'Netherlands' => 'Netherlands', 'Netherlands Antilles' => 'Netherlands Antilles', 'New Caledonia' => 'New Caledonia', 'New Zealand' => 'New Zealand', 'Nicaragua' => 'Nicaragua', 'Niger' => 'Niger', 'Nigeria' => 'Nigeria', 'Norfolk Island' => 'Norfolk Island', 'Northern Mariana Islands' => 'Northern Mariana Islands', 'Norway' => 'Norway', 'Oman' => 'Oman', 'Pakistan' => 'Pakistan', 'Palau' => 'Palau', 'Palestine' => 'Palestine', 'Panama' => 'Panama', 'Papua New Guinea' => 'Papua New Guinea', 'Paraguay' => 'Paraguay', 'Peru' => 'Peru', 'Philippines' => 'Philippines', 'Poland' => 'Poland', 'Portugal' => 'Portugal', 'Puerto Rico' => 'Puerto Rico', 'Qatar' => 'Qatar', 'Reunion' => 'Reunion', 'Romania' => 'Romania', 'Russian Federation' => 'Russian Federation', 'Rwanda' => 'Rwanda', 'Saint Kitts and Nevis' => 'Saint Kitts and Nevis', 'Saint Lucia' => 'Saint Lucia', 'Saint Vincent and the Grenadines' => 'Saint Vincent and the Grenadines', 'Samoa' => 'Samoa', 'San Marino' => 'San Marino', 'Sao Tome and Principe' => 'Sao Tome and Principe', 'Saudi Arabia' => 'Saudi Arabia', 'Senegal' => 'Senegal', 'Seychelles' => 'Seychelles', 'Sierra Leone' => 'Sierra Leone', 'Singapore' => 'Singapore', 'Slovakia' => 'Slovakia', 'Slovenia' => 'Slovenia', 'Solomon Islands' => 'Solomon Islands', 'Somalia' => 'Somalia', 'South Africa' => 'South Africa', 'Spain' => 'Spain', 'Sri Lanka' => 'Sri Lanka', 'Sudan' => 'Sudan', 'Suriname' => 'Suriname', 'Swaziland' => 'Swaziland', 'Sweden' => 'Sweden', 'Switzerland' => 'Switzerland', 'Syrian Arab Republic' => 'Syrian Arab Republic', 'Taiwan' => 'Taiwan', 'Tajikistan' => 'Tajikistan', 'Tanzania' => 'Tanzania', 'Thailand' => 'Thailand', 'Togo' => 'Togo', 'Tokelau' => 'Tokelau', 'Tonga' => 'Tonga', 'Trinidad and Tobago' => 'Trinidad and Tobago', 'Tunisia' => 'Tunisia', 'Turkey' => 'Turkey', 'Turkmenistan' => 'Turkmenistan', 'Turks and Caicos Islands' => 'Turks and Caicos Islands', 'Tuvalu' => 'Tuvalu', 'Uganda' => 'Uganda', 'Ukraine' => 'Ukraine', 'United Arab Emirates' => 'United Arab Emirates', 'United Kingdom' => 'United Kingdom', 'United States of America' => 'United States of America', 'United States Minor Outlying Islands' => 'United States Minor Outlying Islands', 'Uruguay' => 'Uruguay', 'Uzbekistan' => 'Uzbekistan', 'Vanuatu' => 'Vanuatu', 'Venezuela' => 'Venezuela', 'Vietnam' => 'Vietnam', 'Virgin Islands' => 'Virgin Islands', 'Virgin Islands' => 'Virgin Islands', 'Wallis and Futuna' => 'Wallis and Futuna', 'Yemen' => 'Yemen', 'Yugoslavia' => 'Yugoslavia', 'Zambia' => 'Zambia', 'Zimbabwe' => 'Zimbabwe'],
                                                isset($agency->country)? ucwords($agency->country): 'Pakistan', ['required' => true, 'placeholder' => 'Select country']) }}
@@ -121,31 +106,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                            <div class="my-4">
-                                Reports
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_staff" role="tabpanel" aria-labelledby="agency_staff-tab">
-                            <div class="my-4">
-                                Agency Staff
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
-                            <div class="my-4">
-                                Clients &amp; Leads
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_website" role="tabpanel" aria-labelledby="agency_website-tab">
-                            <div class="my-4">
-                                Agency Website
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
-                            <div class="my-4">
-                                Advertise
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -162,38 +122,38 @@
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script>
         (function ($) {
-            function getCityLocations(city) {
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    type: 'get',
-                    url: window.location.origin + '/locations',
-                    data: {city: city},
-                    dataType: 'json',
-                    success: function (data) {
-                        let locations = data.data
-                        // console.log(data.data);
-                        if (!jQuery.isEmptyObject({locations})) {
-                            let add_select =  $("#add_location");
-                            add_select.empty();
-                            for (let [index, options] of locations.entries()) {
-                                add_select.append($('<option>', {value: options.name, text: options.name}));
-                            }
-                            $('.fa-spinner').hide();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                        console.log(status);
-                        console.log(xhr);
-                    },
-                    complete: function (url, options) {
-                    }
-                });
-            }
+            // function getCityLocations(city) {
+            //     jQuery.ajaxSetup({
+            //         headers: {
+            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //         }
+            //     });
+            //     jQuery.ajax({
+            //         type: 'get',
+            //         url: window.location.origin + '/locations',
+            //         data: {city: city},
+            //         dataType: 'json',
+            //         success: function (data) {
+            //             let locations = data.data
+            //             // console.log(data.data);
+            //             if (!jQuery.isEmptyObject({locations})) {
+            //                 let add_select =  $("#add_location");
+            //                 add_select.empty();
+            //                 for (let [index, options] of locations.entries()) {
+            //                     add_select.append($('<option>', {value: options.name, text: options.name}));
+            //                 }
+            //                 $('.fa-spinner').hide();
+            //             }
+            //         },
+            //         error: function (xhr, status, error) {
+            //             console.log(error);
+            //             console.log(status);
+            //             console.log(xhr);
+            //         },
+            //         complete: function (url, options) {
+            //         }
+            //     });
+            // }
             $(document).ready(function () {
                 // Initialize Select2 Elements
                 $('.select2').select2({
@@ -250,11 +210,11 @@
                         }
                     });
                 });
-                $('#add_city').on('select2:select', function (e) {
-                    let city = $('#add_city').val();
-                    $('.fa-spinner').show();
-                    getCityLocations(city);
-                });
+                // $('#add_city').on('select2:select', function (e) {
+                //     let city = $('#add_city').val();
+                //     $('.fa-spinner').show();
+                //     getCityLocations(city);
+                // });
             });
         })(jQuery);
     </script>

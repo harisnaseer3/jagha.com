@@ -61,10 +61,10 @@
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
         @if(isset($default_area_unit))
-            {{ Form::bsSelect2('unit',  ['Marla' => 'Marla', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
+            {{ Form::bsSelect2('unit',  ['Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Marla' => 'Marla', 'Kanal'=>'Kanal'],
                 isset($default_area_unit->default_area_unit) ? $default_area_unit->default_area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         @else
-            {{ Form::bsSelect2('unit',  ['Marla' => 'Marla', 'Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Kanal'=>'Kanal'],
+            {{ Form::bsSelect2('unit',  ['Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Marla' => 'Marla', 'Kanal'=>'Kanal'],
                 isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         @endif
         <div class="selection-hide" style="display: none">

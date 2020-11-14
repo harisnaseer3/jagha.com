@@ -283,7 +283,7 @@
                             @endcan
                         @can('Manage Property')
                             <li class="nav-item hide-nav navbar-li">
-                                <?php $route_params = ['status' => 'active', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
+                                <?php $route_params = ['status' => 'active', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 200]; ?>
 
                                 <a class="nav-link" href="{{route('admin.properties.listings', array_merge($route_params, ['purpose' => 'sale']))}}">
                                     Property Management</a>
@@ -291,7 +291,7 @@
                         @endcan
                         @can('Manage Agency')
                             <li class="nav-item hide-nav navbar-li">
-                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 50]; ?>
+                                <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 200]; ?>
                                 <a class="nav-link"
                                    href="{{route('admin.agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
                                     Agency Management</a>
