@@ -1344,13 +1344,13 @@ class PropertyController extends Controller
     }
 
     /* search function for houses at different locations*/
-    /* locations are going to be fixed to we use like or regexp to find that location*/
+    /* locations are going to be fixed  we use like or regexp to find that location*/
 
     public function searchForHousesAndPlots(string $type, string $city, string $location, string $purpose = 'sale')
     {
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
 
-        $clean_location = str_replace('_', '-', str_replace('-', ' ', $location));
+        $clean_location = str_replace('_', '-', str_replace('-', ' ', str_replace('BY', '/', $location)));
 
         /*change this part to locate some fix locations in location table */
         $location_data = Location::select('id')->where('city_id', '=', $city->id)
