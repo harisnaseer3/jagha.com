@@ -55,7 +55,7 @@
             <div class="price-block">
                 {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
-{{--            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
+            {{--            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
         @endif
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}

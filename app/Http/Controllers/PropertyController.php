@@ -144,22 +144,20 @@ class PropertyController extends Controller
         $unit = (new Account)->select('default_area_unit')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
 
         $property_types = (new PropertyType)->all();
-        $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
-
-        $agency_ids = [];
-        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->toArray();
-//        dd($agencies_ids);
-        foreach ($agencies_ids as $ids) {
-            array_push($agency_ids, $ids->agency_id);
-        }
-
-
-        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
-
+        $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
         $agencies = [];
-        foreach ($agencies_data as $agency) {
-            $agencies = array_merge($agencies, [$agency->title => $agency->title]);
-        }
+
+        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
+//        $agencies_users_ids = DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agencies_ids)->get()->pluck('user_id')->toArray();
+//        $agencies_users = (new User)->select('name')
+//            ->whereIn('id', $agencies_users_ids)
+//            ->get()->pluck('name')->toArray();
+
+        $agencies = (new Agency)->select('title')
+            ->whereIn('id', $agencies_ids)
+            ->where('status', '=', 'verified')->get()->pluck('title')->toArray();
+
+
         $footer_content = (new FooterController)->footerContent();
 
         return view('website.pages.portfolio',
@@ -367,7 +365,7 @@ class PropertyController extends Controller
             $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
         }
         $property_types = (new PropertyType)->all();
-        $counts = $this->getPropertyListingCount(Auth::user()->getAuthIdentifier());
+        $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
         if (Auth::guard('admin')->user()) {
             return view('website.admin-pages.portfolio',
