@@ -443,6 +443,7 @@ class PropertySearchController extends Controller
         if ($validator->fails()) {
             return (['error' => $validator->errors()]);
         }
+
         $location = '';
         $city = (new City)->select('id', 'name')->where('name', '=', $data['city'])->first();
 
@@ -482,10 +483,15 @@ class PropertySearchController extends Controller
             $properties->where('price', '<=', $max_price);
         }
 
-
         //        both filters have some custom values
         $min_area = floatval(str_replace(',', '', $data['min_area']));
         $max_area = floatval(str_replace(',', '', $data['max_area']));
+
+
+        if($min_area < 0 or $max_area < 0){
+            $min_area = $max_area = 0.0;
+        }
+
 
         $area_column_wrt_unit = '';
 
@@ -493,7 +499,7 @@ class PropertySearchController extends Controller
 //        if ($data['area_unit'] === 'New Marla (225 Sqft)') $area_column_wrt_unit = 'area_in_new_marla';
         if ($data['area_unit'] === 'Marla') $area_column_wrt_unit = 'area_in_new_marla';
         if ($data['area_unit'] === 'Kanal') $area_column_wrt_unit = 'area_in_kanal';
-        if ($data['area_unit'] === 'New Kanal (16 Marla)') $area_column_wrt_unit = 'area_in_new_kanal';
+//        if ($data['area_unit'] === 'New Kanal (16 Marla)') $area_column_wrt_unit = 'area_in_new_kanal';
         if ($data['area_unit'] === 'Square Feet') $area_column_wrt_unit = 'area_in_sqft';
         if ($data['area_unit'] === 'Square Yards') $area_column_wrt_unit = 'area_in_sqyd';
         if ($data['area_unit'] === 'Square Meters') $area_column_wrt_unit = 'area_in_sqm';

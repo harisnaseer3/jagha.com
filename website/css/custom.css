@@ -1837,5 +1837,9 @@ position: fixed;
 .admin-margin {
     margin-top: 100px;
 }
-
-
+.index-page-num-area{
+    border: 0 !important;
+    width: 100%;
+    padding: 14px 0 0 9px !important;
+    font-size: 14px;
+}
