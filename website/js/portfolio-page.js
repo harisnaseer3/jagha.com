@@ -285,6 +285,19 @@
         //         $('.price-block').slideDown();
         //     }
         // });
+        let agency = $('#agency');
+        // if (agency.length > 0) {
+        //     if (agency.val() === null) {
+        //         $('select.agency-class').select2({
+        //             placeholder: 'Select Agency',
+        //             allowClear: true
+        //         });
+        //     }
+        //
+        //     $('.select2.select2-container.select2-container--default')
+        //         .css({'border': '1px solid rgb(206, 212, 218)', 'border-radius': '0.25rem'});
+        // }
+
         $('#add_city').on('select2:select', function (e) {
             let city = $('#add_city').val();
             $("#add_location").val(null).trigger("change");
@@ -293,15 +306,23 @@
         });
 
 
-        $('#agency').on('select2:select', function (e) {
+        agency.on('select2:select', function (e) {
             $('.agency-user-block').hide();
             $('.user-details-block').hide();
             $('.contact-person-block').hide();
             $('.contact_person_spinner').show();
-            let agency = $(this).val();
-            if (agency !== '') {
-                getAgencyUsers(agency);
+            let agency_val = $(this).val();
+            if (agency_val !== '' && agency_val !== null) {
+                getAgencyUsers(agency_val);
             }
+        });
+
+        $('#reset-agency').on('click',function(e){
+            e.preventDefault();
+            $('.agency-user-block').hide();
+            $('.user-details-block').show();
+            $('.contact-person-block').show();
+            $('.contact_person_spinner').hide();
         });
 
         $('#contact_person').on('change', function (e) {
