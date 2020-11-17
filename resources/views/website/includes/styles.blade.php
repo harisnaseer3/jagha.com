@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="{{asset('website/fonts/font-awesome/css/font-awesome.min.css')}}" async defer>
 
 <!-- Google fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" async defer>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700" rel="stylesheet" async defer>
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

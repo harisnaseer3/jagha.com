@@ -1426,7 +1426,7 @@ span.post-head-cat,
 }
 
 .properties-details-page {
-    padding-top: 200px !important;
+    padding-top: 295px !important;
 }
 
 .detail-nav-style {
@@ -1842,4 +1842,15 @@ position: fixed;
     width: 100%;
     padding: 14px 0 0 9px !important;
     font-size: 14px;
+}
+.fixed-bottom{
+    width:30%;
+}
+@media (max-width: 768px) {
+    .fixed-bottom {
+        width: 100%;
+    }
+}
+#main-nav-wrap{
+    z-index: 20000;
 }

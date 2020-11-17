@@ -319,10 +319,18 @@
 
         $('#reset-agency').on('click',function(e){
             e.preventDefault();
+            let agency_data = $('#agency');
+            agency_data.val(null).trigger("change");
             $('.agency-user-block').hide();
             $('.user-details-block').show();
             $('.contact-person-block').show();
             $('.contact_person_spinner').hide();
+
+            $('[name=contact_person]').val('');
+            $('[name=phone]').val('');
+            $('[name=mobile]').val('');
+            $('[name=fax]').val('');
+            $('[name=contact_email]').val('');
         });
 
         $('#contact_person').on('change', function (e) {
