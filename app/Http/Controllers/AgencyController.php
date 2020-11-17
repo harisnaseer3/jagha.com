@@ -842,7 +842,7 @@ class AgencyController extends Controller
         foreach ($files as $file) {
             $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
 
-            Storage::put('public/agency_logos/' . $updated_path, fopen($logo, 'r+'));
+            Storage::put('agency_logos/' . $updated_path, fopen($logo, 'r+'));
             $thumbnailpath = ('thumbnails/agency_logos/' . $updated_path);
 
             $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
@@ -866,7 +866,7 @@ class AgencyController extends Controller
         foreach ($files as $file) {
             $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
 
-            Storage::put('public/agency_ceo_images/' . $updated_path, fopen($logo, 'r+'));
+            Storage::put('agency_ceo_images/' . $updated_path, fopen($logo, 'r+'));
             $thumbnailpath = ('thumbnails/agency_ceo_images/' . $updated_path);
 
             $img = \Intervention\Image\Facades\Image::make($thumbnailpath)->fit($file['width'], $file['height'], function ($constraint) {
