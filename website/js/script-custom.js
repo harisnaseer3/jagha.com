@@ -367,6 +367,7 @@
             $('#location').val('');
             $('input[name=area_unit]').val('Marla');
             $('.index-form').trigger('reset');
+            $('.index-form-2').trigger('reset');
             $('.custom-select').data('index', '0').trigger('change');
 
             sessionStorage.clear();
@@ -396,7 +397,8 @@
                     $(this).val('Marla').trigger('change');
             });
             sessionStorage.clear();
-
+            $('.index-form').trigger('reset');
+            $('.index-form-2').trigger('reset');
 
             $('#search2-location').val('');
             $('#location').val('');

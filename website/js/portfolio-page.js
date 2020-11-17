@@ -317,7 +317,7 @@
             }
         });
 
-        $('#reset-agency').on('click',function(e){
+        $('#reset-agency').on('click', function (e) {
             e.preventDefault();
             let agency_data = $('#agency');
             agency_data.val(null).trigger("change");
@@ -325,6 +325,7 @@
             $('.user-details-block').show();
             $('.contact-person-block').show();
             $('.contact_person_spinner').hide();
+            $('#contact_person').removeAttr('required').attr('disable', 'true');
 
             $('[name=contact_person]').val('');
             $('[name=phone]').val('');
