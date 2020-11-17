@@ -266,7 +266,7 @@
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
     <script src="{{asset('website/js/listing-page.js')}}"></script>
-    <script src="{{asset('website/js/script-custom.js')}}"></script>
+    <script src="{{asset('website/js/script-custom.min.js')}}"></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
 
 

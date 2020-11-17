@@ -31,7 +31,7 @@
             isset($property->city) ? str_replace(' ', '_',strtolower($property->city)) : null, ['required' => true, 'placeholder' => 'Select city','id' => 'add_city']) }}
 
             {{ Form::bsSelect2('location', [], null, ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin" style="font-size:20px; display:none"></i></span></div>
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin location-spinner" style="font-size:20px; display:none"></i></span></div>
         @endif
 
     </div>
@@ -55,7 +55,7 @@
             <div class="price-block">
                 {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
-{{--            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
+            {{--            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
         @endif
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
@@ -86,12 +86,10 @@
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
-        @if(isset($property) and !$property->image->isEmpty())	
-		
+        @if(isset($property) and !$property->image->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Images</div>
                 @foreach($property->image as $available_image)
-	
                     <div class="col-md-4 col-sm-6 my-2">
                         <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
                             <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-image" data-record-id="{{$available_image->id}}"
@@ -136,7 +134,7 @@
             {{ Form::bsText('video link', null, ['required' => false]) }}
         @endif
 
-        @if(isset($property) and !$property->floor_plan->isEmpty()))
+        @if(isset($property) and !$property->floor_plan->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Floor Plans</div>
                 @foreach($property->floor_plan as $available_image)
@@ -161,16 +159,38 @@
     @if(!empty($agencies))
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property']) }}
+            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property','id'=>'agency']) }}
+            <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
         </div>
+
+    @endif
+    @if(isset($property->agency))
+        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-body">
+            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}
+        </div>
+
     @endif
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
-        {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : null, ['required' => true]) }}
-        {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : null, ['data-default' => 'E.g. 0511234567']) }}
-        {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : null,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}
-        {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. 0211234567']) }}
-        {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : null, ['required' => true]) }}
+
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+        <div class="agency-user-block" style="display: none">
+            {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
+        </div>
+
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+
+        <div class="contact-person-block" style="display: block">
+            {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : \Illuminate\Support\Facades\Auth::user()->name, ['required' => true, 'id'=>'contact_person_input']) }}
+        </div>
+
+        <div class="user-details-block" style="display:block">
+            {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['data-default' => 'E.g. 0511234567']) }}
+            {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}
+            {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax,  ['data-default' => 'E.g. 0211234567']) }}
+            {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
+        </div>
     </div>
     <div class="card-footer">
         {{form::bsHidden('data-index',isset($property->id)? $property->id : null)}}

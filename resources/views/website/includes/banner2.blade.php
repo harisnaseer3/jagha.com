@@ -160,7 +160,47 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-3 col-8 search-col middle-col-2" style="border-right:1px solid #ced4da" id="area-container"></div>
+                <div class="col-lg-3 col-sm-3 col-8 search-col middle-col-2" style="border-right:1px solid #ced4da" id="area-container">
+                    <div class="row">
+                        <div class="col-sm-6" style="padding-right:0; border-right:1px solid #ced4da">
+                            <div class="label-container"><label class="input-label min-area-label" for="select-min-area">MIN AREA</label></div>
+                            <div class="index-page-select"><input type="number" class="index-page-num-area" id="select-min-area" name="min_area" list="select-min-areas-datalist"
+                                                                  style="color: #555;" min="0">
+                                <datalist id="select-min-areas-datalist">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=8>8</option>
+                                    <option value=10>10</option>
+                                    <option value=12>12</option>
+                                    <option value=15>15</option>
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" style="padding-left: 0;">
+                            <div class="label-container"><label class="input-label max-area-label" for="select-max-area">MAX AREA</label></div>
+                            <div class="index-page-select"><input type="number" class="index-page-num-area" id="select-max-area" name="max_area" list="select-max-areas-datalist"
+                                                                  style="color: #555;" min="0">
+                                <datalist id="select-max-areas-datalist">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=8>8</option>
+                                    <option value=10>10</option>
+                                    <option value=12>12</option>
+                                    <option value=15>15</option>
+                                </datalist>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {{ Form::bsHidden('area_unit','Marla',['id' => 'input-area-unit']) }}
 
                 <div class="col-lg-3 col-sm-3 col-6 search-col middle-col-1 beds-block" style="border-right:1px solid #ced4da; display: block">

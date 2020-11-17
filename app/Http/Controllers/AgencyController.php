@@ -10,10 +10,13 @@ use App\Models\Property;
 use App\Models\PropertyType;
 use App\Notifications\AgencyRejectionMail;
 use App\Notifications\AgencyStatusChange;
+use App\Notifications\AgencyStatusChangeMail;
 use App\Notifications\PropertyStatusChange;
+use App\Notifications\PropertyStatusChangeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
@@ -554,6 +557,8 @@ class AgencyController extends Controller
             $user = User::where('id', '=', $agency->user_id)->first();
 
             $user->notify(new AgencyStatusChange($agency));
+            Notification::send($user, new AgencyStatusChangeMail($agency));
+
             if (Auth::guard('admin')->user()) {
 //                dd($request->has('rejection_reason') && $request->input('status') == 'rejected' ? $request->input('rejection_reason') : null);
 
@@ -598,6 +603,7 @@ class AgencyController extends Controller
 
                 $user = User::where('id', '=', $agency->user_id)->first();
                 $user->notify(new AgencyStatusChange($agency));
+                Notification::send($user, new AgencyStatusChangeMail($agency));
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {
@@ -774,7 +780,7 @@ class AgencyController extends Controller
             $order = 'asc';
         }
         // pagination
-        if (!in_array($page, [10, 15, 30, 50,200])) {
+        if (!in_array($page, [10, 15, 30, 50, 200])) {
             $page = 10;
         }
 

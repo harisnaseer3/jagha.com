@@ -300,4 +300,40 @@ class AgencyUserController extends Controller
     {
         //
     }
+
+    public function getAgencyUsers(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $agencies_users_ids = DB::table('agency_users')->select('user_id')->where('agency_id', $request->input('agency'))->get()->pluck('user_id')->toArray();
+
+            if (!empty($agencies_users_ids)) {
+                $agencies_users = (new User)->select('name', 'id')
+                    ->whereIn('id', $agencies_users_ids)
+                    ->get();
+                $users = [];
+                foreach ($agencies_users as $user) {
+                    $users += array($user->id => $user->name);
+                }
+                return response()->json(['data' => $users, 'status' => 200]);
+            }
+
+        } else {
+            return "not found";
+        }
+    }
+
+    public function getAgencyUserData(Request $request)
+    {
+        if ($request->ajax()) {
+            $agency_user = DB::table('users')->select('name', 'cell', 'phone', 'fax', 'email')->where('id', $request->input('user'))->first();
+
+            if ($agency_user) {
+                return response()->json(['data' => $agency_user, 'status' => 200]);
+            }
+
+        } else {
+            return "not found";
+        }
+    }
 }

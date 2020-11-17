@@ -133,7 +133,8 @@
                             <div class="form-group">
                                 <div class="index-page-select p-0">
                                     <label class="search2-input-label" for="search2-bedrooms">AREA UNIT</label>
-                                    <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-input-area-unit" style="width: 100%;" tabindex="-1" aria-hidden="true"
+                                    <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-input-area-unit" style="width: 100%;" tabindex="-1"
+                                            aria-hidden="true"
                                             aria-describedby="unit-error" aria-invalid="false" name="search2-unit">
                                         @foreach(['Square Feet','Square Yards','Square Meters','Marla','Kanal'] as $key => $unit)
                                             <option value="{{$unit}}"
@@ -142,6 +143,48 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-min-area">
+                            <div class="form-group">
+                                <div class="index-page-select" style="padding: 0;"><label class="search2-input-label min-area-label" for="search2-select-min-area"> MIN AREA</label>
+                                    <input type="number" class="index-page-num-area" id="search2-select-min-area" name="min_area" list="min-areas" style="color: #555;" min="0">
+                                    <datalist id="min-areas" class="min-areas-datalist">
+                                        <option value=1>1</option>
+                                        <option value=2>2</option>
+                                        <option value=3>3</option>
+                                        <option value=4>4</option>
+                                        <option value=5>5</option>
+                                        <option value=6>6</option>
+                                        <option value=8>8</option>
+                                        <option value=10>10</option>
+                                        <option value=12>12</option>
+                                        <option value=15>15</option>
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-max-area">
+                            <div class="form-group">
+                                <div class="index-page-select" style="padding: 0">
+                                    <label class="search2-input-label max-area-label" for="search2-select-max-area">MAX AREA</label>
+                                    <input type="number" class="index-page-num-area" id="search2-select-max-area" name="max_area" list="max-areas" style="color: #555;" min="0">
+                                    <datalist id="max-areas" class="max-areas-datalist">
+                                        <option value=1>1</option>
+                                        <option value=2>2</option>
+                                        <option value=3>3</option>
+                                        <option value=4>4</option>
+                                        <option value=5>5</option>
+                                        <option value=6>6</option>
+                                        <option value=8>8</option>
+                                        <option value=10>10</option>
+                                        <option value=12>12</option>
+                                        <option value=15>15</option>
+                                    </datalist>
                                 </div>
                             </div>
                         </div>
@@ -159,10 +202,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
-                             <div class="form-group">
+                            <div class="form-group">
                                 <div class="index-page-select p-0">
                                     <label class="search2-input-label" for="search2-select-max-price">MAX PRICE</label>
                                     <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="search2-select-max-price" style="width: 100%;" tabindex="-1"
@@ -175,9 +216,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-min-area"></div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6" id="search2-max-area"></div>
-{{--                        {{ Form::bsHidden('search2-area_unit','Marla',['id' => 'search2-input-area-unit']) }}--}}
+
+                        {{--                        {{ Form::bsHidden('search2-area_unit','Marla',['id' => 'search2-input-area-unit']) }}--}}
                     </div>
                     <div class="row">
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
