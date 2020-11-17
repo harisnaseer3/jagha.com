@@ -7,25 +7,30 @@ Route::get('/', 'PropertyController@index')->name('home');
 
 //ajax calls
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
+Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 
-Route::get('/areaUnit', 'PropertyController@getAreaValue');
+
+
+Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
+
+Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
 Route::get('/features', 'FeatureController@getFeatures');
 Route::get('/resetForm', 'PropertyController@resetFrom');
 Route::post('/validation', 'AgencyController@validateFrom')->name('validation');
 Route::post('/subscribe', 'SubscriberController@store')->name('subscribe');
 Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
 Route::get('/load-more-data', 'BlogController@more_data');
-Route::post('/searchWithID', 'PropertyController@searchWithID')->name('property.search.id');
+Route::post('/searchWithID', 'PropertySearchController@searchWithID')->name('property.search.id');
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
 Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
-Route::get('/get-popular-places', 'PropertyController@getPopularPlaces')->name('property.popular-places');
+Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');
 Route::get('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
 Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
 
 
-Route::post('/search-ref', 'PropertyController@userPropertySearch')->name('property.search.ref');
+Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');
@@ -42,10 +47,11 @@ Route::get('/all_cities/pakistan/{type}', 'CountTableController@getCitywisePrope
     ]);
 
 
-Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertyController@searchWithArgumentsForProperty')->name('sale.property.search');
-Route::get('/cities-{city}', 'PropertyController@searchInCities')->name('cities.sale.property');
+Route::get('/{sub_type}_for_{purpose}/{city}/', 'PropertySearchController@searchWithArgumentsForProperty')->name('sale.property.search');
+Route::get('/cities-{city}', 'PropertySearchController@searchInCities')->name('cities.sale.property');
 Route::get('/agents-{city}', 'AgencyController@ListingCityAgencies')->name('agencies.citywise.listing');
-Route::get('{type}_for_sale/{city}/{location}', 'PropertyController@searchForHousesAndPlots')->name('search.houses.plots');
+Route::get('{type}_for_sale/{city}/{location}', 'PropertySearchController@searchForHousesAndPlots')->name('search.houses.plots');
+Route::get('{type}_for_{purpose}/{city}/location/{location}', 'PropertySearchController@searchPropertyWithLocationName')->name('search.property.at.location');
 Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAllCities')->name('cities.listings')
     ->where([
         'purpose' => '(1|2)',
@@ -72,7 +78,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::get('/favorites', 'FavoriteController@store')->name('properties.favorites.store');
         Route::get('/favorites/{user}', 'FavoriteController@destroy')->name('properties.favorites.destroy');
     });
-    Route::get('listings/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
+    Route::get('listings/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyBackendListingController@listings')
         ->name('properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos)',
@@ -126,7 +132,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     });
 
 //    ajax call to change status by the user
-    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('change.property.status');
+    Route::post('/change-status', 'PropertyAjaxCallController@changePropertyStatus')->name('change.property.status');
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('change.agency.status');
 
 //    read notification about property
@@ -160,13 +166,13 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' 
 // admin routes
 Route::get('admin-login', 'AdminAuth\AuthController@adminLogin')->name('admin.login');
 Route::post('admin-login', ['as' => 'admin-login', 'uses' => 'AdminAuth\AuthController@adminLoginPost']);
-Route::post('/search-id', 'PropertyController@adminPropertySearch')->name('admin.property.search.id');
-Route::post('/search-city', 'PropertyController@adminPropertyCitySearch')->name('admin.property.search.city');
+Route::post('/search-id', 'PropertyAjaxCallController@adminPropertySearch')->name('admin.property.search.id');
+Route::post('/search-city', 'PropertyAjaxCallController@adminPropertyCitySearch')->name('admin.property.search.city');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 
-    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyController@listings')
+    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyBackendListingController@listings')
         ->name('admin.properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos|all)',

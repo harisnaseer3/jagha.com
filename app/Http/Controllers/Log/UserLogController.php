@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Log;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PropertyBackendListingController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\PropertyController;
@@ -26,13 +27,13 @@ class UserLogController extends Controller
      */
     public function index()
     {
-        $counts = (new PropertyController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
+        $counts =(new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
         return view('website.pages.user-logs',
             [
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1],
                 'counts' => $counts,
             ]);
-       
+
     }
 }
