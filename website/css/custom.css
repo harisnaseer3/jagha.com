@@ -1837,5 +1837,16 @@ position: fixed;
 .admin-margin {
     margin-top: 100px;
 }
+.fixed-bottom{
+    width:30%;
+}
+@media (max-width: 768px) {
+    .fixed-bottom {
+        width: 100%;
+    }
+}
+#main-nav-wrap{
+    z-index: 20000;
+}
 
 

@@ -30,10 +30,10 @@
         <div class="toast-body p-2 d-flex flex-column">
             {{--            <h4 class="color-white">Cookies</h4>--}}
             <div class="color-white">
-                <span class="mr-auto color-white" style="line-height: 1rem">
+                <span class="mr-auto color-white" style="line-height: 1.5rem">
                 We use cookies for a number of reasons, such as keeping Our Site reliable and secure, providing social media features and to analyse how our Site is used. By clicking on the "Accept" button or by continue to use you consent to the usage these cookies on your device.
                 </span>
-                <span class="float-right pt-1"><a type="button ml-auto" class="btn btn-light" id="btnAccept">Accept</a></span>
+                <span class="float-right pt-2 mt-2"><a type="button ml-auto" class="btn btn-sm theme-blue text-white" id="btnAccept">Accept</a></span>
             </div>
             {{--            <div class="ml-auto">--}}
             {{--                <button type="button" class="btn btn-outline-light mr-3" id="btnDeny">--}}
