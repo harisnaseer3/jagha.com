@@ -7,6 +7,11 @@ Route::get('/', 'PropertyController@index')->name('home');
 
 //ajax calls
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
+Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
+
+
+
+Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
 
 Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
 Route::get('/features', 'FeatureController@getFeatures');

@@ -13,12 +13,15 @@ use App\Models\Property;
 use App\Models\PropertyType;
 use App\Notifications\PropertyRejectionMail;
 use App\Notifications\PropertyStatusChange;
+use App\Notifications\PropertyStatusChangeMail;
+use App\Notifications\SendMailToJoinNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Throwable;
@@ -145,17 +148,17 @@ class PropertyController extends Controller
 
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
-        $agencies = [];
 
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
-//        $agencies_users_ids = DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agencies_ids)->get()->pluck('user_id')->toArray();
-//        $agencies_users = (new User)->select('name')
-//            ->whereIn('id', $agencies_users_ids)
-//            ->get()->pluck('name')->toArray();
 
-        $agencies = (new Agency)->select('title')
+        $agencies_data = (new Agency)->select('title', 'id')
             ->whereIn('id', $agencies_ids)
-            ->where('status', '=', 'verified')->get()->pluck('title')->toArray();
+            ->where('status', '=', 'verified')->get();
+
+        $agencies = [];
+        foreach ($agencies_data as $agency) {
+            $agencies += array($agency->id => $agency->title);
+        }
 
 
         $footer_content = (new FooterController)->footerContent();
@@ -236,8 +239,10 @@ class PropertyController extends Controller
 
             $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
             $agency = '';
-            if ($request->input('agency')) {
-                $agency = DB::table('agencies')->select('id')->where('title', '=', $request->input('agency'))->where('user_id', '=', $user_id)->first();
+            if ($request->has('agency')) {
+                if (DB::table('agencies')->where('id', '=', $request->input('agency'))->exists()) {
+                    $agency = $request->input('agency');
+                }
             }
 
             $property = (new Property)->Create([
@@ -245,7 +250,7 @@ class PropertyController extends Controller
                 'user_id' => $user_id,
                 'city_id' => $city->id,
                 'location_id' => $location['location_id'],
-                'agency_id' => $agency != '' ? $agency->id : null,
+                'agency_id' => $agency != '' ? $agency : null,
                 'purpose' => $request->input('purpose'),
                 'sub_purpose' => $request->has('wanted_for') ? $request->input('wanted_for') : null,
                 'type' => $request->input('property_type'),
@@ -340,18 +345,19 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-        $agency_ids = [];
-        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', $property->user_id)->get()->toArray();
-
-        foreach ($agencies_ids as $ids) {
-            array_push($agency_ids, $ids->agency_id);
-        }
-        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
-
-        $agencies = [];
-        foreach ($agencies_data as $agency) {
-            $agencies = array_merge($agencies, [$agency->title => $agency->title]);
-        }
+//        $agency_ids = [];
+//        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', $property->user_id)->get()->toArray();
+//
+//        foreach ($agencies_ids as $ids) {
+//            array_push($agency_ids, $ids->agency_id);
+//        }
+//        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
+//
+//        $agencies = [];
+//        foreach ($agencies_data as $agency) {
+//            $agencies = array_merge($agencies, [$agency->title => $agency->title]);
+//        }
+//        dd($property->agency);
 //        get name of assigned agency of property
 //        $agency
         $city = $property->location->city->name;
@@ -361,16 +367,15 @@ class PropertyController extends Controller
         $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
         $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
-        if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
-            $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
-        }
+//        if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
+//            $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
+//        }
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
         if (Auth::guard('admin')->user()) {
             return view('website.admin-pages.portfolio',
                 [
-                    'agencies' => $agencies,
                     'property' => $property,
                     'property_types' => $property_types,
                     'counts' => $counts,
@@ -381,7 +386,6 @@ class PropertyController extends Controller
 
         return view('website.pages.portfolio',
             [
-                'agencies' => $agencies,
                 'property' => $property,
                 'property_types' => $property_types,
                 'counts' => $counts,
@@ -454,11 +458,11 @@ class PropertyController extends Controller
 
             $status_before_update = $property->status;
 
-            $agency = '';
-            if ($request->input('agency')) {
-                $agency = DB::table('agencies')->select('id')->
-                where('title', '=', $request->input('agency'))->where('user_id', '=', $property->user_id)->first();
-            }
+//            $agency = '';
+//            if ($request->input('agency')) {
+//                $agency = DB::table('agencies')->select('id')->
+//                where('title', '=', $request->input('agency'))->where('user_id', '=', $property->user_id)->first();
+//            }
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
 //                    'reference' => $property->reference,
 //                    'user_id' => $property->user_id,
@@ -515,11 +519,14 @@ class PropertyController extends Controller
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
                 $property->save();
-                event(new NewPropertyActivatedEvent($property));
+//                comment out new property up event
+//                event(new NewPropertyActivatedEvent($property));
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
             }
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
+            Notification::send($user, new PropertyStatusChangeMail($property));
+
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
 
@@ -548,11 +555,14 @@ class PropertyController extends Controller
             try {
                 if (Auth::guard('admin')->user())
                     $property->reviewed_by = Auth::guard('admin')->user()->name;
+
                 $property->status = 'deleted';
                 $property->save();
 
                 $user = User::where('id', '=', $property->user_id)->first();
                 $user->notify(new PropertyStatusChange($property));
+
+                Notification::send($user, new PropertyStatusChangeMail($property));
 
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
                 $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
