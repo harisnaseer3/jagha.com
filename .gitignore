@@ -15,6 +15,8 @@ yarn-error.log
 /Web
 .vendor
 vendor
+config/session.php
+index.html
 feed_rss.xml
 loaderio-5cbb41ab5e680619c87d573a8fc64c90.html
 loaderio-5cbb41ab5e680619c87d573a8fc64c90.txt
@@ -24,3 +26,4 @@ sitemap2.xml
 sitemap_images.xml
 sitemap_video.xml
 urllist.txt
+
