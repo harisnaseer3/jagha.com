@@ -165,7 +165,7 @@
                                                                                                 <input type="radio" name="status" value="reactive"
                                                                                                        {{$all_listing->status === 'active'? 'disabled':'' }}
                                                                                                        data-id="{{ $all_listing->id }}">
-                                                                                                <label for="active">Reactive</label>
+                                                                                                <label for="active">Active</label>
                                                                                             @endif
                                                                                             @if($params['status'] != 'expired')
                                                                                                 <input type="radio" name="status" value="expired"
