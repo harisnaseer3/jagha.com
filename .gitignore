@@ -15,3 +15,5 @@ yarn-error.log
 /Web
 .vendor
 vendor
+config/session.php
+index.html

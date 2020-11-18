@@ -13,7 +13,7 @@
     <!-- Top header start -->
     {{--    <div style="min-height:90px"></div>--}}
 
-    <div class="submit-property">
+    <div class="submit-property admin-margin">
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
