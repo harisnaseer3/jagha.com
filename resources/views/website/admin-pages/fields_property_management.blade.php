@@ -203,7 +203,7 @@
         {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
           isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
         <div id="reason-of-rejection" style="display: none">
-            {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null,['required'=> 'true']) }}
+            {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}
         </div>
     </div>
 
