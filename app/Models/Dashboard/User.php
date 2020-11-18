@@ -2,6 +2,7 @@
 
 namespace App\Models\Dashboard;
 
+use App\Models\Admin;
 use App\Models\Agency;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -106,6 +107,32 @@ class User extends Authenticatable
 
         return (new User)->select(['id', 'name', 'email', 'is_active','phone','cell','fax','address','zip_code','country','community_nick','about_yourself'])->get();
     }
+    public static function getUserByEmail($email)
+    {
+        return (new User)->where('email', $email)->first();
+    }
+    public static function getUserById($id)
+    {
+        return (new User)->where('id', $id)->first();
+    }
+
+    public static function destroyUser($id)
+    {
+        $current_user = (new User)->find($id);
+        try {
+            if ($current_user->is_active === '1') {
+                $current_user->is_active = '0';
+            } elseif ($current_user->is_active === '0') {
+                $current_user->is_active = '1';
+            }
+
+            $current_user->update();
+            return $current_user->is_active;
+        } catch (\Exception $e) {
+        }
+    }
+
+
 
     public function hasRole($role)
     {
