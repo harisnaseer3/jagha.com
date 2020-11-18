@@ -17,9 +17,9 @@
                 }
             },
             error: function (xhr, status, error) {
-                console.log(error);
-                console.log(status);
-                console.log(xhr);
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
             },
             complete: function (url, options) {
 
@@ -44,6 +44,7 @@
             dataType: 'json',
             success: function (data) {
                 let facilities = $.parseJSON(data.data['list']);
+
                 if (data.status === 200 && data.values['features'] === null) {
                     displayFeatures(facilities);
                 }
@@ -206,9 +207,11 @@
         });
         displayFeatureBtn();
         // to get data for features in edit view
-        if ($('[name^=property_subtype-]:checked').length > 0) {
-            selectValue = $('[name^=property_subtype-]:checked').val();
+
+        if ($('#subtype').length > 0) {
+            selectValue = $('[name^=property_subtype ]').val();
             let property_index = $('[name=data-index]').val();
+
             if (selectValue !== 'Penthouse' && selectValue !== 'Room')
                 getFeaturesForEdit(selectValue, property_index);
             displayFeatureBtn();
