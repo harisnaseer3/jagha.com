@@ -50,7 +50,7 @@ class ImageController extends Controller
 
             foreach ($files as $file) {
                 $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
-                Storage::put('public/properties/' . $updated_path, fopen($file_name, 'r+'));
+                Storage::put('properties/' . $updated_path, fopen($file_name, 'r+'));
 
                 //Resize image here
                 $thumbnailpath = ('thumbnails/properties/' . $updated_path);
@@ -112,7 +112,7 @@ class ImageController extends Controller
 
             foreach ($files as $file) {
                 $updated_path = $filenamewithoutext . '-' . $file['width'] . 'x' . $file['height'] . '.' . $extension;
-                Storage::put('public/properties/' . $updated_path, fopen($file_name, 'r+'));
+                Storage::put('properties/' . $updated_path, fopen($file_name, 'r+'));
 
                 //Resize image here
                 $thumbnailpath = ('thumbnails/properties/' . $updated_path);
