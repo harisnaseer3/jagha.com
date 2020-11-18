@@ -11,7 +11,7 @@
             @endif
             {{ Form::bsText('property_type', isset($property->type)? $property->type : 'Homes', ['readonly' => 'readonly']) }}
 
-            {{ Form::bsText('property_subtype ' . $property->type, isset($property->sub_type)? $property->sub_type : '', ['readonly' => 'readonly']) }}
+            {{ Form::bsText('property_subtype ' . $property->type, isset($property->sub_type)? $property->sub_type : '', ['readonly' => 'readonly','id'=>'subtype']) }}
             {{ Form::bsText('city', isset($property->city)? $property->city : null, ['readonly' => 'readonly']) }}
             {{ Form::bsText('location', isset($property->location)? $property->location : null, ['readonly' => 'readonly']) }}
         @else
@@ -19,7 +19,6 @@
             <div id="purpose-Wanted" style="display: none;">
                 {{ Form::bsRadio('wanted_for', isset($property->sub_purpose)? $property->sub_purpose : '', ['list' => ['Buy', 'Rent']]) }}
             </div>
-
             {{ Form::bsRadio('property_type',isset($property->type)? $property->type : 'Homes', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
             @foreach($property_types as $property_type)
                 <div id="property_subtype-{{ $property_type->name }}" style="display: none;">
@@ -50,7 +49,7 @@
             <div class="price-block" style="display:none">
                 {{ Form::bsNumber('all_inclusive_price', null,['data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
-            {{ Form::bsCheckbox('call_for_price_inquiry', ['1'=>'1'], ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}
+            {{--            {{ Form::bsCheckbox('call_for_price_inquiry', ['1'=>'1'], ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
         @else
             <div class="price-block">
                 {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
@@ -74,15 +73,27 @@
             {{ Form::bsSelect2('bathrooms', ['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10+'=>'10+'],
            isset($property->bathrooms) ? strtolower($property->bathrooms) : null, [ 'placeholder' => 'Select Bathrooms']) }}
         </div>
-        <div class="form-group row btn-hide" style="display:none">
-            <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
-                Features
-            </label>
-            <div class="col-sm-8 col-md-5">
-                <a style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Add Features</a>
+        @if(isset($property->features))
+            <div class="form-group  row" style="display:block">
+                <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+                    Features
+                </label>
+                <div class="col-sm-8 col-md-5">
+                    <a style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Add Features</a>
+                </div>
             </div>
+        @else
+            <div class="form-group row btn-hide" style="display:none">
+                <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+                    Features
+                </label>
+                <div class="col-sm-8 col-md-5">
+                    <a style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Add Features</a>
+                </div>
 
-        </div>
+            </div>
+        @endif
+
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
