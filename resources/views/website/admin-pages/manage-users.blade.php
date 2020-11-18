@@ -42,6 +42,7 @@
                                 <th>Address</th>
 
                                 <th>{{ __('Status') }}</th>
+                                <th>Action</th>
 {{--                                <th>Action</th>--}}
                             </tr>
                             </thead>
@@ -63,9 +64,20 @@
 
 
                                         <td>@if($user->is_active === '1') Active @else Inactive @endif</td>
-{{--                                        <td>--}}
+                                             <td>
 
-{{--                                        </td>--}}
+                                                    {!! Form::open(['route' => ['admins.destroy-user', $user->id], 'method' => 'delete']) !!}
+                                                    @if($user->is_active === '0')
+                                                        <div class='btn-group'>
+                        {!! Form::button('Activate', ['type' => 'submit', 'class' => 'btn btn-success btn-sm', 'onclick' => 'return confirm("'.__('Are you sure you want to activate user account?').'")']) !!}
+                    </div>
+                    @elseif($user->is_active === '1')
+                        <div class='btn-group'>
+                            {!! Form::button('Deactivate', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('Are you sure you want to deactivate user account?').'")']) !!}
+                        </div>
+                        @endif
+                        {!! Form::close() !!}
+                        </td>
                                     </tr>
                                 @endforeach
                             @endif

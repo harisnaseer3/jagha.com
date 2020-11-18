@@ -139,6 +139,23 @@ class UserManagementController extends Controller
 
         }
     }
+    public function userDestroy($user)
+    {
+        $current_user = User::getUserById($user);
+        if (empty($current_user)) {
+            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. User not found');
+        }
+        $user_status = User::destroyUser($current_user->id);
+        if($user_status === '1')
+        {
+            return redirect()->route('admin.manage-users')->with('success', 'User activated successfully.');
+        }
+        elseif($user_status === '0')
+        {
+            return redirect()->route('admin.manage-users')->with('success', 'User deactived successfully.');
+
+        }
+    }
 
 
 }

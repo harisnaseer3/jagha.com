@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dashboard\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -57,6 +58,17 @@ class LoginController extends Controller
         ]);
 
         if ($validator->passes()) {
+            $user = User::getUserByEmail($request->input('email'));
+            if(!empty($user) && $user->is_active === '0')
+            {
+                if ($request->ajax())
+                    return response()->json(['error' => $validator->getMessageBag()->add('password', 'Your account has been deactivated!')]);
+                else
+                    throw ValidationException::withMessages([$this->username() => [trans('auth.failed')]]);
+            }
+
+
+
             if (auth()->guard('web')->attempt(array('email' => $request->input('email'),
                 'password' => $request->input('password')), $request->remember)) {
                 $user = [
