@@ -45,9 +45,20 @@
                     let url_piece_3 = url_piece_2.split('admin/')[1];
                     let new_url = url_piece_1 + 'purpose/' + purpose + '/admin/' + url_piece_3;
                     $(this).attr('href', new_url)
-                })
+                });
             }
         });
+        let url_string = window.location.search;
+        if (url_string.indexOf('?city=') >= 0) {
+            let city = url_string.split("?")[1];
+            $('.pagination li a').each(function (index) {
+                let url = $(this).attr('href');
+                let new_url = url + '&' + city
+                $(this).attr('href', new_url);
+            });
+        }
+
+
         $('#sign-in-btn').click(function (event) {
             if (form.valid()) {
                 event.preventDefault();
@@ -57,7 +68,7 @@
                 event.preventDefault();
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin  + '/login',
+                    url: window.location.origin + '/login',
                     data: form.serialize(),
                     dataType: 'json',
                     success: function (data) {
@@ -78,10 +89,10 @@
                             html += '<span class="mr-1"> Logged in as <span>' + user_name;
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-                            html += '<a class="dropdown-item" href=" ' + window.location.origin  + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
+                            html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                 '                     <div class="dropdown-divider"></div>' +
                                 // '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
-                                '<a class="dropdown-item" href=" ' + window.location.origin  + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
+                                '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
@@ -114,7 +125,7 @@
             });
             jQuery.ajax({
                 type: 'post',
-                url: window.location.origin  + '/admin/change-status',
+                url: window.location.origin + '/admin/change-status',
                 data: {'id': id, 'status': status},
                 dataType: 'json',
                 success: function (data) {
