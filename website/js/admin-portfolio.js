@@ -24,9 +24,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(error);
-                    console.log(status);
-                    console.log(xhr);
+                    // console.log(error);
+                    // console.log(status);
+                    // console.log(xhr);
                 },
                 complete: function (url, options) {
                 }
@@ -34,6 +34,50 @@
         }
 
         $('select option:first-child').prop('disabled', true);
+        function priceInWords() {
+
+            let val = $('[name=all_inclusive_price]').val();
+            if (val !== undefined) {
+                let helpEl = $('#all_inclusive_price-help');
+                let valStr = '';
+
+                if (!val.trim()) {
+                    helpEl.html(valStr);
+                    return;
+                }
+
+                if (val >= 1000) {
+                    if (val >= 100000000000) {
+                        helpEl.html('Price is too big. Please contact us.');
+                        return;
+                    } else if (val >= 1000000000) {
+                        valStr += parseInt(val / 1000000000) + ' arab';
+                        val %= 1000000000;
+                    }
+                    if (val >= 10000000) {
+                        if (valStr) valStr += ', ';
+                        valStr += parseInt(val / 10000000) + ' crore';
+                        val %= 10000000;
+                    }
+                    if (val >= 100000) {
+                        if (valStr) valStr += ', ';
+                        valStr += parseInt(val / 100000) + ' lac';
+                        val %= 100000;
+                    }
+                    if (val >= 1000) {
+                        if (valStr) valStr += ', ';
+                        valStr += parseInt(val / 1000) + ' thousand';
+                        val %= 1000;
+                    }
+                }
+                if (val > 0) {
+                    valStr += (valStr ? ', ' : '') + val;
+                }
+                helpEl.html('PKR ' + valStr);
+                // console.log(valStr);
+            }
+
+        }
 
         (function priceInWords() {
 
@@ -75,7 +119,7 @@
                     valStr += (valStr ? ', ' : '') + val;
                 }
                 helpEl.html('PKR ' + valStr);
-                console.log(valStr);
+                // console.log(valStr);
             }
 
         })();
