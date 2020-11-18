@@ -203,8 +203,15 @@
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $('#property-log').DataTable();
-            $('#agency-log').DataTable();
+            $('#property-log').DataTable(
+                {
+                    "scrollX": true
+                }
+            );
+            $('#agency-log').DataTable({
+                "scrollX": true
+            });
+
         });
     </script>
 @endsection

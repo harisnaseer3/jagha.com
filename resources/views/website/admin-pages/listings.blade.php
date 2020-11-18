@@ -31,19 +31,14 @@
                                         <div class="col-md-9">
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
+                                                <div class ="row mb-3">
+                                                    <div class="col-lg-7">
 
-                                                    <div class="float-right">
-                                                        {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                                                        <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
-                                                               autocomplete="false" required>
-                                                        <i class="fa fa-search ml-1"></i>
-                                                        {{ Form::close() }}
                                                     </div>
-                                                    {{ Form::open(['route' => ['admin.property.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-property-city']) }}
-                                                    <div class ="row mb-3">
-                                                    <div class="col-lg-3 col-md-6 col-sm-6 col-6">
-                                                        <div class="input-group-sm select2-bootstrap-append">
-{{--                                                            <div class="index-page-select p-0">--}}
+                                                    <div class="col-lg-3 col-sm-12">
+                                                        {{ Form::open(['route' => ['admin.property.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-property-city']) }}
+                                                        <div class="row">
+                                                            <div class="col-10 px-0 mx-0">
                                                                 <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible city-select2 select2-single" id="search2-city"
                                                                         style="width: 100%; border: 0" tabindex="-1"
                                                                         aria-hidden="true" aria-describedby="city-error" aria-invalid="false" name="city" required>
@@ -57,15 +52,38 @@
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
-{{--                                                                <button class="btn btn-primary search-submit-btn float-right" type="Submit"><i class="fa fa-search ml-1"></i></button>--}}
-{{--                                                            </div>--}}
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-primary search-submit-btn" type="Submit"><i class="fa fa-search ml-1"></i></button>
+
                                                             </div>
+                                                            <div class="col-2 px-0 mx-0">
+                                                                <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
+
+                                                            </div>
+
                                                         </div>
+                                                        {{ Form::close() }}
+
+
+
+
+
+
+
                                                     </div>
-                                                    {{ Form::close() }}
+                                                    <div class="col-lg-2 col-sm-12">
+
+
+
+
+
+                                                        {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
+                                                        <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
+                                                               autocomplete="false" required>
+                                                        <i class="fa fa-search ml-1"></i>
+                                                        {{ Form::close() }}
+                                                    </div>
+
                                                 </div>
+
 
                                                 @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                                     <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="listings-{{$option}}"
@@ -253,7 +271,7 @@
                     placeholder: 'Select City',
                     allowClear: true
                 });
-         
+
             });
         })(jQuery);
     </script>
