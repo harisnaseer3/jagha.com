@@ -88,11 +88,11 @@ class AgencyController extends Controller
 
         $limit = '';
         $sort = '';
-        if (request()->input('limit') !== null)
+        if (request()->has('limit'))
             $limit = request()->input('limit');
         else
             $limit = '15';
-        if (request()->input('sort') !== null)
+        if (request()->has('sort'))
             $sort = request()->input('sort');
         else
             $sort = 'newest';
@@ -111,6 +111,7 @@ class AgencyController extends Controller
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
         $footer_content = (new FooterController)->footerContent();
+
 
         $data = [
             'property_types' => $property_types,
@@ -166,7 +167,7 @@ class AgencyController extends Controller
             $sort_area = request()->input('area_sort');
 
 
-        $properties = (new PropertyController)->sortPropertyListing($sort, $sort_area, $properties);
+        $properties = (new PropertySearchController)->sortPropertyListing($sort, $sort_area, $properties);
 
         if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
             $lastPage = ceil((int)$properties->count() / $limit);

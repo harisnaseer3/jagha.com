@@ -10,7 +10,6 @@ Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 
 
-
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
 
 Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
@@ -57,11 +56,14 @@ Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAll
         'purpose' => '(1|2)',
         'type' => '(1|2|3|4)',
     ]);
-Route::get('/{type}-locations-for-{purpose}/{city}','CountTableController@getLocationsCount')->name('all.locations');
+Route::get('/{type}-locations-for-{purpose}/{city}', 'CountTableController@getLocationsCount')->name('all.locations');
 
 //agents
 Route::get('/partners/', 'AgencyController@index')->name('agents.listing');
 Route::get('partners-{city}/{slug}_{agency}', 'AgencyController@show')->name('agents.ads.listing');
+
+//search partners
+Route::post('/search/partners_results', 'AgencySearchController@searchPartner')->name('partners.name.search');
 
 
 //list of blogs

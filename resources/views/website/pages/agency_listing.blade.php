@@ -9,10 +9,12 @@
 
 @section('content')
     @include('website.includes.nav')
-    @include('website.includes.banner2')
-    @include('website.includes.search2')
+    {{--    @include('website.includes.banner2')--}}
+    @include('website.includes.agency_banner')
+{{--    @include('website.includes.search2')--}}
+    @include('website.includes.agency-search2')
     <!-- Properties section body start -->
-    <div class="properties-section content-area">
+    <div class="properties-section agency-search-filter">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
@@ -39,7 +41,6 @@
                             <meta itemprop="position" content="3">
                         </span>
                         <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                             <span itemprop="name">
                                 @if(request()->segment(2) == 'null' || request()->segment(2) == '')
@@ -66,7 +67,9 @@
                                             {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                             </span>
                                     @endif
-
+                                @endif
+                                @if(isset($agency_city))
+                                    <span itemprop="name">{{$agency_city}}</span>
                                 @endif
                             </span>
                             <meta itemprop="position" content="4">
