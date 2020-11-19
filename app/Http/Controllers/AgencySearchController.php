@@ -102,4 +102,8 @@ class AgencySearchController extends Controller
         ];
         return view('website.pages.agency_listing', $data);
     }
+
+//    public function getAdminAgencyByName(){
+//
+//    }
 }

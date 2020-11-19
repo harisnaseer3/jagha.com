@@ -141,7 +141,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('/property-notification', 'NotificationController@ReadPropertyStatus');
     Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
 
-
 });
 
 Route::group(['prefix' => 'properties'], function () {
@@ -206,8 +205,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     Route::post('/search-id', 'AgencyController@adminAgencySearch')->name('admin.agency.search.id');
     Route::post('/search-agency', 'AgencyController@adminAgencyCitySearch')->name('admin.agency.search.city');
+    //agency name search form admin dashboard
+    Route::post('/agency-name', 'AgencyController@AdminAgencyNameSearch')->name('admin.agency.search.name');
 
     Route::get('agencies/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'AgencyController@listings')
+
         ->name('admin.agencies.listings')
         ->where([
             'status' => '(verified_agencies|pending_agencies|expired_agencies|rejected_agencies|deleted_agencies|all_agencies)',
@@ -240,6 +242,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status')->middleware(['permission:Manage Property']);
+
+
 });
 
 //Facebook Login
