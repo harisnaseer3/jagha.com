@@ -30,8 +30,6 @@
                                             {{--                                    @include('website.layouts.user_notification')--}}
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
-
-
                                                 <div class ="row mb-3 mt-3">
                                                     <div class="col-md-4 col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.agency.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-agency-city']) }}

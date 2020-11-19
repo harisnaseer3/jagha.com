@@ -106,8 +106,12 @@
                                 </a>
                             </div>
                             <div class="col-sm-6 p-1"><a class="btn btn-block btn-call mb-1" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>
-                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
-                        @else
+                            @if($agency->email !== null)
+                                <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                            @else
+                                <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                                        class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+                            @endif                        @else
                             <div class="col-sm-12 my-2 agency-description-height">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">No Description Added..</h6>
@@ -120,7 +124,7 @@
                                 <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
                                         class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
                             @endif
-                            @endif
+                        @endif
                     </div>
                 </div>
             </div>

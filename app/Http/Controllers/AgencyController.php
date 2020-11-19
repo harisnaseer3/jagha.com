@@ -88,11 +88,11 @@ class AgencyController extends Controller
 
         $limit = '';
         $sort = '';
-        if (request()->input('limit') !== null)
+        if (request()->has('limit'))
             $limit = request()->input('limit');
         else
             $limit = '15';
-        if (request()->input('sort') !== null)
+        if (request()->has('sort'))
             $sort = request()->input('sort');
         else
             $sort = 'newest';
@@ -111,6 +111,7 @@ class AgencyController extends Controller
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
         $footer_content = (new FooterController)->footerContent();
+
 
         $data = [
             'property_types' => $property_types,
@@ -166,7 +167,7 @@ class AgencyController extends Controller
             $sort_area = request()->input('area_sort');
 
 
-        $properties = (new PropertyController)->sortPropertyListing($sort, $sort_area, $properties);
+        $properties = (new PropertySearchController)->sortPropertyListing($sort, $sort_area, $properties);
 
         if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
             $lastPage = ceil((int)$properties->count() / $limit);
@@ -176,7 +177,17 @@ class AgencyController extends Controller
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
 
+
+        $agency_data = (new Agency)->select('agencies.title', 'agencies.description', 'agencies.status',
+            'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'property_count_by_agencies.property_count AS count')
+            ->where('agencies.status', '=', 'verified')->where('agencies.id', '=', $agency)
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
+
         $data = [
+            'agency_detail' => $agency_data->first(),
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),

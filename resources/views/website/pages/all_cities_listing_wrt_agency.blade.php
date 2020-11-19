@@ -9,11 +9,12 @@
 @endsection
 
 @section('content')
-
     @include('website.includes.nav')
-
+    @include('website.includes.agency_banner')
+    <!-- Search Section start -->
+    @include('website.includes.agency-search2')
     <!-- Properties section body start -->
-    <div class="properties-section content-area">
+    <div class="properties-section agency-search-filter">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12 pb-3">
@@ -111,4 +112,21 @@
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
     <script src="{{asset('website/js/all-cities-page.js')}}" defer></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('.select2').select2({
+                    language: '{{app()->getLocale()}}',
+                    direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
+                });
+                $('.select2bs4').select2({
+                    language: '{{app()->getLocale()}}',
+                    direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
+                    theme: 'bootstrap4',
+                });
+            })
+        })(jQuery);
+    </script>
+
 @endsection

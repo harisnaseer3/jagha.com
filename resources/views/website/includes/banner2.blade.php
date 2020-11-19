@@ -1,6 +1,10 @@
 @php
     $type=''; $subtype = ''; $purpose = '';$selected_city ='';
-if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'agents-' ) !== false) && !(strpos( request()->segment(1), 'partners' ) !== false)){
+if(request()->segment(2) !== 'partners_results' ){
+    if(request()->segment(1) !== 'properties' &&
+ !(strpos( request()->segment(1), 'agents-' ) !== false) &&
+ !(strpos( request()->segment(1), 'partners' ) !== false))
+ {
     $type=''; $subtype = ''; $purpose = '';$selected_city ='';
       if(request()->segment(2) == 'null' || request()->segment(2) == '')
         $type = ucfirst(explode('_',request()->segment(1))[0]);
@@ -21,8 +25,9 @@ if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'a
             $purpose = ucwords(explode('_',request()->segment(1))[2]);
           $selected_city =  ucwords(str_replace('-',' ',request()->segment(2)));}
 }
-@endphp
 
+}
+@endphp
 <div class="banner" id="banner">
     <div class="text-center detail-page-banner none-992 sticky">
         <div class="container inline-search-area none-992">
