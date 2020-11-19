@@ -31,14 +31,11 @@
                                         <div class="col-md-9">
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
-                                                <div class ="row mb-3">
-                                                    <div class="col-lg-7">
-
-                                                    </div>
-                                                    <div class="col-lg-3 col-sm-12">
+                                                <div class ="row mb-3 mt-3">
+                                                    <div class="col-md-4 col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.property.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-property-city']) }}
                                                         <div class="row">
-                                                            <div class="col-10 px-0 mx-0">
+                                                            <div class="col-10 pr-0 mr-0">
                                                                 <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible city-select2 select2-single" id="search2-city"
                                                                         style="width: 100%; border: 0" tabindex="-1"
                                                                         aria-hidden="true" aria-describedby="city-error" aria-invalid="false" name="city" required>
@@ -69,17 +66,19 @@
 
 
                                                     </div>
-                                                    <div class="col-lg-2 col-sm-12">
-
-
-
-
-
-                                                        {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                                                        <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="property_id"
-                                                               autocomplete="false" required>
-                                                        <i class="fa fa-search ml-1"></i>
+                                                    <div class="col-md-4  col-sm-12">
+                                                        {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form' ,'id'=>'search-property-ref']) }}
+                                                        <div class="row">
+                                                            <div class="col-10 pr-0 mr-0">
+                                                                <input class="form-control form-control-sm" type="text" placeholder="Property ID" name="property_id"
+                                                                       autocomplete="false" required>
+                                                            </div>
+                                                            <div class="col-2 px-0 mx-0">
+                                                                <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
+                                                            </div>
+                                                        </div>
                                                         {{ Form::close() }}
+
                                                     </div>
 
                                                 </div>
@@ -166,7 +165,7 @@
                                                                                                 <input type="radio" name="status" value="reactive"
                                                                                                        {{$all_listing->status === 'active'? 'disabled':'' }}
                                                                                                        data-id="{{ $all_listing->id }}">
-                                                                                                <label for="active">Reactive</label>
+                                                                                                <label for="active">Active</label>
                                                                                             @endif
                                                                                             @if($params['status'] != 'expired')
                                                                                                 <input type="radio" name="status" value="expired"

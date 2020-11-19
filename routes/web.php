@@ -195,6 +195,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit')->middleware(['permission:Manage Users']);
     Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update')->middleware(['permission:Manage Users']);
     Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy')->middleware(['permission:Manage Users']);
+    Route::delete('/destroyUser/{user}', 'Admin\UserManagementController@userDestroy')->name('admins.destroy-user')->middleware(['permission:Manage Users']);
     Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit')->middleware(['permission:Manage Property']);
     Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update')->middleware(['permission:Manage Property']);
     Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy')->middleware(['permission:Manage Property']);
