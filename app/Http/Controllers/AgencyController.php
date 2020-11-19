@@ -177,7 +177,17 @@ class AgencyController extends Controller
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
 
+
+        $agency_data = (new Agency)->select('agencies.title', 'agencies.description', 'agencies.status',
+            'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'property_count_by_agencies.property_count AS count')
+            ->where('agencies.status', '=', 'verified')->where('agencies.id', '=', $agency)
+            ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
+
         $data = [
+            'agency_detail' => $agency_data->first(),
             'params' => ['sort' => $sort],
             'property_types' => $property_types,
             'properties' => $properties->paginate($limit),

@@ -50,9 +50,10 @@
                             <span itemprop="name">
                                 <!-- if homes are selected from nav bar -->
                                 @if(strpos(explode('-', request()->segment(1))[0] , 'partners') !== false)
-                                    <a href="{{route('agencies.citywise.listing',['city'=> explode('-',explode('_', request()->segment(1))[0])[1],'sort'=> 'newest'])}}" title="city" itemprop="item">
+                                    <a href="{{route('agencies.citywise.listing',['city'=> explode('partners-',explode('_', request()->segment(1))[0])[1],'sort'=> 'newest'])}}" title="city"
+                                       itemprop="item">
                                         <span class="breadcrumb-link" itemprop="name">
-                                        {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
+                                        {{ucwords(str_replace('-',' ',explode("partners-",explode('_', request()->segment(1))[0])[1]))}}
                                     </span>
                                     </a>
                                 @else
@@ -146,7 +147,10 @@
                         </div>
                     @endif
                     @if( request()->segment(1) != 'featured-properties')
-                            @include('website.includes.locations_count_card')
+                        @include('website.includes.locations_count_card')
+                    @endif
+                    @if(isset($agency_detail))
+                        @include('website.includes.agency_detail_card')
                     @endif
 
                 <!-- Listing -->

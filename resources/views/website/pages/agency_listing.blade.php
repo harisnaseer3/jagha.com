@@ -11,7 +11,7 @@
     @include('website.includes.nav')
     {{--    @include('website.includes.banner2')--}}
     @include('website.includes.agency_banner')
-{{--    @include('website.includes.search2')--}}
+    {{--    @include('website.includes.search2')--}}
     @include('website.includes.agency-search2')
     <!-- Properties section body start -->
     <div class="properties-section agency-search-filter">
@@ -45,7 +45,7 @@
                             <span itemprop="name">
                                 @if(request()->segment(2) == 'null' || request()->segment(2) == '')
                                     @if(strpos(explode('-', request()->segment(1))[0] , 'agents') !== false)
-                                        {{ucwords(explode("-",explode('_', request()->segment(1))[0])[1])}}
+                                        {{ucwords(str_replace('-',' ',explode("agents-",explode('_', request()->segment(1))[0])[1]))}}
                                     @else
                                         {{ucwords(str_replace('-',' ',explode('_', request()->segment(1))[0]))}}
                                     @endif
