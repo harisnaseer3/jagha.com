@@ -1,6 +1,10 @@
 @php
     $type=''; $subtype = ''; $purpose = '';$selected_city ='';
-    if(request()->segment(1) !== 'properties' && !(strpos( request()->segment(1), 'agents-' ) !== false) && !(strpos( request()->segment(1), 'partners' ) !== false)){
+    if(request()->segment(1) !== 'properties' &&
+    !(strpos( request()->segment(1), 'agents-' ) !== false)
+     && !(strpos( request()->segment(1), 'partners' ) !== false)
+     && (request()->segment(2) !== 'partners_results' ))
+    {
       if(request()->segment(2) == 'null' || request()->segment(2) == '')
         $type = ucfirst(explode('_',request()->segment(1))[0]);
       else {
@@ -20,7 +24,7 @@
             $purpose = ucwords(explode('_',request()->segment(1))[2]);
           $selected_city =  ucwords(str_replace('-',' ',request()->segment(2)));
       }
-      }
+    }
 @endphp
 
 

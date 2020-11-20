@@ -30,9 +30,7 @@
                                             {{--                                    @include('website.layouts.user_notification')--}}
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
-
-
-                                                <div class ="row mb-3 mt-3">
+                                                <div class="row mb-3 mt-3">
                                                     <div class="col-md-4 col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.agency.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-agency-city']) }}
                                                         <div class="row">
@@ -61,18 +59,13 @@
                                                         {{ Form::close() }}
 
 
-
-
-
-
-
                                                     </div>
-                                                    <div class="col-md-4  col-sm-12">
+                                                    <div class="col-md-4  col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.agency.search.id'], 'method' => 'post', 'role' => 'form']) }}
                                                         <div class="row">
                                                             <div class="col-10 pr-0 mr-0">
                                                                 <input class="form-control form-control-sm text-transform" type="text" placeholder="Agency ID" name="agency_id"
-                                                                       autocomplete="false" required>
+                                                                       autocomplete="false" required value="{{request()->query('id')}}">
                                                             </div>
                                                             <div class="col-2 px-0 mx-0">
                                                                 <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
@@ -81,7 +74,20 @@
                                                         {{ Form::close() }}
 
                                                     </div>
+                                                    <div class="col-md-4  col-sm-12">
+                                                        {{ Form::open(['route' => ['admin.agency.search.name'], 'method' => 'post', 'role' => 'form']) }}
+                                                        <div class="row">
+                                                            <div class="col-10 pr-0 mr-0">
+                                                                <input class="form-control form-control-sm text-transform" type="text" placeholder="Agency Name" name="agency_name"
+                                                                       autocomplete="false" required value="{{request()->query('name')}}">
+                                                            </div>
+                                                            <div class="col-2 px-0 mx-0">
+                                                                <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
+                                                            </div>
+                                                        </div>
+                                                        {{ Form::close() }}
 
+                                                    </div>
                                                 </div>
                                                 <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-agencies-create')}}">Add New Agency</a></span>
                                                 <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"

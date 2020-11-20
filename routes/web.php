@@ -10,7 +10,6 @@ Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 
 
-
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
 
 Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
@@ -24,7 +23,7 @@ Route::post('/searchWithID', 'PropertySearchController@searchWithID')->name('pro
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
 Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
 Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');
-Route::get('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
+Route::post('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
 Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
@@ -57,11 +56,14 @@ Route::get('/all-cities/pakistan/{purpose}-{type}', 'CountTableController@getAll
         'purpose' => '(1|2)',
         'type' => '(1|2|3|4)',
     ]);
-Route::get('/{type}-locations-for-{purpose}/{city}','CountTableController@getLocationsCount')->name('all.locations');
+Route::get('/{type}-locations-for-{purpose}/{city}', 'CountTableController@getLocationsCount')->name('all.locations');
 
 //agents
 Route::get('/partners/', 'AgencyController@index')->name('agents.listing');
 Route::get('partners-{city}/{slug}_{agency}', 'AgencyController@show')->name('agents.ads.listing');
+
+//search partners
+Route::post('/search/partners_results', 'AgencySearchController@searchPartner')->name('partners.name.search');
 
 
 //list of blogs
@@ -139,7 +141,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('/property-notification', 'NotificationController@ReadPropertyStatus');
     Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
 
-
 });
 
 Route::group(['prefix' => 'properties'], function () {
@@ -204,8 +205,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     Route::post('/search-id', 'AgencyController@adminAgencySearch')->name('admin.agency.search.id');
     Route::post('/search-agency', 'AgencyController@adminAgencyCitySearch')->name('admin.agency.search.city');
+    //agency name search form admin dashboard
+    Route::post('/agency-name', 'AgencyController@AdminAgencyNameSearch')->name('admin.agency.search.name');
 
     Route::get('agencies/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'AgencyController@listings')
+
         ->name('admin.agencies.listings')
         ->where([
             'status' => '(verified_agencies|pending_agencies|expired_agencies|rejected_agencies|deleted_agencies|all_agencies)',
@@ -238,6 +242,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);
     Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status')->middleware(['permission:Manage Property']);
+
+
 });
 
 //Facebook Login

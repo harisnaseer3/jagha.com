@@ -162,30 +162,39 @@ class BlogController extends Controller
             return 'not found';
     }
 
-    public function recentBlogsOnMainPage()
+    public function recentBlogsOnMainPage(Request $request)
     {
-        $blogs = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
-                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`,SUM(`wp_statistics_pages`.`count`) AS `view_count`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
-                    FROM `wp_posts`
-                        LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
-                        LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
-                        LEFT JOIN `wp_terms`  ON `wp_terms`.`term_id` = `wp_term_taxonomy`.`term_id`
-                        JOIN `wp_users` ON `wp_posts`.`post_author` = `wp_users`.`ID`
-                        JOIN `wp_statistics_pages` ON `wp_posts`.`ID` = `wp_statistics_pages`.`id`
-                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Property\'  AND `wp_posts`.`post_type` = \'post\'
-                    GROUP BY `wp_posts`.`ID`
-                ) `t1`
-                JOIN (
-                    SELECT `wp_posts`.`ID` AS `id`, `pm2`.`meta_value` AS `image`
-                    FROM `wp_posts`
-                        INNER JOIN `wp_postmeta` AS pm1 ON `wp_posts`.`id` = `pm1`.`post_id` AND `pm1`.`meta_key` = \'_thumbnail_id\'
-                        INNER JOIN `wp_postmeta` AS pm2 ON `pm1`.`meta_value` = `pm2`.`post_id` AND `pm2`.`meta_key` = \'_wp_attached_file\'
-                ) `t2` ON `t1`.`id` = `t2`.`id`
-                ORDER BY `t1`.`post_date` DESC LIMIT 9');
+
+        $blogs = $request->input('result');
+
+
+
+
+
+//        $blogs = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
+//                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`,SUM(`wp_statistics_pages`.`count`) AS `view_count`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
+//                    FROM `wp_posts`
+//                        LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
+//                        LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
+//                        LEFT JOIN `wp_terms`  ON `wp_terms`.`term_id` = `wp_term_taxonomy`.`term_id`
+//                        JOIN `wp_users` ON `wp_posts`.`post_author` = `wp_users`.`ID`
+//                        JOIN `wp_statistics_pages` ON `wp_posts`.`ID` = `wp_statistics_pages`.`id`
+//                    WHERE `wp_term_taxonomy`.`taxonomy` = \'category\' AND  `wp_terms`.`name` = \'Property\'  AND `wp_posts`.`post_type` = \'post\'
+//                    GROUP BY `wp_posts`.`ID`
+//                ) `t1`
+//                JOIN (
+//                    SELECT `wp_posts`.`ID` AS `id`, `pm2`.`meta_value` AS `image`
+//                    FROM `wp_posts`
+//                        INNER JOIN `wp_postmeta` AS pm1 ON `wp_posts`.`id` = `pm1`.`post_id` AND `pm1`.`meta_key` = \'_thumbnail_id\'
+//                        INNER JOIN `wp_postmeta` AS pm2 ON `pm1`.`meta_value` = `pm2`.`post_id` AND `pm2`.`meta_key` = \'_wp_attached_file\'
+//                ) `t2` ON `t1`.`id` = `t2`.`id`
+//                ORDER BY `t1`.`post_date` DESC LIMIT 9');
+
         $data['view'] = View('website.components.main-page-blogs',
             [
                 'blogs' => $blogs
             ])->render();
+
 
         return $data;
     }
