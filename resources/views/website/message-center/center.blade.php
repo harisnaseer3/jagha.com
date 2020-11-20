@@ -16,7 +16,7 @@
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="tab-content" id="ListingsTabContent">
+                    <div class="tab-content admin-margin" id="ListingsTabContent">
                         <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="my-4">
 
