@@ -147,7 +147,7 @@
                                                 </div>
                                             @endcan
                                             @can('Manage Agency')
-                                                <div class="col-12">
+                                                <div class="col-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header theme-blue text-white">
                                                             Agency Log
@@ -185,6 +185,39 @@
                                                     </div>
                                                 </div>
                                             @endcan
+                                            @can('Manage Users')
+                                                <div class="col-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header theme-blue text-white">
+                                                            User Visit Log
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table id="user-log" class="display" style="width: 100%">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Sr.</th>
+                                                                    <th>IP</th>
+                                                                    <th>Date</th>
+                                                                    <th>Visit Count</th>
+                                                                    <th>Time</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($user_visit_log as $visit)
+                                                                    <tr>
+                                                                        <td>{{$visit->id}}</td>
+                                                                        <td>{{$visit->ip}}</td>
+                                                                        <td>{{$visit->date}}</td>
+                                                                        <td>{{$visit->count}}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($visit->visit_time))->format('h:i:s A') }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>
@@ -209,6 +242,9 @@
                 }
             );
             $('#agency-log').DataTable({
+                "scrollX": true
+            });
+            $('#user-log').DataTable({
                 "scrollX": true
             });
 
