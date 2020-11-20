@@ -11,6 +11,7 @@ use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Models\PropertyType;
+use App\Models\Visit;
 use App\Notifications\PropertyRejectionMail;
 use App\Notifications\PropertyStatusChange;
 use App\Notifications\PropertyStatusChangeMail;
@@ -130,7 +131,7 @@ class PropertyController extends Controller
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
         $footer_content = (new FooterController)->footerContent();
-
+        (new Visit)->hit();
         $data = [
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),
@@ -139,6 +140,7 @@ class PropertyController extends Controller
             'recent_properties' => $footer_content[0],
             'footer_agencies' => $footer_content[1],
         ];
+
         return view('website.index', $data);
     }
 
