@@ -9,17 +9,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @mixin Builder
  */
-class Visits extends Model
+class Visit extends Model
 {
+
     use SoftDeletes;
 
     public $attributes = ['count' => 0];
 
     protected $fillable = ['ip', 'date', 'visit_time', 'count'];
-    protected $table = 'table_name';
+    protected $table = 'visits';
 
     public static function boot()
     {
+        parent::boot();
         // Any time the instance is updated (but not created)
         static::saving(function ($tracker) {
             $tracker->visit_time = date('H:i:s');
@@ -29,7 +31,7 @@ class Visits extends Model
 
     public static function hit()
     {
-        (new Visits)->firstOrCreate([
+        (new Visit)->firstOrCreate([
             'ip' => $_SERVER['REMOTE_ADDR'],
             'date' => date('Y-m-d'),
         ])->save();

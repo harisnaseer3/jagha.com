@@ -20,8 +20,8 @@ class CreateVisitsTable extends Migration
             $table->unsignedInteger('count');
             $table->date('date');
             $table->time('visit_time');
-            $table->softDeletes();
-            $table->timestamps();
+//            $table->softDeletes();
+//            $table->timestamps();
 
             $table->unique(['ip', 'date']);
         });
