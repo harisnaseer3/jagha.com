@@ -249,10 +249,20 @@
             $('#popular-properties-container').html(data.view);
 
         });
-    $.get('/get-main-page-blogs',  // url
-        function (data, textStatus, jqXHR) {  // success callback
-            $('#ajax-loader-blogs').hide();
-            $('#main-page-blogs-container').html(data.view);
 
+    $.get('https://www.aboutpakistan.com/process/select/property-blogs.php',  // url
+        function (data, textStatus) {
+                ajaxCall(data.data);
         });
+    function ajaxCall(data)
+    {
+        console.log(data);
+        $.post('/get-main-page-blogs', { "result":data }, // url
+            function (data, textStatus) {  // success callback
+                console.log(data);
+                $('#ajax-loader-blogs').hide();
+                $('#main-page-blogs-container').html(data.view);
+
+            });
+    }
 })(jQuery);
