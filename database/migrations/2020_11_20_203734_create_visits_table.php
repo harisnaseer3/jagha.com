@@ -26,9 +26,9 @@ class CreateVisitsTable extends Migration
             $table->unique(['ip', 'date']);
         });
 
-        DB::statement('ALTER TABLE `visits`
-            CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-            CHANGE `updated_at` `updated_at` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL DEFAULT NULL');
+//        DB::statement('ALTER TABLE `visits`
+//            CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+//            CHANGE `updated_at` `updated_at` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL DEFAULT NULL');
     }
 
     /**
