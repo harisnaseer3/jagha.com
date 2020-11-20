@@ -249,14 +249,19 @@
             $('#popular-properties-container').html(data.view);
 
         });
+    $.ajax({
+        type: "GET",
+        url: "https://www.aboutpakistan.com/process/select/property-blogs.php",
+        dataType: "json",
+        processData: true,
+        crossDomain: true,
+        success: function (data) {
+            ajaxCall(data.data);
+        }
+    });
 
-    $.get('https://www.aboutpakistan.com/process/select/property-blogs.php',  // url
-        function (data, textStatus) {
-                ajaxCall(data.data);
-        });
     function ajaxCall(data)
     {
-        console.log(data);
         $.post('/get-main-page-blogs', { "result":data }, // url
             function (data, textStatus) {  // success callback
                 console.log(data);
