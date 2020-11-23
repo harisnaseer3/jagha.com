@@ -274,6 +274,16 @@
                             <a class="nav-link" href="{{route('agents.listing')}}">
                                 Partners</a>
                         </li>
+
+                        <li class="nav-item hide-nav navbar-li nav-property-link">
+                            @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
+                            <a class="nav-link" href="{{route('properties.listings',
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
+                                Property Management
+                            </a>
+                            @endif
+                        </li>
+
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">
