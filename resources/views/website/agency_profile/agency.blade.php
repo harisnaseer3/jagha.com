@@ -76,7 +76,7 @@
                                         <div class="card-body">
                                             {{ Form::bsText('name', isset($agency->ceo_name)?$agency->ceo_name:null) }}
                                             {{ Form::bsText('designation', isset($agency->ceo_designation)?$agency->ceo_designation:null) }}
-                                            {{ Form::bsText('about_CEO', isset($agency->ceo_message)?$agency->ceo_message:null) }}
+                                            {{ Form::bsTextArea('about_CEO', isset($agency->ceo_message)?$agency->ceo_message:null) }}
                                             @if(isset($agency->ceo_image))
                                                 <div class="form-group row">
                                                     <div class="col-sm-4 col-md-2 col-form-label col-form-label-sm">Picture</div>
