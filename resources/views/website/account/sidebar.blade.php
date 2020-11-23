@@ -11,11 +11,11 @@
         <li class="list-group-item {{ $current_route_name === 'users.edit' ? 'active' : '' }}"><a
                 href="{{ route('users.edit', ['user' => $user_id]) }}" class="{{ $current_route_name === 'users.edit' ? 'text-white' : '' }}">User Profile</a></li>
         <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
-                href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">User Roles</a></li>
+                href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">Current User Role</a></li>
         <li class="list-group-item {{ $current_route_name === 'settings.edit' ? 'active' : '' }}"><a
                 href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }} text-capitalize">User & Communication Settings</a></li>
         <li class="list-group-item {{ $current_route_name === 'password.edit' ? 'active' : '' }}"><a
-                href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-white' : '' }}">Change Password</a></li>
+                href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-white' : '' }}">Change Current Password</a></li>
 {{--        @if(!empty($agency_id))--}}
 {{--            <li class="list-group-item {{ $current_route_name === 'agencies.edit' ? 'active' : '' }}" style="display: {{$agency_user > 0 ? 'block':'none'}} ">--}}
 {{--                <a href="{{ route('agencies.edit', ['agency' => $agency_id[0] ]) }}" class="{{ $current_route_name === 'agencies.edit' ? 'text-white' : '' }}">Agency Profile</a>--}}
