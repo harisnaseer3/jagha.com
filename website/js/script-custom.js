@@ -474,8 +474,10 @@
                         if (data.data) {
                             $('.error-tag').hide();
                             $('#exampleModalCenter').modal('hide');
-                            let user_dropdown = $('.user-dropdown')
+                            let user_dropdown = $('.user-dropdown');
+                            let nav_property_link = $('.nav-property-link');
                             user_dropdown.html('');
+                            nav_property_link.html('');
                             let user_name = data.user.name;
                             let user_id = data.user.id;
                             let html =
@@ -492,8 +494,11 @@
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
+                            let html_nav =   '<a class="nav-link" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
 
                             user_dropdown.html(html);
+                            nav_property_link.html(html_nav);
+
 
                             if ($('.user-name').length > 0) {
                                 $('input[name=name]').val(data.user.name);
