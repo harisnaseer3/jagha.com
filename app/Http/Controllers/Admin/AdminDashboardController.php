@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\PropertyLogController;
 use App\Models\AgencyLog;
 use App\Models\PropertyLog;
+use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
@@ -30,6 +31,7 @@ class AdminDashboardController extends Controller
             'admin' => $admin,
             'property_log' => PropertyLog::all(),
             'agency_log' => AgencyLog::all(),
+            'user_visit_log' => Visit::all()
         ]);
     }
 
