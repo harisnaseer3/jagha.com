@@ -410,6 +410,27 @@
             let index_value = jQuery.inArray(selected_value, store_image_name);
             store_image_name.splice(index_value, 1);
         });
+        //in case of an error
+        if ($('[name=images]').val() !== '') {
+            displayImagesOnError();
+        }
+
+        function displayImagesOnError() {
+            $.each($('[name=images]').val().split(','), function (idx, val) {
+                let image = val.split('.')[0];
+                let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
+                let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
+                    '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
+                    '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+                    '' +
+                    ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
+                    '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
+                    '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
+                    '</div>' +
+                    '</div>';
+                $('.add-images').append(html).show();
+            });
+        }
 
     });
 })(jQuery);
