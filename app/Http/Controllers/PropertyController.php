@@ -176,18 +176,18 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-        if (request()->hasFile('image')) {
-            $error_msg = $this->_imageValidation('image');
-            if ($error_msg !== null && count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-            }
-        }
-        if (request()->hasFile('floor_plans')) {
-            $error_msg = $this->_imageValidation('floor_plans');
-            if (count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-            }
-        }
+//        if (request()->hasFile('image')) {
+//            $error_msg = $this->_imageValidation('image');
+//            if ($error_msg !== null && count($error_msg)) {
+//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
+//            }
+//        }
+//        if (request()->hasFile('floor_plans')) {
+//            $error_msg = $this->_imageValidation('floor_plans');
+//            if (count($error_msg)) {
+//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
+//            }
+//        }
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -285,12 +285,16 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
             ]);
 
-            if ($request->hasFile('image')) {
-                (new ImageController)->store($request, $property);
+//            if ($request->hasFile('image')) {
+//                (new ImageController)->store($request, $property);
+//            }
+            //check if value of images is empty
+            if ($request->has('images') && $request->input('images') !== '') {
+                (new ImageController)->storeImage($request->input('images'), $property);
             }
-            if ($request->hasFile('floor_plans')) {
-                (new FloorPlanController)->store($request, $property);
-            }
+//            if ($request->hasFile('floor_plans')) {
+//                (new FloorPlanController)->store($request, $property);
+//            }
             if ($request->filled('video_link')) {
                 (new VideoController)->store($request, $property);
             }
@@ -308,6 +312,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.');
         } catch (Exception $e) {
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -398,19 +403,19 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-        if (request()->hasFile('image')) {
-            $error_msg = $this->_imageValidation('images');
-
-            if ($error_msg !== null && count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-            }
-        }
-        if (request()->hasFile('floor_plans')) {
-            $error_msg = $this->_imageValidation('floor plans');
-            if (count($error_msg)) {
-                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-            }
-        }
+//        if (request()->hasFile('image')) {
+//            $error_msg = $this->_imageValidation('images');
+//
+//            if ($error_msg !== null && count($error_msg)) {
+//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
+//            }
+//        }
+//        if (request()->hasFile('floor_plans')) {
+//            $error_msg = $this->_imageValidation('floor plans');
+//            if (count($error_msg)) {
+//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
+//            }
+//        }
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
@@ -503,12 +508,13 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
                 'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
             ]);
-            if ($request->hasFile('image')) {
-                (new ImageController)->update($request, $property);
+            if ($request->has('images')) {
+//                (new ImageController)->update($request, $property);
+                (new ImageController)->storeImage($request->input('images'), $property);
             }
-            if ($request->hasFile('floor_plans')) {
-                (new FloorPlanController)->update($request, $property);
-            }
+//            if ($request->hasFile('floor_plans')) {
+//                (new FloorPlanController)->update($request, $property);
+//            }
             if ($request->filled('video_link')) {
                 (new VideoController)->update($request, $property);
             }
@@ -662,39 +668,39 @@ class PropertyController extends Controller
 
     }
 
-    private function _imageValidation($type)
-    {
-        if ($type == 'image') {
-            $error_msg = [];
-            if (count(request()->file('image')) > 60) {
-                $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
-                return $error_msg;
-            }
-            foreach (request()->file('image') as $index => $file) {
-                $mime = $file->getMimeType();
-                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
-                if (!in_array($mime, $supported_mime_types)) {
-                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
-                }
-            }
-            return $error_msg;
-        }
-        if ($type == 'floor_plans') {
-            $error_msg = [];
-//            $allowed_height = 400;
-//            $allowed_width = 750;
-            if (count(request()->file('floor_plans')) > 2) {
-                $error_msg['floor_plans.' . 0] = 'Only 2 ' . ' floor plans are allowed to upload.';
-                return $error_msg;
-            }
-            foreach (request()->file('floor_plans') as $index => $file) {
-                $mime = $file->getMimeType();
-                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
-                if (!in_array($mime, $supported_mime_types)) {
-                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
-                }
-            }
-            return $error_msg;
-        }
-    }
+//    private function _imageValidation($type)
+//    {
+//        if ($type == 'image') {
+//            $error_msg = [];
+//            if (count(request()->file('image')) > 60) {
+//                $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
+//                return $error_msg;
+//            }
+//            foreach (request()->file('image') as $index => $file) {
+//                $mime = $file->getMimeType();
+//                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
+//                if (!in_array($mime, $supported_mime_types)) {
+//                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
+//                }
+//            }
+//            return $error_msg;
+//        }
+//        if ($type == 'floor_plans') {
+//            $error_msg = [];
+////            $allowed_height = 400;
+////            $allowed_width = 750;
+//            if (count(request()->file('floor_plans')) > 2) {
+//                $error_msg['floor_plans.' . 0] = 'Only 2 ' . ' floor plans are allowed to upload.';
+//                return $error_msg;
+//            }
+//            foreach (request()->file('floor_plans') as $index => $file) {
+//                $mime = $file->getMimeType();
+//                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
+//                if (!in_array($mime, $supported_mime_types)) {
+//                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
+//                }
+//            }
+//            return $error_msg;
+//        }
+//    }
 }

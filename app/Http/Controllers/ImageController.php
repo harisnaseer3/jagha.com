@@ -32,6 +32,7 @@ class ImageController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -70,6 +71,20 @@ class ImageController extends Controller
             ]);
         }
     }
+
+    public function storeImage($name, $property)
+    {
+        foreach (explode(',', $name) as $file_name) {
+            $user_id = Auth::user()->getAuthIdentifier();
+
+            (new Image)->updateOrCreate(['property_id' => $property->id, 'name' => $file_name], [
+                'user_id' => $user_id,
+                'property_id' => $property->id,
+                'name' => $file_name
+            ]);
+        }
+    }
+
 
     /**
      * Display the specified resource.

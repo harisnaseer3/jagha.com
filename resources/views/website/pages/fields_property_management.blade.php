@@ -113,9 +113,16 @@
                 @endforeach
             </div>
         @endif
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+        <div class="row border-bottom my-2 add-images" style="display: none">
+            <div class="col-sm-12 text-bold my-2">Images</div>
+        </div>
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
-
-        <div class="mb-3"><span style="color:red">* </span>Image will be uploaded on form submission</div>
+        {{form::bsHidden('images',null,['id'=>'store-images'])}}
+        {{--        <div class="col-sm-8 col-md-5">--}}
+        <div class="mb-2"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
+        {{--        </div>--}}
+        {{--        <div class="mb-3"><span style="color:red">* </span>Image will be uploaded on form submission</div>--}}
 
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
@@ -145,27 +152,27 @@
             {{ Form::bsText('video link', null, ['required' => false]) }}
         @endif
 
-        @if(isset($property) and !$property->floor_plan->isEmpty())
-            <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2">Floor Plans</div>
-                @foreach($property->floor_plan as $available_image)
-                    <div class="col-md-4 col-sm-6 my-2">
-                        <label>{{$available_image->title}}</label>
-                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                            <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-plan" data-record-id="{{$available_image->id}}"
-                               style="position: absolute; top: 0; right: 0; z-index: 1">
-                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>
-                            </a>
-                            {{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
-                            <img src="{{asset('thumbnails/floor_plans/'.explode('.',$available_image->name)[0].'-750x600.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+        {{--        @if(isset($property) and !$property->floor_plan->isEmpty())--}}
+        {{--            <div class="row border-bottom my-2">--}}
+        {{--                <div class="col-sm-12 text-bold my-2">Floor Plans</div>--}}
+        {{--                @foreach($property->floor_plan as $available_image)--}}
+        {{--                    <div class="col-md-4 col-sm-6 my-2">--}}
+        {{--                        <label>{{$available_image->title}}</label>--}}
+        {{--                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">--}}
+        {{--                            <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-plan" data-record-id="{{$available_image->id}}"--}}
+        {{--                               style="position: absolute; top: 0; right: 0; z-index: 1">--}}
+        {{--                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>--}}
+        {{--                            </a>--}}
+        {{--                            --}}{{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
+        {{--                            <img src="{{asset('thumbnails/floor_plans/'.explode('.',$available_image->name)[0].'-750x600.webp')}}" width="100%" class="img-responsive" alt="image not available"/>--}}
+        {{--                        </div>--}}
+        {{--                    </div>--}}
+        {{--                @endforeach--}}
+        {{--            </div>--}}
+        {{--        @endif--}}
 
-        {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 256 KB']) }}
-        <div><span style="color:red">* </span>Floor plans will be uploaded on form submission</div>
+        {{--        {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 256 KB']) }}--}}
+        {{--        <div><span style="color:red">* </span>Floor plans will be uploaded on form submission</div>--}}
     </div>
     @if(!empty($agencies))
         <div class="card-header theme-blue text-white">Agency Details</div>
