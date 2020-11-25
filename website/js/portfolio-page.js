@@ -67,9 +67,9 @@
                 }
             },
             error: function (xhr, status, error) {
-                console.log(error);
-                console.log(status);
-                console.log(xhr);
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
             },
             complete: function (url, options) {
             }
@@ -151,6 +151,40 @@
             // console.log(valStr);
         }
 
+    }
+
+    function displayImages(name) {
+        let image = name.split('.')[0];
+        let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
+        let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
+            '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
+            '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+            '' +
+            ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
+            '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
+            '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
+            '</div>' +
+            '</div>';
+        $('#show_image_spinner').hide();
+        $('.add-images').append(html).show();
+
+    }
+
+    function displayImagesOnError() {
+        $.each($('[name=images]').val().split(','), function (idx, val) {
+            let image = val.split('.')[0];
+            let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
+            let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
+                '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
+                '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+                '' +
+                ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
+                '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
+                '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
+                '</div>' +
+                '</div>';
+            $('.add-images').append(html).show();
+        });
     }
 
 
@@ -264,39 +298,19 @@
             $(this).find('.modal-body #video-record-id').val(record_id);
         });
 
-        $("input[name='phone']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
-        $("input[name='mobile']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
-        $("input[name='fax']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
+
+        // $("input[name='phone']").keyup(function () {
+        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+        // });
+        // $("input[name='mobile']").keyup(function () {
+        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+        // });
+        // $("input[name='fax']").keyup(function () {
+        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+        // });
         $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
 
-        // $('[name=call_for_price_inquiry]').click(function () {
-        //     if ($('[name=call_for_price_inquiry]').is(':checked')) {
-        //         $('[name=all_inclusive_price]').removeAttr('required').attr('disable', 'true');
-        //         $('[name=all_inclusive_price]').val('');
-        //         $('.price-block').slideUp();
-        //     } else {
-        //         $('[name=all_inclusive_price]').attr('required', 'required').attr('disable', 'false');
-        //         $('.price-block').slideDown();
-        //     }
-        // });
         let agency = $('#agency');
-        // if (agency.length > 0) {
-        //     if (agency.val() === null) {
-        //         $('select.agency-class').select2({
-        //             placeholder: 'Select Agency',
-        //             allowClear: true
-        //         });
-        //     }
-        //
-        //     $('.select2.select2-container.select2-container--default')
-        //         .css({'border': '1px solid rgb(206, 212, 218)', 'border-radius': '0.25rem'});
-        // }
 
         $('#add_city').on('select2:select', function (e) {
             let city = $('#add_city').val();
@@ -347,5 +361,177 @@
                 $('[name=contact_email]').val('');
             }
         });
+        var store_image_name = [];
+        $('#property-image-btn').on('click', function (e) {
+            e.preventDefault();
+
+            var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
+            let images = $('input#image')[0];
+            // console.log(images.files);
+
+            if (images.files['length'] > 60) {
+                alert('You can select 60 images only');
+                return 0;
+            }
+            $.each(images.files, function (idx, val) {
+
+                if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
+                    alert('Please select images of type jpg, png or jpeg.');
+                    return 0;
+                } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
+                {
+                    alert('Please select image of size 10 MB or less');
+                    return 0;
+                } else {
+                    $('#show_image_spinner').show();
+                    var fd = new FormData();
+                    fd.append('image', images.files[idx]);
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url: window.location.origin + '/property-image-upload',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function (data) {
+                            $('input#image').val("");
+
+                            if (data.status === 201) {
+                                alert(data.data);
+                            } else if (data.status === 200) {
+                                // alert(data.data);
+                                store_image_name.push(data.data);
+                                $('#store-images').val(store_image_name);
+                                displayImages(data.data);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                            console.log(status);
+                            console.log(xhr);
+                        },
+                    });
+                }
+            });
+
+
+        });
+        $(document).on('click', '.remove-images', function () {
+            let selected_value = $(this).next('img').attr('data-value') + ".webp";
+
+            let index_value = jQuery.inArray(selected_value, store_image_name);
+            store_image_name.splice(index_value, 1);
+            $('#store-images').val(store_image_name);
+            $(this).parents('.upload-image-block').hide();
+
+        });
+        //in case of an error
+        if ($('[name=images]').val() !== '') {
+            displayImagesOnError();
+        }
+
+        var phone = document.querySelector('#phone');
+        var cell = document.querySelector('#cell')
+        var iti_phone = window.intlTelInput(phone, {
+            // any initialisation options go here
+            allowDropdown: false,
+            numberType: "FIXED_LINE",
+            placeholderNumberType: "FIXED_LINE",
+            separateDialCode: true,
+            onlyCountries: ['pk'],
+            // preventInvalidNumbers: true,
+            utilsScript: "../../plugins/intl-tel-input/js/utils.js"
+        });
+
+        var iti_cell = window.intlTelInput(cell, {
+            // any initialisation options go here
+            allowDropdown: false,
+            onlyCountries: ['pk'],
+            // preventInvalidNumbers: true,
+            separateDialCode: true,
+            numberType: "MOBILE",
+            utilsScript: "../../plugins/intl-tel-input/js/utils.js"
+        });
+
+        let phone_num = $("#phone");
+        let mobile_num = $("#cell");
+        if (phone_num.val !== '') {
+            let data = $(this).val();
+            let value = "+92-" + data;
+            $("input[name='phone']").val(value);
+        }
+        if (mobile_num !== '') {
+            let data = $(this).val();
+            let value = "+92-" + data;
+            $("input[name='mobile']").val(value);
+        }
+        mobile_num.change(function () {
+            let data = iti_cell.getNumber().split('+92');
+            let value = "+92-" + data[1];
+            $("input[name='mobile']").val(value);
+        });
+        phone_num.change(function () {
+            let data = iti_phone.getNumber().split('+92');
+            let value = "+92-" + data[1];
+            $("input[name='phone']").val(value);
+        });
+        $.validator.addMethod("checkcellnum", function (value) {
+            return /^3\d{2}\d{7}$/.test(value) || /^03\d{2}\d{7}$/.test(value);
+        });
+        $.validator.addMethod("checkphonenum", function (value) {
+            return /^\d{10}$/.test(value) || /^\d{9}$/.test(value) || /^\d{11}$/.test(value);
+        });
+        let form = $('.data-insertion-form');
+        form.validate({
+            rules: {
+                'mobile_#': {
+                    required: true,
+                    checkcellnum: true,
+                },
+                'phone_#': {
+                    checkphonenum: true,
+                },
+                contact_email: {
+                    required: true,
+                    email: true
+                },
+            },
+            messages: {
+                'mobile_#': {
+                    checkcellnum: "Please enter a valid value. (300 1234567)"
+                },
+                'phone_#': {
+                    checkphonenum: "Please enter a valid value. (21 23456789)",
+                }
+            },
+            errorElement: 'small',
+            errorClass: 'help-block text-red',
+            submitHandler: function (form) {
+                form.submit();
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                const errors = validator.numberOfInvalids();
+                if (errors) {
+                    let error_tag = $('div.error.text-red.invalid-feedback.mt-2');
+                    error_tag.hide();
+                    const message = errors === 1
+                        ? 'You missed 1 field. It has been highlighted'
+                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                    $('div.error.text-red.invalid-feedback strong').html(message);
+                    error_tag.show();
+                } else {
+                    $('#submit-block').show();
+                    $('div.error.text-red.invalid-feedback').hide();
+                }
+            }
+        });
+
     });
-})(jQuery);
+})
+(jQuery);

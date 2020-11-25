@@ -143,15 +143,15 @@ class UserController extends Controller
             $user->about_yourself = $request->about_yourself;
             if ($request->hasFile('upload_new_picture')) {
                 $error_msg = [];
-                $allowed_height = 256;
-                $allowed_width = 256;
-
-                $width = getimagesize(request()->file('upload_new_picture'))[0];
-                $height = getimagesize(request()->file('upload_new_picture'))[1];
-
-                if ($height < $allowed_height && $width < $allowed_width) {
-                    $error_msg['upload_new_picture'] = 'upload_new_picture has invalid image dimensions';
-                }
+//                $allowed_height = 256;
+//                $allowed_width = 256;
+//
+//                $width = getimagesize(request()->file('upload_new_picture'))[0];
+//                $height = getimagesize(request()->file('upload_new_picture'))[1];
+//
+//                if ($height < $allowed_height && $width < $allowed_width) {
+//                    $error_msg['upload_new_picture'] = 'upload_new_picture has invalid image dimensions';
+//                }
                 if ($error_msg != null && count($error_msg)) {
                     return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
                 }
@@ -179,6 +179,7 @@ class UserController extends Controller
             $user->save();
             return redirect()->route('users.edit', $user->id)->with('success', 'Your information has been saved');
         } catch (\Exception $e) {
+//            dd($e->getMessage());
             return redirect()->route('users.edit', $user->id)->withInput()->with('error', 'No record updated !');
         }
     }

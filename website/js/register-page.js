@@ -1,4 +1,4 @@
-        (function ($) {
+(function ($) {
             $.validator.addMethod("checklower", function (value) {
                 return /[a-z]/.test(value);
             });
