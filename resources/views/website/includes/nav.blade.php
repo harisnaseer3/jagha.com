@@ -320,6 +320,12 @@
                                         {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                     </div>
                                 </div>
+                                @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                                <a class="nav-link" data-toggle="modal" data-target="#adminLogoutModal"
+                                   href="javascript:void(0);"  aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user mr-3"></i>
+                                </a>
+
                             @else
                                 <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
                                    href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
@@ -331,4 +337,7 @@
                 </div>
             </nav>
 @include('website.layouts.sign-in-modal')
+@if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+@include('website.layouts.admin-logout-modal')
+@endif
 
