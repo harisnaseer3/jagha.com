@@ -573,6 +573,28 @@
             }
         });
 
+        $('#admin-logout-btn').click(function (event) {
+            event.preventDefault();
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/admin/admin-logout',
+                success: function (data) {
+                    if(data.data){
+                        let user_dropdown = $('.user-dropdown');
+                        user_dropdown.html('');
+                        let html = ' <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"\n' +
+                            '                                   href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">\n' +
+                            '                                    <i class="fas fa-user mr-3"></i>\n' +
+                            '                                </a>'
+                        $('#adminLogoutModal').modal('hide');
+                        user_dropdown.html(html);
+                        $('#exampleModalCenter').modal('show');
+
+                    }
+        }
+        })
+    });
+
         $('#btnAccept').click(() => {
             setCookie('allowCookies', '1', 7)
             $('.toast').hide();

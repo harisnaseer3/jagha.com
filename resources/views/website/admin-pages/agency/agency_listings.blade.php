@@ -114,7 +114,7 @@
                                                                 @elseif($params['status'] == 'rejected_agencies')
                                                                     <td>Rejected By</td>
                                                                 @endif
-                                                                <td>Controls</td>
+                                                                <td colspan="2">Controls</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -157,8 +157,14 @@
                                                                             <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Users</span>
+                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                             </a>
+                                                                            @endif
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($params['status'] != 'deleted_agencies')
+
                                                                             @if($params['status'] == 'pending_agencies')
                                                                                 <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}" class="btn btn-sm btn-warning"
                                                                                    data-toggle-1="tooltip"
@@ -198,7 +204,7 @@
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                                    <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                                 </tr>
                                                             @endforelse
                                                             </tbody>
@@ -215,7 +221,7 @@
                                                             <tr>
                                                                 <td>ID</td>
                                                                 <td>Title</td>
-                                                                <td>address</td>
+                                                                <td>Address</td>
                                                                 <td>City</td>
                                                                 <td>Website</td>
                                                                 <td>Phone</td>
@@ -228,7 +234,7 @@
                                                                 @elseif($params['status'] == 'deleted_agencies')
                                                                     <td>Deleted By</td>
                                                                 @endif
-                                                                <td>Controls</td>
+                                                                <td colspan="2">Controls</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -264,8 +270,14 @@
                                                                             <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
+                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                             </a>
+                                                                            @endif
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($params['status'] != 'deleted_agencies')
+
                                                                             <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}" class="btn btn-sm btn-warning "
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">
@@ -291,7 +303,7 @@
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                                    <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                                 </tr>
                                                             @endforelse
                                                             </tbody>
@@ -310,7 +322,7 @@
                                                             <tr>
                                                                 <td>ID</td>
                                                                 <td>Title</td>
-                                                                <td>address</td>
+                                                                <td>Address</td>
                                                                 <td>City</td>
                                                                 <td>Website</td>
                                                                 <td>Phone</td>
@@ -323,7 +335,7 @@
                                                                 @elseif($params['status'] == 'deleted_agencies')
                                                                     <td>Deleted By</td>
                                                                 @endif
-                                                                <td>Controls</td>
+                                                                <td colspan="2">Controls</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -355,13 +367,19 @@
                                                                         <td></td>
                                                                     @endif
                                                                     <td>
+
                                                                         @if($params['status'] != 'deleted_agencies')
 
                                                                             <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
+                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                             </a>
+                                                                            @endif
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($params['status'] != 'deleted_agencies')
                                                                             <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}" class="btn btn-sm btn-warning"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">

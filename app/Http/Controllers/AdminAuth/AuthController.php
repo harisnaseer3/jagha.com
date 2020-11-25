@@ -64,6 +64,7 @@ class AuthController extends Controller
 
     public function adminLogin()
     {
+        Auth::guard('web')->logout();
         return view('website.admin-pages.admin-login');
     }
 
@@ -92,9 +93,12 @@ class AuthController extends Controller
         }
     }
 
-    public function adminLogout()
+    public function adminLogout(Request $request)
     {
         Auth::guard('admin')->logout();
+        if ($request->ajax()) {
+            return response()->json(['data' => 'success']);
+        }
         return redirect()->route('admin.login');
     }
 }

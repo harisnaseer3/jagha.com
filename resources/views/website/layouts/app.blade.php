@@ -31,7 +31,7 @@
             {{--            <h4 class="color-white">Cookies</h4>--}}
             <div class="color-white">
                 <span class="mr-auto color-white" style="line-height: 1.5rem">
-                We use cookies for a number of reasons, such as keeping Our Site reliable and secure, providing social media features and to analyse how our Site is used. By clicking on the "Accept" button or by continue to use you consent to the usage these cookies on your device.
+                We use cookies for a number of reasons, such as keeping our site reliable and secure, providing social media features and analyzing how our site is being used by end user. By selecting "Accept" option or continuing to browse site, you consent to the usage of these cookies on your device.
                 </span>
                 <span class="float-right pt-2 mt-2"><a type="button ml-auto" class="btn btn-sm theme-blue text-white" id="btnAccept">Accept</a></span>
             </div>
