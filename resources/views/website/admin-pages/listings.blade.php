@@ -53,18 +53,9 @@
                                                             </div>
                                                             <div class="col-2 px-0 mx-0">
                                                                 <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
-
                                                             </div>
-
                                                         </div>
                                                         {{ Form::close() }}
-
-
-
-
-
-
-
                                                     </div>
                                                     <div class="col-md-4  col-sm-12">
                                                         {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form' ,'id'=>'search-property-ref']) }}
@@ -78,11 +69,8 @@
                                                             </div>
                                                         </div>
                                                         {{ Form::close() }}
-
                                                     </div>
-
                                                 </div>
-
 
                                                 @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                                     <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="listings-{{$option}}"
@@ -127,7 +115,8 @@
                                                                                 @else
                                                                                     <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                                 @endif
-                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
+{{--                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>--}}
+                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                                 @if($params['status'] == 'active')
                                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <p>Will Expire
                                                                                             in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}

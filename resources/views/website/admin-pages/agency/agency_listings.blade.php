@@ -126,7 +126,8 @@
                                                                     <td class="pr-3">{{ $all_listing->city}}</td>
                                                                     <td>{{ $all_listing->website }}</td>
                                                                     <td>{{ $all_listing->phone }}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
+{{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')
                                                                         <td>
                                                                             <div class="pending-status"><strong>Pending</strong></div>
@@ -246,7 +247,8 @@
                                                                     <td class=" pr-3">{{ $key_listing->city }}</td>
                                                                     <td>{{ $key_listing->website }}</td>
                                                                     <td>{{ $key_listing->phone }}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
+{{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($key_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')
                                                                         <td>
                                                                             <div class="pending-status"><strong>Pending</strong></div>
@@ -347,7 +349,8 @@
                                                                     <td class="pr-3">{{ $featured_listing->city }}</td>
                                                                     <td>{{ $featured_listing->website }}</td>
                                                                     <td>{{ $featured_listing->phone }}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>
+{{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($featured_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')
                                                                         <td>
                                                                             <div class="pending-status"><strong>Pending</strong></div>
