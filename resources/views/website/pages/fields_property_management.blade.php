@@ -204,9 +204,15 @@
         </div>
 
         <div class="user-details-block" style="display:block">
-            {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['data-default' => 'E.g. 0511234567']) }}
-            {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}
-            {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax,  ['data-default' => 'E.g. 0211234567']) }}
+            {{ Form::bsTel('phone_#', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['data-default' => 'E.g. 02123456789','id'=>'phone']) }}
+            {{form::bsHidden('phone',null)}}
+
+            {{ Form::bsTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'data-default' => 'E.g. 03012345678','id'=>'cell']) }}
+            {{form::bsHidden('mobile',null)}}
+
+{{--            {{ Form::bsTel('fax_#', isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax,  ['data-default' => 'E.g. 0211234567','id'=>'fax']) }}--}}
+{{--            {{form::bsHidden('fax',isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax)}}--}}
+
             {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
         </div>
     </div>
