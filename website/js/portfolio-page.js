@@ -459,19 +459,23 @@
         });
 
         let phone_num = $("#phone");
+        let mobile_num = $("#cell");
         if (phone_num.val !== '') {
+            let data = $(this).val();
+            let value = "+92-" + data;
+            $("input[name='phone']").val(value);
+        }
+        if (mobile_num !== '') {
             let data = $(this).val();
             let value = "+92-" + data;
             $("input[name='mobile']").val(value);
         }
-        $("#cell").change(function () {
-            let data = iti_cell.getNumber().split(+92);
+        mobile_num.change(function () {
+            let data = iti_cell.getNumber().split('+92');
             let value = "+92-" + data[1];
             $("input[name='mobile']").val(value);
         });
         phone_num.change(function () {
-            console.log(iti_phone.getNumber())
-
             let data = iti_phone.getNumber().split('+92');
             let value = "+92-" + data[1];
             $("input[name='phone']").val(value);
@@ -480,7 +484,7 @@
             return /^3\d{2}\d{7}$/.test(value) || /^03\d{2}\d{7}$/.test(value);
         });
         $.validator.addMethod("checkphonenum", function (value) {
-            return /^\d{10}$/.test(value) || /^\d{9}$/.test(value) ||/^\d{11}$/.test(value);
+            return /^\d{10}$/.test(value) || /^\d{9}$/.test(value) || /^\d{11}$/.test(value);
         });
         let form = $('.data-insertion-form');
         form.validate({
