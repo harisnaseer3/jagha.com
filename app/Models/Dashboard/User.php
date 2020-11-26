@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var arrayserv
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_active', 'roles','cell'
+        'name', 'email', 'password', 'is_active', 'roles', 'cell'
     ];
 
     /**
@@ -47,9 +47,9 @@ class User extends Authenticatable
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|email',
-        'phone' => 'required|regex:/\+92-\d{2}\d{7}/',   // +92-511234567
+        'phone' => 'nullable|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
         'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
-        'fax' => 'nullable|regex:/\+92-\d{2}\\d{7}/',   // +92-211234567
+//        'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',
@@ -82,9 +82,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Property')->using('App\Favorite')->withTimestamps();
     }
+
     public static function findUserByEmail($email)
     {
-        return User::where('email','=',$email)->first();
+        return User::where('email', '=', $email)->first();
 
     }
 
@@ -102,15 +103,18 @@ class User extends Authenticatable
         }
         return false;
     }
+
     public static function getAllUsers()
     {
 
-        return (new User)->select(['id', 'name', 'email', 'is_active','phone','cell','fax','address','zip_code','country','community_nick','about_yourself'])->get();
+        return (new User)->select(['id', 'name', 'email', 'is_active', 'phone', 'cell', 'fax', 'address', 'zip_code', 'country', 'community_nick', 'about_yourself'])->get();
     }
+
     public static function getUserByEmail($email)
     {
         return (new User)->where('email', $email)->first();
     }
+
     public static function getUserById($id)
     {
         return (new User)->where('id', $id)->first();
@@ -131,7 +135,6 @@ class User extends Authenticatable
         } catch (\Exception $e) {
         }
     }
-
 
 
     public function hasRole($role)

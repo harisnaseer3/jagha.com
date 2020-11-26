@@ -318,7 +318,12 @@
             $('.location-spinner').show();
             getCityLocations(city);
         });
-
+        if($('#add_city').val() !== null){
+            let city = $('#add_city').val();
+            $("#add_location").val(null).trigger("change");
+            $('.location-spinner').show();
+            getCityLocations(city);
+        }
 
         agency.on('select2:select', function (e) {
             $('.agency-user-block').hide();
@@ -434,10 +439,7 @@
         if ($('[name=images]').val() !== '') {
             displayImagesOnError();
         }
-
-        var phone = document.querySelector('#phone');
-        var cell = document.querySelector('#cell')
-        var iti_phone = window.intlTelInput(phone, {
+        var iti_phone = window.intlTelInput( document.querySelector('#phone'), {
             // any initialisation options go here
             allowDropdown: false,
             numberType: "FIXED_LINE",
@@ -448,7 +450,7 @@
             utilsScript: "../../plugins/intl-tel-input/js/utils.js"
         });
 
-        var iti_cell = window.intlTelInput(cell, {
+        var iti_cell = window.intlTelInput(document.querySelector('#cell'), {
             // any initialisation options go here
             allowDropdown: false,
             onlyCountries: ['pk'],
@@ -460,13 +462,13 @@
 
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
-        if (phone_num.val !== '') {
-            let data = $(this).val();
+        if (phone_num.val() !== '') {
+            let data = phone_num.val();
             let value = "+92-" + data;
             $("input[name='phone']").val(value);
         }
-        if (mobile_num !== '') {
-            let data = $(this).val();
+        if (mobile_num.val() !== '') {
+            let data = mobile_num.val();
             let value = "+92-" + data;
             $("input[name='mobile']").val(value);
         }
@@ -531,7 +533,6 @@
                 }
             }
         });
-
     });
 })
 (jQuery);

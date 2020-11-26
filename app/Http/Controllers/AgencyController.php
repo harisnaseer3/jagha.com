@@ -398,7 +398,7 @@ class AgencyController extends Controller
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
-                'cell' => $request->input('cell'),
+                'cell' => $request->input('mobile'),
                 'fax' => $request->input('fax'),
                 'address' => $request->input('address'),
                 'zip_code' => $request->input('zip_code'),
