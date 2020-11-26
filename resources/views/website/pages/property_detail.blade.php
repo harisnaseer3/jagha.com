@@ -3,9 +3,10 @@
     {!! SEO::generate(true) !!}
 @endsection
 @section('css')
-    {{--    <link rel="stylesheet" type="text/css" href="{{asset("website/fonts/font-awesome/css/font-awesome.min.css")}}" async defer>--}}
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer >
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}" async defer>
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+
 @endsection
 
 @section('content')
@@ -284,7 +285,10 @@
     </div><!--fly-fade-->
 @endsection
 
+
 @section('script')
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}" defer></script>
+
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/jssor.slider-28.0.0.min.js')}}"></script>
@@ -292,7 +296,8 @@
     <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
     <script src="{{asset('website/js/script-custom.js')}}" defer></script>
-    <script src="{{asset('website/js/detail-page.js')}}"></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
+    <script src="{{asset('website/js/detail-page.js')}}" defer></script>
+
 
 @endsection

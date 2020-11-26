@@ -218,7 +218,6 @@
                         @else
                             <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
                                     class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
-
                         @endif
                     </div>
                 </div>

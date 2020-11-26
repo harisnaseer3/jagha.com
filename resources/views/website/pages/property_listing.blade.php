@@ -5,6 +5,8 @@
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+
 @endsection
 
 @section('content')
@@ -208,8 +210,12 @@
                         {{ Form::text('name',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->name:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"Name"])) }}
                         <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
                         {{ Form::email('email',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
-                        <div><label class="mt-2">Phone (03001234567) <span style="color:red">*</span></label></div>
-                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"03001234567"])) }}
+                        {{--                        <div><label class="mt-2">Phone (03001234567) <span style="color:red">*</span></label></div>--}}
+                        {{--                        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"03001234567"])) }}--}}
+                        {{--                        --}}
+                        <div><label class="mt-2">Mobile # (03012345678)<span style="color:red">*</span></label></div>
+                        {{ Form::tel('phone_#', null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"03012345678"])) }}
+                        <input class="form-control" name="phone" type="hidden">
                         {{--                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>--}}
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
@@ -267,9 +273,11 @@
     </script>
     <script src="{{ asset('/plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
-    <script src="{{asset('website/js/listing-page.js')}}"></script>
-    <script src="{{asset('website/js/script-custom.min.js')}}"></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}" defer></script>
+    <script src="{{asset('website/js/script-custom.min.js')}}"></script>
+    <script src="{{asset('website/js/listing-page.js')}}"></script>
+
 
 
 @endsection
