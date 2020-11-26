@@ -135,9 +135,9 @@
     });
     let phone = '';
     let form = $('#email-contact-form');
-    $("input[name='phone']").keyup(function () {
-        $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-    });
+    // $("input[name='phone']").keyup(function () {
+    //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+    // });
     $('.btn-email').click(function (e) {
         let property = $(this).closest('#email-contact-form').find('input[name=property]').val();
         let title = $(this).closest('#email-contact-form').find('input[name=title]').val();
@@ -166,17 +166,20 @@
     call_btn.on('click', function () {
         call_btn.attr('href', 'tel:' + phone).text(phone);
     });
-    $.validator.addMethod("regx", function (value, element, regexpr) {
-        return regexpr.test(value);
+    // $.validator.addMethod("regx", function (value, element, regexpr) {
+    //     return regexpr.test(value);
+    // }, "Please enter a valid value. (03001234567)");
+    $.validator.addMethod("checkcellnum", function (value) {
+        return /^3\d{2}[\s.-]?\d{7}$/.test(value) || /^03\d{2}[\s.-]?\d{7}$/.test(value);
     }, "Please enter a valid value. (03001234567)");
     form.validate({
         rules: {
             name: {
                 required: true,
             },
-            phone: {
+            'phone_#': {
                 required: true,
-                regx: /^\+92-3\d{2}\d{7}$/,
+                checkcellnum: true,
             },
             email: {
                 required: true,
@@ -208,6 +211,25 @@
             }
         }
     });
+
+    let mobile_num = $("#cell");
+    var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
+        // any initialisation options go here
+        allowDropdown: false,
+        onlyCountries: ['pk'],
+        // preventInvalidNumbers: true,
+        separateDialCode: true,
+        numberType: "MOBILE",
+        utilsScript: "/../../plugins/intl-tel-input/js/utils.js"
+    });
+
+    mobile_num.change(function () {
+        let data = ag_iti_cell.getNumber().split('+92');
+        let value = "+92-" + data[1];
+        $("input[name='phone']").val(value);
+    });
+
+
     $('#send-mail').click(function (event) {
         if (form.valid()) {
             event.preventDefault();
@@ -241,6 +263,7 @@
             });
         }
     });
+
     function addFavorite(id, selector, task) {
         jQuery.ajaxSetup({
             headers: {
@@ -260,6 +283,7 @@
             }
         });
     }
+
     $.get('/get-similar-properties', {'property': $('#email-contact-form').find('input[name=property]').val()},  // url
         function (data, textStatus, jqXHR) {  // success callback
             $('.ajax-loader').hide();
@@ -274,7 +298,7 @@
 
                 slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
                 )
-                $('.detail-tab-style').append('<li class="nav-item li-detail-page text-transform mr-1">'+
+                $('.detail-tab-style').append('<li class="nav-item li-detail-page text-transform mr-1">' +
                     '<a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a></li>');
                 $('[data-toggle="tooltip"]').tooltip();
                 $('.favorite').on('click', function (e) {

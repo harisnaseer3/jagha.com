@@ -9,7 +9,7 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}" async defer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
-    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.css')}}" async defer>
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 
 @endsection
 

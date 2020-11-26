@@ -138,9 +138,9 @@
             });
         });
         let phone = '';
-        $("input[name='phone']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
+        // $("input[name='phone']").keyup(function () {
+        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
+        // });
         let form = $('#email-contact-form');
         $('.btn-email').click(function (e) {
             // console.log($(this).closest('.contact-container').find('input[name=property]').val());
@@ -172,17 +172,20 @@
         call_btn.on('click', function () {
             call_btn.attr('href', 'tel:' + phone).text(phone);
         });
-        $.validator.addMethod("regx", function (value, element, regexpr) {
-            return regexpr.test(value);
-        }, "Please enter a valid value. (+92-3001234567)");
+        // $.validator.addMethod("regx", function (value, element, regexpr) {
+        //     return regexpr.test(value);
+        // }, "Please enter a valid value. (+92-3001234567)");
+        $.validator.addMethod("checkcellnum", function (value) {
+            return /^3\d{2}[\s.-]?\d{7}$/.test(value) || /^03\d{2}[\s.-]?\d{7}$/.test(value);
+        }, "Please enter a valid value. (03001234567)");
         form.validate({
             rules: {
                 name: {
                     required: true,
                 },
-                phone: {
+                'phone_#': {
                     required: true,
-                    regx: /^\+92-3\d{2}\d{7}$/,
+                    checkcellnum: true,
                 },
                 email: {
                     required: true,
@@ -214,6 +217,24 @@
                 }
             }
         });
+
+        let mobile_num = $("#cell");
+        var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
+            // any initialisation options go here
+            allowDropdown: false,
+            onlyCountries: ['pk'],
+            // preventInvalidNumbers: true,
+            separateDialCode: true,
+            numberType: "MOBILE",
+            utilsScript: "/../../plugins/intl-tel-input/js/utils.js"
+        });
+
+        mobile_num.change(function () {
+            let data = ag_iti_cell.getNumber().split('+92');
+            let value = "+92-" + data[1];
+            $("input[name='phone']").val(value);
+        });
+
         $('#send-mail').click(function (event) {
             if (form.valid()) {
                 event.preventDefault();
@@ -224,7 +245,7 @@
                 });
                 jQuery.ajax({
                     type: 'post',
-                    url: window.location.origin  + '/contactAgent',
+                    url: window.location.origin + '/contactAgent',
                     data: form.serialize(),
                     dataType: 'json',
                     success: function (data) {

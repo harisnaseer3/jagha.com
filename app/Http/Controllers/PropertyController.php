@@ -285,10 +285,6 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
             ]);
 
-//            if ($request->hasFile('image')) {
-//                (new ImageController)->store($request, $property);
-//            }
-            //check if value of images is empty
             if ($request->has('images') && $request->input('images') !== '') {
                 (new ImageController)->storeImage($request->input('images'), $property);
             }

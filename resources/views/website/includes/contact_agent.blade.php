@@ -8,8 +8,10 @@
         {{ Form::text('name', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->name:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm user-name' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>'Name'])) }}
         <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
         {{ Form::email('email', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm user-email', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=> "name@domain.com"])) }}
-        <div><label class="mt-2">Phone (03001234567)<span style="color:red">*</span></label></div>
-        {{ Form::tel('phone', null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"03001234567"])) }}
+        <div><label class="mt-2">Mobile # (03012345678)<span style="color:red">*</span></label></div>
+        {{ Form::tel('phone_#', null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false','placeholder'=>"03012345678"])) }}
+        <input class="form-control" name="phone" type="hidden">
+
         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
         <div class="editable form-control form-control-sm valid editable-div" contenteditable="true">
             I would like to gather information about your property <a href="{{$property->property_detail_path()}}" style="text-decoration:underline; color:blue">{{$property->title}} </a> being
@@ -27,7 +29,7 @@
         @endif
         <div class="text-center">
             @if($property->email == null)
-                <button class="btn btn-block mt-2 btn-email disabled" data-toggle="tooltip" data-placement="top" data-html="true" title ="<div>Currently not available</div>" >Email</button>
+                <button class="btn btn-block mt-2 btn-email disabled" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>">Email</button>
             @else
                 {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
             @endif
