@@ -483,10 +483,10 @@
             $("input[name='phone']").val(value);
         });
         $.validator.addMethod("checkcellnum", function (value) {
-            return /^3\d{2}\d{7}$/.test(value) || /^03\d{2}\d{7}$/.test(value);
+            return /^3\d{2}[\s.-]?\d{7}$/.test(value) || /^03\d{2}[\s.-]?\d{7}$/.test(value);
         });
         $.validator.addMethod("checkphonenum", function (value) {
-            return /^\d{10}$/.test(value) || /^\d{9}$/.test(value) || /^\d{11}$/.test(value);
+            return /^0\d{2}[\s.-]?\d{7}$/.test(value) || /^\d{2}[\s.-]?\d{7}$/.test(value) || /^0\d{2}[\s.-]?\d{8}$/.test(value) || /^\d{2}[\s.-]?\d{8}$/.test(value);
         });
         let form = $('.data-insertion-form');
         form.validate({
