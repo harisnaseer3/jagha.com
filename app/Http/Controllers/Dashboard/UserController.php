@@ -134,8 +134,8 @@ class UserController extends Controller
         }
         try {
             $user->phone = $request->phone;
-            $user->cell = $request->cell;
-            $user->fax = $request->fax;
+            $user->mobile = $request->cell;
+//            $user->fax = $request->fax;
             $user->address = $request->address;
             $user->zip_code = $request->zip_code;
             $user->country = $request->country;
@@ -254,9 +254,8 @@ class UserController extends Controller
 
         $user_email = $user->email;
         $admin = Admin::getAdminByEmail($user_email);
-        if(!empty($admin))
-        {
-            $updated_password = Admin::updateAdminPassword($admin->id,$user->password);
+        if (!empty($admin)) {
+            $updated_password = Admin::updateAdminPassword($admin->id, $user->password);
 
         }
 
