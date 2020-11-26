@@ -31,7 +31,6 @@
                             <div class="my-4">
 
                             <div class="card">
-                                @include('website.layouts.user_notification')
                             <div class="row">
 
                                 <div class = "col-md-12 col-sm-12 mb-5" >

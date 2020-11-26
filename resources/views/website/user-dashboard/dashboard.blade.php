@@ -19,7 +19,7 @@
                     <div class="tab-content admin-margin" id="ListingsTabContent">
                         <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="m-4">
-                                @include('website.layouts.user_notification')
+
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6 col-lg-3">
                                         <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
