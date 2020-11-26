@@ -48,7 +48,6 @@
                                     @include('website.account.sidebar')
                                 </div>
                                 <div class="col-md-9">
-                                    @include('website.layouts.user_notification')
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => 'user.password.update', 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form']) }}
                                     <div class="card">
