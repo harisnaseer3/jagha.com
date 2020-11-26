@@ -24,24 +24,8 @@
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-
-
                     <div class="tab-content" id="portfolioTabContent">
-                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="my-4">
-                                Dashboard
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
-                            <div class="my-4">
-                                Property Management
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
-                            <div class="my-4">
-                                Message Center
-                            </div>
-                        </div>
+
                         <div class="tab-pane fade show active" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -55,7 +39,7 @@
                                         <div class="card-header theme-blue text-white text-capitalize">Change Password</div>
                                         <div class="card-body">
                                             {{ Form::bsPassword('current_password', ['required' => true]) }}
-                                            {{ Form::bsPassword('new_password', ['required' => true,'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
+                                            {{ Form::bsPassword('new_password', ['required' => true, 'id'=>'new_password', 'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
                                             {{ Form::bsPassword('confirm_new_password', ['required' => true]) }}
                                         </div>
                                         <div class="card-footer">
@@ -64,31 +48,6 @@
                                     </div>
                                     {{ Form::close() }}
                                 </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                            <div class="my-4">
-                                Reports
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_staff" role="tabpanel" aria-labelledby="agency_staff-tab">
-                            <div class="my-4">
-                                Agency Staff
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
-                            <div class="my-4">
-                                Clients &amp; Leads
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_website" role="tabpanel" aria-labelledby="agency_website-tab">
-                            <div class="my-4">
-                                Agency Website
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
-                            <div class="my-4">
-                                Advertise
                             </div>
                         </div>
                     </div>
@@ -103,8 +62,21 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script>
         (function ($) {
+            $.validator.addMethod("checklower", function (value) {
+                return /[a-z]/.test(value);
+            });
+            $.validator.addMethod("checkupper", function (value) {
+                return /[A-Z]/.test(value);
+            });
+            $.validator.addMethod("checkdigit", function (value) {
+                return /[0-9]/.test(value);
+            });
+            $.validator.addMethod("checkspecialchr", function (value) {
+                return /[#?!@$%^&*-]/.test(value);
+            });
             $(document).ready(function () {
                 // Initialize Select2 Elements
                 $('.btn-accept').on('click', function () {
@@ -120,7 +92,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin  + '/dashboard/agencies/accept-invitation',
+                        url: window.location.origin + '/dashboard/agencies/accept-invitation',
                         data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
                         dataType: 'json',
                         success: function (data) {
@@ -180,7 +152,7 @@
                     });
                     jQuery.ajax({
                         type: 'post',
-                        url: window.location.origin  + '/dashboard/property-notification',
+                        url: window.location.origin + '/dashboard/property-notification',
                         data: {'notification_id': notification_id},
                         dataType: 'json',
                         success: function (data) {
@@ -200,6 +172,58 @@
                         }
                     });
                 });
+
+                let form = $('.data-insertion-form');
+                form.validate({
+                    rules: {
+                        'current_password': {
+                            required: true,
+                        },
+                        'new_password': {
+                            required: true,
+                            minlength: 8,
+                            maxlength: 20,
+                            checklower: true,
+                            checkupper: true,
+                            checkdigit: true,
+                            checkspecialchr: true,
+                        },
+                        'confirm_new_password': {
+                            equalTo: "#new_password"
+                        }
+                    },
+                    messages: {
+                        'new_password': {
+                            pwcheck: "Password is not strong enough",
+                            checklower: "Need atleast 1 lowercase alphabet",
+                            checkupper: "Need atleast 1 uppercase alphabet",
+                            checkdigit: "Need atleast 1 digit",
+                            checkspecialchr: "Need atleast 1 special character"
+                        },
+                    },
+                    errorElement: 'small',
+                    errorClass: 'help-block text-red',
+                    submitHandler: function (form) {
+                        form.submit();
+                    },
+                    invalidHandler: function (event, validator) {
+                        // 'this' refers to the form
+                        const errors = validator.numberOfInvalids();
+                        if (errors) {
+                            let error_tag = $('div.error.text-red.invalid-feedback');
+                            error_tag.hide();
+                            const message = errors === 1
+                                ? 'You missed 1 field. It has been highlighted'
+                                : 'You missed ' + errors + ' fields. They have been highlighted';
+                            $('div.error.text-red.invalid-feedback strong').html(message);
+                            error_tag.show();
+                        } else {
+                            $('#submit-block').show();
+                            $('div.error.text-red.invalid-feedback').hide();
+                        }
+                    }
+                });
+
             });
         })(jQuery);
     </script>
