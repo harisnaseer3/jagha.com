@@ -13,7 +13,7 @@
     <!-- Properties section body start -->
     <div class="properties-section content-area pt-3">
         <div class="container">
-            <div class="row">
+            <div class="row cities-margin">
                 <div class="col-lg-9 col-md-12 pb-3">
                     <!-- Listing -->
                     <div class="card">
@@ -25,7 +25,12 @@
                             <div class="row">
                                 @foreach($locations_data['count'] as $location)
                                     <div class="col-sm-6  mb-3">
-                                        <a href="{{route('search.houses.plots',['type'=>lcfirst($locations_data['type']),'city' => lcfirst($locations_data['city']), 'location'=> str_replace(' ', '-',str_replace('-','_',$location->location_name)), 'sort'=>'newest','limit'=>15])}}"
+                                        <a href="{{route('search.property.at.location',[
+                                'type'=>lcfirst($locations_data['type']),
+                                'purpose'=>lcfirst($locations_data['purpose']),
+                                'city' => lcfirst($locations_data['city']),
+                                'location'=> str_replace(' ', '-',str_replace('-','_',str_replace('/','BY',$location->location_name))),
+                                 'sort'=>'newest','limit'=>15])}}"
                                            class="breadcrumb-link">
                                             {{ \Illuminate\Support\Str::limit($location->location_name , 40, $end='...')}} ({{$location->property_count}})
                                         </a>

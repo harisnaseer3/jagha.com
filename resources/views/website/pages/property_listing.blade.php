@@ -128,9 +128,7 @@
                             <span itemprop="name">{{ucfirst(request()->segment(2))}}</span>
                             <meta itemprop="position" content="3">
                             </span>
-
                             @endif
-
                         </div>
                     @endif
 
