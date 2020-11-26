@@ -193,8 +193,6 @@ class PropertyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
-            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
-
 //            dd($request->all());
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
 
