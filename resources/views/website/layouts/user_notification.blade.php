@@ -18,11 +18,22 @@
             <div class="alert alert-block" style="background-color:  #FCF3CF">
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <div style="color: black;">
-                    <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to
+                    <div class="row">
+                        <div class="col-md-8 mt-2">
+                               <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to
                         <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
-                    <a class="btn-read btn-sm btn-outline-info pull-right mr-2 mark-as-read" href="javascript:void(0)"
-                       data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
-                       data-id={{$notification->data['id']}}> Mark as read</a>
+
+                        </div>
+                        <div class="col-md-4">
+                            <a class=" btn-sm btn btn-primary pull-right mr-2 mark-as-read" href="javascript:void(0)"
+                               data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                               data-id={{$notification->data['id']}}> Mark as read</a>
+
+                        </div>
+
+                    </div>
+
+
                 </div>
             </div>
         @else

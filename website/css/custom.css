@@ -1314,6 +1314,9 @@ span.post-head-cat,
     background-color: #444;
     border-color: #444;
 }
+.alert{
+    padding: 1rem;
+}
 
 .color-white {
     color: white;

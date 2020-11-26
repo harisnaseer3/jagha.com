@@ -30,13 +30,15 @@
                         <div class="tab-pane fade show active" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
                             <div class="my-4">
                                 <div class="card">
-                                    @include('website.layouts.user_notification')
+                                    <div class="card-header">
+                                        <h6>Notifications</h6>
+                                    </div>
+
                                     <div class="row">
-                                        <div class="col-md-12 col-sm-12 mb-5">
-                                            <div id="post-404" class="left relative">
-                                                <h1>COMING SOON!</h1>
-                                                <p>This feature will be available in next update.</p>
-                                            </div>
+                                        <div class="col-md-12 col-sm-12 mb-5 p-5">
+
+                                                @include('website.layouts.user_notification')
+
                                         </div>
                                     </div>
                                 </div>
@@ -151,6 +153,37 @@
                     console.log(xhr);
                     console.log(status);
                     console.log(error);
+                },
+                complete: function (url, options) {
+
+                }
+            });
+        });
+        $('.mark-as-read').on('click', function () {
+            let alert = $(this);
+            let notification_id = alert.attr('data-id');
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin  + '/dashboard/property-notification',
+                data: {'notification_id': notification_id},
+                dataType: 'json',
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status === 200) {
+                        // console.log(alert);
+                        alert.closest('.alert').remove();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // console.log(xhr);
+                    // console.log(status);
+                    // console.log(error);
                 },
                 complete: function (url, options) {
 
