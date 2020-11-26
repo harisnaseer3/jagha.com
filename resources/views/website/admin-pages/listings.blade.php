@@ -31,7 +31,7 @@
                                         <div class="col-md-9">
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
-                                                <div class ="row mb-3 mt-3">
+                                                <div class="row mb-3 mt-3">
                                                     <div class="col-md-4 col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.property.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-property-city']) }}
                                                         <div class="row">
@@ -49,7 +49,6 @@
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
-
                                                             </div>
                                                             <div class="col-2 px-0 mx-0">
                                                                 <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
@@ -57,7 +56,7 @@
                                                         </div>
                                                         {{ Form::close() }}
                                                     </div>
-                                                    <div class="col-md-4  col-sm-12">
+                                                    <div class="col-md-4  col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form' ,'id'=>'search-property-ref']) }}
                                                         <div class="row">
                                                             <div class="col-10 pr-0 mr-0">
@@ -69,6 +68,21 @@
                                                             </div>
                                                         </div>
                                                         {{ Form::close() }}
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <div class="row">
+                                                            {{--                                                            <div class="col-2">--}}
+                                                            {{--                                                                <h4>Sort</h4>--}}
+                                                            {{--                                                            </div>--}}
+                                                            <div class="col-10">
+                                                                <select class="w-100 sorting" style="width: 100%">
+                                                                    <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
+                                                                    </option>
+                                                                    <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -115,7 +129,7 @@
                                                                                 @else
                                                                                     <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                                 @endif
-{{--                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>--}}
+                                                                                {{--                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>--}}
                                                                                 <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                                 @if($params['status'] == 'active')
                                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <p>Will Expire
@@ -259,7 +273,22 @@
                     placeholder: 'Select City',
                     allowClear: true
                 });
-
+                $('.sorting').on('change', function (e) {
+                    if ($(this).val() !== null) {
+                        let sort = '';
+                        if ($(this).val() === 'newest') {
+                            sort = 'order/desc/';
+                        } else if ($(this).val() === 'oldest') {
+                            sort = 'order/asc/';
+                        }
+                        let link = window.location.href
+                        let break_link = link.split('order/');
+                        let piece_1 = break_link[0];
+                        let piece_2 = break_link[1];
+                        let link_2 = piece_2.split('sc/')[1];
+                        window.location = piece_1 + sort + link_2;
+                    }
+                });
             });
         })(jQuery);
     </script>
