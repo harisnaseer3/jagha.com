@@ -21,7 +21,7 @@ class ContactAgentController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'email' => 'required|email',
-                'phone' => 'required|regex:/\+92-3\d{2}\d{7}/',
+//                'phone' => 'required|regex:/\+92-3\d{2}\d{7}/',
 //                'message' => 'required',
                 'agent' => 'string',
                 'property' => 'string'

@@ -176,24 +176,12 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-//        if (request()->hasFile('image')) {
-//            $error_msg = $this->_imageValidation('image');
-//            if ($error_msg !== null && count($error_msg)) {
-//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-//            }
-//        }
-//        if (request()->hasFile('floor_plans')) {
-//            $error_msg = $this->_imageValidation('floor_plans');
-//            if (count($error_msg)) {
-//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-//            }
-//        }
+//        dd($request->input('images'));
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
-//            dd($request->all());
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
 
             $json_features = '';
@@ -285,8 +273,8 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
             ]);
 
-            if ($request->has('images') && $request->input('images') !== '') {
-                (new ImageController)->storeImage($request->input('images'), $property);
+            if ($request->has('image') && $request->input('image') !== '') {
+                (new ImageController)->storeImage($request->input('image'), $property);
             }
 //            if ($request->hasFile('floor_plans')) {
 //                (new FloorPlanController)->store($request, $property);
@@ -348,28 +336,13 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-//        $agency_ids = [];
-//        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', $property->user_id)->get()->toArray();
-//
-//        foreach ($agencies_ids as $ids) {
-//            array_push($agency_ids, $ids->agency_id);
-//        }
-//        $agencies_data = (new Agency)->whereIn('id', $agency_ids)->where('status', '=', 'verified')->get();
-//
-//        $agencies = [];
-//        foreach ($agencies_data as $agency) {
-//            $agencies = array_merge($agencies, [$agency->title => $agency->title]);
-//        }
-//        dd($property->agency);
-//        get name of assigned agency of property
-//        $agency
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
 
-        $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
+//        $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
-        $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
+//        $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
 //        if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
 //            $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
 //        }
@@ -399,19 +372,6 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-//        if (request()->hasFile('image')) {
-//            $error_msg = $this->_imageValidation('images');
-//
-//            if ($error_msg !== null && count($error_msg)) {
-//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-//            }
-//        }
-//        if (request()->hasFile('floor_plans')) {
-//            $error_msg = $this->_imageValidation('floor plans');
-//            if (count($error_msg)) {
-//                return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, try again.');
-//            }
-//        }
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
@@ -461,11 +421,6 @@ class PropertyController extends Controller
 
             $status_before_update = $property->status;
 
-//            $agency = '';
-//            if ($request->input('agency')) {
-//                $agency = DB::table('agencies')->select('id')->
-//                where('title', '=', $request->input('agency'))->where('user_id', '=', $property->user_id)->first();
-//            }
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
 //                    'reference' => $property->reference,
 //                    'user_id' => $property->user_id,
@@ -504,13 +459,10 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
                 'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
             ]);
-            if ($request->has('images')) {
+            if ($request->has('image')) {
 //                (new ImageController)->update($request, $property);
-                (new ImageController)->storeImage($request->input('images'), $property);
+                (new ImageController)->storeImage($request->input('image'), $property);
             }
-//            if ($request->hasFile('floor_plans')) {
-//                (new FloorPlanController)->update($request, $property);
-//            }
             if ($request->filled('video_link')) {
                 (new VideoController)->update($request, $property);
             }

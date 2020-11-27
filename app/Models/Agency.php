@@ -33,8 +33,10 @@ class Agency extends Model
         'description' => 'required|string|max:4096',
 //        'email' => 'required|email|unique:agencies',
         'email' => 'required|email',
-        'phone' => 'nullable|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
-        'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
+        'phone' => 'required',
+//        'phone' => 'required|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
+        'mobile' => 'required',
+//        'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
 //        'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
