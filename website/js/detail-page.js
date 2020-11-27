@@ -133,11 +133,98 @@
             });
         }
     });
+
+
+    let input = document.querySelector("#cell");
+    var errorMsg = document.querySelector("#error-msg");
+    var validMsg = document.querySelector("#valid-msg");
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    var ag_iti_cell = window.intlTelInput(input, {
+        preferredCountries: ["pk"],
+        preventInvalidNumbers: true,
+        separateDialCode: true,
+        numberType: "MOBILE",
+        utilsScript: "/../../plugins/intl-tel-input/js/utils.js?1603274336113"
+    });
+    var reset = function () {
+        input.classList.remove("error");
+        input.classList.remove("valid");
+        errorMsg.innerHTML = "";
+        errorMsg.classList.add("hide");
+        validMsg.classList.add("hide");
+    };
+    input.addEventListener('blur', function () {
+        reset();
+        if (input.value.trim()) {
+            if (ag_iti_cell.isValidNumber()) {
+                $('[name=phone]').val(ag_iti_cell.getNumber());
+                validMsg.classList.remove("hide");
+                $('#phone-error').hide();
+            } else {
+                // input.classList.add("error");
+
+                var errorCode = ag_iti_cell.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+                $('[name=phone]').val('');
+            }
+        }
+    });
+
+    input.addEventListener('change', reset);
+    input.addEventListener('keyup', reset);
+
     let phone = '';
     let form = $('#email-contact-form');
-    // $("input[name='phone']").keyup(function () {
-    //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-    // });
+
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            'phone_#': {
+                required: true,
+                // checkcellnum: true,
+            },
+            'phone': {
+                required: true,
+                // checkcellnum: true,
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            message: {
+                required: true,
+            },
+        },
+        messages: {'phone': ", please enter a valid value."},
+        errorElement: 'span',
+        errorClass: 'error help-block text-red',
+        ignore: [],
+
+        submitHandler: function (form) {
+            form.preventDefault();
+        },
+        invalidHandler: function (event, validator) {
+            // 'this' refers to the form
+            const errors = validator.numberOfInvalids();
+            if (errors) {
+                let error_tag = $('div.error.text-red');
+                error_tag.hide();
+                const message = errors === 1
+                    ? 'You missed 1 field. It has been highlighted'
+                    : 'You missed ' + errors + ' fields. They have been highlighted';
+                $('div.error.text-red span').html(message);
+                error_tag.show();
+            } else {
+                $('div.error.text-red').hide();
+                document.querySelector("input").classList.remove("valid");
+            }
+        }
+    });
+
+
     $('.btn-email').click(function (e) {
         let property = $(this).closest('#email-contact-form').find('input[name=property]').val();
         let title = $(this).closest('#email-contact-form').find('input[name=title]').val();
@@ -166,69 +253,6 @@
     call_btn.on('click', function () {
         call_btn.attr('href', 'tel:' + phone).text(phone);
     });
-    // $.validator.addMethod("regx", function (value, element, regexpr) {
-    //     return regexpr.test(value);
-    // }, "Please enter a valid value. (03001234567)");
-    $.validator.addMethod("checkcellnum", function (value) {
-        return /^3\d{2}[\s.-]?\d{7}$/.test(value) || /^03\d{2}[\s.-]?\d{7}$/.test(value);
-    }, "Please enter a valid value. (03001234567)");
-    form.validate({
-        rules: {
-            name: {
-                required: true,
-            },
-            'phone_#': {
-                required: true,
-                checkcellnum: true,
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            message: {
-                required: true,
-            },
-        },
-        messages: {},
-        errorElement: 'small',
-        errorClass: 'help-block text-red',
-        submitHandler: function (form) {
-            form.preventDefault();
-        },
-        invalidHandler: function (event, validator) {
-            // 'this' refers to the form
-            const errors = validator.numberOfInvalids();
-            if (errors) {
-                let error_tag = $('div.error.text-red');
-                error_tag.hide();
-                const message = errors === 1
-                    ? 'You missed 1 field. It has been highlighted'
-                    : 'You missed ' + errors + ' fields. They have been highlighted';
-                $('div.error.text-red span').html(message);
-                error_tag.show();
-            } else {
-                $('div.error.text-red').hide();
-            }
-        }
-    });
-
-    let mobile_num = $("#cell");
-    var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
-        // any initialisation options go here
-        allowDropdown: false,
-        onlyCountries: ['pk'],
-        // preventInvalidNumbers: true,
-        separateDialCode: true,
-        numberType: "MOBILE",
-        utilsScript: "/../../plugins/intl-tel-input/js/utils.js"
-    });
-
-    mobile_num.change(function () {
-        let data = ag_iti_cell.getNumber().split('+92');
-        let value = "+92-" + data[1];
-        $("input[name='phone']").val(value);
-    });
-
 
     $('#send-mail').click(function (event) {
         if (form.valid()) {
