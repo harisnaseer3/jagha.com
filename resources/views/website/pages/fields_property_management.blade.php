@@ -29,7 +29,7 @@
             {{ Form::bsSelect2('city', ['islamabad' => 'Islamabad', 'karachi' => 'Karachi', 'lahore' => 'Lahore', 'rawalpindi' => 'Rawalpindi', 'abbottabad' => 'Abbottabad', 'abdul_hakim' => 'Abdul Hakim', 'ahmedpur east' => 'Ahmedpur East', 'alipur' => 'Alipur', 'arifwala' => 'Arifwala', 'astore' => 'Astore', 'attock' => 'Attock', 'awaran' => 'Awaran', 'badin' => 'Badin', 'bagh' => 'Bagh', 'bahawalnagar' => 'Bahawalnagar', 'bahawalpur' => 'Bahawalpur', 'balakot' => 'Balakot', 'bannu' => 'Bannu', 'barnala' => 'Barnala', 'batkhela' => 'Batkhela', 'bhakkar' => 'Bhakkar', 'bhalwal' => 'Bhalwal', 'bhimber' => 'Bhimber', 'buner' => 'Buner', 'burewala' => 'Burewala', 'chaghi' => 'Chaghi', 'chakwal' => 'Chakwal', 'charsadda' => 'Charsadda', 'chichawatni' => 'Chichawatni', 'chiniot' => 'Chiniot', 'chishtian sharif' => 'Chishtian Sharif', 'chitral' => 'Chitral', 'choa_saidan_shah' => 'Choa Saidan Shah', 'chunian' => 'Chunian', 'dadu' => 'Dadu', 'daharki' => 'Daharki', 'daska' => 'Daska', 'daur' => 'Daur', 'depalpur' => 'Depalpur', 'dera_ghazi_khan' => 'Dera Ghazi Khan', 'dera_ismail_khan' => 'Dera Ismail Khan', 'dijkot' => 'Dijkot', 'dina' => 'Dina', 'dobian' => 'Dobian', 'duniya_pur' => 'Duniya Pur', 'fata' => 'FATA', 'faisalabad' => 'Faisalabad', 'fateh_jang' => 'Fateh Jang', 'gaarho' => 'Gaarho', 'gadoon' => 'Gadoon', 'galyat' => 'Galyat', 'ghakhar' => 'Ghakhar', 'gharo' => 'Gharo', 'ghotki' => 'Ghotki', 'gilgit' => 'Gilgit', 'gojra' => 'Gojra', 'gujar_khan' => 'Gujar Khan', 'gujranwala' => 'Gujranwala', 'gujrat' => 'Gujrat', 'gwadar' => 'Gwadar', 'hafizabad' => 'Hafizabad', 'hala' => 'Hala', 'hangu' => 'Hangu', 'harappa' => 'Harappa', 'haripur' => 'Haripur', 'haroonabad' => 'Haroonabad', 'hasilpur' => 'Hasilpur', 'hassan_abdal' => 'Hassan Abdal', 'haveli_lakha' => 'Haveli Lakha', 'hazro' => 'Hazro', 'hub_chowki' => 'Hub Chowki', 'hujra_shah_muqeem' => 'Hujra Shah Muqeem', 'hunza' => 'Hunza', 'hyderabad' => 'Hyderabad', 'islamabad' => 'Islamabad', 'jacobabad' => 'Jacobabad', 'jahanian' => 'Jahanian', 'jalalpur_jattan' => 'Jalalpur Jattan', 'jampur' => 'Jampur', 'jamshoro' => 'Jamshoro', 'jatoi' => 'Jatoi', 'jauharabad' => 'Jauharabad', 'jhang' => 'Jhang', 'jhelum' => 'Jhelum', 'kaghan' => 'Kaghan', 'kahror_pakka' => 'Kahror Pakka', 'kalat' => 'Kalat', 'kamalia' => 'Kamalia', 'kamoki' => 'Kamoki', 'kandiaro' => 'Kandiaro', 'karachi' => 'Karachi', 'karak' => 'Karak', 'kasur' => 'Kasur', 'khairpur' => 'Khairpur', 'khanewal' => 'Khanewal', 'khanpur' => 'Khanpur', 'kharian' => 'Kharian', 'khipro' => 'Khipro', 'khushab' => 'Khushab', 'khuzdar' => 'Khuzdar', 'kohat' => 'Kohat', 'kot_addu' => 'Kot Addu', 'kotli' => 'Kotli', 'kotri' => 'Kotri', 'lahore' => 'Lahore', 'lakki_marwat' => 'Lakki Marwat', 'lalamusa' => 'Lalamusa', 'larkana' => 'Larkana', 'lasbela' => 'Lasbela', 'layyah' => 'Layyah', 'liaquatpur' => 'Liaquatpur', 'lodhran' => 'Lodhran', 'loralai' => 'Loralai', 'lower_dir' => 'Lower Dir', 'mailsi' => 'Mailsi', 'makran' => 'Makran', 'malakand' => 'Malakand', 'mandi_bahauddin' => 'Mandi Bahauddin', 'mangla' => 'Mangla', 'mansehra' => 'Mansehra', 'mardan' => 'Mardan', 'matiari' => 'Matiari', 'matli' => 'Matli', 'mian_channu' => 'Mian Channu', 'mianwali' => 'Mianwali', 'mingora' => 'Mingora', 'mirpur' => 'Mirpur', 'mirpur_khas' => 'Mirpur Khas', 'mirpur_sakro' => 'Mirpur Sakro', 'mitha_tiwana' => 'Mitha Tiwana', 'moro' => 'Moro', 'multan' => 'Multan', 'muridke' => 'Muridke', 'murree' => 'Murree', 'muzaffarabad' => 'Muzaffarabad', 'muzaffargarh' => 'Muzaffargarh', 'nankana_sahib' => 'Nankana Sahib', 'naran' => 'Naran', 'narowal' => 'Narowal', 'nasar_ullah_khan_town' => 'Nasar Ullah Khan Town', 'nasirabad' => 'Nasirabad', 'naushahro_feroze' => 'Naushahro Feroze', 'nawabshah' => 'Nawabshah', 'neelum' => 'Neelum', 'new_mirpur_city' => 'New Mirpur City', 'nowshera' => 'Nowshera', 'okara' => 'Okara', 'others' => 'Others', 'others_azad kashmir' => 'Others Azad Kashmir', 'others_balochistan' => 'Others Balochistan', 'others_gilgit baltistan' => 'Others Gilgit Baltistan', 'others_khyber pakhtunkhwa' => 'Others Khyber Pakhtunkhwa', 'others_punjab' => 'Others Punjab', 'others_sindh' => 'Others Sindh', 'pakpattan' => 'Pakpattan', 'peshawar' => 'Peshawar', 'pind_dadan_khan' => 'Pind Dadan Khan', 'pindi_bhattian' => 'Pindi Bhattian', 'pir_mahal' => 'Pir Mahal', 'qazi_ahmed' => 'Qazi Ahmed', 'quetta' => 'Quetta', 'rahim_yar_khan' => 'Rahim Yar Khan', 'rajana' => 'Rajana', 'rajanpur' => 'Rajanpur', 'ratwal' => 'Ratwal', 'rawalkot' => 'Rawalkot', 'rawalpindi' => 'Rawalpindi', 'rohri' => 'Rohri', 'sadiqabad' => 'Sadiqabad', 'sahiwal' => 'Sahiwal', 'sakrand' => 'Sakrand', 'samundri' => 'Samundri', 'sanghar' => 'Sanghar', 'sarai_alamgir' => 'Sarai Alamgir', 'sargodha' => 'Sargodha', 'sehwan' => 'Sehwan', 'shabqadar' => 'Shabqadar', 'shahdadpur' => 'Shahdadpur', 'shahkot' => 'Shahkot', 'shahpur_chakar' => 'Shahpur Chakar', 'shakargarh' => 'Shakargarh', 'shehr_sultan' => 'Shehr Sultan', 'sheikhupura' => 'Sheikhupura', 'sher_garh' => 'Sher Garh', 'shikarpur' => 'Shikarpur', 'shorkot' => 'Shorkot', 'sialkot' => 'Sialkot', 'sibi' => 'Sibi', 'skardu' => 'Skardu', 'sudhnoti' => 'Sudhnoti', 'sujawal' => 'Sujawal', 'sukkur' => 'Sukkur', 'swabi' => 'Swabi', 'swat' => 'Swat', 'talagang' => 'Talagang', 'tando_adam' => 'Tando Adam', 'tando_allahyar' => 'Tando Allahyar', 'tando_bago' => 'Tando Bago', 'tando_muhammad_khan' => 'Tando Muhammad Khan', 'taxila' => 'Taxila', 'tharparkar' => 'Tharparkar', 'thatta' => 'Thatta', 'toba_tek_singh' => 'Toba Tek Singh', 'turbat' => 'Turbat', 'vehari' => 'Vehari', 'wah' => 'Wah', 'wazirabad' => 'Wazirabad', 'waziristan' => 'Waziristan', 'yazman' => 'Yazman', 'zhob' => 'Zhob'],
             isset($property->city) ? str_replace(' ', '_',strtolower($property->city)) : null, ['required' => true, 'placeholder' => 'Select city','id' => 'add_city']) }}
 
-            {{ Form::bsSelect2('location', [], isset($property->location) ? $property->location : null, ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
+            {{ Form::bsSelect2('location', [], isset($property->location) ? $property->location : old('location'), ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
             <div class="text-center"><span><i class="fa fa-spinner fa-spin location-spinner" style="font-size:20px; display:none"></i></span></div>
         @endif
 
@@ -97,17 +97,19 @@
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
-        @if(isset($property) and !$property->image->isEmpty())
+        {{--                {{dd($property->images)}}--}}
+        @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Images</div>
-                @foreach($property->image as $available_image)
+                @foreach($property->images as $available_image)
+
                     <div class="col-md-4 col-sm-6 my-2">
                         <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
                             <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-image" data-record-id="{{$available_image->id}}"
                                style="position: absolute; top: 0; right: 0; z-index: 1">
                                 <i class="fad fa-times-circle fa-2x" style="color: red"></i>
                             </a>
-                            <img src="{{asset('thumbnails/properties/'.explode('.',$available_image->name)[0].'-450x350.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
+                            <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
                         </div>
                     </div>
                 @endforeach
@@ -117,12 +119,10 @@
         <div class="row border-bottom my-2 add-images" style="display: none">
             <div class="col-sm-12 text-bold my-2">Images</div>
         </div>
+
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
-        {{form::bsHidden('images',null,['id'=>'store-images'])}}
-        {{--        <div class="col-sm-8 col-md-5">--}}
+        {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
         <div class="mb-2"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
-        {{--        </div>--}}
-        {{--        <div class="mb-3"><span style="color:red">* </span>Image will be uploaded on form submission</div>--}}
 
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
@@ -204,11 +204,9 @@
         </div>
 
         <div class="user-details-block" style="display:block">
-            {{ Form::bsTel('phone_#', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['data-default' => 'E.g. 02123456789','id'=>'phone']) }}
-            {{form::bsHidden('phone',null)}}
+            {{ Form::bsIntlTel('phone_#', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
 
-            {{ Form::bsTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'data-default' => 'E.g. 03012345678','id'=>'cell']) }}
-            {{form::bsHidden('mobile',null)}}
+            {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
 
             {{--            {{ Form::bsTel('fax_#', isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax,  ['data-default' => 'E.g. 0211234567','id'=>'fax']) }}--}}
             {{--            {{form::bsHidden('fax',isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax)}}--}}

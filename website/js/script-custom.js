@@ -476,8 +476,10 @@
                             $('#exampleModalCenter').modal('hide');
                             let user_dropdown = $('.user-dropdown');
                             let nav_property_link = $('.nav-property-link');
+                            let nav_profile_link = $('.nav-profile-link');
                             user_dropdown.html('');
                             nav_property_link.html('');
+                            nav_profile_link.html('');
                             let user_name = data.user.name;
                             let user_id = data.user.id;
                             let html =
@@ -494,10 +496,12 @@
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
-                            let html_nav =   '<a class="nav-link" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
+                            let html_profile_link =   '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
+                            let html_property_link =   '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
 
                             user_dropdown.html(html);
-                            nav_property_link.html(html_nav);
+                            nav_property_link.html(html_property_link);
+                            nav_profile_link.html(html_profile_link);
 
 
                             if ($('.user-name').length > 0) {

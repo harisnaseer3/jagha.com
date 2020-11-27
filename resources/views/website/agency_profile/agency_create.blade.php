@@ -52,11 +52,9 @@
                                             {{ Form::bsTextArea('description', isset($agency->description)? $agency->description : null, ['required' => true, 'data-default' => 'Please provided detailed information about your agency services. For example, does your company provide sales and rental services or both.Description should have almost 4096 characters.']) }}
 
 
-                                            {{ Form::bsTel('phone_#', isset($agency->phone)? $agency->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['required' => true, 'data-default' => 'E.g. 02123456789','id'=>'phone']) }}
-                                            {{form::bsHidden('phone',null)}}
+                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['required' => true,'id'=>'phone']) }}
 
-                                            {{ Form::bsTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['data-default' => 'E.g. 03012345678','id'=>'cell']) }}
-                                            {{form::bsHidden('mobile',null)}}
+                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['id'=>'cell']) }}
                                             {{--                                            {{ Form::bsTel('fax', isset($agency->fax)? $agency->fax : null, ['data-default' => 'E.g. 0211234567']) }}--}}
 
                                             {{--                                            {{ Form::bsSelect2('address', [], null, ['required' => true, 'placeholder' => 'Select Address','id' => 'add_location']) }}--}}
