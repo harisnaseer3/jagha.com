@@ -193,7 +193,6 @@ class PropertyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
-//            dd($request->all());
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
 
             $json_features = '';
@@ -508,9 +507,6 @@ class PropertyController extends Controller
 //                (new ImageController)->update($request, $property);
                 (new ImageController)->storeImage($request->input('images'), $property);
             }
-//            if ($request->hasFile('floor_plans')) {
-//                (new FloorPlanController)->update($request, $property);
-//            }
             if ($request->filled('video_link')) {
                 (new VideoController)->update($request, $property);
             }
