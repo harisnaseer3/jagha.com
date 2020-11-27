@@ -1326,11 +1326,6 @@ span.post-head-cat,
     background-color: #007BFF;
 }
 
-.theme-dark-blue {
-
-    color: #2238D8;
-
-}
 
 .theme-grey {
     background-color: #444;
@@ -1889,4 +1884,8 @@ hr.solid {
 }
 .iti{
     width: 100%;
+}
+
+.theme-dark-blue {
+    color: #2238D8 !important;
 }

@@ -65,29 +65,32 @@
                             $('#exampleModalCenter').modal('hide');
                             let user_dropdown = $('.user-dropdown');
                             let nav_property_link = $('.nav-property-link');
+                            let nav_profile_link = $('.nav-profile-link');
                             user_dropdown.html('');
                             nav_property_link.html('');
-                            let user_name = data.user.name + ' (ID: ' + user_id + ')';
+                            nav_profile_link.html('');
+                            let user_name = data.user.name;
                             let user_id = data.user.id;
                             let html =
                                 '            <div class="dropdown">' +
                                 '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
                                 '                      <i class="fas fa-user mr-3"></i>';
-                            html += '<span class="mr-1"> Logged in as <span>' + user_name;
+                            html += '<span class="mr-1"> Logged in as <span>' + user_name + ' (ID: ' + user_id + ')';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
                                 '                     <div class="dropdown-divider"></div>' +
-                                // '<a class="dropdown-item" href=" ' + window.location.origin + '/property/dashboard/properties/create"><i class="fa fa-building-o mr-2"></i>Property Managment </a>' +
                                 '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
-                                '                          <a class="dropdown-item" href="{{route("accounts.logout")}}"><i class="far fa-sign-out mr-2"></i>Logout</a>';
+                                '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
-                            let html_nav =   '<a class="nav-link" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
+                            let html_profile_link =   '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
+                            let html_property_link =   '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
 
                             user_dropdown.html(html);
-                            nav_property_link.html(html_nav);
+                            nav_property_link.html(html_property_link);
+                            nav_profile_link.html(html_profile_link);
                             // window.location.reload(true);
                         } else if (data.error) {
                             $('div.help-block small').html(data.error.password);
