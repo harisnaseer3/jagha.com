@@ -139,6 +139,7 @@
         });
 
         let input = document.querySelector("#cell");
+
         var errorMsg = document.querySelector("#error-msg");
         var validMsg = document.querySelector("#valid-msg");
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];

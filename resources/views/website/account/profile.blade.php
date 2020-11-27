@@ -41,11 +41,9 @@
                                             {{ Form::bsEmail('email', \Illuminate\Support\Facades\Auth::user()->email, ['required' => true, 'readonly' => 'readonly', 'data-default' => 'Email is locked for security reasons, contact admin to change.']) }}
                                             {{ Form::bsText('name', \Illuminate\Support\Facades\Auth::user()->name, ['required' => true]) }}
 
-                                            {{ Form::bsTel('phone_#', isset($user->phone)?$user->phone: null, ['required' => true,'data-default' => 'E.g. 02123456789','id'=>'phone']) }}
-                                            {{form::bsHidden('phone',null)}}
+                                            {{ Form::bsIntlTel('phone_#', isset($user->phone)?$user->phone: null, ['required' => true, 'id'=>'phone']) }}
+                                            {{ Form::bsIntlTel('mobile_#', isset($user->phone)?$user->cell: null, ['id'=>'cell']) }}
 
-                                            {{ Form::bsTel('cell', isset($user->phone)?$user->cell: null, ['data-default' => 'E.g. 03012345678','id'=>'cell']) }}
-                                            {{form::bsHidden('mobile',null)}}
                                             {{--                                            {{ Form::bsTel('fax', isset($user->fax)?$user->fax: null, ['data-default' => 'E.g. 0211234567']) }}--}}
                                             {{ Form::bsText('address', isset($user->address)?$user->address: null) }}
                                             {{ Form::bsText('zip_code', isset($user->zip_code)?$user->zip_code: null) }}
@@ -94,6 +92,57 @@
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script>
         (function ($) {
+
+
+            function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
+                var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+                let ag_iti_cell = '';
+                if (phone_type === "MOBILE") {
+                    ag_iti_cell = window.intlTelInput(input, {
+                        utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
+                        preferredCountries: ["pk"],
+                        preventInvalidNumbers: true,
+                        separateDialCode: true,
+                        numberType: "MOBILE",
+                    });
+                } else if (phone_type === "FIXED_LINE") {
+                    ag_iti_cell = window.intlTelInput(input, {
+                        utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
+                        preferredCountries: ["pk"],
+                        preventInvalidNumbers: true,
+                        separateDialCode: true,
+                        placeholderNumberType: "FIXED_LINE",
+                        numberType: "FIXED_LINE",
+                    });
+                }
+
+                var reset = function () {
+                    input.classList.remove("error");
+                    input.classList.remove("valid");
+                    errorMsg.innerHTML = "";
+                    errorMsg.classList.add("hide");
+                    validMsg.classList.add("hide");
+                };
+                input.addEventListener('blur', function () {
+                    reset();
+                    if (input.value.trim()) {
+                        if (ag_iti_cell.isValidNumber()) {
+                            field.val(ag_iti_cell.getNumber());
+                            validMsg.classList.remove("hide");
+                            $(error_div).hide();
+                        } else {
+                            var errorCode = ag_iti_cell.getValidationError();
+                            errorMsg.innerHTML = errorMap[errorCode];
+                            errorMsg.classList.remove("hide");
+                            field.val('');
+                        }
+                    }
+                });
+
+                input.addEventListener('change', reset);
+                input.addEventListener('keyup', reset);
+            }
+
             $(document).ready(function () {
                 // Initialize Select2 Elements
                 $('.select2').select2({
@@ -105,15 +154,6 @@
                     direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
                     theme: 'bootstrap4',
                 });
-                // $("input[name='phone']").keyup(function () {
-                //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-                // });
-                // $("input[name='cell']").keyup(function () {
-                //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-                // });
-                // $("input[name='fax']").keyup(function () {
-                //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-                // });
                 $('[name=country]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
             });
             $('.btn-accept').on('click', function () {
@@ -210,60 +250,40 @@
                 });
             });
 
-            var ag_iti_phone = window.intlTelInput(document.querySelector('#phone'), {
-                // any initialisation options go here
-                allowDropdown: false,
-                numberType: "FIXED_LINE",
-                placeholderNumberType: "FIXED_LINE",
-                separateDialCode: true,
-                onlyCountries: ['pk'],
-                // preventInvalidNumbers: true,
-                utilsScript: "../../../../plugins/intl-tel-input/js/utils.js"
-            });
-
-            var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
-                // any initialisation options go here
-                allowDropdown: false,
-                onlyCountries: ['pk'],
-                // preventInvalidNumbers: true,
-                separateDialCode: true,
-                numberType: "MOBILE",
-                utilsScript: "../../../../plugins/intl-tel-input/js/utils.js"
-            });
-
             let phone_num = $("#phone");
             let mobile_num = $("#cell");
             if (phone_num.val() !== '') {
-                $("input[name='phone']").val("+92-" + phone_num.val());
+                $("input[name='phone']").val(phone_num.val());
             }
             if (mobile_num.val() !== '') {
-                $("input[name='mobile']").val("+92-" + mobile_num.val());
+                $("input[name='mobile']").val(mobile_num.val());
             }
-            mobile_num.change(function () {
-                let data = ag_iti_cell.getNumber().split('+92');
-                let value = "+92-" + data[1];
-                $("input[name='mobile']").val(value);
-            });
-            phone_num.change(function () {
-                let data = ag_iti_phone.getNumber().split('+92');
-                let value = "+92-" + data[1];
-                $("input[name='phone']").val(value);
-            });
-            $.validator.addMethod("checkcellnum", function (value) {
-                return /^3\d{2}[\s.-]?\d{7}$/.test(value) || /^03\d{2}[\s.-]?\d{7}$/.test(value);
-            });
-            $.validator.addMethod("checkphonenum", function (value) {
-                return /^0\d{2}[\s.-]?\d{7}$/.test(value) || /^\d{2}[\s.-]?\d{7}$/.test(value) || /^0\d{2}[\s.-]?\d{8}$/.test(value) || /^\d{2}[\s.-]?\d{8}$/.test(value);
-            });
+
+            iti_contact_number(document.querySelector("#cell"),
+                document.querySelector("#error-msg-mobile"),
+                document.querySelector("#valid-msg-mobile"),
+                $('[name=mobile]'), '#mobile-error', "MOBILE");
+
+            iti_contact_number(document.querySelector("#phone"),
+                document.querySelector("#error-msg-phone"),
+                document.querySelector("#valid-msg-phone"),
+                $('[name=phone]'), '#phone-error', "FIXED_LINE");
+
             let form = $('.data-insertion-form');
             form.validate({
                 rules: {
                     'mobile_#': {
                         required: true,
-                        checkcellnum: true,
+                        // checkcellnum: true,
+                    },
+                    'mobile': {
+                        required: true,
+                    },
+                    'phone': {
+                        required: true,
                     },
                     'phone_#': {
-                        checkphonenum: true,
+                        required: true,
                     },
                     contact_email: {
                         required: true,
@@ -271,15 +291,12 @@
                     },
                 },
                 messages: {
-                    'mobile_#': {
-                        checkcellnum: "Please enter a valid value. (300 1234567)"
-                    },
-                    'phone_#': {
-                        checkphonenum: "Please enter a valid value. (21 23456789)",
-                    }
+                    'mobile': " please enter a valid value.",
+                    'phone': "please enter a valid value.",
                 },
-                errorElement: 'small',
-                errorClass: 'help-block text-red',
+                errorElement: 'span',
+                errorClass: 'error help-block text-red',
+                ignore: [],
                 submitHandler: function (form) {
                     form.submit();
                 },
@@ -300,6 +317,7 @@
                     }
                 }
             });
+
         })(jQuery);
     </script>
 @endsection

@@ -102,15 +102,6 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-
-//        if (Gate::denies('edit-users')) {
-//            return redirect(route('users.index'));
-//        }
-//        $user_roles = User::find($user->id)->roles()->get(['name'])->all();
-//        $roles = [];
-//        foreach ($user_roles as $role) $roles[] = $role->getAttributes()['name'];
-//        $user->user_roles = $roles;
-//        return view('user.edit', ['table_name' => 'users', 'user' => $user, 'roles' => PropertyRole::all()]);
         return view('website.account.profile',
             ['notifications' => Auth()->user()->unreadNotifications,
                 'user' => $user,
@@ -134,7 +125,7 @@ class UserController extends Controller
         }
         try {
             $user->phone = $request->phone;
-            $user->mobile = $request->cell;
+            $user->cell = $request->mobile;
 //            $user->fax = $request->fax;
             $user->address = $request->address;
             $user->zip_code = $request->zip_code;
