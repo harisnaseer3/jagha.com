@@ -11,7 +11,7 @@
 
         <div><label class="mt-2">Mobile #<span style="color:red">*</span></label></div>
         {{ Form::tel('phone_#', null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
-        <span id="valid-msg" class="hide valid mt-2">✓ Valid</span>
+        <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
         <span id="error-msg" class="hide error mt-2"></span>
         <input class="form-control" name="phone" type="hidden">
 

@@ -1891,5 +1891,5 @@ hr.solid {
     }
 }
 
-.hide {display: none;}.error {color: red;}.valid {color: limegreen;}.iti {width: 100%;}
+.hide {display: none;}.error {color: red;}.validated {color: limegreen;}.iti {width: 100%;}
 
