@@ -35,6 +35,7 @@ class FormGroupServiceProvider extends ServiceProvider
         Form::component('bsSelect', 'components.form.select', ['name', 'list' => [], 'selected' => null, 'selectAttributes' => [], 'optionsAttributes' => [], 'optgroupsAttributes' => []]);
         Form::component('bsSelect2', 'components.form.select2', ['name', 'list' => [], 'selected' => null, 'selectAttributes' => [], 'optionsAttributes' => [], 'optgroupsAttributes' => []]);
         Form::component('bsTel', 'components.form.tel', ['name', 'value' => null, 'attributes' => []]);
+        Form::component('bsIntlTel', 'components.form.intltel', ['name', 'value' => null, 'attributes' => []]);
         Form::component('bsText', 'components.form.text', ['name', 'value' => null, 'attributes' => []]);
         Form::component('bsTextArea', 'components.form.textArea', ['name', 'value' => null, 'attributes' => []]);
         Form::component('bsTime', 'components.form.time', ['name', 'value' => null, 'attributes' => []]);

@@ -46,7 +46,9 @@
                             </div>
                             <div class="form-group form-box">
                                 <input id="cell" type="tel" class="form-control input-text mb-2 @error('cell') is-invalid @enderror" name="mobile_#" value="{{ old('mobile') }}" required
-                                       autocomplete="mobile" placeholder="Mobile Number">
+                                       autocomplete="mobile">
+                                <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
+                                <span id="error-msg" class="hide error mt-2"></span>
                                 <input class="form-control" name="mobile" type="hidden">
 
                                 @error('mobile')

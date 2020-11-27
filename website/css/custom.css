@@ -1,10 +1,12 @@
 .modal-open {
     padding-right: 0 !important;
 }
+
 .inline-search-area {
     max-width: 1150px !important;
 
 }
+
 html {
     overflow-y: scroll !important;
 }
@@ -1314,7 +1316,8 @@ span.post-head-cat,
     background-color: #444;
     border-color: #444;
 }
-.alert{
+
+.alert {
     padding: 1rem;
 }
 
@@ -1889,3 +1892,5 @@ hr.solid {
 .theme-dark-blue {
     color: #2238D8 !important;
 }
+.hide {display: none;}.error {color: red;}.validated {color: limegreen;}.iti {width: 100%;}
+
