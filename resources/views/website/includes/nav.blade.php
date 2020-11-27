@@ -274,10 +274,17 @@
                             <a class="nav-link" href="{{route('agents.listing')}}">
                                 Partners</a>
                         </li>
+                        <li class="nav-item hide-nav navbar-li nav-profile-link">
+                            @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
+                                <a class="nav-link theme-dark-blue" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}">
+                                    Profile Management
+                                </a>
+                            @endif
+                        </li>
 
                         <li class="nav-item hide-nav navbar-li nav-property-link">
                             @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
-                            <a class="nav-link" href="{{route('properties.listings',
+                            <a class="nav-link theme-dark-blue" href="{{route('properties.listings',
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
                                 Property Management
                             </a>
