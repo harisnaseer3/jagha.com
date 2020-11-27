@@ -53,15 +53,6 @@ class TempImageController extends Controller
         }
         (new TempImage)->hit($filenametostore);
         return $filenametostore;
-
-//        $user_id = Auth::user()->getAuthIdentifier();
-
-//        (new Image)->updateOrCreate(['property_id' => $property->id, 'name' => $filenametostore], [
-//            'user_id' => $user_id,
-//            'property_id' => $property->id,
-//            'name' => $filenametostore
-//        ]);
-//        }
     }
 
     private function _imageValidation()
