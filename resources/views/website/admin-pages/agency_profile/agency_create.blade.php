@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+
 @endsection
 
 @section('content')
@@ -29,7 +31,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
-                                    {{ Form::open(['route' => ['admin-agencies-store'], 'method' => 'post', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
+                                    {{ Form::open(['route' => ['admin-agencies-store'], 'method' => 'post', 'role' => 'form','class'=>'data-insertion-form', 'enctype' => 'multipart/form-data']) }}
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">Agency Profile</div>
                                         <div class="card-body">
@@ -40,9 +42,15 @@
 
                                             {{ Form::bsText('company_title', isset($agency->title)? $agency->title : null, ['required' => true, 'data-default' => 'Please provide the official and registered name of your agency.']) }}
                                             {{ Form::bsTextArea('description', isset($agency->description)? $agency->description : null, ['required' => true, 'data-default' => 'Please provided detailed information about your agency services. For example, does your company provide sales and rental services or both.Description should have almost 4096 characters.']) }}
-                                            {{ Form::bsTel('phone', isset($agency->phone)? $agency->phone : null, ['required' => true, 'data-default' => 'E.g. 0511234567']) }}
-                                            {{ Form::bsTel('cell', isset($agency->cell)? $agency->cell : null, ['data-default' => 'E.g. 03001234567']) }}
-                                            {{ Form::bsTel('fax', isset($agency->fax)? $agency->fax : null, ['data-default' => 'E.g. 0211234567']) }}
+
+
+                                            {{ Form::bsTel('phone_#', isset($agency->phone)? $agency->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['required' => true, 'data-default' => 'E.g. 02123456789','id'=>'phone']) }}
+                                            {{form::bsHidden('phone',null)}}
+
+                                            {{ Form::bsTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['data-default' => 'E.g. 03012345678','id'=>'cell']) }}
+                                            {{form::bsHidden('mobile',null)}}
+
+{{--                                            {{ Form::bsTel('fax', isset($agency->fax)? $agency->fax : null, ['data-default' => 'E.g. 0211234567']) }}--}}
 
 
                                             {{--                                            {{ Form::bsSelect2('address', [], null, ['required' => true, 'placeholder' => 'Select Address','id' => 'add_location']) }}--}}
@@ -113,41 +121,11 @@
 
 @section('script')
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
+    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script>
         (function ($) {
-            function getCityLocations(city) {
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    type: 'get',
-                    url: window.location.origin + '/locations',
-                    data: {city: city},
-                    dataType: 'json',
-                    success: function (data) {
-                        let locations = data.data
-                        // console.log(data.data);
-                        if (!jQuery.isEmptyObject({locations})) {
-                            let add_select = $("#add_location");
-                            add_select.empty();
-                            for (let [index, options] of locations.entries()) {
-                                add_select.append($('<option>', {value: options.name, text: options.name}));
-                            }
-                            $('.fa-spinner').hide();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                        console.log(status);
-                        console.log(xhr);
-                    },
-                    complete: function (url, options) {
-                    }
-                });
-            }
-
             $(document).ready(function () {
                 // Initialize Select2 Elements
                 $('.select2').select2({
@@ -174,11 +152,99 @@
                 });
                 $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
 
-                $('#add_city').on('select2:select', function (e) {
-                    let city = $('#add_city').val();
-                    $('.fa-spinner').show();
-                    getCityLocations(city);
+                var ag_iti_phone = window.intlTelInput(document.querySelector('#phone'), {
+                    // any initialisation options go here
+                    allowDropdown: false,
+                    numberType: "FIXED_LINE",
+                    placeholderNumberType: "FIXED_LINE",
+                    separateDialCode: true,
+                    onlyCountries: ['pk'],
+                    // preventInvalidNumbers: true,
+                    utilsScript: "../../../plugins/intl-tel-input/js/utils.js"
                 });
+
+                var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
+                    // any initialisation options go here
+                    allowDropdown: false,
+                    onlyCountries: ['pk'],
+                    // preventInvalidNumbers: true,
+                    separateDialCode: true,
+                    numberType: "MOBILE",
+                    utilsScript: "../../../plugins/intl-tel-input/js/utils.js"
+                });
+
+                let phone_num = $("#phone");
+                let mobile_num = $("#cell");
+                if (phone_num.val() !== '') {
+                    $("input[name='phone']").val("+92-" + phone_num.val());
+                }
+                if (mobile_num.val() !== '') {
+                    $("input[name='mobile']").val("+92-" + mobile_num.val());
+                }
+                mobile_num.change(function () {
+                    let data = ag_iti_cell.getNumber().split('+92');
+                    let value = "+92-" + data[1];
+                    $("input[name='mobile']").val(value);
+                });
+                phone_num.change(function () {
+                    let data = ag_iti_phone.getNumber().split('+92');
+                    let value = "+92-" + data[1];
+                    $("input[name='phone']").val(value);
+                });
+                $.validator.addMethod("checkcellnum", function (value) {
+                    return /^3\d{2}[\s.-]?\d{7}$/.test(value) || /^03\d{2}[\s.-]?\d{7}$/.test(value);
+                });
+                $.validator.addMethod("checkphonenum", function (value) {
+                    return /^0\d{2}[\s.-]?\d{7}$/.test(value) || /^\d{2}[\s.-]?\d{7}$/.test(value) || /^0\d{2}[\s.-]?\d{8}$/.test(value) || /^\d{2}[\s.-]?\d{8}$/.test(value);
+                });
+                let form = $('.data-insertion-form');
+                form.validate({
+                    rules: {
+                        'mobile_#': {
+                            required: true,
+                            checkcellnum: true,
+                        },
+                        'phone_#': {
+                            checkphonenum: true,
+                        },
+                        contact_email: {
+                            required: true,
+                            email: true
+                        },
+                    },
+                    messages: {
+                        'mobile_#': {
+                            checkcellnum: "Please enter a valid value. (300 1234567)"
+                        },
+                        'phone_#': {
+                            checkphonenum: "Please enter a valid value. (21 23456789)",
+                        }
+                    },
+                    errorElement: 'small',
+                    errorClass: 'help-block text-red',
+                    submitHandler: function (form) {
+                        form.submit();
+                    },
+                    invalidHandler: function (event, validator) {
+                        // 'this' refers to the form
+                        const errors = validator.numberOfInvalids();
+                        if (errors) {
+                            let error_tag = $('div.error.text-red.invalid-feedback.mt-2');
+                            error_tag.hide();
+                            const message = errors === 1
+                                ? 'You missed 1 field. It has been highlighted'
+                                : 'You missed ' + errors + ' fields. They have been highlighted';
+                            $('div.error.text-red.invalid-feedback strong').html(message);
+                            error_tag.show();
+                        } else {
+                            $('#submit-block').show();
+                            $('div.error.text-red.invalid-feedback').hide();
+                        }
+                    }
+                });
+
+
+
             });
         })(jQuery);
     </script>

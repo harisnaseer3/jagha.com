@@ -27,6 +27,7 @@ Route::post('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->nam
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
 Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
+Route::post('/property-image-upload', 'TempImageController@ajaxImageUpload');
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');

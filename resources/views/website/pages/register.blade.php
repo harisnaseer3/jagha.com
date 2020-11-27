@@ -5,9 +5,7 @@
 
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
-    {{--    <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">--}}
-    {{--    <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">--}}
-    {{--    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">--}}
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 @endsection
 
 <!-- Contact section start -->
@@ -47,10 +45,11 @@
                                 @enderror
                             </div>
                             <div class="form-group form-box">
-                                <input id="cell" type="tel" class="form-control input-text mb-2 @error('cell') is-invalid @enderror" name="cell" value="{{ old('cell') }}" required
-                                       autocomplete="cell" placeholder="Cell Number">
+                                <input id="cell" type="tel" class="form-control input-text mb-2 @error('cell') is-invalid @enderror" name="mobile_#" value="{{ old('mobile') }}" required
+                                       autocomplete="mobile" placeholder="Mobile Number">
+                                <input class="form-control" name="mobile" type="hidden">
 
-                                @error('cell')
+                                @error('mobile')
                                 <span class="invalid-feedback" role="alert">
                                         <strong style="color: #e3342f">{{ $message }}</strong>
                                     </span>
@@ -88,6 +87,8 @@
 @endsection
 @section('script')
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('website/js/register-page.js')}}"></script>
+    <script src="{{asset('website/js/register-user.js')}}"></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
+
 @endsection
 

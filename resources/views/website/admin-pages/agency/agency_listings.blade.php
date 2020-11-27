@@ -48,17 +48,12 @@
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
-
                                                             </div>
                                                             <div class="col-2 px-0 mx-0">
                                                                 <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
-
                                                             </div>
-
                                                         </div>
                                                         {{ Form::close() }}
-
-
                                                     </div>
                                                     <div class="col-md-4  col-sm-12 mb-2">
                                                         {{ Form::open(['route' => ['admin.agency.search.id'], 'method' => 'post', 'role' => 'form']) }}
@@ -88,6 +83,21 @@
                                                         {{ Form::close() }}
 
                                                     </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <div class="row">
+                                                            {{--                                                            <div class="col-2">--}}
+                                                            {{--                                                                <h4>Sort</h4>--}}
+                                                            {{--                                                            </div>--}}
+                                                            <div class="col-10">
+                                                                <select class="w-100 sorting" style="width: 100%">
+                                                                    <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
+                                                                    </option>
+                                                                    <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-agencies-create')}}">Add New Agency</a></span>
                                                 <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
@@ -114,7 +124,7 @@
                                                                 @elseif($params['status'] == 'rejected_agencies')
                                                                     <td>Rejected By</td>
                                                                 @endif
-                                                                <td>Controls</td>
+                                                                <td colspan="2">Controls</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -126,7 +136,8 @@
                                                                     <td class="pr-3">{{ $all_listing->city}}</td>
                                                                     <td>{{ $all_listing->website }}</td>
                                                                     <td>{{ $all_listing->phone }}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                    {{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')
                                                                         <td>
                                                                             <div class="pending-status"><strong>Pending</strong></div>
@@ -157,8 +168,14 @@
                                                                             <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Users</span>
+                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                             </a>
+                                                                        @endif
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($params['status'] != 'deleted_agencies')
+
                                                                             @if($params['status'] == 'pending_agencies')
                                                                                 <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}" class="btn btn-sm btn-warning"
                                                                                    data-toggle-1="tooltip"
@@ -198,7 +215,7 @@
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                                    <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                                 </tr>
                                                             @endforelse
                                                             </tbody>
@@ -215,7 +232,7 @@
                                                             <tr>
                                                                 <td>ID</td>
                                                                 <td>Title</td>
-                                                                <td>address</td>
+                                                                <td>Address</td>
                                                                 <td>City</td>
                                                                 <td>Website</td>
                                                                 <td>Phone</td>
@@ -228,7 +245,7 @@
                                                                 @elseif($params['status'] == 'deleted_agencies')
                                                                     <td>Deleted By</td>
                                                                 @endif
-                                                                <td>Controls</td>
+                                                                <td colspan="2">Controls</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -240,7 +257,8 @@
                                                                     <td class=" pr-3">{{ $key_listing->city }}</td>
                                                                     <td>{{ $key_listing->website }}</td>
                                                                     <td>{{ $key_listing->phone }}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                    {{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($key_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')
                                                                         <td>
                                                                             <div class="pending-status"><strong>Pending</strong></div>
@@ -264,8 +282,14 @@
                                                                             <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
+                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                             </a>
+                                                                        @endif
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($params['status'] != 'deleted_agencies')
+
                                                                             <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}" class="btn btn-sm btn-warning "
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">
@@ -291,7 +315,7 @@
                                                                 </tr>
                                                             @empty
                                                                 <tr>
-                                                                    <td colspan="8" class="p-4 text-center">No Listings Found!</td>
+                                                                    <td colspan="9" class="p-4 text-center">No Listings Found!</td>
                                                                 </tr>
                                                             @endforelse
                                                             </tbody>
@@ -310,7 +334,7 @@
                                                             <tr>
                                                                 <td>ID</td>
                                                                 <td>Title</td>
-                                                                <td>address</td>
+                                                                <td>Address</td>
                                                                 <td>City</td>
                                                                 <td>Website</td>
                                                                 <td>Phone</td>
@@ -323,7 +347,7 @@
                                                                 @elseif($params['status'] == 'deleted_agencies')
                                                                     <td>Deleted By</td>
                                                                 @endif
-                                                                <td>Controls</td>
+                                                                <td colspan="2">Controls</td>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
@@ -335,7 +359,8 @@
                                                                     <td class="pr-3">{{ $featured_listing->city }}</td>
                                                                     <td>{{ $featured_listing->website }}</td>
                                                                     <td>{{ $featured_listing->phone }}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                    {{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($featured_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')
                                                                         <td>
                                                                             <div class="pending-status"><strong>Pending</strong></div>
@@ -355,13 +380,19 @@
                                                                         <td></td>
                                                                     @endif
                                                                     <td>
+
                                                                         @if($params['status'] != 'deleted_agencies')
 
                                                                             <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true"></span>
+                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                             </a>
+                                                                        @endif
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @if($params['status'] != 'deleted_agencies')
                                                                             <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}" class="btn btn-sm btn-warning"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">
@@ -428,6 +459,22 @@
                 $('select').select2({
                     placeholder: 'Select City',
                     allowClear: true
+                });
+                $('.sorting').on('change', function (e) {
+                    if ($(this).val() !== null) {
+                        let sort = '';
+                        if ($(this).val() === 'newest') {
+                            sort = 'order/desc/';
+                        } else if ($(this).val() === 'oldest') {
+                            sort = 'order/asc/';
+                        }
+                        let link = window.location.href
+                        let break_link = link.split('order/');
+                        let piece_1 = break_link[0];
+                        let piece_2 = break_link[1];
+                        let link_2 = piece_2.split('sc/')[1];
+                        window.location = piece_1 + sort + link_2;
+                    }
                 });
             });
         })(jQuery);

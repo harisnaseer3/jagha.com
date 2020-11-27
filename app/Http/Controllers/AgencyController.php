@@ -398,7 +398,7 @@ class AgencyController extends Controller
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
-                'cell' => $request->input('cell'),
+                'cell' => $request->input('mobile'),
                 'fax' => $request->input('fax'),
                 'address' => $request->input('address'),
                 'zip_code' => $request->input('zip_code'),
@@ -499,9 +499,9 @@ class AgencyController extends Controller
             'company_title' => 'required|string|max:255',
             'description' => 'required|string|max:4096',
             'email' => 'required|email',
-            'phone' => 'required|regex:/\+92-\d{2}\d{7}/',   // +92-511234567
+            'phone' => 'nullable|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
             'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
-            'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
+//            'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
             'address' => 'nullable|string',
             'zip_code' => 'nullable|digits:5',
             'country' => 'required|string',
@@ -538,8 +538,8 @@ class AgencyController extends Controller
 //                'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
-                'cell' => $request->input('cell'),
-                'fax' => $request->input('fax'),
+                'cell' => $request->input('mobile'),
+//                'fax' => $request->input('fax'),
                 'address' => $request->input('address'),
                 'zip_code' => $request->input('zip_code'),
                 'country' => $request->input('country'),
@@ -753,8 +753,7 @@ class AgencyController extends Controller
             ];
             return view('website.admin-pages.agency.agency_listings', $data);
 
-        }
-        elseif ($request->has('id')) {
+        } elseif ($request->has('id')) {
             $all = $this->_listings(explode("_", $status)[0], $user);
             $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
             $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
@@ -775,8 +774,7 @@ class AgencyController extends Controller
                 ]
             ];
             return view('website.admin-pages.agency.agency_listings', $data);
-        }
-        elseif($request->has('name')){
+        } elseif ($request->has('name')) {
             $all = $this->_listings(explode("_", $status)[0], $user);
             $key = $this->_listings(explode("_", $status)[0], $user)->where('key_listing', true);
             $featured = $this->_listings(explode("_", $status)[0], $user)->where('featured_listing', true);
@@ -791,11 +789,12 @@ class AgencyController extends Controller
                 ],
                 'counts' => $this->getAgencyListingCount($user),
                 'listings' => [
-                    'all' => $all->orderBy($sort, $order)->where('agencies.title', '=', $request->name)->paginate($page),
-                    'key' => $key->orderBy($sort, $order)->where('agencies.title', '=', $request->name)->paginate($page),
-                    'featured' => $featured->orderBy($sort, $order)->where('agencies.title', '=', $request->name)->paginate($page),
+                    'all' => $all->orderBy($sort, $order)->where('agencies.title', 'LIKE', '%' . $request->name . '%')->paginate($page),
+                    'key' => $key->orderBy($sort, $order)->where('agencies.title', 'LIKE', '%' . $request->name . '%')->paginate($page),
+                    'featured' => $featured->orderBy($sort, $order)->where('agencies.title', 'LIKE', '%' . $request->name . '%')->paginate($page),
                 ]
             ];
+//            dd($all->orderBy($sort, $order)->where('agencies.title', 'LIKE', $request->name)->get());
             return view('website.admin-pages.agency.agency_listings', $data);
         }
         // listing of status
@@ -966,9 +965,17 @@ class AgencyController extends Controller
 
     public function adminAgencyNameSearch(Request $request)
     {
-        $agency = (new Agency)->where('title', '=', $request->agency_name)->first();
+        $agency = (new Agency)->where('title', 'LIKE', '%' . $request->agency_name . '%')->first();
         if (!$agency)
-            return redirect()->back()->withInput()->with('error', 'Agency not found.');
+//            return redirect()->back()->with('error', 'Agency not found.');
+            return redirect()->route('admin.agencies.listings', [
+                'status' => 'verified_agencies',
+                'purpose' => 'all',
+                'user' => Auth::guard('admin')->user()->getAuthIdentifier(),
+                'sort' => 'id',
+                'order' => 'asc',
+                'page' => 200,
+            ])->withInput()->with('error', 'Agency not found.');
         else {
             $status = lcfirst($agency->status);
             return redirect()->route('admin.agencies.listings', [

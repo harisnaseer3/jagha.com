@@ -9,6 +9,7 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}" async defer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 
 @endsection
 
@@ -53,4 +54,7 @@
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/portfolio-page.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}" defer></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
+    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+
 @endsection
