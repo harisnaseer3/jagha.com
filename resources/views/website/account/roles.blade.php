@@ -73,7 +73,7 @@
                                                     </div>
                                                 @endif
                                             @else
-                                                {{ Form::bsRadio('current_user_role','Investor', ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                {{ Form::bsRadio('user_roles','Investor', ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
                                                                   'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block','class'=>'mt-3']) }}
 
                                                 <div class="other-textbox" style="display: none">
