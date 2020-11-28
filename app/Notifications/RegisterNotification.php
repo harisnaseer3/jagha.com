@@ -50,7 +50,7 @@ class RegisterNotification extends Notification
         }
 
         return (new MailMessage)
-            ->subject('Invitation to Join About Pakistan Property Portal!!')
+            ->subject('Invitation to Join About Pakistan Properties!!')
             ->greeting('Greetings!')
             ->line("To become a member of About Pakistan  Property Portal team as $role_name. Click on the following Register button to SignUp on the About Pakistan Property Portal. ")
             ->action('Register', route('register'));

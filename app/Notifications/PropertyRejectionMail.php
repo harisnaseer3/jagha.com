@@ -45,7 +45,7 @@ class PropertyRejectionMail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Notification of Property Rejection On About Pakistan Property Portal')
+            ->subject('Notification of Property Rejection On About Pakistan Properties')
             ->greeting('Greetings!')
             ->line("Property of ID = {$this->property->id} and Reference = {$this->property->reference} has been rejected by the Admin due to the reason of {$this->reason}.")
             ->line('Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.');
