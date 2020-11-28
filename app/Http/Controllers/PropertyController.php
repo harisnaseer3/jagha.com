@@ -273,7 +273,7 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
             ]);
 
-            if ($request->has('image') && $request->input('image') !== '') {
+            if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
                 (new ImageController)->storeImage($request->input('image'), $property);
             }
 //            if ($request->hasFile('floor_plans')) {
@@ -403,17 +403,17 @@ class PropertyController extends Controller
             }
 
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
-
-            $address = $prepAddr = str_replace(' ', '+', $location['location_name'] . ',' . $city->name . ' Pakistan');
-            $apiKey = config('app.google_map_api_key');
-            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
-            $geo = json_decode($geo, true); // Convert the JSON to an array
-            $latitude = '';
-            $longitude = '';
-            if (isset($geo['status']) && ($geo['status'] == 'OK')) {
-                $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
-                $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
-            }
+//
+//            $address = $prepAddr = str_replace(' ', '+', $location['location_name'] . ',' . $city->name . ' Pakistan');
+//            $apiKey = config('app.google_map_api_key');
+//            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
+//            $geo = json_decode($geo, true); // Convert the JSON to an array
+//            $latitude = '';
+//            $longitude = '';
+//            if (isset($geo['status']) && ($geo['status'] == 'OK')) {
+//                $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
+//                $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
+//            }
             $subtype = '';
             if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
             else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
@@ -446,8 +446,8 @@ class PropertyController extends Controller
                 'area_in_new_kanal' => $area_values['new_kanal'],
                 'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
                 'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
+//                'latitude' => $latitude,
+//                'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
                 'status' => $request->has('status') ? $request->input('status') : 'edited',
                 'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
@@ -459,7 +459,7 @@ class PropertyController extends Controller
                 'email' => $request->input('contact_email'),
                 'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
             ]);
-            if ($request->has('image')) {
+            if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
 //                (new ImageController)->update($request, $property);
                 (new ImageController)->storeImage($request->input('image'), $property);
             }

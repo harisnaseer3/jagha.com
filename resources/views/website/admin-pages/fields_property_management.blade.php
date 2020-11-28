@@ -96,25 +96,31 @@
     </div>
     <div class="card-header theme-blue text-white">Property Images and Videos</div>
     <div class="card-body">
-        @if(isset($property) and !$property->image->isEmpty())
+        @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Images</div>
-                @foreach($property->image as $available_image)
+                @foreach($property->images as $available_image)
+
                     <div class="col-md-4 col-sm-6 my-2">
                         <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
                             <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-image" data-record-id="{{$available_image->id}}"
                                style="position: absolute; top: 0; right: 0; z-index: 1">
                                 <i class="fad fa-times-circle fa-2x" style="color: red"></i>
                             </a>
-                            <img src="{{asset('thumbnails/properties/'.explode('.',$available_image->name)[0].'-450x350.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
+                            <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
                         </div>
                     </div>
                 @endforeach
             </div>
         @endif
-        {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+        <div class="row border-bottom my-2 add-images" style="display: none">
+            <div class="col-sm-12 text-bold my-2">Images</div>
+        </div>
 
-        <div class="mb-3"><span style="color:red">* </span>Image will be uploaded on form submission</div>
+        {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
+        {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
+        <div class="mb-2"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
 
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
@@ -144,41 +150,81 @@
             {{ Form::bsText('video link', null, ['required' => false]) }}
         @endif
 
-        @if(isset($property) and !$property->floor_plan->isEmpty())
-            <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2">Floor Plans</div>
-                @foreach($property->floor_plan as $available_image)
-                    <div class="col-md-4 col-sm-6 my-2">
-                        <label>{{$available_image->title}}</label>
-                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                            <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-plan" data-record-id="{{$available_image->id}}"
-                               style="position: absolute; top: 0; right: 0; z-index: 1">
-                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>
-                            </a>
-                            {{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
-                            <img src="{{asset('thumbnails/floor_plans/'.explode('.',$available_image->name)[0].'-750x600.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+{{--        @if(isset($property) and !$property->floor_plan->isEmpty())--}}
+{{--            <div class="row border-bottom my-2">--}}
+{{--                <div class="col-sm-12 text-bold my-2">Floor Plans</div>--}}
+{{--                @foreach($property->floor_plan as $available_image)--}}
+{{--                    <div class="col-md-4 col-sm-6 my-2">--}}
+{{--                        <label>{{$available_image->title}}</label>--}}
+{{--                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">--}}
+{{--                            <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-plan" data-record-id="{{$available_image->id}}"--}}
+{{--                               style="position: absolute; top: 0; right: 0; z-index: 1">--}}
+{{--                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>--}}
+{{--                            </a>--}}
+{{--                            --}}{{--                            <img src="{{asset('storage/floor_plans/'.$available_image->name)}}" width="100%" class="img-responsive" alt="image not available"/>--}}
+{{--                            <img src="{{asset('thumbnails/floor_plans/'.explode('.',$available_image->name)[0].'-750x600.webp')}}" width="100%" class="img-responsive" alt="image not available"/>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endforeach--}}
+{{--            </div>--}}
+{{--        @endif--}}
 
-        {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 256 KB']) }}
-        <div><span style="color:red">* </span>Floor plans will be uploaded on form submission</div>
+{{--        {{ Form::bsFile('floor_plans[]', null, ['required' => false, 'multiple'=>'multiple','data-default' => 'Image dimension: 750x400, File size: 256 KB']) }}--}}
+{{--        <div><span style="color:red">* </span>Floor plans will be uploaded on form submission</div>--}}
     </div>
+{{--    @if(!empty($agencies))--}}
+{{--        <div class="card-header theme-blue text-white">Agency Details</div>--}}
+{{--        <div class="card-body">--}}
+{{--            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property']) }}--}}
+{{--        </div>--}}
+{{--    @endif--}}
+{{--    <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>--}}
+{{--    <div class="card-body">--}}
+{{--        {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : null, ['required' => true]) }}--}}
+{{--        {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : null, ['data-default' => 'E.g. 0511234567']) }}--}}
+{{--        {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : null,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}--}}
+{{--        {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. 0211234567']) }}--}}
+{{--        {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : null, ['required' => true]) }}--}}
+{{--    </div>--}}
+
     @if(!empty($agencies))
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property']) }}
+            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property','id'=>'agency']) }}
+            <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
         </div>
+
+    @endif
+    @if(isset($property->agency))
+        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-body">
+            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}
+        </div>
+
     @endif
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
-        {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : null, ['required' => true]) }}
-        {{ Form::bsTel('phone', isset($property->phone) ? $property->phone : null, ['data-default' => 'E.g. 0511234567']) }}
-        {{ Form::bsTel('mobile', isset($property->cell) ? $property->cell : null,  ['required' => true,'data-default' => 'E.g. 03001234567']) }}
-        {{ Form::bsTel('fax', isset($property->fax) ? $property->fax : null,  ['data-default' => 'E.g. 0211234567']) }}
-        {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : null, ['required' => true]) }}
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+        <div class="agency-user-block" style="display: none">
+            {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
+        </div>
+
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+
+        <div class="contact-person-block" style="display: block">
+            {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : \Illuminate\Support\Facades\Auth::user()->name, ['required' => true, 'id'=>'contact_person_input']) }}
+        </div>
+
+        <div class="user-details-block" style="display:block">
+            {{ Form::bsIntlTel('phone_#', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
+
+            {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
+
+            {{--            {{ Form::bsTel('fax_#', isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax,  ['data-default' => 'E.g. 0211234567','id'=>'fax']) }}--}}
+            {{--            {{form::bsHidden('fax',isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax)}}--}}
+
+            {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
+        </div>
     </div>
 
     <div class="card-header theme-blue text-white text-capitalize">Property Package</div>

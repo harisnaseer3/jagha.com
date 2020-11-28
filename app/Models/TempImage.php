@@ -45,8 +45,13 @@ class TempImage extends Model
 
         $expiry = $dt->addHour()->toDateTimeString();
 //        $expiry = $dt->addMonths(3)->toDateTimeString();
+        $user = '';
+        if (Auth::guard('admin')->check())
+            $user = Auth::guard('admin')->user()->getAuthIdentifier();
+        if (Auth::guard('web')->check())
+            $user = Auth::guard('web')->user()->getAuthIdentifier();
         (new TempImage)->firstOrCreate([
-            'user_id' => Auth::user()->getAuthIdentifier(),
+            'user_id' => $user,
             'name' => $name,
             'expiry_time' => $expiry,
         ])->save();
