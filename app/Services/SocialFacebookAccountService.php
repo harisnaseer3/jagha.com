@@ -2,6 +2,7 @@
 namespace App\Services;
 use App\Models\SocialFacebookAccount;
 use App\Models\Dashboard\User;
+use Carbon\Carbon;
 use Laravel\Socialite\Contracts\User as ProviderUser;
 class SocialFacebookAccountService
 {
@@ -23,6 +24,7 @@ class SocialFacebookAccountService
                     'email' => $providerUser->getEmail(),
                     'name' => $providerUser->getName(),
                     'password' => md5(rand(1,10000)),
+                    'email_verified_at' => date("Y-m-d H:i:s"),
                 ]);
             }
 
