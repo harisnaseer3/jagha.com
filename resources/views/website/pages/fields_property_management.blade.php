@@ -191,7 +191,6 @@
     @endif
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
-
         <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
         <div class="agency-user-block" style="display: none">
             {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
