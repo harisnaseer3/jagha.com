@@ -35,7 +35,7 @@
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => 'user.password.update', 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header theme-blue text-white text-capitalize">Change Password</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">Change Current Password</div>
                                         <div class="card-body">
                                             {{ Form::bsPassword('current_password', ['required' => true]) }}
                                             {{ Form::bsPassword('new_password', ['required' => true, 'id'=>'new_password', 'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}

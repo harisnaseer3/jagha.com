@@ -52,7 +52,7 @@
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => ['user_roles.update'], 'method' => 'put', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header theme-blue text-white text-capitalize">User Roles</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">Current User Role</div>
                                         <div class="card-body">
                                             <!-- TODO: $role get the user role name not id-->
                                             {{--                                            {{ Form::bsRadio('role', '', ['list'=> ['Investor','Owner/Tenant'],'display' => 'block']) }}--}}
@@ -73,7 +73,7 @@
                                                     </div>
                                                 @endif
                                             @else
-                                                {{ Form::bsRadio('user_roles','Investor', ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
+                                                {{ Form::bsRadio('current_user_role','Investor', ['list' => ['Investor','Owner/Tenant','Agent/Broker','Appraiser','Architect','Builder','Corporate Investor','Developer','Listing Administrator',
                                                                   'Mortgage Broker','Partner','Property/Asset Manager','Researcher','Other'],'display' => 'block','class'=>'mt-3']) }}
 
                                                 <div class="other-textbox" style="display: none">
