@@ -54,7 +54,7 @@ class PropertyActivatedNotification extends Notification
 //        dd(route('properties.show', $id));
 
         return (new MailMessage)
-            ->subject('A new Property is up!!')
+            ->subject('A new Property is up on About Pakistan Properties!!')
             ->greeting('Hi!')
             ->line("A new Property")
             ->line("{$title}")

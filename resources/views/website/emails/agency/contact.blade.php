@@ -15,6 +15,5 @@ Phone : {{ $phone }} <br>
 
 # Regards,<br>
 {{--<img src="{{('img/logo/logo-with-text.png') }}" alt="About Pakistan"/>--}}
-
-Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.
+About Pakistan Properties
 @endcomponent
