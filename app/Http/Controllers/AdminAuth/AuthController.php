@@ -64,7 +64,12 @@ class AuthController extends Controller
 
     public function adminLogin()
     {
-        Auth::guard('web')->logout();
+        if(Auth::guard('web')->check())
+        {
+            Auth::guard('web')->logout();
+
+        }
+
         return view('website.admin-pages.admin-login');
     }
 
@@ -76,6 +81,11 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+        if(Auth::guard('web')->check())
+        {
+            Auth::guard('web')->logout();
+
+        }
          $admin = Admin::getAdminByEmail($request->input('email'));
           if(!empty($admin) && $admin->is_active === '0')
           {
