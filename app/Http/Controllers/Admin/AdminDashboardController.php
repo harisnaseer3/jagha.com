@@ -8,6 +8,7 @@ use App\Models\AgencyLog;
 use App\Models\PropertyLog;
 use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 
@@ -35,5 +36,26 @@ class AdminDashboardController extends Controller
         ]);
     }
 
+    public function getUserCount(Request $request)
+    {
+        if ($request->ajax()) {
+            $total_count = array();
+            $date = array();
+            $unique_count = array();
+            $unique_result = Visit::select(DB::raw('Count(count) AS user_count'))->orderBy('date')->groupBy('date')->get()->toArray();
+            $result = Visit::select(DB::raw('SUM(count) AS user_count'), 'date')->orderBy('date')->groupBy('date')->get()->toArray();
 
+            foreach ($result as $data) {
+                $total_count[] = $data['user_count'];
+                $date[] = $data['date'];
+            }
+            foreach ($unique_result as $value) {
+                $unique_count[] = $value['user_count'];
+            }
+            return response()->json(['data' => ['total_count' => $total_count, 'unique_count' => $unique_count, 'date' => $date], 'status' => 200]);
+        } else {
+            return 'Not Found';
+        }
+
+    }
 }

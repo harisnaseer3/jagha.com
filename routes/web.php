@@ -28,6 +28,8 @@ Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProper
 Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
 Route::post('/property-image-upload', 'TempImageController@ajaxImageUpload');
+Route::post('/admin-user-count', 'Admin\AdminDashboardController@getUserCount');
+
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
