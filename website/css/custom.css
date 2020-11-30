@@ -2,11 +2,6 @@
     padding-right: 0 !important;
 }
 
-.inline-search-area {
-    max-width: 1150px !important;
-
-}
-
 html {
     overflow-y: scroll !important;
 }
@@ -1885,12 +1880,37 @@ hr.solid {
         margin-top: 75px;
     }
 }
-.iti{
+
+.iti {
     width: 100%;
 }
 
 .theme-dark-blue {
     color: #2238D8 !important;
 }
-.hide {display: none;}.error {color: red;}.validated {color: limegreen;}.iti {width: 100%;}
+
+.hide {
+    display: none;
+}
+
+.error {
+    color: red;
+}
+
+.validated {
+    color: limegreen;
+}
+
+.iti {
+    width: 100%;
+}
+
+.agency-search-bar {
+    max-width: 1150px!important;
+
+}
+
+
+
+
 
