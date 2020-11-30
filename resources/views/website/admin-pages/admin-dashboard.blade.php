@@ -187,6 +187,9 @@
                                             @endcan
                                             @can('Manage Users')
                                                 <div class="col-12 mb-4">
+                                                    <canvas id="myChart" class="w-100" height="300px"></canvas>
+                                                </div>
+                                                <div class="col-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header theme-blue text-white">
                                                             User Visit Log
@@ -234,22 +237,9 @@
 
 @section('script')
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
-    <script>
-        $(document).ready(function () {
-            $('#property-log').DataTable(
-                {
-                    "scrollX": true
-                }
-            );
-            $('#agency-log').DataTable({
-                "scrollX": true
-            });
-            $('#user-log').DataTable({
-                "scrollX": true
-            });
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/chart.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/admin-dashboard-page.js')}}"></script>
 
-        });
-    </script>
 @endsection
 
 
