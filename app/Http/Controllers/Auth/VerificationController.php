@@ -49,11 +49,7 @@ class VerificationController extends Controller
      */
     public function __construct()
     {
-<<<<<<< HEAD
-       // $this->middleware('auth')->except('emailConfirmation');
-=======
-        // $this->middleware('auth')->except('emailConfirmation');
->>>>>>> 354efd430869fd1cebbd71c277fbec8981927ab9
+
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
