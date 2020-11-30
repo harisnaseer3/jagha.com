@@ -49,10 +49,10 @@
                             </a>
                         </div>
                         <div class="social-list">
-                            <a href="https://www.facebook.com/aboutpk" class="facebook-bg" target="_blank">
+                            <a href="https://www.facebook.com/aboutpkofficial" class="facebook-bg" target="_blank">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="https://twitter.com/aboutpk_" class="twitter-bg" target="_blank">
+                            <a href="https://twitter.com/aboutpkofficial" class="twitter-bg" target="_blank">
                                 <i class="fab fa-twitter"></i>
                             </a>
                             <a href="https://www.linkedin.com/company/cordstones/" class="linkedin-bg" target="_blank">
