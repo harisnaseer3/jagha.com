@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Register Page : Property Portal By https://www.aboutpakistan.com</title>
+    <title> Register Page : About Pakistan Properties  https://www.properties.aboutpakistan.com</title>
 @endsection
 
 @section('css_library')
