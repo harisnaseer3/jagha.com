@@ -90,6 +90,7 @@
                                                             {{--                                                            </div>--}}
                                                             <div class="col-10">
                                                                 <select class="w-100 sorting" style="width: 100%">
+                                                                    <option value selected disabled data-index="0">Select Sorting Option</option>
                                                                     <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
                                                                     </option>
                                                                     <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest
