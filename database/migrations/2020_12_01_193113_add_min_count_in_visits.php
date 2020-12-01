@@ -14,7 +14,7 @@ class AddMinCountInVisits extends Migration
     public function up()
     {
         Schema::table('visits', function (Blueprint $table) {
-            $table->unsignedInteger('min_count');
+            $table->unsignedInteger('min_count')->default(0);
         });
     }
 
