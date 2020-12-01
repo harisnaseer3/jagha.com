@@ -20,7 +20,7 @@ class Visit extends Model
 
     public $attributes = ['count' => 0];
 
-    protected $fillable = ['ip', 'date', 'visit_time', 'count'];
+    protected $fillable = ['ip', 'date', 'visit_time', 'count', 'min_count'];
     protected $table = 'visits';
 
     public static function boot()
@@ -53,8 +53,8 @@ class Visit extends Model
                 (new Visit)->firstOrCreate([
                     'ip' => $_SERVER['REMOTE_ADDR'],
                     'date' => date('Y-m-d'),
-                    'min_count' => 1
-                ])->save();
+                ], ['min_count' => 1]
+                )->save();
                 return true;
             }
         }
