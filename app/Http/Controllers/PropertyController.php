@@ -124,6 +124,9 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
+        if (!(new Visit)->hit()) {
+            return  redirect('https://www.aboutpakistan.com/custom404.php');
+        }
         (new MetaTagController())->addMetaTags();
 
         $property_types = (new PropertyType)->all();
@@ -131,7 +134,7 @@ class PropertyController extends Controller
         // property count table
         $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
         $footer_content = (new FooterController)->footerContent();
-        (new Visit)->hit();
+
         $data = [
             'total_count' => $total_count,
             'cities_count' => (new CountTableController())->getCitiesCount(),

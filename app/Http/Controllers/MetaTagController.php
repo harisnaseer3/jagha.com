@@ -15,33 +15,33 @@ class MetaTagController extends Controller
 //    display tags on page
     public function addMetaTags()
     {
-        SEOMeta::setTitle('About Pakistan Property Portal - Buy Sell Rent Homes & Properties In Pakistan');
-        SEOMeta::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        SEOMeta::setTitle('About Pakistan Properties - Buy Sell Rent Homes & Properties In Pakistan');
+        SEOMeta::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
 
         OpenGraph::setTitle('Pakistan Property Real Estate - Sell Buy Rent Homes & Properties In Pakistan');
-        OpenGraph::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        OpenGraph::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
         OpenGraph::setUrl(URL::current());
         OpenGraph::addProperty('image', asset('img/logo/logo-with-text-200x200.png'));
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', ['en-us']);
 
-        TwitterCard::setTitle('About Pakistan Property Portal - Buy Sell Rent Homes & Properties In Pakistan');
+        TwitterCard::setTitle('About Pakistan Properties - Buy Sell Rent Homes & Properties In Pakistan');
         TwitterCard::setSite('@aboutpk_');
-        TwitterCard::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        TwitterCard::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
         TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));
 
         SEOMeta::addMeta('site_name', env('APP_NAME'), 'name');
         SEOMeta::addMeta('image', asset('img/logo/logo-with-text-200x200.png'), 'itemprop');
-        SEOMeta::addMeta('description', 'About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.', 'itemprop');
+        SEOMeta::addMeta('description', 'About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.', 'itemprop');
     }
 
     public function addMetaTagsAccordingToCity($city)
     {
         SEOMeta::setTitle('Property and Real Estate for Sell in ' . $city);
-        SEOMeta::setDescription('Find properties for Sale in ' . $city . ' within your budget on About Pakistan Property Portal. Get complete details of properties and available amenities');
+        SEOMeta::setDescription('Find properties for Sale in ' . $city . ' within your budget on About Pakistan Properties. Get complete details of properties and available amenities');
 
         OpenGraph::setTitle('Property and Real Estate for Sell in ' . $city);
-        OpenGraph::setDescription('Find properties for Sale in ' . $city . ' within your budget on About Pakistan Property Portal. Get complete details of properties and available amenities');
+        OpenGraph::setDescription('Find properties for Sale in ' . $city . ' within your budget on About Pakistan Properties. Get complete details of properties and available amenities');
         /* change url according to seo url */
         OpenGraph::setUrl(URL::current());
         OpenGraph::addProperty('image', asset('img/logo/logo-with-text-200x200.png'));
@@ -50,20 +50,20 @@ class MetaTagController extends Controller
 
         TwitterCard::setTitle('Property and Real Estate for Sell in ' . $city);
         TwitterCard::setSite('@aboutpk_');
-        TwitterCard::setDescription('Find properties for Sale in ' . $city . ' within your budget on About Pakistan Property Portal. Get complete details of properties and available amenities');
+        TwitterCard::setDescription('Find properties for Sale in ' . $city . ' within your budget on About Pakistan Properties. Get complete details of properties and available amenities');
         TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));
 
         SEOMeta::addMeta('site_name', env('APP_NAME'), 'name');
         SEOMeta::addMeta('image', asset('img/logo/logo-with-text-200x200.png'), 'itemprop');
-        SEOMeta::addMeta('description', 'Find properties for Sale in ' . $city . ' within your budget on About Pakistan Property Portal. Get complete details of properties and available amenities');
+        SEOMeta::addMeta('description', 'Find properties for Sale in ' . $city . ' within your budget on About Pakistan Properties. Get complete details of properties and available amenities');
     }
 
     public function addMetaTagsAccordingToPropertyDetail($property)
     {
-        SEOMeta::setTitle($property->title . ' For ' . $property->purpose . ' in ' . $property->location . ', ' . $property->city . ' ' . $property->reference . ' - About Pakistan Property Portal');
+        SEOMeta::setTitle($property->title . ' For ' . $property->purpose . ' in ' . $property->location . ', ' . $property->city . ' ' . $property->reference . ' - About Pakistan Properties');
         SEOMeta::setDescription($property->location . ' - ' . $property->city . ' Property, ' . number_format($property->land_area) . ' ' . $property->area_unit . ' ' . $property->title . ' in ' . $property->location . ' ' . $property->city . ' with ' . ' Area ' . number_format($property->land_area) . ' ' . $property->area_unit . ' and Demand ' . \Illuminate\Support\Str::limit(explode(',', Helper::getPriceInWords($property->price))[0], 10, $end = '...'));
 
-        OpenGraph::setTitle($property->title . ' For ' . $property->purpose . ' in ' . $property->location . '. ' . $property->city . $property->reference . ' - About Pakistan Property Portal');
+        OpenGraph::setTitle($property->title . ' For ' . $property->purpose . ' in ' . $property->location . '. ' . $property->city . $property->reference . ' - About Pakistan Properties');
         OpenGraph::setDescription($property->location . ' - ' . $property->city . ' Property, ' . number_format($property->land_area) . ' ' . $property->area_unit . ' ' . $property->title . ' in ' . $property->location . ' ' . $property->city . ' with ' . ' Area ' . number_format($property->land_area) . ' ' . $property->area_unit . ' and Demand ' . \Illuminate\Support\Str::limit(explode(',', Helper::getPriceInWords($property->price))[0], 10, $end = '...'));
         /* change url according to seo url */
         OpenGraph::setUrl(URL::current());
@@ -71,7 +71,7 @@ class MetaTagController extends Controller
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', ['en-us']);
 
-        TwitterCard::setTitle($property->title . ' For ' . $property->purpose . ' in ' . $property->location . ', ' . $property->city . $property->reference . ' - About Pakistan Property Portal');
+        TwitterCard::setTitle($property->title . ' For ' . $property->purpose . ' in ' . $property->location . ', ' . $property->city . $property->reference . ' - About Pakistan Properties');
         TwitterCard::setSite('@aboutpk_');
         TwitterCard::setDescription($property->location . ' - ' . $property->city . ' Property, ' . number_format($property->land_area) . ' ' . $property->area_unit . ' ' . $property->title . ' in ' . $property->location . ' ' . $property->city . ' with ' . ' Area ' . number_format($property->land_area) . ' ' . $property->area_unit . ' and Demand ' . \Illuminate\Support\Str::limit(explode(',', Helper::getPriceInWords($property->price))[0], 10, $end = '...'));
         TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));
@@ -84,8 +84,8 @@ class MetaTagController extends Controller
     public function addScriptJsonldTag()
     {
         $localBusiness = Schema::localBusiness()
-            ->name('About Pakistan Property Portal')
-            ->description('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.')
+            ->name('About Pakistan Properties')
+            ->description('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.')
             ->url(URL::current())
             ->telephone('+92 51 4862317')
             ->email('info@aboutpakistan.com')
@@ -121,7 +121,7 @@ class MetaTagController extends Controller
     public function addScriptJsonldOnBlogOrganization()
     {
         $blogOrganization = Schema::organization()
-            ->name('About Pakistan Property Portal')
+            ->name('About Pakistan Properties')
             ->url(URL::current())
             ->email('info@aboutpakistan.com')
             ->logo(Schema::imageObject()->url(asset('img/logo/logo-with-text-200x200.png')));
@@ -167,10 +167,10 @@ class MetaTagController extends Controller
 
     public function addMetaTagsOnPartnersListing(){
         SEOMeta::setTitle('About Pakistan Property Partners - Real Estate Property Agencies in Pakistan');
-        SEOMeta::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        SEOMeta::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
 
         OpenGraph::setTitle('About Pakistan Property Partners - Real Estate Property Agencies in Pakistan');
-        OpenGraph::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        OpenGraph::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
         OpenGraph::setUrl(URL::current());
         OpenGraph::addProperty('image', asset('img/logo/logo-with-text-200x200.png'));
         OpenGraph::addProperty('type', 'website');
@@ -178,12 +178,12 @@ class MetaTagController extends Controller
 
         TwitterCard::setTitle('AboutPakistan Property Partners - Real Estate Property Agencies in Pakistan');
         TwitterCard::setSite('@aboutpk_');
-        TwitterCard::setDescription('About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
+        TwitterCard::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
         TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));
 
         SEOMeta::addMeta('site_name', env('APP_NAME'), 'name');
         SEOMeta::addMeta('image', asset('img/logo/logo-with-text-200x200.png'), 'itemprop');
-        SEOMeta::addMeta('description', 'About Pakistan Property Portal, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.', 'itemprop');
+        SEOMeta::addMeta('description', 'About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.', 'itemprop');
 
     }
 }
