@@ -94,17 +94,12 @@ class UserController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Dashboard\User $user
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */
+
     public function edit(User $user)
     {
         return view('website.account.profile',
-            ['notifications' => Auth()->user()->unreadNotifications,
-                'user' => $user,
+            [
+                'user' => Auth::guard('web')->user(),
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
@@ -119,6 +114,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+
         $validator = Validator::make($request->all(), User::$rules);
         if ($validator->fails()) {
             return redirect()->route('users.edit', $user->id)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');

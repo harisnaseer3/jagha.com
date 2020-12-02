@@ -730,6 +730,11 @@ class AgencyController extends Controller
 
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
     {
+        if (Auth::guard('admin')->check()) {
+            $user = Auth::guard('admin')->user()->getAuthIdentifier();
+        } else if (Auth::guard('web')->check()) {
+            $user = Auth::guard('web')->user()->getAuthIdentifier();
+        }
         if ($request->has('city')) {
             $city = (new City)->select('id')->where('name', '=', str_replace('-', ' ', $request->city))->first();
             $all = $this->_listings(explode("_", $status)[0], $user);
