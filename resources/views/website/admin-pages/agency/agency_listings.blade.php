@@ -458,7 +458,7 @@
                     theme: 'bootstrap4',
                 });
                 $('select').select2({
-                    placeholder: 'Select City',
+                    placeholder: 'Select Option',
                     allowClear: true
                 });
                 $('.sorting').on('change', function (e) {
