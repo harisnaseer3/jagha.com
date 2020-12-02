@@ -134,6 +134,12 @@ class PropertyBackendListingController extends Controller
 
     public function listings(string $status, string $purpose, string $user, string $sort, string $order, string $page, Request $request)
     {
+        if (Auth::guard('admin')->check()) {
+            $user = Auth::guard('admin')->user()->getAuthIdentifier();
+        } else if (Auth::guard('web')->check()) {
+            $user = Auth::guard('web')->user()->getAuthIdentifier();
+        }
+
         $property_count = $this->getPropertyListingCount($user);
         $footer_content = (new FooterController)->footerContent();
         if ($request->has('city')) {
