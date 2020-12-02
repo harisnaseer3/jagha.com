@@ -13,9 +13,9 @@
     <!-- Top header start -->
     {{--    <div style="min-height:90px"></div>--}}
 
-    <div class="submit-property admin-margin">
+    <div class="submit-property">
         <div class="container-fluid container-padding">
-            <div class="row">
+            <div class="row admin-margin">
                 <div class="col-md-12">
                     <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="property_management-tab">
                         <div class="row my-4">
