@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    @include('website.includes.dashboard-nav')
+    @include('website.admin-pages.includes.admin-nav')
     <!-- Top header start -->
     {{--    <div style="min-height:90px"></div>--}}
 
