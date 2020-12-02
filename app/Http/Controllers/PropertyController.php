@@ -540,7 +540,6 @@ class PropertyController extends Controller
         return redirect()->back()->with('error', 'Record not found');
     }
 
-
 //    calculate area value for different units
     public function calculateArea($area_unit, $land_area)
     {
@@ -618,40 +617,4 @@ class PropertyController extends Controller
             'new_kanal' => $area_in_new_kanal];
 
     }
-
-//    private function _imageValidation($type)
-//    {
-//        if ($type == 'image') {
-//            $error_msg = [];
-//            if (count(request()->file('image')) > 60) {
-//                $error_msg['image.' . 0] = 'Only 60 ' . ' images are allowed to upload.';
-//                return $error_msg;
-//            }
-//            foreach (request()->file('image') as $index => $file) {
-//                $mime = $file->getMimeType();
-//                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
-//                if (!in_array($mime, $supported_mime_types)) {
-//                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
-//                }
-//            }
-//            return $error_msg;
-//        }
-//        if ($type == 'floor_plans') {
-//            $error_msg = [];
-////            $allowed_height = 400;
-////            $allowed_width = 750;
-//            if (count(request()->file('floor_plans')) > 2) {
-//                $error_msg['floor_plans.' . 0] = 'Only 2 ' . ' floor plans are allowed to upload.';
-//                return $error_msg;
-//            }
-//            foreach (request()->file('floor_plans') as $index => $file) {
-//                $mime = $file->getMimeType();
-//                $supported_mime_types = ['image/png', 'image/jpeg', 'image/jpg'];
-//                if (!in_array($mime, $supported_mime_types)) {
-//                    $error_msg['image.' . $index] = ' image' . ($index + 1) . 'must be a file of type: jpeg, png, jpg';
-//                }
-//            }
-//            return $error_msg;
-//        }
-//    }
 }
