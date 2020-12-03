@@ -105,6 +105,13 @@
                                     </div>
                                     <div class="col-lg-10 col-md-8 col-sm-6">
                                         <div class="row">
+                                            <div class="col-2 mb-4">
+                                                <button class="btn theme-blue color-white task-btn" id="execute-tasks">Execute Tasks</button>
+                                            </div>
+                                            <div class="col-10 mt-2"><i class="fa fa-spinner fa-spin " style="font-size:20px;display:none"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             @can('Manage Property')
                                                 <div class="col-12 mb-4">
                                                     <div class="card">
@@ -112,7 +119,6 @@
                                                             Property Log
                                                         </div>
                                                         <div class="card-body">
-
                                                             <table id="property-log" class="display" style="width: 100%">
                                                                 <thead>
                                                                 <tr>

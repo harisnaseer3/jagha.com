@@ -29,6 +29,7 @@ Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
 Route::post('/property-image-upload', 'TempImageController@ajaxImageUpload');
 Route::post('/admin-user-count', 'Admin\AdminDashboardController@getUserCount');
+Route::post('/admin-cron-job', 'CronJobController@executeTasks');
 
 
 
