@@ -112,6 +112,49 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            @can('Manage Users')
+                                                <div class="col-12 mb-4">
+                                                    <div class="card">
+                                                        <div class="card-header theme-blue text-white">
+                                                            Admins Session Log
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table id="admin-log" class="display" style="width: 100%">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Sr.</th>
+                                                                    <th>Admin ID</th>
+                                                                    <th>Email</th>
+                                                                    <th>IP Address</th>
+                                                                    <th>Operating System</th>
+                                                                    <th>Browser</th>
+                                                                    <th>LoggedIn_at</th>
+                                                                    <th>LoggedOut_at</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($admin_log as $admin)
+                                                                    <tr>
+                                                                        <td>{{$admin->id}}</td>
+                                                                        <td>{{$admin->admin_id}}</td>
+                                                                        <td>{{$admin->email}}</td>
+                                                                        <td>{{$admin->ip}}</td>
+                                                                        <td>{{$admin->os}}</td>
+                                                                        <td>{{$admin->browser}}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($admin->created_at))->format('Y-m-d h:i:s A') }}</td>
+                                                                        @if($admin->logout_at !== null)
+                                                                            <td>{{ (new \Illuminate\Support\Carbon($admin->logout_at))->format('Y-m-d h:i:s A') }}</td>
+                                                                        @else
+                                                                            <td><span class="badge-success p-1">Connected</span></td>
+                                                                        @endif
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endcan
                                             @can('Manage Property')
                                                 <div class="col-12 mb-4">
                                                     <div class="card">

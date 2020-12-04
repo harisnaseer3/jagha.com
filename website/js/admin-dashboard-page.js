@@ -1,5 +1,8 @@
 (function ($) {
     $(document).ready(function () {
+        $('#admin-log').DataTable({
+            "scrollX": true
+        });
         $('#property-log').DataTable(
             {
                 "scrollX": true
@@ -11,6 +14,7 @@
         $('#user-log').DataTable({
             "scrollX": true
         });
+
         if ($('#myChart').length > 0) {
             jQuery.ajaxSetup({
                 headers: {

@@ -125,7 +125,7 @@ class PropertyController extends Controller
     public function index()
     {
         if (!(new Visit)->hit()) {
-            return  redirect('https://www.aboutpakistan.com/custom404.php');
+            return view('website.error.404');
         }
         (new MetaTagController())->addMetaTags();
 

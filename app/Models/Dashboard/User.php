@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that are mass assignable.
      *
-     * @var arrayserv
+     * @var array
      */
     protected $fillable = [
         'name', 'email', 'password', 'is_active', 'roles', 'cell'
@@ -94,7 +94,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function agency()
     {
         return $this->belongsTo(Agency::class);
-//        return $this->belongsToMany('App\Models\Agency', 'agency_users');
     }
 
     public function hasAnyRoles($roles)
