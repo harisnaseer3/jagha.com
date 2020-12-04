@@ -26,15 +26,17 @@ class Visit extends Model
     public static function boot()
     {
         parent::boot();
-        // Any time the instance is updated (but not created)
         static::saving(function ($tracker) {
             $tracker->visit_time = date('H:i:s');
             $tracker->count++;
         });
+        // Any time the instance is updated (but not created)
+
     }
 
     public static function hit()
     {
+
         if (!Crawler::isCrawler()) {
             $user_visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))
                 ->whereBetween('visit_time', [(new Carbon(date('H:i:s')))->subMinutes(1)->format('H:i:s'), date('H:i:s')])->first();
@@ -58,6 +60,7 @@ class Visit extends Model
                 return true;
             }
         }
+
 //        handle bots
 
     }
