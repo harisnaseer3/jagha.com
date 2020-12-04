@@ -58,6 +58,7 @@ class Visit extends Model
                 return true;
             }
         }
+//        handle bots
 
     }
 }
