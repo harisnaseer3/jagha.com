@@ -28,12 +28,13 @@ class AdminDashboardController extends Controller
     {
         $admin = Auth::guard('admin')->user();
         $admin_logs = DB::table('admin_session_logs')->get()->all();
+        $visit_logs = DB::table('visits')->get()->all();
 
         return view('website.admin-pages.admin-dashboard', [
             'admin' => $admin,
             'property_log' => PropertyLog::all(),
             'agency_log' => AgencyLog::all(),
-            'user_visit_log' => Visit::all(),
+            'user_visit_log' => $visit_logs,
             'admin_log' => $admin_logs
         ]);
     }
