@@ -28,7 +28,7 @@ class Visit extends Model
     {
 
         if (!Crawler::isCrawler()) {
-            $user_visit = DB::table('visits')->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))
+            $user_visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))
                 ->whereBetween('visit_time', [(new Carbon(date('H:i:s')))->subMinutes(1)->format('H:i:s'), date('H:i:s')])->first();
             if ($user_visit) {
                 if ($user_visit->min_count <= 100) {
