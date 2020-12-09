@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
         <div class="col-md-3 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> <i class="medium-icon"><img  src="{{asset('img\sale-count.png')}}" alt="" aria-label="properties to sale"></i> <span id="anim-number-pizza" class="counter-number"></span> <span class="timer counter alt-font appear" data-to="{{$total_count->sale_property_count}}" data-speed="7000">{{$total_count->sale_property_count}}</span>
-                <p class="counter-title">Properties To Sale</p>
+                <p class="counter-title">Properties For Sale</p>
             </div> <!-- end counter -->
             <!-- counter -->
             <div class="col-md-3  col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;"> <i class="medium-icon"><img  src="{{asset('img\rental-count.png')}}" alt="" aria-label="properties to rent"></i> <span id="anim-number-pizza" class="counter-number"></span> <span class="timer counter alt-font appear" data-to="{{$total_count->rent_property_count}}" data-speed="7000">{{$total_count->rent_property_count}}</span>
-                <p class="counter-title">Properties To Rent</p>
+                <p class="counter-title">Properties For Rent</p>
             </div> <!-- end counter -->
             <!-- counter -->
             <div class="col-md-3  col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-name: fadeInUp;"> <i class="medium-icon"><img  src="{{asset('img\handshake.png')}}" alt="" aria-label="partners"></i> <span class="timer counter alt-font appear" data-to="{{$total_count->agency_count}}" data-speed="7000">{{$total_count->agency_count}}</span> <p class="counter-title">Partners</p> </div> <!-- end counter -->
