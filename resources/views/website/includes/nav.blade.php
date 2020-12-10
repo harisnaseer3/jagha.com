@@ -277,7 +277,7 @@
                         <li class="nav-item hide-nav navbar-li nav-profile-link">
                             @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                                 <a class="nav-link theme-dark-blue" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}">
-                                    Profile Management
+                                    Account & Profiles
                                 </a>
                             @endif
                         </li>
@@ -312,7 +312,9 @@
 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
+{{--                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i--}}
+{{--                                                class="far fa-user-cog mr-2"></i>Manage Profile</a>--}}
+                                        <a class="dropdown-item" href="{{route('user.dashboard')}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
                                         {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
