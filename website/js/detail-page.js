@@ -94,8 +94,10 @@
             $('[id^=property_subtype-]').attr('disable', 'true').slideUp();
             $('#property_subtype-' + selectedValue).attr('disable', 'true').slideDown();
         });
-        if ($('.properties-amenities ').find('li').length === 0)
+
+        if ($('.icon-list').length === 0) {
             $('.properties-amenities').hide();
+        }
         //    description show more and less
         let defaultHeight = 50; // height when "closed"
         let text = $('.description');

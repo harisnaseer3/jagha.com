@@ -3,7 +3,7 @@
     {!! SEO::generate(true) !!}
 @endsection
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer >
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}" async defer>
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 
@@ -92,9 +92,9 @@
                                     </li>
                                 @endif
                                 {{--                                @if(count($similar_properties) > 3)--}}
-{{--                                <li class="nav-item li-detail-page text-transform mr-1">--}}
-{{--                                    <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>--}}
-{{--                                </li>--}}
+                                {{--                                <li class="nav-item li-detail-page text-transform mr-1">--}}
+                                {{--                                    <a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a>--}}
+                                {{--                                </li>--}}
                                 {{--                                @endif--}}
                             </ul>
                         </div>
@@ -161,18 +161,18 @@
                                         </h3>
                                         <div>
                                             <div class="features-list">
-                                                <ul class="amenities custom-amenities">
-                                                    {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
+                                                <div class="row amenities custom-amenities">
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                        {{--                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id'&& $key !== 'agency')--}}
                                                         @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
-                                                            <li class="mb-5 pt-1">
-                                                                <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
+
+                                                            <div class="col-sm-4 my-2 py-2 icon-list">
+                                                                <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
+                                                                   style="color: #274abb; font-size: 16px;"></i>
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
-                                                            </li>
+                                                            </div>
                                                         @endif
                                                     @endforeach
-                                                </ul>
+                                                </div>
                                             </div>
                                             <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
                                         </div>
