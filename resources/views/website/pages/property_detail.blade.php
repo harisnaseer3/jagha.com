@@ -165,7 +165,7 @@
                                                     {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
                                                         {{--                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id'&& $key !== 'agency')--}}
-                                                        @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial'])))
+                                                        @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
                                                             <li class="mb-5 pt-1">
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
