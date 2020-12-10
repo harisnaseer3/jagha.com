@@ -29,13 +29,13 @@
                 // const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
                 let fullStar = '';
                 for (let i = 1; i <= Math.floor(rating); i++) {
-                     fullStar += '<i class="fas fa-star"></i>';
+                    fullStar += '<i class="fas fa-star"></i>';
                 }
                 const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
                 // const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
                 let noStar = '';
                 for (let j = 1; j <= Math.floor(numStars - rating); j++) {
-                     noStar += '<i class="far fa-star"></i>';
+                    noStar += '<i class="far fa-star"></i>';
                 }
                 $(this).html(fullStar + halfStar + noStar);
             });
@@ -113,7 +113,6 @@
         });
         $('#subscribe-form').on('submit', function (e) {
             e.preventDefault();
-            // console.log($('#subscribe').val());
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -128,13 +127,18 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.status === 200) {
-                        let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
+                        let btn = '';
+                        if (data.msg === 'already exists') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Already Subscribed </button>';
+                        } else if (data.msg === 'new subscriber') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Subscribed </button>';
+                        }
                         $("#subscribe-form").slideUp();
                         $('.Subscribe-box').append(btn);
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(error);
+                    // console.log(error);
                 },
                 complete: function (url, options) {
                 }
