@@ -55,8 +55,8 @@ class Handler extends ExceptionHandler
                 return response()->view('website.errors.' . $exception->getStatusCode(), [], $exception->getStatusCode());
             }
         }
-        else{
-            return response()->view('website.errors.404');
+       else{
+           return response()->view('website.errors.404');
         }
         return parent::render($request, $exception);
     }
