@@ -48,5 +48,18 @@
     <script src="{{asset('website/js/index-page.js')}}" defer></script>
     <script src="{{asset('website/js/popper.min.js')}}" defer></script>
     <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
+    {{--    script to show images on internet explorer--}}
+    {{--    <script defer>--}}
+    {{--        let isIE = /*@cc_on!@*/false || !!document.documentMode;--}}
+    {{--        if (isIE) {--}}
+
+    {{--            $.getScript("{{asset('website/js/iejs/polyfills.js')}}").done(function (script, textStatus) {--}}
+    {{--                $.getScript("{{asset('website/js/iejs/webp.bundle.js')}}").done(function (script, textStatus) {--}}
+    {{--                    var webpMachine = new webpHero.WebpMachine();--}}
+    {{--                    webpMachine.polyfillDocument();--}}
+    {{--                });--}}
+    {{--            });--}}
+    {{--        }--}}
+    {{--    </script>--}}
 
 @endsection

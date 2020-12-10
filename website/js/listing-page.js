@@ -7,7 +7,6 @@
         });
         $('body').on('click', function (e) {
             $('[data-toggle=popover]').each(function () {
-                // hide any open popovers when the anywhere else in the body is clicked
                 if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
                     $(this).popover('hide');
                 }
@@ -19,7 +18,6 @@
 
         $('.list-layout-btn').on('click', function (e) {
             sessionStorage.setItem("page-layout", 'list-layout');
-            // console.log(sessionStorage.getItem("page-layout"))
             $('.page-list-layout').show();
             $('.page-grid-layout').hide();
         });
@@ -28,16 +26,23 @@
                 let rating = $(this).data("rating");
                 rating = rating > 5 ? 5 : rating;
                 const numStars = $(this).data("numStars");
-                const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
+                // const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
+                let fullStar = '';
+                for (let i = 1; i <= Math.floor(rating); i++) {
+                    fullStar += '<i class="fas fa-star"></i>';
+                }
                 const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
-                const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
-                $(this).html(`${fullStar}${halfStar}${noStar}`);
+                // const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
+                let noStar = '';
+                for (let j = 1; j <= Math.floor(numStars - rating); j++) {
+                    noStar += '<i class="far fa-star"></i>';
+                }
+                $(this).html(fullStar + halfStar + noStar);
             });
         }
         $('.stars').stars();
         $('.grid-layout-btn').on('click', function (e) {
             sessionStorage.setItem("page-layout", 'grid-layout');
-            // console.log(sessionStorage.getItem("page-layout"))
             $('.page-list-layout').hide();
             $('.page-grid-layout').show();
             $('.grid-stars').stars();
@@ -51,13 +56,11 @@
             $('.grid-stars').stars();
         }
         $('.sorting').on('change', function (e) {
-            // console.log($(this).val());
             let area_sort = ['higher_area', 'lower_area'];
             if (jQuery.inArray($(this).val(), area_sort) !== -1) {
                 insertParam('area_sort', $(this).val());
             } else
                 insertParam('sort', $(this).val());
-            // location.assign(location.href.replace(/(.*)(sort=)(.*)/, '$1$2' + $(this).val()));
         });
 
         function insertParam(key, value) {
@@ -110,7 +113,6 @@
         });
         $('#subscribe-form').on('submit', function (e) {
             e.preventDefault();
-            // console.log($('#subscribe').val());
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -125,13 +127,18 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.status === 200) {
-                        let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
+                        let btn = '';
+                        if (data.msg === 'already exists') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Already Subscribed </button>';
+                        } else if (data.msg === 'new subscriber') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Subscribed </button>';
+                        }
                         $("#subscribe-form").slideUp();
                         $('.Subscribe-box').append(btn);
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(error);
+                    // console.log(error);
                 },
                 complete: function (url, options) {
                 }

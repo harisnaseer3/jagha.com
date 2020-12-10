@@ -287,7 +287,7 @@
 
 
 @section('script')
-    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}" defer></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.min.js')}}" defer></script>
 
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
@@ -295,7 +295,7 @@
     <script type="text/javascript" defer>jssor_1_slider_init();  </script>
     <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
-    <script src="{{asset('website/js/script-custom.js')}}" defer></script>
+    <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
     <script src="{{asset('website/js/detail-page.js')}}" defer></script>
 

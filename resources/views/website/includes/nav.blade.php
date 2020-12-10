@@ -111,7 +111,7 @@
                                         <a href="https://www.aboutpakistan.com/contact-us.php">Contact Us</a>
                                     </li>
                                     <li id="menu-item-15"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518" >
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
                                         <a style="color:#444444;" href="/">Property</a>
                                     </li>
                                 </ul>
@@ -219,7 +219,7 @@
                                                 <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>
                                             </a>
                                             <a href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook">
-                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i>
+                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i></span>
                                             </a>
                                             <a href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Twitter">
                                                 <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>
@@ -227,10 +227,10 @@
                                             <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
                                                 <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
                                             </a>
-                                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank"  title="Visit About Pakistan Instagram">
+                                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>
-                                            <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank"  title="Visit About Pakistan Youtube">
+                                            <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
                                                 <span class="nav-soc-but"><i class="fab fa-youtube"></i></span>
                                             </a>
 
@@ -277,17 +277,17 @@
                         <li class="nav-item hide-nav navbar-li nav-profile-link">
                             @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                                 <a class="nav-link theme-dark-blue" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}">
-                                    Profile Management
+                                    Account & Profiles
                                 </a>
                             @endif
                         </li>
 
                         <li class="nav-item hide-nav navbar-li nav-property-link">
                             @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
-                            <a class="nav-link theme-dark-blue" href="{{route('properties.listings',
+                                <a class="nav-link theme-dark-blue" href="{{route('properties.listings',
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'asc','page'=>10])}}">
-                                Property Management
-                            </a>
+                                    Property Management
+                                </a>
                             @endif
                         </li>
 
@@ -312,7 +312,9 @@
 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
+{{--                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i--}}
+{{--                                                class="far fa-user-cog mr-2"></i>Manage Profile</a>--}}
+                                        <a class="dropdown-item" href="{{route('user.dashboard')}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
                                         {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}
@@ -327,9 +329,9 @@
                                         {{--                                        <a class="dropdown-item logout-btn"><i class="far fa-sign-out mr-2"></i>Logout</a>--}}
                                     </div>
                                 </div>
-                                @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                            @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->check())
                                 <a class="nav-link" data-toggle="modal" data-target="#adminLogoutModal"
-                                   href="javascript:void(0);"  aria-haspopup="true" aria-expanded="false">
+                                   href="javascript:void(0);" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-user mr-3"></i>
                                 </a>
 
@@ -345,6 +347,6 @@
             </nav>
 @include('website.layouts.sign-in-modal')
 @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
-@include('website.layouts.admin-logout-modal')
+    @include('website.layouts.admin-logout-modal')
 @endif
 
