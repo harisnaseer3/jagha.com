@@ -166,8 +166,16 @@
                                                         @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
 
                                                             <div class="col-sm-4 my-2 py-2 icon-list">
-                                                                <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                                @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
+                                                                    <i class="fal fa-garage-car"
+                                                                       style="color: #274abb; font-size: 16px;"></i>
+                                                                @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
+                                                                    <i class="fal fa-bed-alt"
+                                                                       style="color: #274abb; font-size: 16px;"></i>
+                                                                @else
+                                                                    <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
+                                                                       style="color: #274abb; font-size: 16px;"></i>
+                                                                @endif
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
                                                             </div>
                                                         @endif
