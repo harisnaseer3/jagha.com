@@ -65,10 +65,17 @@
                 let rating = $(this).data("rating");
                 rating = rating > 5 ? 5 : rating
                 const numStars = $(this).data("numStars");
-                const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
+                // const fullStar = '<i class="fas fa-star"></i>'.repeat(Math.floor(rating));
+                let fullStar = '';
+                for (let i = 1; i <= Math.floor(rating); i++) {
+                    fullStar += '<i class="fas fa-star"></i>';
+                }
                 const halfStar = (rating % 1 !== 0) ? '<i class="fas fa-star-half-alt"></i>' : '';
-                const noStar = '<i class="far fa-star"></i>'.repeat(Math.floor(numStars - rating));
-                $(this).html(`${fullStar}${halfStar}${noStar}`);
+                let noStar = '';
+                for (let j = 1; j <= Math.floor(numStars - rating); j++) {
+                    noStar += '<i class="far fa-star"></i>';
+                }
+                $(this).html(fullStar + halfStar + noStar);
             });
         }
         $('.stars').stars();

@@ -150,15 +150,16 @@
             data: {city: city},
             dataType: 'json',
             success: function (data) {
-                let locations = data.data
-                if (!jQuery.isEmptyObject({locations})) {
+                let locations = data.data;
+                // if (!jQuery.isEmptyObject({locations})) {
+
                     let datalist = $('.location-datalist');
                     let html = '';
                     $.each(data.data, function (index, value) {
                         html += '<option value="' + value.name + '">';
                     });
                     datalist.html(html);
-                }
+                // }
             },
             error: function (xhr, status, error) {
 
@@ -257,9 +258,9 @@
         }
     }
 
-    $('#btnDeny').click(() => {
-        eraseCookie('allowCookies')
-        $('.toast').toast('hide')
+    $('#btnDeny').click(function(){
+        eraseCookie('allowCookies');
+        $('.toast').toast('hide');
     })
 
 
@@ -599,8 +600,8 @@
         })
     });
 
-        $('#btnAccept').click(() => {
-            setCookie('allowCookies', '1', 7)
+        $('#btnAccept').click(function() {
+            setCookie('allowCookies', '1', 7);
             $('.toast').hide();
         })
         cookieConsent()

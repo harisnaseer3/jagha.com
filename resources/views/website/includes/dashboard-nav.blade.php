@@ -269,7 +269,7 @@
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <a class="nav-link theme-dark-blue" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
-                                Profile Management</a>
+                                Account & Profiles</a>
                         </li>
                         {{--                        @if(Auth::user()->hasRole('Admin'))--}}
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
@@ -310,7 +310,9 @@
 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
+{{--                                        <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i--}}
+{{--                                                class="far fa-user-cog mr-2"></i>Manage Profile</a>--}}
+                                        <a class="dropdown-item" href="{{route('user.dashboard')}}"><i
                                                 class="far fa-user-cog mr-2"></i>Manage Profile</a>
                                         <div class="dropdown-divider"></div>
                                         {{--                                        <a class="dropdown-item" href="{{route('properties.create')}}"><i--}}

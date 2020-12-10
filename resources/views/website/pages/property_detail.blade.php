@@ -165,7 +165,7 @@
                                                     {{--                                                       {{dd(json_decode($property->features,true)['features'])}}--}}
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
                                                         {{--                                                        @if($value !== null && $value !== 'None' && $value !=='no' && $value !=='null' && $key !== '_method' && $key !== 'data-index' && $value !== '0'&& $key !== 'call_for_price_inquiry'&& $key !== 'property_id'&& $key !== 'agency')--}}
-                                                        @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial'])))
+                                                        @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
                                                             <li class="mb-5 pt-1">
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"></i>
                                                                 {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
@@ -287,7 +287,7 @@
 
 
 @section('script')
-    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}" defer></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.min.js')}}" defer></script>
 
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
@@ -295,7 +295,7 @@
     <script type="text/javascript" defer>jssor_1_slider_init();  </script>
     <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
-    <script src="{{asset('website/js/script-custom.js')}}" defer></script>
+    <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
     <script src="{{asset('website/js/detail-page.js')}}" defer></script>
 

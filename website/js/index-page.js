@@ -264,7 +264,6 @@
     {
         $.post('/get-main-page-blogs', { "result":data }, // url
             function (data, textStatus) {  // success callback
-                console.log(data);
                 $('#ajax-loader-blogs').hide();
                 $('#main-page-blogs-container').html(data.view);
 
