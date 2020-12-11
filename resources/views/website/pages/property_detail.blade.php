@@ -177,6 +177,12 @@
                                                                 @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
                                                                     <i class="fal fa-bed-alt"
                                                                        style="color: #274abb; font-size: 16px;"></i>
+                                                                @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
+                                                                    <i class="fal fa-air-conditioner"
+                                                                       style="color: #274abb; font-size: 16px;"></i>
+                                                                @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
+                                                                    <i class="fal fa-air-conditioner"
+                                                                       style="color: #274abb; font-size: 16px;"></i>
                                                                 @else
                                                                     <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
                                                                        style="color: #274abb; font-size: 16px;"></i>
@@ -187,8 +193,9 @@
                                                     @endforeach
                                                 </div>
                                             </div>
-                                            <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
 
+                                            <button class="btn-outline-primary button2 show-features" style="border: none; margin-top: 5px;display: none">Show More</button>
+                                        </div>
                                     </div>
                                 @endif
                             </div>

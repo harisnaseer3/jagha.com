@@ -94,8 +94,8 @@
             $('[id^=property_subtype-]').attr('disable', 'true').slideUp();
             $('#property_subtype-' + selectedValue).attr('disable', 'true').slideDown();
         });
-
-        if ($('.icon-list').length === 0) {
+        let icons = $('.icon-list');
+        if (icons.length === 0) {
             $('.properties-amenities').hide();
         }
         //    description show more and less
@@ -120,7 +120,9 @@
             }, 500);
         });
         let features = $('.features-list');
-        if (features.length > 0) {
+        let show_feature = $('.show-features');
+        if (features.length > 0 && icons.length > 3) {
+            show_feature.show();
             let text2 = features;
             let textHeight2 = text2[0].scrollHeight; // the real height of the element
             let button2 = $(".button2");
