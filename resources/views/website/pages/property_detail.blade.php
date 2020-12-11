@@ -100,12 +100,14 @@
                         </div>
                         <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
                             <div class="properties-description mb-50">
-                                <h3 class="heading-2 text-transform">
-                                    Overview
-                                </h3>
+{{--                                <h3 class="heading-2 text-transform">--}}
+{{--                                    Overview--}}
+{{--                                </h3>--}}
                                 <!-- Properties detail start -->
-                                <div class="property-details mb-40">
+                                <div class="property-details mb-20 detail-overview-style">
                                     <h5 style="font-weight: 400">Details</h5>
+                                    <div class="s-border"></div>
+                                    <div class="m-border"></div>
                                     <div class="row">
                                         <div class="col-md-4 col-sm-6">
                                             <ul>
@@ -145,9 +147,11 @@
                                     </div>
                                 </div>
                                 <!-- Properties description start -->
-                                <div class="property-description mb-40">
+                                <div class="property-description mb-20 detail-overview-style">
                                     <h5 style="font-weight: 400">Description</h5>
-                                    <p style="white-space: pre-line" class="description"
+                                    <div class="s-border"></div>
+                                    <div class="m-border"></div>
+                                    <p  class="description"
                                        aria-label="property description">
                                         {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',$property->description))))}}</p>
                                     <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
@@ -156,11 +160,11 @@
                                 <!-- Properties condition start -->
                                 <!-- Properties amenities start -->
                                 @if($property->features !== null)
-                                    <div class="properties-amenities mb-40">
-                                        <h3 class="heading-2">
-                                            Features
-                                        </h3>
-                                        <div>
+                                    <div class="properties-amenities mb-40 detail-overview-style">
+                                        <h5 style="font-weight: 400">Features</h5>
+                                        <div class="s-border"></div>
+                                        <div class="m-border"></div>
+
                                             <div class="features-list">
                                                 <div class="row amenities custom-amenities">
                                                     @foreach(json_decode($property->features,true)['features'] as $key => $value)
@@ -184,7 +188,7 @@
                                                 </div>
                                             </div>
                                             <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
-                                        </div>
+
                                     </div>
                                 @endif
                             </div>

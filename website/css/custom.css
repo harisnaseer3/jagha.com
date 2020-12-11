@@ -1267,7 +1267,6 @@ span.post-head-cat,
 .property-description {
     line-height: 1.0rem;
     margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .agent-description {
@@ -1914,6 +1913,17 @@ hr.solid {
 }
 .slick-arrow-buton i {
     margin-top: 21%;
+}
+.page-item.disabled .page-link {
+    border-radius: 100px;
+}
+.detail-overview-style {
+    background-color: white;
+    padding: 10px;
+    border-radius: .25rem;
+}
+.mb-20 {
+    margin-bottom: 20px;
 }
 
 
