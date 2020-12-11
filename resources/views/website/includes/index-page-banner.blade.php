@@ -218,7 +218,7 @@
                                         <div class="row slick-carousel" id="popular-cities-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next"
                                              data-cycle-prev="slick-prev"
                                              data-cycle-carousel-horizontal="true"
-                                             data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1440,"settings":{"slidesToShow": 3}}, {"breakpoint": 1024,"settings":{"slidesToShow": 2}}]}'>
+                                             data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1680,"settings":{"slidesToShow": 3}}, {"breakpoint": 1024,"settings":{"slidesToShow": 2}}]}'>
                                             @foreach($cities_count as $city)
                                                 <div class="slick-slide-item" aria-label="key agency">
                                                     <div class="row">
