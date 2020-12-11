@@ -98,6 +98,10 @@
                                     <li id="menu-item-11"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
                                         <a href="https://www.aboutpakistan.com/medical">Medical</a></li>
+                                    <li id="menu-item-15"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
+                                        <a  href="/">Property</a>
+                                    </li>
                                     <li id="menu-item-12"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                         <a href="https://www.aboutpakistan.com/mobile-packages">Mobile Packages</a>
@@ -110,10 +114,7 @@
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
                                         <a href="https://www.aboutpakistan.com/contact-us.php">Contact Us</a>
                                     </li>
-                                    <li id="menu-item-15"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                        <a style="color:#444444;" href="/">Property</a>
-                                    </li>
+
                                 </ul>
                             </div>
                         </nav>
@@ -200,6 +201,8 @@
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
                                                             <a href="https://www.aboutpakistan.com/medical">Medical</a>
                                                         </li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
+                                                            <a  href="/">Property</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                                             <a href="https://www.aboutpakistan.com/mobile-packages">Mobile
                                                                 Packages</a></li>
@@ -207,8 +210,7 @@
                                                             <a href="https://www.aboutpakistan.com/about-us.php">About Us</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
                                                             <a href="https://www.aboutpakistan.com/contact-us.php">Contact Us</a></li>
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
-                                                            <a style="color:#000000;" href="/">Property</a></li>
+
                                                     </ul>
                                                 </div>
                                             </nav>

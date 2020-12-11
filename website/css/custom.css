@@ -1103,7 +1103,7 @@ footer {
 
 @media (min-width: 991px) {
     .sidebar-right {
-        margin-top: 32%;
+        margin-top: 35%;
     }
 }
 
@@ -1908,6 +1908,9 @@ hr.solid {
 .agency-search-bar {
     max-width: 1150px!important;
 
+}
+.table {
+    background-color:white;
 }
 
 
