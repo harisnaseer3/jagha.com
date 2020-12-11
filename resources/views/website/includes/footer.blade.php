@@ -7,8 +7,10 @@
             <div class="body-main-in">
                 <div id="foot-widget-wrap" class="left relative">
                     <div class="foot-widget left relative">
-                        <div class="foot-logo left realtive">
+                        <div class="foot-logo left relative">
+                            <a href="https://www.aboutpakistan.com">
                             <img src="{{asset('img/logo/logo-with-text.png')}}" alt="About Pakistan" data-rjs="2"/>
+                            </a>
                         </div><!--foot-logo-->
                         <div class="foot-info-text left relative">
                             <p>Pakistan history, culture, civilization, architecture, politics, constitution, election, music, drama, film, theatre, food, natural resources and more.</p></div>
