@@ -79,7 +79,7 @@
             });
         }
         $('.stars').stars();
-        $('select option:first-child').css('cursor', 'default').prop('disabled', true);
+        // $('select option:first-child').css('cursor', 'default').prop('disabled', true);
         $('.select2').select2({
             language: '{{app()->getLocale()}}',
             direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',

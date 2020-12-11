@@ -109,13 +109,13 @@
                     <ul class="facilities-list facilities-list-custom clearfix">
                         <li aria-label="bedrooms">
                             @if($property->bedrooms > 0)
-                                <i class="flaticon-furniture"></i>
+                                <i class="fal fa-bed-alt"></i>
                                 <span>{{ number_format($property->bedrooms) }} Beds</span>
                             @endif
                         </li>
                         <li aria-label="baths">
                             @if($property->bathrooms > 0)
-                                <i class="flaticon-holidays"></i>
+                                <i class="fal fa-bath"></i>
                                 <span>{{ number_format($property->bathrooms) }} Baths</span>
                             @endif
                         </li>

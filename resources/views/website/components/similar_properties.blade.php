@@ -74,13 +74,13 @@
                     </li>
                     @if($feature_property->bedrooms > 0)
                         <li style="width: 30%; text-align: center">
-                            <i class="flaticon-furniture"></i>
+                            <i class="fal fa-bed-alt"></i>
                             <p>{{ number_format($feature_property->bedrooms) }} Beds</p>
                         </li>
                     @endif
                     @if($feature_property->bathrooms > 0)
                         <li style="width: 30%; text-align: center">
-                            <i class="flaticon-holidays"></i>
+                            <i class="fal fa-bath"></i>
                             <p>{{ number_format($feature_property->bathrooms) }} Bath</p>
                         </li>
                     @endif
@@ -114,7 +114,7 @@
                         @endif
                     </ul>
                     <div class="days">
-                        <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans(['parts' => 2]) }}</p>
+                        <p> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans(['parts' => 2]) }}</p>
                     </div>
                 </div>
 
