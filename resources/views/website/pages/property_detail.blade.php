@@ -109,96 +109,109 @@
                                     <div class="s-border"></div>
                                     <div class="m-border"></div>
                                     <div class="row">
-                                        <div class="col-md-4 col-sm-6">
-                                            <ul>
-                                                @if($property->price != 0)
-                                                    <li aria-label="value"><strong>Price: </strong>PKR {{ $property->price }}</li>
-                                                @else
-                                                    <li aria-label="value"><strong>Price: </strong>Call Us for Price Details</li>
-                                                @endif
-                                                <li aria-label="value"><strong>Property Type: </strong> {{ $property->sub_type }}</li>
-                                                @if($property->city)
-                                                    <li aria-label="value"><strong>City: </strong>{{$property->city}}</li>
-                                                @endif
-                                                <li aria-label="value"><strong>Added: </strong>{{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}</li>
-                                            </ul>
+
+                                        @if($property->price != 0)
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Price: </strong>PKR {{ $property->price }}
+                                            </div>
+                                        @else
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Price: </strong>Call Us for Price Details
+                                            </div>
+                                        @endif
+                                        <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                            <strong>Property Type: </strong> {{ $property->sub_type }}
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <ul>
-                                                @if(isset($property->land_area))
-                                                    <li aria-label="value"><strong>Land area: </strong>{{ number_format($property->land_area) }} {{ $property->area_unit }} </li>
-                                                @endif
-                                                @if($property->bathrooms > 0)
-                                                    <li aria-label="value"><strong>Bathrooms: </strong>{{number_format($property->bathrooms)}} </li>
-                                                @endif
-                                                @if($property->bedrooms > 0)
-                                                    <li aria-label="value"><strong>Bedrooms: </strong>{{ number_format($property->bedrooms) }}</li>
-                                                @endif
-                                            </ul>
+                                        @if($property->city)
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>City: </strong>{{$property->city}}
+                                            </div>
+                                        @endif
+                                        <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                            <strong>Added: </strong>{{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <ul>
-                                                <li aria-label="value"><strong>Property Owner: </strong>{{$property->contact_person}}</li>
-                                                @if(isset($property->phone))
-                                                    <li aria-label="value"><strong>Phone: </strong>{{$property->phone}}</li>
-                                                @endif
-                                            </ul>
+
+
+                                        @if(isset($property->land_area))
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Land area: </strong>{{ number_format($property->land_area) }} {{ $property->area_unit }}
+                                            </div>
+                                        @endif
+                                        @if($property->bathrooms > 0)
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Bathrooms: </strong>{{number_format($property->bathrooms)}}
+                                            </div>
+                                        @endif
+                                        @if($property->bedrooms > 0)
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Bedrooms: </strong>{{ number_format($property->bedrooms) }}
+                                            </div>
+                                        @endif
+                                        <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                            <strong>Property Owner: </strong>{{$property->contact_person}}
                                         </div>
+                                        @if(isset($property->phone))
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Phone: </strong>{{$property->phone}}
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
-                                <!-- Properties description start -->
-                                <div class="property-description mb-20 detail-overview-style">
-                                    <h5 style="font-weight: 400">Description</h5>
+
+                            <!-- Properties description start -->
+                            <div class="property-description mb-20 detail-overview-style">
+                                <h5 style="font-weight: 400">Description</h5>
+                                <div class="s-border"></div>
+                                <div class="m-border"></div>
+                                <p class="description"
+                                   aria-label="property description">
+                                    {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',$property->description))))}}</p>
+                                <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
+                                <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
+                            </div>
+                            <!-- Properties condition start -->
+                            <!-- Properties amenities start -->
+                            @if($property->features !== null)
+                                <div class="properties-amenities mb-40 detail-overview-style">
+                                    <h5 style="font-weight: 400">Features</h5>
                                     <div class="s-border"></div>
                                     <div class="m-border"></div>
-                                    <p class="description"
-                                       aria-label="property description">
-                                        {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',$property->description))))}}</p>
-                                    <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
-                                    <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
-                                </div>
-                                <!-- Properties condition start -->
-                                <!-- Properties amenities start -->
-                                @if($property->features !== null)
-                                    <div class="properties-amenities mb-40 detail-overview-style">
-                                        <h5 style="font-weight: 400">Features</h5>
-                                        <div class="s-border"></div>
-                                        <div class="m-border"></div>
 
-                                        <div class="features-list">
-                                            <div class="row amenities custom-amenities">
-                                                @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                    @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
+                                    <div class="features-list">
+                                        <div class="row amenities custom-amenities">
+                                            @foreach(json_decode($property->features,true)['features'] as $key => $value)
+                                                @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
 
-                                                        <div class="col-sm-4 my-2 py-2 icon-list">
-                                                            @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
-                                                                <i class="fal fa-garage-car"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
-                                                            @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
-                                                                <i class="fal fa-bed-alt"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
-                                                            @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
-                                                                <i class="fal fa-air-conditioner"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
-                                                            @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
-                                                                <i class="fal fa-air-conditioner"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
-                                                            @else
-                                                                <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
-                                                            @endif
-                                                            {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
+                                                    <div class="col-sm-4 my-2 py-2 icon-list">
+                                                        @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
+                                                            <i class="fal fa-garage-car"
+                                                               style="color: #274abb; font-size: 16px;"></i>
+                                                        @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
+                                                            <i class="fal fa-bed-alt"
+                                                               style="color: #274abb; font-size: 16px;"></i>
+                                                        @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
+                                                            <i class="fal fa-air-conditioner"
+                                                               style="color: #274abb; font-size: 16px;"></i>
+                                                        @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
+                                                            <i class="fal fa-air-conditioner"
+                                                               style="color: #274abb; font-size: 16px;"></i>
+                                                        @else
+                                                            <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
+                                                               style="color: #274abb; font-size: 16px;"></i>
+                                                        @endif
+                                                        {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
+                                                    </div>
+                                                @endif
+                                            @endforeach
                                         </div>
-
-                                        <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
-
-
-                                        <button class="btn-outline-primary button2 show-features" style="border: none; margin-top: 5px;display: none">Show More</button>
                                     </div>
+
+                                    <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
+
+
+                                    <button class="btn-outline-primary button2 show-features" style="border: none; margin-top: 5px;display: none">Show More</button>
+                                </div>
 
 
                             @endif
