@@ -15,6 +15,7 @@
                 <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
             </select>
             <select class="sorting area-filter none-992">
+                <option disabled selected>Select Area Filter</option>
                 <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
                 <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
             </select>

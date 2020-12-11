@@ -122,33 +122,23 @@ class AgencyController extends Controller
         return view('website.pages.agency_listing', $data);
     }
 
+    function sortPropertyListing($sort, $sort_area, $properties)
+    {
+        if ($sort_area === 'higher_area') $properties = $properties->orderBy('area_in_sqft', 'DESC');
+        else if ($sort_area === 'lower_area') $properties = $properties->orderBy('area_in_sqft', 'ASC');
+//        else  $properties = $properties->orderBy('area_in_sqft', 'DESC');
+
+        if ($sort === 'newest') $properties = $properties->orderBy('created_at', 'DESC');
+        else if ($sort === 'oldest') $properties = $properties->orderBy('created_at', 'ASC');
+        else if ($sort === 'high_price') $properties = $properties->orderBy('price', 'DESC');
+        else if ($sort === 'low_price') $properties = $properties->orderBy('price', 'ASC');
+
+        return $properties;
+    }
+
     public function show(string $city, string $slug, string $agency)
     {
-        $properties = (new Property)
-            ->select('properties.reference', 'properties.agency_id', 'properties.id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'properties.created_at', 'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location',
-                'cities.name AS city', 'p.name AS image',
-                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.key_listing', 'agencies.logo AS logo', 'agencies.created_at AS agency_created_at',
-                'agencies.description AS agency_description', 'agencies.status AS agency_status', 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent',
-                'property_count_by_agencies.property_count AS agency_property_count', 'users.community_nick AS user_nick_name', 'users.name AS user_name')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
-            ->leftJoin('images as p', function ($q) {
-                $q->on('properties.id', '=', 'p.property_id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
-            })
-            ->leftJoin('favorites as f', function ($f) {
-                $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
-            })
-            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id')
-            ->join('users', 'properties.user_id', '=', 'users.id')
-            ->where('properties.status', '=', 'active')
-            ->where('properties.agency_id', '=', $agency)
-            ->whereNull('properties.deleted_at');
+        $properties = (new PropertySearchController)->listingFrontend()->where('properties.agency_id', '=', $agency);
 
         $sort = '';
         $limit = '';
@@ -167,7 +157,8 @@ class AgencyController extends Controller
             $sort_area = request()->input('area_sort');
 
 
-        $properties = (new PropertySearchController)->sortPropertyListing($sort, $sort_area, $properties);
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
 
         if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
             $lastPage = ceil((int)$properties->count() / $limit);
