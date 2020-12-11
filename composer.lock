@@ -1129,6 +1129,10 @@
                 "spider",
                 "user-agent"
             ],
+            "support": {
+                "issues": "https://github.com/JayBizzle/Laravel-Crawler-Detect/issues",
+                "source": "https://github.com/JayBizzle/Laravel-Crawler-Detect/tree/master"
+            },
             "time": "2017-06-01T20:29:30+00:00"
         },
         {
@@ -7535,5 +7539,6 @@
         "php": "^7.2.5",
         "ext-json": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
