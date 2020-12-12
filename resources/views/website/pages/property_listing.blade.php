@@ -212,7 +212,7 @@
                         {{ Form::email('email',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
 
                         <div><label class="mt-2">Mobile #<span style="color:red">*</span></label></div>
-                        {{ Form::tel('phone_#', null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
+                        {{ Form::tel('phone_#',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
                         <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
                         <span id="error-msg" class="hide error mt-2"></span>
                         <input class="form-control" name="phone" type="hidden">

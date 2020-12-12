@@ -91,7 +91,7 @@ class Property extends Model
         'property_type' => 'required',
         'property_subtype-*' => 'required',
         'property_title' => 'required|max:225',
-        'description' => 'required|max:4096',
+        'description' => 'required|max:6144',
         'all_inclusive_price' => 'nullable|numeric|max:99999999999|min:1000',
         'call_for_price_inquiry' => 'numeric',
         'land_area' => 'required|numeric',

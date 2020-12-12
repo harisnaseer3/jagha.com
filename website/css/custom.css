@@ -1385,7 +1385,7 @@ span.post-head-cat,
 }
 
 .editable-div {
-    height: 105px;
+    height: 150px;
     resize: none;
     cursor: text;
     overflow-wrap: break-word;
