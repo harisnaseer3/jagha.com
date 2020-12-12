@@ -105,6 +105,7 @@
                     <!-- Pagination -->
                     <div class="pagination-box hidden-mb-45 text-center" role="navigation">
                         {{ $agencies->links() }}
+
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-12">

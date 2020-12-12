@@ -1,7 +1,7 @@
 <div class="banner" id="banner">
     <div class="text-center detail-page-banner none-992 sticky">
         <div class="container inline-search-area agency-search-bar none-992">
-            {{ Form::open(['route' => 'partners.name.search', 'method' => 'post', 'role' => 'form', 'class' => 'agency-index-form']) }}
+            {{ Form::open(['route' => 'partners.name.search', 'method' => 'get', 'role' => 'form', 'class' => 'agency-index-form']) }}
             <div class="row">
                 <div class="col-lg-4 col-sm-3 col-6 search-col middle-col-1" style="border-right:1px solid #ced4da">
                     <div class="label-container"><label class="input-label" for="city">CITY</label></div>

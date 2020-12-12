@@ -67,7 +67,7 @@ Route::get('/partners/', 'AgencyController@index')->name('agents.listing');
 Route::get('partners-{city}/{slug}_{agency}', 'AgencyController@show')->name('agents.ads.listing');
 
 //search partners
-Route::post('/search/partners_results', 'AgencySearchController@searchPartner')->name('partners.name.search');
+Route::get('/search/partners_results', 'AgencySearchController@searchPartner')->name('partners.name.search');
 
 
 //list of blogs
