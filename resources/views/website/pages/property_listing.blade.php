@@ -18,7 +18,7 @@
     @include('website.includes.search2')
 
     <!-- Properties section body start -->
-    <div class="properties-section content-area">
+    <div class="properties-section content-area2" id="data-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
@@ -146,7 +146,7 @@
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @endif
-                    @if( request()->segment(1) != 'featured-properties')
+                    @if( request()->segment(1) != 'featured-properties' && request()->query('location') == null)
                         @include('website.includes.locations_count_card')
                     @endif
                     @if(isset($agency_detail))

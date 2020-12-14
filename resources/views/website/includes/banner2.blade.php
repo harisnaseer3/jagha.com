@@ -230,12 +230,15 @@ if(request()->segment(2) !== 'partners_results' ){
                    style="margin:0; background-color: #274abb;">
                     <span class="reset-search">Reset Search</span>
                 </a>
-                {{--                <div class="search-options-btn-area">--}}
-                <a class="search-options-btn">
-                    <span class="text-transform font-12">Search Options</span>
+                <a type="button" class="btn search-options-btn text-transform"
+                   style="margin:0; background-color: #274abb; padding:7px 12px !important;">
+                    <span class="reset-search">Search Options</span>
                     <i class="fa fa-chevron-down animated fadeInUp"></i>
                 </a>
-                {{--                </div>--}}
+                {{--                <a type="button" class="search-options-btn">--}}
+                {{--                    <span class="text-transform font-12">Search Options</span>--}}
+                {{--                    <i class="fa fa-chevron-down animated fadeInUp"></i>--}}
+                {{--                </a>--}}
                 {{--                <a type="button" class="btn btn-outline-primary reset-search-btn text-transform" data-toggle="modal" data-target="#modalCart"--}}
                 {{--                   style="margin-left: 5px;background-color: #274abb;">--}}
                 {{--                    <span style="padding: 2px; color: white; font-size: 12px; font-weight: 600">Change Area Unit</span>--}}

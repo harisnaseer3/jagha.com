@@ -15,7 +15,7 @@
     @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
-    <div class="properties-details-page content-area-7">
+    <div class="properties-details-page2 content-area-7" id="details-page">
         <div class="spinner-border text-primary"></div>
         <div class="container">
             <div class="row">

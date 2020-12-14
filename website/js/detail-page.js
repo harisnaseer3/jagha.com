@@ -353,6 +353,11 @@
                 });
             }
 
+            $('.search-options-btn').on('click', function () {
+                $('#details-page').toggleClass('properties-details-page2').toggleClass('properties-details-page');
+
+            });
+
         });
 })
 (jQuery);
