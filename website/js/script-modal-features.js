@@ -220,7 +220,7 @@
 
     });
     $(document).on('change', '.selected-feature', function ($this) {
-        console.log(this.type);
+
         if (this.type === 'checkbox' && $("[id='" + this.id + "']").is(":checked")) {
 
             const checkbox_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + this.name + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + this.type + '" data-id="' + this.id + '"><i class="fas fa-times color-red"></i></a></span>';
@@ -247,11 +247,15 @@
         } else {
             $('a[data-id="' + this.id + '"]').parent().remove();
         }
+        if($('.tag-span').length > 0){
+            $('.feature-alert').hide();
+        }
 
-    })
-    ;
+    });
+
     $(document).on('click', '.remove-tag', function ($this) {
         event.preventDefault();
+
 
         const id = $(this).attr('data-id');
         const type = $(this).attr('data-type');
@@ -269,6 +273,10 @@
         }
 
         $(this).parent().remove();
+        console.log($('.tag-span').length);
+        if($('.tag-span').length == 0){
+            $('.feature-alert').show();
+        }
     });
 
 
