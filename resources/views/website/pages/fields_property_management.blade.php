@@ -92,6 +92,9 @@
                 </div>
 
             </div>
+                <div class="feature-tags">
+
+                </div>
         @endif
 
     </div>

@@ -1984,4 +1984,14 @@ hr.solid {
         margin-top: 130px;
     }
 }
+.option-bar .record-limit {
+    color: #444
+}
+.option-bar .sorting {
+    color: #444
+}
+.register-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
 

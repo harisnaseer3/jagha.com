@@ -8,7 +8,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url:  window.location.origin + '/features',
+            url: window.location.origin + '/features',
             data: {name: selectedValue},
             dataType: 'json',
             success: function (data) {
@@ -39,7 +39,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url:  window.location.origin + '/features',
+            url: window.location.origin + '/features',
             data: {name: selectedValue, 'index': property_index},
             dataType: 'json',
             success: function (data) {
@@ -144,13 +144,13 @@
                     '         </div>' +
                     '         <div class="col-sm-6">';
                 if (val.type === 'checkbox') {
-                    html += ' <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                    html += ' <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         ' </div>';
                 } else if (val.type === 'number') {
-                    html += '    <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         '         </div>';
                 } else if (val.type === 'select') {
-                    html += '    <select name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
+                    html += '    <select class="selected-feature" name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
                     let options = '';
                     options += '<option value=""  selected disabled>Choose here</option>';
                     $.each(val.options, function (index1, value1) {
@@ -160,7 +160,7 @@
                     html += '</select>' +
                         '    </div>';
                 } else {
-                    html += '    <input name="' + idx + '" type="' + val.type + '" value="" id="' + idx + '">' +
+                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="" id="' + idx + '">' +
                         '         </div>';
                 }
                 html += '        <input type="hidden"  name="' + idx + '-icon" value="' + val.icon + '">';
@@ -205,6 +205,7 @@
             displayFeatureBtn();
 
         });
+
         displayFeatureBtn();
         // to get data for features in edit view
 
@@ -218,5 +219,58 @@
         }
 
     });
+    $(document).on('change', '.selected-feature', function ($this) {
+        console.log(this.type);
+        if (this.type === 'checkbox' && $("[id='" + this.id + "']").is(":checked")) {
+
+            const checkbox_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + this.name + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + this.type + '" data-id="' + this.id + '"><i class="fas fa-times color-red"></i></a></span>';
+
+            $('.feature-tags').append(checkbox_html);
+        } else if (this.type === 'number' && this.value > 0) {
+            if ($('a[data-id="' + this.id + '"]').length > 0) {
+                $('a[data-id="' + this.id + '"]').parent().remove();
+
+            }
+            const number_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + this.name + ': ' + this.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + this.type + '" data-id="' + this.id + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(number_html);
+        } else if (this.type === 'text' && this.value != '') {
+            if ($('a[data-id="' + this.id + '"]').length > 0) {
+                $('a[data-id="' + this.id + '"]').parent().remove();
+
+            }
+            const text_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + this.name + ': ' + this.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + this.type + '" data-id="' + this.id + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(text_html);
+        } else if (this.type === 'select-one') {
+            const select_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + this.name + ': ' + this.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + this.type + '" data-id="' + this.id + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(select_html);
+
+        } else {
+            $('a[data-id="' + this.id + '"]').parent().remove();
+        }
+
+    })
+    ;
+    $(document).on('click', '.remove-tag', function ($this) {
+        event.preventDefault();
+
+        const id = $(this).attr('data-id');
+        const type = $(this).attr('data-type');
+        if (type === 'checkbox') {
+            $("[id='" + id + "']").prop('checked', false);
+        }
+        if (type === 'number') {
+            $("[id='" + id + "']").val('0');
+        }
+        if (type === 'text') {
+            $("[id='" + id + "']").val('');
+        }
+        if (type === 'select-one') {
+            $("[id='" + id + "']").val('').prop('selected', true);
+        }
+
+        $(this).parent().remove();
+    });
+
+
 })
 (jQuery);
