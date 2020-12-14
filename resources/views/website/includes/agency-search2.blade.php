@@ -3,7 +3,7 @@
         <div class="search-section-area">
             <div class="search-area-inner">
                 <div class="search-contents">
-                    {{ Form::open(['route' => 'partners.name.search', 'method' => 'post', 'role' => 'form', 'class' => 'agency-index-form-2']) }}
+                    {{ Form::open(['route' => 'partners.name.search', 'method' => 'get', 'role' => 'form', 'class' => 'agency-index-form-2']) }}
                     <div class="row">
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
                             <div class="form-group">
