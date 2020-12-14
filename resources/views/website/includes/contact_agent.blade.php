@@ -10,14 +10,15 @@
         {{ Form::email('email', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm user-email', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=> "name@domain.com"])) }}
 
         <div><label class="mt-2">Mobile #<span style="color:red">*</span></label></div>
-        {{ Form::tel('phone_#', null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
+        {{ Form::tel('phone_#', \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
         <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
         <span id="error-msg" class="hide error mt-2"></span>
         <input class="form-control" name="phone" type="hidden">
 
         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
         <div class="editable form-control form-control-sm  editable-div" contenteditable="true">
-            I would like to gather information about your property <a href="{{$property->property_detail_path()}}" style="text-decoration:underline; color:blue">{{$property->title}} </a> being
+            I would like to gather information about your property <a href="{{$property->property_detail_path()}}" style="text-decoration:underline; color:blue">{{$property->title}} </a> having
+            reference <span class="color-blue" style="text-decoration:underline"> {{$property->reference}}</span> being
             displayed at <a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com </a> <br><br> Please contact me at your earliest by phone
             or by email.
         </div>

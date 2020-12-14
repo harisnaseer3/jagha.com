@@ -40,7 +40,7 @@
         @if(isset($property))
             {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['readonly' => 'readonly']) }}
         @else
-            {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
+            {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true,'data-default' => 'Title should have almost 255 characters']) }}
         @endif
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true,'data-default' => 'Description should have almost 6144 characters']) }}
 

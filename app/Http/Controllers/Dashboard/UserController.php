@@ -120,13 +120,14 @@ class UserController extends Controller
             return redirect()->route('users.edit', $user->id)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');
         }
         try {
+            $user->name = $request->name;
             $user->phone = $request->phone;
             $user->cell = $request->mobile;
 //            $user->fax = $request->fax;
             $user->address = $request->address;
             $user->zip_code = $request->zip_code;
             $user->country = $request->country;
-            $user->community_nick = $request->community_nick;
+//            $user->community_nick = $request->community_nick;
             $user->about_yourself = $request->about_yourself;
             if ($request->hasFile('upload_new_picture')) {
                 $error_msg = [];
