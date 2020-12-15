@@ -75,7 +75,6 @@
         </div>
         @if(isset($property->features))
             <div class="form-group  row">
-
                 <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
                     Features
                 </label>
@@ -83,17 +82,16 @@
                     <a style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Select Features</a>
                 </div>
             </div>
-                <div class="row">
-                    <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
-                        Selected Features
-                    </label>
-                    <div class="col-sm-8 col-md-5">
-                        <div class="feature-tags">
-                            <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i> All the selected features will appear here</alert>
-                        </div>
-
+            <div class="row">
+                <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+                    Selected Features
+                </label>
+                <div class="col-sm-8 col-md-5">
+                    <div class="feature-tags">
+                        <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i> All the selected features will appear here</alert>
                     </div>
                 </div>
+            </div>
         @else
             <div class="form-group row btn-hide" style="display:none">
                 <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
@@ -104,19 +102,18 @@
                 </div>
 
             </div>
-                <div class="row btn-hide">
-                    <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
-                        Selected Features
-                    </label>
-                    <div class="col-sm-8 col-md-5">
-                        <div class="feature-tags">
-                            <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i> All the selected features will appear here</alert>
-                        </div>
-
+            <div class="row btn-hide">
+                <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+                    Selected Features
+                </label>
+                <div class="col-sm-8 col-md-5">
+                    <div class="feature-tags">
+                        <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i> All the selected features will appear here</alert>
                     </div>
-                </div>
-        @endif
 
+                </div>
+            </div>
+        @endif
 
 
     </div>

@@ -231,7 +231,7 @@
 
     function displayFeatureTag(data) {
         if (data.type === 'checkbox' && $("[id='" + data.id + "']").is(":checked")) {
-
+            data.value = "yes";
             const checkbox_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
 
             $('.feature-tags').append(checkbox_html);
