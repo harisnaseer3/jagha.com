@@ -15,7 +15,9 @@
     @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
-    <div class="properties-details-page2 content-area-7" id="details-page">
+    {{--    <div class="properties-details-page  content-area-7">--}}
+    <div class="properties-page2 properties-details-page content-area-7" id="details-page">
+
         <div class="spinner-border text-primary"></div>
         <div class="container">
             <div class="row">
@@ -207,10 +209,6 @@
                                                 @endforeach
                                             </div>
                                         </div>
-
-                                        <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
-
-
                                         <button class="btn-outline-primary button2 show-features" style="border: none; margin-top: 5px;display: none">Show More</button>
                                     </div>
 

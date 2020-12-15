@@ -54,7 +54,6 @@
             <div class="price-block">
                 {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
-            {{--            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
         @endif
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
@@ -90,22 +89,20 @@
                 <div class="col-sm-8 col-md-5">
                     <a style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Select Features</a>
                 </div>
-
             </div>
-                <div class=" row btn-hide" style="display:none">
-                    <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
-                       Selected Features
-                    </label>
-                    <div class="col-sm-8 col-md-5">
-                        <div class="feature-tags">
-                       <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i>  All the selected features will appear  here</alert>
-                        </div>
-
-                    </div>
-
+        @endif
+        <div class="row btn-hide read-features" style="display:none">
+            <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+                Selected Features
+            </label>
+            <div class="col-sm-8 col-md-5">
+                <div class="feature-tags">
+                    <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i> All the selected features will appear here</alert>
                 </div>
 
-        @endif
+            </div>
+
+        </div>
 
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>

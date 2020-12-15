@@ -92,7 +92,18 @@
                 </div>
             </div>
         @endif
+            <div class="row btn-hide read-features" style="display:none">
+                <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
+                    Selected Features
+                </label>
+                <div class="col-sm-8 col-md-5">
+                    <div class="feature-tags">
+                        <alert class="alert alert-secondary feature-alert"><i class="fa fa-info-circle fa-2x mr-2 theme-dark-blue"></i> All the selected features will appear here</alert>
+                    </div>
 
+                </div>
+
+            </div>
     </div>
     <div class="card-header theme-blue text-white">Property Images and Videos</div>
     <div class="card-body">

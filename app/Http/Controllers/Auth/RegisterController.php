@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Providers\RouteServiceProvider;
 use App\Models\Dashboard\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -46,7 +48,6 @@ class RegisterController extends Controller
 //    }
 
 
-
     /**
      * Create a new controller instance.
      *
@@ -68,7 +69,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
             'mobile' => ['required'], // +92-3001234567
 //            'mobile' => ['required','regex:/\+92-3\d{2}\d{7}/'], // +92-3001234567
         ]);
@@ -82,11 +83,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $dt = Carbon::now();
+
+        $expiry = $dt->addHour()->toDateTimeString();
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'cell'=>$data['mobile']
+            'cell' => $data['mobile']
         ]);
+        DB::table('temp_users')->insert(['user_id' => $user->id, 'expire_at' => $expiry]);
+
+        return $user;
     }
 }

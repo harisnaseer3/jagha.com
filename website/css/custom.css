@@ -1959,12 +1959,12 @@ hr.solid {
     }
 }
 
-.properties-details-page {
+.properties-page1 {
     margin-top: 195px;
     animation: detailPageMove 0.5s;
 }
 
-.properties-details-page2 {
+.properties-page2 {
     margin-top: 130px;
     animation: detailPageMove2 0.5s;
 }

@@ -354,7 +354,7 @@
             }
 
             $('.search-options-btn').on('click', function () {
-                $('#details-page').toggleClass('properties-details-page2').toggleClass('properties-details-page');
+                $('#details-page').toggleClass('properties-page2').toggleClass('properties-page1');
 
             });
 
