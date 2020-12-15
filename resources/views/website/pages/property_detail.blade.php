@@ -15,7 +15,9 @@
     @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
-    <div class="properties-details-page content-area-7">
+    {{--    <div class="properties-details-page  content-area-7">--}}
+    <div class="properties-page2 properties-details-page content-area-7" id="details-page">
+
         <div class="spinner-border text-primary"></div>
         <div class="container">
             <div class="row">
@@ -38,7 +40,8 @@
                                 <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
 
                                 <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="javascript:void(0)" title="{{$property->title}}" itemprop="item"><span itemprop="name"> {{$property->title}}</span></a>
+                                    <a href="javascript:void(0)" title="{{$property->title}}" itemprop="item"><span
+                                            itemprop="name"> {{$property->title}}<span> (<span class="color-blue">property reference: </span>{{$property->reference}})</span></span></a>
                                     <meta itemprop="position" content="3">
                                 </span>
                             </div>
@@ -159,158 +162,154 @@
                                     </div>
                                 </div>
 
-                            <!-- Properties description start -->
-                            <div class="property-description mb-20 detail-overview-style">
-                                <h5 style="font-weight: 400">Description</h5>
-                                <div class="s-border"></div>
-                                <div class="m-border"></div>
-                                <p class="description"
-                                   aria-label="property description">
-                                    {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',$property->description))))}}</p>
-                                <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
-                                <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
-                            </div>
-                            <!-- Properties condition start -->
-                            <!-- Properties amenities start -->
-                            @if($property->features !== null)
-                                <div class="properties-amenities mb-40 detail-overview-style">
-                                    <h5 style="font-weight: 400">Features</h5>
+                                <!-- Properties description start -->
+                                <div class="property-description mb-20 detail-overview-style">
+                                    <h5 style="font-weight: 400">Description</h5>
                                     <div class="s-border"></div>
                                     <div class="m-border"></div>
+                                    <p class="description"
+                                       aria-label="property description">
+                                        {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',$property->description))))}}</p>
+                                    <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
+                                    <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
+                                </div>
+                                <!-- Properties condition start -->
+                                <!-- Properties amenities start -->
+                                @if($property->features !== null)
+                                    <div class="properties-amenities mb-40 detail-overview-style">
+                                        <h5 style="font-weight: 400">Features</h5>
+                                        <div class="s-border"></div>
+                                        <div class="m-border"></div>
 
-                                    <div class="features-list">
-                                        <div class="row amenities custom-amenities">
-                                            @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
+                                        <div class="features-list">
+                                            <div class="row amenities custom-amenities">
+                                                @foreach(json_decode($property->features,true)['features'] as $key => $value)
+                                                    @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
 
-                                                    <div class="col-sm-4 my-2 py-2 icon-list">
-                                                        @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
-                                                            <i class="fal fa-garage-car"
-                                                               style="color: #274abb; font-size: 16px;"></i>
-                                                        @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
-                                                            <i class="fal fa-bed-alt"
-                                                               style="color: #274abb; font-size: 16px;"></i>
-                                                        @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
-                                                            <i class="fal fa-air-conditioner"
-                                                               style="color: #274abb; font-size: 16px;"></i>
-                                                        @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
-                                                            <i class="fal fa-air-conditioner"
-                                                               style="color: #274abb; font-size: 16px;"></i>
-                                                        @else
-                                                            <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
-                                                               style="color: #274abb; font-size: 16px;"></i>
-                                                        @endif
-                                                        {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
-                                                    </div>
-                                                @endif
-                                            @endforeach
+                                                        <div class="col-sm-4 my-2 py-2 icon-list">
+                                                            @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
+                                                                <i class="fal fa-garage-car"
+                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                            @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
+                                                                <i class="fal fa-bed-alt"
+                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                            @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
+                                                                <i class="fal fa-air-conditioner"
+                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                            @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
+                                                                <i class="fal fa-air-conditioner"
+                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                            @else
+                                                                <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
+                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                            @endif
+                                                            {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         </div>
+                                        <button class="btn-outline-primary button2 show-features" style="border: none; margin-top: 5px;display: none">Show More</button>
                                     </div>
 
-                                    <button class="btn-outline-primary button2" style="border: none; margin-top: 5px">Show More</button>
 
-
-                                    <button class="btn-outline-primary button2 show-features" style="border: none; margin-top: 5px;display: none">Show More</button>
-                                </div>
-
-
-                            @endif
-                        </div>
-                    </div>
-                    <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
-                    </div>
-                    <div>
-                        <div class="location mb-30">
-                            <h3 class="heading-2">Location and Nearby</h3>
-                            @include('website.includes.location_and_nearby')
-                        </div>
-                    </div>
-
-                    @if(!empty($property->video))
-                        <div class="tab-pane " id="three" role="tabpanel" aria-labelledby="3-tab">
-                            <div class="inside-properties mb-50">
-                                <h3 class="heading-2">
-                                    Property Video
-                                </h3>
-                                {{-- TODO: apply check on video link restict user to add video of following 3rd party --}}
-                                @if($property->video[0]['host'] === 'Youtube')
-                                    <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]['name'])[1])[0]}}></iframe>
-                                @elseif($property->video[0]['host'] === 'Vimeo')
-                                    <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]['name'])[1]}}></iframe>
-                                @else
-                                    <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
                                 @endif
                             </div>
                         </div>
-                    @endif
-                    <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
-                        @include('website.includes.similar_properties')
+                        <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
+                        </div>
+                        <div>
+                            <div class="location mb-30">
+                                <h3 class="heading-2">Location and Nearby</h3>
+                                @include('website.includes.location_and_nearby')
+                            </div>
+                        </div>
+
+                        @if(!empty($property->video))
+                            <div class="tab-pane " id="three" role="tabpanel" aria-labelledby="3-tab">
+                                <div class="inside-properties mb-50">
+                                    <h3 class="heading-2">
+                                        Property Video
+                                    </h3>
+                                    {{-- TODO: apply check on video link restict user to add video of following 3rd party --}}
+                                    @if($property->video[0]['host'] === 'Youtube')
+                                        <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]['name'])[1])[0]}}></iframe>
+                                    @elseif($property->video[0]['host'] === 'Vimeo')
+                                        <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]['name'])[1]}}></iframe>
+                                    @else
+                                        <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                        <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
+                            @include('website.includes.similar_properties')
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="sidebar-right">
-                    <!-- Advanced search start -->
-                    @include('website.includes.contact_agent')
-                    <hr>
-                    {{--                        @if(!empty($agency))--}}
-                    @if($property->agency)
-                        <div class="sidebar widget mb-2 none-992">
-                            <h3 class="sidebar-title">{{ucwords($property->agency->title)}} </h3>
-                            <div class="s-border"></div>
-                            <div class="m-border"></div>
-                            <div class="row">
-                                @if($property->agency->logo !==null)
-                                    <div class="col-sm-6 text-center">
-                                        <img
-                                            src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                                            alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
-                                            data-placement="bottom"
-                                            data-html='true' data-content='
+                <div class="col-lg-4 col-md-12">
+                    <div class="sidebar-right">
+                        <!-- Advanced search start -->
+                        @include('website.includes.contact_agent')
+                        <hr>
+                        {{--                        @if(!empty($agency))--}}
+                        @if($property->agency)
+                            <div class="sidebar widget mb-2 none-992">
+                                <h3 class="sidebar-title">{{ucwords($property->agency->title)}} </h3>
+                                <div class="s-border"></div>
+                                <div class="m-border"></div>
+                                <div class="row">
+                                    @if($property->agency->logo !==null)
+                                        <div class="col-sm-6 text-center">
+                                            <img
+                                                src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                                                alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
+                                                data-placement="bottom"
+                                                data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
                                     <div>{{$property->agency->description}}</div>'>
-                                    </div>
-                                @endif
-                                <div class="col-sm-6 mt-1">
-                                    <div style="font-size: 1rem">
-                                        @if($property->agency->status === 'verified')
-                                            <div class="mb-3">
+                                        </div>
+                                    @endif
+                                    <div class="col-sm-6 mt-1">
+                                        <div style="font-size: 1rem">
+                                            @if($property->agency->status === 'verified')
+                                                <div class="mb-3">
                                                     <span style="color:green" data-toggle="tooltip" data-placement="top"
                                                           title="{{$property->agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
                                                             class="far fa-shield-check"></i></span>
-                                            </div>
-                                        @endif
-                                        @if($property->agency->featured_listing === 1)
-                                            <div class="mb-3">
+                                                </div>
+                                            @endif
+                                            @if($property->agency->featured_listing === 1)
+                                                <div class="mb-3">
                                                 <span class="premium-badge" style="color:#ffcc00;">
                                                     <i class="fas fa-star"></i>
                                                     <span style="color: white">FEATURED PARTNER</span>
                                                 </span>
-                                            </div>
-                                        @endif
-                                        @if($property->agency->key_listing === 1)
-                                            <div class="mb-3">
+                                                </div>
+                                            @endif
+                                            @if($property->agency->key_listing === 1)
+                                                <div class="mb-3">
                                                 <span class="premium-badge" style="color:#ffcc00;">
                                                     <i class="fas fa-star"></i>
                                                     <span style="color: white">KEY PARTNER</span>
                                                 </span>
-                                            </div>
-                                        @endif
-                                        @if($property->agency->ceo_name !== null)
-                                            <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$property->agency->ceo_name}} </span></div>
-                                        @endif
+                                                </div>
+                                            @endif
+                                            @if($property->agency->ceo_name !== null)
+                                                <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$property->agency->ceo_name}} </span></div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                    @endif
+                            <hr>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <!-- Footer start -->
     @include('website.includes.footer')

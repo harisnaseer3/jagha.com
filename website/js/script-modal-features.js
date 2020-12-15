@@ -8,7 +8,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url:  window.location.origin + '/features',
+            url: window.location.origin + '/features',
             data: {name: selectedValue},
             dataType: 'json',
             success: function (data) {
@@ -39,7 +39,7 @@
         });
         jQuery.ajax({
             type: 'get',
-            url:  window.location.origin + '/features',
+            url: window.location.origin + '/features',
             data: {name: selectedValue, 'index': property_index},
             dataType: 'json',
             success: function (data) {
@@ -49,6 +49,7 @@
                     displayFeatures(facilities);
                 }
                 if (data.status === 200 && data.values['features'] != null) {
+
                     let features_list = JSON.parse(data.values['features'])['features'];
                     let html = '<input type="hidden" name="features" value="features">' +
                         ' <div class="row">';
@@ -65,28 +66,28 @@
                                 '         <div class="col-sm-6">';
                             if (val.type === 'checkbox') {
                                 if (features_list[idx.replace(/ /g, '_')] != null) {
-                                    html += '   <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '" checked >' +
+                                    html += '   <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '" checked >' +
                                         '     </div>';
                                 } else {
-                                    html += '   <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '" >' +
+                                    html += '   <input  class="selected-feature"  name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '" >' +
                                         '     </div>';
                                 }
                             } else if (val.type === 'number') {
                                 if (features_list[idx.replace(/ /g, '_')] != null) {
-                                    html += '    <input name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
                                         '         </div>';
                                 } else {
                                     if (features_list[idx.replace(/ /g, '_')] != null) {
-                                        html += '    <input name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                        html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
                                             '         </div>';
                                     } else {
-                                        html += '    <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                                        html += '    <input  class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                                             '         </div>';
                                     }
 
                                 }
                             } else if (val.type === 'select') {
-                                html += '    <select name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
+                                html += '    <select class="selected-feature" name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
                                 let options = '';
                                 options += '<option value=""  selected disabled>Choose here</option>';
                                 $.each(val.options, function (index1, value1) {
@@ -99,11 +100,11 @@
                                 html += '</select>' +
                                     '    </div>';
                             } else {
-                                if (features_list[idx.replace(/ /g, '_')] != null) {
-                                    html += '    <input name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                if (features_list[idx.replace(/ /g, '_')] !== null) {
+                                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
                                         '         </div>';
                                 } else {
-                                    html += '    <input name="' + idx + '" type="' + val.type + '" value="" id="' + idx + '">' +
+                                    html += '    <input  class="selected-feature" name="' + idx + '" type="' + val.type + '" value="" id="' + idx + '">' +
                                         '         </div>';
                                 }
                             }
@@ -117,14 +118,19 @@
                         ' data-dismiss="modal" id="area-unit-save">SAVE</a>';
 
                     $('#features-model').html(html);
+                    $('.read-features').show();
+                    $.each($('.selected-feature'), function (index, value) {
+                        displayFeatureTag(value);
+                    });
                 }
             },
             error: function (xhr, status, error) {
-                console.log(error);
+                // console.log(error);
                 // console.log(status);
                 // console.log(xhr);
             },
             complete: function (url, options) {
+
             }
         });
     }
@@ -144,13 +150,13 @@
                     '         </div>' +
                     '         <div class="col-sm-6">';
                 if (val.type === 'checkbox') {
-                    html += ' <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                    html += ' <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         ' </div>';
                 } else if (val.type === 'number') {
-                    html += '    <input name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         '         </div>';
                 } else if (val.type === 'select') {
-                    html += '    <select name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
+                    html += '    <select class="selected-feature" name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
                     let options = '';
                     options += '<option value=""  selected disabled>Choose here</option>';
                     $.each(val.options, function (index1, value1) {
@@ -160,7 +166,7 @@
                     html += '</select>' +
                         '    </div>';
                 } else {
-                    html += '    <input name="' + idx + '" type="' + val.type + '" value="" id="' + idx + '">' +
+                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="" id="' + idx + '">' +
                         '         </div>';
                 }
                 html += '        <input type="hidden"  name="' + idx + '-icon" value="' + val.icon + '">';
@@ -205,6 +211,7 @@
             displayFeatureBtn();
 
         });
+
         displayFeatureBtn();
         // to get data for features in edit view
 
@@ -218,5 +225,71 @@
         }
 
     });
+    $(document).on('change', '.selected-feature', function ($this) {
+        displayFeatureTag(this);
+    });
+
+    function displayFeatureTag(data) {
+        if (data.type === 'checkbox' && $("[id='" + data.id + "']").is(":checked")) {
+
+            const checkbox_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
+
+            $('.feature-tags').append(checkbox_html);
+        } else if (data.type === 'number' && data.value > 0) {
+            if ($('a[data-id="' + data.id + '"]').length > 0) {
+                $('a[data-id="' + data.id + '"]').parent().remove();
+
+            }
+            const number_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(number_html);
+        } else if (data.type === 'text' && data.value !== '' && data.value !== 'null' && data.value !== null) {
+            if ($('a[data-id="' + data.id + '"]').length > 0) {
+                $('a[data-id="' + data.id + '"]').parent().remove();
+
+            }
+            const text_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(text_html);
+
+        } else if (data.type === 'select-one') {
+            if (data.value !== '') {
+                const select_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
+                $('.feature-tags').append(select_html);
+            }
+
+        } else {
+            $('a[data-id="' + data.id + '"]').parent().remove();
+        }
+        if ($('.tag-span').length > 0) {
+            $('.feature-alert').hide();
+        }
+
+    }
+
+    $(document).on('click', '.remove-tag', function ($this) {
+        event.preventDefault();
+
+
+        const id = $(this).attr('data-id');
+        const type = $(this).attr('data-type');
+        if (type === 'checkbox') {
+            $("[id='" + id + "']").prop('checked', false);
+        }
+        if (type === 'number') {
+            $("[id='" + id + "']").val('0');
+        }
+        if (type === 'text') {
+            $("[id='" + id + "']").val('');
+        }
+        if (type === 'select-one') {
+            $("[id='" + id + "']").val('').prop('selected', true);
+        }
+
+        $(this).parent().remove();
+        if ($('.tag-span').length == 0) {
+            $('.feature-alert').show();
+        }
+    });
+
+
 })
 (jQuery);

@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Dashboard\User;
 use App\Models\TempImage;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class HourlyUpdate extends Command
 {
@@ -20,7 +22,7 @@ class HourlyUpdate extends Command
      *
      * @var string
      */
-    protected $description = 'Remove images from temp_images table after an hour';
+    protected $description = 'Remove images and users from temp_images and temp_users tables after an hour';
 
     /**
      * Create a new command instance.
@@ -40,6 +42,16 @@ class HourlyUpdate extends Command
     public function handle()
     {
         TempImage::where('expiry_time', '<=', Carbon::now()->toDateTimeString())->forceDelete();
+
+        $data = DB::table('temp_users')->select('user_id')->where('expire_at', '<=', Carbon::now()->toDateTimeString());
+        $user_delete = $data->get()->toArray();
+        if (!empty($user_delete)) {
+            foreach ($user_delete as $val) {
+                User::where('id', $val->user_id)->where('email_verified_at', null)->forceDelete();
+            }
+
+        }
+        $data->delete();
         echo("Hourly update completed successfully");
     }
 }

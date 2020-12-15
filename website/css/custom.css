@@ -1335,6 +1335,7 @@ span.post-head-cat,
 @media (min-width: 1024px) {
     .content-area {
         padding-top: 280px;
+        animation: mymove 0.5s;
     }
 }
 
@@ -1342,6 +1343,7 @@ span.post-head-cat,
     .content-area {
         padding: 80px 0 50px;
         padding-top: 0;
+        animation: mymove 0.5s;
     }
 }
 
@@ -1385,7 +1387,7 @@ span.post-head-cat,
 }
 
 .editable-div {
-    height: 105px;
+    height: 150px;
     resize: none;
     cursor: text;
     overflow-wrap: break-word;
@@ -1413,10 +1415,6 @@ span.post-head-cat,
 
 .property-description a:hover {
     color: #2238D8 !important;
-}
-
-.properties-details-page {
-    padding-top: 295px !important;
 }
 
 .detail-nav-style {
@@ -1905,31 +1903,95 @@ hr.solid {
 }
 
 .agency-search-bar {
-    max-width: 1150px!important;
+    max-width: 1150px !important;
 
 }
+
 .table {
-    background-color:white;
+    background-color: white;
 }
+
 .slick-arrow-buton i {
     margin-top: 21%;
 }
+
 .page-item.disabled .page-link {
     border-radius: 100px;
 }
+
 .detail-overview-style {
     background-color: white;
     padding: 10px;
     border-radius: .25rem;
 }
+
 .mb-20 {
     margin-bottom: 20px;
 }
-.fs-14{
-    font-size:14px;
+
+.fs-14 {
+    font-size: 14px;
+}
+
+@media (min-width: 1024px) {
+    .content-area2 {
+        padding-top: 220px;
+        animation: mymove2 0.5s;
+    }
 }
 
 
+@keyframes mymove2 {
+    from {
+        padding-top: 280px;
+    }
+    to {
+        padding-top: 220px;
+    }
+}
 
+@keyframes mymove {
+    from {
+        padding-top: 220px;
+    }
+    to {
+        padding-top: 280px;
+    }
+}
 
+.properties-page1 {
+    margin-top: 195px;
+    animation: detailPageMove 0.5s;
+}
+
+.properties-page2 {
+    margin-top: 130px;
+    animation: detailPageMove2 0.5s;
+}
+@keyframes detailPageMove {
+    from {
+        margin-top: 130px;
+    }
+    to {
+        margin-top: 195px;
+    }
+}
+@keyframes detailPageMove2 {
+    from {
+        margin-top:195px;
+    }
+    to {
+        margin-top: 130px;
+    }
+}
+.option-bar .record-limit {
+    color: #444
+}
+.option-bar .sorting {
+    color: #444
+}
+.register-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
 

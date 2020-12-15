@@ -55,7 +55,6 @@
 
         $('#subscribe-form').on('submit', function (e) {
             e.preventDefault();
-            // console.log($('#subscribe').val());
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -70,11 +69,14 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.status === 200) {
-                        let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
+                        let btn = '';
+                        if (data.msg === 'already exists') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Already Subscribed </button>';
+                        } else if (data.msg === 'new subscriber') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Subscribed </button>';
+                        }
                         $("#subscribe-form").slideUp();
                         $('.Subscribe-box').append(btn);
-                    } else {
-                        //
                     }
                 },
                 error: function (xhr, status, error) {
@@ -84,6 +86,7 @@
                 }
             });
         });
+
 
         let form = $('#sign-in-card');
 

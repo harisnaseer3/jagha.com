@@ -16,6 +16,11 @@ yarn-error.log
 .vendor
 vendor
 config/session.php
+app/Exceptions/Handler.php
+
+/config/session.php
+/app/Exceptions/
+
 index.html
 feed_rss.xml
 loaderio-5cbb41ab5e680619c87d573a8fc64c90.html

@@ -18,7 +18,7 @@
     @include('website.includes.search2')
 
     <!-- Properties section body start -->
-    <div class="properties-section content-area">
+    <div class="properties-section content-area2" id="data-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 col-md-12">
@@ -146,7 +146,7 @@
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @endif
-                    @if( request()->segment(1) != 'featured-properties')
+                    @if( request()->segment(1) != 'featured-properties' && request()->query('location') == null)
                         @include('website.includes.locations_count_card')
                     @endif
                     @if(isset($agency_detail))
@@ -212,7 +212,7 @@
                         {{ Form::email('email',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
 
                         <div><label class="mt-2">Mobile #<span style="color:red">*</span></label></div>
-                        {{ Form::tel('phone_#', null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
+                        {{ Form::tel('phone_#',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
                         <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
                         <span id="error-msg" class="hide error mt-2"></span>
                         <input class="form-control" name="phone" type="hidden">
