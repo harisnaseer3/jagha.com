@@ -1,5 +1,5 @@
 (function ($) {
-    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
+    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type, check_field = '') {
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         let ag_iti_cell = '';
         if (phone_type === "MOBILE") {
@@ -35,11 +35,13 @@
                     field.val(ag_iti_cell.getNumber());
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
+                    if(check_field !=='')$('[' + check_field + ']').val('');
                 } else {
                     var errorCode = ag_iti_cell.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
                     field.val('');
+                    if(check_field !=='')$('[' + check_field + ']').val(errorMap[errorCode]);
                 }
             }
         });
@@ -62,15 +64,6 @@
         $('#delete-image').on('show.bs.modal', function (event) {
             let record_id = $(event.relatedTarget).data('record-id');
             $(this).find('.modal-body #image-record-id').val(record_id);
-        });
-        $("input[name='phone']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
-        $("input[name='cell']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
-        $("input[name='fax']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
         });
         $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
         $('.mark-as-read').on('click', function () {
@@ -121,24 +114,23 @@
         iti_contact_number(document.querySelector("#phone"),
             document.querySelector("#error-msg-phone"),
             document.querySelector("#valid-msg-phone"),
-            $('[name=phone]'), '#phone-error', "FIXED_LINE");
+            $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+
+        $.validator.addMethod('empty', function (value, element, param) {
+            return (value === '');
+        });
 
         let form = $('.data-insertion-form');
         form.validate({
             rules: {
                 'mobile_#': {
                     required: true,
-                    // checkcellnum: true,
-                },
-                'phone_#': {
-                    required: true
-                    // checkphonenum: true,
                 },
                 'mobile': {
                     required: true,
                 },
-                'phone': {
-                    required: true,
+                'phone_check': {
+                    empty: true,
                 },
                 contact_email: {
                     required: true,
@@ -147,7 +139,7 @@
             },
             messages: {
                 'mobile': " please enter a valid value.",
-                'phone': "please enter a valid value.",
+                'phone_check': "",
             },
             errorElement: 'span',
             errorClass: 'error help-block text-red',

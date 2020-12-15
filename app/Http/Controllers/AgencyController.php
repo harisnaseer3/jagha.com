@@ -358,6 +358,7 @@ class AgencyController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         if ($request->hasFile('upload_new_logo')) {
             $error_msg = $this->_imageValidation('upload_new_logo');
             if ($error_msg !== null && count($error_msg)) {
@@ -471,6 +472,7 @@ class AgencyController extends Controller
 
     public function update(Request $request, Agency $agency)
     {
+        dd($request->all());
         if ($request->hasFile('upload_new_logo')) {
             $error_msg = $this->_imageValidation('upload_new_logo');
             if (count($error_msg)) {
