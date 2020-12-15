@@ -54,6 +54,9 @@
                                             {{Form::hidden('phone_check')}}
 
                                             {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['required' => true,'id'=>'cell']) }}
+                                            <!--TODO: get data from agency to display by default-->
+                                                {{ Form::bsIntlTel('optional_mobile_#', null, ['id'=>'optional_mobile']) }}
+                                            {{Form::hidden('optional_mobile_check')}}
 
                                             {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}
                                             {{ Form::bsText('zip_code', isset($agency->zip_code)? $agency->zip_code : null,['data-default' => 'Postal code must be of 5 digits']) }}

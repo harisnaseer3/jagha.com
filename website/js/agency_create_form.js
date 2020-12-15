@@ -35,13 +35,13 @@
                     field.val(ag_iti_cell.getNumber());
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
-                    if(check_field !=='')$('[' + check_field + ']').val('');
+                    if (check_field !== '') $('[' + check_field + ']').val('');
                 } else {
                     var errorCode = ag_iti_cell.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
                     field.val('');
-                    if(check_field !=='')$('[' + check_field + ']').val(errorMap[errorCode]);
+                    if (check_field !== '') $('[' + check_field + ']').val(errorMap[errorCode]);
                 }
             }
         });
@@ -81,16 +81,12 @@
                 data: {'notification_id': notification_id},
                 dataType: 'json',
                 success: function (data) {
-                    // console.log(data);
                     if (data.status === 200) {
-                        // console.log(alert);
                         alert.closest('.alert').remove();
                     }
                 },
                 error: function (xhr, status, error) {
                     // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
                 },
                 complete: function (url, options) {
 
@@ -100,12 +96,19 @@
 
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
+        let optional_mobile_num = $("#optional_mobile");
         if (phone_num.val() !== '') {
             $("input[name='phone']").val(phone_num.val());
         }
         if (mobile_num.val() !== '') {
             $("input[name='mobile']").val(mobile_num.val());
         }
+        if (optional_mobile_num.val() !== '') {
+            $("input[name='optional']").val(optional_mobile_num.val());
+        }
+        phone_num.on('change',function(){ $("input[name='phone']").val(phone_num.val());});
+        mobile_num.on('change',function(){$("input[name='mobile']").val(mobile_num.val());});
+        optional_mobile_num.on('change',function(){ $("input[name='optional']").val(optional_mobile_num.val());});
         iti_contact_number(document.querySelector("#cell"),
             document.querySelector("#error-msg-mobile"),
             document.querySelector("#valid-msg-mobile"),
@@ -115,6 +118,11 @@
             document.querySelector("#error-msg-phone"),
             document.querySelector("#valid-msg-phone"),
             $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+
+        iti_contact_number(document.querySelector("#optional_mobile"),
+            document.querySelector("#error-msg-optional"),
+            document.querySelector("#valid-msg-optional"),
+            $('[name=optional]'), '#optional-error', "MOBILE", 'name=optional_mobile_check');
 
         $.validator.addMethod('empty', function (value, element, param) {
             return (value === '');
@@ -132,6 +140,9 @@
                 'phone_check': {
                     empty: true,
                 },
+                'optional_mobile_check': {
+                    empty: true,
+                },
                 contact_email: {
                     required: true,
                     email: true
@@ -140,6 +151,7 @@
             messages: {
                 'mobile': " please enter a valid value.",
                 'phone_check': "",
+                'optional_mobile_check': "",
             },
             errorElement: 'span',
             errorClass: 'error help-block text-red',
