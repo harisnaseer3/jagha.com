@@ -481,6 +481,7 @@ class AgencyController extends Controller
         }
 
         if ($request->hasFile('upload_new_picture')) {
+
             $error_msg = $this->_imageValidation('upload_new_picture');
             if (count($error_msg)) {
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
@@ -584,8 +585,9 @@ class AgencyController extends Controller
             }
 
         } catch (Throwable $e) {
-            if (Auth::guard('admin')->user())
+            if (Auth::guard('admin')->user()){
                 return redirect()->route('admin-agencies-edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
+            }
             else
                 return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }

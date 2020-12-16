@@ -54,8 +54,7 @@
                                             {{Form::hidden('phone_check')}}
 
                                             {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['required' => true,'id'=>'cell']) }}
-                                            <!--TODO: get data from agency to display by default-->
-                                                {{ Form::bsIntlTel('optional_mobile_#', null, ['id'=>'optional_mobile']) }}
+                                            {{ Form::bsIntlTel('optional_mobile_#', null, ['id'=>'optional_mobile']) }}
                                             {{Form::hidden('optional_mobile_check')}}
 
                                             {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}
@@ -105,7 +104,6 @@
                                             <div class="mt-2"><span style="color:red">*</span>Above details will be updated in all property listings</div>
 
                                         </div>
-
                                         <div class="card-footer">
                                             {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                         </div>
