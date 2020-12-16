@@ -109,23 +109,29 @@
                     </div>
                     <!--Body-->
                     <div class="modal-body">
-                        <div class="container color-555 font-12">
+                        <div class="container" style="font-size: 12px; color: #555">
                             <div class="text-center mb-2">
                                 <div class="mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
                                 <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+
                             </div>
                             <table class="table table-borderless">
                                 <tbody>
                                 <tr>
                                     <td class="w-30">Mobile</td>
-                                    <td class="w-70 font-weight-bold">{{ $agency->cell !== null  ? $agency->cell: '-'}}</td>
+                                    @if($agency->cell !== null)
+                                        <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number : ''}}</td>
+                                    @else
+                                        <td class="font-weight-bold"> -</td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <td>Phone No</td>
+
                                     @if($agency->phone !== null)
                                         <td class="font-weight-bold">{{$agency->phone}}</td>
                                     @else
-                                        <td class="font-weight-bold">-</td>
+                                        <td class="font-weight-bold"> -</td>
                                     @endif
                                 </tr>
                                 <tr>
@@ -139,23 +145,6 @@
                 </div>
             </div>
         </div>
-        {{--        <div class="modal fade" id="EmailConfirmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
-        {{--            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">--}}
-        {{--                <div class="modal-content">--}}
-        {{--                    <!--Body-->--}}
-        {{--                    <div class="modal-body">--}}
-        {{--                        <div class="container">--}}
-        {{--                            <div class="text-center">--}}
-        {{--                                <i class="fas fa-check-circle fa-3x" style="color: #28a745;"></i>--}}
-        {{--                                <div class="m-3" style="font-size: 14px">Message sent successfully</div>--}}
-        {{--                                <div class="mb-2 line-height">Add email@aboutpakistan.com to your white list to get email from us.</div>--}}
-        {{--                                <button class="btn btn-email" data-dismiss="modal">Dismiss</button>--}}
-        {{--                            </div>--}}
-        {{--                        </div>--}}
-        {{--                    </div>--}}
-        {{--                </div>--}}
-        {{--            </div>--}}
-        {{--        </div>--}}
     @endforeach
 </div>
 

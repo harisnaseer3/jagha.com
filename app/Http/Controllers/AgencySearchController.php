@@ -12,6 +12,7 @@ class AgencySearchController extends Controller
 {
     public function searchPartner(Request $request)
     {
+
         if ($request->has('city')) {
             $city = City::select('id', 'name')->where('name', '=', $request->input('city'))->first();
             if ($request->input('title') !== null && $city) {
@@ -41,7 +42,6 @@ class AgencySearchController extends Controller
                     }
                     $agencies = $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
                         ->orderBy('agencies.created_at', $sort === 'newest' ? 'DESC' : 'ASC');
-
 
                     $data = [
                         'agency_city' => $city->name,
@@ -90,8 +90,6 @@ class AgencySearchController extends Controller
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
         $footer_content = (new FooterController)->footerContent();
-
-
         $data = [
             'agency_city' => $city,
             'agency_title' => $request->input('title'),
