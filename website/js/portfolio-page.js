@@ -177,7 +177,6 @@
 
     function showImagesCount(images) {
         imageCountOnError !== 0 ? imageCountOnError = imageCountOnError + 1 : imageCountOnError = 0;
-        // let total = parseInt(images.files['length'])+ parseInt(imageCountOnError);
         let total = parseInt($('#image-count').attr('data-count')) + 1;
         $('#image-count').show().attr('data-count', total).text('Image Count: ' + total);
     }
@@ -187,10 +186,6 @@
         let total = parseInt(images.length) + parseInt(imageCountOnError);
         $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
     }
-
-    // function UpdateImageCountOnError(count) {
-    //     imagesCountOnError = count;
-    // }
 
     function displayImagesOnError() {
         let image_data = $('[name=image]').val().split(',');
@@ -463,30 +458,18 @@
         // $('#store-images').val(store_image_name);
 
         function checkImagesCountLimit(count) {
-            console.log(imageCountOnError)
-            if (store_image_name.length + count + imageCountOnError > 2) {
+            if (store_image_name.length + count + imageCountOnError > 60) {
                 alert('You can select 60 images only');
                 return false;
             } else
                 return true;
         }
 
-        // function ImagesCount() {
-        //     return store_image_name.length;
-        // }
-
         $('#property-image-btn').on('click', function (e) {
             e.preventDefault();
             var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
             let images = $('input#image')[0];
-            // console.log(images.files);
-
-            // if (images.files['length'] > 60) {
-            //     alert('You can select 60 images only');
-            //     return 0;
-            // }
             if (checkImagesCountLimit(images.files['length'])) {
-                console.log(checkImagesCountLimit(images.files['length']))
                 $.each(images.files, function (idx, val) {
                     if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
                         alert('Please select images of type jpg, png or jpeg.');
@@ -518,7 +501,6 @@
                                 if (data.status === 201) {
                                     alert(data.data);
                                 } else if (data.status === 200) {
-                                    // alert(data.data);
                                     store_image_name.push(data.data);
 
                                     $('#store-images').val(store_image_name);
@@ -526,11 +508,7 @@
                                 }
                             },
                             error: function (xhr, status, error) {
-                                // console.log(error);
-                                // console.log(status);
-                                // console.log(xhr);
                             },
-
                         });
                         showImagesCount(images);
                     }
@@ -571,11 +549,9 @@
             rules: {
                 'mobile_#': {
                     required: true,
-                    // checkcellnum: true,
                 },
                 'phone_#': {
                     required: true,
-                    // checkphonenum: true,
                 },
                 contact_email: {
                     required: true,
