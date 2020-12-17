@@ -12,10 +12,10 @@
                     <div class="row">
                         <div class="col-sm-12 justify-content-center">
                             <a href="{{url('/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
-                                <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="" aria-label="facebook-login">Login with Facebook</a>
+                                <img class="mr-4" src="{{asset('img\facebook-icon.png')}}" alt="facebook-icon" aria-label="facebook-login">Login with Facebook</a>
 
                             <a href="{{url('google/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
-                                <img class="mr-4" src="{{asset('img\google-icon.png')}}" alt="" aria-label="google-login">Login with Google</a>
+                                <img class="mr-4" src="{{asset('img\google-icon.png')}}" alt="google-icon" aria-label="google-login">Login with Google</a>
                             <p class="text-center">OR</p>
 
                             <form method="POST" action="{{ route('login') }}" id="sign-in-card">
