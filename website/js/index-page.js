@@ -269,8 +269,7 @@
 
             });
     }
-
-    if (window.location.hash && window.location.hash == '#') {
-        window.location.hash = '';
+    if(location.hash === '#_=_'){
+        location.href = location.href.split('#')[0];
     }
 })(jQuery);
