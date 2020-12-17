@@ -1,5 +1,5 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header theme-grey text-white text-capitalize">Profile & user settings</div>
+    <div class="card-header theme-grey text-white text-capitalize">Account & Profiles</div>
     @php
         $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName();
         $user_id = \Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier();
