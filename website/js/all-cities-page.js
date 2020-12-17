@@ -176,8 +176,8 @@
                                 '            <div class="dropdown">' +
                                 '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
-                                '                      <i class="fas fa-user mr-3"></i>';
-                            html += '<span class="mr-1"> Logged in as <span>' + user_name + ' (ID: ' + user_id + ')';
+                                '                      <i class="fas fa-user mr-2"></i>';
+                            html += '<span class="mr-1">'+ user_name + ' (ID: ' + user_id + ')'+'<span>' ;
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
