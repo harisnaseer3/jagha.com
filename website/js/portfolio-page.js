@@ -1,4 +1,9 @@
 (function ($) {
+    var store_image_name = [];
+
+    //this value is only used check the image count
+    var imageCountOnError = 0;
+
     function getCityLocations(city) {
         jQuery.ajaxSetup({
             headers: {
@@ -170,8 +175,28 @@
 
     }
 
+    function showImagesCount(images) {
+        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError + 1 : imageCountOnError = 0;
+        // let total = parseInt(images.files['length'])+ parseInt(imageCountOnError);
+        let total = parseInt($('#image-count').attr('data-count')) + 1;
+        $('#image-count').show().attr('data-count', total).text('Image Count: ' + total);
+    }
+
+    function showImagesCountOnRemove(images) {
+        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
+        let total = parseInt(images.length) + parseInt(imageCountOnError);
+        $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
+    }
+
+    // function UpdateImageCountOnError(count) {
+    //     imagesCountOnError = count;
+    // }
+
     function displayImagesOnError() {
-        $.each($('[name=image]').val().split(','), function (idx, val) {
+        let image_data = $('[name=image]').val().split(',');
+        showImagesCountOnRemove(image_data);
+        imageCountOnError = image_data.length;
+        $.each(image_data, function (idx, val) {
             let image = val.split('.')[0];
             let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
             let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
@@ -236,8 +261,17 @@
         input.addEventListener('keyup', reset);
     }
 
-
     $(document).ready(function () {
+        $(document).on('click', '.remove-images', function () {
+            let selected_value = $(this).next('img').attr('data-value') + ".webp";
+            let index_value = jQuery.inArray(selected_value, store_image_name);
+            store_image_name.splice(index_value, 1);
+            $('#store-images').val(store_image_name);
+            $(this).parents('.upload-image-block').hide();
+            showImagesCountOnRemove(store_image_name);
+
+        });
+
         $('select option:first-child').prop('disabled', true);
 
         (function priceInWords() {
@@ -354,10 +388,10 @@
                 if ($.trim(params.term) === '') {
                     return data;
                 }
-                keywords=(params.term).split(" ");
+                keywords = (params.term).split(" ");
                 for (var i = 0; i < keywords.length; i++) {
 
-                    if (((data.text).toUpperCase()).indexOf((keywords[i]).toUpperCase()) == -1)
+                    if (((data.text).toUpperCase()).indexOf((keywords[i]).toUpperCase()) === -1)
                         return null;
 
                 }
@@ -366,7 +400,6 @@
 
         });
         $("#add_location").parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
-
 
 
         let agency = $('#agency');
@@ -425,77 +458,89 @@
                 $('[name=contact_email]').val('');
             }
         });
-        let store_image_name = [];
+
+
         // $('#store-images').val(store_image_name);
+
+        function checkImagesCountLimit(count) {
+            console.log(imageCountOnError)
+            if (store_image_name.length + count + imageCountOnError > 2) {
+                alert('You can select 60 images only');
+                return false;
+            } else
+                return true;
+        }
+
+        // function ImagesCount() {
+        //     return store_image_name.length;
+        // }
+
         $('#property-image-btn').on('click', function (e) {
             e.preventDefault();
             var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
             let images = $('input#image')[0];
             // console.log(images.files);
 
-            if (images.files['length'] > 60) {
-                alert('You can select 60 images only');
-                return 0;
-            }
-            $.each(images.files, function (idx, val) {
-
-                if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
-                    alert('Please select images of type jpg, png or jpeg.');
-                    return 0;
-                } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
-                {
-                    alert('Please select image of size 10 MB or less');
-                    return 0;
-                } else {
-                    $('#show_image_spinner').show();
-                    var fd = new FormData();
-                    fd.append('image', images.files[idx]);
-                    jQuery.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        url: window.location.origin + '/property-image-upload',
-                        data: fd,
-                        processData: false,
-                        contentType: false,
-                        type: 'POST',
-                        success: function (data) {
-                            $('input#image').val("");
-                            // console.log(data.data);
-
-                            if (data.status === 201) {
-                                alert(data.data);
-                            } else if (data.status === 200) {
-                                // alert(data.data);
-                                store_image_name.push(data.data);
-                                // console.log(data.data)
-                                $('#store-images').val(store_image_name);
-                                displayImages(data.data);
+            // if (images.files['length'] > 60) {
+            //     alert('You can select 60 images only');
+            //     return 0;
+            // }
+            if (checkImagesCountLimit(images.files['length'])) {
+                console.log(checkImagesCountLimit(images.files['length']))
+                $.each(images.files, function (idx, val) {
+                    if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
+                        alert('Please select images of type jpg, png or jpeg.');
+                        return 0;
+                    } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
+                    {
+                        alert('Please select image of size 10 MB or less');
+                        return 0;
+                    } else {
+                        $('#show_image_spinner').show();
+                        var fd = new FormData();
+                        fd.append('image', images.files[idx]);
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            // console.log(error);
-                            // console.log(status);
-                            // console.log(xhr);
-                        },
-                    });
-                }
-            });
+                        });
 
+                        $.ajax({
+                            url: window.location.origin + '/property-image-upload',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            type: 'POST',
+                            success: function (data) {
+                                $('input#image').val("");
+                                // console.log(data.data);
+
+                                if (data.status === 201) {
+                                    alert(data.data);
+                                } else if (data.status === 200) {
+                                    // alert(data.data);
+                                    store_image_name.push(data.data);
+
+                                    $('#store-images').val(store_image_name);
+                                    displayImages(data.data);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                // console.log(error);
+                                // console.log(status);
+                                // console.log(xhr);
+                            },
+
+                        });
+                        showImagesCount(images);
+                    }
+                });
+
+            }
 
         });
-        $(document).on('click', '.remove-images', function () {
-            let selected_value = $(this).next('img').attr('data-value') + ".webp";
 
-            let index_value = jQuery.inArray(selected_value, store_image_name);
-            store_image_name.splice(index_value, 1);
-            $('#store-images').val(store_image_name);
-            $(this).parents('.upload-image-block').hide();
 
-        });
         //in case of an error
         if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
             displayImagesOnError();
