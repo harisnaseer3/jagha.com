@@ -152,12 +152,17 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                <td class="w-70 font-weight-bold">{{ $agency->cell !== null  ? $agency->cell: '-'}}</td>
+                                @if($agency->cell !== null)
+                                    <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number : ''}}</td>
+                                @else
+                                    <td class="font-weight-bold"> -</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td>Phone No</td>
+
                                 @if($agency->phone !== null)
-                                    <td class="font-weight-bold">{{$agency->phone}} </td>
+                                    <td class="font-weight-bold">{{$agency->phone}}</td>
                                 @else
                                     <td class="font-weight-bold"> -</td>
                                 @endif

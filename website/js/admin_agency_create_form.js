@@ -66,34 +66,26 @@
             $(this).find('.modal-body #image-record-id').val(record_id);
         });
         $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
-        $('.mark-as-read').on('click', function () {
-            let alert = $(this);
-            let notification_id = alert.attr('data-id');
+        let rejection_input = $('[name=rejection_reason]');
+        let rejection_div = $('#reason-of-rejection');
+        if ($("#status option:selected").text() === 'Rejected') {
+            rejection_input.attr('required', 'required').attr('disable', 'false');
+            rejection_div.slideDown();
+        }
 
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin + '/dashboard/property-notification',
-                data: {'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                },
-                complete: function (url, options) {
+        $('#status').on('change', function (e) {
 
-                }
-            });
+            if ($("#status option:selected").text() === 'Rejected') {
+                rejection_input.attr('required', 'required').attr('disable', 'false');
+                rejection_div.slideDown();
+            } else {
+                rejection_input.removeAttr('required').attr('disable', 'true');
+                // console.log(rejection_input.val());
+                rejection_input.val('');
+                // console.log(rejection_input.val());
+                rejection_div.slideUp();
+            }
         });
-
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
         let optional_mobile_num = $("#optional_mobile");

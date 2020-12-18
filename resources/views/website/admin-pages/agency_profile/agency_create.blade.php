@@ -5,10 +5,9 @@
 @endsection
 
 @section('css_library')
-    <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 
 @endsection
@@ -44,12 +43,13 @@
                                             {{ Form::bsTextArea('description', isset($agency->description)? $agency->description : null, ['required' => true, 'data-default' => 'Please provided detailed information about your agency services. For example, does your company provide sales and rental services or both.Description should have almost 4096 characters.']) }}
 
 
-                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['required' => true, 'id'=>'phone']) }}
+                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
+                                            {{Form::hidden('phone_check')}}
 
-                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['id'=>'cell']) }}
+                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['required' => true, 'id'=>'cell']) }}
 
-                                            {{--                                            {{ Form::bsTel('fax', isset($agency->fax)? $agency->fax : null, ['data-default' => 'E.g. 0211234567']) }}--}}
-
+                                            {{ Form::bsIntlTel('optional_mobile_#', null, ['id'=>'optional_mobile']) }}
+                                            {{Form::hidden('optional_mobile_check')}}
 
 
                                             {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}
@@ -121,142 +121,5 @@
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
-    <script>
-        (function ($) {
-            function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
-                var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-                let ag_iti_cell = '';
-                if (phone_type === "MOBILE") {
-                    ag_iti_cell = window.intlTelInput(input, {
-                        utilsScript: "../../../plugins/intl-tel-input/js/utils.js",
-                        preferredCountries: ["pk"],
-                        preventInvalidNumbers: true,
-                        separateDialCode: true,
-                        numberType: "MOBILE",
-                    });
-                } else if (phone_type === "FIXED_LINE") {
-                    ag_iti_cell = window.intlTelInput(input, {
-                        utilsScript: "../../../plugins/intl-tel-input/js/utils.js",
-                        preferredCountries: ["pk"],
-                        preventInvalidNumbers: true,
-                        separateDialCode: true,
-                        placeholderNumberType: "FIXED_LINE",
-                        numberType: "FIXED_LINE",
-                    });
-                }
-
-                var reset = function () {
-                    input.classList.remove("error");
-                    input.classList.remove("valid");
-                    errorMsg.innerHTML = "";
-                    errorMsg.classList.add("hide");
-                    validMsg.classList.add("hide");
-                };
-                input.addEventListener('blur', function () {
-                    reset();
-                    if (input.value.trim()) {
-                        if (ag_iti_cell.isValidNumber()) {
-                            field.val(ag_iti_cell.getNumber());
-                            validMsg.classList.remove("hide");
-                            $(error_div).hide();
-                        } else {
-                            var errorCode = ag_iti_cell.getValidationError();
-                            errorMsg.innerHTML = errorMap[errorCode];
-                            errorMsg.classList.remove("hide");
-                            field.val('');
-                        }
-                    }
-                });
-
-                input.addEventListener('change', reset);
-                input.addEventListener('keyup', reset);
-            }
-
-            $(document).ready(function () {
-                // Initialize Select2 Elements
-                $('.select2').select2({
-                    language: '{{app()->getLocale()}}',
-                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
-                });
-                $('.select2bs4').select2({
-                    language: '{{app()->getLocale()}}',
-                    direction: '{{app()->getLocale() === 'en' ? 'ltr' : 'rtl'}}',
-                    theme: 'bootstrap4',
-                });
-                $('#delete-image').on('show.bs.modal', function (event) {
-                    let record_id = $(event.relatedTarget).data('record-id');
-                    $(this).find('.modal-body #image-record-id').val(record_id);
-                });
-                $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
-
-                let phone_num = $("#phone");
-                let mobile_num = $("#cell");
-                if (phone_num.val() !== '') {
-                    $("input[name='phone']").val(phone_num.val());
-                }
-                if (mobile_num.val() !== '') {
-                    $("input[name='mobile']").val(mobile_num.val());
-                }
-
-                iti_contact_number(document.querySelector("#cell"),
-                    document.querySelector("#error-msg-mobile"),
-                    document.querySelector("#valid-msg-mobile"),
-                    $('[name=mobile]'), '#mobile-error', "MOBILE");
-
-                iti_contact_number(document.querySelector("#phone"),
-                    document.querySelector("#error-msg-phone"),
-                    document.querySelector("#valid-msg-phone"),
-                    $('[name=phone]'), '#phone-error', "FIXED_LINE");
-                let form = $('.data-insertion-form');
-                form.validate({
-                    rules: {
-                        'mobile_#': {
-                            required: true,
-                        },
-                        'phone_#': {
-                            required: true,
-                        },
-                        'mobile': {
-                            required: true,
-                        },
-                        'phone': {
-                            required: true,
-                        },
-                        contact_email: {
-                            required: true,
-                            email: true
-                        },
-                    },
-                    messages: {
-                        'mobile': " please enter a valid value.",
-                        'phone': "please enter a valid value.",
-                    },
-                    errorElement: 'span',
-                    errorClass: 'error help-block text-red',
-                    ignore: [],
-                    submitHandler: function (form) {
-                        form.submit();
-                    },
-                    invalidHandler: function (event, validator) {
-                        // 'this' refers to the form
-                        const errors = validator.numberOfInvalids();
-                        if (errors) {
-                            let error_tag = $('div.error.text-red.invalid-feedback.mt-2');
-                            error_tag.hide();
-                            const message = errors === 1
-                                ? 'You missed 1 field. It has been highlighted'
-                                : 'You missed ' + errors + ' fields. They have been highlighted';
-                            $('div.error.text-red.invalid-feedback strong').html(message);
-                            error_tag.show();
-                        } else {
-                            $('#submit-block').show();
-                            $('div.error.text-red.invalid-feedback').hide();
-                        }
-                    }
-                });
-
-
-            });
-        })(jQuery);
-    </script>
+    <script src="{{asset('website/js/admin_agency_create_form.js')}}"></script>
 @endsection

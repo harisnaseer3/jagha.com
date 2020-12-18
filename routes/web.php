@@ -32,7 +32,6 @@ Route::post('/admin-user-count', 'Admin\AdminDashboardController@getUserCount');
 Route::post('/admin-cron-job', 'CronJobController@executeTasks');
 
 
-
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
@@ -74,9 +73,10 @@ Route::get('/search/partners_results', 'AgencySearchController@searchPartner')->
 Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
 Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth','verified']], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
     Route::resource('properties', 'PropertyController')->except(['index', 'show']);
     Route::resource('images', 'ImageController')->only(['destroy']);
+    Route::delete('image-delete', 'ImageController@form_destroy')->name('delete-image');
     Route::resource('floorPlans', 'FloorPlanController')->only(['destroy']);
     Route::resource('videos', 'VideoController')->only(['destroy']);
 
@@ -156,7 +156,7 @@ Route::group(['prefix' => 'properties'], function () {
 
 Auth::routes(['verify' => true]);
 //only logged in user can view following
-Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' => ['auth','verified']], function () {
+Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
 //    Route::get('/', 'DashboardController@index');
 //    Route::get('/logout', 'DashboardController@logout');
 
@@ -213,7 +213,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/agency-name', 'AgencyController@AdminAgencyNameSearch')->name('admin.agency.search.name');
 
     Route::get('agencies/status/{status}/purpose/{purpose}/user/{user}/sort/{sort}/order/{order}/page/{page}', 'AgencyController@listings')
-
         ->name('admin.agencies.listings')
         ->where([
             'status' => '(verified_agencies|pending_agencies|expired_agencies|rejected_agencies|deleted_agencies|all_agencies)',

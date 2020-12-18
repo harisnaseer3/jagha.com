@@ -1,5 +1,5 @@
 @include('website.layouts.flash-message')
-
+<div id="flash-msg" style="display: none"></div>
 @if(isset($property))
     {{ Form::model($property,['route' => ['properties.update', $property->id], 'method' => 'PUT', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
 @else
@@ -11,7 +11,7 @@
 
 {{ Form::close() }}
 
-@include('website.layouts.delete-image-modal', array('route'=>'images'))
+{{--@include('website.layouts.delete-image-modal', array('route'=>'images'))--}}
 @include('website.layouts.delete-plan-modal', array('route'=>'floorPlans'))
 @include('website.layouts.delete-video-modal', array('route'=>'videos'))
 

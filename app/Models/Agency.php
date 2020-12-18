@@ -25,7 +25,7 @@ class Agency extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'user_id', 'city_id', 'title', 'description', 'phone', 'zip_code', 'cell', 'fax', 'address', 'country', 'email', 'website', 'ceo_name', 'ceo_designation',
+        'user_id', 'city_id', 'title', 'description', 'optional_number', 'phone', 'zip_code', 'cell', 'fax', 'address', 'country', 'email', 'website', 'ceo_name', 'ceo_designation',
         'ceo_message', 'ceo_image', 'status', 'featured_listing', 'key_listing', 'rejection_reason', 'reviewed_by'];
     public static $rules = [
         'city' => 'required|string',
@@ -33,11 +33,9 @@ class Agency extends Model
         'description' => 'required|string|max:4096',
 //        'email' => 'required|email|unique:agencies',
         'email' => 'required|email',
-        'phone' => 'required',
-//        'phone' => 'required|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
+        'phone' => 'nullable|string',
+        'optional' => 'nullable|string',
         'mobile' => 'required',
-//        'mobile' => 'nullable|regex:/\+92-3\d{2}\d{7}/', // +92-3001234567
-//        'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',
