@@ -128,7 +128,7 @@
                 type: 'get',
                 url: window.location.origin + '/admin/admin-logout',
                 success: function (data) {
-                    if(data.data){
+                    if (data.data) {
                         let user_dropdown = $('.user-dropdown');
                         user_dropdown.html('');
                         let html = ' <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"\n' +
@@ -143,6 +143,48 @@
                 }
             })
         });
+        $(document).on('change', '#alpha-switch', function () {
+            event.preventDefault();
+            let sort = 'unsort-alpha';
+            let type = $('#type').val();
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            if ($('#alpha-switch').is(':checked')) {
+                sort = 'sort-alpha';
+            }
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/all_cities/pakistan/' + type,
+                data: {'sort': sort},
+                success: function (data) {
+                    $('#all-cities-count-body').html(data.view);
+                }
+            })
+        });
+        $(document).on('change', '#alpha-partners-switch', function () {
+            event.preventDefault();
+            let sort = 'unsort-alpha';
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            if ($('#alpha-partners-switch').is(':checked')) {
+                sort = 'sort-alpha';
+            }
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/partners',
+                data: {'sort': sort},
+                success: function (data) {
+                    $('#all-cities-partners-count-body').html(data.view);
+                }
+            })
+        });
+
 
         $('#sign-in-btn').click(function (event) {
             if (form.valid()) {
@@ -177,7 +219,7 @@
                                 '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
                                 '                      <i class="fas fa-user mr-2"></i>';
-                            html += '<span class="mr-1">'+ user_name + ' (ID: ' + user_id + ')'+'<span>' ;
+                            html += '<span class="mr-1">' + user_name + ' (ID: ' + user_id + ')' + '<span>';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
@@ -186,8 +228,8 @@
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
-                            let html_profile_link =   '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
-                            let html_property_link =   '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
+                            let html_profile_link = '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
+                            let html_property_link = '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
 
                             user_dropdown.html(html);
                             nav_property_link.html(html_property_link);

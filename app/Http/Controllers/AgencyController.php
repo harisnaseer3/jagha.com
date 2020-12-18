@@ -25,9 +25,67 @@ use function GuzzleHttp\Promise\all;
 
 class AgencyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         (new MetaTagController())->addMetaTagsOnPartnersListing();
+        if ($request->ajax()) {
+            if ($request->sort === 'sort-alpha') {
+                $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '0')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('cities.name')->get();
+                $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '1')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('cities.name')->get();
+                $key_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.key_listing', '=', '1')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+                    ->groupBy('cities.name')
+                    ->orderBy('cities.name')->get();
+                $sort = 'checked';
+            }
+            else if ($request->sort === 'unsort-alpha') {
+                $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '0')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('agency_count', 'DESC')->get();
+                $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '1')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('agency_count', 'DESC')->get();
+                $key_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.key_listing', '=', '1')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+                    ->groupBy('cities.name')->orderBy('agency_count', 'DESC')->get();
+                $sort = 'unchecked';
+            }
+            $data['view'] = View('website.components.all_cities_listing_wrt_agency',
+                [
+                    'normal_agencies' => $normal_agencies,
+                    'featured_agencies' => $featured_agencies,
+                    'key_agencies' => $key_agencies,
+                    'sort' => $sort
+                ])->render();
+
+            return $data;
+            }
 
         $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')
