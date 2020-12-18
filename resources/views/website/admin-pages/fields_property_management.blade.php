@@ -92,6 +92,7 @@
                     </div>
                 </div>
             </div>
+
         @else
             <div class="form-group row btn-hide" style="display:none">
                 <label for="features" class="col-sm-4 col-md-2 col-form-label col-form-label-sm">
