@@ -25,9 +25,67 @@ use function GuzzleHttp\Promise\all;
 
 class AgencyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         (new MetaTagController())->addMetaTagsOnPartnersListing();
+        if ($request->ajax()) {
+            if ($request->sort === 'sort-alpha') {
+                $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '0')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('cities.name')->get();
+                $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '1')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('cities.name')->get();
+                $key_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.key_listing', '=', '1')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+                    ->groupBy('cities.name')
+                    ->orderBy('cities.name')->get();
+                $sort = 'checked';
+            }
+            else if ($request->sort === 'unsort-alpha') {
+                $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '0')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('agency_count', 'DESC')->get();
+                $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.featured_listing', '=', '1')
+                    ->where('agencies.key_listing', '=', '0')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
+                    ->orderBy('agency_count', 'DESC')->get();
+                $key_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
+                    ->where('agencies.status', '=', 'verified')
+                    ->where('agencies.key_listing', '=', '1')
+                    ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
+                    ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
+                    ->groupBy('cities.name')->orderBy('agency_count', 'DESC')->get();
+                $sort = 'unchecked';
+            }
+            $data['view'] = View('website.components.all_cities_listing_wrt_agency',
+                [
+                    'normal_agencies' => $normal_agencies,
+                    'featured_agencies' => $featured_agencies,
+                    'key_agencies' => $key_agencies,
+                    'sort' => $sort
+                ])->render();
+
+            return $data;
+            }
 
         $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')
@@ -65,7 +123,7 @@ class AgencyController extends Controller
     function _listingFrontend()
     {
         return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.key_listing', 'agencies.featured_listing', 'agencies.status',
-            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.optional_number', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
             'property_count_by_agencies.property_count AS count')
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
@@ -170,7 +228,7 @@ class AgencyController extends Controller
 
 
         $agency_data = (new Agency)->select('agencies.title', 'agencies.description', 'agencies.status',
-            'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'agencies.phone', 'agencies.cell', 'agencies.optional_number','agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
             'property_count_by_agencies.property_count AS count')
             ->where('agencies.status', '=', 'verified')->where('agencies.id', '=', $agency)
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
@@ -358,6 +416,7 @@ class AgencyController extends Controller
 
     public function store(Request $request)
     {
+//        dd($request->all());
         if ($request->hasFile('upload_new_logo')) {
             $error_msg = $this->_imageValidation('upload_new_logo');
             if ($error_msg !== null && count($error_msg)) {
@@ -389,6 +448,7 @@ class AgencyController extends Controller
                 'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
+                'optional_number' => $request->input('optional'),
                 'cell' => $request->input('mobile'),
                 'fax' => $request->input('fax'),
                 'address' => $request->input('address'),
@@ -479,6 +539,7 @@ class AgencyController extends Controller
         }
 
         if ($request->hasFile('upload_new_picture')) {
+
             $error_msg = $this->_imageValidation('upload_new_picture');
             if (count($error_msg)) {
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
@@ -490,9 +551,9 @@ class AgencyController extends Controller
             'company_title' => 'required|string|max:255',
             'description' => 'required|string|max:4096',
             'email' => 'required|email',
-            'phone' => 'required', // +92-511234567
+            'phone' => 'nullable|string', // +92-511234567
+            'optional' => 'nullable|string', // +92-511234567
             'mobile' => 'required', // +92-3001234567
-//            'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
             'address' => 'nullable|string',
             'zip_code' => 'nullable|digits:5',
             'country' => 'required|string',
@@ -522,15 +583,13 @@ class AgencyController extends Controller
         }
         try {
             $status_before_update = $agency->status;
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+//            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
             $agency = (new Agency)->updateOrCreate(['id' => $agency->id], [
-//                'city_id' => $city->id,
-//                'title' => $request->input('company_title'),
                 'description' => $request->input('description'),
                 'phone' => $request->input('phone'),
+                'optional_number' => $request->input('optional'),
                 'cell' => $request->input('mobile'),
-//                'fax' => $request->input('fax'),
                 'address' => $request->input('address'),
                 'zip_code' => $request->input('zip_code'),
                 'country' => $request->input('country'),
@@ -562,8 +621,6 @@ class AgencyController extends Controller
             Notification::send($user, new AgencyStatusChangeMail($agency));
 
             if (Auth::guard('admin')->user()) {
-//                dd($request->has('rejection_reason') && $request->input('status') == 'rejected' ? $request->input('rejection_reason') : null);
-
                 (new AgencyLogController())->store($agency);
 
                 return redirect()->route('admin.agencies.listings', [
@@ -586,8 +643,9 @@ class AgencyController extends Controller
             }
 
         } catch (Throwable $e) {
-            if (Auth::guard('admin')->user())
+            if (Auth::guard('admin')->user()){
                 return redirect()->route('admin-agencies-edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
+            }
             else
                 return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }

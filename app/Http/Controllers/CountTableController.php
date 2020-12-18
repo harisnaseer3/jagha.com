@@ -522,8 +522,41 @@ class CountTableController extends Controller
 
     public function getCitywisePropertyCount(string $type, Request $request)
     {
-        (new MetaTagController())->addMetaTags();
 
+        (new MetaTagController())->addMetaTags();
+        if ($request->ajax()) {
+            if ($request->sort === 'sort-alpha') {
+                $properties = DB::table('property_count_by_property_purposes')
+                    ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
+                    ->where([
+                        ['property_purpose', '=', 'sale'],
+                        ['property_type', '=', $type],
+                    ])
+                    ->orderBy('city_name')
+                    ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
+                    ->get();
+                $sort = 'checked';
+            } else if ($request->sort === 'unsort-alpha'){
+                $properties = DB::table('property_count_by_property_purposes')
+                    ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
+                    ->where([
+                        ['property_purpose', '=', 'sale'],
+                        ['property_type', '=', $type],
+                    ])
+                    ->orderBy('property_count', 'DESC')
+                    ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
+                    ->get();
+                $sort = 'unchecked';
+
+            }
+            $data['view'] = View('website.components.property_count_by_city',
+                [
+                    'properties' => $properties,
+                    'sort' => $sort
+                ])->render();
+
+            return $data;
+        }
 
         $properties = DB::table('property_count_by_property_purposes')
             ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')

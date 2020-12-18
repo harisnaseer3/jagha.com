@@ -9,9 +9,9 @@
                 </div>
                 <div class="text-center">
                     <p>Do you really want to delete this Image</p>
-                    {!! Form::open(['route' => [$route.'.destroy', 0], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['delete-image'], 'method' => 'delete']) !!}
                     <input type="hidden" id="image-record-id" value="" name="image-record-id"/>
-                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-sm btn-danger" id="confirm-delete-image">Delete</button>
                     <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Cancel</button>
                     {!! Form::close() !!}
                 </div>

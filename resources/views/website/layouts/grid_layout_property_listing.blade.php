@@ -2,8 +2,8 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-            <span class="heading-icon"><i class="fa fa-th-large"></i></span>
-            <span class="title-name text-transform">Properties Grid</span>
+{{--            <span class="heading-icon"><i class="fa fa-th-large"></i></span>--}}
+            <span class="title-name ml-2 text-transform">Properties Grid</span>
         </h4>
     </div>
     <div class="float-right cod-pad">

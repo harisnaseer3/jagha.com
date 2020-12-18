@@ -106,7 +106,6 @@
 
         $('#subscribe-form').on('submit', function (e) {
             e.preventDefault();
-            // console.log($('#subscribe').val());
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -114,18 +113,21 @@
             });
             jQuery.ajax({
                 type: 'post',
-                url: window.location.origin  + '/subscribe',
+                url: window.location.origin + '/subscribe',
                 data: {
                     email: $('#subscribe').val()
                 },
                 dataType: 'json',
                 success: function (data) {
                     if (data.status === 200) {
-                        let btn = '<button class="btn btn-block btn-success"><i class="far fa-check-circle"></i> SUBSCRIBED </button>'
+                        let btn = '';
+                        if (data.msg === 'already exists') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Already Subscribed </button>';
+                        } else if (data.msg === 'new subscriber') {
+                            btn = '<button class="btn btn-block color-white" style="background-color: #274abb;"><i class="far fa-check-circle"></i> Subscribed </button>';
+                        }
                         $("#subscribe-form").slideUp();
                         $('.Subscribe-box').append(btn);
-                    } else {
-                        //
                     }
                 },
                 error: function (xhr, status, error) {
@@ -179,9 +181,12 @@
                 name: {
                     required: true,
                 },
-                phone: {
+                'phone_#': {
                     required: true,
-                    regx: /^\+92-3\d{2}\d{7}$/,
+                },
+                'phone': {
+                    required: true,
+                    // checkcellnum: true,
                 },
                 email: {
                     required: true,
@@ -191,9 +196,11 @@
                     required: true,
                 },
             },
-            messages: {},
-            errorElement: 'small',
-            errorClass: 'help-block text-red',
+            messages: {'phone': ", please enter a valid value."},
+            errorElement: 'span',
+            errorClass: 'error help-block text-red',
+            ignore: [],
+
             submitHandler: function (form) {
                 form.preventDefault();
             },
@@ -206,10 +213,11 @@
                     const message = errors === 1
                         ? 'You missed 1 field. It has been highlighted'
                         : 'You missed ' + errors + ' fields. They have been highlighted';
-                    $('div.error.text-red span').text(message);
+                    $('div.error.text-red span').html(message);
                     error_tag.show();
                 } else {
                     $('div.error.text-red').hide();
+                    document.querySelector("input").classList.remove("valid");
                 }
             }
         });

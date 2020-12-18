@@ -2,8 +2,8 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-            <span class="heading-icon"><i class="fa fa-th-list"></i></span>
-            <span class="title-name text-transform">Partners List</span>
+{{--            <span class="heading-icon"><i class="fa fa-th-list"></i></span>--}}
+            <span class="title-name ml-2 text-transform">Partners List</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
@@ -152,12 +152,17 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                <td class="w-70 font-weight-bold">{{ $agency->cell !== null  ? $agency->cell: '-'}}</td>
+                                @if($agency->cell !== null)
+                                    <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number : ''}}</td>
+                                @else
+                                    <td class="font-weight-bold"> -</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td>Phone No</td>
+
                                 @if($agency->phone !== null)
-                                    <td class="font-weight-bold">{{$agency->phone}} </td>
+                                    <td class="font-weight-bold">{{$agency->phone}}</td>
                                 @else
                                     <td class="font-weight-bold"> -</td>
                                 @endif

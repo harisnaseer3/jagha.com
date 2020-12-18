@@ -1,4 +1,9 @@
 (function ($) {
+    var store_image_name = [];
+
+    //this value is only used check the image count
+    var imageCountOnError = 0;
+
     function getCityLocations(city) {
         jQuery.ajaxSetup({
             headers: {
@@ -153,40 +158,6 @@
 
     }
 
-    function displayImages(name) {
-        let image = name.split('.')[0];
-        let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
-        let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
-            '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
-            '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
-            '' +
-            ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
-            '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
-            '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
-            '</div>' +
-            '</div>';
-        $('#show_image_spinner').hide();
-        $('.add-images').append(html).show();
-
-    }
-
-    function displayImagesOnError() {
-        $.each($('[name=image]').val().split(','), function (idx, val) {
-            let image = val.split('.')[0];
-            let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
-            let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
-                '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
-                '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
-                '' +
-                ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
-                '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
-                '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
-                '</div>' +
-                '</div>';
-            $('.add-images').append(html).show();
-        });
-    }
-
     function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         let ag_iti_cell = '';
@@ -237,7 +208,183 @@
     }
 
 
+    function displayImages(name) {
+        let image = name.split('.')[0];
+        let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
+        let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
+            '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
+            '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+            '' +
+            ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
+            '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
+            '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
+            '</div>' +
+            '</div>';
+        $('#show_image_spinner').hide();
+        $('.add-images').append(html).show();
+
+    }
+
+    function showImagesCount(images) {
+        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError + 1 : imageCountOnError = 0;
+        let total = parseInt($('#image-count').attr('data-count')) + 1;
+        $('#image-count').show().attr('data-count', total).text('Image Count: ' + total);
+    }
+
+    function showImagesCountOnRemove(images) {
+        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
+        //to get the recent count  rather than length of array length
+        let current_val = parseInt($('#image-count').attr('data-count')) - 1 ;
+
+        // let total = parseInt(images.length) + parseInt(imageCountOnError) +  parseInt($('#image-count').attr('data-count'));
+        let total =  current_val;
+        $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
+    }
+
+    function displayImagesOnError() {
+        let image_data = $('[name=image]').val().split(',');
+        // showImagesCountOnRemove(image_data);
+        $('#image-count').attr('data-count', image_data.length).show().text('Image Count: ' + image_data.length);
+        imageCountOnError = image_data.length;
+        $.each(image_data, function (idx, val) {
+            let image = val.split('.')[0];
+            let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
+            let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
+                '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
+                '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+                '' +
+                ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
+                '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
+                '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
+                '</div>' +
+                '</div>';
+            $('.add-images').append(html).show();
+        });
+    }
+
+
     $(document).ready(function () {
+
+        //in case of an error
+        if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
+            displayImagesOnError();
+        }
+        let count_div = $('#edit-count');
+        if (count_div.attr('data-count') > 0) {
+            imageCountOnError = parseInt(count_div.attr('data-count'));
+            $('#image-count').attr('data-count', count_div.attr('data-count')).show().text('Image Count: ' + count_div.attr('data-count'));
+
+        }
+        $(document).on('click', '.delete-image-btn', function () {
+            let image = $(this).attr('data-record-id');
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: window.location.origin + '/dashboard/images/' + image,
+                type: "POST",
+                data:{
+                    _method:"DELETE"
+                },
+                success: function (data) {
+                    if (data.status === 200) {
+                        $('#delete-image').modal('hide');
+                        // let flash_msg = '<div class="alert alert-success alert-block">' +
+                        //     '<button type="button" class="close" data-dismiss="alert">×</button>' +
+                        //     '<strong>Image Deleted Successfully</strong>' +
+                        //     '</div>';
+                        // $('#flash-msg').show().html(flash_msg);
+                        $("[data-id='" + image + "']").parent().parent().remove();
+
+                        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
+                        let count = parseInt($('#image-count').attr('data-count')) - 1;
+                        $('#image-count').attr('data-count', count).show().text('Image Count: ' + count);
+
+
+                    } else if (data.status === 404) {
+                        $('#delete-image').modal('hide');
+
+                        let flash_msg = '<div class="alert alert-danger alert-block">' +
+                            '<button type="button" class="close" data-dismiss="alert">×</button>' +
+                            '<strong>Image not found.</strong>' +
+                            '</div>';
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                },
+            });
+
+        });
+
+        $(document).on('click', '.remove-images', function () {
+            let selected_value = $(this).next('img').attr('data-value') + ".webp";
+            let index_value = jQuery.inArray(selected_value, store_image_name);
+            store_image_name.splice(index_value, 1);
+            $('#store-images').val(store_image_name);
+            $(this).parents('.upload-image-block').hide();
+            showImagesCountOnRemove(store_image_name);
+
+        });
+
+        $('#property-image-btn').on('click', function (e) {
+
+            e.preventDefault();
+            var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
+            let images = $('input#image')[0];
+            if (checkImagesCountLimit(images.files['length'])) {
+                $.each(images.files, function (idx, val) {
+                    if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
+                        alert('Please select images of type jpg, png or jpeg.');
+                        return 0;
+                    } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
+                    {
+                        alert('Please select image of size 10 MB or less');
+                        return 0;
+                    } else {
+                        $('#show_image_spinner').show();
+                        var fd = new FormData();
+                        fd.append('image', images.files[idx]);
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url: window.location.origin + '/property-image-upload',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            type: 'POST',
+                            success: function (data) {
+                                $('input#image').val("");
+                                // console.log(data.data);
+
+                                if (data.status === 201) {
+                                    alert(data.data);
+                                } else if (data.status === 200) {
+                                    store_image_name.push(data.data);
+
+                                    $('#store-images').val(store_image_name);
+                                    displayImages(data.data);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                            },
+                        });
+                        // console.log('calling image count from image upload');
+                        showImagesCount(images);
+                    }
+                });
+
+            }
+
+        });
+
         $('select option:first-child').prop('disabled', true);
 
         (function priceInWords() {
@@ -354,10 +501,10 @@
                 if ($.trim(params.term) === '') {
                     return data;
                 }
-                keywords=(params.term).split(" ");
+                keywords = (params.term).split(" ");
                 for (var i = 0; i < keywords.length; i++) {
 
-                    if (((data.text).toUpperCase()).indexOf((keywords[i]).toUpperCase()) == -1)
+                    if (((data.text).toUpperCase()).indexOf((keywords[i]).toUpperCase()) === -1)
                         return null;
 
                 }
@@ -366,7 +513,6 @@
 
         });
         $("#add_location").parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
-
 
 
         let agency = $('#agency');
@@ -425,83 +571,18 @@
                 $('[name=contact_email]').val('');
             }
         });
-        let store_image_name = [];
+
+
         // $('#store-images').val(store_image_name);
-        $('#property-image-btn').on('click', function (e) {
-            e.preventDefault();
-            var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
-            let images = $('input#image')[0];
-            // console.log(images.files);
 
-            if (images.files['length'] > 60) {
+        function checkImagesCountLimit(count) {
+            if (store_image_name.length + count + imageCountOnError > 60) {
+                console.log(store_image_name.length + count + imageCountOnError);
                 alert('You can select 60 images only');
-                return 0;
-            }
-            $.each(images.files, function (idx, val) {
-
-                if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
-                    alert('Please select images of type jpg, png or jpeg.');
-                    return 0;
-                } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
-                {
-                    alert('Please select image of size 10 MB or less');
-                    return 0;
-                } else {
-                    $('#show_image_spinner').show();
-                    var fd = new FormData();
-                    fd.append('image', images.files[idx]);
-                    jQuery.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        url: window.location.origin + '/property-image-upload',
-                        data: fd,
-                        processData: false,
-                        contentType: false,
-                        type: 'POST',
-                        success: function (data) {
-                            $('input#image').val("");
-                            // console.log(data.data);
-
-                            if (data.status === 201) {
-                                alert(data.data);
-                            } else if (data.status === 200) {
-                                // alert(data.data);
-                                store_image_name.push(data.data);
-                                // console.log(data.data)
-                                $('#store-images').val(store_image_name);
-                                displayImages(data.data);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            // console.log(error);
-                            // console.log(status);
-                            // console.log(xhr);
-                        },
-                    });
-                }
-            });
-
-
-        });
-        $(document).on('click', '.remove-images', function () {
-            let selected_value = $(this).next('img').attr('data-value') + ".webp";
-
-            let index_value = jQuery.inArray(selected_value, store_image_name);
-            store_image_name.splice(index_value, 1);
-            $('#store-images').val(store_image_name);
-            $(this).parents('.upload-image-block').hide();
-
-        });
-        //in case of an error
-        if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
-            displayImagesOnError();
+                return false;
+            } else
+                return true;
         }
-
-
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
         if (phone_num.val() !== '') {
@@ -526,11 +607,9 @@
             rules: {
                 'mobile_#': {
                     required: true,
-                    // checkcellnum: true,
                 },
                 'phone_#': {
                     required: true,
-                    // checkphonenum: true,
                 },
                 contact_email: {
                     required: true,

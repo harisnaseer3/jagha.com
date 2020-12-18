@@ -21,10 +21,26 @@
                     <!-- Listing -->
                     <div class="card mb-3">
                         <div class="card-header">
-                            <h1 class="all-cities-header">Featured Partners Listing</h1>
+                            <h1 class="all-cities-header">Partners Listing</h1>
+
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" id="all-cities-partners-count-body">
                             <div class="row">
+                                <div class="col-12">
+                                    <div class="pull-right">
+                                        <strong>Sort Alphabetically</strong>
+                                        <label class="switch">
+                                            <input name="alpha-partners-switch" id="alpha-partners-switch" type="checkbox">
+                                            <span class="slider round"></span>
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 style="font-weight: 400">Featured Partners</h5>
+                            <div class="s-border"></div>
+                            <div class="m-border"></div>
+                            <div class="row  mb-3">
                                 @foreach($featured_agencies as $agency)
                                     <div class="col-sm-3 my-2">
                                         <a href="{{route('city.wise.partners',['agency'=>'featured','city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
@@ -35,14 +51,10 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h1 class="all-cities-header">Key Partners Listing</h1>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
+                            <h5 style="font-weight: 400">Key Partners</h5>
+                            <div class="s-border"></div>
+                            <div class="m-border"></div>
+                            <div class="row mb-3">
                                 @foreach($key_agencies as $agency)
                                     <div class="col-sm-3 my-2">
                                         <a href="{{route('city.wise.partners',['agency'=>'key','city'=> strtolower(Str::slug($agency->city)),'sort'=> 'newest'])}}"
@@ -53,13 +65,9 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h1 class="all-cities-header">Other Partners Listing</h1>
-                        </div>
-                        <div class="card-body">
+                            <h5 style="font-weight: 400">Other Partners</h5>
+                            <div class="s-border"></div>
+                            <div class="m-border"></div>
                             <div class="row">
                                 @foreach($normal_agencies as $agency)
                                     <div class="col-sm-3 my-2">
@@ -73,6 +81,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right mt-0">
