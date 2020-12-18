@@ -49,12 +49,10 @@
             <div class="price-block" style="display:none">
                 {{ Form::bsNumber('all_inclusive_price', null,['data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
-            {{--            {{ Form::bsCheckbox('call_for_price_inquiry', ['1'=>'1'], ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
         @else
             <div class="price-block">
                 {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
-            {{--            {{ Form::bsCheckbox('call_for_price_inquiry', null, ['required' => false, 'list'=> [(object) ['id' => 1, 'name' => '']], '']) }}--}}
         @endif
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
@@ -119,7 +117,6 @@
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
-        {{--                        {{dd(count($property->images))}}--}}
         @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Images</div>
@@ -145,7 +142,6 @@
         <div class="row border-bottom my-2 add-images" style="display: none">
             <div class="col-sm-12 text-bold my-2">Images</div>
         </div>
-        {{--{{dd((isset($property) and !$property->images->isEmpty()) ? count($property->images):0)}}--}}
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
         <div id="image-count" class="my-3" style="display: none" data-count=0></div>
@@ -210,11 +206,8 @@
         <div class="user-details-block" style="display:block">
             {{ Form::bsIntlTel('phone_#', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
 
+
             {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
-
-            {{--            {{ Form::bsTel('fax_#', isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax,  ['data-default' => 'E.g. 0211234567','id'=>'fax']) }}--}}
-            {{--            {{form::bsHidden('fax',isset($property->fax) ? $property->fax : \Illuminate\Support\Facades\Auth::user()->fax)}}--}}
-
             {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
         </div>
     </div>
