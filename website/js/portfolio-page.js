@@ -285,7 +285,10 @@
 
             $.ajax({
                 url: window.location.origin + '/dashboard/images/' + image,
-                type: 'DELETE',
+                type: "POST",
+                data:{
+                    _method:"DELETE"
+                },
                 success: function (data) {
                     if (data.status === 200) {
                         $('#delete-image').modal('hide');
