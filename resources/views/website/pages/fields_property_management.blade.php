@@ -119,29 +119,33 @@
     </div>
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
-        {{--                {{dd($property->images)}}--}}
+        {{--                        {{dd(count($property->images))}}--}}
         @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2">Images</div>
                 @foreach($property->images as $available_image)
                     <div class="col-md-4 col-sm-6 my-2">
                         <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                            <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-image" data-record-id="{{$available_image->id}}"
+                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal"
+                               data-target="#delete-image" data-record-id="{{$available_image->id}}"
                                style="position: absolute; top: 0; right: 0; z-index: 1">
                                 <i class="fad fa-times-circle fa-2x" style="color: red"></i>
                             </a>
-                            <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}" width="100%" class="img-responsive" alt="image not available"/>
+                            <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
+                                 data-id="{{$available_image->id}}"
+                                 width="100%" class="img-responsive" alt="image not available"/>
                         </div>
                     </div>
                 @endforeach
             </div>
-        @endif
+            <div id="edit-count" data-count="{{count($property->images)}}"></div>
 
+        @endif
         <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
         <div class="row border-bottom my-2 add-images" style="display: none">
             <div class="col-sm-12 text-bold my-2">Images</div>
         </div>
-
+        {{--{{dd((isset($property) and !$property->images->isEmpty()) ? count($property->images):0)}}--}}
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
         <div id="image-count" class="my-3" style="display: none" data-count=0></div>

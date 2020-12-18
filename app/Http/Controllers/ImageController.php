@@ -152,9 +152,9 @@ class ImageController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Image $image
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request)
+    public function form_destroy(Request $request)
     {
         $images = (new Image)->find($request->input('image-record-id'));
 
@@ -169,4 +169,17 @@ class ImageController extends Controller
         }
         return redirect()->back()->with('error', 'Image not found');
     }
+    public function destroy(Image $image)
+    {
+        if ($image->exists) {
+            try {
+                $image->delete();
+                return response()->json(['data' => 'images deleted', 'status' => 200]);
+            } catch (Throwable $e) {
+                return response()->json(['data' => $e->getMessage(), 'status' => 404]);
+
+            }
+        }
+    }
+
 }
