@@ -238,7 +238,6 @@
 
         // let total = parseInt(images.length) + parseInt(imageCountOnError) +  parseInt($('#image-count').attr('data-count'));
         let total =  current_val;
-        console.log( imageCountOnError + current_val);
         $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
     }
 
@@ -272,7 +271,7 @@
         }
         let count_div = $('#edit-count');
         if (count_div.attr('data-count') > 0) {
-            // imageCountOnError = parseInt(count_div.attr('data-count'));
+            imageCountOnError = parseInt(count_div.attr('data-count'));
             $('#image-count').attr('data-count', count_div.attr('data-count')).show().text('Image Count: ' + count_div.attr('data-count'));
 
         }
@@ -374,7 +373,7 @@
                             error: function (xhr, status, error) {
                             },
                         });
-                        console.log('calling image count from image upload');
+                        // console.log('calling image count from image upload');
                         showImagesCount(images);
                     }
                 });
@@ -575,6 +574,7 @@
 
         function checkImagesCountLimit(count) {
             if (store_image_name.length + count + imageCountOnError > 60) {
+                console.log(store_image_name.length + count + imageCountOnError);
                 alert('You can select 60 images only');
                 return false;
             } else
