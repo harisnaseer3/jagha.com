@@ -20,11 +20,41 @@
                     <!-- Listing -->
                     <div class="card">
                         <div class="card-header">
-                            <h1 class="all-cities-header">
-                                {{ucwords($type)}} for Sale in All Cities of Pakistan</h1>
+                            <div class="row">
+                                <div class="col-6">
+                                    <h1 class="all-cities-header">
+                                        {{ucwords($type)}} for Sale in All Cities of Pakistan</h1>
+                                    <input type="hidden" name="type" id="type" value="{{$type}}" />
+                                </div>
+{{--                                <div class="col-6">--}}
+{{--                                    <div class="pull-right">--}}
+{{--                                        <strong>Sort Alphabetically</strong>--}}
+{{--                                        <label class="switch">--}}
+{{--                                            <input type="checkbox">--}}
+{{--                                            <span class="slider round"></span>--}}
+{{--                                        </label>--}}
+
+{{--                                    </div>--}}
+
+{{--                                </div>--}}
+                            </div>
+
+
                         </div>
-                        <div class="card-body">
-                        @if($properties)
+                        <div class="card-body" id="all-cities-count-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="pull-right">
+                                        <strong>Sort Alphabetically</strong>
+                                        <label class="switch">
+                                            <input name="alpha-switch" id="alpha-switch" type="checkbox">
+                                            <span class="slider round"></span>
+                                        </label>
+
+                                    </div>
+                            </div>
+                            </div>
+                            @if($properties)
                                 <div class="row">
                                     @foreach($properties as  $property)
                                         <div class="col-sm-3 my-2">
