@@ -10,7 +10,7 @@
 
 {{ Form::close() }}
 
-@include('website.admin-pages.layouts.delete-image-modal', array('route'=>'images'))
+{{--@include('website.admin-pages.layouts.delete-image-modal', array('route'=>'images'))--}}
 @include('website.admin-pages.layouts.delete-plan-modal', array('route'=>'floorPlans'))
 @include('website.admin-pages.layouts.delete-video-modal', array('route'=>'videos'))
 

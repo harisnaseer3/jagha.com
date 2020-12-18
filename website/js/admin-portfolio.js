@@ -1,4 +1,17 @@
 (function ($) {
+    var store_image_name = [];
+
+    //this value is only used check the image count
+    var imageCountOnError = 0;
+
+    function checkImagesCountLimit(count) {
+        if (store_image_name.length + count + imageCountOnError > 60) {
+            console.log(store_image_name.length + count + imageCountOnError);
+            alert('You can select 60 images only');
+            return false;
+        } else
+            return true;
+    }
 
     function displayImages(name) {
         let image = name.split('.')[0];
@@ -17,8 +30,28 @@
 
     }
 
+    function showImagesCount(images) {
+        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError + 1 : imageCountOnError = 0;
+        let total = parseInt($('#image-count').attr('data-count')) + 1;
+        $('#image-count').show().attr('data-count', total).text('Image Count: ' + total);
+    }
+
+    function showImagesCountOnRemove(images) {
+        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
+        //to get the recent count  rather than length of array length
+        let current_val = parseInt($('#image-count').attr('data-count')) - 1 ;
+
+        // let total = parseInt(images.length) + parseInt(imageCountOnError) +  parseInt($('#image-count').attr('data-count'));
+        let total =  current_val;
+        $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
+    }
+
     function displayImagesOnError() {
-        $.each($('[name=image]').val().split(','), function (idx, val) {
+        let image_data = $('[name=image]').val().split(',');
+        // showImagesCountOnRemove(image_data);
+        $('#image-count').attr('data-count', image_data.length).show().text('Image Count: ' + image_data.length);
+        imageCountOnError = image_data.length;
+        $.each(image_data, function (idx, val) {
             let image = val.split('.')[0];
             let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
             let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
@@ -83,6 +116,126 @@
         input.addEventListener('keyup', reset);
     }
     $(document).ready(function () {
+        //in case of an error
+        if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
+            displayImagesOnError();
+        }
+        let count_div = $('#edit-count');
+        if (count_div.attr('data-count') > 0) {
+            imageCountOnError = parseInt(count_div.attr('data-count'));
+            $('#image-count').attr('data-count', count_div.attr('data-count')).show().text('Image Count: ' + count_div.attr('data-count'));
+
+        }
+        $(document).on('click', '.delete-image-btn', function () {
+            let image = $(this).attr('data-record-id');
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: window.location.origin + '/admin/images/' + image,
+                type: "POST",
+                data:{
+                    _method:"DELETE"
+                },
+                success: function (data) {
+                    if (data.status === 200) {
+                        $('#delete-image').modal('hide');
+                        // let flash_msg = '<div class="alert alert-success alert-block">' +
+                        //     '<button type="button" class="close" data-dismiss="alert">×</button>' +
+                        //     '<strong>Image Deleted Successfully</strong>' +
+                        //     '</div>';
+                        // $('#flash-msg').show().html(flash_msg);
+                        $("[data-id='" + image + "']").parent().parent().remove();
+
+                        imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
+                        let count = parseInt($('#image-count').attr('data-count')) - 1;
+                        $('#image-count').attr('data-count', count).show().text('Image Count: ' + count);
+
+
+                    } else if (data.status === 404) {
+                        $('#delete-image').modal('hide');
+
+                        let flash_msg = '<div class="alert alert-danger alert-block">' +
+                            '<button type="button" class="close" data-dismiss="alert">×</button>' +
+                            '<strong>Image not found.</strong>' +
+                            '</div>';
+
+                    }
+                },
+                error: function (xhr, status, error) {
+                },
+            });
+
+        });
+
+        $(document).on('click', '.remove-images', function () {
+            let selected_value = $(this).next('img').attr('data-value') + ".webp";
+            let index_value = jQuery.inArray(selected_value, store_image_name);
+            store_image_name.splice(index_value, 1);
+            $('#store-images').val(store_image_name);
+            $(this).parents('.upload-image-block').hide();
+            showImagesCountOnRemove(store_image_name);
+
+        });
+
+        $('#property-image-btn').on('click', function (e) {
+
+            e.preventDefault();
+            var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
+            let images = $('input#image')[0];
+            if (checkImagesCountLimit(images.files['length'])) {
+                $.each(images.files, function (idx, val) {
+                    if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
+                        alert('Please select images of type jpg, png or jpeg.');
+                        return 0;
+                    } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
+                    {
+                        alert('Please select image of size 10 MB or less');
+                        return 0;
+                    } else {
+                        $('#show_image_spinner').show();
+                        var fd = new FormData();
+                        fd.append('image', images.files[idx]);
+                        jQuery.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url: window.location.origin + '/property-image-upload',
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            type: 'POST',
+                            success: function (data) {
+                                $('input#image').val("");
+                                // console.log(data.data);
+
+                                if (data.status === 201) {
+                                    alert(data.data);
+                                } else if (data.status === 200) {
+                                    store_image_name.push(data.data);
+
+                                    $('#store-images').val(store_image_name);
+                                    displayImages(data.data);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                            },
+                        });
+                        // console.log('calling image count from image upload');
+                        showImagesCount(images);
+                    }
+                });
+
+            }
+
+        });
+
         function getCityLocations(city) {
             jQuery.ajaxSetup({
                 headers: {
@@ -268,28 +421,8 @@
             let record_id = $(event.relatedTarget).data('record-id');
             $(this).find('.modal-body #video-record-id').val(record_id);
         });
-        //
-        // $("input[name='phone']").keyup(function () {
-        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        // });
-        // $("input[name='mobile']").keyup(function () {
-        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        // });
-        // $("input[name='fax']").keyup(function () {
-        //     $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        // });
-        $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
 
-        // $('[name=call_for_price_inquiry]').click(function () {
-        //     if ($('[name=call_for_price_inquiry]').is(':checked')) {
-        //         $('[name=all_inclusive_price]').removeAttr('required').attr('disable', 'true');
-        //         $('[name=all_inclusive_price]').val('');
-        //         $('.price-block').slideUp();
-        //     } else {
-        //         $('[name=all_inclusive_price]').attr('required', 'required').attr('disable', 'false');
-        //         $('.price-block').slideDown();
-        //     }
-        // });
+        $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
         let radios = $('[name=property_package]')
 
         radios.prop("disabled", true);
@@ -375,81 +508,6 @@
                 $('[name=contact_email]').val('');
             }
         });
-        let store_image_name = [];
-        // $('#store-images').val(store_image_name);
-        $('#property-image-btn').on('click', function (e) {
-            e.preventDefault();
-            var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
-            let images = $('input#image')[0];
-            // console.log(images.files);
-
-            if (images.files['length'] > 60) {
-                alert('You can select 60 images only');
-                return 0;
-            }
-            $.each(images.files, function (idx, val) {
-
-                if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
-                    alert('Please select images of type jpg, png or jpeg.');
-                    return 0;
-                } else if (images.files[idx].size > 10 * 1000000) //greater than 10 mb
-                {
-                    alert('Please select image of size 10 MB or less');
-                    return 0;
-                } else {
-                    $('#show_image_spinner').show();
-                    var fd = new FormData();
-                    fd.append('image', images.files[idx]);
-                    jQuery.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        url: window.location.origin + '/property-image-upload',
-                        data: fd,
-                        processData: false,
-                        contentType: false,
-                        type: 'POST',
-                        success: function (data) {
-                            $('input#image').val("");
-                            // console.log(data.data);
-
-                            if (data.status === 201) {
-                                alert(data.data);
-                            } else if (data.status === 200) {
-                                // alert(data.data);
-                                store_image_name.push(data.data);
-                                // console.log(data.data)
-                                $('#store-images').val(store_image_name);
-                                displayImages(data.data);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            // console.log(error);
-                            // console.log(status);
-                            // console.log(xhr);
-                        },
-                    });
-                }
-            });
-
-
-        });
-        $(document).on('click', '.remove-images', function () {
-            let selected_value = $(this).next('img').attr('data-value') + ".webp";
-
-            let index_value = jQuery.inArray(selected_value, store_image_name);
-            store_image_name.splice(index_value, 1);
-            $('#store-images').val(store_image_name);
-            $(this).parents('.upload-image-block').hide();
-
-        });
-        //in case of an error
-        if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
-            displayImagesOnError();
-        }
 
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
