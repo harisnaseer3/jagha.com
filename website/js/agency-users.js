@@ -1,5 +1,19 @@
 (function ($) {
-    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type, check_field = '') {
+
+    $.validator.addMethod("checklower", function (value) {
+        return /[a-z]/.test(value);
+    });
+    $.validator.addMethod("checkupper", function (value) {
+        return /[A-Z]/.test(value);
+    });
+    $.validator.addMethod("checkdigit", function (value) {
+        return /[0-9]/.test(value);
+    });
+    $.validator.addMethod("checkspecialchr", function (value) {
+        return /[#?!@$%^&*-]/.test(value);
+    });
+
+    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         let ag_iti_cell = '';
         if (phone_type === "MOBILE") {
@@ -35,14 +49,11 @@
                     field.val(ag_iti_cell.getNumber());
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
-                    if (check_field !== '') $('[' + check_field + ']').val('');
                 } else {
                     var errorCode = ag_iti_cell.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
                     field.val('');
-                    if (check_field !== '') $('[' + check_field + ']').val(errorMap[errorCode]);
-
                 }
             }
         });
@@ -117,9 +128,9 @@
                 }
             },
             error: function (xhr, status, error) {
-                // console.log(xhr);
-                // console.log(status);
-                // console.log(error);
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
             },
             complete: function (url, options) {
 
@@ -166,16 +177,6 @@
     if (mobile_num.val() !== '') {
         $("input[name='mobile']").val(mobile_num.val());
     }
-    phone_num.on('change', function () {
-        if (phone_num.val() === '') {
-            $('input[name=phone_check]').val('');
-        }
-
-        $("input[name='phone']").val(phone_num.val());
-    });
-    mobile_num.on('change', function () {
-        $("input[name='mobile']").val(mobile_num.val());
-    });
 
     iti_contact_number(document.querySelector("#cell"),
         document.querySelector("#error-msg-mobile"),
@@ -185,12 +186,9 @@
     iti_contact_number(document.querySelector("#phone"),
         document.querySelector("#error-msg-phone"),
         document.querySelector("#valid-msg-phone"),
-        $('[name=phone]'), '#phone-error', "FIXED_LINE",'name=phone_check');
+        $('[name=phone]'), '#phone-error', "FIXED_LINE");
 
     let form = $('.data-insertion-form');
-    $.validator.addMethod('empty', function (value, element, param) {
-        return (value === '');
-    });
     form.validate({
         rules: {
             'mobile_#': {
@@ -200,17 +198,39 @@
             'mobile': {
                 required: true,
             },
-            'phone_check': {
-                empty: true,
+            'phone': {
+                required: true,
             },
-            contact_email: {
+            'phone_#': {
+                required: true,
+            },
+            'email': {
                 required: true,
                 email: true
             },
+            'accpunt_password': {
+                required: true,
+                minlength: 8,
+                maxlength: 20,
+                checklower: true,
+                checkupper: true,
+                checkdigit: true,
+                checkspecialchr: true,
+            },
+            'confirm_password': {
+                equalTo: "#account_password"
+            }
         },
         messages: {
+            'account_password': {
+                pwcheck: "Password is not strong enough",
+                checklower: "Need atleast 1 lowercase alphabet",
+                checkupper: "Need atleast 1 uppercase alphabet",
+                checkdigit: "Need atleast 1 digit",
+                checkspecialchr: "Need atleast 1 special character"
+            },
             'mobile': " please enter a valid value.",
-            'phone_check': "",
+            'phone': "please enter a valid value.",
         },
         errorElement: 'span',
         errorClass: 'error help-block text-red',

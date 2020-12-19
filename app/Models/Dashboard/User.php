@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -47,10 +48,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|email',
-//        'phone' => 'required|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
-        'phone' => 'required', // +92-511234567
+        'phone' => 'nullable|string', // +92-511234567
         'mobile' => 'required', // +92-3001234567
-//        'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',
@@ -143,5 +142,21 @@ class User extends Authenticatable implements MustVerifyEmail
             return true;
         }
         return false;
+    }
+
+    public static function createUser($data)
+    {
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->cell = $data['mobile'];
+        $user->phone = $data['phone'];
+        $user->country = $data['country'];
+        $user->password = Hash::make($data['account_password']);
+        $user->address = $data['address'];
+        $user->zip_code = $data['zip_code'];
+        $user->save();
+        return $user;
+
     }
 }

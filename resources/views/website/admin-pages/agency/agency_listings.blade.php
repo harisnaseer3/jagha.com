@@ -221,7 +221,8 @@
                                                             @endforelse
                                                             </tbody>
                                                         </table>
-                                                        {{ $listings['all']->links() }}
+{{--                                                        {{ $listings['all']->links() }}--}}
+                                                        {{ $listings['all']->links('vendor.pagination.bootstrap-4') }}
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'key'? 'active show' : '' }}" id="listings-key" role="tabpanel"
@@ -322,6 +323,7 @@
                                                             </tbody>
                                                         </table>
 
+{{--                                                        {{ $listings['key']->links() }}--}}
                                                         {{ $listings['key']->links() }}
                                                     </div>
                                                 </div>
@@ -424,7 +426,8 @@
                                                             </tbody>
                                                         </table>
 
-                                                        {{ $listings['featured']->links() }}
+{{--                                                        {{ $listings['featured']->links() }}--}}
+                                                        {{ $listings['featured']->links('vendor.pagination.bootstrap-4') }}
                                                     </div>
                                                 </div>
                                             </div>

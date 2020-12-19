@@ -89,15 +89,27 @@
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
         let optional_mobile_num = $("#optional_mobile");
-        if (phone_num.val() !== '') {
+
+        if (phone_num.val() !== '' && $("input[name='phone']").val() === '') {
             $("input[name='phone']").val(phone_num.val());
         }
-        if (mobile_num.val() !== '') {
+        if (mobile_num.val() !== '' && $("input[name='mobile']").val() === '') {
             $("input[name='mobile']").val(mobile_num.val());
         }
-        if (optional_mobile_num.val() !== '') {
+        if (optional_mobile_num.val() !== '' && $("input[name='optional']").val() === '') {
             $("input[name='optional']").val(optional_mobile_num.val());
         }
+        //on error form
+        // if ($("input[name='phone']").val() !== '') {
+        //     phone_num.val('+92' + $("input[name='phone']").val());
+        // }
+        // if ($("input[name='mobile']").val() !== '') {
+        //     mobile_num.val('+92' + $("input[name='mobile']").val());
+        // }
+        // if ($("input[name='optional']").val() !== '') {
+        //     optional_mobile_num.val('+92' + $("input[name='optional']").val());
+        // }
+
         phone_num.on('change',function(){ $("input[name='phone']").val(phone_num.val());});
         mobile_num.on('change',function(){$("input[name='mobile']").val(mobile_num.val());});
         optional_mobile_num.on('change',function(){ $("input[name='optional']").val(optional_mobile_num.val());});

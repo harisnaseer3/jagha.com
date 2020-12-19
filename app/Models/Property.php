@@ -70,7 +70,7 @@ class Property extends Model
         'premium_listing',
         'super_hot_listing',
         'hot_listing',
-        'magazine_listing', 'basic_listing', 'bronze_listing', 'silver_listing', 'golden_listing', 'platinum_listing',
+        'basic_listing', 'bronze_listing', 'silver_listing', 'golden_listing', 'platinum_listing',
         'contact_person',
         'phone',
         'cell',
@@ -98,19 +98,13 @@ class Property extends Model
         'unit' => 'required',
         'image.*' => 'image|max:10000',
         'floor_plans.*' => 'image|max:256',
-//        'phone' => 'required|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
-        'phone' => 'required', // +92-511234567
+        'phone' => 'nullable|string', // +92-511234567
         'mobile' => 'required', // +92-3001234567
-//        'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/', // +92-211234567
         'contact_person' => 'required|max:225',
         'contact_email' => 'required|email',
         'video_link' => 'nullable|url',
         'rejection_reason' => 'nullable|string'
     ];
-
-    /**
-     * @var \Illuminate\Database\Eloquent\HigherOrderBuilderProxy|mixed
-     */
 
     public function location()
     {

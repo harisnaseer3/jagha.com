@@ -97,16 +97,18 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
-                                                            <td>
-                                                                @if($params['status'] != 'deleted_agencies')
+
+                                                                @if($params['status'] == 'verified_agencies')
+                                                                <td>
                                                                     <a type="button" href="{{route('agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                     </a>
+                                                                </td>
                                                                     @endif
 
-                                                            </td>
+
 
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
@@ -142,7 +144,8 @@
                                                     @endforelse
                                                     </tbody>
                                                 </table>
-                                                {{ $listings['all']->links() }}
+{{--                                                {{ $listings['all']->links() }}--}}
+                                                {{ $listings['all']->links('vendor.pagination.bootstrap-4') }}
                                             </div>
                                         </div>
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'key'? 'active show' : '' }}" id="listings-key" role="tabpanel"
@@ -188,16 +191,18 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
-                                                            <td>
-                                                                @if($params['status'] != 'deleted_agencies')
+
+                                                                @if($params['status'] == 'verified_agencies')
+                                                                <td>
                                                                     <a type="button" href="{{route('agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                     </a>
+                                                                </td>
                                                                 @endif
 
-                                                            </td>
+
 
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
@@ -233,7 +238,8 @@
                                                     </tbody>
                                                 </table>
 
-                                                {{ $listings['key']->links() }}
+{{--                                                {{ $listings['key']->links() }}--}}
+                                                {{ $listings['key']->links('vendor.pagination.bootstrap-4') }}
                                             </div>
                                         </div>
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'featured'? 'active show' : '' }}" id="listings-featured" role="tabpanel"
@@ -280,17 +286,19 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
+                                                            @if($params['status'] == 'verified_agencies')
                                                             <td>
-                                                                @if($params['status'] != 'deleted_agencies')
+
 
                                                                     <a type="button" href="{{route('agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                     </a>
+                                                            </td>
                                                                     @endif
 
-                                                            </td>
+
 
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
@@ -325,7 +333,8 @@
                                                     </tbody>
                                                 </table>
 
-                                                {{ $listings['featured']->links() }}
+{{--                                                {{ $listings['featured']->links() }}--}}
+                                                {{ $listings['featured']->links('vendor.pagination.bootstrap-4') }}
                                             </div>
                                         </div>
 

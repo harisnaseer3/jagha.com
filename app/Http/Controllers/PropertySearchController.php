@@ -473,6 +473,7 @@ class PropertySearchController extends Controller
         $min_price = intval(str_replace(',', '', $data['min_price']));
         $max_price = intval(str_replace(',', '', $data['max_price']));
 
+
         //        both filters have some custom values
         if ($min_price !== 0 and $max_price !== 0) {
             if ($min_price < $max_price) $properties->whereBetween('price', [$min_price, $max_price]);
@@ -489,7 +490,7 @@ class PropertySearchController extends Controller
         $max_area = floatval(str_replace(',', '', $data['max_area']));
 
 
-        if($min_area < 0 or $max_area < 0){
+        if ($min_area < 0 or $max_area < 0) {
             $min_area = $max_area = 0.0;
         }
 

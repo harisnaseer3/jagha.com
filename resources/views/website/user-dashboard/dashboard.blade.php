@@ -159,7 +159,8 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        {{ $properties->links() }}
+{{--                                        {{ $properties->links() }}--}}
+                                        {{ $properties->links('vendor.pagination.bootstrap-4') }}
                                     </div>
                                 </div>
                             </div>
