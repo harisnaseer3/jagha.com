@@ -47,10 +47,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|email',
-//        'phone' => 'required|regex:/^(\+\d{1,2}[\s.-])?\d{2,3}\d{3}\d{4}$/', // +92-511234567
-        'phone' => 'required', // +92-511234567
+        'phone' => 'nullable|string', // +92-511234567
         'mobile' => 'required', // +92-3001234567
-//        'fax' => 'nullable|regex:/\+92-\d{2}\d{7}/',   // +92-211234567
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',

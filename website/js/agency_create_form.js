@@ -119,12 +119,19 @@
         // }
 
         phone_num.on('change', function () {
+            if (phone_num.val() === '') {
+                $('input[name=phone_check]').val('');
+            }
             $("input[name='phone']").val(phone_num.val());
         });
         mobile_num.on('change', function () {
+
             $("input[name='mobile']").val(mobile_num.val());
         });
         optional_mobile_num.on('change', function () {
+            if (optional_mobile_num.val() === '') {
+                $('input[name=optional_mobile_check]').val('');
+            }
             $("input[name='optional']").val(optional_mobile_num.val());
         });
 
