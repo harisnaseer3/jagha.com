@@ -164,16 +164,16 @@
                                                                     @elseif($params['status'] == 'rejected_agencies')
                                                                         <td>{{ucwords($all_listing->reviewed_by)}}</td>
                                                                     @endif
-                                                                    <td>
-                                                                        @if($params['status'] != 'deleted_agencies')
-                                                                            <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"
-                                                                               data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
-                                                                            </a>
-                                                                        @endif
+{{--                                                                    <td>--}}
+{{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
+{{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"--}}
+{{--                                                                               data-toggle-1="tooltip"--}}
+{{--                                                                               data-placement="bottom" title="Add user in agency">--}}
+{{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+{{--                                                                            </a>--}}
+{{--                                                                        @endif--}}
 
-                                                                    </td>
+{{--                                                                    </td>--}}
                                                                     <td>
                                                                         @if($params['status'] != 'deleted_agencies')
 
@@ -279,16 +279,16 @@
                                                                     @elseif($params['status'] == 'deleted_agencies')
                                                                         <td></td>
                                                                     @endif
-                                                                    <td>
-                                                                        @if($params['status'] != 'deleted_agencies')
-                                                                            <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
-                                                                               data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
-                                                                            </a>
-                                                                        @endif
+{{--                                                                    <td>--}}
+{{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
+{{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"--}}
+{{--                                                                               data-toggle-1="tooltip"--}}
+{{--                                                                               data-placement="bottom" title="Add user in agency">--}}
+{{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+{{--                                                                            </a>--}}
+{{--                                                                        @endif--}}
 
-                                                                    </td>
+{{--                                                                    </td>--}}
                                                                     <td>
                                                                         @if($params['status'] != 'deleted_agencies')
 
@@ -382,18 +382,18 @@
                                                                     @elseif($params['status'] == 'deleted_agencies')
                                                                         <td></td>
                                                                     @endif
-                                                                    <td>
+{{--                                                                    <td>--}}
 
-                                                                        @if($params['status'] != 'deleted_agencies')
+{{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
 
-                                                                            <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
-                                                                               data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="Add user in agency">
-                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
-                                                                            </a>
-                                                                        @endif
+{{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"--}}
+{{--                                                                               data-toggle-1="tooltip"--}}
+{{--                                                                               data-placement="bottom" title="Add user in agency">--}}
+{{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+{{--                                                                            </a>--}}
+{{--                                                                        @endif--}}
 
-                                                                    </td>
+{{--                                                                    </td>--}}
                                                                     <td>
                                                                         @if($params['status'] != 'deleted_agencies')
                                                                             <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}" class="btn btn-sm btn-warning"
