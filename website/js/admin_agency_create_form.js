@@ -100,15 +100,15 @@
             $("input[name='optional']").val(optional_mobile_num.val());
         }
         //on error form
-        if ($("input[name='phone']").val() !== '') {
-            phone_num.val('+92' + $("input[name='phone']").val());
-        }
-        if ($("input[name='mobile']").val() !== '') {
-            mobile_num.val('+92' + $("input[name='mobile']").val());
-        }
-        if ($("input[name='optional']").val() !== '') {
-            optional_mobile_num.val('+92' + $("input[name='optional']").val());
-        }
+        // if ($("input[name='phone']").val() !== '') {
+        //     phone_num.val('+92' + $("input[name='phone']").val());
+        // }
+        // if ($("input[name='mobile']").val() !== '') {
+        //     mobile_num.val('+92' + $("input[name='mobile']").val());
+        // }
+        // if ($("input[name='optional']").val() !== '') {
+        //     optional_mobile_num.val('+92' + $("input[name='optional']").val());
+        // }
 
         phone_num.on('change',function(){ $("input[name='phone']").val(phone_num.val());});
         mobile_num.on('change',function(){$("input[name='mobile']").val(mobile_num.val());});

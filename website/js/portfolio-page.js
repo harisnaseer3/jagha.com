@@ -596,12 +596,12 @@
             $("input[name='mobile']").val(mobile_num.val());
         }
         //on error form
-        if ($("input[name='phone']").val() !== '') {
-            phone_num.val('+92' + $("input[name='phone']").val());
-        }
-        if ($("input[name='mobile']").val() !== '') {
-            mobile_num.val('+92' + $("input[name='mobile']").val());
-        }
+        // if ($("input[name='phone']").val() !== '') {
+        //     phone_num.val('+92' + $("input[name='phone']").val());
+        // }
+        // if ($("input[name='mobile']").val() !== '') {
+        //     mobile_num.val('+92' + $("input[name='mobile']").val());
+        // }
         phone_num.on('change', function () {
             if (phone_num.val() === '') {
                 $('input[name=phone_check]').val('');
