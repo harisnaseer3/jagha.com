@@ -235,7 +235,8 @@
                                                                 <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                             @endif
                                                             @if($listings[$option] != null)
-                                                                {{ $listings[$option]->links() }}
+{{--                                                                {{ $listings[$option]->links() }}--}}
+                                                                {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}
                                                             @endif
                                                         </div>
                                                     </div>

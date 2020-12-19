@@ -104,7 +104,9 @@
 
                     <!-- Pagination -->
                     <div class="pagination-box hidden-mb-45 text-center" role="navigation">
-                        {{ $agencies->links() }}
+                        {{--                        {{ $agencies->links() }}--}}
+                        {{ $agencies->links('vendor.pagination.bootstrap-4') }}
+
 
                     </div>
                 </div>

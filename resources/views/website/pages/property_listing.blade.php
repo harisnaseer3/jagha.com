@@ -164,7 +164,8 @@
                     @if($properties->count())
                     <!-- Pagination -->
                         <div class="pagination-box hidden-mb-45 text-center" role="navigation">
-                            {{ $properties->links() }}
+
+                            {{ $properties->links('vendor.pagination.bootstrap-4') }}
                         </div>
                     @endif
                 </div>
