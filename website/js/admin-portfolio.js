@@ -1,6 +1,36 @@
 (function ($) {
     var store_image_name = [];
-
+    function getUserData(user) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: window.location.origin + '/user-info',
+            data: {user: user},
+            dataType: 'json',
+            success: function (data) {
+                let result = data.data
+                if (!jQuery.isEmptyObject({result})) {
+                    $('.select_contact_person_spinner').hide();
+                    $('.user-details-block').show();
+                    if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
+                    if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
+                    if (result.fax !== null) $('[name=fax]').val(result.fax);
+                    if (result.email !== null) $('[name=contact_email]').val(result.email);
+                }
+            },
+            error: function (xhr, status, error) {
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
+            },
+            complete: function (url, options) {
+            }
+        });
+    }
     //this value is only used check the image count
     var imageCountOnError = 0;
 

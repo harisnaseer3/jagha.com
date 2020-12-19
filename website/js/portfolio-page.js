@@ -97,8 +97,8 @@
                 if (!jQuery.isEmptyObject({result})) {
                     $('.select_contact_person_spinner').hide();
                     $('.user-details-block').show();
-                    if (result.phone !== null) $('[name=phone]').val(result.phone);
-                    if (result.cell !== null) $('[name=mobile]').val(result.cell);
+                    if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
+                    if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
                     if (result.fax !== null) $('[name=fax]').val(result.fax);
                     if (result.email !== null) $('[name=contact_email]').val(result.email);
                 }
