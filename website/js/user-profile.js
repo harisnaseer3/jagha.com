@@ -1,5 +1,5 @@
 (function ($) {
-    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
+    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type, check_field = '') {
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         let ag_iti_cell = '';
         if (phone_type === "MOBILE") {
@@ -35,11 +35,14 @@
                     field.val(ag_iti_cell.getNumber());
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
+                    if (check_field !== '') $('[' + check_field + ']').val('');
                 } else {
                     var errorCode = ag_iti_cell.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
                     field.val('');
+                    if (check_field !== '') $('[' + check_field + ']').val(errorMap[errorCode]);
+
                 }
             }
         });
@@ -114,9 +117,9 @@
                 }
             },
             error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
+                // console.log(xhr);
+                // console.log(status);
+                // console.log(error);
             },
             complete: function (url, options) {
 
@@ -163,6 +166,16 @@
     if (mobile_num.val() !== '') {
         $("input[name='mobile']").val(mobile_num.val());
     }
+    phone_num.on('change', function () {
+        if (phone_num.val() === '') {
+            $('input[name=phone_check]').val('');
+        }
+
+        $("input[name='phone']").val(phone_num.val());
+    });
+    mobile_num.on('change', function () {
+        $("input[name='mobile']").val(mobile_num.val());
+    });
 
     iti_contact_number(document.querySelector("#cell"),
         document.querySelector("#error-msg-mobile"),
@@ -172,9 +185,12 @@
     iti_contact_number(document.querySelector("#phone"),
         document.querySelector("#error-msg-phone"),
         document.querySelector("#valid-msg-phone"),
-        $('[name=phone]'), '#phone-error', "FIXED_LINE");
+        $('[name=phone]'), '#phone-error', "FIXED_LINE",'name=phone_check');
 
     let form = $('.data-insertion-form');
+    $.validator.addMethod('empty', function (value, element, param) {
+        return (value === '');
+    });
     form.validate({
         rules: {
             'mobile_#': {
@@ -184,11 +200,8 @@
             'mobile': {
                 required: true,
             },
-            'phone': {
-                required: true,
-            },
-            'phone_#': {
-                required: true,
+            'phone_check': {
+                empty: true,
             },
             contact_email: {
                 required: true,
@@ -197,7 +210,7 @@
         },
         messages: {
             'mobile': " please enter a valid value.",
-            'phone': "please enter a valid value.",
+            'phone_check': "",
         },
         errorElement: 'span',
         errorClass: 'error help-block text-red',

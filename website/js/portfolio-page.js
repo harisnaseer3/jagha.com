@@ -97,8 +97,8 @@
                 if (!jQuery.isEmptyObject({result})) {
                     $('.select_contact_person_spinner').hide();
                     $('.user-details-block').show();
-                    if (result.phone !== null) $('[name=phone]').val(result.phone);
-                    if (result.cell !== null) $('[name=mobile]').val(result.cell);
+                    if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
+                    if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
                     if (result.fax !== null) $('[name=fax]').val(result.fax);
                     if (result.email !== null) $('[name=contact_email]').val(result.email);
                 }
@@ -596,12 +596,12 @@
             $("input[name='mobile']").val(mobile_num.val());
         }
         //on error form
-        if ($("input[name='phone']").val() !== '') {
-            phone_num.val('+92' + $("input[name='phone']").val());
-        }
-        if ($("input[name='mobile']").val() !== '') {
-            mobile_num.val('+92' + $("input[name='mobile']").val());
-        }
+        // if ($("input[name='phone']").val() !== '') {
+        //     phone_num.val('+92' + $("input[name='phone']").val());
+        // }
+        // if ($("input[name='mobile']").val() !== '') {
+        //     mobile_num.val('+92' + $("input[name='mobile']").val());
+        // }
         phone_num.on('change', function () {
             if (phone_num.val() === '') {
                 $('input[name=phone_check]').val('');

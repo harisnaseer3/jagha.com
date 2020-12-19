@@ -130,6 +130,7 @@ if(request()->segment(2) !== 'partners_results' ){
                                         <option value="{{$type}}" {{ $subtype === $type? 'selected' : ''}}>{{$type}}</option>
                                     @endforeach
                                 </select>
+
                             </div>
                         @endforeach
                     </div>
@@ -139,27 +140,45 @@ if(request()->segment(2) !== 'partners_results' ){
                         <div class="label-container"><label class="input-label" for="select-min-price" style="padding-left: 28px">MIN PRICE (PKR)</label></div>
                         <div class="col-sm-6" style="padding-right:0; border-right:1px solid #ced4da">
                             <div class="index-page-select">
-                                <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="select-min-price" style="width: 100%;" tabindex="-1"
-                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_price">
-                                    <option value="0" data-index="0" {{request()->query('min_price')? '' : 'selected'}} >0</option>
-                                    @foreach(['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000'] as $key => $price)
-                                        as $key => $price)
-                                        <option value="{{$price}}" {{request()->query('min_price') === $price? 'selected' : ''}} data-index="{{$key}}">{{$price}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="number" class="index-page-num-area" id="select-min-price"
+                                       aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_price" list="select-min-price-datalist"
+                                       style="color: #555;" min=0>
+                                <datalist id="select-min-price-datalist" class="areas-datalist">
+                                    <option value=500000>500000</option>
+                                    <option value=1000000>1000000</option>
+                                    <option value=2000000>2000000</option>
+                                    <option value=3500000>3500000</option>
+                                    <option value=5000000>5000000</option>
+                                    <option value=6500000>6500000</option>
+                                    <option value=8000000>8000000</option>
+                                    <option value=10000000>10000000</option>
+                                    <option value=12500000>12500000</option>
+                                    <option value=15000000>15000000</option>
+                                    <option value=17500000>17500000</option>
+                                </datalist>
+
                             </div>
                         </div>
                         <div class="col-sm-6" style="padding-left: 0;">
                             <div class="label-container"><label class="input-label" for="select-max-price">MAX PRICE (PKR)</label></div>
                             <div class="index-page-select">
-                                <select class="custom-select custom-select-sm select2bs4 select2-hidden-accessible" id="select-max-price" style="width: 100%;" tabindex="-1"
-                                        aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_price">
-                                    <option value="Any" data-index="0" selected>Any</option>
-                                    @foreach(['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000', '5,000,000,000'] as $price)
-                                        as $price)
-                                        <option value="{{$price}}" {{request()->query('max_price') === $price? 'selected' : ''}} data-index="{{$key}}">{{$price}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="number" class="index-page-num-area"
+                                       id="select-max-price" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="max_price"
+                                       list="select-max-price-datalist"
+                                       style="color: #555;" min=0>
+
+                                <datalist id="select-max-price-datalist" class="areas-datalist">
+                                    <option value=1000000>1000000</option>
+                                    <option value=2000000>2000000</option>
+                                    <option value=3500000>3500000</option>
+                                    <option value=5000000>5000000</option>
+                                    <option value=6500000>6500000</option>
+                                    <option value=8000000>8000000</option>
+                                    <option value=10000000>10000000</option>
+                                    <option value=12500000>12500000</option>
+                                    <option value=15000000>15000000</option>
+                                    <option value=17500000>17500000</option>
+                                </datalist>
                             </div>
                         </div>
                     </div>

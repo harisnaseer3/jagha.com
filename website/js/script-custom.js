@@ -1,6 +1,6 @@
 (function ($) {
     function searchWithparams() {
-        let baseurl=window.location.origin;
+        let baseurl = window.location.origin;
         let page_link = '';
         let purpose = '';
         let type = '';
@@ -37,11 +37,16 @@
             min_area = '';
             max_area = '';
         }
+        if (min_price < 0 || max_price < 0) {
+            min_price = 0;
+            max_price = 0;
+        }
+
 
         page_link += '/' + city.replace(/ /g, '-').toLowerCase() + '?';
         if (location !== '') page_link += 'location=' + location.replace(/-/g, '_').replace(/ /g, '-').toLowerCase();
-        if (min_price !== '0' && min_price !== null) page_link += '&min_price=' + min_price;
-        if (max_price !== 'Any' && max_price !== null) page_link += '&max_price=' + max_price;
+        if (min_price !== '0' && min_price !== null && min_price !== '') page_link += '&min_price=' + min_price;
+        if (max_price !== 'Any' && max_price !== null && max_price !== '') page_link += '&max_price=' + max_price;
         if (min_area !== '0' && min_area !== null && min_area !== '') page_link += '&min_area=' + min_area;
         if (max_area !== 'Any' && max_area !== null && max_area !== '') page_link += '&max_area=' + max_area;
         if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
@@ -83,10 +88,19 @@
         if (purpose === 'Buy')
             page_link += 'sale';
         else page_link += purpose.toLowerCase();
+        if (min_area < 0 || max_area < 0) {
+            min_area = '';
+            max_area = '';
+        }
+        if (min_price < 0 || max_price < 0) {
+            min_price = 0;
+            max_price = 0;
+        }
+
         page_link += '/' + city.replace(/ /g, '-').toLowerCase() + '?';
         if (location !== '') page_link += 'location=' + location.replace(/-/g, '_').replace(/ /g, '-').toLowerCase();
-        if (min_price !== '0' && min_price !== null) page_link += '&min_price=' + min_price;
-        if (max_price !== 'Any' && max_price !== null) page_link += '&max_price=' + max_price;
+        if (min_price !== '0' && min_price !== null && min_price !== '') page_link += '&min_price=' + min_price;
+        if (max_price !== 'Any' && max_price !== null && max_price !== '') page_link += '&max_price=' + max_price;
         if (min_area !== '0' && min_area !== null && min_area !== '') page_link += '&min_area=' + min_area;
         if (max_area !== 'Any' && max_area !== null && max_area !== '') page_link += '&max_area=' + max_area;
         if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
@@ -153,12 +167,12 @@
                 let locations = data.data;
                 // if (!jQuery.isEmptyObject({locations})) {
 
-                    let datalist = $('.location-datalist');
-                    let html = '';
-                    $.each(data.data, function (index, value) {
-                        html += '<option value="' + value.name + '">';
-                    });
-                    datalist.html(html);
+                let datalist = $('.location-datalist');
+                let html = '';
+                $.each(data.data, function (index, value) {
+                    html += '<option value="' + value.name + '">';
+                });
+                datalist.html(html);
                 // }
             },
             error: function (xhr, status, error) {
@@ -258,7 +272,7 @@
         }
     }
 
-    $('#btnDeny').click(function(){
+    $('#btnDeny').click(function () {
         eraseCookie('allowCookies');
         $('.toast').toast('hide');
     })
@@ -332,30 +346,6 @@
         $('#search2-property_subtype-' + selectedValue).toggle();
         $('#property_subtype-' + selectedValue).toggle();
 
-        function addPriceOptions(end) {
-            let options = ['500,000', '1,000,000', '2,000,000', '3,500,000', '5,000,000', '6,500,000', '8,000,000', '10,000,000', '12,500,000', '15,000,000', '17,500,000', '20,000,000', '25,000,000', '30,000,000', '40,000,000', '50,000,000', '75,000,000', '100,000,000', '250,000,000', '500,000,000', '1,000,000,000', '5,000,000,000']
-            $('#select-max-price option').remove();
-            $('#search2-select-max-price option').remove();
-            var max_value = $('#select-max-price');
-            var max_value2 = $('#search2-select-max-price');
-            max_value.append('<option selected="selected" value="Any">Any</option>');
-            max_value2.append('<option selected="selected" value="Any">Any</option>');
-            for (let i = end; i < options.length; i++) {
-                max_value.append('<option value=' + options[i] + '>' + options[i] + '</option>');
-            }
-            for (let i = end + 1; i < options.length; i++) {
-                max_value2.append('<option value=' + options[i] + '>' + options[i] + '</option>');
-            }
-        }
-
-        $('#select-min-price').on('change', function (e) {
-            addPriceOptions($("#select-min-price option:selected").data('index'));
-        });
-
-        $('#search2-select-min-price').on('change', function (e) {
-            addPriceOptions($("#search2-select-min-price option:selected").data('index'));
-        });
-
         $('#city').on('change', function (e) {
             getCityLocations($('#city option:selected').val());
         });
@@ -411,10 +401,19 @@
             sessionStorage.setItem('max_area', data2);
         });
         $(document.body).on("change", "[name=min_area]", function () {
-            // console.log('here2');
             let data1 = $(this).val();
             sessionStorage.setItem('min_area', data1);
         });
+
+        $(document.body).on("change", "[name=min_price]", function () {
+            let data1 = $(this).val();
+            sessionStorage.setItem('min_price', data1);
+        });
+        $(document.body).on("change", "[name=max_price]", function () {
+            let data2 = $(this).val();
+            sessionStorage.setItem('max_price', data2);
+        });
+
         if (sessionStorage.getItem('max_area') !== null) {
             $('#select-max-area').val(parseInt(sessionStorage.getItem('max_area')));
             $('#search2-select-max-area').val(parseInt(sessionStorage.getItem('max_area')));
@@ -422,6 +421,14 @@
         if (sessionStorage.getItem('min_area') !== null) {
             $('#select-min-area').val(parseInt(sessionStorage.getItem('min_area')));
             $('#search2-select-min-area').val(parseInt(sessionStorage.getItem('min_area')));
+        }
+        if (sessionStorage.getItem('min_price') !== null) {
+            $('#select-min-price').val(parseInt(sessionStorage.getItem('min_price')));
+            $('#search2-select-min-price').val(parseInt(sessionStorage.getItem('min_price')));
+        }
+        if (sessionStorage.getItem('max_price') !== null) {
+            $('#select-max-price').val(parseInt(sessionStorage.getItem('max_price')));
+            $('#search2-select-max-price').val(parseInt(sessionStorage.getItem('max_price')));
         }
 
 
@@ -488,7 +495,7 @@
                                 '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
                                 '                      <i class="fas fa-user mr-2"></i>';
-                            html += '<span class="mr-1">'+ user_name + ' (ID: ' + user_id + ')'+'<span>' ;
+                            html += '<span class="mr-1">' + user_name + ' (ID: ' + user_id + ')' + '<span>';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
@@ -497,8 +504,8 @@
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
-                            let html_profile_link =   '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
-                            let html_property_link =   '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
+                            let html_profile_link = '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
+                            let html_property_link = '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
 
                             user_dropdown.html(html);
                             nav_property_link.html(html_property_link);
@@ -584,7 +591,7 @@
                 type: 'get',
                 url: window.location.origin + '/admin/admin-logout',
                 success: function (data) {
-                    if(data.data){
+                    if (data.data) {
                         let user_dropdown = $('.user-dropdown');
                         user_dropdown.html('');
                         let html = ' <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"\n' +
@@ -596,11 +603,11 @@
                         $('#exampleModalCenter').modal('show');
 
                     }
-        }
-        })
-    });
+                }
+            })
+        });
 
-        $('#btnAccept').click(function() {
+        $('#btnAccept').click(function () {
             setCookie('allowCookies', '1', 7);
             $('.toast').hide();
         })
