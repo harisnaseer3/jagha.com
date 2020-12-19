@@ -23,6 +23,7 @@ class PropertyAjaxCallController extends Controller
             return "not found";
         }
     }
+
     public function changePropertyStatus(Request $request)
     {
         if ($request->ajax()) {
@@ -81,6 +82,7 @@ class PropertyAjaxCallController extends Controller
         }
 
     }
+
     public function adminPropertyCitySearch(Request $request)
     {
         $city = (new City)->select('id')->where('name', '=', $request->city)->first();
@@ -93,10 +95,11 @@ class PropertyAjaxCallController extends Controller
         }
 
     }
+
     public function userPropertySearch(Request $request)
     {
         if ($request->input('property_ref') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('property_ref'))) {
-            $property = (new Property)->where('reference', '=', $request->property_ref)->first();
+            $property = (new Property)->where('reference', '=', $request->property_ref)->where('status', '=', 'active')->first();
             if (!$property)
                 return redirect()->back()->withInput()->with('error', 'Property not found.');
             else {
