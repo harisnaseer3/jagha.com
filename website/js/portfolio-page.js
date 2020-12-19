@@ -158,7 +158,7 @@
 
     }
 
-    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type) {
+    function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type, check_field = '') {
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         let ag_iti_cell = '';
         if (phone_type === "MOBILE") {
@@ -194,11 +194,13 @@
                     field.val(ag_iti_cell.getNumber());
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
+                    if (check_field !== '') $('[' + check_field + ']').val('');
                 } else {
                     var errorCode = ag_iti_cell.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
                     field.val('');
+                    if (check_field !== '') $('[' + check_field + ']').val(errorMap[errorCode]);
                 }
             }
         });
@@ -206,7 +208,6 @@
         input.addEventListener('change', reset);
         input.addEventListener('keyup', reset);
     }
-
 
     function displayImages(name) {
         let image = name.split('.')[0];
@@ -234,10 +235,10 @@
     function showImagesCountOnRemove(images) {
         imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
         //to get the recent count  rather than length of array length
-        let current_val = parseInt($('#image-count').attr('data-count')) - 1 ;
+        let current_val = parseInt($('#image-count').attr('data-count')) - 1;
 
         // let total = parseInt(images.length) + parseInt(imageCountOnError) +  parseInt($('#image-count').attr('data-count'));
-        let total =  current_val;
+        let total = current_val;
         $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
     }
 
@@ -286,8 +287,8 @@
             $.ajax({
                 url: window.location.origin + '/dashboard/images/' + image,
                 type: "POST",
-                data:{
-                    _method:"DELETE"
+                data: {
+                    _method: "DELETE"
                 },
                 success: function (data) {
                     if (data.status === 200) {
@@ -583,14 +584,34 @@
             } else
                 return true;
         }
+
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
-        if (phone_num.val() !== '') {
+
+        //on update form
+        if (phone_num.val() !== '' && $("input[name='phone']").val() === '') {
             $("input[name='phone']").val(phone_num.val());
         }
-        if (mobile_num.val() !== '') {
+        if (mobile_num.val() !== '' && $("input[name='mobile']").val() === '') {
             $("input[name='mobile']").val(mobile_num.val());
         }
+        //on error form
+        if ($("input[name='phone']").val() !== '') {
+            phone_num.val('+92' + $("input[name='phone']").val());
+        }
+        if ($("input[name='mobile']").val() !== '') {
+            mobile_num.val('+92' + $("input[name='mobile']").val());
+        }
+        phone_num.on('change', function () {
+            if (phone_num.val() === '') {
+                $('input[name=phone_check]').val('');
+            }
+
+            $("input[name='phone']").val(phone_num.val());
+        });
+        mobile_num.on('change', function () {
+            $("input[name='mobile']").val(mobile_num.val());
+        });
 
         iti_contact_number(document.querySelector("#cell"),
             document.querySelector("#error-msg-mobile"),
@@ -600,7 +621,11 @@
         iti_contact_number(document.querySelector("#phone"),
             document.querySelector("#error-msg-phone"),
             document.querySelector("#valid-msg-phone"),
-            $('[name=phone]'), '#phone-error', "FIXED_LINE");
+            $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+
+        $.validator.addMethod('empty', function (value, element, param) {
+            return (value === '');
+        });
 
         let form = $('.data-insertion-form');
         form.validate({
@@ -608,8 +633,8 @@
                 'mobile_#': {
                     required: true,
                 },
-                'phone_#': {
-                    required: true,
+                'phone_check': {
+                    empty: true,
                 },
                 contact_email: {
                     required: true,
@@ -618,13 +643,10 @@
                 'mobile': {
                     required: true,
                 },
-                'phone': {
-                    required: true,
-                },
             },
             messages: {
                 'mobile': " please enter a valid value.",
-                'phone': "please enter a valid value.",
+                'phone_check': "",
             },
             errorElement: 'span',
             errorClass: 'error help-block text-red',
