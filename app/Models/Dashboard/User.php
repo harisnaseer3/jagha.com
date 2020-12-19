@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -143,5 +144,21 @@ class User extends Authenticatable implements MustVerifyEmail
             return true;
         }
         return false;
+    }
+
+    public static function createUser($data)
+    {
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->cell = $data['mobile'];
+        $user->phone = $data['phone'];
+        $user->country = $data['country'];
+        $user->password = Hash::make($data['account_password']);
+        $user->address = $data['address'];
+        $user->zip_code = $data['zip_code'];
+        $user->save();
+        return $user;
+
     }
 }

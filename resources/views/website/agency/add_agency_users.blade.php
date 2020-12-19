@@ -6,6 +6,7 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 @endsection
 
 @section('content')
@@ -72,11 +73,11 @@
                                             <thead class="theme-blue color-white">
                                             <tr>
                                                 <th>#</th>
-                                                <th>AboutPakistan ID</th>
                                                 <th>Name</th>
                                                 <th>Role</th>
-                                                <th>Email Address</th>
+                                                <th>Email</th>
                                                 <th>Phone</th>
+
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -84,7 +85,6 @@
                                                 @foreach($current_agency_users as $agency_user)
                                                     <tr>
                                                         <td>{{$loop->iteration}}</td>
-                                                        <td>{{$agency_user->id}}</td>
                                                         <td>{{$agency_user->name}}</td>
                                                         @if($agency->user_id === $agency_user->id)
                                                             <td>Agency CEO</td>
@@ -104,94 +104,25 @@
                                             <div class="card-header bg-secondary color-white">
                                                 Add User
                                             </div>
+                                            {{ Form::open(['route' => ['agencies.store-agency-users',$agency->id], 'method' => 'post', 'class'=> 'data-insertion-form']) }}
                                             <div class="card-body">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <form class="form-inline" role="form">
-                                                            <div class="form-group mb-2">
-                                                                <div class="radio">
-                                                                    <label class="radio-inline control-label">
-                                                                        <input type="radio" name="user_add_by" value="Id" class="mb-2 mr-2" checked="checked"> By AboutPakistan ID
-                                                                        <input type="number" min="2" class="form-control form-control-md mr-3 ml-3" id="user-id" name="user-id"/>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group mb-2">
-                                                                <div class="radio">
-                                                                    <label class="radio-inline control-label">
-                                                                        <input type="radio" name="user_add_by" value="Email" class="mb-2 mr-2"> By Email Address
-                                                                        <input type="email" class="form-control form-control-md  ml-3" readonly id="user-mail" name="user-mail"/>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
 
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <a href="#" class="btn btn-sm btn-primary" id="add_user">Add User</a>
-                                                        <a href="#" class="btn btn-sm btn-warning " id="clear">Clear</a>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-2">
-                                                    <div class="col-md-12">
-                                                        <div id="error-message" style="display:none; color:red;"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-md-12">
-                                                <div class="table-responsive">
-                                                    {{ Form::open(['route' => ['agencies.store-agency-users', $agency->id], 'method' => 'post', 'role' => 'form']) }}
-                                                    <table class="table table-md table-bordered" id="agency-users-table" style="display:none;">
-                                                        <thead class="theme-blue color-white">
-                                                        <tr>
-                                                            <th>Type</th>
-                                                            <th>AboutPakistan ID</th>
-                                                            <th>Email Address</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
+                                                {{ Form::bsEmail('email',null, ['required' => true]) }}
+                                                {{ Form::bsText('name', null, ['required' => true]) }}
+                                                {{ Form::bsPassword('account_password', ['required' => true, 'id' => 'account_password', 'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
+                                                {{ Form::bsPassword('confirm_password', ['required' => true, 'id'=>'confirm_password']) }}
+                                                {{ Form::bsIntlTel('phone_#', null, ['required' => true, 'id'=>'phone']) }}
+                                                {{ Form::bsIntlTel('mobile_#',null, ['required' => true,'id'=>'cell']) }}
+                                                {{ Form::bsText('address',null) }}
+                                                {{ Form::bsText('zip_code',null) }}
+                                                {{ Form::bsSelect2('country', ['Afghanistan' => 'Afghanistan', 'Albania' => 'Albania', 'Algeria' => 'Algeria', 'American Samoa' => 'American Samoa', 'Andorra' => 'Andorra', 'Angola' => 'Angola', 'Anguilla' => 'Anguilla', 'Antarctica' => 'Antarctica', 'Antigua and Barbuda' => 'Antigua and Barbuda', 'Argentina' => 'Argentina', 'Armenia' => 'Armenia', 'Aruba' => 'Aruba', 'Australia' => 'Australia', 'Austria' => 'Austria', 'Azerbaijan' => 'Azerbaijan', 'Bahamas' => 'Bahamas', 'Bahrain' => 'Bahrain', 'Bangladesh' => 'Bangladesh', 'Barbados' => 'Barbados', 'Belarus' => 'Belarus', 'Belgium' => 'Belgium', 'Belize' => 'Belize', 'Benin' => 'Benin', 'Bermuda' => 'Bermuda', 'Bhutan' => 'Bhutan', 'Bolivia' => 'Bolivia', 'Bosnia and Herzegoviegovina' => 'Bosnia and Herzegoviegovina', 'Botswana' => 'Botswana', 'Bouvet Island' => 'Bouvet Island', 'Brazil' => 'Brazil', 'British Indian Ocean Territory' => 'British Indian Ocean Territory', 'Brunei Darussalam' => 'Brunei Darussalam', 'Bulgaria' => 'Bulgaria', 'Burkina Faso' => 'Burkina Faso', 'Burundi' => 'Burundi', 'Cambodia' => 'Cambodia', 'Cameroon' => 'Cameroon', 'Canada' => 'Canada', 'Cape Verde' => 'Cape Verde', 'Cayman Islands' => 'Cayman Islands', 'Central African Republic' => 'Central African Republic', 'Chad' => 'Chad', 'Chile' => 'Chile', 'China' => 'China', 'Colombia' => 'Colombia', 'Comoros' => 'Comoros', 'Congo' => 'Congo', 'Cook Islands' => 'Cook Islands', 'Costa Rica' => 'Costa Rica', 'Cote D Ivoire' => 'Cote D Ivoire', 'Croatia' => 'Croatia', 'Cuba' => 'Cuba', 'Cyprus' => 'Cyprus', 'Czech Republic' => 'Czech Republic', 'Denmark' => 'Denmark', 'Djibouti' => 'Djibouti', 'Dominica' => 'Dominica', 'Dominican Republic' => 'Dominican Republic', 'Ecuador' => 'Ecuador', 'Egypt' => 'Egypt', 'El Salvador' => 'El Salvador', 'Equatorial Guinea' => 'Equatorial Guinea', 'Eritrea' => 'Eritrea', 'Estonia' => 'Estonia', 'Ethiopia' => 'Ethiopia', 'Falkland Islands (Malvinas)' => 'Falkland Islands (Malvinas)', 'Faroe Islands' => 'Faroe Islands', 'Fiji' => 'Fiji', 'Finland' => 'Finland', 'France' => 'France', 'French Guiana' => 'French Guiana', 'French Polynesia' => 'French Polynesia', 'French Southern Terri Territories' => 'French Southern Terri Territories', 'Gabon' => 'Gabon', 'Gambia' => 'Gambia', 'Georgia' => 'Georgia', 'Germany' => 'Germany', 'Ghana' => 'Ghana', 'Gibraltar' => 'Gibraltar', 'Greece' => 'Greece', 'Greenland' => 'Greenland', 'Grenada' => 'Grenada', 'Guadeloupe' => 'Guadeloupe', 'Guam' => 'Guam', 'Guatemala' => 'Guatemala', 'Guinea' => 'Guinea', 'Guinea-Bissau' => 'Guinea-Bissau', 'Guyana' => 'Guyana', 'Haiti' => 'Haiti', 'Heard Island and McDonald Islands' => 'Heard Island and McDonald Islands', 'Holy See (Vatican City State)' => 'Holy See (Vatican City State)', 'Honduras' => 'Honduras', 'Hong Kong' => 'Hong Kong', 'Hungary' => 'Hungary', 'Iceland' => 'Iceland', 'India' => 'India', 'Indonesia' => 'Indonesia', 'Iran' => 'Iran', 'Iraq' => 'Iraq', 'Ireland' => 'Ireland', 'Italy' => 'Italy', 'Jamaica' => 'Jamaica', 'Japan' => 'Japan', 'Jordan' => 'Jordan', 'Kazakhstan' => 'Kazakhstan', 'Kenya' => 'Kenya', 'Kiribati' => 'Kiribati', 'Korea' => 'Korea', 'Kuwait' => 'Kuwait', 'Kyrgyzstan' => 'Kyrgyzstan', 'Latvia' => 'Latvia', 'Lebanon' => 'Lebanon', 'Lesotho' => 'Lesotho', 'Liberia' => 'Liberia', 'Libyan Arab Jamahiriya' => 'Libyan Arab Jamahiriya', 'Liechtenstein' => 'Liechtenstein', 'Lithuania' => 'Lithuania', 'Luxembourg' => 'Luxembourg', 'Macau' => 'Macau', 'Macedonia' => 'Macedonia', 'Madagascar' => 'Madagascar', 'Malawi' => 'Malawi', 'Malaysia' => 'Malaysia', 'Maldives' => 'Maldives', 'Mali' => 'Mali', 'Malta' => 'Malta', 'Marshall Islands' => 'Marshall Islands', 'Martinique' => 'Martinique', 'Mauritania' => 'Mauritania', 'Mauritius' => 'Mauritius', 'Mayotte' => 'Mayotte', 'Mexico' => 'Mexico', 'Micronesia' => 'Micronesia', 'Moldova' => 'Moldova', 'Monaco' => 'Monaco', 'Mongolia' => 'Mongolia', 'Montserrat' => 'Montserrat', 'Morocco' => 'Morocco', 'Mozambique' => 'Mozambique', 'Myanmar' => 'Myanmar', 'Namibia' => 'Namibia', 'Nauru' => 'Nauru', 'Nepal' => 'Nepal', 'Netherlands' => 'Netherlands', 'Netherlands Antilles' => 'Netherlands Antilles', 'New Caledonia' => 'New Caledonia', 'New Zealand' => 'New Zealand', 'Nicaragua' => 'Nicaragua', 'Niger' => 'Niger', 'Nigeria' => 'Nigeria', 'Norfolk Island' => 'Norfolk Island', 'Northern Mariana Islands' => 'Northern Mariana Islands', 'Norway' => 'Norway', 'Oman' => 'Oman', 'Pakistan' => 'Pakistan', 'Palau' => 'Palau', 'Palestine' => 'Palestine', 'Panama' => 'Panama', 'Papua New Guinea' => 'Papua New Guinea', 'Paraguay' => 'Paraguay', 'Peru' => 'Peru', 'Philippines' => 'Philippines', 'Poland' => 'Poland', 'Portugal' => 'Portugal', 'Puerto Rico' => 'Puerto Rico', 'Qatar' => 'Qatar', 'Reunion' => 'Reunion', 'Romania' => 'Romania', 'Russian Federation' => 'Russian Federation', 'Rwanda' => 'Rwanda', 'Saint Kitts and Nevis' => 'Saint Kitts and Nevis', 'Saint Lucia' => 'Saint Lucia', 'Saint Vincent and the Grenadines' => 'Saint Vincent and the Grenadines', 'Samoa' => 'Samoa', 'San Marino' => 'San Marino', 'Sao Tome and Principe' => 'Sao Tome and Principe', 'Saudi Arabia' => 'Saudi Arabia', 'Senegal' => 'Senegal', 'Seychelles' => 'Seychelles', 'Sierra Leone' => 'Sierra Leone', 'Singapore' => 'Singapore', 'Slovakia' => 'Slovakia', 'Slovenia' => 'Slovenia', 'Solomon Islands' => 'Solomon Islands', 'Somalia' => 'Somalia', 'South Africa' => 'South Africa', 'Spain' => 'Spain', 'Sri Lanka' => 'Sri Lanka', 'Sudan' => 'Sudan', 'Suriname' => 'Suriname', 'Swaziland' => 'Swaziland', 'Sweden' => 'Sweden', 'Switzerland' => 'Switzerland', 'Syrian Arab Republic' => 'Syrian Arab Republic', 'Taiwan' => 'Taiwan', 'Tajikistan' => 'Tajikistan', 'Tanzania' => 'Tanzania', 'Thailand' => 'Thailand', 'Togo' => 'Togo', 'Tokelau' => 'Tokelau', 'Tonga' => 'Tonga', 'Trinidad and Tobago' => 'Trinidad and Tobago', 'Tunisia' => 'Tunisia', 'Turkey' => 'Turkey', 'Turkmenistan' => 'Turkmenistan', 'Turks and Caicos Islands' => 'Turks and Caicos Islands', 'Tuvalu' => 'Tuvalu', 'Uganda' => 'Uganda', 'Ukraine' => 'Ukraine', 'United Arab Emirates' => 'United Arab Emirates', 'United Kingdom' => 'United Kingdom', 'United States of America' => 'United States of America', 'United States Minor Outlying Islands' => 'United States Minor Outlying Islands', 'Uruguay' => 'Uruguay', 'Uzbekistan' => 'Uzbekistan', 'Vanuatu' => 'Vanuatu', 'Venezuela' => 'Venezuela', 'Vietnam' => 'Vietnam', 'Virgin Islands' => 'Virgin Islands', 'Virgin Islands' => 'Virgin Islands', 'Wallis and Futuna' => 'Wallis and Futuna', 'Yemen' => 'Yemen', 'Yugoslavia' => 'Yugoslavia', 'Zambia' => 'Zambia', 'Zimbabwe' => 'Zimbabwe'], isset($user->country)?$user->country:['Pakistan' => 'Pakistan'],['required' => true, 'placeholder' => 'Select country']) }}
 
-                                                    </table>
-                                                    {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md d-none search-submit-btn ml-1 mb-1 user-submit']) }}
-                                                    {{ Form::close() }}
-                                                </div>
                                             </div>
+                                            <div class="card-footer">
+                                                {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
+                                            </div>
+                                            {{ Form::close() }}
                                         </div>
-                                        @if(isset($users_status) && count($users_status) > 0)
-                                            <div class="row mt-3">
-                                                <div class="col-md-12">
-                                                    <div><h6> Agency Invitation Status</h6></div>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-md table-bordered">
-                                                            <thead class="theme-blue color-white">
-                                                            <tr>
-                                                                <th>Sr</th>
-                                                                <th>AboutPakistan ID</th>
-                                                                <th>Email Address</th>
-                                                                <th>Status</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach($users_status as $key => $value)
-                                                                <tr>
-                                                                    <td>{{$key + 1}}</td>
-                                                                    <td>{{$value['user_id']}}</td>
-                                                                    <td>{{$value['user_email']}}</td>
-                                                                    <td style=" @if($value['status'] === 'pending') color:orange; @elseif($value['status'] === 'accepted') color:green; @elseif($value['status'] === 'rejected') color:red; @endif ">{{ucwords($value['status'])}}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -200,118 +131,14 @@
                 </div>
             </div>
         </div>
-    </div>
-    @include('website.includes.footer')
-@endsection
+        @include('website.includes.footer')
+        @endsection
 
-@section('script')
-    <script>
-        (function ($) {
-            $(document).ready(function () {
-                const logged_in_user ={{Auth::user()->getAuthIdentifier()}};
-                const logged_in_email = '{{Auth::user()->email}}';
-                $('input[type=radio][name=user_add_by]').change(function () {
-                    if (this.value === 'Id') {
-                        $("#user-id").attr("readonly", false);
-                        $("#user-mail").attr("readonly", true);
-                        $('#error-message').slideUp();
-                        $('#user-mail').val('');
-                    } else if (this.value === 'Email') {
-                        $("#user-mail").attr("readonly", false);
-                        $("#user-id").attr("readonly", true);
-                        $('#error-message').slideUp();
-                        $('#id').val('');
-                    }
-                });
-
-                $('#clear').on('click', function (e) {
-                    $('#agency-users-table').slideUp();
-                    $("#agency-users-table tbody").empty();
-                    $(".user-submit").addClass("d-none");
-
-                    id.val('');
-                    email.val('');
-
-                });
-                $('#agency-users-table tbody').on('click', '.user-delete', function (e) {
-                    e.preventDefault();
-                    $(this).closest('tr').remove();
-
-
-                    let rowCount = $('#agency-users-table tbody tr').length;
-                    console.log(rowCount);
-                    if (rowCount === 1) {
-
-                        $('#agency-users-table').slideUp();
-                        $(".user-submit").addClass("d-none");
-                    }
-                });
-                // runs on add payment button click
-                $('#add_user').on('click', function (e) {
-
-                    e.preventDefault();
-                    const type = $("input[name='user_add_by']:checked");
-                    const id = $('#user-id');
-                    const email = $('#user-mail');
-
-                    if (type.val() === 'Id' && id.val() === '') {
-                        $('#error-message').html('* AboutPakistan ID is required').slideDown();
-                        return;
-                    }
-                    if (id.val() == logged_in_user) {
-
-                        $('#error-message').html('* Specify ID other than your ID').slideDown();
-                        id.val('');
-                        return;
-                    }
-                    if (email.val() === logged_in_email) {
-
-                        $('#error-message').html('* Specify email other than your email').slideDown();
-                        email.val('');
-                        return;
-                    }
-
-                    if (type.val() === 'Email' && email.val() === '') {
-
-                        $('#error-message').html('* Email Address is required.').slideDown();
-                        return;
-                    }
-                    if (email.val() !== '' && IsEmail(email.val()) === false) {
-                        e.preventDefault();
-                        $('#error-message').html('* Incorrect email format').slideDown();
-                        return;
-
-                    } else {
-                        $('#error-message').slideUp();
-                    }
-
-
-                    const html =
-                        '<tr>' +
-                        '  <td>' + type.val() + '<input type="hidden" name="type[]" value="' + type.val() + '"/> </td>' +
-                        '  <td>' + id.val() + '<input type="hidden" name="id[]" value="' + id.val() + '"/> </td>' +
-                        '  <td>' + email.val() + '<input type="hidden" name="email[]" value="' + email.val() + '"/> </td>' +
-                        '  <td><button class="btn btn-danger btn-sm user-delete"><i class="fas fa-trash-alt"></i></button> </td>' +
-                        '</tr>';
-
-                    $('#agency-users-table').slideDown().find('tbody').append(html);
-                    $(".user-submit").removeClass("d-none");
-
-                    //Reset Fields
-                    $("input[name=user_add_by][value=Id]").prop('checked', true);
-                    id.val('');
-                    email.val('');
-                    $("#user-mail").attr("readonly", true);
-                    $("#user-id").attr("readonly", false);
-                });
-
-                function IsEmail(email) {
-                    var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                    return regex.test(email);
-                }
-            });
-        })(jQuery);
-
-    </script>
+        @section('script')
+            <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+            <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
+            <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+            <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
+            <script src="{{asset('website/js/agency-users.js')}}"></script>
 
 @endsection
