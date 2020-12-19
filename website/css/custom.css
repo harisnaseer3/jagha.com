@@ -2059,3 +2059,6 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+.data-default-line-height {
+    line-height: 1.0rem;
+}

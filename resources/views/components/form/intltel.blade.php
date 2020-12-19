@@ -20,7 +20,7 @@
     </div>
 
     @if(!empty($attributes['data-default']))
-        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted" style="padding-top: 0.375rem; padding-bottom: 0.375rem;">
+        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height">
             {{ $attributes['data-default'] }}
         </div>
     @endif

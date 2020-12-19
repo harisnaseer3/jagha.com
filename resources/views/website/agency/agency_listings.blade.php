@@ -97,16 +97,18 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
-                                                            <td>
-                                                                @if($params['status'] != 'deleted_agencies')
+
+                                                                @if($params['status'] == 'verified_agencies')
+                                                                <td>
                                                                     <a type="button" href="{{route('agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                     </a>
+                                                                </td>
                                                                     @endif
 
-                                                            </td>
+
 
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
@@ -189,16 +191,18 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
-                                                            <td>
-                                                                @if($params['status'] != 'deleted_agencies')
+
+                                                                @if($params['status'] == 'verified_agencies')
+                                                                <td>
                                                                     <a type="button" href="{{route('agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                     </a>
+                                                                </td>
                                                                 @endif
 
-                                                            </td>
+
 
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
@@ -282,17 +286,19 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
+                                                            @if($params['status'] == 'verified_agencies')
                                                             <td>
-                                                                @if($params['status'] != 'deleted_agencies')
+
 
                                                                     <a type="button" href="{{route('agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Add user in agency">
                                                                         <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
                                                                     </a>
+                                                            </td>
                                                                     @endif
 
-                                                            </td>
+
 
                                                             <td>
                                                                 @if($params['status'] != 'deleted_agencies')
