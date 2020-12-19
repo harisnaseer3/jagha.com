@@ -99,6 +99,7 @@ class AgencyUserController extends Controller
         if(isset($user->id)) {
             DB::table('agency_users')->insert(['agency_id' => $agency, 'user_id' => $user->id]);
         }
+        return redirect()->back()->with('success', 'Agency user successfully added');
 
     }
 
