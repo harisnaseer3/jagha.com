@@ -476,12 +476,18 @@ class PropertySearchController extends Controller
 
         //        both filters have some custom values
         if ($min_price !== 0 and $max_price !== 0) {
-            if ($min_price < $max_price) $properties->whereBetween('price', [$min_price, $max_price]);
+            if ($min_price < $max_price) {
+                $properties->where('price', '>=', $min_price)->where('price', '<=', $max_price);
+            } elseif ($min_price > $max_price) {
+                $properties->where('price', '>=', $max_price)->where('price', '<=', $min_price);
+            }
         } //      if min price is selected
         else if ($min_price !== 0 and $max_price === 0) {
+//            dd('if min!=0 and max != 0');
             $properties->where('price', '>=', $min_price);
         } //      if max price is selected
         else if ($min_price === 0 and $max_price !== 0) {
+//            dd('if min=0 and max == 0');
             $properties->where('price', '<=', $max_price);
         }
 
