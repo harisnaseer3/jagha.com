@@ -204,8 +204,13 @@
         </div>
 
         <div class="user-details-block" style="display:block">
-            {{ Form::bsIntlTel('phone_#', isset($property->phone) ? $property->phone : \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
+            @if(isset($property->phone))
+                {{ Form::bsIntlTel('phone_#', $property->phone, ['id'=>'phone']) }}
+            @else
+                {{ Form::bsIntlTel('phone_#', \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
+            @endif
 
+            {{Form::hidden('phone_check')}}
 
             {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
             {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
