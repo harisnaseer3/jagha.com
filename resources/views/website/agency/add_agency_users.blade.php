@@ -159,5 +159,13 @@
             <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
             <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
             <script src="{{asset('website/js/agency-users.js')}}"></script>
+    <script>
+        (function ($) {
+        $('#status-modal').on('show.bs.modal', function (event) {
+            let record_id = $(event.relatedTarget).data('record-id');
+            $(this).find('.modal-body #agency-user-id').val(record_id);
+        });
+        })(jQuery);
+    </script>
 
 @endsection

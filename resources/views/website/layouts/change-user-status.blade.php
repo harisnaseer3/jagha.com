@@ -7,7 +7,8 @@
 
                 <div class="text-center">
                     <p>Do you really want to @if($agency_user->is_active === '0')  activate @else deactivate @endif agency user account?</p>
-                    {!! Form::open(['route' => ['agencies.destroy-user', $agency_user->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['agencies.destroy-user'], 'method' => 'delete']) !!}
+                    <input type="hidden" id="agency-user-id" name="agency_user_id" />
                     <button type="submit"  class="btn btn-sm btn-success">Confirm</button>
                     <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</button>
                     {!! Form::close() !!}
