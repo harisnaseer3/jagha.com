@@ -54,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',
         'community_string' => 'nullable|string',
-        'about_yourself' => 'nullable|string',
+        'about_yourself' => 'nullable|string|max:4096',
         'upload_new_picture.*' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
     ];
 
