@@ -4,7 +4,7 @@
     //this value is only used check the image count
     var imageCountOnError = 0;
 
-    function getCityLocations(city) {
+    function getCityLocations(city, location = '') {
         jQuery.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -26,15 +26,12 @@
                         add_select.append($('<option>', {value: options.name, text: options.name}));
                     }
                     $('.fa-spinner').hide();
+                    if (location !== '') {
+                        add_select.val(location).trigger('change');
+                    } else
+                        add_select.trigger('change');
                 }
             },
-            error: function (xhr, status, error) {
-                // console.log(error);
-                // console.log(status);
-                // console.log(xhr);
-            },
-            complete: function (url, options) {
-            }
         });
     }
 
@@ -166,7 +163,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                separateDialCode: true,
+                // separateDialCode: true,
                 numberType: "MOBILE",
             });
         } else if (phone_type === "FIXED_LINE") {
@@ -174,7 +171,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                separateDialCode: true,
+                // separateDialCode: true,
                 placeholderNumberType: "FIXED_LINE",
                 numberType: "FIXED_LINE",
             });
@@ -265,11 +262,11 @@
 
 
     $(document).ready(function () {
-        //file read script
-        $(".custom-file-input").on("change", function() {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
+        // //file read script
+        // $(".custom-file-input").on("change", function() {
+        //     var fileName = $(this).val().split("\\").pop();
+        //     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        // });
 
         //in case of an error
         if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
@@ -487,10 +484,10 @@
         //hide or show bedroom, bathroom and features btn
         //form validation
 
-        $('#delete-image').on('show.bs.modal', function (event) {
-            let record_id = $(event.relatedTarget).data('record-id');
-            $(this).find('.modal-body #image-record-id').val(record_id);
-        });
+        // $('#delete-image').on('show.bs.modal', function (event) {
+        //     let record_id = $(event.relatedTarget).data('record-id');
+        //     $(this).find('.modal-body #image-record-id').val(record_id);
+        // });
         $('#delete-plan').on('show.bs.modal', function (event) {
             let record_id = $(event.relatedTarget).data('record-id');
             $(this).find('.modal-body #plan-record-id').val(record_id);
@@ -525,16 +522,9 @@
 
         $('#add_city').on('select2:select', function (e) {
             let city = $('#add_city').val();
-            $("#add_location").val(null).trigger("change");
             $('.location-spinner').show();
             getCityLocations(city);
         });
-        // if ($('#add_city').val() !== null) {
-        //     let city = $('#add_city').val();
-        //     $("#add_location").val(null).trigger("change");
-        //     $('.location-spinner').show();
-        //     getCityLocations(city);
-        // }
 
         agency.on('select2:select', function (e) {
             $('.agency-user-block').hide();
@@ -678,36 +668,41 @@
         });
 
         //    on form error get values form error fields
-
-        // let error_field = ['purpose', 'wanted_for', 'property_type', 'property_subtype', 'location'];
-        // // $.each(error_field, function (index, value) {
-        // $(document).on('change', $('input[name=purpose]'), function () {
-        //     console.log($('input[name=purpose]').val());
-        // }); $(document).on('change', $('input[name=wanted_for]'), function () {
-        //     console.log($('input[name=wanted_for]').val());
-        // }); $(document).on('change', $('input[name=property_type]'), function () {
-        //     console.log($('input[name=property_type]').val());
-        // }); $(document).on('change', $('input[name=property_subtype]'), function () {
-        //     console.log($('input[name=property_subtype]').val());
-        // });
-        // $(document).on('change', $('input[name=location]'), function () {
-        //     console.log($('input[name=location]').val());
-        // });
-
-        // });
         let property_type = '';
         if ($('input[name="purpose-error"]').val() !== '') {
+            if ($('input[name="purpose-error"]').val() === 'Wanted') {
+                $('#purpose-Wanted').slideDown().find('input[type=radio]').attr('required', 'true');
+                $("input[name=wanted_for][value=" + $("input[name='wanted_for-error']").val() + "]").prop('checked', true);
+                $('[for=wanted_for]').append(' <span class="text-danger">*</span>');
+            }
             $("input[name=purpose][value=" + $('input[name="purpose-error"]').val() + "]").prop('checked', true);
         }
         if ($('input[name="property_type-error"]').val() !== '') {
             property_type = $('input[name="property_type-error"]').val();
             $("input[name=property_type][value=" + property_type + "]").prop('checked', true);
         }
-        if ($('input[name="property_subtype-error"]').val() !=='') {
-            $("input[name=property_subtype-" + property_type + "][value=" + property_type + "]").prop('checked', true);
+        if ($('input[name="property_subtype-error"]').val() !== '') {
+            if ($('input[name="property_subtype-error"]').val() === 'Homes') {
+                // $('#property_subtype-' + property_type).attr('required', true).slideDown();
+                $("input[name=property_subtype-" + property_type + "][value='" + $('input[name="property_subtype-error"]').val() + "']").prop('checked', true);
+            } else {
+                $('#property_subtype-Homes').attr('required', false).slideUp();
+                $('#property_subtype-' + property_type).attr('required', true).slideDown();
+                $("input[name=property_subtype-" + property_type + "][value='" + $('input[name="property_subtype-error"]').val() + "']").prop('checked', true);
+            }
+        }
+        if ($('input[name="location-error"]').val() !== '') {
+            if ($('#add_city').val() !== null) {
+                let city = $('#add_city').val();
+                let selected_location = $('input[name="location-error"]').val();
+                // $("#add_location").val(null).trigger("change");
+                $('.location-spinner').show();
+                getCityLocations(city, selected_location);
+            }
+
         }
 
-
+        property_type = 'Homes';
         $('input[name="purpose"]').on('change', function () {
             $('input[name="purpose-error"]').val($('input[name="purpose"]:checked').val());
         });
@@ -721,8 +716,13 @@
         $(document).on('change', $('input[name="property_subtype"]'), function () {
             $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
         });
-        $('input[name="location"]').on('change', function () {
-            $('input[name="location-error"]').val($('input[name="location"]').val());
+        // $('#add_location').on('change', function () {
+        //     $('input[name="location-error"]').val($('#add_location').val());
+        // });
+
+        $('#add_location').on('change.select2', function (e) {
+            // console.log(e.params.data);
+            $('input[name="location-error"]').val($(this).val());
         });
 
         if ($('input[name="purpose-error"]').val() === '') {

@@ -12,21 +12,6 @@ use Mockery\Exception;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    /**
-     * Create a new controller instance.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-//    public function __construct()
-//    {
-//        $this->middleware('auth');
-//    }
-
     public function index()
     {
         $table_values = Location::all();
@@ -145,16 +130,12 @@ class LocationController extends Controller
     function cityLocations(Request $request)
     {
         if ($request->ajax()) {
-            $city_id = (new City)->select('id')->where('name', '=', $request->input('city'))->first();
+            $city_id = (new City)->select('id')->where('name', '=', str_replace('_',' ', $request->input('city')))->first();
             $location = (new Location)->select('name')->where('city_id', '=', $city_id->id)->get()->toArray();
 
             return response()->json(['data' => $location, 'status' => 200]);
 
         } else {
-//            $city_id = (new City)->select('id')->where('name', '=', 'karachi')->first();
-//            $location = (new Location)->select('name')->where('city_id', '=', $city_id->id)->get()->toArray();
-//
-//            return $location;
             return "not found";
         }
     }
