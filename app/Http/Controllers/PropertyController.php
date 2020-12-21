@@ -198,7 +198,8 @@ class PropertyController extends Controller
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
                 $icon_value = $request->only($icon_inputs);
                 $features_input = $request->except(array_merge($icon_inputs, ['_token', '_method', 'data_index', 'purpose', 'wanted_for', 'property_type', 'property_subtype-Homes', 'property_subtype-Plots', 'property_subtype-Commercial', 'city', 'location', 'property_title', 'description', 'all_inclusive_price', 'land_area',
-                    'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link', 'video_host', 'floor_plans']));
+                    'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
+                    'video_host', 'floor_plans','purpose-error','wanted_for-error','property_type-error','property_subtype-error','location-error']));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
                     'features' => $features,

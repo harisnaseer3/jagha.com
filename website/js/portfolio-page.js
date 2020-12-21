@@ -671,6 +671,66 @@
                 }
             }
         });
+
+        //    on form error get values form error fields
+
+        // let error_field = ['purpose', 'wanted_for', 'property_type', 'property_subtype', 'location'];
+        // // $.each(error_field, function (index, value) {
+        // $(document).on('change', $('input[name=purpose]'), function () {
+        //     console.log($('input[name=purpose]').val());
+        // }); $(document).on('change', $('input[name=wanted_for]'), function () {
+        //     console.log($('input[name=wanted_for]').val());
+        // }); $(document).on('change', $('input[name=property_type]'), function () {
+        //     console.log($('input[name=property_type]').val());
+        // }); $(document).on('change', $('input[name=property_subtype]'), function () {
+        //     console.log($('input[name=property_subtype]').val());
+        // });
+        // $(document).on('change', $('input[name=location]'), function () {
+        //     console.log($('input[name=location]').val());
+        // });
+
+        // });
+        let property_type = '';
+        if ($('input[name="purpose-error"]').val() !== '') {
+            $("input[name=purpose][value=" + $('input[name="purpose-error"]').val() + "]").prop('checked', true);
+        }
+        if ($('input[name="property_type-error"]').val() !== '') {
+            property_type = $('input[name="property_type-error"]').val();
+            $("input[name=property_type][value=" + property_type + "]").prop('checked', true);
+        }
+        if ($('input[name="property_subtype-error"]').val() !=='') {
+            $("input[name=property_subtype-" + property_type + "][value=" + property_type + "]").prop('checked', true);
+        }
+
+
+        $('input[name="purpose"]').on('change', function () {
+            $('input[name="purpose-error"]').val($('input[name="purpose"]:checked').val());
+        });
+        $(document).on('change', $('input[name="wanted_for"]'), function () {
+            $('input[name="wanted_for-error"]').val($('input[name="wanted_for"]:checked').val());
+        });
+        $('input[name="property_type"]').on('change', function () {
+            property_type = $('input[name="property_type"]:checked').val();
+            $('input[name="property_type-error"]').val($('input[name=property_type]:checked').val());
+        });
+        $(document).on('change', $('input[name="property_subtype"]'), function () {
+            $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
+        });
+        $('input[name="location"]').on('change', function () {
+            $('input[name="location-error"]').val($('input[name="location"]').val());
+        });
+
+        if ($('input[name="purpose-error"]').val() === '') {
+            $('input[name="purpose-error"]').val($('input[name=purpose]:checked').val());
+        }
+        if ($('input[name="property_type-error"]').val() === '') {
+            $('input[name="property_type-error"]').val($('input[name=property_type]:checked').val());
+        }
+        if ($('input[name="property_subtype-error"]').val() === '') {
+            $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
+        }
+
+
     });
 })
 (jQuery);
