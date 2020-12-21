@@ -265,6 +265,11 @@
 
 
     $(document).ready(function () {
+        //file read script
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
 
         //in case of an error
         if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
