@@ -5,6 +5,7 @@ use App\Models\Dashboard\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Verified;
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use Illuminate\Support\Facades\File;
 class SocialFacebookAccountService
 {
     public function createOrGetUser(ProviderUser $providerUser)
@@ -21,6 +22,10 @@ class SocialFacebookAccountService
             ]);
             $user = User::whereEmail($providerUser->getEmail())->first();
             if (!$user) {
+
+
+                $fileContents = file_get_contents($user->getAvatar());
+                File::put(public_path() . '/uploads/profile/' . $user->getId() . ".jpg", $fileContents);
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
                     'name' => $providerUser->getName(),
