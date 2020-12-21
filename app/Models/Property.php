@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 /**
  * @mixin Builder
@@ -82,6 +83,7 @@ class Property extends Model
         'click_through_rate',
         'status',
         'reviewed_by',
+        'video_host',
         'rejection_reason'
     ];
     public static $rules = [
@@ -102,6 +104,7 @@ class Property extends Model
         'mobile' => 'required', // +92-3001234567
         'contact_person' => 'required|max:225',
         'contact_email' => 'required|email',
+        'video_host' => 'string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
         'video_link' => 'nullable|url',
         'rejection_reason' => 'nullable|string'
     ];
