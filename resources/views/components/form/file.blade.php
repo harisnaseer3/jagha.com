@@ -7,7 +7,10 @@
         @endif
     </label>
     <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-        {{ Form::file($name, array_merge(['aria-describedby' => $name . '-error', 'aria-invalid' => 'false', 'id' => str_replace('[]', '', $name), 'multiple' => empty($attributes['multiple']) ? '' : 'multiple'])) }}
+        <div class="custom-file">
+        {{ Form::file($name, array_merge(['aria-describedby' => $name . '-error','class'=>'custom-file-input' ,'aria-invalid' => 'false', 'id' => str_replace('[]', '', $name), 'multiple' => empty($attributes['multiple']) ? '' : 'multiple'])) }}
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
         <ul class='{{str_replace('[]', '', $name)}}-files mt-2'></ul>
 
         @if (empty($attributes['multiple']))
