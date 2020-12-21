@@ -74,14 +74,14 @@
                                 }
                             } else if (val.type === 'number') {
                                 if (features_list[idx.replace(/ /g, '_')] != null) {
-                                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                    html += '    <input class="selected-feature" min="0" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
                                         '         </div>';
                                 } else {
                                     if (features_list[idx.replace(/ /g, '_')] != null) {
-                                        html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                        html += '    <input class="selected-feature" min="0" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
                                             '         </div>';
                                     } else {
-                                        html += '    <input  class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                                        html += '    <input  class="selected-feature" min="0" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                                             '         </div>';
                                     }
 
@@ -153,7 +153,7 @@
                     html += ' <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         ' </div>';
                 } else if (val.type === 'number') {
-                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                    html += '    <input class="selected-feature" min="0" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         '         </div>';
                 } else if (val.type === 'select') {
                     html += '    <select class="selected-feature" name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
