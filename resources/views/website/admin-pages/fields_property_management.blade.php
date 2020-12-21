@@ -142,7 +142,7 @@
             <div class="col-sm-12 text-bold my-2">Images</div>
         </div>
 
-        {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Image dimension: 750x600, File size: 256 KB']) }}
+        {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
         <div id="image-count" class="my-3" style="display: none" data-count=0></div>
         <div class="mb-2"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
