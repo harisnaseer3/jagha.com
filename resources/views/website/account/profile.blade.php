@@ -62,7 +62,7 @@
                                                 </div>
                                             @endif
 
-                                            {{ Form::bsFile('upload_new_picture', null, ['required' => false, 'data-default' => 'Image dimension: 256x256, File size: 128 KB']) }}
+                                            {{ Form::bsFile('upload_new_picture', null, ['required' => false, 'data-default' => 'Supported formats: (png, jpg, jpeg)  File size: 128 KB']) }}
                                             {{--                                            {{ Form::bsCheckbox(null, null, ['list'=> [(object) ['id' => 0, 'name' => 'Update details in all property listings']]]) }}--}}
                                             <div class="mt-2"><span style="color:red">* </span>Picture will be updated on form submission</div>
                                             <div class="mt-2"><span style="color:red">* </span>Above details will be updated in all property listings</div>
