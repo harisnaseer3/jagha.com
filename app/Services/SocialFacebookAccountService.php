@@ -22,10 +22,6 @@ class SocialFacebookAccountService
             ]);
             $user = User::whereEmail($providerUser->getEmail())->first();
             if (!$user) {
-
-
-                $fileContents = file_get_contents($user->getAvatar());
-                File::put(public_path() . '/uploads/profile/' . $user->getId() . ".jpg", $fileContents);
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
                     'name' => $providerUser->getName(),
