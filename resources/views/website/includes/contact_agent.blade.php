@@ -23,8 +23,27 @@
             or by email.
         </div>
         {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
-        <div class="mt-2">
-            {{ Form::bsRadio('i am','Buyer', [ 'list' => ['Buyer', 'Agent']]) }}
+        <div class="mt-3">
+            <div class="form-group row">
+                <label for="i am" class="col-sm-4 col-md-3 col-lg-3 col-xl-2 col-form-label col-form-label-sm">
+                    I Am
+                </label>
+                <div class="col-lg-3 col-xl-3">
+                    <div class="custom-control custom-radio custom-control-inline align-items-center">
+                        <input class="custom-control-input" type="radio" name="i am" id="i am_radio_0" value="Buyer" aria-describedby="i am-error" checked="">
+                        <label class="custom-control-label" style="line-height:1.2rem;" for="i am_radio_0">
+                            Buyer </label>
+                    </div>
+
+                </div>
+                <div class="col-lg-3 col-xl-3">
+                <div class="custom-control custom-radio custom-control-inline align-items-center">
+                    <input class="custom-control-input" type="radio" name="i am" id="i am_radio_1" value="Agent" aria-describedby="i am-error">
+                    <label class="custom-control-label" style="line-height:1.2rem;" for="i am_radio_1">
+                        Agent </label>
+                </div>
+                </div>
+            </div>
         </div>
         @if(!empty($agency))
             {{ Form::hidden('agency',$agency->id)}}
