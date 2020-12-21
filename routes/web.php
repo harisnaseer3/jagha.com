@@ -115,7 +115,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
     Route::post('agencies/reject-invitation', 'AgencyUserController@rejectInvitation')
         ->name('agencies.reject_invitation');
-    Route::delete('agencies/destroyUser/{user}', 'AgencyUserController@agencyUserDestroy')->name('agencies.destroy-user');
+    Route::delete('agencies/destroyAgencyUser', 'AgencyUserController@agencyUserDestroy')->name('agencies.destroy-user');
 
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
