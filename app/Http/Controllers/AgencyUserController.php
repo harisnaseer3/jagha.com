@@ -50,7 +50,7 @@ class AgencyUserController extends Controller
             $user = Auth::guard('admin')->user()->getAuthIdentifier();
         else
             $user = Auth::user()->getAuthIdentifier();
-        $current_agency_users = User::select('id', 'email', 'name', 'phone')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
+        $current_agency_users = User::select('id', 'email', 'name', 'phone','is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
         $status = '';
         $agency_data = Agency::where('id', '=', $id)->first();
         $data = '{"name":"' . $agency_data->title . '","id":' . $agency_data->id . '}';
@@ -220,6 +220,23 @@ class AgencyUserController extends Controller
 
         } else {
             return "not found";
+        }
+    }
+    public function agencyUserDestroy($user)
+    {
+        $current_user = User::getUserById($user);
+        if (empty($current_user)) {
+            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. User not found');
+        }
+        $user_status = User::destroyUser($current_user->id);
+        if($user_status === '1')
+        {
+            return redirect()->back()->with('success', 'User activated successfully.');
+        }
+        elseif($user_status === '0')
+        {
+            return redirect()->back()->with('success', 'User deactived successfully.');
+
         }
     }
 }
