@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                         <h6 class="mt-2"> Registered Users</h6>
-
+                                        <div style="overflow-x:auto;">
                                         <table class="table table-md table-bordered">
                                             <thead class="theme-blue color-white">
                                             <tr>
@@ -77,6 +77,8 @@
                                                 <th>Role</th>
                                                 <th>Email</th>
                                                 <th>Phone</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
 
                                             </tr>
                                             </thead>
@@ -95,11 +97,27 @@
                                                         @endif
                                                         <td>{{$agency_user->email}}</td>
                                                         <td>{{$agency_user->phone}}</td>
+                                                        <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
+                                                        <td>
+                                                            @if($agency->user_id != $agency_user->id)
+                                                            @if($agency_user->is_active === '0')
+                                                                <div class='btn-group'>
+                                                                    <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Activate</a>
+                                                                </div>
+                                                            @elseif($agency_user->is_active === '1')
+                                                                <div class='btn-group'>
+                                                                    <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Deactivate</a>
+                                                                </div>
+                                                            @endif
+
+                                                                @endif
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
                                             </tbody>
                                         </table>
+                                        </div>
                                         <div class="card">
                                             <div class="card-header bg-secondary color-white">
                                                 Add User
@@ -132,6 +150,7 @@
             </div>
         </div>
         @include('website.includes.footer')
+        @include('website.layouts.change-user-status')
         @endsection
 
         @section('script')
