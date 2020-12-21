@@ -222,11 +222,11 @@ class AgencyUserController extends Controller
             return "not found";
         }
     }
-    public function agencyUserDestroy($user)
+    public function agencyUserDestroy(Request $request)
     {
-        $current_user = User::getUserById($user);
+        $current_user = User::getUserById($request->input('agency_user_id'));
         if (empty($current_user)) {
-            return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. User not found');
+            return redirect()->back()->with('error', 'Something went wrong. User not found');
         }
         $user_status = User::destroyUser($current_user->id);
         if($user_status === '1')
