@@ -17,17 +17,34 @@
                 }
             },
             error: function (xhr, status, error) {
-                // console.log(error);
-                // console.log(status);
-                // console.log(xhr);
             },
             complete: function (url, options) {
-
-                // $('#featuresModalCenter').on('show.bs.modal', function (event) {
-                //     var modal = $(this)
-                //     modal.find('.modal-body').append('this is modal from jquery')
-                // })
+                //read error tag value to dispaly it on error return
+                if ($('input[name="features-error"]').val() !== '') {
+                    getDataOnError();
+                }
             }
+        });
+    }
+
+    function getDataOnError() {
+        $('input[name="features-error"]').val()
+        $('.feature-alert').remove();
+        $('.feature-tags').append($('input[name="features-error"]').val());
+
+        $('.feature-tag-badge').each(function (i, obj) {
+            let div = $(this).find('a');
+            let id = div.attr('data-id');
+            let type = div.attr('data-type');
+            let value = div.attr('data-value');
+            if (type === 'checkbox') {
+                $('input[id="' + id + '"]').prop('checked', true);
+            } else if (type === 'select-one') {
+                $('select[id="' + id + '"] option[value="' + value + '"]').attr("selected", "selected");
+            } else {
+                $('input[id="' + id + '"]').val(value);
+            }
+
         });
     }
 
@@ -74,14 +91,14 @@
                                 }
                             } else if (val.type === 'number') {
                                 if (features_list[idx.replace(/ /g, '_')] != null) {
-                                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '" min="0">' +
                                         '         </div>';
                                 } else {
                                     if (features_list[idx.replace(/ /g, '_')] != null) {
-                                        html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '">' +
+                                        html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="' + features_list[idx.replace(/ /g, '_')] + '" id="' + idx + '" min="0">' +
                                             '         </div>';
                                     } else {
-                                        html += '    <input  class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                                        html += '    <input  class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '" min="0">' +
                                             '         </div>';
                                     }
 
@@ -125,12 +142,11 @@
                 }
             },
             error: function (xhr, status, error) {
-                // console.log(error);
-                // console.log(status);
-                // console.log(xhr);
             },
             complete: function (url, options) {
-
+                if ($('input[name="features-error"]').val() !== '') {
+                    getDataOnError();
+                }
             }
         });
     }
@@ -153,7 +169,7 @@
                     html += ' <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
                         ' </div>';
                 } else if (val.type === 'number') {
-                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '">' +
+                    html += '    <input class="selected-feature" name="' + idx + '" type="' + val.type + '" value="0" id="' + idx + '" min="0">' +
                         '         </div>';
                 } else if (val.type === 'select') {
                     html += '    <select class="selected-feature" name="' + idx + '" type="' + val.type + '" id="' + idx + '">';
@@ -205,12 +221,20 @@
         let selectValue = '';
         $('[name^=property_subtype-]').on('click', function (e) {
             selectValue = $('[name^=property_subtype-]:checked').val();
-
             if (selectValue !== 'Penthouse' && selectValue !== 'Room')
                 getFeatures(selectValue);
             displayFeatureBtn();
 
         });
+        if ($('input[name="property_subtype-error"]').length > 0 && $('input[name="property_subtype-error"]').val() !== '') {
+            console.log('deit view');
+            let value = $('input[name="property_subtype-error"]').val();
+            if (value !== 'Penthouse' && value !== 'Room')
+                getFeatures(value);
+            displayFeatureBtn();
+
+        }
+
 
         displayFeatureBtn();
         // to get data for features in edit view
@@ -228,42 +252,6 @@
     $(document).on('change', '.selected-feature', function ($this) {
         displayFeatureTag(this);
     });
-
-    function displayFeatureTag(data) {
-        if (data.type === 'checkbox' && $("[id='" + data.id + "']").is(":checked")) {
-            data.value = "yes";
-            const checkbox_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
-
-            $('.feature-tags').append(checkbox_html);
-        } else if (data.type === 'number' && data.value > 0) {
-            if ($('a[data-id="' + data.id + '"]').length > 0) {
-                $('a[data-id="' + data.id + '"]').parent().remove();
-
-            }
-            const number_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
-            $('.feature-tags').append(number_html);
-        } else if (data.type === 'text' && data.value !== '' && data.value !== 'null' && data.value !== null) {
-            if ($('a[data-id="' + data.id + '"]').length > 0) {
-                $('a[data-id="' + data.id + '"]').parent().remove();
-
-            }
-            const text_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
-            $('.feature-tags').append(text_html);
-
-        } else if (data.type === 'select-one') {
-            if (data.value !== '') {
-                const select_html = '<span class="badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '"><i class="fas fa-times color-red"></i></a></span>';
-                $('.feature-tags').append(select_html);
-            }
-
-        } else {
-            $('a[data-id="' + data.id + '"]').parent().remove();
-        }
-        if ($('.tag-span').length > 0) {
-            $('.feature-alert').hide();
-        }
-
-    }
 
     $(document).on('click', '.remove-tag', function ($this) {
         event.preventDefault();
@@ -290,6 +278,41 @@
         }
     });
 
+    function displayFeatureTag(data) {
+        if (data.type === 'checkbox' && $("[id='" + data.id + "']").is(":checked")) {
+            data.value = "yes";
+            const checkbox_html = '<span class="feature-tag-badge badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '" data-value= checked"><i class="fas fa-times color-red"></i></a></span>';
+
+            $('.feature-tags').append(checkbox_html);
+        } else if (data.type === 'number' && data.value > 0) {
+            if ($('a[data-id="' + data.id + '"]').length > 0) {
+                $('a[data-id="' + data.id + '"]').parent().remove();
+
+            }
+            const number_html = '<span class="feature-tag-badge badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '" data-value="' + data.value + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(number_html);
+        } else if (data.type === 'text' && data.value !== '' && data.value !== 'null' && data.value !== null) {
+            if ($('a[data-id="' + data.id + '"]').length > 0) {
+                $('a[data-id="' + data.id + '"]').parent().remove();
+
+            }
+            const text_html = '<span class="feature-tag-badge badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '" data-value="' + data.value + '"><i class="fas fa-times color-red"></i></a></span>';
+            $('.feature-tags').append(text_html);
+
+        } else if (data.type === 'select-one') {
+            if (data.value !== '') {
+                const select_html = '<span class="feature-tag-badge badge badge-primary color-white tag-span mx-2 mb-2"><b>' + data.name + ': ' + data.value + '</b><a href="#" class="btn btn-sm remove-tag" data-type="' + data.type + '" data-id="' + data.id + '" data-value="' + data.value + '"><i class="fas fa-times color-red"></i></a></span>';
+                $('.feature-tags').append(select_html);
+            }
+
+        } else {
+            $('a[data-id="' + data.id + '"]').parent().remove();
+        }
+        if ($('.tag-span').length > 0) {
+            $('.feature-alert').hide();
+        }
+
+    }
 
 })
 (jQuery);

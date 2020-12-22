@@ -163,7 +163,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                // separateDialCode: true,
+                separateDialCode: true,
                 numberType: "MOBILE",
             });
         } else if (phone_type === "FIXED_LINE") {
@@ -171,7 +171,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                // separateDialCode: true,
+                separateDialCode: true,
                 placeholderNumberType: "FIXED_LINE",
                 numberType: "FIXED_LINE",
             });
@@ -482,7 +482,6 @@
             priceInWords();
         });
         //hide or show bedroom, bathroom and features btn
-        //form validation
 
         // $('#delete-image').on('show.bs.modal', function (event) {
         //     let record_id = $(event.relatedTarget).data('record-id');
@@ -523,7 +522,8 @@
         $('#add_city').on('select2:select', function (e) {
             let city = $('#add_city').val();
             $('.location-spinner').show();
-            getCityLocations(city);
+            if ($('input[name=location]').length === 0)
+                getCityLocations(city);
         });
 
         agency.on('select2:select', function (e) {
@@ -697,10 +697,17 @@
                 let selected_location = $('input[name="location-error"]').val();
                 // $("#add_location").val(null).trigger("change");
                 $('.location-spinner').show();
-                getCityLocations(city, selected_location);
+                if ($('input[name=location]').length === 0)
+                    getCityLocations(city, selected_location);
             }
 
         }
+
+
+        $(document).on('change', $('.feature-tags .badge').length, function () {
+            $('input[name="features-error"]').val($('.feature-tags').html());
+
+        });
 
         property_type = 'Homes';
         $('input[name="purpose"]').on('change', function () {
@@ -716,12 +723,7 @@
         $(document).on('change', $('input[name="property_subtype"]'), function () {
             $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
         });
-        // $('#add_location').on('change', function () {
-        //     $('input[name="location-error"]').val($('#add_location').val());
-        // });
-
         $('#add_location').on('change.select2', function (e) {
-            // console.log(e.params.data);
             $('input[name="location-error"]').val($(this).val());
         });
 
