@@ -16,7 +16,7 @@
 
     </div>
     @if(!empty($attributes['data-default']))
-        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 col-lg-4 col-xl-5 offset-md-0 col-md-4 text-muted data-default-line-height">
+        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 col-lg-4 col-xl-5 offset-md-0 col-md-4 text-muted data-default-line-height my-sm-auto">
             {{ $attributes['data-default'] }}
         </div>
     @endif

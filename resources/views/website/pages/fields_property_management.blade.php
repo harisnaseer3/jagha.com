@@ -23,6 +23,7 @@
             </div>
             {{ Form::bsRadio('property_type',isset($property->type)? $property->type : 'Homes', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
             {{Form::hidden('property_type-error')}}
+
             @foreach($property_types as $property_type)
                 <div id="property_subtype-{{ $property_type->name }}" style="display: none;">
                     {{ Form::bsRadio('property_subtype-' . $property_type->name, isset($property->sub_type)? $property->sub_type : '',
@@ -46,18 +47,18 @@
         @if(isset($property))
             {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['readonly' => 'readonly']) }}
         @else
-            {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true,'data-default' => 'Title should have almost 255 characters']) }}
+            {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true,'data-default' => 'Minimum of 10 characters required','minlength' => '10']) }}
         @endif
-        {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true,'data-default' => 'Description should have almost 6144 characters']) }}
+        {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true,'data-default' => 'Minimum of 50 characters required','minlength' => '50']) }}
 
 
         @if(isset($property->price) && $property->price == 0)
             <div class="price-block" style="display:none">
-                {{ Form::bsNumber('all_inclusive_price', null,['data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+                {{ Form::bsNumber('all_inclusive_price', null,['data-default' => 'Price has a minimum value of PKR 1000', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
         @else
             <div class="price-block">
-                {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Enter price in PKR (minimum price must be greater than 1000)', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+                {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Price has a minimum value of PKR 1000', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
             </div>
         @endif
 
@@ -118,6 +119,7 @@
                 </div>
             </div>
         @endif
+        {{Form::hidden('features-error')}}
 
 
     </div>
