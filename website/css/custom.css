@@ -2065,3 +2065,6 @@ input:checked + .slider:before {
 .support-link:hover{
     color:grey;
 }
+.dropdown-min-width{
+    min-width: 13rem;
+}
