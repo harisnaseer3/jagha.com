@@ -179,6 +179,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -378,7 +379,6 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
