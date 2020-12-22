@@ -2062,3 +2062,9 @@ input:checked + .slider:before {
 .data-default-line-height {
     line-height: 1.0rem;
 }
+.support-link:hover{
+    color:grey;
+}
+.dropdown-min-width{
+    min-width: 13rem;
+}

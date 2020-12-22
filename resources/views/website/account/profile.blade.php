@@ -38,7 +38,23 @@
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">User Profile</div>
                                         <div class="card-body">
-                                            {{ Form::bsEmail('email', \Illuminate\Support\Facades\Auth::user()->email, ['required' => true, 'readonly' => 'readonly', 'data-default' => 'Email is locked for security reasons, contact admin to change.']) }}
+                                            <div class="form-group row">
+                                                <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                                                    Email
+
+                                                    <span class="text-danger">*</span>
+                                                </label>
+
+                                                <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                    <input class="form-control form-control-sm valid" aria-describedby="email-error" aria-invalid="false" required="" readonly="readonly"
+                                                           data-default="Email is locked for security reasons, contact support for help." name="email" type="email" value="aniqa@cordstones.com">
+
+                                                </div>
+
+                                                <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height">
+                                                    Email is locked for security reasons, contact <a href="{{route('aboutpakistan.support')}}"><u><strong class="theme-dark-blue">Support</strong></u></a> for help.
+                                                </div>
+                                            </div>
                                             {{ Form::bsText('name', \Illuminate\Support\Facades\Auth::user()->name, ['required' => true]) }}
 
                                             {{ Form::bsIntlTel('phone_#', isset($user->phone)?$user->phone: null, ['id'=>'phone']) }}
@@ -62,7 +78,7 @@
                                                 </div>
                                             @endif
 
-                                            {{ Form::bsFile('upload_new_picture', null, ['required' => false, 'data-default' => 'Image dimension: 256x256, File size: 128 KB']) }}
+                                            {{ Form::bsFile('upload_new_picture', null, ['required' => false, 'data-default' => 'Supported formats: (png, jpg, jpeg)  File size: 128 KB']) }}
                                             {{--                                            {{ Form::bsCheckbox(null, null, ['list'=> [(object) ['id' => 0, 'name' => 'Update details in all property listings']]]) }}--}}
                                             <div class="mt-2"><span style="color:red">* </span>Picture will be updated on form submission</div>
                                             <div class="mt-2"><span style="color:red">* </span>Above details will be updated in all property listings</div>
