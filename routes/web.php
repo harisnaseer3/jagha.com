@@ -45,7 +45,7 @@ Route::get('{agency}-partners/{city}', 'AgencyController@listingPartnersCitywise
 Route::get('/{type}_property', 'PropertyController@getPropertyListing')->name('properties.get_listing');
 Route::get('/all_cities/pakistan/{type}', 'CountTableController@getCitywisePropertyCount')->name('property.city.count.listing')
     ->where([
-        'type' => '(homes|plots|commercial)',
+        'type' => '(homes|plots|commercial|Homes|Plots|Commercial)',
     ]);
 
 
