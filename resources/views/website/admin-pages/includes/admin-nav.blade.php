@@ -310,8 +310,8 @@
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item user-dropdown">
                             @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
-                                <div class="dropdown">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
+                                <div class="dropdown dropdown-min-width">
+                                    <a class="nav-link dropdown-toggle text-center" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-2"></i>
                                         @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
