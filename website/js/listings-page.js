@@ -72,8 +72,8 @@
                             let user_name = data.user.name;
                             let user_id = data.user.id;
                             let html =
-                                '            <div class="dropdown">' +
-                                '                <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
+                                '            <div class="dropdown dropdown-min-width">' +
+                                '                <a class="nav-link dropdown-toggle text-center" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
                                 '                      <i class="fas fa-user mr-2"></i>';
                             html += '<span class="mr-1">'+ user_name + ' (ID: ' + user_id + ')'+'<span>' ;
