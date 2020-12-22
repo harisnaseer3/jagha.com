@@ -15,6 +15,7 @@
     @include('website.includes.nav')
     @include('website.includes.banner2')
     @include('website.includes.search2')
+
     {{--    <div class="properties-details-page  content-area-7">--}}
     <div class="properties-page2 properties-details-page content-area-7" id="details-page">
 
@@ -89,7 +90,7 @@
                                 <li class="nav-item li-detail-page text-transform mr-1">
                                     <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" aria-controls="2" aria-selected="true">Location & Nearby</a>
                                 </li>
-                                @if(!empty($property->video))
+                                @if(!empty($property->videos))
                                     <li class="nav-item li-detail-page text-transform">
                                         <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Video</a>
                                     </li>
@@ -103,9 +104,6 @@
                         </div>
                         <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
                             <div class="properties-description mb-50">
-                            {{--                                <h3 class="heading-2 text-transform">--}}
-                            {{--                                    Overview--}}
-                            {{--                                </h3>--}}
                             <!-- Properties detail start -->
                                 <div class="property-details mb-20 detail-overview-style">
                                     <h5 style="font-weight: 400">Details</h5>
@@ -217,27 +215,25 @@
                             </div>
                         </div>
                         <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
-                        </div>
-                        <div>
-                            <div class="location mb-30">
-                                <h3 class="heading-2">Location and Nearby</h3>
-                                @include('website.includes.location_and_nearby')
-                            </div>
+                                <div class="location mb-50">
+                                    <h3 class="heading-2">Location and Nearby</h3>
+                                    @include('website.includes.location_and_nearby')
+                                </div>
                         </div>
 
-                        @if(!empty($property->video))
+                        @if(!empty($property->videos))
                             <div class="tab-pane " id="three" role="tabpanel" aria-labelledby="3-tab">
-                                <div class="inside-properties mb-50">
+                                <div class="inside-properties">
                                     <h3 class="heading-2">
                                         Property Video
                                     </h3>
                                     {{-- TODO: apply check on video link restict user to add video of following 3rd party --}}
-                                    @if($property->video[0]['host'] === 'Youtube')
-                                        <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]['name'])[1])[0]}}></iframe>
-                                    @elseif($property->video[0]['host'] === 'Vimeo')
-                                        <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]['name'])[1]}}></iframe>
+                                    @if($property->videos[0]['host'] === 'Youtube')
+                                        <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->videos[0]['name'])[1])[0]}}></iframe>
+                                    @elseif($property->videos[0]['host'] === 'Vimeo')
+                                        <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->videos[0]['name'])[1]}}></iframe>
                                     @else
-                                        <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
+                                        <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->videos[0]['name'])[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
                                     @endif
                                 </div>
                             </div>

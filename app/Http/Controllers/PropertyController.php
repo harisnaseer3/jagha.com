@@ -329,7 +329,6 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         $property->city = $property->city->name;
         $property->location = $property->location->name;
-
         (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
         $footer_content = (new FooterController)->footerContent();
         return view('website.pages.property_detail', [
