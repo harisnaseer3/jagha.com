@@ -33,6 +33,49 @@
     }
     //this value is only used check the image count
     var imageCountOnError = 0;
+    function getAgencyUsers(agency) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: window.location.origin + '/agency-users',
+            data: {agency: agency},
+            dataType: 'json',
+            success: function (data) {
+                // console.log(data);
+                let user_data = data.data
+                // console.log(user_data);
+                if (!jQuery.isEmptyObject({user_data})) {
+                    $('.agency-user-block').show();
+
+                    let add_select = $("#contact_person");
+                    add_select.empty();
+
+                    add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
+
+                    $.each(user_data, function (key, value) {
+                        add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
+                    });
+
+                    $('#contact_person_input').removeAttr('required').attr('disable', 'true');
+                    $('.contact_person_spinner').hide();
+                    $('.contact-person-block').hide();
+                    $('#contact_person').attr('required', 'required').attr('disable', 'false');
+                }
+            },
+            error: function (xhr, status, error) {
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
+            },
+            complete: function (url, options) {
+            }
+        });
+    }
+
 
     function checkImagesCountLimit(count) {
         if (store_image_name.length + count + imageCountOnError > 60) {
@@ -628,5 +671,75 @@
                 }
             }
         });
+
+        let property_type = '';
+        if ($('input[name="purpose-error"]').val() !== '') {
+            if ($('input[name="purpose-error"]').val() === 'Wanted') {
+                $('#purpose-Wanted').slideDown().find('input[type=radio]').attr('required', 'true');
+                $("input[name=wanted_for][value=" + $("input[name='wanted_for-error']").val() + "]").prop('checked', true);
+                $('[for=wanted_for]').append(' <span class="text-danger">*</span>');
+            }
+            $("input[name=purpose][value=" + $('input[name="purpose-error"]').val() + "]").prop('checked', true);
+        }
+        if ($('input[name="property_type-error"]').val() !== '') {
+            property_type = $('input[name="property_type-error"]').val();
+            $("input[name=property_type][value=" + property_type + "]").prop('checked', true);
+        }
+        if ($('input[name="property_subtype-error"]').val() !== '') {
+            if ($('input[name="property_subtype-error"]').val() === 'Homes') {
+                // $('#property_subtype-' + property_type).attr('required', true).slideDown();
+                $("input[name=property_subtype-" + property_type + "][value='" + $('input[name="property_subtype-error"]').val() + "']").prop('checked', true);
+            } else {
+                $('#property_subtype-Homes').attr('required', false).slideUp();
+                $('#property_subtype-' + property_type).attr('required', true).slideDown();
+                $("input[name=property_subtype-" + property_type + "][value='" + $('input[name="property_subtype-error"]').val() + "']").prop('checked', true);
+            }
+        }
+        if ($('input[name="location-error"]').val() !== '') {
+            if ($('#add_city').val() !== null) {
+                let city = $('#add_city').val();
+                let selected_location = $('input[name="location-error"]').val();
+                // $("#add_location").val(null).trigger("change");
+                $('.location-spinner').show();
+                if ($('input[name=location]').length === 0)
+                    getCityLocations(city, selected_location);
+            }
+
+        }
+
+
+        $(document).on('change', $('.feature-tags .badge').length, function () {
+            $('input[name="features-error"]').val($('.feature-tags').html());
+
+        });
+
+        property_type = 'Homes';
+        $('input[name="purpose"]').on('change', function () {
+            $('input[name="purpose-error"]').val($('input[name="purpose"]:checked').val());
+        });
+        $(document).on('change', $('input[name="wanted_for"]'), function () {
+            $('input[name="wanted_for-error"]').val($('input[name="wanted_for"]:checked').val());
+        });
+        $('input[name="property_type"]').on('change', function () {
+            property_type = $('input[name="property_type"]:checked').val();
+            $('input[name="property_type-error"]').val($('input[name=property_type]:checked').val());
+        });
+        $(document).on('change', $('input[name="property_subtype"]'), function () {
+            $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
+        });
+        $('#add_location').on('change.select2', function (e) {
+            $('input[name="location-error"]').val($(this).val());
+        });
+
+        if ($('input[name="purpose-error"]').val() === '') {
+            $('input[name="purpose-error"]').val($('input[name=purpose]:checked').val());
+        }
+        if ($('input[name="property_type-error"]').val() === '') {
+            $('input[name="property_type-error"]').val($('input[name=property_type]:checked').val());
+        }
+        if ($('input[name="property_subtype-error"]').val() === '') {
+            $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
+        }
+
     });
 })(jQuery);

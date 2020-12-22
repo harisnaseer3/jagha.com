@@ -379,7 +379,6 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
