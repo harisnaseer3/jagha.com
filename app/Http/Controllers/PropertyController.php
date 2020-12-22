@@ -179,6 +179,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
