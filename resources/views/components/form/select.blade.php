@@ -17,7 +17,7 @@
     </div>
 
     @if(!empty($selectAttributes['data-default']))
-        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height my-auto">
+        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height my-sm-auto">
             {{ $selectAttributes['data-default'] }}
         </div>
     @endif
