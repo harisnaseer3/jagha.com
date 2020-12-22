@@ -179,7 +179,6 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-//        dd($request->all());
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -197,9 +196,13 @@ class PropertyController extends Controller
             if ($request->has('features')) {
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
                 $icon_value = $request->only($icon_inputs);
-                $features_input = $request->except(array_merge($icon_inputs, ['_token', '_method', 'data_index', 'purpose', 'wanted_for', 'property_type', 'property_subtype-Homes', 'property_subtype-Plots', 'property_subtype-Commercial', 'city', 'location', 'property_title', 'description', 'all_inclusive_price', 'land_area',
+                $features_input = $request->except(array_merge($icon_inputs, ['_token', '_method', 'data_index', 'purpose', 'wanted_for', 'property_type',
+                    'property_subtype-Homes', 'property_subtype-Plots', 'property_subtype-Commercial', 'city', 'location', 'property_title', 'description',
+                    'all_inclusive_price', 'land_area',
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
-                    'video_host', 'floor_plans','purpose-error','wanted_for-error','property_type-error','property_subtype-error','location-error']));
+                    'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
+                    'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes', 'features-error'
+                ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
                     'features' => $features,
@@ -375,7 +378,7 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-//        dd($request->all());
+
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
@@ -397,8 +400,13 @@ class PropertyController extends Controller
             if ($request->has('features')) {
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
                 $icon_value = $request->only($icon_inputs);
-                $features_input = $request->except(array_merge($icon_inputs, ['_token', '_method', 'data_index', 'purpose', 'wanted_for', 'property_type', 'property_subtype-Homes', 'property_subtype-Plots', 'property_subtype-Commercial', 'city', 'location', 'property_title', 'description', 'all_inclusive_price', 'land_area',
-                    'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link', 'video_host', 'floor_plans']));
+                $features_input = $request->except(array_merge($icon_inputs, ['_token', '_method', 'data_index', 'purpose', 'wanted_for', 'property_type',
+                    'property_subtype-Homes', 'property_subtype-Plots', 'property_subtype-Commercial', 'city', 'location', 'property_title', 'description',
+                    'all_inclusive_price', 'land_area',
+                    'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
+                    'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
+                    'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes', 'features-error'
+                ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
                     'features' => $features,

@@ -23,6 +23,7 @@
             </div>
             {{ Form::bsRadio('property_type',isset($property->type)? $property->type : 'Homes', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
             {{Form::hidden('property_type-error')}}
+
             @foreach($property_types as $property_type)
                 <div id="property_subtype-{{ $property_type->name }}" style="display: none;">
                     {{ Form::bsRadio('property_subtype-' . $property_type->name, isset($property->sub_type)? $property->sub_type : '',
@@ -118,6 +119,7 @@
                 </div>
             </div>
         @endif
+        {{Form::hidden('features-error')}}
 
 
     </div>
