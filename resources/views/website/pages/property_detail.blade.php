@@ -90,7 +90,7 @@
                                 <li class="nav-item li-detail-page text-transform mr-1">
                                     <a class="nav-link detail-nav-style" id="2-tab" href="#two" role="tab" aria-controls="2" aria-selected="true">Location & Nearby</a>
                                 </li>
-                                @if(!empty($property->videos))
+                                @if(count($property->videos) > 0)
                                     <li class="nav-item li-detail-page text-transform">
                                         <a class="nav-link detail-nav-style" id="3-tab" href="#three" role="tab" aria-controls="3" aria-selected="true">Video</a>
                                     </li>
@@ -221,7 +221,7 @@
                                 </div>
                         </div>
 
-                        @if(!empty($property->videos))
+                        @if(count($property->videos) > 0)
                             <div class="tab-pane " id="three" role="tabpanel" aria-labelledby="3-tab">
                                 <div class="inside-properties">
                                     <h3 class="heading-2">
