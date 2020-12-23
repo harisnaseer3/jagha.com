@@ -251,7 +251,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
-                    <div class="sidebar-right">
+                    <div class="sidebar-right mt-0">
                         <!-- Advanced search start -->
                         @include('website.includes.contact_agent')
                         <hr>
