@@ -277,7 +277,7 @@
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}" defer></script>
-    <script src="{{asset('website/js/script-custom.js')}}"></script>
+    <script src="{{asset('website/js/script-custom.min.js')}}"></script>
     <script src="{{asset('website/js/listing-page.js')}}"></script>
 
 

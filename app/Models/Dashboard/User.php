@@ -56,6 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'community_string' => 'nullable|string',
         'about_yourself' => 'nullable|string|max:4096',
         'upload_new_picture.*' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
+        'city_name' => 'nullable|string|max:255'
     ];
 
     public function setNameAttribute($name)

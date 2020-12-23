@@ -165,15 +165,12 @@
             dataType: 'json',
             success: function (data) {
                 let locations = data.data;
-                // if (!jQuery.isEmptyObject({locations})) {
-
                 let datalist = $('.location-datalist');
                 let html = '';
                 $.each(data.data, function (index, value) {
                     html += '<option value="' + value.name + '">';
                 });
                 datalist.html(html);
-                // }
             },
             error: function (xhr, status, error) {
 
@@ -394,41 +391,111 @@
             $('#search2-location').val('');
             $('#location').val('');
         });
+        let min_price = parseInt(sessionStorage.getItem('min_price'));
+        let max_price = parseInt(sessionStorage.getItem('max_price'));
+
+        let min_area = parseInt(sessionStorage.getItem('min_area'));
+        let max_area = parseInt(sessionStorage.getItem('max_area'));
 
         $(document.body).on("change", "[name=max_area]", function () {
-            // console.log('here1');
-            let data2 = $(this).val();
-            sessionStorage.setItem('max_area', data2);
+            max_area = parseInt($(this).val());
+            if (min_area !== 0 && max_area !== '') {
+                if (max_area <= min_area) {
+                    $('#min-max-text').html('Max area must be greater than Min area: ' + min_area);
+                    $('#minMaxModal').modal('show');
+                    $('#select-max-area').val('');
+                    $('#search2-select-max-area').val('');
+                    sessionStorage.setItem('max_area', '');
+                } else
+                    sessionStorage.setItem('max_area', max_area);
+            } else {
+                sessionStorage.setItem('max_area', '');
+            }
+
         });
         $(document.body).on("change", "[name=min_area]", function () {
-            let data1 = $(this).val();
-            sessionStorage.setItem('min_area', data1);
+
+            min_area = parseInt($(this).val());
+            if (min_area !== '' && min_area === 0) {
+                $('#min-max-text').html('Min area must be greater than 0');
+                $('#minMaxModal').modal('show');
+                $('#select-min-area').val('');
+                $('#search2-select-min-area').val('');
+
+            }
+            if (min_area !== '' && min_area !== 0 && max_area !== '' && max_area !== 0) {
+                if (max_area <= min_area) {
+                    $('#min-max-text').html('Max area must be greater than Min area: ' + min_area);
+                    $('#minMaxModal').modal('show');
+                    $('#select-max-area').val('');
+                    $('#search2-select-max-area').val('');
+                    sessionStorage.setItem('min_area', '')
+                } else
+                    sessionStorage.setItem('min_area', min_area);
+            } else
+                sessionStorage.setItem('min_area', '');
+        });
+        $(document.body).on("change", "[name=bedrooms]", function () {
+            sessionStorage.setItem('bedrooms', $(this).val());
         });
 
         $(document.body).on("change", "[name=min_price]", function () {
-            let data1 = $(this).val();
-            sessionStorage.setItem('min_price', data1);
+            min_price = parseInt($(this).val());
+            if (min_price !== '' && min_price === 0) {
+                $('#min-max-text').html('Min price must be greater than 0');
+                $('#minMaxModal').modal('show');
+                $('#select-min-price').val('');
+                $('#search2-select-min-price').val('');
+
+            }
+            if (min_price !== '' && min_price !== 0 && max_price !== '' && max_price !== 0) {
+                if (max_price <= min_price) {
+                    $('#min-max-text').html('Max price must be greater than Min price:' + min_price);
+                    $('#minMaxModal').modal('show');
+                    $('#select-max-price').val('');
+                    $('#search2-select-max-price').val('');
+                    sessionStorage.setItem('min_price', '')
+                } else
+                    sessionStorage.setItem('min_price', min_price);
+            } else
+                sessionStorage.setItem('min_price', '');
         });
         $(document.body).on("change", "[name=max_price]", function () {
-            let data2 = $(this).val();
-            sessionStorage.setItem('max_price', data2);
+            max_price = parseInt($(this).val());
+            if (min_price !== '' && min_price !== 0 && max_price !== '') {
+                if (max_price <= min_price) {
+                    $('#min-max-text').html('Max price must be greater than Min price:' + min_price);
+                    $('#minMaxModal').modal('show');
+                    $('#select-max-price').val('');
+                    $('#search2-select-max-price').val('');
+                    sessionStorage.setItem('max_price', '');
+                } else
+                    sessionStorage.setItem('max_price', max_price);
+            } else {
+                sessionStorage.setItem('max_price', '');
+            }
         });
 
-        if (sessionStorage.getItem('max_area') !== null) {
+
+        if (sessionStorage.getItem('max_area') !== null && sessionStorage.getItem('max_area') !== '') {
             $('#select-max-area').val(parseInt(sessionStorage.getItem('max_area')));
             $('#search2-select-max-area').val(parseInt(sessionStorage.getItem('max_area')));
         }
-        if (sessionStorage.getItem('min_area') !== null) {
+        if (sessionStorage.getItem('min_area') !== null && sessionStorage.getItem('min_area') !== '') {
             $('#select-min-area').val(parseInt(sessionStorage.getItem('min_area')));
             $('#search2-select-min-area').val(parseInt(sessionStorage.getItem('min_area')));
         }
-        if (sessionStorage.getItem('min_price') !== null) {
+        if (sessionStorage.getItem('min_price') !== null && sessionStorage.getItem('min_price') !== '') {
             $('#select-min-price').val(parseInt(sessionStorage.getItem('min_price')));
             $('#search2-select-min-price').val(parseInt(sessionStorage.getItem('min_price')));
         }
-        if (sessionStorage.getItem('max_price') !== null) {
+        if (sessionStorage.getItem('max_price') !== null && sessionStorage.getItem('max_price') !== '') {
             $('#select-max-price').val(parseInt(sessionStorage.getItem('max_price')));
             $('#search2-select-max-price').val(parseInt(sessionStorage.getItem('max_price')));
+        }
+        if(sessionStorage.getItem('bedrooms') !== null){
+            $('#search2-beds').val(parseInt(sessionStorage.getItem('bedrooms')));
+            $('#beds').val(parseInt(sessionStorage.getItem('bedrooms')));
         }
 
 
@@ -614,7 +681,7 @@
         cookieConsent()
 
     });
-    $(".custom-file-input").on("change", function() {
+    $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });

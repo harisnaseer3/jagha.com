@@ -46,7 +46,8 @@
         </div>
     </div>
 </div>
-
+@include('website.layouts.min-max-check-modal')
 @include('website.includes.scripts')
+
 </body>
 </html>

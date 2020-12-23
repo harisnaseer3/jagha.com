@@ -6,6 +6,8 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+
 @endsection
 
 @section('content')
@@ -17,66 +19,67 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content admin-margin" id="ListingsTabContent">
-                        <div class="tab-pane fade" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                            <div class="my-4">
-
-                            </div>
-                        </div>
-                        <div class="tab-pane fade " id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
-                            <div class="row my-4">
-                                Property Management
-                            </div>
-                        </div>
                         <div class="tab-pane fade show active" id="message_center" role="tabpanel" aria-labelledby="message_center-tab">
                             <div class="my-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h6>Notifications</h6>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12 col-sm-12 mb-5 p-5">
-
-                                                @include('website.layouts.user_notification')
-
+                                <div class="col-12 mb-4">
+                                    <div class="card">
+                                        <div class="card-header theme-blue text-white">
+                                            Inbox
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="user-notification" class="display" style="width: 100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>Sr.</th>
+                                                    <th>Dated</th>
+                                                    <th>Message</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($notifications as $key=> $notification)
+                                                    {{--                                                    {{dd($notification, $key)}}--}}
+                                                    <tr>
+                                                        <td>{{$key +1}}</td>
+                                                        <td>{{ (new \Illuminate\Support\Carbon($notification->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                        @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
+                                                            <td>
+                                                                <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
+                                                                    <span>Status of Property ID = <strong> {{$notification->data['id']}} </strong> having Reference <strong> {{$notification->data['reference']}} </strong>
+                                                                        has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
+                                                                </div>
+                                                            </td>
+                                                        @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
+                                                            <td>
+                                                                <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
+                                                                    <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
+                                                                </div>
+                                                            </td>
+                                                        @endif
+                                                        @if($notification->read_at === null)
+                                                            <td>
+                                                                <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
+                                                                   data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                                                                   data-id={{$notification->id}}>Mark as read</a>
+                                                            </td>
+                                                        @else
+                                                            <td>
+                                                                <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
+                                                                   data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                                                                   data-id={{$notification->id}}>Mark as unread</a>
+                                                            </td>
+                                                        @endif
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
-                            <div class="my-4">
-                                My Accounts &amp; Profiles
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="reports" role="tabpanel" aria-labelledby="reports-tab">
-                            <div class="my-4">
-                                Reports
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_staff" role="tabpanel" aria-labelledby="agency_staff-tab">
-                            <div class="my-4">
-                                Agency Staff
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="clients_leads" role="tabpanel" aria-labelledby="clients_leads-tab">
-                            <div class="my-4">
-                                Clients &amp; Leads
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="agency_website" role="tabpanel" aria-labelledby="agency_website-tab">
-                            <div class="my-4">
-                                Agency Website
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="advertise" role="tabpanel" aria-labelledby="advertise-tab">
-                            <div class="my-4">
-                                Advertise
-                            </div>
-                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -86,110 +89,8 @@
 @endsection
 
 @section('script')
-    <script>
-        setInterval(function () {
-            var docHeight = $(window).height();
-            var footerHeight = $('#foot-wrap').height();
-            var footerTop = $('#foot-wrap').position().top + footerHeight;
-            var marginTop = (docHeight - footerTop);
-            if (footerTop < docHeight)
-                $('#foot-wrap').css('margin-top', marginTop + 'px'); // padding of 30 on footer
-            else
-                $('#foot-wrap').css('margin-top', '0px');
-        }, 250);
-        $('.btn-accept').on('click', function () {
-            let alert = $(this);
-            let agency_id = alert.attr('data-agency');
-            let user_id = alert.attr('data-user');
-            let notification_id = alert.attr('data-id');
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/script-message-center.js')}}"></script>
 
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin  + '/dashboard/agencies/accept-invitation',
-                data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
-                },
-                complete: function (url, options) {
-
-                }
-            });
-        });
-        $('.btn-reject').on('click', function () {
-            let alert = $(this);
-            let notification_id = alert.attr('data-id');
-
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin  + '/dashboard/agencies/reject-invitation',
-                data: {'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
-                },
-                complete: function (url, options) {
-
-                }
-            });
-        });
-        $('.mark-as-read').on('click', function () {
-            let alert = $(this);
-            let notification_id = alert.attr('data-id');
-
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin  + '/dashboard/property-notification',
-                data: {'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        // console.log(alert);
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
-                },
-                complete: function (url, options) {
-
-                }
-            });
-        });
-    </script>
 
 @endsection

@@ -74,7 +74,26 @@
             theme: 'bootstrap4',
         });
         $('[name=country]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+        $('#add_city').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
     });
+    $('#add-country').on('change', function () {
+        const selected_country = $('#add-country').val();
+        if(selected_country !== 'Pakistan'){
+            $('#city-name-div').show();
+            $('#city-dropdown-div').hide();
+            $('#city-name').val('');
+            $("#add_city").val('').trigger('change');
+        }
+        else{
+            $('#city-name-div').hide();
+            $('#city-dropdown-div').show();
+            $('#city-name').val('');
+            $("#add_city").val('').trigger('change');
+        }
+
+
+    });
+
     $('.btn-accept').on('click', function () {
         let alert = $(this);
         let agency_id = alert.attr('data-agency');
