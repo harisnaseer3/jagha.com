@@ -1103,11 +1103,6 @@ footer {
     color: #274abb;
 }
 
-@media (min-width: 991px) {
-    .sidebar-right {
-        margin-top: 35%;
-    }
-}
 
 .sidebar-right {
     border-radius: .25rem;
