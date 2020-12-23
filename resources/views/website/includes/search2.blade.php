@@ -121,14 +121,14 @@
                             <div class="form-group">
                                 <div class="index-page-select p-0">
                                     <label class="search2-input-label" for="search2-bedrooms">BEDROOMS</label>
-                                    <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="search2-beds" style="width: 100%;" tabindex="-1" aria-hidden="true"
-                                            aria-describedby="unit-error" aria-invalid="false" name="bedrooms">
-                                        @foreach(['All','1','2','3','4','5','6','7','8','9','10'] as $key => $beds)
-                                            <option value="{{$beds}}"
-                                                    {{request()->query('bedrooms') === $beds? 'selected' : ''}}
-                                                    data-index="{{$key}}"> {{$beds}}</option>
+                                    <input type="number" class="index-page-num-area" id="search2-beds" name="bedrooms" list="select2-beds-datalist"
+                                           aria-describedby="unit-error" aria-invalid="false"
+                                           style="color: #555;" min="0">
+                                    <datalist id="select2-beds-datalist" class="areas-datalist">
+                                        @foreach(['1','2','3','4','5',] as $beds)
+                                            <option value="{{$beds}}"> {{$beds}}</option>
                                         @endforeach
-                                    </select>
+                                    </datalist>
                                 </div>
                             </div>
                         </div>
