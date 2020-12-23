@@ -53,7 +53,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-4">
-                                                <strong>City:</strong> {{$agency->address}}
+                                                <strong>City:</strong> {{$agency->city->name}}
                                             </div>
                                         </div>
                                         <div class="row mb-3">

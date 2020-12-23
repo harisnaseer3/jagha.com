@@ -302,7 +302,7 @@ class PropertyController extends Controller
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
             }
 
-            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.');
+            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
 //            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
@@ -346,13 +346,8 @@ class PropertyController extends Controller
         $city = $property->location->city->name;
         $property->location = $property->location->name;
         $property->city = $city;
-
-//        $property->image = (new Property)->find($property->id)->images()->where('name', '<>', 'null')->get(['name', 'id']);
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
-//        $property->floor_plan = (new Property)->find($property->id)->floor_plans()->where('name', '<>', 'null')->get(['name', 'id', 'title']);
-//        if ((new Agency())->select('title')->where('id', '=', $property->agency_id)->first()) {
-//            $property->agency = (new Agency())->select('title')->where('id', '=', $property->agency_id)->first()->title;
-//        }
+
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 

@@ -19,56 +19,63 @@
     {{--    <div class="properties-details-page  content-area-7">--}}
     <div class="properties-page2 properties-details-page content-area-7" id="details-page">
 
-        <div class="spinner-border text-primary"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-12 col-xs-12">
-                    <div class="properties-details-section">
-                        <div id="propertiesDetailsSlider" class="carousel properties-details-sliders slide mb-40">
-                            <!-- Heading properties start -->
-                            <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2">
+        <div>
+            <div class="container inline-search-area none-992 property-detail-bg-style">
+                <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2">
                                 <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
                                         <span class="breadcrumb-link" itemprop="name">Home</span></a>
                                     <meta itemprop="position" content="1">
                                 </span>
-                                <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-                                <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                    <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                    <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{asset('/')}}" title="Property Portal" itemprop="item">
                                         <span itemprop="name" class="m-0">Property</span></a>
                                     <meta itemprop="position" content="2"></span>
 
-                                <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
+                    <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
 
-                                <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="javascript:void(0)" title="{{$property->title}}" itemprop="item"><span
-                                            itemprop="name"> {{$property->title}}<span> (<span class="color-blue">property reference: </span>{{$property->reference}})</span></span></a>
+                    <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                                    <span
+                                        itemprop="name"> {{$property->sub_type}} For {{$property->purpose}}<span> (<strong class="theme-dark-blue">Property Reference: </strong>{{$property->reference}})</span></span>
                                     <meta itemprop="position" content="3">
                                 </span>
+                </div>
+                <div class="heading-properties-2">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div><h1 class="property-detail-title" aria-label="Property header">{{$property->title}}</h1></div>
+                            <div class="pull-left">
+                                <h2 style="font-weight: 400; font-size:20px;">
+                                    @if($property->price != 0)
+                                        <span aria-label="currency"> PKR </span> <span aria-label="price"> {{Helper::getPriceInWords($property->price)}}</span>
+                                    @endif
+                                </h2>
+                                <h6 class="color-555" style="font-weight: 400; font-size:14px;"><i class="fa fa-map-marker"></i> {{ $property->location }}, {{ $property->city }}</h6>
                             </div>
-                            <div class="heading-properties-2">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div><h1 class="property-detail-title" aria-label="Property header">{{$property->title}}</h1></div>
-                                        <div class="pull-left">
-                                            <h2 style="font-weight: 400; font-size:20px;">
-                                                @if($property->price != 0)
-                                                    <span aria-label="currency"> PKR </span> <span aria-label="price"> {{Helper::getPriceInWords($property->price)}}</span>
-                                                @endif
-                                            </h2>
-                                            <h6 class="color-555" style="font-weight: 400; font-size:14px;"><i class="fa fa-map-marker"></i> {{ $property->location }}, {{ $property->city }}</h6>
-                                        </div>
-                                        <div class="pull-right">
-                                            @if($property->price != 0)
-                                                <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
-                                            @endif
+                            <div class="pull-right">
+                                @if($property->price != 0)
+                                    <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
+                                @endif
 
-                                            <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
-                                                 data-num-stars="5" aria-label="rating"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
+                                     data-num-stars="5" aria-label="rating"></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        </div>
+
+        <div class="spinner-border text-primary"></div>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-8 col-md-12 col-xs-12">
+
+                    <div class="properties-details-section">
+                        <div id="propertiesDetailsSlider" class="carousel properties-details-sliders slide mb-40">
+                            <!-- Heading properties start -->
                         @if(!$property->images->isEmpty())
                             <!-- main slider carousel items -->
                                 @include('website.includes.property_detail_images')
@@ -104,7 +111,7 @@
                         </div>
                         <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
                             <div class="properties-description mb-50">
-                            <!-- Properties detail start -->
+                                <!-- Properties detail start -->
                                 <div class="property-details mb-20 detail-overview-style">
                                     <h5 style="font-weight: 400">Details</h5>
                                     <div class="s-border"></div>
@@ -215,10 +222,10 @@
                             </div>
                         </div>
                         <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
-                                <div class="location mb-50">
-                                    <h3 class="heading-2">Location and Nearby</h3>
-                                    @include('website.includes.location_and_nearby')
-                                </div>
+                            <div class="location mb-50">
+                                <h3 class="heading-2">Location and Nearby</h3>
+                                @include('website.includes.location_and_nearby')
+                            </div>
                         </div>
 
                         @if(count($property->videos) > 0)
