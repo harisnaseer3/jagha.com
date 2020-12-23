@@ -401,7 +401,8 @@
             max_area = parseInt($(this).val());
             if (min_area !== 0 && max_area !== '') {
                 if (max_area <= min_area) {
-                    alert('Max area must be greater than Min area: ' + min_area);
+                    $('#min-max-text').html('Max area must be greater than Min area: ' + min_area);
+                    $('#minMaxModal').modal('show');
                     $('#select-max-area').val('');
                     $('#search2-select-max-area').val('');
                     sessionStorage.setItem('max_area', '');
@@ -416,14 +417,16 @@
 
             min_area = parseInt($(this).val());
             if (min_area !== '' && min_area === 0) {
-                alert('Min area must be greater than 0');
+                $('#min-max-text').html('Min area must be greater than 0');
+                $('#minMaxModal').modal('show');
                 $('#select-min-area').val('');
                 $('#search2-select-min-area').val('');
 
             }
             if (min_area !== '' && min_area !== 0 && max_area !== '' && max_area !== 0) {
                 if (max_area <= min_area) {
-                    alert('Max area must be greater than Min area: ' + min_area);
+                    $('#min-max-text').html('Max area must be greater than Min area: ' + min_area);
+                    $('#minMaxModal').modal('show');
                     $('#select-max-area').val('');
                     $('#search2-select-max-area').val('');
                     sessionStorage.setItem('min_area', '')
@@ -439,14 +442,16 @@
         $(document.body).on("change", "[name=min_price]", function () {
             min_price = parseInt($(this).val());
             if (min_price !== '' && min_price === 0) {
-                alert('Min price must be greater than 0');
+                $('#min-max-text').html('Min price must be greater than 0');
+                $('#minMaxModal').modal('show');
                 $('#select-min-price').val('');
                 $('#search2-select-min-price').val('');
 
             }
             if (min_price !== '' && min_price !== 0 && max_price !== '' && max_price !== 0) {
                 if (max_price <= min_price) {
-                    alert('Max price must be greater than Min price: ' + min_price);
+                    $('#min-max-text').html('Max price must be greater than Min price:' + min_price);
+                    $('#minMaxModal').modal('show');
                     $('#select-max-price').val('');
                     $('#search2-select-max-price').val('');
                     sessionStorage.setItem('min_price', '')
@@ -459,7 +464,8 @@
             max_price = parseInt($(this).val());
             if (min_price !== '' && min_price !== 0 && max_price !== '') {
                 if (max_price <= min_price) {
-                    alert('Max price must be greater than Min price: ' + min_price);
+                    $('#min-max-text').html('Max price must be greater than Min price:' + min_price);
+                    $('#minMaxModal').modal('show');
                     $('#select-max-price').val('');
                     $('#search2-select-max-price').val('');
                     sessionStorage.setItem('max_price', '');
