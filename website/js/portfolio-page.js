@@ -49,7 +49,7 @@
             success: function (data) {
                 // console.log(data);
                 let user_data = data.data
-                // console.log(user_data);
+                let agency_data = data.agency;
                 if (!jQuery.isEmptyObject({user_data})) {
                     $('.agency-user-block').show();
 
@@ -67,6 +67,34 @@
                     $('.contact-person-block').hide();
                     $('#contact_person').attr('required', 'required').attr('disable', 'false');
                 }
+                if (!jQuery.isEmptyObject({agency_data})) {
+                    let html = '' +
+                        '<div class="row">' +
+                        '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
+                        '   <div class="my-2"> Agency Information</div>' +
+                        '</div>' +
+                        '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
+                        '<div class="col-md-6 my-2">' +
+                        ' <strong>Title: </strong>' + agency_data['title'] +
+                        '</div>' +
+                        '<div class="col-md-6 my-2">' +
+                        '<strong>Address: </strong>' + agency_data['address'] +
+                        '</div>' +
+                        '<div class="col-md-6 my-2">' +
+                        '    <strong>City: </strong>' + data.agency_city +
+                        '</div>' +
+                        '   <div class="col-md-6 my-2">' +
+                        '      <strong>Phone: </strong>' + agency_data['phone'] +
+                        '</div>' +
+                        '   <div class="col-md-6 my-2">' +
+                        '      <strong>Cell: </strong>' + agency_data['cell'] +
+                        '</div>'+
+                        '</div>';
+
+                    $('.agency-block').show().html(html);
+
+                }
+
             },
             error: function (xhr, status, error) {
                 // console.log(error);
@@ -552,6 +580,7 @@
             $('[name=mobile]').val('');
             $('[name=fax]').val('');
             $('[name=contact_email]').val('');
+            $('.agency-block').hide();
         });
 
         $('#contact_person').on('change', function (e) {
