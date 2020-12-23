@@ -42,33 +42,37 @@
                                                     <tr>
                                                         <td>{{$key +1}}</td>
                                                         <td>{{ (new \Illuminate\Support\Carbon($notification->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                        <td>
                                                         @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
-                                                            <td>
+
                                                                 <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
                                                                     <span>Status of Property ID = <strong> {{$notification->data['id']}} </strong> having Reference <strong> {{$notification->data['reference']}} </strong>
                                                                         has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
                                                                 </div>
-                                                            </td>
+
                                                         @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
-                                                            <td>
+
                                                                 <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
                                                                     <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
                                                                 </div>
-                                                            </td>
+
                                                         @endif
+                                                            </td>
+                                                        <td>
                                                         @if($notification->read_at === null)
-                                                            <td>
+
                                                                 <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
                                                                    data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
                                                                    data-id={{$notification->id}}>Mark as read</a>
-                                                            </td>
+
                                                         @else
-                                                            <td>
+
                                                                 <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
                                                                    data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
                                                                    data-id={{$notification->id}}>Mark as unread</a>
-                                                            </td>
+
                                                         @endif
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
