@@ -50,9 +50,10 @@ class AgencyUserController extends Controller
             $user = Auth::guard('admin')->user()->getAuthIdentifier();
         else
             $user = Auth::user()->getAuthIdentifier();
-        $current_agency_users = User::select('id', 'email', 'name', 'phone','is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
+        $current_agency_users = User::select('id', 'email', 'name', 'phone', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->where('agency_id', '=', $id)->pluck('user_id')->toArray())->get();
         $status = '';
         $agency_data = Agency::where('id', '=', $id)->first();
+
         $data = '{"name":"' . $agency_data->title . '","id":' . $agency_data->id . '}';
         $user_status = [];
 
@@ -96,7 +97,7 @@ class AgencyUserController extends Controller
     public function storeAgencyUsers(Request $request, string $agency)
     {
         $user = User::createUser($request->input());
-        if(isset($user->id)) {
+        if (isset($user->id)) {
             DB::table('agency_users')->insert(['agency_id' => $agency, 'user_id' => $user->id]);
         }
         return redirect()->back()->with('success', 'Agency user successfully added');
@@ -190,19 +191,25 @@ class AgencyUserController extends Controller
     public function getAgencyUsers(Request $request)
     {
         if ($request->ajax()) {
+            $agency = (new Agency)->where('id', $request->input('agency'))->first();
+            if ($agency) {
+                $city =$agency->city->name;
+                $agencies_users_ids = DB::table('agency_users')->select('user_id')
+                    ->where('agency_id', $agency->id)
+                    ->get()->pluck('user_id')->toArray();
 
-            $agencies_users_ids = DB::table('agency_users')->select('user_id')->where('agency_id', $request->input('agency'))->get()->pluck('user_id')->toArray();
-
-            if (!empty($agencies_users_ids)) {
-                $agencies_users = (new User)->select('name', 'id')
-                    ->whereIn('id', $agencies_users_ids)
-                    ->get();
-                $users = [];
-                foreach ($agencies_users as $user) {
-                    $users += array($user->id => $user->name);
+                if (!empty($agencies_users_ids)) {
+                    $agencies_users = (new User)->select('name', 'id')
+                        ->whereIn('id', $agencies_users_ids)
+                        ->get();
+                    $users = [];
+                    foreach ($agencies_users as $user) {
+                        $users += array($user->id => $user->name);
+                    }
+                    return response()->json(['data' => $users, 'agency' => $agency->toArray(), 'agency_city' => $city, 'status' => 200]);
                 }
-                return response()->json(['data' => $users, 'status' => 200]);
             }
+
 
         } else {
             return "not found";
@@ -222,6 +229,7 @@ class AgencyUserController extends Controller
             return "not found";
         }
     }
+
     public function agencyUserDestroy(Request $request)
     {
         $current_user = User::getUserById($request->input('agency_user_id'));
@@ -229,12 +237,9 @@ class AgencyUserController extends Controller
             return redirect()->back()->with('error', 'Something went wrong. User not found');
         }
         $user_status = User::destroyUser($current_user->id);
-        if($user_status === '1')
-        {
+        if ($user_status === '1') {
             return redirect()->back()->with('success', 'User activated successfully.');
-        }
-        elseif($user_status === '0')
-        {
+        } elseif ($user_status === '0') {
             return redirect()->back()->with('success', 'User deactived successfully.');
 
         }

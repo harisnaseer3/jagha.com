@@ -190,12 +190,39 @@
             <div class="agency-block" style="display:none"></div>
             <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
         </div>
-
     @endif
     @if(isset($property->agency))
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
             {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}
+            <div class="agency-block">
+                <div class="row">
+                    <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
+                        <div class="my-2"> Agency Information</div>
+                    </div>
+                    <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
+                        <div class="col-md-6 my-2">
+                            <strong>Title: </strong>{{$property->agency->title}}
+                        </div>
+
+                        <div class="col-md-6 my-2">
+                            <strong>Address: </strong> {{$property->agency->address}}
+                        </div>
+
+                        <div class="col-md-6 my-2">
+                            <strong>City: </strong> {{$property->agency->city->name}}
+                        </div>
+
+                        <div class="col-md-6 my-2">
+                            <strong>Phone: </strong> {{$property->agency->phone}}
+                        </div>
+
+                        <div class="col-md-6 my-2">
+                            <strong>Cell: </strong> {{$property->agency->cell}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     @endif
