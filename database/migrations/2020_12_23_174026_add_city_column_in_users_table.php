@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class columnAddOptionalNumberColumn extends Migration
+class AddCityColumnInUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class columnAddOptionalNumberColumn extends Migration
      */
     public function up()
     {
-        Schema::table('agencies', function (Blueprint $table) {
-            $table->string('optional_number', 32)->nullable()->after('phone');
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 
@@ -25,7 +25,7 @@ class columnAddOptionalNumberColumn extends Migration
      */
     public function down()
     {
-        Schema::table('agencies', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }
