@@ -144,7 +144,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
 //    read notification about property
     Route::post('/property-notification', 'NotificationController@ReadPropertyStatus');
-    Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
+//    Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
 
 });
 

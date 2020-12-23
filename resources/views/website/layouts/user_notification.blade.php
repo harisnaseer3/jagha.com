@@ -8,9 +8,11 @@
                     <span>Status of Property ID = <strong> {{$notification->data['id']}} </strong> having Reference <strong> {{$notification->data['reference']}} </strong>
                     has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
 
-                    <span><a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
-                             data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
-                             data-id={{$notification->data['id']}}>Mark as read</a></span>
+                    <span>
+                        <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
+                           data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                           data-id={{$notification->data['id']}}>Mark as read</a>
+                    </span>
 
                 </div>
             </div>
@@ -30,10 +32,7 @@
                                data-id={{$notification->data['id']}}> Mark as read</a>
 
                         </div>
-
                     </div>
-
-
                 </div>
             </div>
         @else
