@@ -229,14 +229,13 @@ if(request()->segment(2) !== 'partners_results' ){
                 <div class="col-lg-3 col-sm-3 col-6 search-col middle-col-1 beds-block" style="border-right:1px solid #ced4da; display: block">
                     <div class="label-container"><label class="input-label" for="beds">BEDROOMS</label></div>
                     <div class="index-page-select">
-                        <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="beds" style="width: 100%;" tabindex="-1" aria-hidden="true"
-                                aria-describedby="unit-error" aria-invalid="false" name="bedrooms">
-                            @foreach(['All','1','2','3','4','5','6','7','8','9','10'] as $key => $beds)
-                                <option value="{{$beds}}"
-                                        {{request()->query('bedrooms') === $beds? 'selected' : ''}}
-                                        data-index="{{$key}}"> {{$beds}}</option>
+                        <input type="number" class="index-page-num-area" id="beds" name="bedrooms" list="select-beds-datalist" aria-describedby="unit-error" aria-invalid="false"
+                               style="color: #555;" min="0">
+                        <datalist id="select-beds-datalist" class="areas-datalist">
+                            @foreach(['1','2','3','4','5'] as $beds)
+                                <option value="{{$beds}}">{{$beds}}</option>
                             @endforeach
-                        </select>
+                        </datalist>
                     </div>
                 </div>
             </div>

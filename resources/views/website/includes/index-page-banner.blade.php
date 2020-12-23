@@ -105,7 +105,8 @@
                                             <div class="col-sm-6" style="padding-right:0; border-right:1px solid #ced4da">
                                                 <div class="index-page-select">
                                                     <input type="number" class="index-page-num-area" id="select-min-price"
-                                                           aria-hidden="true" aria-describedby="unit-error" aria-invalid="false" name="min_price" list="select-min-price-datalist"
+                                                           aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
+                                                           name="min_price" list="select-min-price-datalist"
                                                            style="color: #555;" min=0>
                                                     <datalist id="select-min-price-datalist" class="areas-datalist">
                                                         <option value=500000>500000</option>
@@ -115,10 +116,6 @@
                                                         <option value=5000000>5000000</option>
                                                         <option value=6500000>6500000</option>
                                                         <option value=8000000>8000000</option>
-                                                        <option value=10000000>10000000</option>
-                                                        <option value=12500000>12500000</option>
-                                                        <option value=15000000>15000000</option>
-                                                        <option value=17500000>17500000</option>
                                                     </datalist>
                                                 </div>
                                             </div>
@@ -137,9 +134,6 @@
                                                         <option value=6500000>6500000</option>
                                                         <option value=8000000>8000000</option>
                                                         <option value=10000000>10000000</option>
-                                                        <option value=12500000>12500000</option>
-                                                        <option value=15000000>15000000</option>
-                                                        <option value=17500000>17500000</option>
                                                     </datalist>
                                                 </div>
                                             </div>
@@ -193,12 +187,13 @@
                                     <div class="col-lg-3 col-sm-3 col-6 search-col middle-col-1 beds-block" style="border-right:1px solid #ced4da; display: block">
                                         <div class="label-container"><label class="input-label" for="beds">BEDROOMS</label></div>
                                         <div class="index-page-select">
-                                            <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible" id="beds" style="width: 100%;" tabindex="-1" aria-hidden="true"
-                                                    aria-describedby="unit-error" aria-invalid="false" name="bedrooms">
-                                                @foreach(['All','1','2','3','4','5','6','7','8','9','10'] as $beds)
+                                            <input type="number" class="index-page-num-area" id="beds" name="bedrooms" list="select-beds-datalist" aria-describedby="unit-error" aria-invalid="false"
+                                                   style="color: #555;" min="0">
+                                            <datalist id="select-beds-datalist" class="areas-datalist">
+                                                @foreach(['1','2','3','4','5'] as $beds)
                                                     <option value="{{$beds}}" {{request()->query('bedrooms') === $beds? 'selected' : ''}} data-index={{$key}}>{{$beds}}</option>
                                                 @endforeach
-                                            </select>
+                                            </datalist>
                                         </div>
                                     </div>
                                 </div>
