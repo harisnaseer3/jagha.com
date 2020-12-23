@@ -302,7 +302,7 @@ class PropertyController extends Controller
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
             }
 
-            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.');
+            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
 //            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
