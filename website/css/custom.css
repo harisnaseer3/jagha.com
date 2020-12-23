@@ -2068,3 +2068,7 @@ input:checked + .slider:before {
     padding-top: 10px;
     border-radius: .25rem;
 }
+.team-details{
+    padding: 10px !important;
+}
+

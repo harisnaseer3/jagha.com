@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-2 col-md-4 col-sm-6">
+                                    <div class="col-xl-2 col-lg-3 col-md-5 col-sm-6">
                                         <div class="team-1">
                                             <div class="team-photo">
                                                 @if(isset($user->image) && $user->image != null)
@@ -89,19 +89,19 @@
                                                     </p>
                                                     @if($user->cell !== null)
                                                         <p class="m-0">
-                                                            <a href="tel:+554XX-634-7071"> <i class="fa fa-phone mr-1"></i>{{$user->cell}}</a>
+                                                            <i class="fa fa-phone mr-1"></i>{{$user->cell}}
                                                         </p>
                                                     @endif
                                                     @if($user->phone !== null)
                                                         <p class="m-0">
-                                                            <a href="#"><i class="fa fa-phone mr-1"></i>{{$user->phone}}</a>
+                                                           <i class="fa fa-phone mr-1"></i>{{$user->phone}}
                                                         </p>
                                                     @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-8 col-sm-12 col-lg-10">
+                                    <div class=" col-xl-10 col-lg-9 col-md-7 col-sm-12  ">
                                         <div><h6>Property Listing</h6></div>
                                         <div class="table-responsive">
                                             <table class="table table-sm table-bordered">
