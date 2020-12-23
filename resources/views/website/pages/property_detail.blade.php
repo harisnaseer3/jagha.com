@@ -41,8 +41,8 @@
                                 <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
 
                                 <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                                    <a href="javascript:void(0)" title="{{$property->title}}" itemprop="item"><span
-                                            itemprop="name"> {{$property->title}}<span> (<span class="color-blue">property reference: </span>{{$property->reference}})</span></span></a>
+                                    <a title="{{$property->title}}" itemprop="item"><span
+                                            itemprop="name"> {{$property->sub_type}} For {{$property->purpose}}<span> (<span class="color-blue">Property Reference: </span>{{$property->reference}})</span></span></a>
                                     <meta itemprop="position" content="3">
                                 </span>
                             </div>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="tab-pane" id="one" role="tabpanel" aria-labelledby="one-tab">
                             <div class="properties-description mb-50">
-                            <!-- Properties detail start -->
+                                <!-- Properties detail start -->
                                 <div class="property-details mb-20 detail-overview-style">
                                     <h5 style="font-weight: 400">Details</h5>
                                     <div class="s-border"></div>
@@ -215,10 +215,10 @@
                             </div>
                         </div>
                         <div class="tab-pane h-25" id="two" role="tabpanel" aria-labelledby="2-tab">
-                                <div class="location mb-50">
-                                    <h3 class="heading-2">Location and Nearby</h3>
-                                    @include('website.includes.location_and_nearby')
-                                </div>
+                            <div class="location mb-50">
+                                <h3 class="heading-2">Location and Nearby</h3>
+                                @include('website.includes.location_and_nearby')
+                            </div>
                         </div>
 
                         @if(count($property->videos) > 0)
