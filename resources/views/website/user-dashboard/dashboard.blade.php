@@ -6,6 +6,7 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
 @endsection
 
 @section('content')
@@ -180,6 +181,7 @@
 @endsection
 
 @section('script')
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
     <script>
         $('#delete').on('show.bs.modal', function (event) {
             let record_id = $(event.relatedTarget).data('record-id');

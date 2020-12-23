@@ -127,6 +127,14 @@ class UserController extends Controller
             $user->address = $request->address;
             $user->zip_code = $request->zip_code;
             $user->country = $request->country;
+            if($request->city != null && $request->country === 'Pakistan')
+            {
+                $user->city_name = $request->city;
+            }
+            if($request->city_name != null && $request->country != 'Pakistan'){
+                $user->city_name = $request->city_name;
+            }
+
 //            $user->community_nick = $request->community_nick;
             $user->about_yourself = $request->about_yourself;
             if ($request->hasFile('upload_new_picture')) {

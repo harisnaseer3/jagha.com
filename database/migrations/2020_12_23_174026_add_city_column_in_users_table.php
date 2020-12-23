@@ -14,7 +14,8 @@ class AddCityColumnInUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->string('city_name',255)->nullable();
+            $table->integer('city_id')->unsigned()->nullable();
         });
     }
 
