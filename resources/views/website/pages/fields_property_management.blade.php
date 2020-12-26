@@ -144,25 +144,30 @@
                 @endforeach
             </div>
             <div id="edit-count" data-count="{{count($property->images)}}"></div>
+            <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
 
-        @endif
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-        <div class="row border-bottom my-2 add-images" style="display: none">
-            <div class="col-sm-12 text-bold my-2">
-                <strong>Total Images
-                    <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-                </strong>
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="row border-bottom my-2 add-images" style="display: none"></div>
+        @else
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="row border-bottom my-2 add-images" style="display: none">
+                <div class="col-sm-12 text-bold my-2">
+                    <strong>Total Images
+                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                    </strong>
+                </div>
             </div>
+        @endif
 
-        </div>
+
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
-        <div style="display: none" class="mb-2 btn image-upload-btn">
-            <a style="background-color: #007bff; color: white;" id="property-image-btn" class="btn-sm">
+        <div class="mb-2 ">
+            <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
                 Upload Images</a>
-{{--            <span class="my-2"><span style="color:red">* </span>After file selection click on Upload Images button to upload files</span>--}}
+            {{--            <span class="my-2"><span style="color:red">* </span>After file selection click on Upload Images button to upload files</span>--}}
         </div>
-{{--        <div class="my-2"><span style="color:red">* </span>Press CTRL key while selecting images to upload multiple images at once</div>--}}
+        {{--        <div class="my-2"><span style="color:red">* </span>Press CTRL key while selecting images to upload multiple images at once</div>--}}
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
             <div class="row border-bottom my-2">
