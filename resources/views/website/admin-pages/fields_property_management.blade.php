@@ -117,13 +117,17 @@
                 </div>
             </div>
         @endif
-            {{Form::hidden('features-error')}}
+        {{Form::hidden('features-error')}}
     </div>
     <div class="card-header theme-blue text-white">Property Images and Videos</div>
     <div class="card-body">
         @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2">Images</div>
+                <div class="col-sm-12 text-bold my-2"><strong>Total Images
+                        <span id="edit-count" class="badge badge-primary badge-pill ml-2 f-12" data-count="{{count($property->images)}}"></span>
+                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                    </strong>
+                </div>
                 @foreach($property->images as $available_image)
 
                     <div class="col-md-4 col-sm-6 my-2">
@@ -139,18 +143,24 @@
                     </div>
                 @endforeach
             </div>
-            <div id="edit-count" data-count="{{count($property->images)}}"></div>
-
+            {{--            <div id="edit-count" data-count="{{count($property->images)}}"></div>--}}
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="row border-bottom my-2 add-images" style="display: none"></div>
+        @else
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="row border-bottom my-2 add-images" style="display: none">
+                <div class="col-sm-12 text-bold my-2"><strong>Total Images
+                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                    </strong></div>
+            </div>
         @endif
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-        <div class="row border-bottom my-2 add-images" style="display: none">
-            <div class="col-sm-12 text-bold my-2">Images</div>
-        </div>
+
+
 
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
         <div id="image-count" class="my-3" style="display: none" data-count=0></div>
-        <div class="mb-2"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
+        <div style="display: none" class="mb-2 btn image-upload-btn"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
 
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
@@ -225,7 +235,6 @@
         </div>
 
     @endif
-
 
 
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
