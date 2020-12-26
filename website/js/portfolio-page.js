@@ -88,7 +88,7 @@
                         '</div>' +
                         '   <div class="col-md-6 my-2">' +
                         '      <strong>Cell: </strong>' + agency_data['cell'] +
-                        '</div>'+
+                        '</div>' +
                         '</div>';
 
                     $('.agency-block').show().html(html);
@@ -254,7 +254,7 @@
     function showImagesCount(images) {
         imageCountOnError !== 0 ? imageCountOnError = imageCountOnError + 1 : imageCountOnError = 0;
         let total = parseInt($('#image-count').attr('data-count')) + 1;
-        $('#image-count').show().attr('data-count', total).text('Image Count: ' + total);
+        $('#image-count').show().attr('data-count', total).text(total);
     }
 
     function showImagesCountOnRemove(images) {
@@ -264,13 +264,13 @@
 
         // let total = parseInt(images.length) + parseInt(imageCountOnError) +  parseInt($('#image-count').attr('data-count'));
         let total = current_val;
-        $('#image-count').attr('data-count', total).show().text('Image Count: ' + total);
+        $('#image-count').attr('data-count', total).show().text(total);
     }
 
     function displayImagesOnError() {
         let image_data = $('[name=image]').val().split(',');
         // showImagesCountOnRemove(image_data);
-        $('#image-count').attr('data-count', image_data.length).show().text('Image Count: ' + image_data.length);
+        $('#image-count').attr('data-count', image_data.length).show().text(image_data.length);
         imageCountOnError = image_data.length;
         $.each(image_data, function (idx, val) {
             let image = val.split('.')[0];
@@ -303,7 +303,7 @@
         let count_div = $('#edit-count');
         if (count_div.attr('data-count') > 0) {
             imageCountOnError = parseInt(count_div.attr('data-count'));
-            $('#image-count').attr('data-count', count_div.attr('data-count')).show().text('Image Count: ' + count_div.attr('data-count'));
+            $('#image-count').attr('data-count', count_div.attr('data-count')).show().text(count_div.attr('data-count'));
 
         }
         $(document).on('click', '.delete-image-btn', function () {
@@ -332,7 +332,7 @@
 
                         imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
                         let count = parseInt($('#image-count').attr('data-count')) - 1;
-                        $('#image-count').attr('data-count', count).show().text('Image Count: ' + count);
+                        $('#image-count').attr('data-count', count).show().text(count);
 
 
                     } else if (data.status === 404) {
@@ -367,6 +367,10 @@
             var allowed_types = ['image/jpg', 'image/png', 'image/jpeg'];
             let images = $('input#image')[0];
             if (checkImagesCountLimit(images.files['length'])) {
+
+                $(".custom-file-input").siblings(".custom-file-label").addClass("selected").html('Choose files');
+                $('#property-image-btn').hide();
+
                 $.each(images.files, function (idx, val) {
                     if (!(allowed_types.indexOf(images.files[idx].type) > -1)) {
                         alert('Please select images of type jpg, png or jpeg.');
@@ -766,7 +770,15 @@
             $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
         }
 
+        $(".custom-file-input").on("change", function () {
 
+            let images = $('input#image')[0];
+            if (images.files.length > 0) {
+                $('.image-upload-btn').show();
+            }
+            let html = '<span>' + images.files.length + ' files selected</span>'
+            $(this).siblings(".custom-file-label").addClass("selected").html(html);
+        });
     });
 })
 (jQuery);
