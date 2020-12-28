@@ -151,17 +151,16 @@
             <div class="row border-bottom my-2 add-images" style="display: none">
                 <div class="col-sm-12 text-bold my-2"><strong>Total Images
                         <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-                    </strong></div>
+                    </strong>
+                </div>
             </div>
         @endif
-
-
-
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
-        <div id="image-count" class="my-3" style="display: none" data-count=0></div>
-        <div style="display: none" class="mb-2 btn image-upload-btn"><a style="background-color: #007bff; color: white" id="property-image-btn" class="btn-sm btn">Upload Images</a></div>
-
+            <div class="mb-2 ">
+                <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
+                    Upload Images</a>
+            </div>
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
             <div class="row border-bottom my-2">
