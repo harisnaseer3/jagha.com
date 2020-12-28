@@ -110,25 +110,25 @@
         }
 
         $('.record-limit').on('change', function (e) {
-            insertParamWithAjax('limit', $(this).val());
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'get',
-                url: window.location,
-                dataType: 'json',
-                success: function (data) {
-                    $('#listings-div').html(data.view);
-                },
-                error: function (xhr, status, error) {
-                    console.log(error);
-                },
-                complete: function (url, options) {
-                }
-            });
+            insertParam('limit', $(this).val());
+            // jQuery.ajaxSetup({
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     }
+            // });
+            // jQuery.ajax({
+            //     type: 'get',
+            //     url: window.location,
+            //     dataType: 'json',
+            //     success: function (data) {
+            //         $('#listings-div').html(data.view);
+            //     },
+            //     error: function (xhr, status, error) {
+            //         console.log(error);
+            //     },
+            //     complete: function (url, options) {
+            //     }
+            // });
         });
         if ($('.pagination-box').length > 0) {
             let current_search_params = window.location.search.split('&page')[0];
