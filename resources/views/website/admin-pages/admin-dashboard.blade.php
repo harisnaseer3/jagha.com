@@ -84,19 +84,19 @@
                                                 @if(count($admin->roles) > 0)
                                                     <h6 class="proper-case">{{ucwords($admin->roles[0]->name)}}</h6>
                                                 @endif
-                                                <h5><a href="#">{{ucwords($admin->name)}}</a></h5>
+                                                <h5>{{ucwords($admin->name)}}</h5>
                                                 <div class="contact">
                                                     <p class="m-0">
                                                         <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o mr-1"></i> {{$admin->email}}</a>
                                                     </p>
                                                     @if($admin->cell !== null)
                                                         <p class="m-0">
-                                                            <a href="tel:+554XX-634-7071"> <i class="fa fa-phone mr-1"></i>{{$admin->cell}}</a>
+                                                             <i class="fa fa-phone mr-1"></i>{{$admin->cell}}
                                                         </p>
                                                     @endif
                                                     @if($admin->phone !== null)
                                                         <p class="m-0">
-                                                            <a href="#"><i class="fa fa-phone mr-1"></i>{{$admin->phone}}</a>
+                                                          <i class="fa fa-phone mr-1"></i>{{$admin->phone}}
                                                         </p>
                                                     @endif
                                                 </div>
