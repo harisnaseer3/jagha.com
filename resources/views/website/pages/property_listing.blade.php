@@ -154,20 +154,24 @@
                     @endif
 
                 <!-- Listing -->
-                    <div class="page-list-layout">
-                        @include('website.layouts.list_layout_property_listing')
-                    </div>
+                        <div id="listings-div">
+                            <div class="page-list-layout">
+                                @include('website.layouts.list_layout_property_listing')
+                            </div>
 
-                    <div class="page-grid-layout" style="display: none;">
-                        @include('website.layouts.grid_layout_property_listing')
-                    </div>
-                    @if($properties->count())
-                    <!-- Pagination -->
-                        <div class="pagination-box hidden-mb-45 text-center" role="navigation">
+                            <div class="page-grid-layout" style="display: none;">
+                                @include('website.layouts.grid_layout_property_listing')
+                            </div>
+                        @if($properties->count())
+                            <!-- Pagination -->
+                                <div class="pagination-box hidden-mb-45 text-center" role="navigation">
 
-                            {{ $properties->links('vendor.pagination.bootstrap-4') }}
+                                    {{ $properties->links('vendor.pagination.bootstrap-4') }}
+                                </div>
+                            @endif
+
                         </div>
-                    @endif
+
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">

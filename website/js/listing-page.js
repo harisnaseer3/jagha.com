@@ -85,9 +85,50 @@
             // reload page with new params
             document.location.search = params;
         }
+        function insertParamWithAjax(key, value) {
+            key = encodeURIComponent(key);
+            value = encodeURIComponent(value);
+            // kvp looks like ['key1=value1', 'key2=value2', ...]
+            var kvp = document.location.search.substr(1).split('&');
+            let i = 0;
+            for (; i < kvp.length; i++) {
+                if (kvp[i].startsWith(key + '=')) {
+                    let pair = kvp[i].split('=');
+                    pair[1] = value;
+                    kvp[i] = pair.join('=');
+                    break;
+                }
+            }
+            if (i >= kvp.length) {
+                kvp[kvp.length] = [key, value].join('=');
+            }
+            // can return this or...
+            let params = kvp.join('&');
+            alert(params);
+             window.location.search = params;
+
+        }
 
         $('.record-limit').on('change', function (e) {
-            insertParam('limit', $(this).val());
+            insertParamWithAjax('limit', $(this).val());
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'get',
+                url: window.location,
+                dataType: 'json',
+                success: function (data) {
+                    $('#listings-div').html(data.view);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                },
+                complete: function (url, options) {
+                }
+            });
         });
         if ($('.pagination-box').length > 0) {
             let current_search_params = window.location.search.split('&page')[0];
