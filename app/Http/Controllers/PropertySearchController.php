@@ -412,6 +412,13 @@ class PropertySearchController extends Controller
 
 
         $location_data = $this->_getLocationsWiseCount($purpose, $sub_type, $location_city->id, $location_city->name, $type);
+        if($request->ajax()){
+            $data['view'] = View('website.components.property-listings',
+                [
+                    'properties' => $properties->paginate($limit)
+                ])->render();
+            return $data;
+        }
 
         $data = [
             'params' => $request->all(),
