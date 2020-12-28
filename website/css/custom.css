@@ -2076,4 +2076,7 @@ input:checked + .slider:before {
         margin-top: 35%;
     }
 }
+.f-12{
+    font-size: 12px;
+}
 

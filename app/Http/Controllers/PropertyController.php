@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewPropertyActivatedEvent;
 use App\Http\Controllers\Dashboard\LocationController;
+use App\Jobs\AddWaterMark;
 use App\Models\Account;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
@@ -299,7 +300,12 @@ class PropertyController extends Controller
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
                 $property->save();
+
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
+//                Add water mark on image
+//                AddWaterMark::dispatch($property);
+//                dd($property->images);
+//                $this->dispatch(new AddWaterMark($property));
             }
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
@@ -385,6 +391,30 @@ class PropertyController extends Controller
             }
         }
         $validator = Validator::make($request->all(), Property::$rules);
+        $validator = Validator::make($request->all(), [
+//            'city' => 'required',
+//            'location' => 'required',
+//            'purpose' => 'required',
+//            'property_type' => 'required',
+//            'property_subtype-*' => 'required',
+//            'property_title' => 'required|min:10|max:225',
+            'description' => 'required|min:50|max:6144',
+            'all_inclusive_price' => 'nullable|numeric|max:99999999999|min:1000',
+            'call_for_price_inquiry' => 'numeric',
+            'land_area' => 'required|numeric',
+            'unit' => 'required',
+            'image.*' => 'image|max:10000',
+            'floor_plans.*' => 'image|max:256',
+            'phone' => 'nullable|string', // +92-511234567
+            'mobile' => 'required', // +92-3001234567
+            'contact_person' => 'required|max:225',
+            'contact_email' => 'required|email',
+            'video_host' => 'string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
+            'video_link' => 'nullable|url',
+            'rejection_reason' => 'nullable|string'
+        ]);
+
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
@@ -485,6 +515,16 @@ class PropertyController extends Controller
 //                comment out new property up event
 //                event(new NewPropertyActivatedEvent($property));
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
+                //if property has images and status is going to live than add water mark on images
+                if (count($property->images) > 0) {
+                    foreach ($property->images as $property_image) {
+                        if ($property_image->watermarked == 0) {
+                            $this->dispatch(new AddWaterMark($property_image));
+                        }
+                    }
+
+                }
+
             }
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));

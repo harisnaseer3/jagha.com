@@ -39,11 +39,11 @@ class Agency extends Model
         'address' => 'nullable|string',
         'zip_code' => 'nullable|digits:5',
         'country' => 'required|string',
-        'upload_new_logo' => 'nullable|image|max:128',
+        'upload_new_logo' => 'nullable|image|max:10000',
         'name' => 'nullable|string',
         'designation' => 'nullable|string',
         'message' => 'nullable|string',
-        'upload_new_picture' => 'nullable|image|max:128',
+        'upload_new_picture' => 'nullable|image|max:10000',
     ];
 
     public function users()
