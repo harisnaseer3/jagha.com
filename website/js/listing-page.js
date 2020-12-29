@@ -1,4 +1,28 @@
 (function ($) {
+    function layoutSelection() {
+        if (sessionStorage.getItem("page-layout") === 'list-layout') {
+            $('.page-list-layout').show();
+            $('.page-grid-layout').hide();
+        } else if (sessionStorage.getItem("page-layout") === 'grid-layout') {
+            $('.page-list-layout').hide();
+            $('.page-grid-layout').show();
+            $('.grid-stars').stars();
+        }
+    }
+
+    function addPaginationLinks() {
+        let current_search_params = window.location.search.split('&page')[0];
+        $('.page-item').each(function () {
+            let link = $(this).find('a');
+            if (link.length > 0) {
+                let fetched_link = link.attr('href');
+                let piece1 = fetched_link.split('?')[0];
+                let piece2 = fetched_link.split('?')[1];
+                link.attr('href', piece1 + current_search_params + '&' + piece2);
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover({trigger: "hover"});
@@ -16,10 +40,16 @@
         $('.tt_large').tooltip({template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner large"></div></div>'});
 
 
-        $('.list-layout-btn').on('click', function (e) {
+        $(document).on('click', '.list-layout-btn', function (e) {
             sessionStorage.setItem("page-layout", 'list-layout');
             $('.page-list-layout').show();
             $('.page-grid-layout').hide();
+        });
+        $(document).on('click', '.grid-layout-btn', function (e) {
+            sessionStorage.setItem("page-layout", 'grid-layout');
+            $('.page-list-layout').hide();
+            $('.page-grid-layout').show();
+            $('.grid-stars').stars();
         });
         $.fn.stars = function () {
             return $(this).each(function () {
@@ -41,26 +71,75 @@
             });
         }
         $('.stars').stars();
-        $('.grid-layout-btn').on('click', function (e) {
-            sessionStorage.setItem("page-layout", 'grid-layout');
-            $('.page-list-layout').hide();
-            $('.page-grid-layout').show();
-            $('.grid-stars').stars();
-        });
-        if (sessionStorage.getItem("page-layout") === 'list-layout') {
-            $('.page-list-layout').show();
-            $('.page-grid-layout').hide();
-        } else if (sessionStorage.getItem("page-layout") === 'grid-layout') {
-            $('.page-list-layout').hide();
-            $('.page-grid-layout').show();
-            $('.grid-stars').stars();
-        }
-        $('.sorting').on('change', function (e) {
+        layoutSelection();
+
+
+        $(document).on('change', '.sorting', function (e) {
             let area_sort = ['higher_area', 'lower_area'];
             if (jQuery.inArray($(this).val(), area_sort) !== -1) {
-                insertParam('area_sort', $(this).val());
-            } else
-                insertParam('sort', $(this).val());
+                // insertParam('area_sort', $(this).val());
+                let new_url = insertParamWithAjax('area_sort', $(this).val());
+                console.log(new_url);
+                $('.ajax-loader').show();
+                $('#listings-div').html('');
+                jQuery.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                jQuery.ajax({
+                    type: 'get',
+                    url: new_url,
+
+                    dataType: 'json',
+                    success: function (data) {
+                        $('.ajax-loader').hide();
+                        $('#listings-div').html(data.view);
+                        layoutSelection();
+                        if ($('.pagination-box').length > 0) {
+                            addPaginationLinks();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // console.log(error);
+                    },
+                    complete: function (url, options) {
+
+                    }
+                });
+            } else {
+                // insertParam('sort', $(this).val());
+                let new_url = insertParamWithAjax('sort', $(this).val());
+                console.log(new_url);
+                $('.ajax-loader').show();
+                $('#listings-div').html('');
+                jQuery.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                jQuery.ajax({
+                    type: 'get',
+                    url: new_url,
+
+                    dataType: 'json',
+                    success: function (data) {
+                        $('.ajax-loader').hide();
+                        $('#listings-div').html(data.view);
+                        layoutSelection();
+                        if ($('.pagination-box').length > 0) {
+                            addPaginationLinks();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // console.log(error);
+                    },
+                    complete: function (url, options) {
+
+                    }
+                });
+            }
+
         });
 
         function insertParam(key, value) {
@@ -85,6 +164,7 @@
             // reload page with new params
             document.location.search = params;
         }
+
         function insertParamWithAjax(key, value) {
             key = encodeURIComponent(key);
             value = encodeURIComponent(value);
@@ -104,43 +184,45 @@
             }
             // can return this or...
             let params = kvp.join('&');
-            alert(params);
-             window.location.search = params;
+            return window.location.origin + window.location.pathname + '?' + params;
 
         }
 
-        $('.record-limit').on('change', function (e) {
-            insertParam('limit', $(this).val());
-            // jQuery.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
-            // jQuery.ajax({
-            //     type: 'get',
-            //     url: window.location,
-            //     dataType: 'json',
-            //     success: function (data) {
-            //         $('#listings-div').html(data.view);
-            //     },
-            //     error: function (xhr, status, error) {
-            //         console.log(error);
-            //     },
-            //     complete: function (url, options) {
-            //     }
-            // });
-        });
-        if ($('.pagination-box').length > 0) {
-            let current_search_params = window.location.search.split('&page')[0];
-            $('.page-item').each(function () {
-                let link = $(this).find('a');
-                if (link.length > 0) {
-                    let fetched_link = link.attr('href');
-                    let piece1 = fetched_link.split('?')[0];
-                    let piece2 = fetched_link.split('?')[1];
-                    link.attr('href', piece1 + current_search_params + '&' + piece2);
+        $('.ajax-loader').hide();
+        $(document).on('change', '.record-limit', function (e) {
+            let new_url = insertParamWithAjax('limit', $(this).val());
+            console.log(new_url);
+            $('.ajax-loader').show();
+            $('#listings-div').html('');
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            jQuery.ajax({
+                type: 'get',
+                url: new_url,
+
+                dataType: 'json',
+                success: function (data) {
+                    $('.ajax-loader').hide();
+                    $('#listings-div').html(data.view);
+                    layoutSelection();
+                    if ($('.pagination-box').length > 0) {
+                        addPaginationLinks();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // console.log(error);
+                },
+                complete: function (url, options) {
+
+                }
+            });
+        });
+
+        if ($('.pagination-box').length > 0) {
+            addPaginationLinks();
         }
 
         $('.select2').select2({

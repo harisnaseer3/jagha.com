@@ -2,13 +2,13 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-{{--            <span class="heading-icon"><i class="fa fa-th-list"></i></span>--}}
+            {{--            <span class="heading-icon"><i class="fa fa-th-list"></i></span>--}}
             <span class="title-name text-transform ml-2">Properties List</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            <select class="sorting record-limit none-992">
+            <select class="record-limit none-992">
                 <option value="15" {{ request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
                 <option value="30" {{ request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
                 <option value="45" {{ request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
@@ -31,9 +31,11 @@
     </div>
 </div>
 
+
 @if($properties->isEmpty())
     <div> No results to show</div>
 @endif
+
 <!-- Property box 2 start -->
 @foreach($properties as $property)
     <div class="property-box-2">

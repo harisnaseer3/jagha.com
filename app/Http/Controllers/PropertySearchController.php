@@ -61,7 +61,7 @@ class PropertySearchController extends Controller
     /* search function for houses at different locations*/
     /* locations are going to be fixed  we use like or regexp to find that location*/
 
-    public function searchForHousesAndPlots(string $type, string $city, string $location)
+    public function searchForHousesAndPlots(string $type, string $city, string $location, Request $request)
     {
         $purpose = 'sale';
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
@@ -106,7 +106,17 @@ class PropertySearchController extends Controller
 
         $property_types = (new PropertyType)->all();
         $footer_content = (new FooterController)->footerContent();
-
+        if ($request->ajax()) {
+            $data['view'] = View('website.components.property-listings',
+                [
+                    'limit' => $limit,
+                    'area_sort' => $sort_area,
+                    'sort' => $sort,
+                    'params' => $request->all(),
+                    'properties' => $properties->paginate($limit)
+                ])->render();
+            return $data;
+        }
         $data = [
             'params' => request()->all(),
             'property_types' => $property_types,
@@ -207,7 +217,7 @@ class PropertySearchController extends Controller
     }
 
     //   search for city property
-    public function searchInCities(string $city)
+    public function searchInCities(string $city, Request $request)
     {
         $city = str_replace('_', ' ', $city);
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
@@ -243,6 +253,19 @@ class PropertySearchController extends Controller
 
             $property_types = (new PropertyType)->all();
             (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
+
+            if ($request->ajax()) {
+                $data['view'] = View('website.components.property-listings',
+                    [
+                        'limit' => $limit,
+                        'area_sort' => $sort_area,
+                        'sort' => $sort,
+                        'params' => $request->all(),
+                        'properties' => $properties->paginate($limit)
+                    ])->render();
+                return $data;
+            }
+
 
             $data = [
                 'params' => request()->all(),
@@ -425,6 +448,10 @@ class PropertySearchController extends Controller
         if ($request->ajax()) {
             $data['view'] = View('website.components.property-listings',
                 [
+                    'limit' => $limit,
+                    'area_sort' => $sort_area,
+                    'sort' => $sort,
+                    'params' => $request->all(),
                     'properties' => $properties->paginate($limit)
                 ])->render();
             return $data;
