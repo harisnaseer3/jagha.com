@@ -23,6 +23,26 @@
         });
     }
 
+    function addPaginationAjaxLinks(url) {
+        let data = url.split('?')[1];
+        let current_search_params = data.split('&');
+        let condition = '';
+        $.each(current_search_params, function (index, value) {
+            if (!value.includes('limit') && !value.includes('page'))
+                condition += value +'&'
+
+        });
+        $('.page-item').each(function () {
+            let link = $(this).find('a');
+            if (link.length > 0) {
+                let fetched_link = link.attr('href');
+                let piece1 = fetched_link.split('?')[0];
+                let piece2 = fetched_link.split('?')[1];
+                link.attr('href', piece1 + '?' + condition + piece2);
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover({trigger: "hover"});
@@ -74,74 +94,6 @@
         layoutSelection();
 
 
-        $(document).on('change', '.sorting', function (e) {
-            let area_sort = ['higher_area', 'lower_area'];
-            if (jQuery.inArray($(this).val(), area_sort) !== -1) {
-                // insertParam('area_sort', $(this).val());
-                let new_url = insertParamWithAjax('area_sort', $(this).val());
-                console.log(new_url);
-                $('.ajax-loader').show();
-                $('#listings-div').html('');
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    type: 'get',
-                    url: new_url,
-
-                    dataType: 'json',
-                    success: function (data) {
-                        $('.ajax-loader').hide();
-                        $('#listings-div').html(data.view);
-                        layoutSelection();
-                        if ($('.pagination-box').length > 0) {
-                            addPaginationLinks();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // console.log(error);
-                    },
-                    complete: function (url, options) {
-
-                    }
-                });
-            } else {
-                // insertParam('sort', $(this).val());
-                let new_url = insertParamWithAjax('sort', $(this).val());
-                console.log(new_url);
-                $('.ajax-loader').show();
-                $('#listings-div').html('');
-                jQuery.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                jQuery.ajax({
-                    type: 'get',
-                    url: new_url,
-
-                    dataType: 'json',
-                    success: function (data) {
-                        $('.ajax-loader').hide();
-                        $('#listings-div').html(data.view);
-                        layoutSelection();
-                        if ($('.pagination-box').length > 0) {
-                            addPaginationLinks();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // console.log(error);
-                    },
-                    complete: function (url, options) {
-
-                    }
-                });
-            }
-
-        });
-
         function insertParam(key, value) {
             key = encodeURIComponent(key);
             value = encodeURIComponent(value);
@@ -188,10 +140,63 @@
 
         }
 
+        function insert2ParamsWithAjax(url, key, value) {
+            key = encodeURIComponent(key);
+            value = encodeURIComponent(value);
+            // kvp looks like ['key1=value1', 'key2=value2', ...]
+            var kvp = url.split('?')[1].split('&');
+            let i = 0;
+            for (; i < kvp.length; i++) {
+                if (kvp[i].startsWith(key + '=')) {
+                    let pair = kvp[i].split('=');
+                    pair[1] = value;
+                    kvp[i] = pair.join('=');
+                    break;
+                }
+            }
+            if (i >= kvp.length) {
+                kvp[kvp.length] = [key, value].join('=');
+            }
+            // can return this or...
+            let params = kvp.join('&');
+            return window.location.origin + window.location.pathname + '?' + params;
+
+        }
+
+
         $('.ajax-loader').hide();
         $(document).on('change', '.record-limit', function (e) {
-            let new_url = insertParamWithAjax('limit', $(this).val());
-            console.log(new_url);
+            getDataFromAjax();
+        });
+
+        $(document).on('change', '.sorting', function (e) {
+            getDataFromAjax();
+
+        });
+
+        function getDataFromAjax() {
+            let area_sort = '';
+            let sort = '';
+            let limit = '';
+            if (sessionStorage.getItem("page-layout") === 'list-layout') {
+                limit = $('#list-record').val();
+                area_sort = $('#list-area-filter').val();
+                sort = $('#list-sorting').val();
+            } else if (sessionStorage.getItem("page-layout") === 'grid-layout') {
+                limit = $('#grid-record').val();
+                area_sort = $('#grid-area-filter').val();
+                sort = $('#grid-sorting').val();
+            } else {
+                limit = $('#list-record').val();
+                area_sort = $('#list-area-filter').val();
+                sort = $('#list-sorting').val();
+            }
+            //get value from other filters and add them to new url
+            let new_url = insertParamWithAjax('limit', limit)
+            let url = insert2ParamsWithAjax(new_url, 'sort', sort);
+            if (area_sort) {
+                url = insert2ParamsWithAjax(url, 'area_sort', area_sort);
+            }
             $('.ajax-loader').show();
             $('#listings-div').html('');
             jQuery.ajaxSetup({
@@ -201,25 +206,27 @@
             });
             jQuery.ajax({
                 type: 'get',
-                url: new_url,
+                url: url,
 
                 dataType: 'json',
                 success: function (data) {
                     $('.ajax-loader').hide();
                     $('#listings-div').html(data.view);
                     layoutSelection();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle="popover"]').popover({trigger: "hover"});
                     if ($('.pagination-box').length > 0) {
-                        addPaginationLinks();
+                        addPaginationAjaxLinks(url);
                     }
                 },
                 error: function (xhr, status, error) {
-                    // console.log(error);
                 },
                 complete: function (url, options) {
 
                 }
             });
-        });
+        }
+
 
         if ($('.pagination-box').length > 0) {
             addPaginationLinks();

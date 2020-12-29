@@ -257,6 +257,7 @@ class PropertySearchController extends Controller
             if ($request->ajax()) {
                 $data['view'] = View('website.components.property-listings',
                     [
+
                         'limit' => $limit,
                         'area_sort' => $sort_area,
                         'sort' => $sort,
