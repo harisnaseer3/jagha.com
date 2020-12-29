@@ -43,12 +43,12 @@ $(function() {
 
 
     // WOW animation library initialization
-    var wow = new WOW({
-        animateClass: 'animated',
-        offset: 100,
-        mobile: false
-    });
-    wow.init();
+    // var wow = new WOW({
+    //     animateClass: 'animated',
+    //     offset: 100,
+    //     mobile: false
+    // });
+    // wow.init();
 
     // Banner slider
     (function($) {
@@ -95,23 +95,23 @@ $(function() {
         return ((BotElement <= BotView) && (TopElement >= TopView));
     }
 
-    $(window).scroll(function() {
-        $(".counter").each(function() {
-            var isOnView = isCounterElementVisible($(this));
-            if (isOnView && !$(this).hasClass('Starting')) {
-                $(this).addClass('Starting');
-                $(this).prop('Counter', 0).animate({
-                    Counter: $(this).text()
-                }, {
-                    duration: 3000,
-                    easing: 'swing',
-                    step: function(now) {
-                        $(this).text(Math.ceil(now));
-                    }
-                });
-            }
-        });
-    });
+    // $(window).scroll(function() {
+    //     $(".counter").each(function() {
+    //         var isOnView = isCounterElementVisible($(this));
+    //         if (isOnView && !$(this).hasClass('Starting')) {
+    //             $(this).addClass('Starting');
+    //             $(this).prop('Counter', 0).animate({
+    //                 Counter: $(this).text()
+    //             }, {
+    //                 duration: 3000,
+    //                 easing: 'swing',
+    //                 step: function(now) {
+    //                     $(this).text(Math.ceil(now));
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
 
 
     // Countdown activation
