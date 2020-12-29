@@ -536,7 +536,7 @@ class CountTableController extends Controller
                     ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type')
                     ->get();
                 $sort = 'checked';
-            } else if ($request->sort === 'unsort-alpha'){
+            } else if ($request->sort === 'unsort-alpha') {
                 $properties = DB::table('property_count_by_property_purposes')
                     ->select(DB::raw('SUM(property_count) AS property_count'), 'city_id', 'city_name', 'property_purpose', 'property_type')
                     ->where([
@@ -585,13 +585,25 @@ class CountTableController extends Controller
         $city_data = City::select('id', 'name')->where('name', '=', $city)->first();
         $city_id = $city_data->id;
         $city_name = $city_data->name;
+        $sub_type = '';
 
-        $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type];
+        if (in_array($type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) {
+            $sub_type = $type;
+            $type = 'homes';
+        } elseif (in_array($type, ['residential-plot', 'commercial-plot', 'agricultural-land', 'industrial-land', 'plot-file', 'plot-form'])) {
+            $sub_type = $type;
+            $type = 'plots';
+        } elseif (in_array($type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other'])) {
+            $sub_type = $type;
+            $type = 'commercial';
+        }
+        $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type, 'property_sub_type' => $sub_type];
 
         $location_data['count'] = DB::table('property_count_by_property_purposes')->select('location_name', 'property_count', 'property_sub_type')->where($condition)->orderBy('property_count', 'DESC')->get();
         $location_data['purpose'] = $purpose;
         $location_data['type'] = $type;
         $location_data['city'] = $city_name;
+        $location_data['sub_type'] = $sub_type;
         $data = [
             'locations_data' => $location_data,
             'recent_properties' => $footer_content[0],
