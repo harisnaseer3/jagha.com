@@ -19,14 +19,14 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="all-cities-header">
-                                All locations of {{ucfirst($locations_data['type'])}} for {{ucfirst($locations_data['purpose'])}} in {{$locations_data['city']}}</h1>
+                                All locations of {{ucfirst($locations_data['sub_type'])}} for {{ucfirst($locations_data['purpose'])}} in {{$locations_data['city']}}</h1>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 @foreach($locations_data['count'] as $location)
                                     <div class="col-sm-6  mb-3">
                                         <a href="{{route('search.property.at.location',[
-                                'type'=>lcfirst($locations_data['type']),
+                                'type'=>strtolower($locations_data['sub_type']),
                                 'purpose'=>lcfirst($locations_data['purpose']),
                                 'city' => lcfirst($locations_data['city']),
                                 'location'=> str_replace(' ', '-',str_replace('-','_',str_replace('/','BY',$location->location_name))),
