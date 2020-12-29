@@ -26,11 +26,11 @@ class UserManagementController extends Controller
         $this->middleware('auth:admin');
     }
 
-    protected function validator(array $data, $id, $model)
+    protected function validator($data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => 'required|string|email|unique:' . $model . ',email,' . $id,
+            'email' => 'bail|required|email',
+            'role.*' => 'required',
         ]);
     }
 
@@ -41,6 +41,7 @@ class UserManagementController extends Controller
             'admins' => $admins,
         ]);
     }
+
     public function getUsers()
     {
         $users = User::getAllUsers();
@@ -59,12 +60,15 @@ class UserManagementController extends Controller
 
     public function registration(Request $request)
     {
+        $request->validate([
+            'email' => 'bail|required|email',
+            'role.*' => 'required',
+        ]);
         $input = $request->input();
         $roles = $input['role'];
         $current_user = User::findUserByEmail($input['email']);
 
-        if(!empty($current_user))
-        {
+        if (!empty($current_user)) {
             $input['name'] = $current_user->name;
             $input['password'] = $current_user->password;
             $input['remember_token'] = $current_user->remember_token;
@@ -74,8 +78,7 @@ class UserManagementController extends Controller
 
 
             return redirect()->route('admin.manage-admins')->with('success', 'Admin created successfully.');
-        }
-        else {
+        } else {
             $new_email_users[] = $input['email'];
             DB::table('user_invites')
                 ->updateOrInsert(
@@ -94,9 +97,12 @@ class UserManagementController extends Controller
     public function editAdmin($id)
     {
         $current_admin = Admin::getAdminById($id);
-        $admin_role = '';
+        $admin_roles = [];
         if (count($current_admin->roles) > 0) {
-            $admin_roles = $current_admin->roles;
+            foreach ($current_admin->roles as $role) {
+                array_push(  $admin_roles,$role->name);
+            }
+
         }
         $roles = Role::all();
         if (empty($current_admin)) {
@@ -104,21 +110,25 @@ class UserManagementController extends Controller
         }
         return view('website.admin-pages.edit-admin', [
             'admin' => $current_admin,
-            'admin_role' => $admin_roles,
+            'admin_roles' => $admin_roles,
             'roles' => $roles
         ]);
     }
 
-    public function updateAdmin($id, Request $request)
+    public function updateAdmin(Request $request)
     {
-        $this->validator($request->all(), $id, 'admins')->validate();
-        $current_admin = Admin::getAdminById($id);
+        $validator = Validator::make($request->all(), Admin::$rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->with('error', 'Error storing record, try again.');
+        }
+        $current_admin = Admin::getAdminById($request->id);
         if (empty($current_admin)) {
-            return redirect()->route('admin.manage-admins')->with('error', 'Something went wrong. Admin not found');
+            return redirect()->back()->with('error', 'Something went wrong. Admin not found');
         }
         $input = $request->all();
-        $current_admin = Admin::updateAdmin($input, $id);
-        return redirect()->route('admin.manage-admins')->with('success', 'Admin updated successfully.');
+        $current_admin = Admin::updateAdmin($input);
+        return redirect()->route('admin.manage-admins')->with('success', 'Admin roles updated successfully.');
     }
 
     public function adminDestroy($admin)
@@ -129,16 +139,14 @@ class UserManagementController extends Controller
             return redirect()->route('admin.manage-admins')->with('error', 'Something went wrong. Admin not found');
         }
         $admin_status = Admin::destroy($current_admin->id);
-        if($admin_status === '1')
-        {
+        if ($admin_status === '1') {
             return redirect()->route('admin.manage-admins')->with('success', 'Admin activated successfully.');
-        }
-        elseif($admin_status === '0')
-        {
+        } elseif ($admin_status === '0') {
             return redirect()->route('admin.manage-admins')->with('success', 'Admin deactived successfully.');
 
         }
     }
+
     public function userDestroy($user)
     {
         $current_user = User::getUserById($user);
@@ -146,12 +154,9 @@ class UserManagementController extends Controller
             return redirect()->route('admin.manage-users')->with('error', 'Something went wrong. User not found');
         }
         $user_status = User::destroyUser($current_user->id);
-        if($user_status === '1')
-        {
+        if ($user_status === '1') {
             return redirect()->route('admin.manage-users')->with('success', 'User activated successfully.');
-        }
-        elseif($user_status === '0')
-        {
+        } elseif ($user_status === '0') {
             return redirect()->route('admin.manage-users')->with('success', 'User deactived successfully.');
 
         }

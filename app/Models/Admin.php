@@ -36,6 +36,10 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    public static $rules = [
+        'email' => 'required|email',
+        'role' => 'required',
+    ];
 
     public static function getAllAdmins()
     {
@@ -59,15 +63,12 @@ class Admin extends Authenticatable
         return (new Admin)->where('email', $email)->first();
     }
 
-    public static function updateAdmin($object, $id)
+    public static function updateAdmin($object)
     {
-        $current_admin = (new Admin)->findOrFail($id);
+        $current_admin = (new Admin)->findOrFail($object['id']);
         if (empty($current_admin)) {
             return null;
         }
-        $current_admin->name = $object['name'];
-        $current_admin->email = $object['email'];
-        $current_admin->update();
         //updating admin role
         $current_admin->syncRoles($object['role']);
     }
