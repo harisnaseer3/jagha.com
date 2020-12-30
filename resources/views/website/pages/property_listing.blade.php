@@ -146,31 +146,30 @@
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @endif
-                    @if( request()->segment(1) != 'featured-properties' && request()->query('location') == null)
-                        @include('website.includes.locations_count_card')
-                    @endif
+
                     @if(isset($agency_detail))
                         @include('website.includes.agency_detail_card')
                     @endif
 
-                <!-- Listing -->
-                        <div id="listings-div">
-                            <div class="page-list-layout">
-                                @include('website.layouts.list_layout_property_listing')
-                            </div>
-
-                            <div class="page-grid-layout" style="display: none;">
-                                @include('website.layouts.grid_layout_property_listing')
-                            </div>
-                        @if($properties->count())
-                            <!-- Pagination -->
-                                <div class="pagination-box hidden-mb-45 text-center" role="navigation">
-
-                                    {{ $properties->links('vendor.pagination.bootstrap-4') }}
-                                </div>
-                            @endif
-
+                        <div class="ajax-loader"></div>
+                        <!-- Listing -->
+                    <div id="listings-div">
+                        <div class="page-list-layout">
+                            @include('website.layouts.list_layout_property_listing')
                         </div>
+                        <div class="page-grid-layout" style="display: none;">
+                            @include('website.layouts.grid_layout_property_listing')
+                        </div>
+                    @if($properties->count())
+                        <!-- Pagination -->
+                            <div class="pagination-box hidden-mb-45 text-center" role="navigation">
+                                {{ $properties->links('vendor.pagination.bootstrap-4') }}
+                            </div>
+                        @endif
+                    </div>
+                    @if( request()->segment(1) != 'featured-properties' && request()->query('location') == null)
+                        @include('website.includes.locations_count_card')
+                    @endif
 
                 </div>
                 <div class="col-lg-3 col-md-12">

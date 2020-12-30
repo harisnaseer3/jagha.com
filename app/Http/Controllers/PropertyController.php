@@ -33,7 +33,7 @@ class PropertyController extends Controller
 {
 
 //    list all featured properties
-    public function featuredProperties()
+    public function featuredProperties(Request $request)
     {
         $properties = (new PropertySearchController)->listingfrontend()
             ->where('properties.platinum_listing', '=', 1);
@@ -64,7 +64,17 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
-
+        if ($request->ajax()) {
+            $data['view'] = View('website.components.property-listings',
+                [
+                    'limit' => $limit,
+                    'area_sort' => $sort_area,
+                    'sort' => $sort,
+                    'params' => $request->all(),
+                    'properties' => $properties->paginate($limit)
+                ])->render();
+            return $data;
+        }
         $data = [
             'params' => request()->all(),
             'property_types' => $property_types,

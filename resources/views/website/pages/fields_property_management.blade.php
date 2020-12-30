@@ -123,11 +123,15 @@
 
 
     </div>
-    <div class="card-header theme-blue text-white">Property Details</div>
+    <div class="card-header theme-blue text-white">Property Images and Videos</div>
     <div class="card-body">
         @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2">Images</div>
+                <div class="col-sm-12 text-bold my-2"><strong>Total Images
+                        <span id="edit-count" class="badge badge-primary badge-pill ml-2 f-12" data-count="{{count($property->images)}}"></span>
+                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                    </strong>
+                </div>
                 @foreach($property->images as $available_image)
                     <div class="col-md-4 col-sm-6 my-2">
                         <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">

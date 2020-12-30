@@ -197,7 +197,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/register', 'Admin\UserManagementController@showAdminRegisterForm')->name('admin.show-register-form')->middleware(['permission:Manage Users']);
     Route::post('/registration', 'Admin\UserManagementController@registration')->name('registration.submit')->middleware(['permission:Manage Users']);
     Route::get('{admin}/edit', 'Admin\UserManagementController@editAdmin')->name('admins.edit')->middleware(['permission:Manage Users']);
-    Route::patch('/{admin}', 'Admin\UserManagementController@updateAdmin')->name('admins.update')->middleware(['permission:Manage Users']);
+    Route::post('/update-admin', 'Admin\UserManagementController@updateAdmin')->name('admins.update')->middleware(['permission:Manage Users']);
     Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy')->middleware(['permission:Manage Users']);
     Route::delete('/destroyUser/{user}', 'Admin\UserManagementController@userDestroy')->name('admins.destroy-user')->middleware(['permission:Manage Users']);
     Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit')->middleware(['permission:Manage Property']);

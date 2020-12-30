@@ -2,34 +2,35 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-{{--            <span class="heading-icon"><i class="fa fa-th-large"></i></span>--}}
+            {{--            <span class="heading-icon"><i class="fa fa-th-large"></i></span>--}}
             <span class="title-name ml-2 text-transform">Properties Grid</span>
         </h4>
     </div>
     <div class="float-right cod-pad">
         <div class="sorting-options" role="button" aria-label="sort by filter">
-            <select class="sorting record-limit none-992">
+            <select class="record-limit none-992" id="grid-record">
                 <option value="15" {{request()->query('limit') === '15'  ? 'selected' : '' }}>15 Records</option>
                 <option value="30" {{request()->query('limit') === '30'  ? 'selected' : '' }}>30 Records</option>
                 <option value="45" {{request()->query('limit') === '45'  ? 'selected' : '' }}>45 Records</option>
                 <option value="60" {{request()->query('limit') === '60'  ? 'selected' : '' }}>60 Records</option>
             </select>
-            <select class="sorting area-filter none-992">
+            <select class="sorting area-filter none-992" id="grid-area-filter">
                 <option disabled selected>Select Area Filter</option>
                 <option value="higher_area" {{request()->query('area_sort') === 'higher_area' ? 'selected' : '' }}>Area (High To Low)</option>
                 <option value="lower_area" {{ request()->query('area_sort') === 'lower_area'? 'selected' : '' }}>Area (Low To High)</option>
             </select>
-            <select class="sorting">
+            <select class="sorting" id="grid-sorting">
                 <option value="newest" {{ $params['sort'] === 'newest' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest</option>
                 <option value="oldest" {{ $params['sort'] === 'oldest' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest</option>
                 <option value="high_price" {{ $params['sort'] === 'high_price' || request()->query('sort') === 'high_price' ? 'selected' : '' }}>Price (High To Low)</option>
                 <option value="low_price" {{ $params['sort'] === 'low_price' || request()->query('sort') === 'low_price'? 'selected' : '' }}>Price (Low To High)</option>
             </select>
-            <a class="change-view-btn  list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
+            <a class="change-view-btn list-layout-btn" role="button" aria-label="List view"><i class="fa fa-th-list"></i></a>
             <a class="change-view-btn active-view-btn grid-layout-btn" role="button" aria-label="Grid view"><i class="fa fa-th-large"></i></a>
         </div>
     </div>
 </div>
+
 @if($properties->isEmpty())
     <div> No results to show</div>
 @endif
@@ -144,20 +145,20 @@
                                     @endif
                                 </span>
                             </li>
-{{--                        @elseif(isset($property->land_area))--}}
-{{--                            <li aria-label="land area" data-toggle="tooltip" data-placement="right" data-html="true"--}}
-{{--                                title='<div class="row mt-1">--}}
-{{--                           <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>--}}
-{{--                           <div class="col-md-12 mb-1 mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>--}}
-{{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>--}}
-{{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>--}}
-{{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla</div>--}}
-{{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>--}}
-{{--                           </div>'>--}}
-{{--                                <i class="fas fa-arrows-alt"></i>--}}
-{{--                                {{ number_format($property->land_area, 2) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')--}}
-{{--                                    Sq.F. @elseif ($property->area_unit === 'Square Yards') Sq.Yd. @else {{$property->area_unit}} @endif--}}
-{{--                            </li>--}}
+                            {{--                        @elseif(isset($property->land_area))--}}
+                            {{--                            <li aria-label="land area" data-toggle="tooltip" data-placement="right" data-html="true"--}}
+                            {{--                                title='<div class="row mt-1">--}}
+                            {{--                           <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>--}}
+                            {{--                           <div class="col-md-12 mb-1 mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>--}}
+                            {{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>--}}
+                            {{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>--}}
+                            {{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla</div>--}}
+                            {{--                           <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>--}}
+                            {{--                           </div>'>--}}
+                            {{--                                <i class="fas fa-arrows-alt"></i>--}}
+                            {{--                                {{ number_format($property->land_area, 2) }} @if($property->area_unit === 'Square Meters') Sq.M. @elseif($property->area_unit === 'Square Feet')--}}
+                            {{--                                    Sq.F. @elseif ($property->area_unit === 'Square Yards') Sq.Yd. @else {{$property->area_unit}} @endif--}}
+                            {{--                            </li>--}}
                         @endif
                     </ul>
                 </div>

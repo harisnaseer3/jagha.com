@@ -49,7 +49,7 @@
         if (max_price !== 'Any' && max_price !== null && max_price !== '') page_link += '&max_price=' + max_price;
         if (min_area !== '0' && min_area !== null && min_area !== '') page_link += '&min_area=' + min_area;
         if (max_area !== 'Any' && max_area !== null && max_area !== '') page_link += '&max_area=' + max_area;
-        if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
+        if (beds !== 'All' && beds !== null && beds !== '') page_link += '&bedrooms=' + beds;
         page_link += '&area_unit=' + area_unit.replace(' ', '-').toLowerCase();
         page_link += '&sort=newest';
         window.location.href = page_link;
@@ -103,7 +103,7 @@
         if (max_price !== 'Any' && max_price !== null && max_price !== '') page_link += '&max_price=' + max_price;
         if (min_area !== '0' && min_area !== null && min_area !== '') page_link += '&min_area=' + min_area;
         if (max_area !== 'Any' && max_area !== null && max_area !== '') page_link += '&max_area=' + max_area;
-        if (beds !== 'All' && beds !== null) page_link += '&bedrooms=' + beds;
+        if (beds !== 'All' && beds !== null && beds !== '') page_link += '&bedrooms=' + beds;
         page_link += '&area_unit=' + area_unit.replace(' ', '-').toLowerCase();
         page_link += '&sort=newest';
         window.location.href = page_link;
@@ -493,7 +493,7 @@
             $('#select-max-price').val(parseInt(sessionStorage.getItem('max_price')));
             $('#search2-select-max-price').val(parseInt(sessionStorage.getItem('max_price')));
         }
-        if(sessionStorage.getItem('bedrooms') !== null){
+        if (sessionStorage.getItem('bedrooms') !== null) {
             $('#search2-beds').val(parseInt(sessionStorage.getItem('bedrooms')));
             $('#beds').val(parseInt(sessionStorage.getItem('bedrooms')));
         }

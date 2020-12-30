@@ -61,7 +61,7 @@ class PropertySearchController extends Controller
     /* search function for houses at different locations*/
     /* locations are going to be fixed  we use like or regexp to find that location*/
 
-    public function searchForHousesAndPlots(string $type, string $city, string $location)
+    public function searchForHousesAndPlots(string $type, string $city, string $location, Request $request)
     {
         $purpose = 'sale';
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
@@ -106,7 +106,17 @@ class PropertySearchController extends Controller
 
         $property_types = (new PropertyType)->all();
         $footer_content = (new FooterController)->footerContent();
-
+        if ($request->ajax()) {
+            $data['view'] = View('website.components.property-listings',
+                [
+                    'limit' => $limit,
+                    'area_sort' => $sort_area,
+                    'sort' => $sort,
+                    'params' => $request->all(),
+                    'properties' => $properties->paginate($limit)
+                ])->render();
+            return $data;
+        }
         $data = [
             'params' => request()->all(),
             'property_types' => $property_types,
@@ -121,12 +131,12 @@ class PropertySearchController extends Controller
     {
         if ($type === '') {
             if (in_array($sub_type, ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room', 'penthouse'])) $type = 'homes';
-            elseif (in_array($sub_type, ['Residential Plot', 'Commercial Plot', 'Agricultural Land', 'Industrial Land', 'Plot File', 'Plot Form'])) $type = 'plots';
+            elseif (in_array($sub_type, ['residential-plot', 'commercial-plot', 'agricultural-land', 'industrial-land', 'plot-file', 'plot-form'])) $type = 'plots';
             elseif (in_array($sub_type, ['office', 'shop', 'warehouse', 'factory', 'building', 'other']))
                 $type = 'commercial';
 
         }
-        $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type];
+        $condition = ['city_id' => $city_id, 'property_purpose' => $purpose, 'property_type' => $type, 'property_sub_type' => $sub_type];
 
 //        $location_data['count'] = DB::table('property_count_by_property_purposes')->select('location_name', 'property_count', 'property_sub_type')->where($condition)->orderBy('property_count', 'DESC')->limit(50)->get();
         $location_data['count'] = DB::table('property_count_by_property_purposes')->select(DB::raw('SUM(property_count) as property_count'), 'location_name', 'property_type')
@@ -136,6 +146,7 @@ class PropertySearchController extends Controller
         $location_data['purpose'] = $purpose;
         $location_data['type'] = $type;
         $location_data['city'] = $city_name;
+        $location_data['sub_type'] = $sub_type;
         return $location_data;
     }
 
@@ -153,7 +164,16 @@ class PropertySearchController extends Controller
         $properties = $this->listingFrontend();
 
         if ($city !== null) $properties->where('properties.city_id', '=', $city->id);
-        if ($type !== '') $properties->where('properties.type', '=', $type);
+        if ($type !== '') {
+            if (in_array($type, ['homes', 'plots', 'commercial', 'Homes', 'Plots', 'Commercial'])) {
+                $properties->where('properties.type', '=', $type);
+            } elseif (in_array($type,
+                ['house', 'houses', 'flat', 'flats', 'upper-portion', 'lower-portion', 'farm-house', 'room',
+                    'penthouse', 'residential-plot', 'commercial-plot', 'agricultural-land', 'industrial-land',
+                    'plot-file', 'plot-form', 'office', 'shop', 'warehouse', 'factory', 'building', 'other'])) {
+                $properties->where('properties.sub_type', '=', $type);
+            }
+        }
         $properties->where('properties.purpose', '=', $purpose);
         $properties->whereIn('properties.location_id', $location_data);
         $sort = '';
@@ -197,7 +217,7 @@ class PropertySearchController extends Controller
     }
 
     //   search for city property
-    public function searchInCities(string $city)
+    public function searchInCities(string $city, Request $request)
     {
         $city = str_replace('_', ' ', $city);
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
@@ -233,6 +253,20 @@ class PropertySearchController extends Controller
 
             $property_types = (new PropertyType)->all();
             (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
+
+            if ($request->ajax()) {
+                $data['view'] = View('website.components.property-listings',
+                    [
+
+                        'limit' => $limit,
+                        'area_sort' => $sort_area,
+                        'sort' => $sort,
+                        'params' => $request->all(),
+                        'properties' => $properties->paginate($limit)
+                    ])->render();
+                return $data;
+            }
+
 
             $data = [
                 'params' => request()->all(),
@@ -412,9 +446,13 @@ class PropertySearchController extends Controller
 
 
         $location_data = $this->_getLocationsWiseCount($purpose, $sub_type, $location_city->id, $location_city->name, $type);
-        if($request->ajax()){
+        if ($request->ajax()) {
             $data['view'] = View('website.components.property-listings',
                 [
+                    'limit' => $limit,
+                    'area_sort' => $sort_area,
+                    'sort' => $sort,
+                    'params' => $request->all(),
                     'properties' => $properties->paginate($limit)
                 ])->render();
             return $data;

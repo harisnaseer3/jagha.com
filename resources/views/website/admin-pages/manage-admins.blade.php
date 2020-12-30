@@ -9,8 +9,8 @@
 @endsection
 
 @section('content')
-    <div id="site" class="left relative" >
-        <div id="site-wrap" class="left relative" >
+    <div id="site" class="left relative">
+        <div id="site-wrap" class="left relative">
             @include('website.admin-pages.includes.admin-nav')
             <section class="content-header admin-margin">
                 <h1 class="ml-5">
@@ -59,18 +59,23 @@
                                                 </td>
                                                 <td>@if($admin->is_active === '1') Active @else Inactive @endif</td>
                                                 <td>
-                                                    {!! Form::open(['route' => ['admins.destroy', $admin->id], 'method' => 'delete']) !!}
-                                                    @if($admin->is_active === '0')
-                                                        <div class='btn-group'>
+                                                    <div class='btn-group'>
+                                                        <a type="button" href="{{route('admins.edit',$admin->id)}}" class="btn btn-sm btn-warning"><strong>Edit Roles</strong>
+                                                        </a>
+                                                        {!! Form::open(['route' => ['admins.destroy', $admin->id], 'method' => 'delete']) !!}
+                                                        @if($admin->is_active === '0')
+
                                                             {{--                                                <a href="{{ route('admins.edit', ['admin' => $admin->id]) }}" class='btn btn-warning btn-sm'><i class="fas fa-pen-alt"></i></a>--}}
                                                             {!! Form::button('Activate', ['type' => 'submit', 'class' => 'btn btn-success btn-sm', 'onclick' => 'return confirm("'.__('Are you sure you want to activate admin account?').'")']) !!}
-                                                        </div>
-                                                    @elseif($admin->is_active === '1')
-                                                        <div class='btn-group'>
+
+                                                        @elseif($admin->is_active === '1')
+
                                                             {!! Form::button('Deactivate', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("'.__('Are you sure you want to deactivate admin account?').'")']) !!}
-                                                        </div>
-                                                    @endif
-                                                    {!! Form::close() !!}
+
+                                                        @endif
+                                                        {!! Form::close() !!}
+
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
