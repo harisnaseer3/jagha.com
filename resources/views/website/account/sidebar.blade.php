@@ -1,5 +1,5 @@
 <div class="card" id="sidebar-property-management">
-    <div class="card-header theme-grey text-white text-capitalize">Account & Profiles</div>
+    <div class="card-header theme-grey text-white text-capitalize">My Account Settings</div>
     @php
         $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName();
         $user_id = \Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier();
@@ -9,7 +9,7 @@
 
     <ul class="list-group">
         <li class="list-group-item {{ $current_route_name === 'users.edit' ? 'active' : '' }}"><a
-                href="{{ route('users.edit', ['user' => $user_id]) }}" class="{{ $current_route_name === 'users.edit' ? 'text-white' : '' }}">User Profile</a></li>
+                href="{{ route('users.edit', ['user' => $user_id]) }}" class="{{ $current_route_name === 'users.edit' ? 'text-white' : '' }}">Current User Profile</a></li>
         <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
                 href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">Current User Role</a></li>
         <li class="list-group-item {{ $current_route_name === 'settings.edit' ? 'active' : '' }}"><a
