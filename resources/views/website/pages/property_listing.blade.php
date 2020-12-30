@@ -151,7 +151,8 @@
                         @include('website.includes.agency_detail_card')
                     @endif
 
-                <!-- Listing -->
+                        <div class="ajax-loader"></div>
+                        <!-- Listing -->
                     <div id="listings-div">
                         <div class="page-list-layout">
                             @include('website.layouts.list_layout_property_listing')

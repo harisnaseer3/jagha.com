@@ -368,7 +368,7 @@ $(function() {
                 },
                 {
                     featureType: 'transit',
-                    elementType: 'labels.icon',
+                    elementType: 'labels.icchange-view-btnon',
                     stylers: [{ visibility: 'off' }]
                 },
             ]
