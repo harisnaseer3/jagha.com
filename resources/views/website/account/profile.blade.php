@@ -39,6 +39,18 @@
                                         <div class="card-header theme-blue text-white text-capitalize">User Profile</div>
                                         <div class="card-body">
                                             <div class="form-group row">
+                                                <div class="col-12">
+                                                    <ul class="square-list-style">
+                                                        <li class="square-list-li">View or edit your name (same as display name).</li>
+                                                        <li class="square-list-li">View or edit contact information such as phone, mobile, address, postal code, city and country.</li>
+                                                        <li class="square-list-li">View or edit a profile picture.</li>
+                                                        <li class="square-list-li">View or write about yourself such as your biography.</li>
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
                                                 <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
                                                     Email
 

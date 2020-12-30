@@ -2142,4 +2142,13 @@ input:checked + .slider:before {
         opacity: 0;
     }
 }
+.square-list-style {
+    list-style: square;
+    margin-left:16px;
+}
+.square-list-li{
+    padding-top: calc(.25rem + 1px);
+    padding-bottom: calc(.25rem + 1px);
+    line-height: 1.5;
+}
 
