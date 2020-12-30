@@ -256,7 +256,7 @@
                     <ul class="navbar-nav header-ml">
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
-                                Homes
+                              Houses
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">

@@ -23,7 +23,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <h1 class="all-cities-header">
-                                        {{ucwords($type)}} for Sale in All Cities of Pakistan</h1>
+                                        @if($type === 'homes') Houses @else {{ucwords($type)}} @endif for Sale in All Cities of Pakistan</h1>
                                     <input type="hidden" name="type" id="type" value="{{$type}}" />
                                 </div>
 {{--                                <div class="col-6">--}}

@@ -16,7 +16,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>My Account &amp; Profiles</h1>
+                <h1>My Account Settings</h1>
             </div>
         </div>
     </div>

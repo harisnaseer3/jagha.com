@@ -19,7 +19,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>Agency Management</h1>
+                <h1>Agency Profile</h1>
             </div>
         </div>
     </div>

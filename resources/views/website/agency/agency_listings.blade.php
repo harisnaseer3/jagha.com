@@ -14,7 +14,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>Agency Listings</h1>
+                <h1>Your Property Agencies</h1>
             </div>
         </div>
     </div>
