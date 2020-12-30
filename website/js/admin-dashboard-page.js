@@ -83,6 +83,9 @@
                     ]
                 },
                 options: {
+                    tooltips: {
+                        mode: 'index'
+                    },
                     scales: {
                         yAxes: [{
                             ticks: {

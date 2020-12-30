@@ -74,7 +74,8 @@ class LoginController extends Controller
                 $user = [
                     'name' => Auth::guard('web')->user()->name,
                     'id' => Auth::guard('web')->user()->getAuthIdentifier(),
-                    'email' => Auth::guard('web')->user()->email
+                    'email' => Auth::guard('web')->user()->email,
+                    'verified_at' => Auth::guard('web')->user()->email_verified_at,
                 ];
                 if ($request->ajax()) {
                     return response()->json(['data' => 'success', 'user' => $user]);

@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
 @endsection
 @section('content')
+
     @include('website.includes.nav')
     <!-- Banner start -->
     <div class="container-fluid">

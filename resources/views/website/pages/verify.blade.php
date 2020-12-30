@@ -65,4 +65,15 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('#snackbar').hide();
+            });
+        })(jQuery);
+
+    </script>
+
+@endsection
 

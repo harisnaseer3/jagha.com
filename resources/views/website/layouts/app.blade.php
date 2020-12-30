@@ -12,7 +12,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170072080-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
 
         gtag('config', 'UA-170072080-1');
@@ -22,8 +26,16 @@
 </head>
 <body>
 <div class="page_loader"></div>
+<div id="snack-div">
+    @if(\Illuminate\Support\Facades\Auth::guard('web')->check() && \Illuminate\Support\Facades\Auth::guard('web')->user()->email_verified_at == null)
+        <div id="snackbar">Limited Functionality! <a href="{{route('user.dashboard')}}"><u class="color-white">Verify Email Address</u></a> </div>
+    @endif
+</div>
+    @yield('content')
 
-@yield('content')
+
+
+
 
 <div class="fixed-bottom p-2">
     <div class="toast bg-dark w-100 mw-100 color-white" role="alert" style="display: none">
@@ -35,14 +47,6 @@
                 </span>
                 <span class="float-right pt-2 mt-2"><a type="button ml-auto" class="btn btn-sm theme-blue text-white" id="btnAccept">Accept</a></span>
             </div>
-            {{--            <div class="ml-auto">--}}
-            {{--                <button type="button" class="btn btn-outline-light mr-3" id="btnDeny">--}}
-            {{--                    Deny--}}
-            {{--                </button>--}}
-            {{--                <button type="button" class="btn btn-light" id="btnAccept">--}}
-            {{--                    Accept--}}
-            {{--                </button>--}}
-            {{--            </div>--}}
         </div>
     </div>
 </div>

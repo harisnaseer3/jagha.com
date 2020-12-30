@@ -230,7 +230,10 @@
                             html += '</div>' + '</div>';
                             let html_profile_link = '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >Profile Management</a>';
                             let html_property_link = '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
-
+                            if(data.user.verified_at === null) {
+                                let snack_html = '<div id="snackbar">Limited Functionality! <a href="' + window.location.origin + '/dashboard/user-dashboard' + '"><u class="color-white">Verify Email Address</u></a></div>'
+                                $('#snack-div').html(snack_html);
+                            }
                             user_dropdown.html(html);
                             nav_property_link.html(html_property_link);
                             nav_profile_link.html(html_profile_link);
