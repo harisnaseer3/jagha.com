@@ -48,7 +48,7 @@ class PendingPropertyNotification extends Notification
         return (new MailMessage)
             ->subject('A new Property is up on About Pakistan Properties!!')
             ->greeting('Hi!')
-            ->line("A new Property {$title} has been added on our site.")
+            ->line("A new Property {$title} has been added on our site.");
 //            ->action('Activate Property', route('admin-properties-edit', $id));
     }
 
