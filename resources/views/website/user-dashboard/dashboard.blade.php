@@ -83,10 +83,10 @@
                                                 @if(count($user->roles) > 0)
                                                     <h6 class="proper-case">{{ucwords($user->roles[0]->name)}}</h6>
                                                 @endif
-                                                <h5><a href="#">{{ucwords($user->name)}}</a></h5>
+                                                <h5>{{ucwords($user->name)}}</h5>
                                                 <div class="contact">
                                                     <p class="m-0">
-                                                        <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o mr-1"></i> {{$user->email}}</a>
+                                                       <i class="fa fa-envelope-o mr-1"></i> {{$user->email}}
                                                     </p>
                                                     @if($user->cell !== null)
                                                         <p class="m-0">

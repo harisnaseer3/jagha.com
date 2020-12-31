@@ -87,7 +87,7 @@
                                                 <h5>{{ucwords($admin->name)}}</h5>
                                                 <div class="contact">
                                                     <p class="m-0">
-                                                        <a href="mailto:info@themevessel.com"><i class="fa fa-envelope-o mr-1"></i> {{$admin->email}}</a>
+                                                        <i class="fa fa-envelope-o mr-1"></i> {{$admin->email}}
                                                     </p>
                                                     @if($admin->cell !== null)
                                                         <p class="m-0">
