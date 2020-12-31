@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Crawler;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Jaybizzle\LaravelCrawlerDetect\Facades\LaravelCrawlerDetect;
 
 /**
  * @mixin Builder
@@ -26,8 +27,9 @@ class Visit extends Model
 
     public static function hit()
     {
-
-        if (!Crawler::isCrawler()) {
+        $CrawlerDetect = new CrawlerDetect;
+        // Pass a user agent as a string
+        if (!$CrawlerDetect->isCrawler()) {
             $user_visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))
                 ->whereBetween('visit_time', [(new Carbon(date('H:i:s')))->subMinutes(1)->format('H:i:s'), date('H:i:s')])->first();
             if ($user_visit) {
@@ -58,5 +60,10 @@ class Visit extends Model
 
 //        handle bots
 
+    }
+
+    public function resolveChildRouteBinding($childType, $value, $field)
+    {
+        // TODO: Implement resolveChildRouteBinding() method.
     }
 }
