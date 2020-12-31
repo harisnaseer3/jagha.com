@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c635a68697c1d63c963445a4d76d62b0",
+    "content-hash": "62ec0b31e2eb88b191a8fd040150f60e",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -1065,6 +1065,10 @@
                 "crawlerdetect",
                 "php crawler detect"
             ],
+            "support": {
+                "issues": "https://github.com/JayBizzle/Crawler-Detect/issues",
+                "source": "https://github.com/JayBizzle/Crawler-Detect/tree/v1.2.103"
+            },
             "time": "2020-11-23T19:49:25+00:00"
         },
         {
