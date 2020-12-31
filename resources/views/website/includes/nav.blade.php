@@ -299,7 +299,8 @@
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                             <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_id" id="ref-id" autocomplete="false">
                             <small id="property_id-error" class="help-block text-red"></small>
-                            <i class="fa fa-search ml-1"></i>
+                            <button class="btn btn-sm btn-theme" style="line-height: 1;" id="property-reference" type="submit">
+                                <i class="fa fa-search ml-1"></i></button>
                             {{ Form::close() }}
                         </li>
                         <li class="nav-item user-dropdown">
