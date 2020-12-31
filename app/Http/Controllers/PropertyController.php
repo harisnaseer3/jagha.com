@@ -136,7 +136,7 @@ class PropertyController extends Controller
     public function index()
     {
         if (!(new Visit)->hit()) {
-            return view('website.error.404');
+            return view('website.errors.404');
         }
         (new MetaTagController())->addMetaTags();
 
