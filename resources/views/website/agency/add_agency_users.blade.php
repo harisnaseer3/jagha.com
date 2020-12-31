@@ -140,6 +140,7 @@
                                                 <div id="city-name-div" style="display:none;">
                                                     {{ Form::bsText('city_name', null, ['id'=>'city-name']) }}
                                                 </div>
+                                                {{ Form::bsRadio('send_verification_mail','No', ['required' => true, 'list' => ['No','Yes'],'display' => 'block','class'=>'mt-3']) }}
                                             </div>
                                             <div class="card-footer">
                                                 {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
