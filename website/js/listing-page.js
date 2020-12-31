@@ -28,7 +28,7 @@
         let current_search_params = data.split('&');
         let condition = '';
         $.each(current_search_params, function (index, value) {
-            if (!value.includes('limit') && !value.includes('page'))
+            if (!value.includes('page'))
                 condition += value +'&'
 
         });
