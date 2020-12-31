@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AgencyUserController extends Controller
 {
@@ -96,9 +97,29 @@ class AgencyUserController extends Controller
 
     public function storeAgencyUsers(Request $request, string $agency)
     {
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'phone' => 'nullable|string', // +92-511234567
+            'mobile' => 'required', // +92-3001234567
+            'address' => 'nullable|string',
+            'zip_code' => 'nullable|digits:5',
+            'country' => 'required|string',
+            'community_string' => 'nullable|string',
+            'about_yourself' => 'nullable|string|max:4096',
+            'upload_new_picture.*' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
+            'city_name' => 'nullable|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
+        }
         $user = User::createUser($request->input());
         if (isset($user->id)) {
             DB::table('agency_users')->insert(['agency_id' => $agency, 'user_id' => $user->id]);
+            $new_agency = (new Agency)->where('id',$agency)->first();
+            if($request->send_verification_mail === 'Yes'){
+                $user->notify(new SendMailToJoinNotification($new_agency));
+            }
         }
         return redirect()->back()->with('success', 'Agency user successfully added');
 
