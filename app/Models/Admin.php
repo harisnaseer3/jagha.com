@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Admin extends Authenticatable
 {
     use HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -112,6 +114,14 @@ class Admin extends Authenticatable
     public function getPermissionsByRole($role_name)
     {
         return Role::findByName($role_name)->permissions->map->only('name');
+    }
+    public static function getAdminsByRoleName($role) {
+        return (new Admin)
+            ->whereHas('roles', function (Builder $query) use ($role) {
+                return $query->where('name', $role);
+            })
+            ->get();
+
     }
 
 
