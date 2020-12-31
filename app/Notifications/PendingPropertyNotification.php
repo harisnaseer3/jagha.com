@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notification;
 class PendingPropertyNotification extends Notification
 {
     use Queueable;
+
     protected $property;
 
     /**
@@ -25,7 +26,7 @@ class PendingPropertyNotification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -36,7 +37,7 @@ class PendingPropertyNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -47,15 +48,14 @@ class PendingPropertyNotification extends Notification
         return (new MailMessage)
             ->subject('A new Property is up on About Pakistan Properties!!')
             ->greeting('Hi!')
-            ->line("A new Property")
-            ->line("{$title}")
-            ->line("has been added on our site.");
+            ->line("A new Property {$title} has been added on our site.")
+//            ->action('Activate Property', route('admin-properties-edit', $id));
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function toArray($notifiable)
