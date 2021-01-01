@@ -74,6 +74,8 @@ class ImageController extends Controller
 
     public function storeImage($name, $property)
     {
+//        dd(json_decode($request->input('image'), true));
+
         foreach (explode(',', $name) as $file_name) {
 //            $user_id = Auth::user()->getAuthIdentifier();
 

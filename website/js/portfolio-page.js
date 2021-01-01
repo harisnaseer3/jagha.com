@@ -1,5 +1,6 @@
 (function ($) {
     var store_image_name = [];
+    var store_image_name_order = [];
 
     //this value is only used check the image count
     var imageCountOnError = 0;
@@ -183,6 +184,7 @@
 
     }
 
+
     function iti_contact_number(input, errorMsg, validMsg, field, error_div, phone_type, check_field = '') {
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
         let ag_iti_cell = '';
@@ -234,21 +236,31 @@
         input.addEventListener('keyup', reset);
     }
 
+    let get_badge_value = 0;
+
     function displayImages(name) {
         let image = name.split('.')[0];
+        let count = 0;
+        if (get_badge_value !== 0) {
+            count = store_image_name.length + parseInt(get_badge_value);
+        } else {
+            get_badge_value = 0;
+            count = store_image_name.length;
+        }
         let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
-        let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
-            '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
-            '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
-            '' +
-            ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
-            '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
-            '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
+        let html =
+            '<li class="ui-state-default m-2 upload-image-block ui-sortable-handle" >' +
+            '<div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">' +
+            '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-num="' + count + '" data-value="' + image + '"/>' +
             '</div>' +
-            '</div>';
+            '<div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">' + count + '</div>' +
+            '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+            ' style="position: absolute; margin-left: 146px; margin-top: 56px; z-index: 1">' +
+            '<i class="fad fa-trash fa-1x" style="color: red;font-size: 30px"></i> </a>' +
+            +'</li>';
         $('#show_image_spinner').hide();
-        $('.add-images').append(html).show();
-
+        $('#sortable').append(html).sortable('refresh');
+        $('.add-images').show();
     }
 
     function showImagesCount(images) {
@@ -268,23 +280,32 @@
     }
 
     function displayImagesOnError() {
-        let image_data = $('[name=image]').val().split(',');
+        let image_data = JSON.parse($('[name=image]').val());
         // showImagesCountOnRemove(image_data);
         $('#image-count').attr('data-count', image_data.length).show().text(image_data.length);
         imageCountOnError = image_data.length;
+        get_badge_value = image_data.length;
+
         $.each(image_data, function (idx, val) {
-            let image = val.split('.')[0];
-            let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
-            let html = '<div class="col-md-4 col-sm-6 my-2 upload-image-block">' +
-                '<div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">' +
-                '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
-                '' +
-                ' style="position: absolute; top: 0; right: 0; z-index: 1">' +
-                '<i class="fad fa-times-circle fa-2x" style="color: red"></i></a>' +
-                '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-value="' + image + '"/>' +
-                '</div>' +
-                '</div>';
-            $('.add-images').append(html).show();
+            // let image = val.split('.')[0];
+            let index = parseInt(idx + 1)
+            for (n in val) {
+                let image = n.split('.')[0].replace('"', '');
+                let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
+                let html = '<li class="ui-state-default m-2 upload-image-block ui-sortable-handle" >' +
+                    '<div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">' +
+                    '<img src="' + src + '" width="100%" class="img-responsive" alt="image not available" data-num="' + val[n] + '" data-value="' + image + '"/>' +
+                    '</div>' +
+                    '<div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">' +
+                    val[n] + '</div>' +
+                    '<a class="btn remove-images" data-toggle-1="tooltip" data-placement="bottom" title="delete"' +
+                    ' style="position: absolute; margin-left: 146px; margin-top: 56px; z-index: 1">' +
+                    '<i class="fad fa-trash fa-1x" style="color: red;font-size: 30px"></i> </a>' +
+                    +'</li>';
+                $('#show_image_spinner').hide();
+                $('#sortable').append(html).sortable('refresh');
+                $('.add-images').show();
+            }
         });
     }
 
@@ -295,6 +316,32 @@
         //     var fileName = $(this).val().split("\\").pop();
         //     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         // });
+        let sort = $("#sortable");
+        sort.sortable({
+            helper: "clone",
+            placeholder: "ui-state-highlight",
+            cursor: "move",
+            appendTo: document.body,
+            scrollSpeed: 60,
+            forceHelperSize: true,
+            scrollSensitivity: 10,
+            tolerance: "pointer",
+            stop: function (ev, ui) {
+                var children = $('#sortable').sortable('refreshPositions').children();
+                store_image_name_order = [];
+                $.each(children, function (idx, val) {
+                    let data_name = $(this).find('img').attr('data-value');
+                    let data_count = parseInt(idx + 1);
+                    $(this).find('.badge').text(data_count);
+                    var object = {};
+                    object[data_name] = JSON.stringify(data_count);
+                    store_image_name_order.push(object);
+                });
+                $('#store-images').val(JSON.stringify(store_image_name_order));
+            }
+        });
+        sort.disableSelection();
+
 
         //in case of an error
         if ($('[name=image]').val() !== undefined && $('[name=image]').val() !== '') {
@@ -322,18 +369,25 @@
                 },
                 success: function (data) {
                     if (data.status === 200) {
-                        $('#delete-image').modal('hide');
-                        // let flash_msg = '<div class="alert alert-success alert-block">' +
-                        //     '<button type="button" class="close" data-dismiss="alert">×</button>' +
-                        //     '<strong>Image Deleted Successfully</strong>' +
-                        //     '</div>';
-                        // $('#flash-msg').show().html(flash_msg);
+                        // $('#delete-image').modal('hide');
+
                         $("[data-id='" + image + "']").parent().parent().remove();
 
                         imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
                         let count = parseInt($('#image-count').attr('data-count')) - 1;
                         $('#image-count').attr('data-count', count).show().text(count);
 
+                        var children = $('#sortable').sortable('refreshPositions').children();
+                        store_image_name_order = [];
+                        $.each(children, function (idx, val) {
+                            let data_name = $(this).find('img').attr('data-value');
+                            let data_count = parseInt(idx + 1);
+                            $(this).find('.badge').text(data_count);
+                            var object = {};
+                            object[data_name] = JSON.stringify(data_count);
+                            store_image_name_order.push(object);
+                        });
+                        $('#store-images').val(JSON.stringify(store_image_name_order));
 
                     } else if (data.status === 404) {
                         $('#delete-image').modal('hide');
@@ -356,8 +410,20 @@
             let index_value = jQuery.inArray(selected_value, store_image_name);
             store_image_name.splice(index_value, 1);
             $('#store-images').val(store_image_name);
-            $(this).parents('.upload-image-block').hide();
+            $(this).parents('.upload-image-block').remove();
             showImagesCountOnRemove(store_image_name);
+
+            var children = $('#sortable').sortable('refreshPositions').children();
+            store_image_name_order = [];
+            $.each(children, function (idx, val) {
+                let data_name = $(this).find('img').attr('data-value');
+                let data_count = parseInt(idx + 1);
+                $(this).find('.badge').text(data_count);
+                var object = {};
+                object[data_name] = JSON.stringify(data_count);
+                store_image_name_order.push(object);
+            });
+            $('#store-images').val(JSON.stringify(store_image_name_order));
 
         });
 
@@ -397,14 +463,15 @@
                             type: 'POST',
                             success: function (data) {
                                 $('input#image').val("");
-                                // console.log(data.data);
-
                                 if (data.status === 201) {
                                     alert(data.data);
                                 } else if (data.status === 200) {
                                     store_image_name.push(data.data);
-
-                                    $('#store-images').val(store_image_name);
+                                    let val_1 = JSON.stringify(data.data);
+                                    var object = {};
+                                    object[val_1] = JSON.stringify(store_image_name.length);
+                                    store_image_name_order.push(object);
+                                    $('#store-images').val(JSON.stringify(store_image_name_order));
                                     displayImages(data.data);
                                 }
                             },

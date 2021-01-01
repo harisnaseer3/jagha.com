@@ -154,12 +154,14 @@
             <div class="row border-bottom my-2 add-images" style="display: none"></div>
         @else
             <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="row border-bottom my-2 add-images" style="display: none">
+            <div class="add-images" style="display: none">
                 <div class="col-sm-12 text-bold my-2">
                     <strong>Total Images
                         <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
                     </strong>
                 </div>
+                <ul id="sortable" class="row border-bottom my-2 ">
+                </ul>
             </div>
         @endif
 
