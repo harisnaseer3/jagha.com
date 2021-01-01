@@ -2151,4 +2151,12 @@ input:checked + .slider:before {
     padding-bottom: calc(.25rem + 1px);
     line-height: 1.5;
 }
+.btn-reference-style{
+    line-height: 1;
+    background-color: #F7F7F7;
+    color: black;
+}
+.btn-reference-style:focus {
+    box-shadow:none;
+}
 
