@@ -68,6 +68,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Advertisement</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
+
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-xl-2 col-lg-3 col-md-5 col-sm-6">
                                         <div class="team-1">
                                             <div class="team-photo">
@@ -86,7 +93,7 @@
                                                 <h5>{{ucwords($user->name)}}</h5>
                                                 <div class="contact">
                                                     <p class="m-0">
-                                                       <i class="fa fa-envelope-o mr-1"></i> {{$user->email}}
+                                                        <i class="fa fa-envelope-o mr-1"></i> {{$user->email}}
                                                     </p>
                                                     @if($user->cell !== null)
                                                         <p class="m-0">
@@ -95,72 +102,83 @@
                                                     @endif
                                                     @if($user->phone !== null)
                                                         <p class="m-0">
-                                                           <i class="fa fa-phone mr-1"></i>{{$user->phone}}
+                                                            <i class="fa fa-phone mr-1"></i>{{$user->phone}}
                                                         </p>
                                                     @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class=" col-xl-10 col-lg-9 col-md-7 col-sm-12  ">
-                                        <div><h6>Property Listing</h6></div>
-                                        <div class="table-responsive">
-                                            <table class="table table-sm table-bordered">
-                                                <thead class="theme-blue text-white">
-                                                <tr>
-                                                    <td>ID</td>
-                                                    <td>Type</td>
-                                                    <td>Location</td>
-                                                    <td>Price (PKR)</td>
-                                                    <td>Area (new marla)</td>
-                                                    <td>Purpose</td>
-                                                    <td>Status</td>
-                                                    <td>Views</td>
-                                                    <td>Activation Date</td>
-                                                    <td>Controls</td>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @forelse($properties as $property)
-                                                    <tr>
-                                                        <td>{{$property->id}}</td>
-                                                        <td>{{$property->type}}</td>
-                                                        <td>{{$property->address}}</td>
-                                                        <td>
-                                                            @if($property->price == 0)
-                                                                Call option selected for price
-                                                            @else
-                                                                {{$property->price}} (PKR)
-                                                            @endif
-                                                        </td>
-                                                        <td>{{(int)round($property->area_in_new_marla)}}</td>
-                                                        <td>{{$property->purpose}}</td>
-                                                        <td>{{$property->status}}</td>
-                                                        <td>{{$property->views}}</td>
-                                                        <td>{{(new \Illuminate\Support\Carbon($property->activated_at))->format('Y-m-d')}}</td>
+                                    <div class=" col-xl-10 col-lg-9 col-md-7 col-sm-12 ">
 
-                                                        <td><a type="button" href="{{route('properties.edit', $property->id)}}"
-                                                               class="btn btn-sm btn-warning"
-                                                               data-toggle-1="tooltip"
-                                                               data-placement="bottom" title="edit">
-                                                                <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                            </a>
-                                                            <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
-                                                               data-placement="bottom" title="delete"
-                                                               data-toggle="modal" data-target="#delete"
-                                                               data-record-id="{{$property->id}}">
-                                                                <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                            </a></td>
-                                                    </tr>
-                                                @empty
+
+                                        <div class="card">
+                                            <div class="card-header theme-blue text-white">
+                                               Recent Properties
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="display" style="width: 100%" id="recent-properties">
+                                                    <thead>
                                                     <tr>
-                                                        <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                        <th>ID</th>
+                                                        <th>Type</th>
+                                                        <th>Location</th>
+                                                        <th>Price (PKR)</th>
+                                                        <th>Area (new marla)</th>
+                                                        <th>Purpose</th>
+                                                        <th>Status</th>
+                                                        <th>Views</th>
+                                                        <th>Activation Date</th>
+                                                        <th>Controls</th>
                                                     </tr>
-                                                @endforelse
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                    @forelse($properties as $property)
+                                                        <tr>
+                                                            <td>{{$property->id}}</td>
+                                                            <td>{{$property->type}}</td>
+                                                            <td>{{$property->address}}</td>
+                                                            <td>
+                                                                @if($property->price == 0)
+                                                                    Call option selected for price
+                                                                @else
+                                                                    {{$property->price}} (PKR)
+                                                                @endif
+                                                            </td>
+                                                            <td>{{(int)round($property->area_in_new_marla)}}</td>
+                                                            <td>{{$property->purpose}}</td>
+                                                            <td>{{$property->status}}</td>
+                                                            <td>{{$property->views}}</td>
+                                                            <td>{{(new \Illuminate\Support\Carbon($property->activated_at))->format('Y-m-d')}}</td>
+
+                                                            <td><a type="button" href="{{route('properties.edit', $property->id)}}"
+                                                                   class="btn btn-sm btn-warning"
+                                                                   data-toggle-1="tooltip"
+                                                                   data-placement="bottom" title="edit">
+                                                                    <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                </a>
+                                                                <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
+                                                                   data-placement="bottom" title="delete"
+                                                                   data-toggle="modal" data-target="#delete"
+                                                                   data-record-id="{{$property->id}}">
+                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                </a></td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                        </tr>
+                                                    @endforelse
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+
                                         </div>
-{{--                                        {{ $properties->links() }}--}}
+
+
+
+                                        {{--                                        {{ $properties->links() }}--}}
                                         {{ $properties->links('vendor.pagination.bootstrap-4') }}
                                     </div>
                                 </div>
@@ -183,6 +201,11 @@
 @section('script')
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
     <script>
+        $('#recent-properties').DataTable(
+            {
+                "scrollX": true
+            }
+        );
         $('#delete').on('show.bs.modal', function (event) {
             let record_id = $(event.relatedTarget).data('record-id');
             $(this).find('.modal-body #record-id').val(record_id);
@@ -240,7 +263,7 @@
             });
             jQuery.ajax({
                 type: 'post',
-                url: window.location.origin +  '/dashboard/agencies/reject-invitation',
+                url: window.location.origin + '/dashboard/agencies/reject-invitation',
                 data: {'notification_id': notification_id},
                 dataType: 'json',
                 success: function (data) {
@@ -270,7 +293,7 @@
             });
             jQuery.ajax({
                 type: 'post',
-                url: window.location.origin  + '/dashboard/property-notification',
+                url: window.location.origin + '/dashboard/property-notification',
                 data: {'notification_id': notification_id},
                 dataType: 'json',
                 success: function (data) {

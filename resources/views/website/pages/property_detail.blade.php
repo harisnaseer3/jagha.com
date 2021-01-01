@@ -174,7 +174,7 @@
                                     <div class="m-border"></div>
                                     <p class="description"
                                        aria-label="property description">
-                                        {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',$property->description))))}}</p>
+                                        {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',str_replace('zameen','AboutPakistan',$property->description)))))}}</p>
                                     <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
                                     <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
                                 </div>
