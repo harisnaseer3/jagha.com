@@ -20,7 +20,7 @@
                             </a>
                         </li>
                         <li class="insta-soc">
-                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
+                            <a href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                 <i class="fab fa-instagram  icon-padding"></i>
                             </a>
                         </li>
@@ -229,7 +229,7 @@
                                             <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
                                                 <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
                                             </a>
-                                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
+                                            <a href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>
                                             <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
