@@ -50,6 +50,9 @@ class PendingPropertyNotification extends Notification
             ->greeting('Hi!')
             ->line("A new Property {$title} has been added on our site.")
             ->action('Activate Property', route('admin-properties-edit', $id));
+//        return (new MailMessage)
+//              ->view('website.custom-emails.verification-email');
+
     }
 
     /**
