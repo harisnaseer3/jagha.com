@@ -11,17 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
-    <style>
-        #sortable li {
-            height: 200px;
-            width: 200px;
-        }
-        .ui-draggable, .ui-droppable {
-            background-position: top;
-        }
-        .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
 
-    </style>
 @endsection
 
 @section('content')
