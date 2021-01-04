@@ -2159,4 +2159,11 @@ input:checked + .slider:before {
 .btn-reference-style:focus {
     box-shadow:none;
 }
-
+#sortable li {
+    height: 200px;
+    width: 200px;
+}
+.ui-draggable, .ui-droppable {
+    background-position: top;
+}
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
