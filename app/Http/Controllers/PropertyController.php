@@ -10,6 +10,7 @@ use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
+use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Visit;
@@ -190,7 +191,6 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -320,7 +320,6 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
-//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -400,7 +399,7 @@ class PropertyController extends Controller
                 $property_user->notify(new PropertyRejectionMail($property, $reason));
             }
         }
-        $validator = Validator::make($request->all(), Property::$rules);
+//        $validator = Validator::make($request->all(), Property::$rules);
         $validator = Validator::make($request->all(), [
 //            'city' => 'required',
 //            'location' => 'required',

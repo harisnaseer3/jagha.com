@@ -241,12 +241,15 @@
     function displayImages(name) {
         let image = name.split('.')[0];
         let count = 0;
-        if (get_badge_value !== 0) {
-            count = store_image_name.length + parseInt(get_badge_value);
-        } else {
-            get_badge_value = 0;
-            count = store_image_name.length;
-        }
+        // if (get_badge_value !== 0) {
+        //     count = store_image_name.length + parseInt(get_badge_value);
+        // } else {
+        //     get_badge_value = 0;
+        //     count = store_image_name.length;
+        // }
+        // if ($('#sortable li').length > 0 ) {
+        count = $('#sortable li').length + parseInt(1);
+        // }
         let src = window.location.origin + '/thumbnails/properties/' + image + '-450x350.webp';
         let html =
             '<li class="ui-state-default m-2 upload-image-block ui-sortable-handle" >' +
@@ -355,6 +358,7 @@
         }
         $(document).on('click', '.delete-image-btn', function () {
             let image = $(this).attr('data-record-id');
+            let selected_div = $(this).parent();
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -369,14 +373,11 @@
                 },
                 success: function (data) {
                     if (data.status === 200) {
-                        // $('#delete-image').modal('hide');
-
-                        $("[data-id='" + image + "']").parent().parent().remove();
-
+                        selected_div.remove();
                         imageCountOnError !== 0 ? imageCountOnError = imageCountOnError - 1 : imageCountOnError = 0;
                         let count = parseInt($('#image-count').attr('data-count')) - 1;
                         $('#image-count').attr('data-count', count).show().text(count);
-
+                        // $(this).parent('li').remove();
                         var children = $('#sortable').sortable('refreshPositions').children();
                         store_image_name_order = [];
                         $.each(children, function (idx, val) {
@@ -469,7 +470,7 @@
                                     store_image_name.push(data.data);
                                     let val_1 = JSON.stringify(data.data);
                                     var object = {};
-                                    object[val_1] = JSON.stringify(store_image_name.length);
+                                    object[val_1] = $('#sortable li').length + parseInt(1);
                                     store_image_name_order.push(object);
                                     $('#store-images').val(JSON.stringify(store_image_name_order));
                                     displayImages(data.data);

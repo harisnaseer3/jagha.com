@@ -8,11 +8,23 @@
 
 @section('css_library')
     <link rel="stylesheet" href="{{asset('plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 
+    <style>
+        #sortable li {
+            height: 200px;
+            width: 200px;
+        }
+        .ui-draggable, .ui-droppable {
+            background-position: top;
+        }
+        .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+    </style>
 
 @endsection
 
@@ -23,7 +35,7 @@
         <!-- Top header start -->
             <div style="min-height:90px"></div>
             <!-- Submit Property start -->
-            <div class="submit-property" >
+            <div class="submit-property">
                 <div class="container-fluid container-padding">
                     <div class="row">
                         <div class="col-md-12">
@@ -49,6 +61,7 @@
 
 @section('script')
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('website/js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>

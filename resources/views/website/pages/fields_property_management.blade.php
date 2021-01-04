@@ -132,26 +132,28 @@
                         <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
                     </strong>
                 </div>
-                @foreach($property->images as $available_image)
-                    <div class="col-md-4 col-sm-6 my-2">
-                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal"
-                               data-target="#delete-image" data-record-id="{{$available_image->id}}"
-                               style="position: absolute; top: 0; right: 0; z-index: 1">
-                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>
-                            </a>
-                            <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
-                                 data-id="{{$available_image->id}}"
-                                 width="100%" class="img-responsive" alt="image not available"/>
-                        </div>
-                    </div>
-                @endforeach
+                <ul id="sortable" class="row m-2">
+                    @foreach($property->images as $available_image)
+                        <li class="ui-state-default m-2 upload-image-block ui-sortable-handle">
+                            <div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">
+                                <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
+                                     width="100%" class="img-responsive" alt="image not available" data-num="{{$available_image->order}}" data-value="{{$available_image->name}}"/>
+                            </div>
+                            <div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">{{$available_image->order}}</div>
+                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" data-record-id="{{$available_image->id}}"
+                               title="delete" style="position: absolute; margin-left: 146px;
+                            margin-top: 56px; z-index: 1"> <i class="fad fa-trash fa-1x" style="color: red;font-size: 30px"></i> </a>
+                        </li>
+
+
+                    @endforeach
+                </ul>
             </div>
             <div id="edit-count" data-count="{{count($property->images)}}"></div>
             <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
 
             <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="row border-bottom my-2 add-images" style="display: none"></div>
+            <div class="add-images" style="display: none"></div>
         @else
             <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
             <div class="add-images" style="display: none">
@@ -171,9 +173,7 @@
         <div class="mb-2 ">
             <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
                 Upload Images</a>
-            {{--            <span class="my-2"><span style="color:red">* </span>After file selection click on Upload Images button to upload files</span>--}}
         </div>
-        {{--        <div class="my-2"><span style="color:red">* </span>Press CTRL key while selecting images to upload multiple images at once</div>--}}
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
             <div class="row border-bottom my-2">
@@ -202,6 +202,7 @@
             {{ Form::bsText('video_link', null, ['required' => false]) }}
         @endif
     </div>
+
     @if(!empty($agencies))
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
@@ -245,6 +246,7 @@
         </div>
 
     @endif
+
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
         <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
