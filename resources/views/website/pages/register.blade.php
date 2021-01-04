@@ -68,11 +68,14 @@
                                         <label class="register-label">Phone <span style="color:red">* </span></label>
                                     </div>
                                     <div class="col-12">
-                                        <input id="cell" type="tel" class="form-control @error('cell') is-invalid @enderror" name="mobile_#" value="{{ old('mobile') }}" required
+                                        <input id="cell" type="tel" class="form-control
+                                        @error('mobile_#') is-invalid @enderror"
+                                               name="mobile_#" value="{{ old('mobile') }}" required
                                                autocomplete="mobile">
                                         <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
                                         <span id="error-msg" class="hide error mt-2"></span>
-                                        <input class="form-control" name="mobile" type="hidden">
+
+                                        <input class="form-control" name="mobile" type="hidden" value="{{ old('mobile') }}">
 
                                         @error('mobile')
                                         <span class="invalid-feedback" role="alert">
