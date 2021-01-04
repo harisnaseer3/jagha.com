@@ -75,6 +75,7 @@ class LoginController extends Controller
                     'name' => Auth::guard('web')->user()->name,
                     'id' => Auth::guard('web')->user()->getAuthIdentifier(),
                     'email' => Auth::guard('web')->user()->email,
+                    'cell' => Auth::guard('web')->user()->cell,
                     'verified_at' => Auth::guard('web')->user()->email_verified_at,
                 ];
                 if ($request->ajax()) {
