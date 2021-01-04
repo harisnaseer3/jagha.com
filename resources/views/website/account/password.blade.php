@@ -14,7 +14,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>My Account &amp; Profiles</h1>
+                <h1>My Account Settings</h1>
             </div>
         </div>
     </div>
@@ -36,7 +36,18 @@
                                     {{ Form::open(['route' => 'user.password.update', 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form']) }}
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">Change Current Password</div>
+
                                         <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <ul class="square-list-style">
+                                                        <li class="square-list-li">You can change your current password.</li>
+                                                        <li class="square-list-li">New password will be used your account logon.</li>
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
                                             {{ Form::bsPassword('current_password', ['required' => true]) }}
                                             {{ Form::bsPassword('new_password', ['required' => true, 'id'=>'new_password', 'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
                                             {{ Form::bsPassword('confirm_new_password', ['required' => true]) }}

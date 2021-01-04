@@ -16,7 +16,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>My Account &amp; Profiles</h1>
+                <h1>My Account Settings</h1>
             </div>
         </div>
     </div>
@@ -54,6 +54,14 @@
                                     <div class="card">
                                         <div class="card-header theme-blue text-white text-capitalize">Current User Role</div>
                                         <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <ul class="square-list-style">
+                                                        <li class="square-list-li">You can change your current role.</li>
+                                                        <li class="square-list-li">Role will be displayed on your dashboard along with profile details.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                             <!-- TODO: $role get the user role name not id-->
                                             {{--                                            {{ Form::bsRadio('role', '', ['list'=> ['Investor','Owner/Tenant'],'display' => 'block']) }}--}}
                                             @if(!empty($role))

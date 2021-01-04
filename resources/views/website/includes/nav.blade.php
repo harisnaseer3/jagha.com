@@ -20,7 +20,7 @@
                             </a>
                         </li>
                         <li class="insta-soc">
-                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
+                            <a href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                 <i class="fab fa-instagram  icon-padding"></i>
                             </a>
                         </li>
@@ -229,7 +229,7 @@
                                             <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
                                                 <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
                                             </a>
-                                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
+                                            <a href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>
                                             <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
@@ -256,7 +256,7 @@
                     <ul class="navbar-nav header-ml">
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
-                                Homes
+                              Houses
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
@@ -299,7 +299,8 @@
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                             <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_id" id="ref-id" autocomplete="false">
                             <small id="property_id-error" class="help-block text-red"></small>
-                            <i class="fa fa-search ml-1"></i>
+                            <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">
+                                <i class="fa fa-search ml-1"></i></button>
                             {{ Form::close() }}
                         </li>
                         <li class="nav-item user-dropdown">

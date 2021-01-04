@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SendMailToJoinNotification extends Notification
+class PendingPropertyNotification extends Notification
 {
     use Queueable;
 
-    private $agency;
+    protected $property;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($agency)
+    public function __construct($property)
     {
-        $this->agency = $agency;
+        $this->property = $property;
     }
 
     /**
@@ -42,13 +42,14 @@ class SendMailToJoinNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $agency_title = $this->agency->title;
+        $title = $this->property->title;
+        $id = $this->property->id;
 
         return (new MailMessage)
-            ->subject('Agency User Registration!!')
-            ->greeting('Greetings!')
-            ->line("Agency named {$agency_title} added you as an agent on About Pakistan Properties.")
-            ->action('Login Account', route('login'));
+            ->subject('A new Property is up on About Pakistan Properties!!')
+            ->greeting('Hi!')
+            ->line("A new Property {$title} has been added on our site.")
+            ->action('Activate Property', route('admin-properties-edit', $id));
     }
 
     /**

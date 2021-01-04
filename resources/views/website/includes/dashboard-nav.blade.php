@@ -20,7 +20,7 @@
                             </a>
                         </li>
                         <li class="insta-soc">
-                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram">
+                            <a href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram">
                                 <i class="fab fa-instagram  icon-padding"></i>
                             </a>
                         </li>
@@ -229,7 +229,7 @@
                                             <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
                                                 <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
                                             </a>
-                                            <a href="https://www.instagram.com/aboutpkofficial/" target="_blank"  title="Visit About Pakistan Instagram">
+                                            <a href="https://www.instagram.com/aboutpakofficial/" target="_blank"  title="Visit About Pakistan Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>
                                             <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank"  title="Visit About Pakistan Youtube">
@@ -271,14 +271,14 @@
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <a class="nav-link theme-dark-blue" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
-                                Account & Profiles</a>
+                                My Account Settings</a>
                         </li>
                         {{--                        @if(Auth::user()->hasRole('Admin'))--}}
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
                                href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
-                                Agency Listing</a>
+                                Your Property Agencies</a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link" href="{{route('aboutpakistan.support')}}">

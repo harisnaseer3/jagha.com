@@ -16,7 +16,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>My Account &amp; Profiles</h1>
+                <h1>My Account Settings</h1>
             </div>
         </div>
     </div>
@@ -39,6 +39,18 @@
                                         <div class="card-header theme-blue text-white text-capitalize">User Profile</div>
                                         <div class="card-body">
                                             <div class="form-group row">
+                                                <div class="col-12">
+                                                    <ul class="square-list-style">
+                                                        <li class="square-list-li">View or edit your name (same as display name).</li>
+                                                        <li class="square-list-li">View or edit contact information such as phone, mobile, address, postal code, city and country.</li>
+                                                        <li class="square-list-li">View or edit a profile picture.</li>
+                                                        <li class="square-list-li">View or write about yourself such as your biography.</li>
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
                                                 <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
                                                     Email
 
@@ -47,7 +59,7 @@
 
                                                 <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                     <input class="form-control form-control-sm valid" aria-describedby="email-error" aria-invalid="false" required="" readonly="readonly"
-                                                           data-default="Email is locked for security reasons, contact support for help." name="email" type="email" value="aniqa@cordstones.com">
+                                                           data-default="Email is locked for security reasons, contact support for help." name="email" type="email" value="{{ \Illuminate\Support\Facades\Auth::guard('web')->user()->email}}">
                                                 </div>
 
                                                 <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height my-sm-auto">

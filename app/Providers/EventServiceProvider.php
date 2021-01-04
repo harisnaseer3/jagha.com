@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Events\ContactAgentEvent;
 use App\Events\NewPropertyActivatedEvent;
 use App\Events\NewUserRegisteredEvent;
+use App\Events\NotifyAdminOfNewProperty;
 use App\Listeners\AddUserInSubscriberListener;
+use App\Listeners\NotifyAdminListener;
 use App\Listeners\NotifySubscriberListener;
 use App\Listeners\SendMailToAgentListener;
 use Illuminate\Auth\Events\Registered;
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ContactAgentEvent::class => [
             SendMailToAgentListener::class
+        ],
+        NotifyAdminOfNewProperty::class => [
+            NotifyAdminListener::class
         ],
     ];
 

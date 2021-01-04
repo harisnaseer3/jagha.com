@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewPropertyActivatedEvent;
+use App\Events\NotifyAdminOfNewProperty;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
 use App\Models\Account;
@@ -137,7 +138,7 @@ class PropertyController extends Controller
     public function index()
     {
         if (!(new Visit)->hit()) {
-            return view('website.error.404');
+            return view('website.errors.404');
         }
         (new MetaTagController())->addMetaTags();
 
@@ -312,11 +313,13 @@ class PropertyController extends Controller
                 $property->save();
 
                 (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
+
 //                Add water mark on image
 //                AddWaterMark::dispatch($property);
 //                dd($property->images);
 //                $this->dispatch(new AddWaterMark($property));
             }
+            event(new NotifyAdminOfNewProperty($property));
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {

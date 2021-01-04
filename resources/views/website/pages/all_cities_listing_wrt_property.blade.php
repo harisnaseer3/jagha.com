@@ -19,7 +19,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="all-cities-header">
-                                {{$type}} for {{$purpose}} in All Cities of Pakistan</h1>
+                               @if($type === 'homes') Houses @else {{$type}} @endif for {{$purpose}} in All Cities of Pakistan</h1>
                         </div>
                         <div class="card-body">
                             @if(trim(explode('&',$type)[0]) =='Houses')<h2 class="all-cities-header">{{trim(explode('&',$type)[0])}}</h2>@endif

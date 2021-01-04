@@ -27,7 +27,7 @@
                                 <a class="mr-2" href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook"><i class="fab fa-facebook-f"></i></a>
                                 <a class="mr-2" href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Twitter"><i class="fab fa-twitter"></i> </a>
                                 <a class="mr-2" href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin"><i class="fab fa-linkedin in"></i> </a>
-                                <a class="mr-2" href="https://www.instagram.com/aboutpkofficial/" target="_blank" title="Visit About Pakistan Instagram"><i class="fab fa-instagram"></i>
+                                <a class="mr-2" href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram"><i class="fab fa-instagram"></i>
                                 </a>
                                 <a class="mr-2" href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube"><i class="fab fa-youtube"></i> </a>
                             </div><!--foot-soc-->
