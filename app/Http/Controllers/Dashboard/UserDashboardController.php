@@ -31,9 +31,9 @@ class UserDashboardController extends Controller
     {
 //        dd(Auth::user()->roles[0]->name);
 
-        $user = (new User)->where('id','=',Auth::user()->getAuthIdentifier())->first();
+        $user = (new User)->where('id', '=', Auth::user()->getAuthIdentifier())->first();
         $agencies = count((new Agency)->where('status', '=', 'verified')->whereIn('id', DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->pluck('agency_id')->toArray())->get());
-        $properties = (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier());
+
         $active_properties = count((new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'active')->get());
         $deleted_properties = count((new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'deleted')->get());
         $pending_properties = count((new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('status', '=', 'pending')->get());
@@ -41,11 +41,12 @@ class UserDashboardController extends Controller
             [
                 'user' => $user,
                 'agencies' => $agencies,
-                'properties' => $properties->paginate(10),
+                'sale' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Sale')->get(),
+                'rent' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Rent')->get(),
                 'active_properties' => $active_properties,
                 'pending_properties' => $pending_properties,
                 'deleted_properties' => $deleted_properties,
-                'notifications' => Auth()->user()->unreadNotifications,
+//                'notifications' => Auth()->user()->unreadNotifications,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
