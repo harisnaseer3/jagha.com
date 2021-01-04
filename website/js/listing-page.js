@@ -414,7 +414,7 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data.status === 200) {
-                            console.log(data.data);
+                            // console.log(data.data);
                             form.trigger("reset");
                             $('#EmailModelCenter').modal('hide');
                             $('#EmailConfirmModel').modal('show');

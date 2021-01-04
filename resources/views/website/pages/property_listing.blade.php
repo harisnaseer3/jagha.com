@@ -219,7 +219,7 @@
                         {{ Form::tel('phone_#',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
                         <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
                         <span id="error-msg" class="hide error mt-2"></span>
-                        <input class="form-control" name="phone" type="hidden">
+                        <input class="form-control" name="phone" type="hidden" value="{{\Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null}}">
                         {{--                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>--}}
 
                         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
