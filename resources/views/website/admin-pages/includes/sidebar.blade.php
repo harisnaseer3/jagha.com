@@ -102,12 +102,4 @@
             </div>
         </li>
     </ul>
-
-    {{--    <div class="card-header theme-grey text-white">Tools</div>--}}
-    {{--    <ul class="list-group">--}}
-    {{--        <!-- <li class="list-group-item"><a href="#">Inventory Search</a></li> -->--}}
-    {{--        <li class="list-group-item {{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'active' : '' }}"><a--}}
-    {{--                href="{{ route('properties.create') }}" class="{{ in_array($current_route_name, ['properties.create', 'properties.edit']) ? 'text-white' : '' }}">--}}
-    {{--                @if ($current_route_name === 'properties.edit') Edit Advertisement @else Add New Advertisement @endif</a></li>--}}
-    {{--    </ul>--}}
 </div>

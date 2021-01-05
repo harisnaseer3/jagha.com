@@ -69,9 +69,11 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 mb-2">
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Advertisement</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Post Advertisement</a></span>
                                         <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i
                                                     class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                                    class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
 
                                     </div>
                                 </div>
@@ -115,7 +117,7 @@
                                         @if($sale->count() > 0)
                                             <div class="card my-2">
                                                 <div class="card-header theme-blue text-white">
-                                                    Properties for Sale
+                                                   Recent Properties for Sale
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="display" style="width: 100%" id="sale-properties">
@@ -125,7 +127,6 @@
                                                             <th>Type</th>
                                                             <th>Location</th>
                                                             <th>Price (PKR)</th>
-                                                            <th>Purpose</th>
                                                             <th>Status</th>
                                                             <th>Views</th>
                                                             <th>Listed Date</th>
@@ -145,7 +146,6 @@
                                                                         {{$property->price}} (PKR)
                                                                     @endif
                                                                 </td>
-                                                                <td>{{$property->purpose}}</td>
                                                                 <td>{{ucfirst($property->status)}}</td>
                                                                 <td>{{$property->views}}</td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
@@ -176,7 +176,7 @@
                                         @if($rent->count() > 0)
                                             <div class="card my-2">
                                                 <div class="card-header theme-blue text-white">
-                                                    Properties for Rent
+                                                  Recent Properties for Rent
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="display" style="width: 100%" id="rent-properties">
@@ -186,7 +186,6 @@
                                                             <th>Type</th>
                                                             <th>Location</th>
                                                             <th>Price (PKR)</th>
-                                                            <th>Purpose</th>
                                                             <th>Status</th>
                                                             <th>Views</th>
                                                             <th>Listed Date</th>
@@ -206,7 +205,6 @@
                                                                         {{$property->price}} (PKR)
                                                                     @endif
                                                                 </td>
-                                                                <td>{{$property->purpose}}</td>
                                                                 <td>{{ucfirst($property->status)}}</td>
                                                                 <td>{{$property->views}}</td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>

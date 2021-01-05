@@ -281,7 +281,7 @@
                                 Your Property Agencies</a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="{{route('aboutpakistan.support')}}">
+                            <a class="nav-link theme-dark-blue" href="{{route('aboutpakistan.support')}}">
                                 Support</a>
                         </li>
                         {{--                        @endif--}}

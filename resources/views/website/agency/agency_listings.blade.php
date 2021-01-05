@@ -52,7 +52,11 @@
 {{--                                    </div>--}}
 
                                     <div class="tab-content" id="listings-tabContent">
-                                        <div class="float-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}">Add New Agency</a></div>
+                                        <div class="float-right">
+                                               <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                                           class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                            <a class="btn btn-sm theme-blue text-white mr-2" href="{{route('agencies.create')}}">Add New Agency</a>
+                                        </div>
 
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
                                              aria-labelledby="listings-all-tab">
@@ -83,7 +87,7 @@
                                                             <td class="pr-3">{{ $all_listing->city}}</td>
                                                             <td>{{ $all_listing->website }}</td>
                                                             <td>{{ $all_listing->phone }}</td>
-                                                            <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
+                                                            <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm a')  }}</td>
                                                             @if($params['status'] == 'pending_agencies')
                                                                 <td>
                                                                     <div class="pending-status"><strong>Pending</strong></div>
@@ -177,7 +181,7 @@
                                                             <td class=" pr-3">{{ $key_listing->city }}</td>
                                                             <td>{{ $key_listing->website }}</td>
                                                             <td>{{ $key_listing->phone }}</td>
-                                                            <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->format('Y-m-d') }}</td>
+                                                            <td>{{ (new \Illuminate\Support\Carbon($key_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm a')  }}</td>
                                                             @if($params['status'] == 'pending_agencies')
                                                                 <td>
                                                                     <div class="pending-status"><strong>Pending</strong></div>
@@ -272,7 +276,7 @@
                                                             <td class="pr-3">{{ $featured_listing->city }}</td>
                                                             <td>{{ $featured_listing->website }}</td>
                                                             <td>{{ $featured_listing->phone }}</td>
-                                                            <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->format('Y-m-d') }}</td>
+                                                            <td>{{ (new \Illuminate\Support\Carbon($featured_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm a')  }}</td>
                                                             @if($params['status'] == 'pending_agencies')
                                                                 <td>
                                                                     <div class="pending-status"><strong>Pending</strong></div>
