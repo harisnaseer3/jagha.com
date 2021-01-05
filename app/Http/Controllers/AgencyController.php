@@ -557,11 +557,11 @@ class AgencyController extends Controller
             'address' => 'nullable|string',
             'zip_code' => 'nullable|digits:5',
             'country' => 'required|string',
-            'upload_new_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
+            'upload_new_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:10000',
             'name' => 'nullable|string',
             'designation' => 'nullable|string',
             'message' => 'nullable|string',
-            'upload_new_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
+            'upload_new_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:10000',
         ]);
 
         if ($validator->fails()) {
