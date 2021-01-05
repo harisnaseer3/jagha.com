@@ -40,7 +40,7 @@
                         <div class="listing-badges pull-right">
                             @if(isset($agency->status) &$agency->status === 'verified')
                                 <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                      title="{{$agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 315 5141959"><i
                                         class="far fa-shield-check"></i></span>
 
                             @endif

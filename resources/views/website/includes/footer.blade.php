@@ -19,7 +19,7 @@
 
                         <div class="foot-soc left relative">
                             <p class="mb-2 pr-15"><i class="fa fa-phone mr-2"></i>+92 51 4862317</p>
-                            <p class="mb-2 pr-15"><i class="fa fa-mobile mr-2 fa-2x"></i>+92 301 5993190</p>
+                            <p class="mb-2 pr-15"><i class="fa fa-mobile mr-2 fa-2x"></i>+92 315 5141959</p>
                             <p class="mb-2 pr-15"><i class="fa fa-envelope mr-2"></i>info@aboutpakistan.com</p>
                             <div class="footer-divider"></div>
                             <div class="text-white mt-2"> Join us on Social</div>
