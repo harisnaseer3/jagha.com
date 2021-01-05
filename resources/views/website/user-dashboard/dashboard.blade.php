@@ -111,7 +111,7 @@
                                         </div>
                                     </div>
                                     <div class=" col-xl-10 col-lg-9 col-md-7 col-sm-12 ">
-                                        <div><h4>Recent Properties</h4></div>
+{{--                                        <div><h4>Recent Properties</h4></div>--}}
                                         @if($sale->count() > 0)
                                             <div class="card my-2">
                                                 <div class="card-header theme-blue text-white">

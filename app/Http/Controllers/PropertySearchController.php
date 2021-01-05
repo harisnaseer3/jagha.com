@@ -32,7 +32,7 @@ class PropertySearchController extends Controller
             ->whereNull('properties.deleted_at')
             ->leftJoin('images as p', function ($q) {
                 $q->on('p.property_id', '=', 'properties.id')
-                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id  limit 1 )'));
+                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id ORDER BY images.order  limit 1 )'));
             })
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
