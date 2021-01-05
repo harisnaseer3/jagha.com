@@ -53,8 +53,9 @@
 {{--                                            </div>--}}
 {{--                                        </div>--}}
 
-
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
+                                                    class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post Advertisement</a></span>
                                         <span class="pull-right">{{ Form::open(['route' => ['property.search.ref'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;']) }}
                                                     <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_ref" id="property_ref"
                                                            autocomplete="false" required>
