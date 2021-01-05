@@ -301,7 +301,7 @@
                                             @if($property->agency->status === 'verified')
                                                 <div class="mb-3">
                                                     <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                                          title="{{$property->agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 301 5993190"><i
+                                                          title="{{$property->agency->title}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 315 5141959"><i
                                                             class="far fa-shield-check"></i></span>
                                                 </div>
                                             @endif
