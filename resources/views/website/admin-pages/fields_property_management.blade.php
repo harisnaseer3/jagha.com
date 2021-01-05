@@ -128,39 +128,48 @@
                         <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
                     </strong>
                 </div>
-                @foreach($property->images as $available_image)
+                <ul id="sortable" class="row m-2">
+                    @foreach($property->images as $available_image)
+                        <li class="ui-state-default m-2 upload-image-block ui-sortable-handle">
+                            <div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">
+                                <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
+                                     width="100%" class="img-responsive" alt="image not available" data-num="{{$available_image->order}}" data-value="{{$available_image->name}}"/>
+                            </div>
+                            <div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">{{$available_image->order}}</div>
+                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" data-record-id="{{$available_image->id}}"
+                               title="delete" style="position: absolute; margin-left: 146px;
+                            margin-top: 56px; z-index: 1"> <i class="fad fa-trash fa-1x" style="color: red;font-size: 30px"></i> </a>
+                        </li>
 
-                    <div class="col-md-4 col-sm-6 my-2">
-                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-image"
-                               data-record-id="{{$available_image->id}}"
-                               style="position: absolute; top: 0; right: 0; z-index: 1">
-                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>
-                            </a>
-                            <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}" width="100%" data-id="{{$available_image->id}}"
-                                 class="img-responsive" alt="image not available"/>
-                        </div>
-                    </div>
-                @endforeach
+
+                    @endforeach
+                </ul>
             </div>
-            {{--            <div id="edit-count" data-count="{{count($property->images)}}"></div>--}}
+            <div id="edit-count" data-count="{{count($property->images)}}"></div>
+            <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+
             <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="row border-bottom my-2 add-images" style="display: none"></div>
+            <div class="add-images" style="display: none"></div>
         @else
             <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="row border-bottom my-2 add-images" style="display: none">
-                <div class="col-sm-12 text-bold my-2"><strong>Total Images
+            <div class="add-images" style="display: none">
+                <div class="col-sm-12 text-bold my-2">
+                    <strong>Total Images
                         <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
                     </strong>
                 </div>
+                <ul id="sortable" class="row border-bottom my-2 ">
+                </ul>
             </div>
         @endif
+
+
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
-            <div class="mb-2 ">
-                <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
-                    Upload Images</a>
-            </div>
+        <div class="mb-2 ">
+            <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
+                Upload Images</a>
+        </div>
         @if(isset($property) and !$property->video->isEmpty())
             {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
             <div class="row border-bottom my-2">
@@ -185,8 +194,8 @@
                 </div>
             </div>
         @else
-            {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null,['required' => false,'placeholder' => 'Select video host']) }}
-            {{ Form::bsText('video link', null, ['required' => false]) }}
+            {{ Form::bsSelect2('video_host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null ,['required' => false,'placeholder' => 'Select video host']) }}
+            {{ Form::bsText('video_link', null, ['required' => false]) }}
         @endif
     </div>
 

@@ -70,7 +70,8 @@
                                 <div class="row">
                                     <div class="col-12 mb-2">
                                         <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Advertisement</a></span>
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i
+                                                    class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
 
                                     </div>
                                 </div>
@@ -110,76 +111,130 @@
                                         </div>
                                     </div>
                                     <div class=" col-xl-10 col-lg-9 col-md-7 col-sm-12 ">
-
-
-                                        <div class="card">
-                                            <div class="card-header theme-blue text-white">
-                                               Recent Properties
-                                            </div>
-                                            <div class="card-body">
-                                                <table class="display" style="width: 100%" id="recent-properties">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Type</th>
-                                                        <th>Location</th>
-                                                        <th>Price (PKR)</th>
-                                                        <th>Area (new marla)</th>
-                                                        <th>Purpose</th>
-                                                        <th>Status</th>
-                                                        <th>Views</th>
-                                                        <th>Activation Date</th>
-                                                        <th>Controls</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @forelse($properties as $property)
+                                        <div><h4>Recent Properties</h4></div>
+                                        @if($sale->count() > 0)
+                                            <div class="card my-2">
+                                                <div class="card-header theme-blue text-white">
+                                                    Properties for Sale
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="display" style="width: 100%" id="sale-properties">
+                                                        <thead>
                                                         <tr>
-                                                            <td>{{$property->id}}</td>
-                                                            <td>{{$property->type}}</td>
-                                                            <td>{{$property->address}}</td>
-                                                            <td>
-                                                                @if($property->price == 0)
-                                                                    Call option selected for price
-                                                                @else
-                                                                    {{$property->price}} (PKR)
-                                                                @endif
-                                                            </td>
-                                                            <td>{{(int)round($property->area_in_new_marla)}}</td>
-                                                            <td>{{$property->purpose}}</td>
-                                                            <td>{{$property->status}}</td>
-                                                            <td>{{$property->views}}</td>
-                                                            <td>{{(new \Illuminate\Support\Carbon($property->activated_at))->format('Y-m-d')}}</td>
+                                                            <th>ID</th>
+                                                            <th>Type</th>
+                                                            <th>Location</th>
+                                                            <th>Price (PKR)</th>
+                                                            <th>Purpose</th>
+                                                            <th>Status</th>
+                                                            <th>Views</th>
+                                                            <th>Listed Date</th>
+                                                            <th>Controls</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @forelse($sale as $property)
+                                                            <tr>
+                                                                <td>{{$property->id}}</td>
+                                                                <td>{{$property->type}}</td>
+                                                                <td>{{$property->location->name}}, {{$property->city->name}}</td>
+                                                                <td>
+                                                                    @if($property->price == 0)
+                                                                        Call option selected for price
+                                                                    @else
+                                                                        {{$property->price}} (PKR)
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{$property->purpose}}</td>
+                                                                <td>{{ucfirst($property->status)}}</td>
+                                                                <td>{{$property->views}}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                                <td><a type="button" href="{{route('properties.edit', $property->id)}}"
+                                                                       class="btn btn-sm btn-warning"
+                                                                       data-toggle-1="tooltip"
+                                                                       data-placement="bottom" title="edit">
+                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                    </a>
+                                                                    <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
+                                                                       data-placement="bottom" title="delete"
+                                                                       data-toggle="modal" data-target="#delete"
+                                                                       data-record-id="{{$property->id}}">
+                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                    </a></td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            </tr>
+                                                        @endforelse
+                                                        </tbody>
+                                                    </table>
 
-                                                            <td><a type="button" href="{{route('properties.edit', $property->id)}}"
-                                                                   class="btn btn-sm btn-warning"
-                                                                   data-toggle-1="tooltip"
-                                                                   data-placement="bottom" title="edit">
-                                                                    <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                </a>
-                                                                <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
-                                                                   data-placement="bottom" title="delete"
-                                                                   data-toggle="modal" data-target="#delete"
-                                                                   data-record-id="{{$property->id}}">
-                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                </a></td>
-                                                        </tr>
-                                                    @empty
+                                                </div>
+
+                                            </div>@endif
+                                        @if($rent->count() > 0)
+                                            <div class="card my-2">
+                                                <div class="card-header theme-blue text-white">
+                                                    Properties for Rent
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="display" style="width: 100%" id="rent-properties">
+                                                        <thead>
                                                         <tr>
-                                                            <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            <th>ID</th>
+                                                            <th>Type</th>
+                                                            <th>Location</th>
+                                                            <th>Price (PKR)</th>
+                                                            <th>Purpose</th>
+                                                            <th>Status</th>
+                                                            <th>Views</th>
+                                                            <th>Listed Date</th>
+                                                            <th>Controls</th>
                                                         </tr>
-                                                    @endforelse
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                        @forelse($rent as $property)
+                                                            <tr>
+                                                                <td>{{$property->id}}</td>
+                                                                <td>{{$property->type}}</td>
+                                                                <td>{{$property->location->name}}, {{$property->city->name}}</td>
+                                                                <td>
+                                                                    @if($property->price == 0)
+                                                                        Call option selected for price
+                                                                    @else
+                                                                        {{$property->price}} (PKR)
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{$property->purpose}}</td>
+                                                                <td>{{ucfirst($property->status)}}</td>
+                                                                <td>{{$property->views}}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                                <td><a type="button" href="{{route('properties.edit', $property->id)}}"
+                                                                       class="btn btn-sm btn-warning"
+                                                                       data-toggle-1="tooltip"
+                                                                       data-placement="bottom" title="edit">
+                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                    </a>
+                                                                    <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
+                                                                       data-placement="bottom" title="delete"
+                                                                       data-toggle="modal" data-target="#delete"
+                                                                       data-record-id="{{$property->id}}">
+                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                    </a></td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                                            </tr>
+                                                        @endforelse
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
 
                                             </div>
-
-                                        </div>
-
-
-
-                                        {{--                                        {{ $properties->links() }}--}}
-                                        {{ $properties->links('vendor.pagination.bootstrap-4') }}
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -201,7 +256,12 @@
 @section('script')
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
     <script>
-        $('#recent-properties').DataTable(
+        $('#sale-properties').DataTable(
+            {
+                "scrollX": true
+            }
+        );
+        $('#rent-properties').DataTable(
             {
                 "scrollX": true
             }
@@ -243,9 +303,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
+                    // console.log(xhr);
+                    // console.log(status);
+                    // console.log(error);
                 },
                 complete: function (url, options) {
 
@@ -273,9 +333,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
+                    // console.log(xhr);
+                    // console.log(status);
+                    // console.log(error);
                 },
                 complete: function (url, options) {
 

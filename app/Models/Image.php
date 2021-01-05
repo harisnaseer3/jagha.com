@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Image extends Model
 {
     use SoftDeletes;
+
     public $table = 'images';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -21,6 +22,7 @@ class Image extends Model
         'user_id',
         'property_id',
         'name',
+        'order'
     ];
 
     public static $rules = [

@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;
+use App\Models\Dashboard\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Lang;
 
 
 class AuthServiceProvider extends ServiceProvider
@@ -40,5 +44,15 @@ class AuthServiceProvider extends ServiceProvider
         });
         Passport::routes();
 
+        VerifyEmail::toMailUsing(function (User $user, string $verificationUrl)
+        {
+            return (new MailMessage)
+                ->view('website.custom-emails.verification-email',[
+                    'user' => $user,
+                    'verificationUrl' => $verificationUrl
+                ]);
+        });
+
     }
+
 }

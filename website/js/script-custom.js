@@ -581,7 +581,9 @@
 
                             if ($('.user-name').length > 0) {
                                 $('input[name=name]').val(data.user.name);
-                                $('input[name=email]').val(data.user.email)
+                                $('input[name=email]').val(data.user.email);
+                                $('input[name=phone]').val(data.user.cell);
+                                $('input[name="phone_#"]').val(data.user.cell);
                             }
                             if ($('.fav-section-index').length > 0) {
                                 let slider = $('#featured-properties-section');

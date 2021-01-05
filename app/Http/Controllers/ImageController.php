@@ -74,14 +74,17 @@ class ImageController extends Controller
 
     public function storeImage($name, $property)
     {
-        foreach (explode(',', $name) as $file_name) {
-//            $user_id = Auth::user()->getAuthIdentifier();
-
-            (new Image)->updateOrCreate(['property_id' => $property->id, 'name' => $file_name], [
-                'user_id' => $property->user_id,
-                'property_id' => $property->id,
-                'name' => $file_name
-            ]);
+        foreach (json_decode($name, true) as $file_name) {
+            foreach ($file_name as $key => $value) {
+                $img_name = str_replace('"', '', $key);
+                (new Image)->updateOrCreate(
+                    ['user_id' => $property->user_id, 'property_id' => $property->id, 'name' => $img_name],
+                    ['user_id' => $property->user_id,
+                        'property_id' => $property->id,
+                        'name' => $img_name,
+                        'order' => (int)$file_name[$key]
+                    ]);
+            }
         }
     }
 
@@ -157,7 +160,6 @@ class ImageController extends Controller
     public function form_destroy(Request $request)
     {
         $images = (new Image)->find($request->input('image-record-id'));
-
         if ($images->exists) {
             try {
                 $images->delete();
@@ -169,6 +171,7 @@ class ImageController extends Controller
         }
         return redirect()->back()->with('error', 'Image not found');
     }
+
     public function destroy(Image $image)
     {
         if ($image->exists) {

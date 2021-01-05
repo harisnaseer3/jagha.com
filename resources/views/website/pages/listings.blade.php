@@ -33,6 +33,27 @@
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
+{{--                                        <div class="row mb-3 mt-3">--}}
+
+{{--                                            <div class="col-md-4 col-sm-12">--}}
+{{--                                                <div class="row">--}}
+{{--                                                    --}}{{--                                                            <div class="col-2">--}}
+{{--                                                    --}}{{--                                                                <h4>Sort</h4>--}}
+{{--                                                    --}}{{--                                                            </div>--}}
+{{--                                                    <div class="col-10">--}}
+{{--                                                        <select class="w-100 sorting" style="width: 100%">--}}
+{{--                                                            <option value selected disabled data-index="0">Select Sorting Option</option>--}}
+{{--                                                            <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest--}}
+{{--                                                            </option>--}}
+{{--                                                            <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest--}}
+{{--                                                            </option>--}}
+{{--                                                        </select>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+
+
                                         <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Add New Advertisement</a></span>
                                         <span class="pull-right">{{ Form::open(['route' => ['property.search.ref'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;']) }}
                                                     <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_ref" id="property_ref"
@@ -50,7 +71,7 @@
                                                             <thead class="theme-blue text-white">
                                                             <tr>
                                                                 <td>ID</td>
-                                                                <td>Reference</td>
+{{--                                                                <td>Reference</td>--}}
                                                                 <td>Type</td>
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
@@ -70,7 +91,7 @@
                                                                 @forelse($listings[$option] as $all_listing)
                                                                     <tr>
                                                                         <td>{{ $all_listing->id }}</td>
-                                                                        <td>{{ $all_listing->reference}}</td>
+{{--                                                                        <td>{{ $all_listing->reference}}</td>--}}
                                                                         <td>{{ $all_listing->type }}</td>
                                                                         <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
                                                                         @if($all_listing->price != '0')
@@ -78,7 +99,9 @@
                                                                         @else
                                                                             <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                         @endif
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+
+{{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
                                                                         @if($params['status'] == 'active')
                                                                             <td>
                                                                                 {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }}
