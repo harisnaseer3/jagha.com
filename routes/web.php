@@ -156,11 +156,11 @@ Route::group(['prefix' => 'properties'], function () {
 
 
 Auth::routes(['verify' => true]);
+Route::get('/dashboard/accounts/logout', 'AccountController@userLogout')->name('accounts.logout');
+
+
 //only logged in user can view following
 Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
-//    Route::get('/', 'DashboardController@index');
-//    Route::get('/logout', 'DashboardController@logout');
-
     Route::group(['prefix' => 'admin', 'middleware' => 'can:manage-users'], function () {
         Route::resource('/users', 'UserController')->only(['index', 'show', 'destroy']); // admin is not allowed other methods
         Route::resource('/roles', 'RoleController');
