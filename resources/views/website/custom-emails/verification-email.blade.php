@@ -275,7 +275,7 @@
 <body width="100%"
       style="margin: 0 auto !important;padding: 0 !important;mso-line-height-rule: exactly;background-color: #f1f1f1;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background: #f1f1f1;font-family: 'Poppins', sans-serif;font-weight: 400;font-size: 15px;line-height: 1.8;color: rgba(0,0,0,.4);height: 100% !important;width: 100% !important;">
 <center style="width: 100%;background-color: #f1f1f1;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-    <div style="max-width: 600px;margin: 0 auto;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="email-container">
+    <div style="max-width: 700px;margin: 0 auto;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="email-container">
         <table role="presentation" cellpadding="0" mso-cellspacing="0" width="100%" border="0"
                style="margin: auto;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;border-spacing: 0 !important;border-collapse: collapse !important;table-layout: fixed !important;">
             <tr style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -311,11 +311,12 @@
                                 <table border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                     <tr>
-                                        <td style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%; max-width: 80%;margin: 0 auto;padding: 2em;">
-                                            <div class="text-author">
+                                        <td style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%; max-width: 60%;margin: 0 auto;padding: 2em;">
+
                                                 <h3 class="name"
                                                     style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
                                                     Hello {{ucwords($user->name)}}</h3>
+                                                <br>
                                                 <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Thank you for registering an account on AboutPakistan, before you get started with exploring wonderful places, finding the right property for your stay, or buying yourself a luxury home we just need you to confirm that this is you. Click below to verify your email address:</span>
                                                 <br>
                                                 <br>
@@ -339,7 +340,7 @@
                                                 </table>
                                                 <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
                                                 <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                    <a href="{{$verificationUrl}}" style="text-decoration: none;">
+                                                    <a href="{{$verificationUrl}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
                                                         <table>
                                                             <tbody>
                                                             <tr>
@@ -363,7 +364,7 @@
                                                         style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
                                                         About Pakistan Properties</h3>
                                                 </div>
-                                            </div>
+
 
                                         </td>
                                     </tr>
