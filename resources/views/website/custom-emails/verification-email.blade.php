@@ -339,7 +339,7 @@
                                                 </table>
                                                 <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
                                                 <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                    <a href="{{$verificationUrl}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
+                                                    <a href="{{$verificationUrl}}" style="text-decoration: none;">
                                                         <table>
                                                             <tbody>
                                                             <tr>
