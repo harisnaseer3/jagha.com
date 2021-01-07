@@ -113,11 +113,11 @@
                                         </div>
                                     </div>
                                     <div class=" col-xl-10 col-lg-9 col-md-7 col-sm-12 ">
-{{--                                        <div><h4>Recent Properties</h4></div>--}}
+                                        {{--                                        <div><h4>Recent Properties</h4></div>--}}
                                         @if($sale->count() > 0)
                                             <div class="card my-2">
                                                 <div class="card-header theme-blue text-white">
-                                                   Recent Properties for Sale
+                                                    Recent Properties for Sale
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="display" style="width: 100%" id="sale-properties">
@@ -149,7 +149,16 @@
                                                                 <td>{{ucfirst($property->status)}}</td>
                                                                 <td>{{$property->views}}</td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
-                                                                <td><a type="button" href="{{route('properties.edit', $property->id)}}"
+                                                                <td>
+                                                                    <a type="button" href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
+                                                                       class="btn btn-sm btn-success
+                                                                           {{$property->status === 'active' ? '':'anchor-disable'}}"
+                                                                       data-toggle-1="tooltip"
+                                                                       data-placement="bottom" title="view">
+                                                                        <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                    </a>
+
+                                                                    <a type="button" href="{{route('properties.edit', $property->id)}}"
                                                                        class="btn btn-sm btn-warning"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="edit">
@@ -160,7 +169,8 @@
                                                                        data-toggle="modal" data-target="#delete"
                                                                        data-record-id="{{$property->id}}">
                                                                         <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a></td>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         @empty
                                                             <tr>
@@ -176,7 +186,7 @@
                                         @if($rent->count() > 0)
                                             <div class="card my-2">
                                                 <div class="card-header theme-blue text-white">
-                                                  Recent Properties for Rent
+                                                    Recent Properties for Rent
                                                 </div>
                                                 <div class="card-body">
                                                     <table class="display" style="width: 100%" id="rent-properties">
