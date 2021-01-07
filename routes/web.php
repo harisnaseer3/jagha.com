@@ -156,7 +156,8 @@ Route::group(['prefix' => 'properties'], function () {
 
 
 Auth::routes(['verify' => true]);
-Route::get('/dashboard/accounts/logout', 'AccountController@userLogout')->name('accounts.logout');
+//Route::get('/dashboard/accounts/logout', 'AccountController@userLogout')->name('accounts.logout');
+Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');
 
 
 //only logged in user can view following
