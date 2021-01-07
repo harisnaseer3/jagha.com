@@ -74,6 +74,7 @@ Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
 Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
+
     Route::resource('properties', 'PropertyController')->except(['index', 'show']);
     Route::resource('images', 'ImageController')->only(['destroy']);
     Route::delete('image-delete', 'ImageController@form_destroy')->name('delete-image');
@@ -120,6 +121,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
     Route::get('/support', 'Support\SupportController@index')->name('aboutpakistan.support');
+    Route::post('/sendSupportMail', 'Support\SupportController@sendSupportMail')->name('support.mail');
+
+
     Route::get('/user-logs', 'Log\UserLogController@index')->name('user.logs');
 
     Route::group(['prefix' => 'accounts'], function () {

@@ -6,6 +6,7 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
     <style type="text/css" id="custom-background-css">
         body.custom-background {
             background-color: #eeeeee;
@@ -98,9 +99,27 @@
 
                                         </div>
                                     </div>
-                                    <form id="contactform" name="sendMessage">
+                                    <form id="supportform" name="sendMessage" action="{{route('support.mail')}}">
+
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 padding-left mb-3">
+                                                <div class="form-group">
+                                                    <input class="form-control" id="name" name="name" type="text" readonly value="{{Auth::guard('web')->user()->name}}" required="required">
+                                                    <p class="help-block text-danger" id="nameHelp"  style="display:none;">Please specify your name</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" id="your-email" type="email" readonly name="email" value="{{Auth::guard('web')->user()->email}}"  required="required">
+                                                    <p class="help-block text-danger" id="emailHelp" style="display:none;">Please specify your email</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input id="cell" type="tel" class="form-control" name="mobile_#" value="{{ Auth::guard('web')->user()->phone }}" required autocomplete="mobile">
+                                                    <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
+                                                    <span id="error-msg" class="hide error mt-2"></span>
+
+                                                    <input class="form-control" name="mobile" type="hidden" value="{{ Auth::guard('web')->user()->phone }}">
+                                                </div>
+
+
                                                 <div class="form-group">
                                                     <input class="form-control" id="id" name="id" type="text" placeholder="Your property/Agency ID *" required="required">
                                                     <p class="help-block text-danger" id="idHelp" style="display:none;">Please specify your agency/property ID</p>
@@ -109,10 +128,7 @@
                                                     <input class="form-control" id="url" name="url" type="url" placeholder="Url">
                                                     <p class="help-block text-danger" id="urlHelp" style="display:none;">Please specify url</p>
                                                 </div>
-                                                <div class="form-group">
-                                                    <input class="form-control" id="your-email" type="email" name="email" placeholder="Your Email *" required="required">
-                                                    <p class="help-block text-danger" id="emailHelp" style="display:none;">Please specify your email</p>
-                                                </div>
+
                                                 <div class="form-group">
                                                     <textarea class="form-control" id="message" name ="message" placeholder="Your Message *" rows="8" required="required"></textarea>
                                                     <p class="help-block text-danger" id="messageHelp" style="display:none;">Please specify your message</p>
@@ -139,6 +155,7 @@
                                                 </div>
 
                                             </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -150,17 +167,58 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
 <script>
     (function ($) {
+        let input = document.querySelector("#cell");
+        var errorMsg = document.querySelector("#error-msg"),
+            validMsg = document.querySelector("#valid-msg");
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+        var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
+            preferredCountries: ["pk"],
+            preventInvalidNumbers: true,
+            separateDialCode: true,
+            numberType: "MOBILE",
+            // hiddenInput: "mobile",
+            utilsScript: "/../../plugins/intl-tel-input/js/utils.js?1603274336113"
+        });
+        var reset = function () {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+        input.addEventListener('blur', function () {
+            reset();
+            if (input.value.trim()) {
+                if (ag_iti_cell.isValidNumber()) {
+                    $('[name=mobile]').val(ag_iti_cell.getNumber());
+                    validMsg.classList.remove("hide");
+                    $('#mobile-error').hide();
+                } else {
+                    input.classList.add("error");
+                    var errorCode = ag_iti_cell.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                    $('[name=mobile]').val('');
+                }
+            }
+        });
+
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
         $('#sendMessageButton').on('click',function(e)
         {
             const id = $('#id').val();
+            const name = $('#name').val();
             const url = $('#url').val();
             const email = $('#your-email').val();
             const message = $('#message').val();
-            if (id.trim === ''|| email.trim() === '' || message.trim() === '') {
+            if (id.trim === ''||name.trim === ''|| email.trim() === '' || message.trim() === '') {
                 e.preventDefault();
                 id.trim() === '' ? $('#idHelp').slideDown() : $('#idHelp').slideUp();
+                name.trim() === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
                 email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
                 message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
                 return;
@@ -178,6 +236,10 @@
         $('#message').on('keyup',function(){
             const message = $('#message').val();
             message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
+        });
+        $('#name').on('keyup',function(){
+            const name = $('#name').val();
+            name.trim() === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
         });
         $('#your-email').on('keyup',function(){
             const email = $('#your-email').val();
@@ -198,15 +260,17 @@
         }
         function insertMessage()
         {
+            console.log($('#supportform').attr('action'));
+            event.preventDefault();
             let html = '';
             $('#message-alert').html(html).slideDown();
             $('#sendMessageButton').prop('disabled', true);
             $.ajax({
                 type: 'post',
-                url: 'process/insert/send_message.php',
-                data: $('#contactform').serialize(),
+                url: $('#supportform').attr('action'),
+                data: $('#supportform').serialize(),
                 success: function () {
-                    $("#contactform").trigger("reset");
+                    $("#supportform").trigger("reset");
                     html= ' <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Your message has been sent. </strong></div>'
                     $('#message-alert').html(html).slideDown();
                 },
