@@ -102,11 +102,16 @@
                                                                         <td>Type</td>
                                                                         <td>Location</td>
                                                                         <td>Price (PKR)</td>
+                                                                        <td>Added By</td>
+                                                                        <td>Contact Person</td>
+                                                                        <td>Contact #</td>
+                                                                        <td>Property Type</td>
                                                                         <td>Listed Date</td>
+
                                                                         @if($params['status'] == 'active')
                                                                             <td>Activation Date</td>
                                                                             <td>Activated By</td>
-                                                                            <td>Boost</td>
+{{--                                                                            <td>Boost</td>--}}
                                                                         @endif
                                                                         @if($params['status'] == 'rejected')
                                                                             <td>Rejected By</td>
@@ -130,6 +135,11 @@
                                                                                 @else
                                                                                     <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                                 @endif
+                                                                                <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
+                                                                                <td>{{$all_listing->contact_person}}</td>
+                                                                                <td>{{$all_listing->cell}}</td>
+                                                                                <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
+
                                                                                 {{--                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>--}}
                                                                                 <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
                                                                                 @if($params['status'] == 'active')
@@ -138,10 +148,10 @@
                                                                                             days </p>
                                                                                     </td>
                                                                                     <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
-                                                                                    <td>
-                                                                                        <span>Boost Count : 0</span>
-                                                                                        <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a>
-                                                                                    </td>
+{{--                                                                                    <td>--}}
+{{--                                                                                        <span>Boost Count : 0</span>--}}
+{{--                                                                                        <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a>--}}
+{{--                                                                                    </td>--}}
                                                                                 @endif
                                                                                 @if($params['status'] == 'rejected' || $params['status'] == 'deleted' )
                                                                                     <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
