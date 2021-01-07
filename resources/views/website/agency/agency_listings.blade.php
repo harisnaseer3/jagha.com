@@ -36,21 +36,6 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
-
-{{--                                    <div class="col-md-4  col-sm-12 mb-3">--}}
-{{--                                        {{ Form::open(['route' => ['user.agency.search.name'], 'method' => 'post', 'role' => 'form']) }}--}}
-{{--                                        <div class="row">--}}
-{{--                                            <div class="col-10 pr-0 mr-0">--}}
-{{--                                                <input class="form-control form-control-sm text-transform" type="text" placeholder="Agency Name" name="agency_name"--}}
-{{--                                                       autocomplete="false" required>--}}
-{{--                                            </div>--}}
-{{--                                            <div class="col-2 px-0 mx-0">--}}
-{{--                                                <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                        {{ Form::close() }}--}}
-{{--                                    </div>--}}
-
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
