@@ -72,14 +72,18 @@
                                                             <thead class="theme-blue text-white">
                                                             <tr>
                                                                 <td>ID</td>
-                                                                {{--                                                                <td>Reference</td>--}}
+                                                                {{-- <td>Reference</td>--}}
                                                                 <td>Type</td>
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
+                                                                <td>Added By</td>
+                                                                <td>Contact Person</td>
+                                                                <td>Contact #</td>
+                                                                <td>Property Type</td>
                                                                 <td>Listed Date</td>
                                                                 @if($params['status'] == 'active')
                                                                     <td>Activation Date</td>
-                                                                    <td>Boost</td>
+                                                                    {{--  <td>Boost</td>--}}
                                                                 @endif
                                                                 @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
                                                                     <td>Status Controls</td>
@@ -92,7 +96,7 @@
                                                                 @forelse($listings[$option] as $all_listing)
                                                                     <tr>
                                                                         <td>{{ $all_listing->id }}</td>
-                                                                        {{--                                                                        <td>{{ $all_listing->reference}}</td>--}}
+                                                                        {{-- <td>{{ $all_listing->reference}}</td>--}}
                                                                         <td>{{ $all_listing->type }}</td>
                                                                         <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
                                                                         @if($all_listing->price != '0')
@@ -100,6 +104,10 @@
                                                                         @else
                                                                             <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                         @endif
+                                                                        <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
+                                                                        <td>{{$all_listing->contact_person}}</td>
+                                                                        <td>{{$all_listing->cell}}</td>
+                                                                        <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
                                                                         <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
 
                                                                         {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
@@ -111,15 +119,18 @@
                                                                                 in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                                 days
                                                                             </td>
-                                                                            <td class="cursor-not-allowed"><span>Boost Count : 0</span>
-                                                                                <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a></td>
+                                                                            {{--                                                                            <td class="cursor-not-allowed"><span>Boost Count : 0</span>--}}
+                                                                            {{--                                                                                <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">--}}
+                                                                            {{--                                                                                    Click to Boost</a>--}}
+                                                                            {{--                                                                            </td>--}}
                                                                         @endif
 
                                                                         @if($params['status'] != 'deleted')
                                                                             <td>
                                                                                 @if($params['status'] === 'sold')
                                                                                     <div class="sold-status"><strong>Property Sold</strong>
-                                                                                    </div>                                                                            @else
+                                                                                    </div>
+                                                                                @else
                                                                                     <form>
                                                                                         @if($params['status'] != 'expired')
 
