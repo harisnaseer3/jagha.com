@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Support;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
+use Illuminate\Support\Facades\Request;
 
 class SupportController extends Controller
 {
@@ -27,10 +28,12 @@ class SupportController extends Controller
     {
         return view('website.support',
             [
-                'notifications' => Auth()->user()->unreadNotifications,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
 
+    }
+    public function sendSupportMail(Request $request){
+        dd($request->all());
     }
 }
