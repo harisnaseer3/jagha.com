@@ -33,25 +33,25 @@
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
-{{--                                        <div class="row mb-3 mt-3">--}}
+                                        {{--                                        <div class="row mb-3 mt-3">--}}
 
-{{--                                            <div class="col-md-4 col-sm-12">--}}
-{{--                                                <div class="row">--}}
-{{--                                                    --}}{{--                                                            <div class="col-2">--}}
-{{--                                                    --}}{{--                                                                <h4>Sort</h4>--}}
-{{--                                                    --}}{{--                                                            </div>--}}
-{{--                                                    <div class="col-10">--}}
-{{--                                                        <select class="w-100 sorting" style="width: 100%">--}}
-{{--                                                            <option value selected disabled data-index="0">Select Sorting Option</option>--}}
-{{--                                                            <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest--}}
-{{--                                                            </option>--}}
-{{--                                                            <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest--}}
-{{--                                                            </option>--}}
-{{--                                                        </select>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
+                                        {{--                                            <div class="col-md-4 col-sm-12">--}}
+                                        {{--                                                <div class="row">--}}
+                                        {{--                                                    --}}{{--                                                            <div class="col-2">--}}
+                                        {{--                                                    --}}{{--                                                                <h4>Sort</h4>--}}
+                                        {{--                                                    --}}{{--                                                            </div>--}}
+                                        {{--                                                    <div class="col-10">--}}
+                                        {{--                                                        <select class="w-100 sorting" style="width: 100%">--}}
+                                        {{--                                                            <option value selected disabled data-index="0">Select Sorting Option</option>--}}
+                                        {{--                                                            <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest--}}
+                                        {{--                                                            </option>--}}
+                                        {{--                                                            <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest--}}
+                                        {{--                                                            </option>--}}
+                                        {{--                                                        </select>--}}
+                                        {{--                                                    </div>--}}
+                                        {{--                                                </div>--}}
+                                        {{--                                            </div>--}}
+                                        {{--                                        </div>--}}
 
                                         <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
                                                     class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
@@ -72,7 +72,7 @@
                                                             <thead class="theme-blue text-white">
                                                             <tr>
                                                                 <td>ID</td>
-{{--                                                                <td>Reference</td>--}}
+                                                                {{--                                                                <td>Reference</td>--}}
                                                                 <td>Type</td>
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
@@ -92,7 +92,7 @@
                                                                 @forelse($listings[$option] as $all_listing)
                                                                     <tr>
                                                                         <td>{{ $all_listing->id }}</td>
-{{--                                                                        <td>{{ $all_listing->reference}}</td>--}}
+                                                                        {{--                                                                        <td>{{ $all_listing->reference}}</td>--}}
                                                                         <td>{{ $all_listing->type }}</td>
                                                                         <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
                                                                         @if($all_listing->price != '0')
@@ -102,7 +102,7 @@
                                                                         @endif
                                                                         <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
 
-{{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
+                                                                        {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
                                                                         @if($params['status'] == 'active')
                                                                             <td>
                                                                                 {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }}
@@ -149,12 +149,21 @@
                                                                             <td></td>
                                                                         @endif
                                                                         <td>
+                                                                            @if($params['status'] == 'active')
+                                                                                <a type="button" href="{{$all_listing->property_detail_path()}}"
+                                                                                   class="btn btn-sm btn-success"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="view">
+                                                                                    <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                                </a>
+                                                                            @endif
                                                                             @if($params['status'] != 'sold' && $params['status'] != 'deleted')
-                                                                                <a type="button" href="{{route('properties.edit', $all_listing->id)}}"
+                                                                                <a type="button"
+                                                                                   href="{{$params['status'] == 'deleted' || $params['status'] == 'sold' ?
+                                                                                        '': route('properties.edit', $all_listing->id)}}"
                                                                                    class="btn btn-sm btn-warning
-                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
-                                                                                   {{$params['status'] == 'sold' ? 'anchor-disable':'' }}
-                                                                                       "
+                                                                                    {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                                   {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="edit">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -167,14 +176,14 @@
                                                                                 </a>
                                                                             @elseif($params['status'] == 'deleted')
                                                                                 <a type="button"
-                                                                                   class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                                   class="btn btn-sm btn-success color-black restore-btn
+                                                                                    {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
                                                                                    data-toggle-1="tooltip" data-placement="bottom"
                                                                                    title="restore"
                                                                                    href="javascript:void(0)"
                                                                                    data-record-id="{{$all_listing->id}}">
                                                                                     <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                                 </a>
-
                                                                             @endif
                                                                         </td>
                                                                     </tr>
@@ -193,7 +202,7 @@
                                                         <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                     @endif
                                                     @if($listings[$option] !== null)
-{{--                                                        {{ $listings[$option]->links() }}--}}
+                                                        {{--                                                        {{ $listings[$option]->links() }}--}}
                                                         {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}
                                                     @endif
                                                 </div>
