@@ -60,7 +60,7 @@
 
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
                                              aria-labelledby="listings-all-tab">
-                                            <h6>All Listings</h6>
+                                            <h6>My Property Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
                                                     <thead class="theme-blue text-white">
