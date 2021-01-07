@@ -188,10 +188,18 @@
                                                                                     @endif
                                                                                 </td>
                                                                                 <td>
+                                                                                    @if($params['status'] == 'active')
+                                                                                        <a type="button" href="{{$all_listing->property_detail_path()}}"
+                                                                                           class="btn btn-sm btn-success"
+                                                                                           data-toggle-1="tooltip"
+                                                                                           data-placement="bottom" title="view">
+                                                                                            <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                                        </a>
+                                                                                    @endif
                                                                                     @if($params['status'] === 'pending')
                                                                                         <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
                                                                                            class="btn btn-sm btn-info
-                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
+                                                                                            {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
                                                                                            {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
                                                                                            data-toggle-1="tooltip"
                                                                                            data-placement="bottom" title="Verify and Activate">
@@ -235,7 +243,7 @@
                                                                 <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                                                             @endif
                                                             @if($listings[$option] != null)
-{{--                                                                {{ $listings[$option]->links() }}--}}
+                                                                {{--                                                                {{ $listings[$option]->links() }}--}}
                                                                 {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}
                                                             @endif
                                                         </div>
