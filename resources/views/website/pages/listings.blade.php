@@ -52,15 +52,15 @@
                                         {{--                                                </div>--}}
                                         {{--                                            </div>--}}
                                         {{--                                        </div>--}}
-
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
-                                                    class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post Advertisement</a></span>
                                         <span class="pull-right">{{ Form::open(['route' => ['property.search.ref'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;']) }}
                                                     <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_ref" id="property_ref"
                                                            autocomplete="false" required>
                                                     <i class="fa fa-search ml-1"></i>
                                                     {{ Form::close() }}</span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
+                                                    class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post Advertisement</a></span>
+
                                         @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                             <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="{{"listings-".$option}}"
                                                  role="tabpanel"

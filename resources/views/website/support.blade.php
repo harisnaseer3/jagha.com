@@ -6,6 +6,7 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
     <style type="text/css" id="custom-background-css">
         body.custom-background {
             background-color: #eeeeee;
@@ -48,6 +49,9 @@
         }
         .padding-right{
             padding-right: 15%;;
+        }
+        .padding-top{
+            padding-top:10%;
         }
         hr {
             clear:both;
@@ -98,21 +102,82 @@
 
                                         </div>
                                     </div>
-                                    <form id="contactform" name="sendMessage">
+                                    <form id="supportform" name="sendMessage" action="{{route('support.mail')}}">
+
                                         <div class="row">
                                             <div class="col-md-6 col-sm-12 padding-left mb-3">
-                                                <div class="form-group">
-                                                    <input class="form-control" id="id" name="id" type="text" placeholder="Your property/Agency ID *" required="required">
-                                                    <p class="help-block text-danger" id="idHelp" style="display:none;">Please specify your agency/property ID</p>
+                                                <div class="form-group row">
+                                                    <label for="i am" class="col-12" style="font-size:1rem;">
+                                                        <strong>
+                                                            Account Details
+
+
+                                                        </strong>
+                                                    </label>
                                                 </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" id="name" name="name" type="text" readonly value="{{Auth::guard('web')->user()->name}}" required="required">
+                                                    <p class="help-block text-danger" id="nameHelp"  style="display:none;">Please specify your name</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" id="your-email" type="email" readonly name="email" value="{{Auth::guard('web')->user()->email}}"  required="required">
+                                                    <p class="help-block text-danger" id="emailHelp" style="display:none;">Please specify your email</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input id="cell" type="tel" class="form-control" name="mobile_#" value="{{ Auth::guard('web')->user()->phone }}" required autocomplete="mobile">
+                                                    <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
+                                                    <span id="error-msg" class="hide error mt-2"></span>
+
+                                                    <input class="form-control" name="mobile" type="hidden" value="{{ Auth::guard('web')->user()->phone }}">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="i am" class="col-12" style="font-size:1rem;">
+                                                       <strong>
+                                                           Inquire About
+
+                                                       </strong>
+                                                    </label>
+                                                </div>
+                                                <div class="form-group row">
+
+                                                    <div class=" col-md-6 col-lg-4 col-xl-3">
+                                                        <div class="custom-control custom-radio custom-control-inline align-items-center">
+                                                            <input class="custom-control-input" type="radio" name="inquire_type" id="property_radio" value="Property" checked="">
+                                                            <label class="custom-control-label" style="line-height:1.2rem;" for="property_radio">
+                                                                Property </label>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class=" col-md-6 col-lg-4 col-xl-3">
+                                                        <div class="custom-control custom-radio custom-control-inline align-items-center">
+                                                            <input class="custom-control-input" type="radio" name="inquire_type" id="agency_radio" value="Agency" >
+                                                            <label class="custom-control-label" style="line-height:1.2rem;" for="agency_radio">
+                                                                Agency </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="property-div">
+                                                <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible property-select2"
+                                                        style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
+                                                        name="property_id" id="property-id">
+                                                    <option disabled selected>Select property</option>
+
+                                                </select>
+                                                </div>
+                                                <div class="form-group" style="display:none;" id="agency-div">
+                                                    <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible agency-select2"
+                                                            style="width: 100%;border:0;" tabindex="-1" aria-hidden="true"  aria-describedby="unit-error" aria-invalid="false"
+                                                            name="agency_id" id="agency-id">
+                                                        <option disabled selected>Select Agency</option>
+                                                    </select>
+
+                                                </div>
+
                                                 <div class="form-group">
                                                     <input class="form-control" id="url" name="url" type="url" placeholder="Url">
                                                     <p class="help-block text-danger" id="urlHelp" style="display:none;">Please specify url</p>
                                                 </div>
-                                                <div class="form-group">
-                                                    <input class="form-control" id="your-email" type="email" name="email" placeholder="Your Email *" required="required">
-                                                    <p class="help-block text-danger" id="emailHelp" style="display:none;">Please specify your email</p>
-                                                </div>
+
                                                 <div class="form-group">
                                                     <textarea class="form-control" id="message" name ="message" placeholder="Your Message *" rows="8" required="required"></textarea>
                                                     <p class="help-block text-danger" id="messageHelp" style="display:none;">Please specify your message</p>
@@ -124,7 +189,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-6  padding-left padding-right">
+                                            <div class="col-md-6  padding-left padding-right padding-top">
                                                 <p class="contact-info mb-4 pr-15"><i class="fa fa-phone mr-2 color-white"></i>+92 51 4862317</p>
                                                 <p class="contact-info mb-4 pr-15"><i class="fa fa-mobile mr-2" style="font-size:24px;"></i>+92 315 5141959</p>
                                                 <p class="contact-info mb-4 pr-15"><i class="fa fa-envelope mr-2"></i>info@aboutpakistan.com</p>
@@ -139,6 +204,7 @@
                                                 </div>
 
                                             </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -150,17 +216,70 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
 <script>
     (function ($) {
+
+        $('.select2').select2({
+            language: '{{app()->getLocale()}}',
+            direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
+        });
+        $('.select2bs4').select2({
+            language: '{{app()->getLocale()}}',
+            direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
+            theme: 'bootstrap4',
+        });
+        $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+        let input = document.querySelector("#cell");
+        var errorMsg = document.querySelector("#error-msg"),
+            validMsg = document.querySelector("#valid-msg");
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
+        var ag_iti_cell = window.intlTelInput(document.querySelector('#cell'), {
+            preferredCountries: ["pk"],
+            preventInvalidNumbers: true,
+            separateDialCode: true,
+            numberType: "MOBILE",
+            // hiddenInput: "mobile",
+            utilsScript: "/../../plugins/intl-tel-input/js/utils.js?1603274336113"
+        });
+        var reset = function () {
+            input.classList.remove("error");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+        input.addEventListener('blur', function () {
+            reset();
+            if (input.value.trim()) {
+                if (ag_iti_cell.isValidNumber()) {
+                    $('[name=mobile]').val(ag_iti_cell.getNumber());
+                    validMsg.classList.remove("hide");
+                    $('#mobile-error').hide();
+                } else {
+                    input.classList.add("error");
+                    var errorCode = ag_iti_cell.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                    $('[name=mobile]').val('');
+                }
+            }
+        });
+
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
         $('#sendMessageButton').on('click',function(e)
         {
             const id = $('#id').val();
+            const name = $('#name').val();
             const url = $('#url').val();
             const email = $('#your-email').val();
             const message = $('#message').val();
-            if (id.trim === ''|| email.trim() === '' || message.trim() === '') {
+            if (id.trim === ''||name.trim === ''|| email.trim() === '' || message.trim() === '') {
                 e.preventDefault();
                 id.trim() === '' ? $('#idHelp').slideDown() : $('#idHelp').slideUp();
+                name.trim() === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
                 email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
                 message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
                 return;
@@ -179,6 +298,10 @@
             const message = $('#message').val();
             message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
         });
+        $('#name').on('keyup',function(){
+            const name = $('#name').val();
+            name.trim() === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
+        });
         $('#your-email').on('keyup',function(){
             const email = $('#your-email').val();
             email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
@@ -196,17 +319,30 @@
                 return true;
             }
         }
+        $('[name=inquire_type]').on('change', function (e) {
+
+            const selectedValue = $(this).val();
+            if (selectedValue === 'Property') {
+                $('#property-div').slideDown().find('#property-id').attr('required','true');
+                $('#agency-div').slideUp().find('#agency-id').removeAttr('required');
+            } else {
+                $('#property-div').slideUp().find('#property-id').removeAttr('required');
+                $('#agency-div').slideDown().find('#agency-id').attr('required','true');
+            }
+        });
         function insertMessage()
         {
+            console.log($('#supportform').attr('action'));
+            event.preventDefault();
             let html = '';
             $('#message-alert').html(html).slideDown();
             $('#sendMessageButton').prop('disabled', true);
             $.ajax({
                 type: 'post',
-                url: 'process/insert/send_message.php',
-                data: $('#contactform').serialize(),
+                url: $('#supportform').attr('action'),
+                data: $('#supportform').serialize(),
                 success: function () {
-                    $("#contactform").trigger("reset");
+                    $("#supportform").trigger("reset");
                     html= ' <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Your message has been sent. </strong></div>'
                     $('#message-alert').html(html).slideDown();
                 },
