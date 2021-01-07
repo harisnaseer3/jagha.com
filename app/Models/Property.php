@@ -154,6 +154,11 @@ class Property extends Model
         return $this->belongsToMany(User::class)->using(Favorite::class)->withTimestamps();
 
     }
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+
+    }
 
     public function property_detail_path($location = null)
     {

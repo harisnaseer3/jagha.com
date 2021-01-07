@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Dashboard\City;
+use App\Models\Dashboard\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -60,5 +61,10 @@ class Agency extends Model
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id');
+    }
+
+    public static function getAgencyTitle($id)
+    {
+        return (new Agency)->where('id', $id)->pluck('title')->first();
     }
 }

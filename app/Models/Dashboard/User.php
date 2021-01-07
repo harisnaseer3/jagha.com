@@ -119,6 +119,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return (new User)->where('id', $id)->first();
     }
+    public static function getUserName($id)
+    {
+        return (new User)->where('id', $id)->pluck('name')->first();
+    }
 
     public static function destroyUser($id)
     {

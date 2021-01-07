@@ -29,12 +29,12 @@ class PropertyBackendListingController extends Controller
     private function _listings(string $status, string $user, $city = '')
     {
         // TODO: make migration for handling quota_used and image_views
-        $listings = Property::
+        $listings =  Property::
         select('properties.id', 'sub_type AS type',  'properties.reference',
             'properties.status', 'locations.name AS location', 'cities.name as city',
             'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
             'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-            'price', 'properties.created_at AS listed_date', 'properties.created_at', DB::raw("'0' AS quota_used"),
+            'price', 'properties.created_at AS listed_date', 'properties.created_at','properties.contact_person','properties.user_id','properties.cell','properties.agency_id', DB::raw("'0' AS quota_used"),
             DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
@@ -49,6 +49,7 @@ class PropertyBackendListingController extends Controller
             }
             //if user owns agencies{}
             $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
+            $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
 
             $ceo_agencies = Agency::where('user_id', '=', $user)->pluck('id')->toArray(); //gives ceo of agency
             $agent_agencies = DB::table('agency_users')->where('user_id', $user)->pluck('agency_id')->toArray(); //gives all agency users
@@ -60,13 +61,14 @@ class PropertyBackendListingController extends Controller
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-                    'price', 'properties.created_at AS listed_date', 'properties.created_at', DB::raw("'0' AS quota_used"),
+                    'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person','properties.user_id','properties.cell','properties.agency_id',DB::raw("'0' AS quota_used"),
                     DB::raw("'0' AS image_views"))
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
                     ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
                     ->whereIn('properties.user_id', $agency_users);
                 $ceo_listings = $status == 'all' ? $ceo_listings : $ceo_listings->where('status', '=', $status);
+//                dd($ceo_listings->get());
                 return $ceo_listings->union($listings);
             } elseif ($agent_agencies > 0) {
                 $agent_listings = Property::
@@ -74,7 +76,7 @@ class PropertyBackendListingController extends Controller
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-                    'price', 'properties.created_at AS listed_date', 'properties.created_at', DB::raw("'0' AS quota_used"),
+                    'price', 'properties.created_at AS listed_date', 'properties.created_at','properties.contact_person','properties.user_id','properties.cell', 'properties.agency_id',DB::raw("'0' AS quota_used"),
                     DB::raw("'0' AS image_views"))
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
