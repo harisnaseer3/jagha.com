@@ -28,7 +28,7 @@
                 type: 'get',
                 url: window.location.origin + '/admin/admin-logout',
                 success: function (data) {
-                    if(data.data){
+                    if (data.data) {
                         let user_dropdown = $('.user-dropdown');
                         user_dropdown.html('');
                         let html = ' <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"\n' +
@@ -76,7 +76,7 @@
                                 '                <a class="nav-link dropdown-toggle text-center" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"' +
                                 '                    aria-expanded="false">' +
                                 '                      <i class="fas fa-user mr-2"></i>';
-                            html += '<span class="mr-1">'+ user_name + ' (ID: ' + user_id + ')'+'<span>' ;
+                            html += '<span class="mr-1">' + user_name + ' (ID: ' + user_id + ')' + '<span>';
                             html += '</a>' +
                                 '                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
                             html += '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit"><i class="far fa-user-cog mr-2"></i>Manage Profile</a>' +
@@ -85,9 +85,9 @@
                                 '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
-                            let html_profile_link =   '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >My Account Settings</a>';
-                            let html_property_link =   '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
-                            if(data.user.verified_at === null) {
+                            let html_profile_link = '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >My Account Settings</a>';
+                            let html_property_link = '<a class="nav-link theme-dark-blue" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"> Property Management </a>';
+                            if (data.user.verified_at === null) {
                                 let snack_html = '<div id="snackbar">Limited Functionality! <a href="' + window.location.origin + '/dashboard/user-dashboard' + '"><u class="color-white">Verify Email Address</u></a></div>'
                                 $('#snack-div').html(snack_html);
                             }
@@ -153,68 +153,7 @@
                 changePropertyStatus(status_value, id);
             }
         });
-        $('.btn-accept').on('click', function () {
-            let alert = $(this);
-            let agency_id = alert.attr('data-agency');
-            let user_id = alert.attr('data-user');
-            let notification_id = alert.attr('data-id');
 
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin + '/dashboard/agencies/accept-invitation',
-                data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
-                },
-                complete: function (url, options) {
-
-                }
-            });
-        });
-        $('.btn-reject').on('click', function () {
-            let alert = $(this);
-            let notification_id = alert.attr('data-id');
-
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin + '/dashboard/agencies/reject-invitation',
-                data: {'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
-                },
-                complete: function (url, options) {
-
-                }
-            });
-        });
         $('.mark-as-read').on('click', function () {
             let alert = $(this);
             let notification_id = alert.attr('data-id');
@@ -246,5 +185,52 @@
                 }
             });
         });
+
+        $('.sorting').on('change', function (e) {
+            if ($(this).val() !== null) {
+                let sort = '';
+                if ($(this).val() === 'newest') {
+                    sort = 'order/desc/';
+                } else if ($(this).val() === 'oldest') {
+                    sort = 'order/asc/';
+                }
+                let link = window.location.href
+                let break_link = link.split('order/');
+                let piece_1 = break_link[0];
+                let piece_2 = break_link[1];
+                let link_2 = piece_2.split('sc/')[1];
+                window.location = piece_1 + sort + link_2;
+            }
+        });
+        $('.agency_users').on('change', function () {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/agent-properties',
+                data: {'user_id': $(this).val(), 'agency-id': $('option:selected', this).data("agency")},
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.status === 200) {
+                        console.log(data);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // console.log(xhr);
+                    // console.log(status);
+                    // console.log(error);
+                },
+                complete: function (url, options) {
+
+                }
+            });
+
+        });
+
+
     });
 })(jQuery);

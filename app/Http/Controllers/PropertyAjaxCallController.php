@@ -113,22 +113,12 @@ class PropertyAjaxCallController extends Controller
             return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
     }
 
-    public function userPropertySearchById(Request $request)
+    public function userPropertySearchById(Request $request): \Illuminate\Http\RedirectResponse
     {
-
-
-//        $city = (new City)->select('id')->where('name', '=', $request->city)->first();
-//        if (is_null($city))
-//            return redirect()->back()->withInput()->with('error', 'No Properties found in ' . $request->city . '.');
-//        else {
-//            return redirect()->route('admin.properties.listings',
-//                ['status' => 'all', 'purpose' => 'all', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
-//                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ', '-', $request->city)]);
-//        }
         if ($request->input('property_id') != null && preg_match('/^[0-9]*$/', $request->input('property_id'))) {
-            $property = (new Property)->where('id', '=', $request->input('property_id'));
+            $property = (new Property)->where('id', '=', $request->property_id)->first();
             if (!$property)
-                return redirect()->back()->withInput()->with('error', 'No Properties found.');
+                return redirect()->back()->withInput()->with('error', 'No Property found.');
             else {
                 $status = lcfirst($property->status);
                 $purpose = lcfirst($property->purpose);

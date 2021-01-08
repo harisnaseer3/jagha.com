@@ -91,9 +91,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 //    public function agencies()
-    public function agency()
+    public function agencies()
     {
-        return $this->belongsTo(Agency::class);
+        return $this->hasMany(Agency::class, 'user_id');
     }
 
     public function hasAnyRoles($roles)
@@ -119,6 +119,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return (new User)->where('id', $id)->first();
     }
+
     public static function getUserName($id)
     {
         return (new User)->where('id', $id)->pluck('name')->first();

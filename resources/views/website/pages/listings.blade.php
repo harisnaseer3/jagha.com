@@ -24,7 +24,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
-
+                        @foreach(\Illuminate\Support\Facades\Auth::user()->agencies() as $agency)
+                            @foreach($agenct->agencyUsers() as $agency_user)
+                                <div>{{$agency_user->id}}</div>
+                            @endforeach
+                        @endforeach
                         <div class="tab-pane fade show active" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
@@ -50,7 +54,7 @@
                                                 <span class="pull-right mx-1">
                                                     {{ Form::open(['route' => ['property.user.search.id'], 'method' => 'post', 'role' => 'form','class'=>' color-555', 'style' => 'max-width:300px;']) }}
                                                      <div class="input-group input-group-sm mb-3">
-                                                    <input class="form-control form-control-sm text-transform" type="text" placeholder="Property ID" name="property_ref" id="property_id"
+                                                    <input class="form-control form-control-sm text-transform" type="number" placeholder="Property ID" name="property_id"
                                                            autocomplete="false" required>
                                                          <div class="input-group-append"><span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span></div>
                                                      </div>
@@ -66,15 +70,22 @@
                                                 </select>
                                                 </span>
                                                 <span class="pull-right mx-1">
-                                                <select class="sorting form-control form-control-sm" style="width: 100%">
-                                                    <option value selected disabled data-index="0">Select Contact Person</option>
-                                                    <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
-                                                    </option>
-                                                    <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest
-                                                    </option>
-                                                </select>
+                                                    <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
+                                                        <option value selected disabled data-index="0">Select Contact Person</option>
+                                                        @foreach (Auth::user()->agencies as $agency)
+                                                            @if(count($agency->agencyUsers) > 1))
+                                                            <optgroup label="{{$agency->title}}">
+                                                                    @foreach ($agency->agencyUsers as $agency_user)
+                                                                    @if($agency_user->user->id !== Auth::user()->id)
+                                                                        <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}">{{$agency_user->user->name}}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </optgroup>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
                                                 </span>
-                                                <div class="my-4">
+                                                <div class="my-4 component_block">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
                                                             <thead class="theme-blue text-white">
