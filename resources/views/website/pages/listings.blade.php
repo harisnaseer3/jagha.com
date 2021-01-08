@@ -32,40 +32,48 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
-                                    <div class="tab-content" id="listings-tabContent">
-                                        {{--                                        <div class="row mb-3 mt-3">--}}
+                                    <div class="row m-0">
+                                        <div class="col-12 my-2">
+                                            <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
+                                                        class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                            <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post Advertisement</a></span>
+                                        </div>
+                                    </div>
 
-                                        {{--                                            <div class="col-md-4 col-sm-12">--}}
-                                        {{--                                                <div class="row">--}}
-                                        {{--                                                    --}}{{--                                                            <div class="col-2">--}}
-                                        {{--                                                    --}}{{--                                                                <h4>Sort</h4>--}}
-                                        {{--                                                    --}}{{--                                                            </div>--}}
-                                        {{--                                                    <div class="col-10">--}}
-                                        {{--                                                        <select class="w-100 sorting" style="width: 100%">--}}
-                                        {{--                                                            <option value selected disabled data-index="0">Select Sorting Option</option>--}}
-                                        {{--                                                            <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest--}}
-                                        {{--                                                            </option>--}}
-                                        {{--                                                            <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest--}}
-                                        {{--                                                            </option>--}}
-                                        {{--                                                        </select>--}}
-                                        {{--                                                    </div>--}}
-                                        {{--                                                </div>--}}
-                                        {{--                                            </div>--}}
-                                        {{--                                        </div>--}}
-                                        <span class="pull-right">{{ Form::open(['route' => ['property.search.ref'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;']) }}
-                                                    <input class="px-3 property-id text-transform" type="text" placeholder="Property Reference" name="property_ref" id="property_ref"
-                                                           autocomplete="false" required>
-                                                    <i class="fa fa-search ml-1"></i>
-                                                    {{ Form::close() }}</span>
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
-                                                    class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post Advertisement</a></span>
-
+                                    <span class="tab-content" id="listings-tabContent">
                                         @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                             <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="{{"listings-".$option}}"
                                                  role="tabpanel"
                                                  aria-labelledby="{{"listings-".$option."-tab"}}">
                                                 <h6 class="pull-left">{{ucwords($option)}} Listings</h6>
+
+                                                <span class="pull-right mx-1">
+                                                    {{ Form::open(['route' => ['property.user.search.id'], 'method' => 'post', 'role' => 'form','class'=>' color-555', 'style' => 'max-width:300px;']) }}
+                                                     <div class="input-group input-group-sm mb-3">
+                                                    <input class="form-control form-control-sm text-transform" type="text" placeholder="Property ID" name="property_ref" id="property_id"
+                                                           autocomplete="false" required>
+                                                         <div class="input-group-append"><span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span></div>
+                                                     </div>
+                                                    {{ Form::close() }}
+                                                </span>
+                                                <span class="pull-right mx-1">
+                                                <select class="sorting form-control form-control-sm" style="width: 100%">
+                                                    <option value selected disabled data-index="0">Select Sorting Option</option>
+                                                    <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
+                                                    </option>
+                                                    <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest
+                                                    </option>
+                                                </select>
+                                                </span>
+                                                <span class="pull-right mx-1">
+                                                <select class="sorting form-control form-control-sm" style="width: 100%">
+                                                    <option value selected disabled data-index="0">Select Contact Person</option>
+                                                    <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
+                                                    </option>
+                                                    <option value="newest" {{ $params['order'] === 'desc' || request()->query('sort') === 'newest'  ? 'selected' : '' }}>Newest
+                                                    </option>
+                                                </select>
+                                                </span>
                                                 <div class="my-4">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
@@ -218,8 +226,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                        @endforeach
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -227,6 +234,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     @include('website.layouts.delete-modal', array('route'=>'properties'))
 

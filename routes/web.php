@@ -33,6 +33,7 @@ Route::post('/admin-cron-job', 'CronJobController@executeTasks');
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
+Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');

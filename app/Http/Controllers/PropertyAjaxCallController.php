@@ -112,4 +112,33 @@ class PropertyAjaxCallController extends Controller
         } else
             return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
     }
+
+    public function userPropertySearchById(Request $request)
+    {
+
+
+//        $city = (new City)->select('id')->where('name', '=', $request->city)->first();
+//        if (is_null($city))
+//            return redirect()->back()->withInput()->with('error', 'No Properties found in ' . $request->city . '.');
+//        else {
+//            return redirect()->route('admin.properties.listings',
+//                ['status' => 'all', 'purpose' => 'all', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
+//                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ', '-', $request->city)]);
+//        }
+        if ($request->input('property_id') != null && preg_match('/^[0-9]*$/', $request->input('property_id'))) {
+            $property = (new Property)->where('id', '=', $request->input('property_id'));
+            if (!$property)
+                return redirect()->back()->withInput()->with('error', 'No Properties found.');
+            else {
+                $status = lcfirst($property->status);
+                $purpose = lcfirst($property->purpose);
+                return redirect()->route('properties.listings',
+                    ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
+                        'sort' => 'id', 'order' => 'asc', 'page' => 10, 'user-property-id' => $request->property_id]);
+            }
+        } else
+            return redirect()->back()->withInput()->with('error', 'Please Enter Valid Property ID.');
+    }
+
+
 }
