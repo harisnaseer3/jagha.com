@@ -161,8 +161,8 @@
                                                                         @endif
                                                                         <td>
                                                                             @if($params['status'] == 'active')
-                                                                                <a type="button" href="{{$all_listing->property_detail_path()}}"
-                                                                                   class="btn btn-sm btn-success"
+                                                                                <a type="button" target="_blank" href="{{$all_listing->property_detail_path()}}"
+                                                                                   class="btn btn-sm btn-primary"
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="view">
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
