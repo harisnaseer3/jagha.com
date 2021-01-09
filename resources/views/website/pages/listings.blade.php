@@ -69,9 +69,12 @@
                                                     </option>
                                                 </select>
                                                 </span>
-                                                <span class="pull-right mx-1">
+                                                @foreach (Auth::user()->agencies as $agency)
+                                                    @if(count($agency->agencyUsers) > 1)
+                                                    <span class="pull-right mx-1">
                                                     <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
-                                                        <option value selected disabled data-index="0">Select Contact Person</option>
+                                                        <option value disabled data-index="-1">Select Contact Person</option>
+                                                        <option value="all" selected >All</option>
                                                         @foreach (Auth::user()->agencies as $agency)
                                                             @if(count($agency->agencyUsers) > 1))
                                                             <optgroup label="{{$agency->title}}">
@@ -85,7 +88,9 @@
                                                         @endforeach
                                                     </select>
                                                 </span>
-                                                <div class="my-4 component_block">
+                                                    @endif
+                                                @endforeach
+                                                <div class="my-4 component-block">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
                                                             <thead class="theme-blue text-white">
@@ -237,7 +242,8 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                    @endforeach
+                                        @endforeach
+                                    </span>
                                 </div>
                             </div>
                         </div>

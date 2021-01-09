@@ -336,9 +336,9 @@ class AgencyUserController extends Controller
     public function getAgentProperties(Request $request)
     {
         if ($request->ajax()) {
-            if ($request->has('user_id') && $request->has('agency_id')) {
-                $listings = Property::
-                select('properties.id', 'sub_type AS type', 'properties.reference',
+
+            if ($request->has('user_id') && $request->has('agency_id') && $request->has('sort') && $request->has('status') && $request->has('purpose')) {
+                $listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
@@ -346,10 +346,12 @@ class AgencyUserController extends Controller
                     'properties.cell', 'properties.agency_id')
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
-                    ->where('user_id', '=', $request->input('user_id'))
-                    ->where('agency_id', '=', $request->input('agency_id'))
-                    ->whereNull('properties.deleted_at');
-                dd($listings);
+                    ->where('properties.user_id', '=', $request->user_id)
+                    ->where('properties.agency_id', '=', $request->agency_id)
+                    ->where('properties.status', '=', $request->status)
+                    ->where('properties.purpose', '=', $request->purpose)
+                    ->whereNull('properties.deleted_at')->orderBy('id', $request->sort == 'oldest' ? 'ASC' : 'DESC')->get();
+
 
                 $data['view'] = View('website.components.user_listings',
                     [
@@ -375,6 +377,8 @@ class AgencyUserController extends Controller
                     ])->render();
                 return $data;
 
+            } else {
+                return "not found";
             }
         } else {
             return "not found";
