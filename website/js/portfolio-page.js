@@ -1,6 +1,10 @@
 (function ($) {
     var store_image_name = [];
     var store_image_name_order = [];
+    var user_default_phone;
+    var user_default_mobile;
+    var user_default_email;
+    var user_default_name;
 
     //this value is only used check the image count
     var imageCountOnError = 0;
@@ -57,16 +61,16 @@
                     let add_select = $("#contact_person");
                     add_select.empty();
 
-                    add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
+                    // add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
 
                     $.each(user_data, function (key, value) {
                         add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
                     });
-
                     $('#contact_person_input').removeAttr('required').attr('disable', 'true');
                     $('.contact_person_spinner').hide();
                     $('.contact-person-block').hide();
                     $('#contact_person').attr('required', 'required').attr('disable', 'false');
+                    $('#contact_person option:first-child').prop('disabled', false);
                 }
                 if (!jQuery.isEmptyObject({agency_data})) {
                     let html = '' +
@@ -103,6 +107,7 @@
                 // console.log(xhr);
             },
             complete: function (url, options) {
+                getUserData($('#contact_person option:selected').val());
             }
         });
     }
@@ -122,7 +127,9 @@
                 let result = data.data
                 if (!jQuery.isEmptyObject({result})) {
                     $('.select_contact_person_spinner').hide();
-                    $('.user-details-block').show();
+                    console.log('called form get user data');
+                    // $('input[name=contact_person]').val($(this).find(':wselected').data('name'));
+                    // $('#contact_person').val(result.id);
                     if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
                     if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
                     if (result.fax !== null) $('[name=fax]').val(result.fax);
@@ -312,6 +319,10 @@
         });
     }
 
+    user_default_name = $('input[name="contact_person"]').val();
+    user_default_phone = $('[name="phone_#"]').val();
+    user_default_mobile = $('[name="mobile_#"]').val();
+    user_default_email = $('[name=contact_email]').val();
 
     $(document).ready(function () {
         // //file read script
@@ -626,13 +637,14 @@
                 getCityLocations(city);
         });
 
-        agency.on('select2:select', function (e) {
+        agency.on('select2:change', function (e) {
             $('.agency-user-block').hide();
             $('.user-details-block').hide();
             $('.contact-person-block').hide();
             $('.contact_person_spinner').show();
             let agency_val = $(this).val();
             if (agency_val !== '' && agency_val !== null) {
+                console.log('calling get agency user 2');
                 getAgencyUsers(agency_val);
             }
         });
@@ -803,8 +815,6 @@
             }
 
         }
-
-
         $(document).on('change', $('.feature-tags .badge').length, function () {
             $('input[name="features-error"]').val($('.feature-tags').html());
 
@@ -847,6 +857,34 @@
             let html = '<span>' + images.files.length + ' files selected</span>'
             $(this).siblings(".custom-file-label").addClass("selected").html(html);
         });
+
+        $(document).on('change', '[name=advertisement]', function () {
+            // console.log($('input[name="advertisement"]:checked').val());
+            if ($('input[name="advertisement"]:checked').val() === 'Agency') {
+                $('#agency option:first-child').prop('disabled', false);
+                $('#user-agency-block').slideDown();
+                getAgencyUsers($("#agency option:selected").val());
+
+
+
+            } else {
+                $('#user-agency-block').slideUp();
+                $('.contact-person-block').show();
+                $('[name=agency]').val('');
+
+                $('#contact_person').removeAttr('required').attr('disable', 'true');
+                $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
+                $('[name="contact_person"]').val(user_default_name);
+                $('[name="phone_#"]').val(user_default_phone);
+                $('[name="mobile_#"]').val(user_default_mobile);
+                $('[name=contact_email]').val(user_default_email);
+                $('.agency-user-block').hide();
+
+            }
+
+        });
+
+
     });
 })
 (jQuery);

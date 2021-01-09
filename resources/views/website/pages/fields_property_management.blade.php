@@ -203,15 +203,27 @@
         @endif
     </div>
 
+
+
     @if(!empty($agencies))
-        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-header theme-blue text-white">Property Advertisement Type</div>
         <div class="card-body">
-            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property','id'=>'agency']) }}
-            <div class="agency-block" style="display:none"></div>
-            <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
+            {{ Form::bsRadio('advertisement', old('advertisement')=='Agency'?'Agency':'Individual', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
+        </div>
+        <div id="user-agency-block" style="display: none">
+            <div class="card-header theme-blue text-white">Agency Details</div>
+            <div class="card-body">
+                {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
+                <div class="agency-block" style="display:none"></div>
+                <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
+            </div>
         </div>
     @endif
     @if(isset($property->agency))
+        <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+        <div class="card-body">
+            {{ Form::bsRadio('advertisement','Agency', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
+        </div>
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
             {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}
@@ -244,35 +256,37 @@
                 </div>
             </div>
         </div>
-
     @endif
+    <div id="agency-user-block">
+        <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
+        <div class="card-body">
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="agency-user-block" style="display: none">
+                {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
+            </div>
 
-    <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
-    <div class="card-body">
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
-        <div class="agency-user-block" style="display: none">
-            {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
-        </div>
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
 
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="contact-person-block" style="display: block">
+                {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : \Illuminate\Support\Facades\Auth::user()->name, ['required' => true, 'id'=>'contact_person_input']) }}
+            </div>
 
-        <div class="contact-person-block" style="display: block">
-            {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : \Illuminate\Support\Facades\Auth::user()->name, ['required' => true, 'id'=>'contact_person_input']) }}
-        </div>
+            <div class="user-details-block" style="display:block">
+                @if(isset($property->phone))
+                    {{ Form::bsIntlTel('phone_#', $property->phone, ['id'=>'phone']) }}
+                @else
+                    {{ Form::bsIntlTel('phone_#', \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
+                @endif
 
-        <div class="user-details-block" style="display:block">
-            @if(isset($property->phone))
-                {{ Form::bsIntlTel('phone_#', $property->phone, ['id'=>'phone']) }}
-            @else
-                {{ Form::bsIntlTel('phone_#', \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
-            @endif
+                {{Form::hidden('phone_check')}}
 
-            {{Form::hidden('phone_check')}}
-
-            {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
-            {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
+                {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
+                {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
+            </div>
         </div>
     </div>
+
+
     <div class="card-footer">
         {{form::bsHidden('data-index',isset($property->id)? $property->id : null)}}
         {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
