@@ -71,12 +71,14 @@
                                                     </option>
                                                 </select>
                                                 </span>
-                                                @foreach (Auth::user()->agencies as $agency)
-                                                    @if(count($agency->agencyUsers) > 1)
+                                                @php $agencies = Auth::user()->agencies->pluck('id')->toArray();
+                                                $agency_users = (new \App\Models\AgencyUser())->whereIn('agency_id',$agencies)->get();
+                                                @endphp
+                                                @if(count($agency_users) > 0)
                                                     <span class="pull-right mx-1 my-2">
                                                     <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
                                                         <option value disabled data-index="-1">Select Contact Person</option>
-                                                        <option value="all" selected >All</option>
+                                                        <option value="all" selected>All</option>
                                                         @foreach (Auth::user()->agencies as $agency)
                                                             @if(count($agency->agencyUsers) > 1))
                                                             <optgroup label="{{$agency->title}}">
@@ -90,8 +92,9 @@
                                                         @endforeach
                                                     </select>
                                                 </span>
-                                                    @endif
-                                                @endforeach
+                                                @endif
+
+
                                                 <div class="my-4 component-block">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
