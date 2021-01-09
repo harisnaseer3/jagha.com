@@ -187,23 +187,68 @@
         });
 
         $(document).on('change', '.sorting', function (e) {
-            if ($(this).val() !== null) {
-                let sort = '';
-                if ($(this).val() === 'newest') {
-                    sort = 'order/desc/';
-                } else if ($(this).val() === 'oldest') {
-                    sort = 'order/asc/';
+            let user_id = $(".agency_users option:selected").val();
+            if (user_id !== 'all') {
+                let agency_id = $(".agency_users option:selected").data("agency");
+                let purpose = 'sale';
+                let status = 'active';
+                let current_url = window.location.pathname.split('/');
+                if (current_url.length > 0) {
+                    if (current_url[3] === 'status') {
+                        status = current_url[4];
+                    }
+                    if (current_url[5] === 'purpose') {
+                        purpose = current_url[6];
+                    }
                 }
-                let link = window.location.href
-                let break_link = link.split('order/');
-                let piece_1 = break_link[0];
-                let piece_2 = break_link[1];
-                let link_2 = piece_2.split('sc/')[1];
-                window.location = piece_1 + sort + link_2;
+
+                if ($(this).val() !== null) {
+                    let sort = $(this).val();
+                    getAgentProperties(user_id, agency_id, sort, status, purpose);
+                }
+
+
+            } else {
+                if ($(this).val() !== null) {
+                    let sort = '';
+                    if ($(this).val() === 'newest') {
+                        sort = 'order/desc/';
+                    } else if ($(this).val() === 'oldest') {
+                        sort = 'order/asc/';
+                    }
+                    let link = window.location.href
+                    let break_link = link.split('order/');
+                    let piece_1 = break_link[0];
+                    let piece_2 = break_link[1];
+                    let link_2 = piece_2.split('sc/')[1];
+                    window.location = piece_1 + sort + link_2;
+                }
             }
         });
+
         $(document).on('change', '.agency_users', function () {
             let user_id = $(this).val();
+            let purpose = 'sale';
+            let status = 'active';
+            if (user_id === 'all') {
+                window.location.reload(true)
+            } else {
+                let current_url = window.location.pathname.split('/');
+                if (current_url.length > 0) {
+                    if (current_url[3] === 'status') {
+                        status = current_url[4];
+                    }
+                    if (current_url[5] === 'purpose') {
+                        purpose = current_url[6];
+                    }
+                }
+                let agency_id = $('option:selected', this).data("agency");
+                let sort = 'oldest';
+                getAgentProperties(user_id, agency_id, sort, status, purpose);
+            }
+        });
+
+        function getAgentProperties(user_id, agency_id, sort, status, purpose) {
             let listing_block = $('#listings-tabContent');
 
             jQuery.ajaxSetup({
@@ -214,7 +259,7 @@
             jQuery.ajax({
                 type: 'get',
                 url: window.location.origin + '/agent-properties',
-                data: {'user_id': user_id, 'agency_id': $('option:selected', this).data("agency")},
+                data: {'user_id': user_id, 'agency_id': agency_id, 'sort': sort, 'status': status, 'purpose': purpose},
                 dataType: 'json',
                 success: function (data) {
                     listing_block.html('');
@@ -230,9 +275,6 @@
 
                 }
             });
-
-        });
-
-
+        }
     });
 })(jQuery);

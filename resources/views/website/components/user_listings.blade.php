@@ -21,7 +21,8 @@
             </span>
             <span class="pull-right mx-1">
                 <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
-                    <option value selected disabled data-index="0">Select Contact Person</option>
+                    <option value disabled data-index="-1">Select Contact Person</option>
+                    <option value="all" selected >All</option>
                     @foreach (Auth::user()->agencies as $agency)
                         @if(count($agency->agencyUsers) > 1))
                         <optgroup label="{{$agency->title}}">
@@ -181,9 +182,9 @@
                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
                     <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                 @endif
-                @if($listings[$option] !== null)
-                    {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}
-                @endif
+{{--                @if($listings[$option] !== null)--}}
+{{--                    {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}--}}
+{{--                @endif--}}
             </div>
         </div>
     @endforeach
