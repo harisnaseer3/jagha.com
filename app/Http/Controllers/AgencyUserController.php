@@ -28,7 +28,7 @@ class AgencyUserController extends Controller
         $user = Auth::user();
         $footer_data = (new FooterController)->footerContent();
         $agency_ids = $user->agencies->pluck('id')->toArray();
-        $current_agency_users = User::select('id', 'email', 'name', 'phone','city_name','is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id',$agency_ids)->pluck('user_id')->toArray())->where('id','!=',$user->id)->get();
+        $current_agency_users = User::select('id', 'email', 'name', 'phone', 'city_name', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agency_ids)->pluck('user_id')->toArray())->where('id', '!=', $user->id)->get();
 
         return view('website.agency-staff.listings', [
             'recent_properties' => $footer_data[0],
@@ -121,8 +121,7 @@ class AgencyUserController extends Controller
 
     public function storeAgencyUsers(Request $request, string $agency)
     {
-        if($request->city != null && $request->country === 'Pakistan')
-        {
+        if ($request->city != null && $request->country === 'Pakistan') {
             $request->city_name = $request->city;
         }
 
@@ -153,10 +152,10 @@ class AgencyUserController extends Controller
         return redirect()->back()->with('success', 'Agency user successfully added');
 
     }
+
     public function storeStaff(Request $request)
     {
-        if($request->city != null && $request->country === 'Pakistan')
-        {
+        if ($request->city != null && $request->country === 'Pakistan') {
             $request->city_name = $request->city;
         }
 
@@ -178,14 +177,13 @@ class AgencyUserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         $user = User::createUser($request->input());
-        $agency = (new Agency)->where('id',$request->agency_id)->first();
+        $agency = (new Agency)->where('id', $request->agency_id)->first();
         if (isset($user->id) && isset($agency->id)) {
             DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
             if ($request->send_verification_mail === 'Yes') {
                 $user->notify(new SendMailToJoinNotification($agency));
             }
-        }
-        else{
+        } else {
             return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
         }
         return redirect()->back()->with('success', 'Agency user successfully added');
@@ -338,6 +336,7 @@ class AgencyUserController extends Controller
         if ($request->ajax()) {
 
             if ($request->has('user_id') && $request->has('agency_id') && $request->has('sort') && $request->has('status') && $request->has('purpose')) {
+
                 $listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
@@ -348,9 +347,13 @@ class AgencyUserController extends Controller
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
                     ->where('properties.user_id', '=', $request->user_id)
                     ->where('properties.agency_id', '=', $request->agency_id)
-                    ->where('properties.status', '=', $request->status)
-                    ->where('properties.purpose', '=', $request->purpose)
-                    ->whereNull('properties.deleted_at')->orderBy('id', $request->sort == 'oldest' ? 'ASC' : 'DESC')->get();
+                    ->where('properties.status', '=', $request->status);
+                if ($request->purpose !== 'all') {
+                    $listings = $listings->where('properties.purpose', '=', $request->purpose);
+                }
+                $listings = $listings->whereNull('properties.deleted_at')
+                    ->orderBy('id', $request->sort == 'oldest' ? 'ASC' : 'DESC')
+                    ->get();
 
 
                 $data['view'] = View('website.components.user_listings',
