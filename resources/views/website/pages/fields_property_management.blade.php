@@ -215,7 +215,7 @@
             <div class="card-body">
                 {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
                 <div class="agency-block" style="display:none"></div>
-                <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
+{{--                <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>--}}
             </div>
         </div>
     @endif
