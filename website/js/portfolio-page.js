@@ -127,7 +127,7 @@
                 let result = data.data
                 if (!jQuery.isEmptyObject({result})) {
                     $('.select_contact_person_spinner').hide();
-                    console.log('called form get user data');
+                    // console.log('called form get user data');
                     // $('input[name=contact_person]').val($(this).find(':wselected').data('name'));
                     // $('#contact_person').val(result.id);
                     if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
@@ -637,14 +637,13 @@
                 getCityLocations(city);
         });
 
-        agency.on('select2:change', function (e) {
-            $('.agency-user-block').hide();
-            $('.user-details-block').hide();
-            $('.contact-person-block').hide();
+        agency.on('select2:select', agency, function (e) {
+            // $('.agency-user-block').hide();
+            // $('.user-details-block').hide();
+            // $('.contact-person-block').hide();
             $('.contact_person_spinner').show();
             let agency_val = $(this).val();
             if (agency_val !== '' && agency_val !== null) {
-                console.log('calling get agency user 2');
                 getAgencyUsers(agency_val);
             }
         });
@@ -864,9 +863,6 @@
                 $('#agency option:first-child').prop('disabled', false);
                 $('#user-agency-block').slideDown();
                 getAgencyUsers($("#agency option:selected").val());
-
-
-
             } else {
                 $('#user-agency-block').slideUp();
                 $('.contact-person-block').show();
