@@ -25,7 +25,18 @@ class AgencyUserController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $footer_data = (new FooterController)->footerContent();
+        $agency_ids = $user->agencies->pluck('id')->toArray();
+        $current_agency_users = User::select('id', 'email', 'name', 'phone','city_name','is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id',$agency_ids)->pluck('user_id')->toArray())->where('id','!=',$user->id)->get();
+
+        return view('website.agency-staff.listings', [
+            'recent_properties' => $footer_data[0],
+            'footer_agencies' => $footer_data[1],
+            'current_agency_users' => $current_agency_users
+
+        ]);
+
     }
 
     /**
@@ -44,6 +55,18 @@ class AgencyUserController extends Controller
         DB::table('agency_users')->insert([
             ['agency_id' => $agency->id, 'user_id' => $user_id != '' ? $user_id : Auth::user()->getAuthIdentifier()],
         ]);
+    }
+
+    public function addStaff()
+    {
+        $footer_data = (new FooterController)->footerContent();
+
+        return view('website.agency-staff.add-staff', [
+            'recent_properties' => $footer_data[0],
+            'footer_agencies' => $footer_data[1]
+
+        ]);
+
     }
 
     public function addUsers($id)
@@ -98,6 +121,11 @@ class AgencyUserController extends Controller
 
     public function storeAgencyUsers(Request $request, string $agency)
     {
+        if($request->city != null && $request->country === 'Pakistan')
+        {
+            $request->city_name = $request->city;
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -121,6 +149,44 @@ class AgencyUserController extends Controller
             if ($request->send_verification_mail === 'Yes') {
                 $user->notify(new SendMailToJoinNotification($new_agency));
             }
+        }
+        return redirect()->back()->with('success', 'Agency user successfully added');
+
+    }
+    public function storeStaff(Request $request)
+    {
+        if($request->city != null && $request->country === 'Pakistan')
+        {
+            $request->city_name = $request->city;
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'phone' => 'nullable|string', // +92-511234567
+            'mobile' => 'required', // +92-3001234567
+            'address' => 'nullable|string',
+            'zip_code' => 'nullable|digits:5',
+            'country' => 'required|string',
+            'community_string' => 'nullable|string',
+            'about_yourself' => 'nullable|string|max:4096',
+            'upload_new_picture.*' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
+            'city_name' => 'nullable|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
+        }
+        $user = User::createUser($request->input());
+        $agency = (new Agency)->where('id',$request->agency_id)->first();
+        if (isset($user->id) && isset($agency->id)) {
+            DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
+            if ($request->send_verification_mail === 'Yes') {
+                $user->notify(new SendMailToJoinNotification($agency));
+            }
+        }
+        else{
+            return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
         }
         return redirect()->back()->with('success', 'Agency user successfully added');
 

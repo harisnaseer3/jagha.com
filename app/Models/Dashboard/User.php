@@ -161,6 +161,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->password = Hash::make($data['account_password']);
         $user->address = $data['address'];
         $user->zip_code = $data['zip_code'];
+        $user->city_name = $data['city_name'];
         $user->save();
         return $user;
 
