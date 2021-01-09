@@ -51,16 +51,18 @@
                                                  aria-labelledby="{{"listings-".$option."-tab"}}">
                                                 <h6 class="pull-left">{{ucwords($option)}} Listings</h6>
 
-                                                <span class="pull-right mx-1">
+                                                <span class="pull-right mx-1 my-2">
                                                     {{ Form::open(['route' => ['property.user.search.id'], 'method' => 'post', 'role' => 'form','class'=>' color-555', 'style' => 'max-width:300px;']) }}
                                                      <div class="input-group input-group-sm mb-3">
                                                     <input class="form-control form-control-sm text-transform" type="number" placeholder="Property ID" name="property_id"
                                                            autocomplete="false" required>
-                                                         <div class="input-group-append"><span class="fa-stack"><i class="fa fa-search fa-stack-1x"></i></span></div>
+                                                         <div class="col-2 px-0 mx-0">
+                                                                <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
+                                                         </div>
                                                      </div>
                                                     {{ Form::close() }}
                                                 </span>
-                                                <span class="pull-right mx-1">
+                                                <span class="pull-right mx-1 my-2">
                                                 <select class="sorting form-control form-control-sm" style="width: 100%">
                                                     <option value selected disabled data-index="0">Select Sorting Option</option>
                                                     <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
@@ -71,7 +73,7 @@
                                                 </span>
                                                 @foreach (Auth::user()->agencies as $agency)
                                                     @if(count($agency->agencyUsers) > 1)
-                                                    <span class="pull-right mx-1">
+                                                    <span class="pull-right mx-1 my-2">
                                                     <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
                                                         <option value disabled data-index="-1">Select Contact Person</option>
                                                         <option value="all" selected >All</option>
