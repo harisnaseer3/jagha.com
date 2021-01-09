@@ -64,6 +64,7 @@
         });
         $('[name=country]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
         $('#add_city').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+        $('.custom-select-agency').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
 
     });
     $('#add-country').on('change', function () {

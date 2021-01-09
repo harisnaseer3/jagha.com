@@ -1,0 +1,107 @@
+@extends('website.layouts.app')
+@php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
+@section('title')
+    <title> Portfolio : About Pakistan Properties Software By https://www.aboutpakistan.com</title>
+@endsection
+@section('css_library')
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+
+@endsection
+
+@section('content')
+    @include('website.includes.dashboard-nav')
+    <!-- Top header start -->
+    <div class="sub-banner">
+        <div class="container">
+            <div class="page-name">
+                <h1>Agency Staff</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Submit Property start -->
+    <div class="submit-property">
+        <div class="container-fluid container-padding">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" role="tabpanel" >
+                            <div class="row my-4">
+                                <div class="col-md-3">
+                                    @include('website.agency-staff.sidebar')
+                                </div>
+                                <div class="col-md-9">
+                                    @include('website.layouts.flash-message')
+                                    <div class="tab-content" id="listings-tabContent">
+                                        <div class="float-right">
+                                               <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                                           class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                        </div>
+
+                                        <div class="tab-pane fade active show" id="listings-all" role="tabpanel"
+                                             aria-labelledby="listings-all-tab">
+                                            <h6>Registered Staff</h6>
+                                            <div class="my-4">
+                                                <table class="table table-sm table-bordered">
+                                                    <thead class="theme-blue text-white">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>City</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @if(isset($current_agency_users) && count($current_agency_users) > 0)
+                                                        @foreach($current_agency_users as $agency_user)
+                                                            <tr>
+                                                                <td>{{$loop->iteration}}</td>
+                                                                <td>{{$agency_user->name}}</td>
+                                                                <td>{{$agency_user->email}}</td>
+                                                                <td>{{$agency_user->phone}}</td>
+                                                                <td>{{$agency_user->city_name}}</td>
+                                                                <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
+                                                                <td>
+                                                                        @if($agency_user->is_active === '0')
+                                                                            <div class='btn-group'>
+                                                                                <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Activate</a>
+                                                                            </div>
+                                                                        @elseif($agency_user->is_active === '1')
+                                                                            <div class='btn-group'>
+                                                                                <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Deactivate</a>
+                                                                            </div>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer start -->
+    @include('website.includes.footer')
+@endsection
+
+@section('script')
+    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
+    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('website/js/user-profile.js')}}"></script>
+@endsection
