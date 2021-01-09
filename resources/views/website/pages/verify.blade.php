@@ -10,6 +10,7 @@
 <!-- Contact section start -->
 
 @section('content')
+    @include('website.includes.nav')
     <div class="contact-section">
         <div class="container">
             <div class="row login-box">
