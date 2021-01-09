@@ -85,7 +85,7 @@
                                                         @endforeach
                                                     </select>
                                                 </span>
-                                                <div class="my-4 component_block">
+                                                <div class="my-4 component-block">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
                                                             <thead class="theme-blue text-white">
@@ -238,6 +238,7 @@
                                                 </div>
                                             </div>
                                     @endforeach
+                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -186,7 +186,7 @@
             });
         });
 
-        $('.sorting').on('change', function (e) {
+        $(document).on('change', '.sorting', function (e) {
             if ($(this).val() !== null) {
                 let sort = '';
                 if ($(this).val() === 'newest') {
@@ -202,7 +202,10 @@
                 window.location = piece_1 + sort + link_2;
             }
         });
-        $('.agency_users').on('change', function () {
+        $(document).on('change', '.agency_users', function () {
+            let user_id = $(this).val();
+            let listing_block = $('#listings-tabContent');
+
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -211,13 +214,12 @@
             jQuery.ajax({
                 type: 'get',
                 url: window.location.origin + '/agent-properties',
-                data: {'user_id': $(this).val(), 'agency-id': $('option:selected', this).data("agency")},
+                data: {'user_id': user_id, 'agency_id': $('option:selected', this).data("agency")},
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
-                    if (data.status === 200) {
-                        console.log(data);
-                    }
+                    listing_block.html('');
+                    listing_block.html(data.view);
+                    $('.agency_users').val(user_id);
                 },
                 error: function (xhr, status, error) {
                     // console.log(xhr);

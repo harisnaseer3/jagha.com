@@ -271,8 +271,7 @@ class AgencyUserController extends Controller
     {
         if ($request->ajax()) {
             if ($request->has('user_id') && $request->has('agency_id')) {
-                $listings = Property::
-                select('properties.id', 'sub_type AS type', 'properties.reference',
+                $listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
@@ -280,10 +279,9 @@ class AgencyUserController extends Controller
                     'properties.cell', 'properties.agency_id')
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
-                    ->where('user_id', '=', $request->input('user_id'))
-                    ->where('agency_id', '=', $request->input('agency_id'))
-                    ->whereNull('properties.deleted_at');
-                dd($listings);
+                    ->where('properties.user_id', '=', $request->user_id)
+                    ->where('properties.agency_id', '=', $request->agency_id)
+                    ->whereNull('properties.deleted_at')->paginate(10);
 
                 $data['view'] = View('website.components.user_listings',
                     [
