@@ -279,6 +279,13 @@
                                href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
                                 My Property Agencies</a>
                         </li>
+                        @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
+                        @if(count($agencies)> 0)
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="{{route('agencies.staff')}}">
+                                Agency Staff</a>
+                        </li>
+                        @endif
                         <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link theme-dark-blue" href="{{route('aboutpakistan.support')}}">
                                 Support</a>

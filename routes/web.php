@@ -123,6 +123,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
     Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
     Route::get('/support', 'Support\SupportController@index')->name('aboutpakistan.support');
+    Route::get('/agencies/agency-staff', 'AgencyUserController@index')->name('agencies.staff');
+    Route::get('/agencies/add-staff', 'AgencyUserController@addStaff')->name('agencies.add-staff');
+    Route::post('/agencies/store-staff', 'AgencyUserController@storeStaff')->name('agencies.store-staff');
     Route::post('/sendSupportMail', 'Support\SupportController@sendSupportMail')->name('support.mail');
 
 
