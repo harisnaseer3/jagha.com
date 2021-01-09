@@ -8,6 +8,7 @@ Route::get('/', 'PropertyController@index')->name('home');
 //ajax calls
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
+Route::get('/agent-properties', 'AgencyUserController@getAgentProperties');
 
 
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
@@ -33,6 +34,7 @@ Route::post('/admin-cron-job', 'CronJobController@executeTasks');
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
+Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
 
 Route::get('featured-properties', 'PropertyController@featuredProperties')->name('featured');
 Route::get('featured-partners', 'AgencyController@listingFeaturedPartners')->name('featured-partners');

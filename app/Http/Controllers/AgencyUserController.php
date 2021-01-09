@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agency;
 use App\Models\Dashboard\User;
+use App\Models\Property;
 use App\Models\UserInvite;
 use App\Notifications\AddAgencyUser;
 use App\Notifications\Property\PropertyActivatedNotification;
@@ -97,7 +98,7 @@ class AgencyUserController extends Controller
 
     public function storeAgencyUsers(Request $request, string $agency)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'phone' => 'nullable|string', // +92-511234567
@@ -116,8 +117,8 @@ class AgencyUserController extends Controller
         $user = User::createUser($request->input());
         if (isset($user->id)) {
             DB::table('agency_users')->insert(['agency_id' => $agency, 'user_id' => $user->id]);
-            $new_agency = (new Agency)->where('id',$agency)->first();
-            if($request->send_verification_mail === 'Yes'){
+            $new_agency = (new Agency)->where('id', $agency)->first();
+            if ($request->send_verification_mail === 'Yes') {
                 $user->notify(new SendMailToJoinNotification($new_agency));
             }
         }
@@ -214,7 +215,7 @@ class AgencyUserController extends Controller
         if ($request->ajax()) {
             $agency = (new Agency)->where('id', $request->input('agency'))->first();
             if ($agency) {
-                $city =$agency->city->name;
+                $city = $agency->city->name;
                 $agencies_users_ids = DB::table('agency_users')->select('user_id')
                     ->where('agency_id', $agency->id)
                     ->get()->pluck('user_id')->toArray();
@@ -264,5 +265,54 @@ class AgencyUserController extends Controller
             return redirect()->back()->with('success', 'User deactived successfully.');
 
         }
+    }
+
+    public function getAgentProperties(Request $request)
+    {
+        if ($request->ajax()) {
+            if ($request->has('user_id') && $request->has('agency_id')) {
+                $listings = Property::
+                select('properties.id', 'sub_type AS type', 'properties.reference',
+                    'properties.status', 'locations.name AS location', 'cities.name as city',
+                    'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
+                    'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
+                    'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id',
+                    'properties.cell', 'properties.agency_id')
+                    ->join('locations', 'properties.location_id', '=', 'locations.id')
+                    ->join('cities', 'properties.city_id', '=', 'cities.id')
+                    ->where('user_id', '=', $request->input('user_id'))
+                    ->where('agency_id', '=', $request->input('agency_id'))
+                    ->whereNull('properties.deleted_at');
+                dd($listings);
+
+                $data['view'] = View('website.components.user_listings',
+                    [
+                        'params' => [
+                            'status' => 'active',
+                            'purpose' => 'sale',
+                            'user' => Auth::user()->id,
+                            'sort' => 'id',
+                            'order' => 'asc',
+                            'page' => 1,
+                        ],
+                        'listings' => [
+                            'all' => $listings,
+                            'sale' => [],
+                            'rent' => [],
+                            'wanted' => [],
+                            'basic' => [],
+                            'silver' => [],
+                            'bronze' => [],
+                            'golden' => [],
+                            'platinum' => [],
+                        ],
+                    ])->render();
+                return $data;
+
+            }
+        } else {
+            return "not found";
+        }
+
     }
 }

@@ -112,4 +112,23 @@ class PropertyAjaxCallController extends Controller
         } else
             return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
     }
+
+    public function userPropertySearchById(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        if ($request->input('property_id') != null && preg_match('/^[0-9]*$/', $request->input('property_id'))) {
+            $property = (new Property)->where('id', '=', $request->property_id)->first();
+            if (!$property)
+                return redirect()->back()->withInput()->with('error', 'No Property found.');
+            else {
+                $status = lcfirst($property->status);
+                $purpose = lcfirst($property->purpose);
+                return redirect()->route('properties.listings',
+                    ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
+                        'sort' => 'id', 'order' => 'asc', 'page' => 10, 'user-property-id' => $request->property_id]);
+            }
+        } else
+            return redirect()->back()->withInput()->with('error', 'Please Enter Valid Property ID.');
+    }
+
+
 }

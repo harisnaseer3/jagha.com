@@ -47,9 +47,13 @@ class Agency extends Model
         'upload_new_picture' => 'nullable|image|max:10000',
     ];
 
-    public function users()
+//    public function users()
+//    {
+//        return $this->belongsToMany('App\Models\Dashboard\User');
+//    }
+    public function agencyUsers()
     {
-        return $this->belongsToMany('App\Models\Dashboard\User');
+        return $this->hasMany('App\Models\AgencyUser');
     }
 
     public function images()

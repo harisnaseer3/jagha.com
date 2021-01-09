@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
+use App\Models\AgencyUser;
 use App\Models\Dashboard\City;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -20,21 +21,22 @@ class PropertyBackendListingController extends Controller
      */
 
     private function listingsCount($status, $user)
-    {
+    { // individual + agency + agent properties
+
         $condition = ['property_status' => $status, 'user_id' => $user];
         return DB::table('property_count_by_status_and_purposes')->select(DB::raw('sum(property_count) as count'))->where($condition);
 
     }
 
-    private function _listings(string $status, string $user, $city = '')
+    private function _listings(string $status, string $user, $condition, $city = '')
     {
         // TODO: make migration for handling quota_used and image_views
-        $listings =  Property::
-        select('properties.id', 'sub_type AS type',  'properties.reference',
+        $listings = Property::
+        select('properties.id', 'sub_type AS type', 'properties.reference',
             'properties.status', 'locations.name AS location', 'cities.name as city',
             'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
             'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-            'price', 'properties.created_at AS listed_date', 'properties.created_at','properties.contact_person','properties.user_id','properties.cell','properties.agency_id', DB::raw("'0' AS quota_used"),
+            'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id', 'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
             DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
@@ -61,7 +63,7 @@ class PropertyBackendListingController extends Controller
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-                    'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person','properties.user_id','properties.cell','properties.agency_id',DB::raw("'0' AS quota_used"),
+                    'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id', 'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
                     DB::raw("'0' AS image_views"))
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
@@ -69,14 +71,14 @@ class PropertyBackendListingController extends Controller
                     ->whereIn('properties.user_id', $agency_users);
                 $ceo_listings = $status == 'all' ? $ceo_listings : $ceo_listings->where('status', '=', $status);
 //                dd($ceo_listings->get());
-                return $ceo_listings->union($listings);
+                return $ceo_listings->where($condition)->unionAll($listings->where($condition));
             } elseif ($agent_agencies > 0) {
                 $agent_listings = Property::
                 select('properties.id', 'sub_type AS type', 'properties.reference',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-                    'price', 'properties.created_at AS listed_date', 'properties.created_at','properties.contact_person','properties.user_id','properties.cell', 'properties.agency_id',DB::raw("'0' AS quota_used"),
+                    'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id', 'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
                     DB::raw("'0' AS image_views"))
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
@@ -84,10 +86,10 @@ class PropertyBackendListingController extends Controller
                     ->whereIn('properties.agency_id', $agent_agencies)
                     ->where('properties.user_id', $user);
                 $agent_listings = $status == 'all' ? $agent_listings : $agent_listings->where('status', '=', $status);
-                return $agent_listings->union($listings);
+                return $agent_listings->where($condition)->unionAll($listings->where($condition));
             }
             //in each case of ceo agent or individual user
-            return $listings;
+            return $listings->where($condition);
 
         }
         if ($status == 'all') {
@@ -122,31 +124,31 @@ class PropertyBackendListingController extends Controller
         $platinum = null;
 
         if ($purpose === 'all') {
-            $all = $this->_listings($status, $user)->where($condition)->orderBy($sort, $order)->paginate($page);
+            $all = $this->_listings($status, $user, $condition)->where($condition)->orderBy($sort, $order)->paginate($page);
         }
         if ($purpose === 'sale') {
-            $sale = $this->_listings($status, $user)->where('purpose', '=', 'sale')->orderBy($sort, $order)->where($condition)->paginate($page);
+            $sale = $this->_listings($status, $user, $condition)->where('purpose', '=', 'sale')->where($condition)->orderBy($sort, $order)->paginate($page);
         }
         if ($purpose === 'rent') {
-            $rent = $this->_listings($status, $user)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where($condition)->paginate($page);
+            $rent = $this->_listings($status, $user, $condition)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         if ($purpose === 'wanted') {
-            $wanted = $this->_listings($status, $user)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where($condition)->paginate($page);
+            $wanted = $this->_listings($status, $user, $condition)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         if ($purpose === 'golden') {
-            $golden = $this->_listings($status, $user)->where('golden_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
+            $golden = $this->_listings($status, $user, $condition)->where('golden_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         if ($purpose === 'silver') {
-            $silver = $this->_listings($status, $user)->where('silver_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
+            $silver = $this->_listings($status, $user, $condition)->where('silver_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         if ($purpose === 'basic') {
-            $basic = $this->_listings($status, $user)->where('basic_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
+            $basic = $this->_listings($status, $user, $condition)->where('basic_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         if ($purpose === 'bronze') {
-            $bronze = $this->_listings($status, $user)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
+            $bronze = $this->_listings($status, $user, $condition)->where('bronze_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         if ($purpose === 'platinum') {
-            $platinum = $this->_listings($status, $user)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
+            $platinum = $this->_listings($status, $user, $condition)->where('platinum_listing', '=', 1)->orderBy($sort, $order)->where($condition)->paginate($page);
         }
         return ['all' => $all, 'sale' => $sale, 'rent' => $rent, 'wanted' => $wanted, 'golden' => $golden, 'platinum' => $platinum, 'silver' => $silver, 'basic' => $basic, 'bronze' => $bronze];
     }
@@ -161,7 +163,37 @@ class PropertyBackendListingController extends Controller
 
         $property_count = $this->getPropertyListingCount($user);
         $footer_content = (new FooterController)->footerContent();
-        if ($request->has('city')) {
+        if ($request->has('user-property-id')) {
+            $condition = ['properties.id' => $request->input('user-property-id')];
+            $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
+
+            $data = [
+                'params' => [
+                    'status' => $status,
+                    'purpose' => $purpose,
+                    'user' => $user,
+                    'sort' => $sort,
+                    'order' => $order,
+                    'page' => $page,
+                ],
+                'counts' => $property_count,
+                'listings' => [
+                    'all' => $result['all'],
+                    'sale' => $result['sale'],
+                    'rent' => $result['rent'],
+                    'wanted' => $result['wanted'],
+                    'basic' => $result['basic'],
+                    'silver' => $result['silver'],
+                    'bronze' => $result['bronze'],
+                    'golden' => $result['golden'],
+                    'platinum' => $result['platinum'],
+                ],
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
+            ];
+
+            return view('website.pages.listings', $data);
+        } else if ($request->has('city')) {
             $city = (new City)->select('id')->where('name', '=', str_replace('-', ' ', $request->city))->first();
             $condition = ['properties.city_id' => $city->id];
             $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
@@ -189,9 +221,7 @@ class PropertyBackendListingController extends Controller
             ];
 
             return view('website.admin-pages.listings', $data);
-        }
-
-        if ($request->has('id')) {
+        } else if ($request->has('id')) {
             $condition = ['properties.id' => $request->input('id')];
             $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
             $data = [
@@ -230,7 +260,6 @@ class PropertyBackendListingController extends Controller
                     'order' => $order,
                     'page' => $page,
                 ],
-                'notifications' => Auth()->user()->unreadNotifications,
                 'counts' => $property_count,
                 'listings' => [
                     'all' => $result['all'],
@@ -320,6 +349,7 @@ class PropertyBackendListingController extends Controller
             return view('website.admin-pages.listings', $data);
         }
         $condition = [];
+
         $result = $this->_getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page);
         $data = [
             'params' => [

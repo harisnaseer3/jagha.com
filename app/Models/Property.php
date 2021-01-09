@@ -53,7 +53,6 @@ class Property extends Model
         'title',
         'description',
         'price',
-        'call_for_inquiry',
         'land_area',
         'area_unit',
         'area_in_sqft',
