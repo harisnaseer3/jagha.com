@@ -102,10 +102,8 @@ class LoginController extends Controller
     protected function insert_into_user_logs()
     {
         $user = Auth::guard('web')->user();
-//        $result = $this->getBrowserInfo();
         $country = '';
         if ($ip_location = IpLocation::get()) {
-            // Successfully retrieved position.
             $country = $ip_location->countryName;
         } else {
 
