@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dashboard\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,7 @@ class LoginController extends Controller
                     'cell' => Auth::guard('web')->user()->cell,
                     'verified_at' => Auth::guard('web')->user()->email_verified_at,
                 ];
+                $this->insert_into_user_logs();
                 if ($request->ajax()) {
                     return response()->json(['data' => 'success', 'user' => $user]);
                 } else {
@@ -96,12 +98,13 @@ class LoginController extends Controller
             throw ValidationException::withMessages([$this->username() => [trans('auth.failed')]]);
     }
 
-    protected function authenticated(Request $request, $user)
+    protected function insert_into_user_logs()
     {
+        $user = Auth::guard('web')->user();
         $result = $this->getBrowserInfo();
 
         $id = DB::table('user_logs')->insertGetId(
-            ['id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => 'anc',
+            ['user_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => 'anc',
                 'browser' => $result['browser'], 'os' => $result['os']]);
         Session::put('logged_user_session_id', $id);
     }
@@ -152,13 +155,32 @@ class LoginController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return mixed
      */
-    protected function loggedOut(Request $request)
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
     {
         if (Session::get('logged_user_session_id') !== null) {
             DB::table('user_logs')
                 ->where('id', Session::get('logged_user_session_id'))
                 ->update(['logout_at' => date('Y-m-d H:i:s')]);
         }
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect('/');
     }
 
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\AdminAuth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use mysql_xdevapi\Table;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Notification;
 
@@ -44,8 +45,10 @@ class UserManagementController extends Controller
 
     public function getUsers()
     {
-        $users = User::getAllUsers();
+        $reg_users = User::getAllUsers();
+        $users = DB::table('user_logs')->get()->all();
         return view('website.admin-pages.manage-users', [
+            'register_users' => $reg_users,
             'users' => $users,
         ]);
     }
@@ -100,7 +103,7 @@ class UserManagementController extends Controller
         $admin_roles = [];
         if (count($current_admin->roles) > 0) {
             foreach ($current_admin->roles as $role) {
-                array_push(  $admin_roles,$role->name);
+                array_push($admin_roles, $role->name);
             }
 
         }
