@@ -295,8 +295,9 @@ class PropertySearchController extends Controller
     public function searchWithID(Request $request)
     {
         /*validate request params */
-        if ($request->input('id') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('id'))) {
-            $property = (new Property)->where('reference', '=', strtoupper($request->input('id')))->first();
+//        if ($request->input('id') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('id'))) {
+        if ($request->input('id') != null && preg_match('/^[0-9]*$/', $request->input('id'))) {
+            $property = (new Property)->where('id', '=', $request->input('id'))->first();
             if ($property) {
                 return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
             } else
@@ -308,7 +309,8 @@ class PropertySearchController extends Controller
 
     /*   search from index page bottom property listing  */
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
-    public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
+    public
+    function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
         $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
 
@@ -471,7 +473,8 @@ class PropertySearchController extends Controller
     }
 
     //  search from main  page
-    public function search($data)
+    public
+    function search($data)
     {
         $validator = Validator::make($data, [
             'purpose' => ['required', Rule::in(['sale', 'rent', 'wanted'])],
