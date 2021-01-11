@@ -2167,3 +2167,18 @@ input:checked + .slider:before {
     background-position: top;
 }
 .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+.contact-modal-padding {
+    padding: 2.2rem;
+    padding-top: 1rem;
+}
+.modal-header-color{
+   background-color: #2238d8;
+}
+.subscribe-header-color{
+    background-color: #274abb;
+    border-radius:.25rem;
+}
+.subscribe-title-font{
+    font-size: 20px;
+}
+
