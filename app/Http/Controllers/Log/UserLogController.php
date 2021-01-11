@@ -36,4 +36,5 @@ class UserLogController extends Controller
             ]);
 
     }
+    
 }
