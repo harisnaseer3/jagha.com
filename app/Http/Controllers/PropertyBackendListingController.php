@@ -22,6 +22,9 @@ class PropertyBackendListingController extends Controller
 
     private function listingsCount($status, $user)
     { // individual + agency + agent properties
+        //if ceo get all properties of agency
+        //if get get only his properties
+        //if both get both
 
         $condition = ['property_status' => $status, 'user_id' => $user];
         return DB::table('property_count_by_status_and_purposes')->select(DB::raw('sum(property_count) as count'))->where($condition);
