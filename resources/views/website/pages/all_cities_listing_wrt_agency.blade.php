@@ -85,23 +85,9 @@
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right mt-0">
-                        <div class="sidebar widget" aria-label="Subscription form">
-                            <h3 class="sidebar-title">Subscribe</h3>
-                            <div class="s-border"></div>
-                            <div class="m-border"></div>
-                            <div class="Subscribe-box">
-                                <h2 class="font-size-14 color-555" style="font-weight: 400">Be the first to hear about new properties</h2>
-                                <form id="subscribe-form">
-                                    <div class="mb-3">
-                                        <input id="subscribe" type="email" class="form-contact" name="email" placeholder="example@example.com"
-                                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="submit" name="submitNewsletter" class="btn btn-block button-theme" value="Subscribe">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+
+                            @include('website.includes.subscribe-content')
+
                     </div>
                 </div>
             </div>

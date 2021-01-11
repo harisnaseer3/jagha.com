@@ -174,23 +174,7 @@
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">
-                        <div class="sidebar widget" aria-label="Subscription form">
-                            <h3 class="sidebar-title">Subscribe</h3>
-                            <div class="s-border"></div>
-                            <div class="m-border"></div>
-                            <div class="Subscribe-box">
-                                <h2 class="font-size-14 color-555" style="font-weight: 400">Be the first to hear about new properties</h2>
-                                <form id="subscribe-form">
-                                    <div class="mb-3">
-                                        <input id="subscribe" type="email" class="form-contact" name="email" placeholder="example@example.com"
-                                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="submit" name="submitNewsletter" class="btn btn-block button-theme" value="Subscribe">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                     @include('website.includes.subscribe-content')
                     </div>
                 </div>
             </div>
@@ -200,37 +184,34 @@
         <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
             <div class="modal-content">
                 <!--Header-->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Contact Seller</h5>
+                <div class="modal-header modal-header-color">
+                    <h5 class="modal-title color-white" id="myModalLabel">Contact Seller</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
+                        <span class=" color-white" aria-hidden="true">×</span>
                     </button>
                 </div>
                 <!--Body-->
-                <div class="modal-body">
+                <div class="modal-body contact-modal-padding">
                     <div class="container">
                         {{ Form::open(['route'=>['contact'],'method' => 'post','role' => 'form', 'id'=> 'email-contact-form', 'role' => 'form']) }}
                         <div><label class="mt-2">Name<span style="color:red">*</span></label></div>
                         {{ Form::text('name',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->name:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm user-name' , 'aria-describedby' => 'name' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"Name"])) }}
-                        <div><label class="mt-2">Email<span style="color:red">*</span></label></div>
+                        <div class="mt-2"><label class="mt-2">Email<span style="color:red">*</span></label></div>
                         {{ Form::email('email',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->email:null, array_merge(['required'=>'true','class' => 'form-control form-control-sm', 'aria-describedby' => 'email' . '-error', 'aria-invalid' => 'false', 'placeholder'=>"name@domain.com"])) }}
 
-                        <div><label class="mt-2">Mobile #<span style="color:red">*</span></label></div>
+                        <div class="mt-2"><label class="mt-2">Mobile #<span style="color:red">*</span></label></div>
                         {{ Form::tel('phone_#',  \Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null, array_merge(['required'=>'true', 'id'=>'cell', 'class' => 'form-control form-control-sm', 'aria-describedby' => 'phone' . '-error', 'aria-invalid' => 'false'])) }}
                         <span id="valid-msg" class="hide validated mt-2">✓ Valid</span>
                         <span id="error-msg" class="hide error mt-2"></span>
                         <input class="form-control" name="phone" type="hidden" value="{{\Illuminate\Support\Facades\Auth::check()? \Illuminate\Support\Facades\Auth::user()->cell:null}}">
                         {{--                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>--}}
 
-                        <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
+                        <div class="mt-2"><label class="mt-2">Message<span style="color:red">*</span></label></div>
                         <div class="editable form-control form-control-sm editable-div" contenteditable="true">
                         </div>
                         {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
                         <div class="mt-2">
                             <div class="form-group row">
-                                <label for="i am" class="col-sm-4 col-md-3 col-lg-3 col-xl-2 col-form-label col-form-label-sm">
-                                    I Am
-                                </label>
                                 <div class="col-lg-3 col-xl-3">
                                     <div class="custom-control custom-radio custom-control-inline align-items-center">
                                         <input class="custom-control-input" type="radio" name="i am" id="i am_radio_0" value="Buyer" aria-describedby="i am-error" checked="">
