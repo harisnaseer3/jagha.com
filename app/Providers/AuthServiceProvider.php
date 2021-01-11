@@ -47,9 +47,13 @@ class AuthServiceProvider extends ServiceProvider
         VerifyEmail::toMailUsing(function (User $user, string $verificationUrl)
         {
             return (new MailMessage)
-                ->view('website.custom-emails.verification-email',[
+                ->view('website.custom-emails.verification-email-template',[
                     'user' => $user,
-                    'verificationUrl' => $verificationUrl
+                    'title' => 'Verify your email address',
+                    'content' => 'Thank you for registering an account on AboutPakistan, before you get started with exploring wonderful places, finding the right property for your stay, or buying yourself a luxury home we just need you to confirm that this is you. Click below to verify your email address:',
+                    'verificationUrl' => $verificationUrl,
+                    'buttonText' => 'Verify your email',
+                    'infoText'   => 'If you did not create any account, no further action is required.'
                 ]);
         });
 

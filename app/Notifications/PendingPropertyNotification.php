@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Dashboard\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -44,12 +45,18 @@ class PendingPropertyNotification extends Notification
     {
         $title = $this->property->title;
         $id = $this->property->id;
+        $user_id = $this->property->user_id;
+        $user = User::where('id',$user_id)->first();
 
         return (new MailMessage)
-            ->subject('A new Property is up on About Pakistan Properties!!')
-            ->greeting('Hi!')
-            ->line("A new Property {$title} has been added on our site.")
-            ->action('Activate Property', route('admin-properties-edit', $id));
+            ->view('website.custom-emails.notification-link-template',[
+                'user' => $user,
+                'title' => 'A new Property is up on About Pakistan Properties!!',
+                'content' => "A new Property with ID {$id} and title {$title} has been added on our site.",
+                'url' => route('admin-properties-edit', $id),
+                'buttonText' => 'Activate Property',
+                'infoText'   => 'Thank you for using About Pakistan Properties.'
+            ]);
 
     }
 
