@@ -8,7 +8,8 @@ use App\Models\Property;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+//use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
@@ -50,6 +51,7 @@ class SupportController extends Controller
 
     public function sendSupportMail(Request $request)
     {
+        dd($request->all());
     }
 
     private function _listings()
