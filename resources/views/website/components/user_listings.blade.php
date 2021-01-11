@@ -20,21 +20,18 @@
             </select>
             </span>
             <span class="pull-right mx-1">
-                <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
-                    <option value disabled data-index="-1">Select Contact Person</option>
-                    <option value="all" selected >All</option>
-                    @foreach (Auth::user()->agencies as $agency)
-                        @if(count($agency->agencyUsers) > 1))
-                        <optgroup label="{{$agency->title}}">
-                                @foreach ($agency->agencyUsers as $agency_user)
-                                @if($agency_user->user->id !== Auth::user()->id)
-                                    <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}">{{$agency_user->user->name}}</option>
-                                @endif
-                            @endforeach
-                        </optgroup>
-                        @endif
-                    @endforeach
-                </select>
+              <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
+                                                        <option value disabled data-index="-1">Select Contact Person</option>
+                                                        <option value="all" selected>All</option>
+                                                        @foreach (Auth::user()->agencies as $agency)
+                      <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
+                      @foreach ($agency->agencyUsers as $agency_user)
+                          @if($agency_user->user->id !== Auth::user()->id)
+                              <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}" data-user="{{$agency_user->user->id}}">{{$agency_user->user->name}}</option>
+                          @endif
+                      @endforeach
+                  @endforeach
+                                                    </select>
             </span>
             <div class="my-4 component-block">
                 <div class="table-responsive">
@@ -78,7 +75,7 @@
                                     <td>{{$all_listing->contact_person}}</td>
                                     <td>{{$all_listing->cell}}</td>
                                     <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
-                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
 
                                     {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
                                     @if($params['status'] == 'active')
@@ -106,20 +103,20 @@
 
                                                     @endif
                                                     @if($params['status'] != 'active' && $params['status'] != 'pending')
-                                                        <input type="radio" name="status" value="reactive"
+                                                        <input type="radio" name="status" value="reactive" class="mb-1"
                                                                {{$all_listing->status === 'active'? 'disabled':'' }}
                                                                data-id="{{ $all_listing->id }}">
                                                         <label for="active">Active</label>
                                                     @endif
                                                     @if($params['status'] != 'expired')
-                                                        <input type="radio" name="status" value="expired"
+                                                        <input type="radio" name="status" value="expired" class="mb-1"
                                                                {{$all_listing->status === 'expired'? 'checked':'' }}
                                                                {{$all_listing->status === 'sold'? 'checked':'' }}
                                                                data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
                                                         <label for="expired">Expired</label>
                                                     @endif
                                                     @if($params['status'] != 'sold')
-                                                        <input type="radio" name="status" value="sold"
+                                                        <input type="radio" name="status" value="sold" class="mb-1"
                                                                data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
                                                         <label for="sold">Sold</label>
                                                     @endif
@@ -132,7 +129,7 @@
                                     <td>
                                         @if($params['status'] == 'active')
                                             <a type="button" target="_blank" href="{{$all_listing->property_detail_path()}}"
-                                               class="btn btn-sm btn-primary"
+                                               class="btn btn-sm btn-primary mb-1"
                                                data-toggle-1="tooltip"
                                                data-placement="bottom" title="view">
                                                 <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
@@ -142,14 +139,14 @@
                                             <a type="button"
                                                href="{{$params['status'] == 'deleted' || $params['status'] == 'sold' ?
                                                     '': route('properties.edit', $all_listing->id)}}"
-                                               class="btn btn-sm btn-warning
+                                               class="btn btn-sm btn-warning mb-1
                                                 {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
                                                {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
                                                data-toggle-1="tooltip"
                                                data-placement="bottom" title="edit">
                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                             </a>
-                                            <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
+                                            <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
                                                data-placement="bottom" title="delete"
                                                data-toggle="modal" data-target="#delete"
                                                data-record-id="{{$all_listing->id}}">
@@ -157,7 +154,7 @@
                                             </a>
                                         @elseif($params['status'] == 'deleted')
                                             <a type="button"
-                                               class="btn btn-sm btn-success color-black restore-btn
+                                               class="btn btn-sm btn-success color-black restore-btn mb-1
                                                 {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
                                                data-toggle-1="tooltip" data-placement="bottom"
                                                title="restore"
@@ -170,7 +167,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="p-4 text-center">No Listings Found!</td>
+                                    <td colspan="12" class="p-4 text-center">No Listings Found!</td>
                                 </tr>
                             @endforelse
                         @endif
@@ -182,9 +179,9 @@
                 @elseif([$params['status'] === 'active'] ||[$params['status'] === 'expired'] )
                     <div class="font-12 mb-2"><span class="color-red">*</span> If property is expired, it will not display on the main site</div>
                 @endif
-{{--                @if($listings[$option] !== null)--}}
-{{--                    {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}--}}
-{{--                @endif--}}
+                {{--                @if($listings[$option] !== null)--}}
+                {{--                    {{ $listings[$option]->links('vendor.pagination.bootstrap-4') }}--}}
+                {{--                @endif--}}
             </div>
         </div>
     @endforeach

@@ -80,15 +80,12 @@
                                                         <option value disabled data-index="-1">Select Contact Person</option>
                                                         <option value="all" selected>All</option>
                                                         @foreach (Auth::user()->agencies as $agency)
-                                                            @if(count($agency->agencyUsers) > 1))
-                                                            <optgroup label="{{$agency->title}}">
-                                                                    @foreach ($agency->agencyUsers as $agency_user)
-                                                                    @if($agency_user->user->id !== Auth::user()->id)
-                                                                        <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}">{{$agency_user->user->name}}</option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </optgroup>
-                                                            @endif
+                                                            <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
+                                                            @foreach ($agency->agencyUsers as $agency_user)
+                                                                @if($agency_user->user->id !== Auth::user()->id)
+                                                                    <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}" data-user="{{$agency_user->user->id}}">{{$agency_user->user->name}}</option>
+                                                                @endif
+                                                            @endforeach
                                                         @endforeach
                                                     </select>
                                                 </span>

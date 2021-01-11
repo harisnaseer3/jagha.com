@@ -187,9 +187,16 @@
         });
 
         $(document).on('change', '.sorting', function (e) {
-            let user_id = $(".agency_users option:selected").val();
-            if (user_id !== 'all') {
-                let agency_id = $(".agency_users option:selected").data("agency");
+            let agency_users = $(".agency_users option:selected");
+            let sort = '';
+            if ($(this).val() !== null) {
+                sort = $(this).val();
+            }
+
+            if (agency_users.val() !== 'all') {
+                let user_id = agency_users.data('user');
+
+                let agency_id = agency_users.data("agency");
                 let purpose = 'sale';
                 let status = 'active';
                 let current_url = window.location.pathname.split('/');
@@ -201,16 +208,13 @@
                         purpose = current_url[6];
                     }
                 }
-
-                if ($(this).val() !== null) {
-                    let sort = $(this).val();
+                if (user_id !== null) {
                     getAgentProperties(user_id, agency_id, sort, status, purpose);
-                }
+                } else getAgentProperties(agency_id, sort, status, purpose);
 
 
             } else {
                 if ($(this).val() !== null) {
-                    let sort = '';
                     if ($(this).val() === 'newest') {
                         sort = 'order/desc/';
                     } else if ($(this).val() === 'oldest') {
@@ -227,13 +231,18 @@
         });
 
         $(document).on('change', '.agency_users', function () {
-            let user_id = $(this).val();
-            let purpose = 'sale';
-            let status = 'active';
-            if (user_id === 'all') {
+            // let user_id = $(this).val();
+            if ($(this).val() === 'all') {
                 window.location.reload(true)
-            } else {
+            }
+            else{
+                let user_id = $('option:selected', this).data("user");
+                let agency_id = $('option:selected', this).data("agency");
+                let purpose = 'sale';
+                let status = 'active';
+                let sort = 'oldest';
                 let current_url = window.location.pathname.split('/');
+
                 if (current_url.length > 0) {
                     if (current_url[3] === 'status') {
                         status = current_url[4];
@@ -242,20 +251,29 @@
                         purpose = current_url[6];
                     }
                 }
-                let agency_id = $('option:selected', this).data("agency");
-                let sort = 'oldest';
-                getAgentProperties(user_id, agency_id, sort, status, purpose);
+
+                if (user_id !== null) {
+                    getAgentProperties(user_id, agency_id, sort, status, purpose);
+
+                } else if ($('option:selected', this).data("agency") !== null) {
+                    getAgentProperties(agency_id, sort, status, purpose);
+                }
             }
         });
 
-        function getAgentProperties(user_id, agency_id, sort, status, purpose) {
+        function getAgentProperties(user_id = 0, agency_id, sort, status, purpose) {
             let listing_block = $('#listings-tabContent');
-
+            $('tbody').html(
+                '<tr><td colspan="12" class="p-4 text-center">' +
+                '<i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px;"></i>'+
+                '</td></tr>'
+            );
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             jQuery.ajax({
                 type: 'get',
                 url: window.location.origin + '/agent-properties',
@@ -264,7 +282,7 @@
                 success: function (data) {
                     listing_block.html('');
                     listing_block.html(data.view);
-                    $('.agency_users').val(user_id);
+
                 },
                 error: function (xhr, status, error) {
                     // console.log(xhr);
@@ -272,7 +290,11 @@
                     // console.log(error);
                 },
                 complete: function (url, options) {
-
+                    if (user_id !== 0)
+                        $('.agency_users').val(user_id);
+                    else {
+                        $('.agency_users').val(agency_id);
+                    }
                 }
             });
         }
