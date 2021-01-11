@@ -133,7 +133,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
-        Route::get('/logout', 'AccountController@userLogout')->name('accounts.logout');
+//        Route::get('/logout', 'AccountController@userLogout')->name('accounts.logout');
+        Route::get('/logout', 'Auth\LoginController@logout')->name('accounts.logout');;
 
         Route::get('/roles', 'AccountController@editRoles')->name('user_roles.edit');
         Route::match(['put', 'patch'], '/roles', 'AccountController@updateRoles')->name('user_roles.update');

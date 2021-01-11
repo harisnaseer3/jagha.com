@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
-use mysql_xdevapi\Table;
-
+use Browser;
+use IpLocation;
 
 class AuthController extends Controller
 {
@@ -96,11 +96,18 @@ class AuthController extends Controller
         if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
 
             $user = auth()->guard('admin')->user();
-            $result = $this->getBrowserInfo();
+
+            $country = '';
+            if ($ip_location = IpLocation::get()) {
+                $country = $ip_location->countryName;
+            } else {
+
+                $country = 'unavailable';
+            }
 
             $id = DB::table('admin_session_logs')->insertGetId(
-                ['admin_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'],
-                    'browser' => $result['browser'], 'os' => $result['os']]);
+                ['admin_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => $country,
+                    'browser' => Browser::browserName(), 'os' => Browser::platformName()]);
             Session::put('logged_admin_session_id', $id);
 
 
@@ -123,45 +130,5 @@ class AuthController extends Controller
             return response()->json(['data' => 'success']);
         }
         return redirect()->route('admin.login');
-    }
-
-    private function getBrowserInfo()
-    {
-        $user_agent = request()->header('User-Agent');
-        $bname = 'Unknown';
-        $platform = 'Unknown';
-
-        //First get the platform?
-        if (preg_match('/linux/i', $user_agent)) {
-            $platform = 'linux';
-        } elseif (preg_match('/macintosh|mac os x/i', $user_agent)) {
-            $platform = 'mac';
-        } elseif (preg_match('/windows|win32/i', $user_agent)) {
-            $platform = 'windows';
-        }
-
-
-        // Next get the name of the useragent yes seperately and for good reason
-        if (preg_match('/MSIE/i', $user_agent) && !preg_match('/Opera/i', $user_agent)) {
-            $bname = 'Internet Explorer';
-            $ub = "MSIE";
-        } elseif (preg_match('/Firefox/i', $user_agent)) {
-            $bname = 'Mozilla Firefox';
-            $ub = "Firefox";
-        } elseif (preg_match('/Chrome/i', $user_agent)) {
-            $bname = 'Google Chrome';
-            $ub = "Chrome";
-        } elseif (preg_match('/Safari/i', $user_agent)) {
-            $bname = 'Apple Safari';
-            $ub = "Safari";
-        } elseif (preg_match('/Opera/i', $user_agent)) {
-            $bname = 'Opera';
-            $ub = "Opera";
-        } elseif (preg_match('/Netscape/i', $user_agent)) {
-            $bname = 'Netscape';
-            $ub = "Netscape";
-        }
-
-        return ['browser' => $bname, 'os' => $platform];
     }
 }

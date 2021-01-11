@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Throwable;
 
-
 class PropertyController extends Controller
 {
 

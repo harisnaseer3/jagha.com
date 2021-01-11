@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
-use Jaybizzle\LaravelCrawlerDetect\Facades\LaravelCrawlerDetect;
+use IpLocation;
 
 /**
  * @mixin Builder
@@ -22,7 +19,7 @@ class Visit extends Model
 
     public $attributes = ['count' => 0];
 
-    protected $fillable = ['ip', 'date', 'visit_time', 'count', 'min_count'];
+    protected $fillable = ['ip', 'date', 'visit_time', 'count', 'min_count', 'ip_location'];
     protected $table = 'visits';
 
     public static function hit()
@@ -50,14 +47,26 @@ class Visit extends Model
                     $visit->count++;
                     $visit->save();
                 } else {
-                    (new Visit)->insert(['ip' => $_SERVER['REMOTE_ADDR'],
-                        'date' => date('Y-m-d'), 'min_count' => 1,
-                        'visit_time' => date('H:i:s'), 'count' => 1]);
+                    $country = '';
+                    if ($ip_location = IpLocation::get()) {
+                        $country = $ip_location->countryName;
+                    } else {
+
+                        $country = 'unavailable';
+                    }
+                    (new Visit)->insert(
+                        [
+                            'ip' => $_SERVER['REMOTE_ADDR'],
+                            'ip_location' => $country,
+                            'date' => date('Y-m-d'),
+                            'min_count' => 1,
+                            'visit_time' => date('H:i:s'),
+                            'count' => 1
+                        ]);
                 }
                 return true;
             }
-        }
-        else {
+        } else {
             return true;
         }
 
