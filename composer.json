@@ -15,6 +15,7 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
+        "hisorange/browser-detect": "^4.3",
         "intervention/image": "^2.5",
         "jaybizzle/crawler-detect": "^1.2",
         "jaybizzle/laravel-crawler-detect": "1.*",
@@ -26,6 +27,7 @@
         "laravelcollective/html": "^6.1",
         "spatie/laravel-permission": "^3.17",
         "spatie/schema-org": "^2.14",
+        "stevebauman/location": "^6.0",
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
