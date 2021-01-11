@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Dashboard\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -42,11 +43,15 @@ class PropertyStatusChangeMail extends Notification
      */
     public function toMail($notifiable)
     {
+        $user_id = $this->property->user_id;
+        $user = User::where('id',$user_id)->first();
         return (new MailMessage)
-            ->subject('About Pakistan Property Status Update')
-            ->greeting('Greetings!')
-            ->line("Status of property titled {$this->property->title} and reference # {$this->property->reference} has been changed to {$this->property->status} on About Pakistan Property Portal.")
-            ->line('Thank you for using About Pakistan Property Portal!');
+            ->view('website.custom-emails.notification-email-template',[
+                'user' => $user,
+                'title' => 'About Pakistan Property Status Update',
+                'content' => "Status of property titled {$this->property->title} and reference # {$this->property->reference} has been changed to {$this->property->status} on About Pakistan Property Portal.",
+                'infoText'   => 'Thank you for using About Pakistan Property Portal!'
+            ]);
     }
 
 

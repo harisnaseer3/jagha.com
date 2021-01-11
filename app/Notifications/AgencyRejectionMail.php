@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Dashboard\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -44,11 +45,15 @@ class AgencyRejectionMail extends Notification
      */
     public function toMail($notifiable)
     {
+        $user_id = $this->agency->user_id;
+        $user = User::where('id',$user_id)->first();
         return (new MailMessage)
-            ->subject('Notification of Agency Rejection On About Pakistan Properties')
-            ->greeting('Greetings!')
-            ->line("Agency of ID = {$this->agency->id} titled as {$this->agency->title} and has been rejected by the Admin due to the reason of {$this->reason}.")
-            ->line('Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.');
+            ->view('website.custom-emails.notification-email-template',[
+                'user' => $user,
+                'title' => 'Notification of Agency Rejection On About Pakistan Properties',
+                'content' => "Agency of ID = {$this->agency->id} titled as {$this->agency->title} and has been rejected by the Admin due to the reason of {$this->reason}.",
+                'infoText'   => 'Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.'
+            ]);
 
     }
 
