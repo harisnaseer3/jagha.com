@@ -148,23 +148,23 @@
                                                                 </td>
                                                                 <td>{{ucfirst($property->status)}}</td>
                                                                 <td>{{$property->views}}</td>
-                                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
                                                                 <td>
-                                                                    <a type="button" href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
-                                                                       class="btn btn-sm btn-success
+                                                                    <a type="button"  href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
+                                                                       class="btn btn-sm btn-primary mb-1
                                                                            {{$property->status === 'active' ? '':'anchor-disable'}}"
                                                                        data-toggle-1="tooltip"
+                                                                       target="_blank"
                                                                        data-placement="bottom" title="view">
                                                                         <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                     </a>
-
                                                                     <a type="button" href="{{route('properties.edit', $property->id)}}"
-                                                                       class="btn btn-sm btn-warning"
+                                                                       class="btn btn-sm btn-warning mb-1"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="edit">
                                                                         <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                     </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip"
+                                                                    <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="delete"
                                                                        data-toggle="modal" data-target="#delete"
                                                                        data-record-id="{{$property->id}}">
