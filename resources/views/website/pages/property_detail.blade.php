@@ -37,7 +37,7 @@
 
                     <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <span
-                                        itemprop="name"> {{$property->sub_type}} For {{$property->purpose}}<span> (<strong class="theme-dark-blue">Property Reference: </strong>{{$property->reference}})</span></span>
+                                        itemprop="name"> {{$property->sub_type}} For {{$property->purpose}}<span> (<strong class="theme-dark-blue">Property ID: </strong>{{$property->id}})</span></span>
                                     <meta itemprop="position" content="3">
                                 </span>
                 </div>

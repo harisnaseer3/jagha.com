@@ -18,7 +18,7 @@
         <div><label class="mt-2">Message<span style="color:red">*</span></label></div>
         <div class="editable form-control form-control-sm  editable-div" contenteditable="true">
             I would like to gather information about your property <a href="{{$property->property_detail_path()}}" style="text-decoration:underline; color:blue">{{$property->title}} </a> having
-            reference <span class="color-blue" style="text-decoration:underline"> {{$property->reference}}</span> being
+            ID <span class="color-blue" style="text-decoration:underline"> {{$property->id}}</span> being
             displayed at <a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com </a> <br><br> Please contact me at your earliest by phone
             or by email.
         </div>

@@ -376,8 +376,23 @@ class CountTableController extends Controller
         if (isset($property->agency_id)) {
             if (DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->exists())
                 DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->increment('property_count');
-            else
-                DB::table('property_count_by_agencies')->insert(['agency_id' => $property->agency_id, 'property_count' => 1]);
+            else {
+                $listing_type = '';
+                if ($property->basic_listing)
+                    $listing_type = 'basic_listing';
+                elseif ($property->silver_listing)
+                    $listing_type = 'silver_listing';
+                elseif ($property->bronze_listing)
+                    $listing_type = 'bronze_listing';
+                elseif ($property->golden_listing)
+                    $listing_type = 'golden_listing';
+                elseif ($property->platinum_listing)
+                    $listing_type = 'platinum_listing';
+
+                DB::table('property_count_by_agencies')->insert(['agency_id' => $property->agency_id,
+                    'property_count' => 1, 'property_purpose' => $property->purpose, 'property_status' => $property->status, 'listing_type' => $listing_type]);
+            }
+
         }
 
         if (DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->exists())

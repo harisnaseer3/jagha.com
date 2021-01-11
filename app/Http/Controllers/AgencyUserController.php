@@ -334,9 +334,7 @@ class AgencyUserController extends Controller
     public function getAgentProperties(Request $request)
     {
         if ($request->ajax()) {
-
             if ($request->has('user_id') && $request->has('agency_id') && $request->has('sort') && $request->has('status') && $request->has('purpose')) {
-
                 $listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
@@ -345,16 +343,17 @@ class AgencyUserController extends Controller
                     'properties.cell', 'properties.agency_id')
                     ->join('locations', 'properties.location_id', '=', 'locations.id')
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
-                    ->where('properties.user_id', '=', $request->user_id)
                     ->where('properties.agency_id', '=', $request->agency_id)
                     ->where('properties.status', '=', $request->status);
+                if ($request->user_id != '0') {
+                    $listings = $listings->where('properties.user_id', '=', $request->user_id);
+                }
                 if ($request->purpose !== 'all') {
                     $listings = $listings->where('properties.purpose', '=', $request->purpose);
                 }
                 $listings = $listings->whereNull('properties.deleted_at')
                     ->orderBy('id', $request->sort == 'oldest' ? 'ASC' : 'DESC')
                     ->get();
-
 
                 $data['view'] = View('website.components.user_listings',
                     [
@@ -381,10 +380,10 @@ class AgencyUserController extends Controller
                 return $data;
 
             } else {
-                return "not found";
+                return "try again";
             }
         } else {
-            return "not found";
+            return "not available";
         }
 
     }
