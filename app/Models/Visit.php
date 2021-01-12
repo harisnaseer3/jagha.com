@@ -47,8 +47,9 @@ class Visit extends Model
                     $visit->count++;
                     $visit->save();
                 } else {
+                    $ip = $_SERVER['REMOTE_ADDR'];
                     $country = '';
-                    if ($ip_location = IpLocation::get()) {
+                    if ($ip_location = IpLocation::get($ip)) {
                         $country = $ip_location->countryName;
                     } else {
 
