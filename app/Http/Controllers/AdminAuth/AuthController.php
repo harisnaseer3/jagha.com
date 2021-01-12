@@ -96,9 +96,9 @@ class AuthController extends Controller
         if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
 
             $user = auth()->guard('admin')->user();
-
+            $ip = $_SERVER['REMOTE_ADDR'];
             $country = '';
-            if ($ip_location = IpLocation::get()) {
+            if ($ip_location = IpLocation::get($ip)) {
                 $country = $ip_location->countryName;
             } else {
 
