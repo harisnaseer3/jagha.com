@@ -52,15 +52,15 @@
                                     @include('website.layouts.flash-message')
 
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-12 mb-3">
 
 
                                             <div class="card">
                                                 <div class="card-header theme-blue text-white">
-                                                    Sent
+                                                    Support Mails
                                                 </div>
                                                 <div class="card-body">
-                                                    <table id="user-notification" class="display" style="width: 100%">
+                                                    <table id="support-mails" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
 
@@ -69,6 +69,7 @@
                                                             <th>ID</th>
                                                             <th>Url</th>
                                                             <th>Message</th>
+                                                            <th>Time</th>
 
                                                         </tr>
                                                         </thead>
@@ -83,10 +84,54 @@
                                                                     @if(strlen($user_support->message) > 30 )
                                                                         <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
                                                                               data-content="{{$user_support->message}}">Read More </span> @endif</td>
+                                                                <td>{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
 
                                                             </tr>
 
                                                         @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-12">
+
+
+                                            <div class="card">
+                                                <div class="card-header theme-blue text-white">
+                                                    Inquiry Mails
+                                                </div>
+                                                <div class="card-body">
+                                                    <table id="inquiry-mails" class="display" style="width: 100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Sr.</th>
+                                                            <th>Name</th>
+                                                            <th>Email</th>
+                                                            <th>Mobile #</th>
+                                                            <th>Type</th>
+                                                            <th>Location</th>
+                                                            <th>Message</th>
+                                                            <th>Time</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @if(count($agent_inboxes) > 0)
+                                                            @foreach($agent_inboxes as $inbox)
+                                                                <td>{{$loop->iteration}}</td>
+                                                                <td>{{$inbox->name}}</td>
+                                                                <td>{{$inbox->email}}</td>
+                                                                <td>{{$inbox->cell}}</td>
+                                                                <td>{{$inbox->type}}</td>
+                                                                <td>{{$inbox->ip_location}}</td>
+                                                                <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
+                                                                    @if(strlen($inbox->message) > 30 )
+                                                                        <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
+                                                                              data-content="{{strip_tags(strtolower($inbox->message))}}">Read More </span> @endif</td>
+                                                                <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                            @endforeach
+                                                        @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
