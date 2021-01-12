@@ -48,41 +48,7 @@
 
     input.addEventListener('change', reset);
     input.addEventListener('keyup', reset);
-    $('#sendMessageButton').on('click', function (e) {
-        const url = $('#url').val();
-        const email = $('#your-email').val();
-        const message = $('#message').val();
-        const type = $('[name=inquire_type]').val();
-        const property_id = $('#property-id').val();
-        const agency_id = $('#agency-id').val();
-        if (email.trim() === '' || message.trim() === '') {
-            e.preventDefault();
-            email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
-            message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
-            return;
-        }
 
-        if (IsEmail(email) === false) {
-            e.preventDefault();
-            $('#emailHelp').html('Incorrect email format').slideDown();
-
-        }
-        if(type === 'Property' && property_id === null ){
-            e.preventDefault();
-            $('#propertyHelp').slideDown();
-            $('#agencyHelp').slideUp();
-        }
-        else if(type === 'Agency' && agency_id === null ){
-            e.preventDefault();
-            $('#propertyHelp').slideUp();
-            $('#agencyHelp').slideDown();
-        }
-        if(message.length < 25){
-            e.preventDefault();
-            $('#messageHelp').html('Minimum of 25 characters required').slideDown();
-        }
-
-    });
     $('#message').on('keyup', function () {
         const message = $('#message').val();
         message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
@@ -121,5 +87,100 @@
             $('#agency-div').slideDown().find('#agency-id').attr('required', 'true');
         }
     });
+
+    let form = $('#supportform');
+
+    form.validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            'phone_#': {
+                required: true,
+                // checkcellnum: true,
+            },
+            'phone': {
+                required: true,
+                // checkcellnum: true,
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            message: {
+                required: true,
+                minlength: 25,
+                maxlength: 1024
+            },
+            'property-id': {
+                required: $('[name=inquire_type]').val() === 'Property'
+            },
+            'agency-id': {
+                required: $('[name=inquire_type]').val() === 'Agency'
+            },
+            'url': {
+                url: true
+            }
+        },
+        messages: {'phone': ", please enter a valid value."},
+        errorElement: 'span',
+        errorClass: 'error help-block text-red',
+        ignore: [],
+
+        submitHandler: function (form) {
+            form.preventDefault();
+        },
+        invalidHandler: function (event, validator) {
+            // 'this' refers to the form
+            const errors = validator.numberOfInvalids();
+            if (errors) {
+                let error_tag = $('div.error.text-red');
+                error_tag.hide();
+                const message = errors === 1
+                    ? 'You missed 1 field. It has been highlighted'
+                    : 'You missed ' + errors + ' fields. They have been highlighted';
+                $('div.error.text-red span').html(message);
+                error_tag.show();
+            } else {
+                $('div.error.text-red').hide();
+                document.querySelector("input").classList.remove("valid");
+            }
+        }
+    });
+
+    // $('#sendMessageButton').on('click', function (e) {
+    //     const url = $('#url').val();
+    //     const email = $('#your-email').val();
+    //     const message = $('#message').val();
+    //     const type = $('[name=inquire_type]').val();
+    //     const property_id = $('#property-id').val();
+    //     const agency_id = $('#agency-id').val();
+    //     if (email.trim() === '' || message.trim() === '') {
+    //         e.preventDefault();
+    //         email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
+    //         message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
+    //         return;
+    //     }
+    //
+    //     if (IsEmail(email) === false) {
+    //         e.preventDefault();
+    //         $('#emailHelp').html('Incorrect email format').slideDown();
+    //
+    //     }
+    //     if (type === 'Property' && property_id === null) {
+    //         e.preventDefault();
+    //         $('#propertyHelp').slideDown();
+    //         $('#agencyHelp').slideUp();
+    //     } else if (type === 'Agency' && agency_id === null) {
+    //         e.preventDefault();
+    //         $('#propertyHelp').slideUp();
+    //         $('#agencyHelp').slideDown();
+    //     }
+    //     if (message.length < 25) {
+    //         e.preventDefault();
+    //         $('#messageHelp').html('Minimum of 25 characters required').slideDown();
+    //     }
+    //
+    // });
 
 })(jQuery);

@@ -19,9 +19,10 @@ class CreateSupportsTable extends Migration
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('url')->nullable();
             $table->string('inquire_about');
+            $table->string('cell', 32)->nullable();
             $table->bigInteger('property_id')->nullable();
             $table->bigInteger('agency_id')->nullable();
-            $table->string('message');
+            $table->string('message',1024);
 
             $table->softDeletes();
             $table->timestamps();

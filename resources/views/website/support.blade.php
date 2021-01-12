@@ -251,7 +251,7 @@
 @section('script')
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
+    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/support-page.js')}}"></script>
-
 
 @endsection
