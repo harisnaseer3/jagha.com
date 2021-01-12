@@ -50,7 +50,7 @@
                                                     Inbox
                                                 </div>
                                                 <div class="card-body">
-                                                    <table id="user-notification" class="display" style="width: 100%">
+                                                    <table id="customer-mails" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
                                                             <th>Sr.</th>
@@ -71,6 +71,7 @@
                                         </div>
 
                                     </div>
+
 
 
 
