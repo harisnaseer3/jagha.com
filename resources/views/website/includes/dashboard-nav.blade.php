@@ -266,7 +266,7 @@
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="{{route('message.center')}}">
+                            <a class="nav-link" href="{{route('message-center.inbox')}}">
                                 Message Center</a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">

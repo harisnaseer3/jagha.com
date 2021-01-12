@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Dashboard\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /*
  * @mixin Builder
@@ -27,4 +29,9 @@ class Support extends Model
         'agency_id' => 'required_if:inquire_about,==,Agency',
         'url' => 'nullable|url',
     ];
+
+    public function resolveChildRouteBinding($childType, $value, $field)
+    {
+        // TODO: Implement resolveChildRouteBinding() method.
+    }
 }
