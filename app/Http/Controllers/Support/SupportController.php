@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Support;
 
+use App\Events\NotifyAdminOfNewProperty;
+use App\Events\NotifyAdminOfSupportMessage;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Property;
@@ -54,15 +56,13 @@ class SupportController extends Controller
 
     public function sendSupportMail(Request $request)
     {
-
-
         $validator = Validator::make($request->all(), Support::$rules);
         if ($validator->fails()) {
 
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error inserting record, try again.');
         }
-
         try {
+
             $property_id = null;
             $agency_id = null;
             $inquire_type = $request->input('inquire_type');
@@ -74,20 +74,21 @@ class SupportController extends Controller
                 $agency_id = $request->input('agency_id');
 
             }
-
             $support = (new Support)->Create([
                 'user_id' => Auth::guard('web')->user()->getAuthIdentifier(),
                 'url' => $request->input('url'),
                 'message' => $request->input('message'),
-                'inquire_type' => $inquire_type,
+                'inquire_about' => $inquire_type,
                 'property_id' => $property_id,
                 'agency_id' => $agency_id
-
-
             ]);
-            return redirect()->back()->with('success', 'Agency profile has been saved.');
+            event(new NotifyAdminOfSupportMessage($support));
+
+            return redirect()->back()->with('success', 'Message Sent Successfully.');
 
         } catch (Throwable $e) {
+            dd($e->getMessage());
+
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
     }

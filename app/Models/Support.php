@@ -24,7 +24,7 @@ class Support extends Model
 
     public static $rules = [
         'message' => 'string|required|max:1024|min:25',
-        'inquire_about' => 'required|in:Property,Agency',
+        'inquire_type' => 'required|in:Property,Agency',
         'property_id' => 'required_if:inquire_about,==,Property',
         'agency_id' => 'required_if:inquire_about,==,Agency',
         'url' => 'nullable|url',

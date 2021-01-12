@@ -121,6 +121,7 @@
 
                     </div>
                 </div>
+                @include('website.layouts.flash-message')
                 <form id="supportform" name="sendMessage" action="{{route('support.mail')}}" method="post">
                     @csrf
                     <div class="row">
@@ -178,7 +179,7 @@
                             <div class="form-group" id="property-div">
                                 <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible property-select2"
                                         style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
-                                        name="property_id" id="property-id">
+                                        name="property_id" id="property-id"  required>
                                     <option disabled selected>Select property</option>
                                     @if(count($properties) > 0)
                                         @foreach($properties as $property)
@@ -187,7 +188,9 @@
                                     @endif
 
                                 </select>
+
                             </div>
+                            <p class="help-block text-danger" id="propertyHelp" style="display:none;">Please select property</p>
                             <div class="form-group" style="display:none;" id="agency-div">
                                 <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible agency-select2"
                                         style="width: 100%;border:0;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
@@ -202,6 +205,7 @@
                                 </select>
 
                             </div>
+                            <p class="help-block text-danger" id="agencyHelp" style="display:none;">Please select agency</p>
 
                             <div class="form-group">
                                 <input class="form-control" id="url" name="url" type="url" placeholder="Url">
@@ -212,8 +216,7 @@
                                 <textarea class="form-control" id="message" name="message" placeholder="Your Message *" rows="8" required="required"></textarea>
                                 <p class="help-block text-danger" id="messageHelp" style="display:none;">Please specify your message</p>
                             </div>
-                            <div id="message-alert" style="display:none;">
-                            </div>
+
                             <div class="form-group text-center">
                                 <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
                             </div>
