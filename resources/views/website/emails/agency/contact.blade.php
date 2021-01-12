@@ -12,6 +12,7 @@ A {{ $visitor }}, has recently viewed your property and sent you an email.
 Name  : {{ $user_name }} <br>
 Email : {{ $email }} <br>
 Phone : {{ $phone }} <br>
+Location : {{ $ip_location }} <br>
 
 # Regards,<br>
 {{--<img src="{{('img/logo/logo-with-text.png') }}" alt="About Pakistan"/>--}}
