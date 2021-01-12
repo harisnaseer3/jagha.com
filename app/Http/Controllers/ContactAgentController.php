@@ -47,8 +47,9 @@ class ContactAgentController extends Controller
             }
             if ($sent_to != null || $sent_to != '') {
 
+                $ip = $_SERVER['REMOTE_ADDR'];
                 $country = '';
-                if ($ip_location = IpLocation::get()) {
+                if ($ip_location = IpLocation::get($ip)) {
                     $country = $ip_location->countryName;
                 } else {
 
