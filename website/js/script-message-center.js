@@ -4,6 +4,15 @@
         $('#user-notification').DataTable({
             "scrollX": true
         });
+        $('#customer-mails').DataTable({
+            "scrollX": true
+        });
+        $('#support-mails').DataTable({
+            "scrollX": true
+        });
+        $('#inquiry-mails').DataTable({
+            "scrollX": true
+        });
         $('[data-toggle="popover"]').popover();
         $(document).on('click', '.mark-as-read', function () {
             let div = $(this);
