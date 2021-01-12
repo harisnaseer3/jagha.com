@@ -7,6 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+    <style>
+        .popover {
+            background: lightgrey;
+        }
+
+    </style>
 
 @endsection
 
@@ -21,6 +27,7 @@
         </div>
     </div>
     <!-- Submit Property start -->
+
     <div class="submit-property">
         <div class="container-fluid container-padding">
             <div class="row">
@@ -66,6 +73,20 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+                                                        @foreach($user_supports as $user_support)
+                                                            <tr>
+                                                                <td>{{$loop->iteration}}</td>
+                                                                <td>{{$user_support->inquire_about}}</td>
+                                                                <td>@if($user_support->inquire_about === 'Property') {{$user_support->property_id}}@else  {{$user_support->agency_id}} @endif</td>
+                                                                <td>{{$user_support->url}}</td>
+                                                                <td>{{\Illuminate\Support\Str::limit(strtolower($user_support->message), 30, $end='.....')}}
+                                                                    @if(strlen($user_support->message) > 30 )
+                                                                        <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
+                                                                              data-content="{{$user_support->message}}">Read More </span> @endif</td>
+
+                                                            </tr>
+
+                                                        @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -74,7 +95,6 @@
                                         </div>
 
                                     </div>
-
 
 
                                 </div>
@@ -93,6 +113,7 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/bootstrap.bundle.min.js')}}"></script>
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/script-message-center.js')}}"></script>
 @endsection

@@ -4,6 +4,7 @@
         $('#user-notification').DataTable({
             "scrollX": true
         });
+        $('[data-toggle="popover"]').popover();
         $(document).on('click', '.mark-as-read', function () {
             let div = $(this);
 

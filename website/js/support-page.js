@@ -49,27 +49,39 @@
     input.addEventListener('change', reset);
     input.addEventListener('keyup', reset);
     $('#sendMessageButton').on('click', function (e) {
-        const id = $('#id').val();
-        const name = $('#name').val();
         const url = $('#url').val();
         const email = $('#your-email').val();
         const message = $('#message').val();
-        if (id.trim === '' || name.trim === '' || email.trim() === '' || message.trim() === '') {
+        const type = $('[name=inquire_type]').val();
+        const property_id = $('#property-id').val();
+        const agency_id = $('#agency-id').val();
+        if (email.trim() === '' || message.trim() === '') {
             e.preventDefault();
-            id.trim() === '' ? $('#idHelp').slideDown() : $('#idHelp').slideUp();
-            name.trim() === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
             email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
             message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
             return;
         }
+
         if (IsEmail(email) === false) {
             e.preventDefault();
             $('#emailHelp').html('Incorrect email format').slideDown();
 
-        } else {
-            e.preventDefault();
-            insertMessage();
         }
+        if(type === 'Property' && property_id === null ){
+            e.preventDefault();
+            $('#propertyHelp').slideDown();
+            $('#agencyHelp').slideUp();
+        }
+        else if(type === 'Agency' && agency_id === null ){
+            e.preventDefault();
+            $('#propertyHelp').slideUp();
+            $('#agencyHelp').slideDown();
+        }
+        if(message.length < 25){
+            e.preventDefault();
+            $('#messageHelp').html('Minimum of 25 characters required').slideDown();
+        }
+
     });
     $('#message').on('keyup', function () {
         const message = $('#message').val();
@@ -110,31 +122,4 @@
         }
     });
 
-    function insertMessage() {
-        let html = '';
-        $('#message-alert').html(html).slideDown();
-        $('#sendMessageButton').prop('disabled', true);
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: $('#supportform').attr('action'),
-            data: $('#supportform').serialize(),
-            success: function () {
-                $("#supportform").trigger("reset");
-                html = ' <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Your message has been sent. </strong></div>'
-                $('#message-alert').html(html).slideDown();
-            },
-            error: function (xhr, status, error) {
-                html = ' <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Error sending message,try again. </strong></div>'
-                $('#message-alert').html(html).slideDown();
-            }, complete: function (url, options) {
-                $('#sendMessageButton').prop('disabled', false);
-            }
-        });
-
-    }
 })(jQuery);

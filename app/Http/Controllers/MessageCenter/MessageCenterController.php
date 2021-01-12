@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\MessageCenter;
 
 use App\Http\Controllers\Controller;
+use App\Models\Support;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
 
@@ -35,8 +36,10 @@ class MessageCenterController extends Controller
     }
     public function inbox()
     {
+
         return view('website.message-center.inbox',
             [
+
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
@@ -44,8 +47,11 @@ class MessageCenterController extends Controller
     }
     public function sent()
     {
+        $user_id = Auth::guard('web')->user()->getAuthIdentifier();
+        $user_supports = (new Support)->where('user_id',$user_id)->get();
         return view('website.message-center.sent',
             [
+                'user_supports' => $user_supports,
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);
