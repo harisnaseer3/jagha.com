@@ -295,13 +295,24 @@ class PropertySearchController extends Controller
     public function searchWithID(Request $request)
     {
         /*validate request params */
-//        if ($request->input('id') != null && preg_match('$(20\d{2}-)\d{8}$', $request->input('id'))) {
-        if ($request->input('id') != null && preg_match('/^[0-9]*$/', $request->input('id'))) {
-            $property = (new Property)->where('id', '=', $request->input('id'))->first();
-            if ($property) {
-                return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
-            } else
-                return response()->json(['data' => 'not found', 'status' => 201]);
+        if ($request->input('id') != null) {
+            if (preg_match('/^[0-9]*$/', $request->input('id'))) {
+                $property = (new Property)->where('id', '=', $request->input('id'))->first();
+                if ($property) {
+                    return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
+                } else
+                    return response()->json(['data' => 'not found', 'status' => 201]);
+            }
+//            else {
+//                $property = (new Property)
+//                    ->where('title', '=', $request->input('id'))
+//                    ->orWhere('title', '=', $request->input('id'))
+//                    ->orWhere('title', '=', $request->input('id'));
+//                if ($property) {
+//                    return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
+//                } else
+//                    return response()->json(['data' => 'not found', 'status' => 201]);
+//            }
         }
         return response()->json(['data' => 'invalid value', 'status' => 202]);
     }
