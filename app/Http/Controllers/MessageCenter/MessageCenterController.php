@@ -25,9 +25,27 @@ class MessageCenterController extends Controller
      */
     public function index()
     {
-        return view('website.message-center.center',
+        return view('website.message-center.notifications',
             [
                 'notifications' => Auth()->user()->Notifications,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]
+            ]);
+
+    }
+    public function inbox()
+    {
+        return view('website.message-center.inbox',
+            [
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]
+            ]);
+
+    }
+    public function sent()
+    {
+        return view('website.message-center.sent',
+            [
                 'recent_properties' => (new FooterController)->footerContent()[0],
                 'footer_agencies' => (new FooterController)->footerContent()[1]
             ]);

@@ -121,7 +121,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::delete('agencies/destroyAgencyUser', 'AgencyUserController@agencyUserDestroy')->name('agencies.destroy-user');
 
     Route::get('/user-dashboard', 'Dashboard\UserDashboardController@index')->name('user.dashboard');
-    Route::get('/message-center', 'MessageCenter\MessageCenterController@index')->name('message.center');
+    Route::get('/message-center/notifications', 'MessageCenter\MessageCenterController@index')->name('message-center.notifications');
+    Route::get('/message-center/inbox', 'MessageCenter\MessageCenterController@inbox')->name('message-center.inbox');
+    Route::get('/message-center/sent', 'MessageCenter\MessageCenterController@sent')->name('message-center.sent');
     Route::get('/support', 'Support\SupportController@index')->name('aboutpakistan.support');
     Route::get('/agencies/agency-staff', 'AgencyUserController@index')->name('agencies.staff');
     Route::get('/agencies/add-staff', 'AgencyUserController@addStaff')->name('agencies.add-staff');

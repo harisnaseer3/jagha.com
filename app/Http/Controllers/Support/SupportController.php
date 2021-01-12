@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Support;
 use App\Http\Controllers\Controller;
 use App\Models\Agency;
 use App\Models\Property;
+use App\Models\Support;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
 use Illuminate\Support\Facades\DB;
+
 //use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class SupportController extends Controller
 {
@@ -33,10 +37,9 @@ class SupportController extends Controller
         $agencies = '';
         $listings = $this->_listings();
         $properties = $listings[0]->get();
-        if(count($listings[1]) > 0){
+        if (count($listings[1]) > 0) {
             $agencies = $listings[1];
-        }
-        elseif(count($listings[2]) > 0){
+        } elseif (count($listings[2]) > 0) {
             $agencies = $listings[2];
         }
         return view('website.support',
@@ -51,33 +54,69 @@ class SupportController extends Controller
 
     public function sendSupportMail(Request $request)
     {
-        dd($request->all());
+
+
+        $validator = Validator::make($request->all(), Support::$rules);
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error inserting record, try again.');
+        }
+
+        try {
+            $property_id = null;
+            $agency_id = null;
+            $inquire_type = $request->input('inquire_type');
+            if($inquire_type === 'Property'){
+                $property_id = $request->input('property_id');
+
+            }
+            elseif($inquire_type === 'Agency'){
+                $agency_id = $request->input('agency_id');
+
+            }
+
+            $support = (new Support)->Create([
+                'user_id' => Auth::guard('web')->user()->getAuthIdentifier(),
+                'url' => $request->input('url'),
+                'message' => $request->input('message'),
+                'inquire_type' => $inquire_type,
+                'property_id' => $property_id,
+                'agency_id' => $agency_id
+
+
+            ]);
+            return redirect()->back()->with('success', 'Agency profile has been saved.');
+
+        } catch (Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
+        }
     }
 
     private function _listings()
-    {   $user = Auth::guard('web')->user()->getAuthIdentifier();
+    {
+        $user = Auth::guard('web')->user()->getAuthIdentifier();
         $listings = Property::
-        select('properties.id','properties.agency_id')
+        select('properties.id', 'properties.agency_id')
             ->whereNull('properties.deleted_at');
-            //if user owns agencies{}
-            $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
+        //if user owns agencies{}
+        $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
 
-            $ceo_agencies = Agency::where('user_id', '=', $user)->pluck('id')->toArray(); //gives ceo of agency
-            $agent_agencies = DB::table('agency_users')->where('user_id', $user)->pluck('agency_id')->toArray();
-            if (count($ceo_agencies) > 0) {
-                $agency_users = DB::table('agency_users')->whereIn('agency_id', $ceo_agencies)->distinct('user_id')->pluck('user_id')->toArray();
-                $ceo_listings = Property::select('properties.id','properties.agency_id')
-                    ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
-                    ->whereIn('properties.user_id', $agency_users);
-                return [$ceo_listings->union($listings),$ceo_agencies,$agent_agencies];
-            } elseif ($agent_agencies > 0) {
-                $agent_listings = Property::
-                select('properties.id','properties.agency_id')
-                    ->whereNull('properties.deleted_at')
-                    ->whereIn('properties.agency_id', $agent_agencies)
-                    ->where('properties.user_id', $user);
-                return [$agent_listings->union($listings),$ceo_agencies,$agent_agencies];
-            }
-            return [$listings,$ceo_agencies,$agent_agencies];
+        $ceo_agencies = Agency::where('user_id', '=', $user)->pluck('id')->toArray(); //gives ceo of agency
+        $agent_agencies = DB::table('agency_users')->where('user_id', $user)->pluck('agency_id')->toArray();
+        if (count($ceo_agencies) > 0) {
+            $agency_users = DB::table('agency_users')->whereIn('agency_id', $ceo_agencies)->distinct('user_id')->pluck('user_id')->toArray();
+            $ceo_listings = Property::select('properties.id', 'properties.agency_id')
+                ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
+                ->whereIn('properties.user_id', $agency_users);
+            return [$ceo_listings->union($listings), $ceo_agencies, $agent_agencies];
+        } elseif ($agent_agencies > 0) {
+            $agent_listings = Property::
+            select('properties.id', 'properties.agency_id')
+                ->whereNull('properties.deleted_at')
+                ->whereIn('properties.agency_id', $agent_agencies)
+                ->where('properties.user_id', $user);
+            return [$agent_listings->union($listings), $ceo_agencies, $agent_agencies];
+        }
+        return [$listings, $ceo_agencies, $agent_agencies];
     }
 }
