@@ -303,18 +303,18 @@ class PropertySearchController extends Controller
                 } else
                     return response()->json(['data' => 'not found', 'status' => 201]);
             }
-            else {
-                $property = Property::select(DB::raw('SELECT *
-                    FROM `properties`
-                    WHERE CONCAT(`title`, `description`) LIKE "%'.$request->input('id').'%" '));
-
-
-
-                if ($property) {
-                    return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
-                } else
-                    return response()->json(['data' => 'not found', 'status' => 201]);
-            }
+//            else {
+//                $property = Property::select(DB::raw('SELECT *
+//                    FROM `properties`
+//                    WHERE CONCAT(`title`, `description`) LIKE "%'.$request->input('id').'%" '));
+//
+//
+//
+//                if ($property) {
+//                    return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
+//                } else
+//                    return response()->json(['data' => 'not found', 'status' => 201]);
+//            }
         }
         return response()->json(['data' => 'invalid value', 'status' => 202]);
     }
