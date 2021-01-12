@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupportsTable extends Migration
+class CreateAgentInboxesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,21 +14,22 @@ class CreateSupportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('supports', function (Blueprint $table) {
+        Schema::create('agent_inboxes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('url')->nullable();
-            $table->string('inquire_about');
-            $table->string('cell', 32)->nullable();
-            $table->bigInteger('property_id')->nullable();
-            $table->bigInteger('agency_id')->nullable();
-            $table->string('message',1024);
+            $table->bigInteger('sender_id');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('cell')->nullable();
+            $table->string('message', 1024);
+            $table->string('ip_location');
+            $table->string('type');
 
             $table->softDeletes();
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE `supports`
+        DB::statement('ALTER TABLE `agent_inboxes`
             CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
             CHANGE `updated_at` `updated_at` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL DEFAULT NULL');
     }
@@ -40,6 +41,6 @@ class CreateSupportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supports');
+        Schema::dropIfExists('agent_inboxes');
     }
 }

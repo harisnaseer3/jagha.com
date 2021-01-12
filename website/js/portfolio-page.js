@@ -610,20 +610,39 @@
         $('.custom-select').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
         // added custom search in location select2
         $("#add_location").select2({
+            sorter: function (results) {
+                if (!results || results.length == 0)
+                    return results
+
+                // Find the open select2 search field and get its value
+                var term = document.querySelector('.select2-search__field').value.toLowerCase()
+                if (term.length == 0)
+                    return results
+
+                return results.sort(function (a, b) {
+                    aHasPrefix = a.text.toLowerCase().indexOf(term) == 0
+                    bHasPrefix = b.text.toLowerCase().indexOf(term) == 0
+
+                    return bHasPrefix - aHasPrefix // If one is prefixed, push to the top. Otherwise, no sorting.
+                })
+            },
             matcher: function (params, data) {
                 if ($.trim(params.term) === '') {
                     return data;
                 }
+                // if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) === 0) {
+                //     return data;
+                // }
+                // else {
                 keywords = (params.term).split(" ");
                 for (var i = 0; i < keywords.length; i++) {
-
                     if (((data.text).toUpperCase()).indexOf((keywords[i]).toUpperCase()) === -1)
                         return null;
 
                 }
+
                 return data;
             }
-
         });
         $("#add_location").parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
 
