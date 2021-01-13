@@ -80,8 +80,12 @@
                                                                 <td>{{$inbox->ip_location}}</td>
                                                                 <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
                                                                     @if(strlen($inbox->message) > 30 )
-                                                                        <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
-                                                                              data-content="{{strip_tags(strtolower($inbox->message))}}">Read More </span> @endif</td>
+                                                                        <a class="color-blue"  data-placement="bottom" title="Read More" data-toggle="modal" id="detail-modal"
+                                                                           data-target="#inbox-detail" data-name="{{$inbox->name}}" data-email ="{{$inbox->email}}"
+                                                                           data-cell="{{$inbox->cell}}" data-type="{{$inbox->type}}" data-location = "{{$inbox->ip_location}}"
+                                                                           data-message = "{{strip_tags($inbox->message)}}" data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                           data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
+                                                                        </a> @endif</td>
                                                                 <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
                                                             @endforeach
                                                         @endif
@@ -103,9 +107,7 @@
             </div>
         </div>
     </div>
-
-
-
+    @include('website.layouts.inbox-detail-modal')
     <!-- Footer start -->
     @include('website.includes.footer')
 @endsection

@@ -82,8 +82,12 @@
                                                                 <td>{{$user_support->url}}</td>
                                                                 <td>{{\Illuminate\Support\Str::limit(strtolower($user_support->message), 30, $end='.....')}}
                                                                     @if(strlen($user_support->message) > 30 )
-                                                                        <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
-                                                                              data-content="{{$user_support->message}}">Read More </span> @endif</td>
+                                                                        <a class="color-blue"  data-placement="bottom" title="Read More" data-toggle="modal" id="support-detail-modal"
+                                                                           data-target="#support-detail" data-inquire-about = "{{$user_support->inquire_about}}" data-inquire-id ="@if($user_support->inquire_about === 'Property') {{$user_support->property_id}}@else  {{$user_support->agency_id}} @endif" data-url ="{{$user_support->url}}"
+                                                                           data-message = "{{strip_tags($user_support->message)}}" data-time="{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                          ><span class="color-blue">Read More</span>
+                                                                        </a>
+                                                                         @endif</td>
                                                                 <td>{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
 
                                                             </tr>
@@ -118,30 +122,35 @@
                                                         </thead>
                                                         <tbody>
                                                         @if(count($agent_inboxes) > 0)
-
-                                                        @foreach($agent_inboxes as $inbox)
-                                                        </tr>
-                                                        <td>{{$loop->iteration}}</td>
-                                                        <td>{{$inbox->name}}</td>
-                                                        <td>{{$inbox->email}}</td>
-                                                        <td>{{$inbox->cell}}</td>
-                                                        <td>{{$inbox->type}}</td>
-                                                        <td>{{$inbox->ip_location}}</td>
-                                                        <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
-                                                            @if(strlen($inbox->message) > 30 )
-                                                                <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
-                                                                      data-content="{{strip_tags(strtolower($inbox->message))}}">Read More </span> @endif</td>
-                                                        <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
-                                                        </tr>
-                                                        @endforeach
-
+                                                            @foreach($agent_inboxes as $inbox)
+                                                                <td>{{$loop->iteration}}</td>
+                                                                <td>{{$inbox->name}}</td>
+                                                                <td>{{$inbox->email}}</td>
+                                                                <td>{{$inbox->cell}}</td>
+                                                                <td>{{$inbox->type}}</td>
+                                                                <td>{{$inbox->ip_location}}</td>
+                                                                <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
+                                                                    @if(strlen($inbox->message) > 30 )
+                                                                        <a class="color-blue"  data-placement="bottom" title="Read More" data-toggle="modal" id="detail-modal"
+                                                                           data-target="#inbox-detail" data-name="{{$inbox->name}}" data-email ="{{$inbox->email}}"
+                                                                           data-cell="{{$inbox->cell}}" data-type="{{$inbox->type}}" data-location = "{{$inbox->ip_location}}"
+                                                                           data-message = "{{strip_tags($inbox->message)}}" data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                           data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
+                                                                        </a>
+                                                                     @endif</td>
+                                                                <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                            @endforeach
                                                         @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
+
                                         </div>
+
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -151,7 +160,8 @@
         </div>
     </div>
 
-
+    @include('website.layouts.inbox-detail-modal')
+    @include('website.layouts.support-detail-modal')
 
     <!-- Footer start -->
     @include('website.includes.footer')
