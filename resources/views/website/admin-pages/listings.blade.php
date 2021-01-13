@@ -217,13 +217,13 @@
                                                                                             <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
                                                                                         </a>
                                                                                     @elseif($params['status'] != 'deleted')
-                                                                                        @if($params['status'] != 'sold')
+{{--                                                                                        @if($params['status'] != 'sold')--}}
                                                                                             <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
-                                                                                               class="btn btn-sm btn-warning  {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                                               class="btn btn-sm btn-warning "
                                                                                                data-toggle-1="tooltip" data-placement="bottom" title="edit">
                                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                             </a>
-                                                                                        @endif
+{{--                                                                                        @endif--}}
                                                                                         <a type="button" class="btn btn-sm btn-danger"
                                                                                            data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete"
                                                                                            data-record-id="{{$all_listing->id}}">
