@@ -34,6 +34,7 @@ class CronJobController extends Controller
         foreach ($columns as $column) {
             $column->status = 'expired';
             $column->save();
+            (new CountTableController())->_on_deletion_insertion_in_count_tables($column->city->name, $column->location->name, $column);
         }
         return true;
     }

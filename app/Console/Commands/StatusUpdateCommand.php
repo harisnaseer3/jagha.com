@@ -47,13 +47,7 @@ class StatusUpdateCommand extends Command
         foreach ($columns as $column) {
             $column->status = 'expired';
             $column->save();
-
-//            $city = (new City)->select('id', 'name')->where('id', '=', $column->city_id)->first();
-//            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $column->location_id)->first();
-//            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
-//            dd($city, $location);
-
-//            (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $column);
+            (new CountTableController())->_on_deletion_insertion_in_count_tables($column->city->name, $column->location->name, $column);
         }
         echo("status updated");
     }
