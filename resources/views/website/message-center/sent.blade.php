@@ -118,30 +118,30 @@
                                                         </thead>
                                                         <tbody>
                                                         @if(count($agent_inboxes) > 0)
-                                                            @foreach($agent_inboxes as $inbox)
-                                                                <td>{{$loop->iteration}}</td>
-                                                                <td>{{$inbox->name}}</td>
-                                                                <td>{{$inbox->email}}</td>
-                                                                <td>{{$inbox->cell}}</td>
-                                                                <td>{{$inbox->type}}</td>
-                                                                <td>{{$inbox->ip_location}}</td>
-                                                                <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
-                                                                    @if(strlen($inbox->message) > 30 )
-                                                                        <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
-                                                                              data-content="{{strip_tags(strtolower($inbox->message))}}">Read More </span> @endif</td>
-                                                                <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
-                                                            @endforeach
+
+                                                        @foreach($agent_inboxes as $inbox)
+                                                        </tr>
+                                                        <td>{{$loop->iteration}}</td>
+                                                        <td>{{$inbox->name}}</td>
+                                                        <td>{{$inbox->email}}</td>
+                                                        <td>{{$inbox->cell}}</td>
+                                                        <td>{{$inbox->type}}</td>
+                                                        <td>{{$inbox->ip_location}}</td>
+                                                        <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
+                                                            @if(strlen($inbox->message) > 30 )
+                                                                <span class="hover-color color-blue" data-placement="bottom" data-toggle="popover" data-trigger="hover"
+                                                                      data-content="{{strip_tags(strtolower($inbox->message))}}">Read More </span> @endif</td>
+                                                        <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                        </tr>
+                                                        @endforeach
+
                                                         @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
-
                                         </div>
-
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
