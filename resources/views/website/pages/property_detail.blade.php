@@ -53,8 +53,7 @@
                     </div>
                     <div class="col-6">
                         <div class="pull-right">
-                            <span style="    font-size: 14px;
-    font-weight: 600;">Share To</span>
+                            <span style="font-size: 14px;font-weight: 600;">Share To</span>
 
                             <a href="{{$links['facebook']}}" target="_blank">
                                 <i class="fab fa-facebook-square fa-2x icon-padding" style="color:#3b5997;"></i>
