@@ -293,10 +293,10 @@ class PropertySearchController extends Controller
     //  display detail page
     public function searchWithID(Request $request)
     {        /*validate request params */
-        if ($request->input('property_id') != null) {
+        if ($request->input('term') != null) {
             $footer_content = (new FooterController)->footerContent();
-            if (preg_match('/^[0-9]*$/', $request->input('property_id'))) {
-                $property = (new Property)->where('id', '=', $request->input('property_id'))->first();
+            if (preg_match('/^[0-9]*$/', $request->input('term'))) {
+                $property = (new Property)->where('id', '=', $request->input('term'))->first();
                 if ($property) {
                     $views = $property->views;
                     $property->views = $views + 1;
@@ -340,20 +340,48 @@ class PropertySearchController extends Controller
 
             } else {
                 $properties = $this->listingFrontend();
+                (new MetaTagController())->addMetaTags();
+                $sort = '';
+                $limit = '';
+                $sort_area = '';
+                if (request()->input('sort') !== null)
+                    $sort = request()->input('sort');
+                else
+                    $sort = 'newest';
+
+                if (request()->input('limit') !== null)
+                    $limit = request()->input('limit');
+                else
+                    $limit = '15';
+
+                if (request()->input('area_sort') !== null)
+                    $sort_area = request()->input('area_sort');
+
+//        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
                 $properties = $properties
-                    ->Where('properties.title', 'LIKE', '%' . $request->input('property_id') . '%')
-                    ->orWhere('cities.name', 'LIKE', '%' . $request->input('property_id') . '%')
-//                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('property_id') . '%')
-                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('property_id') . '%');
+                    ->Where('properties.title', 'LIKE', '%' . $request->input('term') . '%')
+                    ->orWhere('cities.name', 'LIKE', '%' . $request->input('term') . '%')
+                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%')
+//                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('term') . '%')
+                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%');
                 $properties = $properties->orderBy('created_at', 'DESC');
+
+                $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+                $property_count = $properties->count();
+
+                if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+                    $lastPage = ceil((int)$property_count / $limit);
+                    request()->merge(['page' => (int)$lastPage]);
+                }
 
                 $property_types = (new PropertyType)->all();
 
 
                 $data = [
-                    'params' => ['sort' => 'newest', 'search_term' => $request->input('property_id')],
+                    'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
                     'property_types' => $property_types,
-                    'properties' => $properties->paginate(15),
+                    'properties' => $properties->paginate($limit),
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]
                 ];
