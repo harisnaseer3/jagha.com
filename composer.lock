@@ -1404,6 +1404,10 @@
                 "social links",
                 "social share links"
             ],
+            "support": {
+                "issues": "https://github.com/jorenvh/laravel-share/issues",
+                "source": "https://github.com/jorenvh/laravel-share/tree/4.0.0"
+            },
             "time": "2021-01-09T20:47:31+00:00"
         },
         {
