@@ -194,13 +194,12 @@
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                                 </a>
                                                                             @endif
-                                                                            @if($params['status'] != 'sold' && $params['status'] != 'deleted')
+                                                                            @if($params['status'] != 'deleted')
                                                                                 <a type="button"
-                                                                                   href="{{$params['status'] == 'deleted' || $params['status'] == 'sold' ?
+                                                                                   href="{{$params['status'] == 'deleted'?
                                                                                         '': route('properties.edit', $all_listing->id)}}"
                                                                                    class="btn btn-sm btn-warning mb-1
-                                                                                    {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}
-                                                                                   {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
+                                                                                    {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}"
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="edit">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>

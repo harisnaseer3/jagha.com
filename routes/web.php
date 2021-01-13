@@ -257,7 +257,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);
-    Route::post('/change-status', 'PropertyController@changePropertyStatus')->name('admin.change.property.status')->middleware(['permission:Manage Property']);
+    Route::post('/change-status', 'PropertyAjaxCallController@changePropertyStatus')->name('admin.change.property.status')->middleware(['permission:Manage Property']);
 
 
 });

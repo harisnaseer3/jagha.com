@@ -46,8 +46,13 @@ class StatusUpdateCommand extends Command
         $columns = (new Property)->whereDate('expired_at', '<=', Carbon::now()->toDateTimeString())->get();
         foreach ($columns as $column) {
             (new CountTableController())->_delete_in_status_purpose_table($column, $column->status);
+            $city = (new City)->select('id', 'name')->where('id', '=', $column->city_id)->first();
+            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $column->location_id)->first();
+            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+
             $column->status = 'expired';
             $column->save();
+            (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $column);
             (new CountTableController)->_insert_in_status_purpose_table($column);
         }
         echo("status updated");
