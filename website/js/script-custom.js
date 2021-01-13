@@ -121,7 +121,11 @@
             data: {id: id},
             success: function (data) {
                 if (data.status === 200) {
-                    location.assign(data.data);
+                    if (data.result === 'property')
+                        location.assign(data.data);
+                    else if (data.result === 'properties') {
+
+                    }
                 } else $('#property_id-error').text(data.data)
             },
             error: function (xhr, status, error) {
@@ -276,10 +280,10 @@
 
 
     $(document).ready(function () {
-        $('#search-property-ref').submit(function (event) {
-            event.preventDefault();
-            searchWithId($('#ref-id').val());
-        });
+        // $('#search-property-ref').submit(function (event) {
+        //     event.preventDefault();
+        //     searchWithId($('#ref-id').val());
+        // });
 
 
         $('.index-form').submit(function (event) {

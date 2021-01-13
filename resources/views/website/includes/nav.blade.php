@@ -100,7 +100,7 @@
                                         <a href="https://www.aboutpakistan.com/medical">Medical</a></li>
                                     <li id="menu-item-15"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                        <a  href="/">Property</a>
+                                        <a href="/">Property</a>
                                     </li>
                                     <li id="menu-item-12"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
@@ -202,7 +202,7 @@
                                                             <a href="https://www.aboutpakistan.com/medical">Medical</a>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
-                                                            <a  href="/">Property</a></li>
+                                                            <a href="/">Property</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                                             <a href="https://www.aboutpakistan.com/mobile-packages">Mobile
                                                                 Packages</a></li>
@@ -256,7 +256,7 @@
                     <ul class="navbar-nav header-ml">
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
-                              Houses
+                                Houses
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
@@ -297,7 +297,8 @@
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                            <input class="px-3 property-id text-transform" type="text" placeholder="Property ID" name="property_id" id="ref-id" autocomplete="false">
+                            <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="property_id" id="ref-id" autocomplete="false"
+                                   value="{{isset($params['search_term']) ? $params['search_term']:'' }}">
                             <small id="property_id-error" class="help-block text-red"></small>
                             <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">
                                 <i class="fa fa-search ml-1"></i></button>
@@ -310,7 +311,8 @@
                                        aria-expanded="false">
                                         <i class="fas fa-user mr-2"></i>
                                         @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
-                                            <span class="mr-1">{{\Illuminate\Support\Facades\Auth::guard('web')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('web')->user()->id}})</span>
+                                            <span
+                                                class="mr-1">{{\Illuminate\Support\Facades\Auth::guard('web')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('web')->user()->id}})</span>
                                         @endif
 
                                     </a>

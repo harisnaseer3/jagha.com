@@ -257,7 +257,6 @@ class PropertySearchController extends Controller
             if ($request->ajax()) {
                 $data['view'] = View('website.components.property-listings',
                     [
-
                         'limit' => $limit,
                         'area_sort' => $sort_area,
                         'sort' => $sort,
@@ -293,37 +292,82 @@ class PropertySearchController extends Controller
 
     //  display detail page
     public function searchWithID(Request $request)
-    {
-        /*validate request params */
-        if ($request->input('id') != null) {
-            if (preg_match('/^[0-9]*$/', $request->input('id'))) {
-                $property = (new Property)->where('id', '=', $request->input('id'))->first();
+    {        /*validate request params */
+        if ($request->input('property_id') != null) {
+            $footer_content = (new FooterController)->footerContent();
+            if (preg_match('/^[0-9]*$/', $request->input('property_id'))) {
+                $property = (new Property)->where('id', '=', $request->input('property_id'))->first();
                 if ($property) {
-                    return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
-                } else
-                    return response()->json(['data' => 'not found', 'status' => 201]);
+                    $views = $property->views;
+                    $property->views = $views + 1;
+                    $property->save();
+                    $is_favorite = false;
+
+                    if (Auth::check()) {
+                        $is_favorite = DB::table('favorites')->select('id')
+                            ->where([
+                                ['user_id', '=', Auth::user()->getAuthIdentifier()],
+                                ['property_id', '=', $property->id],
+                            ])->exists();
+                    }
+                    $property_types = (new PropertyType)->all();
+                    $property->city = $property->city->name;
+                    $property->location = $property->location->name;
+                    (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
+                    $footer_content = (new FooterController)->footerContent();
+                    return view('website.pages.property_detail', [
+                        'property' => $property,
+                        'is_favorite' => $is_favorite,
+                        'property_types' => $property_types,
+                        'recent_properties' => $footer_content[0],
+                        'footer_agencies' => $footer_content[1],
+                    ]);
+                } else {
+                    $properties = (new Property)->newCollection();
+
+                    $property_types = (new PropertyType)->all();
+                    (new MetaTagController())->addMetaTags();
+                    $data = [
+                        'params' => ['sort' => 'newest'],
+                        'property_types' => $property_types,
+                        'properties' => $properties,
+                        'recent_properties' => $footer_content[0],
+                        'footer_agencies' => $footer_content[1]
+                    ];
+
+                    return view('website.pages.property_listing', $data);
+                }
+
+            } else {
+                $properties = $this->listingFrontend();
+                $properties = $properties
+                    ->Where('properties.title', 'LIKE', '%' . $request->input('property_id') . '%')
+                    ->orWhere('cities.name', 'LIKE', '%' . $request->input('property_id') . '%')
+//                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('property_id') . '%')
+                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('property_id') . '%');
+                $properties = $properties->orderBy('created_at', 'DESC');
+
+                $property_types = (new PropertyType)->all();
+
+
+                $data = [
+                    'params' => ['sort' => 'newest', 'search_term' => $request->input('property_id')],
+                    'property_types' => $property_types,
+                    'properties' => $properties->paginate(15),
+                    'recent_properties' => $footer_content[0],
+                    'footer_agencies' => $footer_content[1]
+                ];
+                return view('website.pages.property_listing', $data);
             }
-//            else {
-//                $property = Property::select(DB::raw('SELECT *
-//                    FROM `properties`
-//                    WHERE CONCAT(`title`, `description`) LIKE "%'.$request->input('id').'%" '));
-//
-//
-//
-//                if ($property) {
-//                    return response()->json(['data' => $property->property_detail_path($property->location->name), 'status' => 200]);
-//                } else
-//                    return response()->json(['data' => 'not found', 'status' => 201]);
-//            }
-        }
-        return response()->json(['data' => 'invalid value', 'status' => 202]);
+        } else
+            return redirect()->back()->with('error', 'No Record found, try again.');
+
     }
 
 
     /*   search from index page bottom property listing  */
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
-    public
-    function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
+    public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
         $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
 
