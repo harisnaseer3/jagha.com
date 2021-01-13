@@ -343,7 +343,7 @@ class PropertySearchController extends Controller
                 $properties = $properties
                     ->Where('properties.title', 'LIKE', '%' . $request->input('property_id') . '%')
                     ->orWhere('cities.name', 'LIKE', '%' . $request->input('property_id') . '%')
-                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('property_id') . '%')
+//                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('property_id') . '%')
                     ->orWhere('agencies.title', 'LIKE', '%' . $request->input('property_id') . '%');
                 $properties = $properties->orderBy('created_at', 'DESC');
 
