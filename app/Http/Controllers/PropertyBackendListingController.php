@@ -26,7 +26,7 @@ class PropertyBackendListingController extends Controller
         //if get get only his properties
         //if both get both
 
-        $condition = ['property_status' => $status, 'user_id' => $user];
+        $condition = ['property_status' => $status, 'user_id' => $user, 'listing_type' => 'basic_listing'];
         return DB::table('property_count_by_status_and_purposes')->select(DB::raw('sum(property_count) as count'))->where($condition);
 
     }
@@ -399,14 +399,16 @@ class PropertyBackendListingController extends Controller
             $counts[$status]['rent'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'rent')->first()->count;
             $counts[$status]['wanted'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'wanted')->first()->count;
 
-            if ($status === 'active') {
-                $counts[$status]['basic'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'basic_listing')->first()->count;
-                $counts[$status]['silver'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'silver_listing')->first()->count;
-                $counts[$status]['bronze'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'bronze_listing')->first()->count;
-                $counts[$status]['golden'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'golden_listing')->first()->count;
-                $counts[$status]['platinum'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'platinum_listing')->first()->count;
-            }
+//            if ($status === 'active') {
+//                $counts[$status]['basic'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'basic_listing')->first()->count;
+//                $counts[$status]['silver'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'silver_listing')->first()->count;
+//                $counts[$status]['bronze'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'bronze_listing')->first()->count;
+//                $counts[$status]['golden'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'golden_listing')->first()->count;
+//                $counts[$status]['platinum'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'platinum_listing')->first()->count;
+//            }
         }
+
+
         return $counts;
     }
 

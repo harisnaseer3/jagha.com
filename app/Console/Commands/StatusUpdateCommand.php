@@ -45,9 +45,10 @@ class StatusUpdateCommand extends Command
         //add  query to compare today's and expiry date of property
         $columns = (new Property)->whereDate('expired_at', '<=', Carbon::now()->toDateTimeString())->get();
         foreach ($columns as $column) {
+            (new CountTableController())->_delete_in_status_purpose_table($column, $column->status);
             $column->status = 'expired';
             $column->save();
-            (new CountTableController())->_on_deletion_insertion_in_count_tables($column->city->name, $column->location->name, $column);
+            (new CountTableController)->_insert_in_status_purpose_table($column);
         }
         echo("status updated");
     }

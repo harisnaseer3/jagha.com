@@ -304,41 +304,44 @@ class CountTableController extends Controller
         elseif ($property->platinum_listing)
             $listing_type = 'platinum_listing';
 
-        if (Auth::guard('web')->user()) {
-            if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                ->where('property_purpose', '=', $property->purpose)->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())
-                ->where('listing_type', '=', $listing_type)->exists()) {
-                DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                    ->where('property_purpose', '=', $property->purpose)
-                    ->where('user_id', '=', Auth::guard('web')->user()->getAuthIdentifier())
-                    ->where('listing_type', '=', $listing_type)->increment('property_count');
-            } else {
-                DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
-                    'user_id' => Auth::guard('web')->user()->getAuthIdentifier(), 'listing_type' => $listing_type, 'property_count' => 1]);
-            }
+//        if (Auth::guard('web')->user()) {
+        if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+            ->where('property_purpose', '=', $property->purpose)->where('user_id', '=', $property->id)
+            ->where('listing_type', '=', $listing_type)->exists()) {
+            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('user_id', '=', $property->id)
+                ->where('listing_type', '=', $listing_type)->increment('property_count');
+        } else {
+            DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
+                'user_id' => $property->id, 'listing_type' => $listing_type, 'property_count' => 1]);
+        }
+        if ($property->user_id != 1) {
             DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', 1)
                 ->where('listing_type', '=', $listing_type)->increment('property_count');
         }
-        if (Auth::guard('admin')->user()) {
-            if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                ->where('property_purpose', '=', $property->purpose)
-                ->where('user_id', '=', $property->user_id)
-                ->where('listing_type', '=', $listing_type)->exists()) {
-                DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                    ->where('property_purpose', '=', $property->purpose)
-                    ->where('user_id', '=', $property->user_id)
-                    ->where('listing_type', '=', $listing_type)->increment('property_count');
-            } else {
-                DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
-                    'user_id' => $property->user_id, 'listing_type' => $listing_type, 'property_count' => 1]);
-            }
-            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                ->where('property_purpose', '=', $property->purpose)
-                ->where('user_id', '=', 1)
-                ->where('listing_type', '=', $listing_type)->increment('property_count');
-        }
+
+//        }
+//        if (Auth::guard('admin')->user()) {
+//            if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+//                ->where('property_purpose', '=', $property->purpose)
+//                ->where('user_id', '=', $property->user_id)
+//                ->where('listing_type', '=', $listing_type)->exists()) {
+//                DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+//                    ->where('property_purpose', '=', $property->purpose)
+//                    ->where('user_id', '=', $property->user_id)
+//                    ->where('listing_type', '=', $listing_type)->increment('property_count');
+//            } else {
+//                DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
+//                    'user_id' => $property->user_id, 'listing_type' => $listing_type, 'property_count' => 1]);
+//            }
+//            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
+//                ->where('property_purpose', '=', $property->purpose)
+//                ->where('user_id', '=', 1)
+//                ->where('listing_type', '=', $listing_type)->increment('property_count');
+//        }
 
     }
 
@@ -364,36 +367,37 @@ class CountTableController extends Controller
                 ->where('user_id', '=', $property->user_id)
                 ->where('listing_type', '=', $listing_type)->where('property_count', '>', 0)->decrement('property_count');
         }
-
-        DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)
-            ->where('property_purpose', '=', $property->purpose)
-            ->where('user_id', '=', 1)
-            ->where('listing_type', '=', $listing_type)->where('property_count', '>', 0)->decrement('property_count');
+        if ($property->user_id != 1) {
+            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('user_id', '=', 1)
+                ->where('listing_type', '=', $listing_type)->where('property_count', '>', 0)->decrement('property_count');
+        }
     }
 
     public function _insertion_in_count_tables($city, $location, $property)
     {       // insertion in count tables
-        if (isset($property->agency_id)) {
-            if (DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->exists())
-                DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->increment('property_count');
-            else {
-                $listing_type = '';
-                if ($property->basic_listing)
-                    $listing_type = 'basic_listing';
-                elseif ($property->silver_listing)
-                    $listing_type = 'silver_listing';
-                elseif ($property->bronze_listing)
-                    $listing_type = 'bronze_listing';
-                elseif ($property->golden_listing)
-                    $listing_type = 'golden_listing';
-                elseif ($property->platinum_listing)
-                    $listing_type = 'platinum_listing';
-
-                DB::table('property_count_by_agencies')->insert(['agency_id' => $property->agency_id,
-                    'property_count' => 1, 'property_purpose' => $property->purpose, 'property_status' => $property->status, 'listing_type' => $listing_type]);
-            }
-
-        }
+//        if (isset($property->agency_id)) {
+//            if (DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->exists())
+//                DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->increment('property_count');
+//            else {
+//                $listing_type = '';
+//                if ($property->basic_listing)
+//                    $listing_type = 'basic_listing';
+//                elseif ($property->silver_listing)
+//                    $listing_type = 'silver_listing';
+//                elseif ($property->bronze_listing)
+//                    $listing_type = 'bronze_listing';
+//                elseif ($property->golden_listing)
+//                    $listing_type = 'golden_listing';
+//                elseif ($property->platinum_listing)
+//                    $listing_type = 'platinum_listing';
+//
+//                DB::table('property_count_by_agencies')->insert(['agency_id' => $property->agency_id,
+//                    'property_count' => 1, 'property_purpose' => $property->purpose, 'property_status' => $property->status, 'listing_type' => $listing_type]);
+//            }
+//
+//        }
 
         if (DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->exists())
             DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->increment('property_count');
@@ -427,7 +431,7 @@ class CountTableController extends Controller
     {
 
         // insertion in count tables
-        DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->decrement('property_count');
+//        DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->decrement('property_count');
 
         DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->decrement('property_count');
         DB::table('property_count_by_locations')->where('city_id', '=', $city->id)->where('location_id', '=', $location['location_id'])->decrement('property_count');
