@@ -74,6 +74,42 @@
             });
         });
 
+        $(document).on('click', '#detail-modal', function ($this) {
+            event.preventDefault();
+            const name = $(this).attr('data-name');
+            const type = $(this).attr('data-type');
+            const email = $(this).attr('data-email');
+            const cell = $(this).attr('data-cell');
+            const location = $(this).attr('data-location');
+            const message =$(this).attr('data-message');
+            const time = $(this).attr('data-time');
+            $('#name').html(name);
+            $('#user-email').html(email);
+            $('#cell').html(cell);
+            $('#type').html(type);
+            $('#location').html(location);
+            $('#message').html(message);
+            $('#time').html(time);
+
+        });
+
+        $(document).on('click', '#support-detail-modal', function ($this) {
+            event.preventDefault();
+            const inquire_about = $(this).attr('data-inquire-about');
+            const inquire_id = $(this).attr('data-inquire-id');
+            const url = $(this).attr('data-url');
+            const message =$(this).attr('data-message');
+            const time = $(this).attr('data-time');
+
+
+            $('#about').html(inquire_about);
+            $('#inquire-id').html(inquire_id);
+            $('#url').html(url);
+            $('#support-message').html(message);
+            $('#support-time').html(time);
+
+        });
+
 
         setInterval(function () {
             var docHeight = $(window).height();
