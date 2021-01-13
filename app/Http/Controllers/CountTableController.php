@@ -459,13 +459,55 @@ class CountTableController extends Controller
         // insertion in count tables
 //        DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->decrement('property_count');
 
-        DB::table('property_count_by_cities')->where('city_id', '=', $city->id)->decrement('property_count');
-        DB::table('property_count_by_locations')->where('city_id', '=', $city->id)->where('location_id', '=', $location['location_id'])->decrement('property_count');
-        DB::table('property_count_by_property_types')->where('city_id', '=', $city->id)->where('location_id', '=', $location['location_id'])->
-        where('property_type', '=', $property->type)->where('property_sub_type', '=', $property->sub_type)->decrement('property_count');
-        DB::table('property_count_by_property_purposes')->where('city_id', '=', $city->id)->where('location_id', '=', $location['location_id'])->
-        where('property_type', '=', $property->type)->where('property_sub_type', '=', $property->sub_type)->where('property_purpose', '=', $property->purpose)->
-        decrement('property_count');
+        if (DB::table('property_count_by_cities')
+            ->where('city_id', '=', $city->id)->exists()) {
+            DB::table('property_count_by_cities')
+                ->where('city_id', '=', $city->id)
+                ->where('property_count', '>', 0)
+                ->decrement('property_count');
+        }
+
+
+        if (DB::table('property_count_by_locations')
+            ->where('city_id', '=', $city->id)
+            ->where('location_id', '=', $location['location_id'])->exists()) {
+            DB::table('property_count_by_locations')
+                ->where('city_id', '=', $city->id)
+                ->where('location_id', '=', $location['location_id'])
+                ->where('property_count', '>', 0)
+                ->decrement('property_count');
+
+        }
+        if (DB::table('property_count_by_property_types')
+            ->where('city_id', '=', $city->id)
+            ->where('location_id', '=', $location['location_id'])
+            ->where('property_type', '=', $property->type)
+            ->where('property_sub_type', '=', $property->sub_type)
+            ->exists()) {
+            DB::table('property_count_by_property_types')
+                ->where('city_id', '=', $city->id)
+                ->where('location_id', '=', $location['location_id'])
+                ->where('property_type', '=', $property->type)
+                ->where('property_sub_type', '=', $property->sub_type)
+                ->where('property_count', '>', 0)
+                ->decrement('property_count');
+        }
+        if (DB::table('property_count_by_property_purposes')
+            ->where('city_id', '=', $city->id)
+            ->where('location_id', '=', $location['location_id'])
+            ->where('property_type', '=', $property->type)
+            ->where('property_sub_type', '=', $property->sub_type)
+            ->where('property_purpose', '=', $property->purpose)->exists()) {
+            DB::table('property_count_by_property_purposes')
+                ->where('city_id', '=', $city->id)
+                ->where('location_id', '=', $location['location_id'])
+                ->where('property_type', '=', $property->type)
+                ->where('property_sub_type', '=', $property->sub_type)
+                ->where('property_purpose', '=', $property->purpose)
+                ->where('property_count', '>', 0)
+                ->decrement('property_count');
+        }
+
         $this->updateTotalPropertyCount();
     }
 

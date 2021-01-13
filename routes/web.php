@@ -19,7 +19,7 @@ Route::post('/validation', 'AgencyController@validateFrom')->name('validation');
 Route::post('/subscribe', 'SubscriberController@store')->name('subscribe');
 Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
 Route::get('/load-more-data', 'BlogController@more_data');
-Route::post('/search', 'PropertySearchController@searchWithID')->name('property.search.id');
+Route::get('/search', 'PropertySearchController@searchWithID')->name('property.search.id');
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
 Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
 Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');

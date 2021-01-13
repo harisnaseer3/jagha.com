@@ -296,8 +296,8 @@
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">
-                            {{ Form::open(['route' => ['property.search.id'], 'method' => 'post', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                            <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="property_id" id="ref-id" autocomplete="false"
+                            {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
+                            <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id" autocomplete="false"
                                    value="{{isset($params['search_term']) ? $params['search_term']:'' }}">
                             <small id="property_id-error" class="help-block text-red"></small>
                             <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">
