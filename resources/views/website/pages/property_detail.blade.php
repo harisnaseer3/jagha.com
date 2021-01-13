@@ -18,32 +18,68 @@
 
     {{--    <div class="properties-details-page  content-area-7">--}}
     <div class="properties-page2 properties-details-page content-area-7" id="details-page">
+        @php $links = Share::currentPage()
+                                        ->facebook()
+                                        ->twitter()
+                                        ->linkedin('Extra linkedin summary can be passed here')
+                                        ->whatsapp()
+                                        ->getRawLinks(); @endphp
 
         <div>
             <div class="container inline-search-area none-992 property-detail-bg-style">
-                <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2">
+                <div class="row">
+                    <div class="col-6 my-auto">
+                        <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2">
                                 <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
                                         <span class="breadcrumb-link" itemprop="name">Home</span></a>
                                     <meta itemprop="position" content="1">
                                 </span>
-                    <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
-                    <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span class="mx-2" aria-label="Link delimiter"> <i class="fal fa-greater-than"></i></span>
+                            <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{asset('/')}}" title="Property Portal" itemprop="item">
                                         <span itemprop="name" class="m-0">Property</span></a>
                                     <meta itemprop="position" content="2"></span>
 
-                    <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
+                            <span class="mx-2"> <i class="fal fa-greater-than"></i></span>
 
-                    <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+                            <span itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <span
-                                        itemprop="name"> {{$property->sub_type}} For {{$property->purpose}}<span> (<strong class="theme-dark-blue">Property ID: </strong>{{$property->id}})</span></span>
+                                        itemprop="name"> {{$property->sub_type}} For {{$property->purpose}}<span> (<strong
+                                                class="theme-dark-blue">Property ID: </strong>{{$property->id}})</span></span>
                                     <meta itemprop="position" content="3">
                                 </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="pull-right">
+                            <span style="    font-size: 14px;
+    font-weight: 600;">Share To</span>
+
+                            <a href="{{$links['facebook']}}" target="_blank">
+                                <i class="fab fa-facebook-square fa-2x icon-padding" style="color:#3b5997;"></i>
+                            </a>
+                            <a href="{{$links['whatsapp']}}" target="_blank">
+                                <i class="fab fa-whatsapp fa-2x icon-padding" style="color: #48C458;"></i>
+                            </a>
+                            <a href="{{$links['linkedin']}}" target="_blank">
+                                <i class="fab fa-linkedin fa-2x icon-padding" style="color: #069;"></i>
+                            </a>
+                            <a href="{{$links['twitter']}}" target="_blank">
+                                <i class="fab fa-twitter fa-2x icon-padding" style="color:#00aced;"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
                 </div>
+
+
                 <div class="heading-properties-2">
                     <div class="row">
                         <div class="col-md-12">
+
+
                             <div><h1 class="property-detail-title" aria-label="Property header">{{$property->title}}</h1></div>
                             <div class="pull-left">
                                 <h2 style="font-weight: 400; font-size:20px;">
@@ -54,6 +90,8 @@
                                 <h6 class="color-555" style="font-weight: 400; font-size:14px;"><i class="fa fa-map-marker"></i> {{ $property->location }}, {{ $property->city }}</h6>
                             </div>
                             <div class="pull-right">
+
+
                                 @if($property->price != 0)
                                     <h3><span class="text-right"> <span aria-label="currency"> PKR </span> <span aria-label="price">  {{$property->price}}</span></span></h3>
                                 @endif
@@ -64,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
         </div>
 
         <div class="spinner-border text-primary"></div>
@@ -358,6 +396,7 @@
     <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
     <script src="{{asset('website/js/detail-page.js')}}" defer></script>
+    <script src="{{ asset('js/share.js') }}"></script>
 
 
 @endsection
