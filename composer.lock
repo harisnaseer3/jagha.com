@@ -1159,6 +1159,10 @@
                 "user agent",
                 "user-agent"
             ],
+            "support": {
+                "issues": "https://github.com/hisorange/browser-detect/issues",
+                "source": "https://github.com/hisorange/browser-detect/tree/4.3.0"
+            },
             "time": "2020-11-07T16:28:56+00:00"
         },
         {
@@ -4240,6 +4244,10 @@
                 "location",
                 "php"
             ],
+            "support": {
+                "issues": "https://github.com/stevebauman/location/issues",
+                "source": "https://github.com/stevebauman/location/tree/v6.0.0"
+            },
             "time": "2021-01-03T22:54:48+00:00"
         },
         {
@@ -8917,5 +8925,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
