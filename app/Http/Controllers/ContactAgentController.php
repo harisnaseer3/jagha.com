@@ -38,6 +38,7 @@ class ContactAgentController extends Controller
             $sent_to = '';
             $name = '';
             $property = '';
+            $agency = '';
             if ($request->filled('agency')) {
                 $agency = (new Agency)->select('email', 'user_id')->where('id', '=', $request->input('agency'))->first();
                 $user = (new User)->select('name')->where('id', '=', $agency->user_id)->first();
@@ -72,11 +73,13 @@ class ContactAgentController extends Controller
                     'ip_location' => $country
                 ]);
                 $data['ip_location'] = $country;
-//                Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
-                if($property != ''){
-                    Notification::send($sent_to, new InquiryNotification($data,$name));
+                if ($property != '') {
+                    $property = (new Property)->where('id', '=', $request->input('property'))->first();
+                    Notification::send(User::getUserByEmail($sent_to), new InquiryNotification($data, $name, $property));
                 }
-
+                if ($agency != null) {
+                    Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
+                }
 
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else

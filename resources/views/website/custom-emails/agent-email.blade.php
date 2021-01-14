@@ -287,8 +287,8 @@
                         <tr style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                             <td class="logo" style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;">
                                 <h1 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin: 0;"><img
-                                    src="https://property.aboutpakistan.com/img/logo/logo-with-text-309x66.png" alt="Logo" title="Logo"
-                                    style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;-ms-interpolation-mode: bicubic;"></h1>
+                                        src="https://property.aboutpakistan.com/img/logo/logo-with-text-309x66.png" alt="Logo" title="Logo"
+                                        style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;-ms-interpolation-mode: bicubic;"></h1>
                             </td>
                         </tr>
                     </table>
@@ -316,11 +316,11 @@
 
                                             <h3 class="name"
                                                 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
-                                                Hello {{ ucwords($user->name) }}</h3>
+                                                Hello {{ ucwords($user) }}</h3>
                                             <br>
 
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an inquiry for  property listing at <a
-                                                href="https://www.aboutpakistan.com">www.aboutpakistan.com</a>  A copy of this inquiry has also been added to your AboutPakistan.com  Inbox in the Message Center.</span>
+                                                    href="https://www.aboutpakistan.com">www.aboutpakistan.com</a>  A copy of this inquiry has also been added to your AboutPakistan.com  Inbox in the Message Center.</span>
                                             <br>
                                             <br>
 
@@ -336,7 +336,7 @@
                                             <br>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{User Message}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{strip_tags($data['message'])}}</span>
                                             <br>
                                             <br>
                                             <b>-------------------------------</b>
@@ -347,16 +347,16 @@
                                             <br>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name:</strong>{{name}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name:</strong>{{$data['name']}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email:</strong>{{email}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email:</strong>{{$data['email']}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone:</strong>{{phone}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone:</strong>{{$data['phone']}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>IP Location:</strong>{{location}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>IP Location:</strong>{{$data['ip_location']}}</span>
                                             <br>
                                             <br>
                                             <b>-------------------------------</b>
@@ -367,17 +367,18 @@
                                             <br>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property:</strong>{{title}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property:</strong>{{$property->title}}</span>
                                             <br>
 
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Location:</strong>{{title}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Location:</strong>{{ $property->location->name , $property->city->name }}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property ID:</strong>{{id}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property ID:</strong>{{$property->id}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property Url:</strong>{{url}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property Url:</strong><a
+                                                    href="{{$property->property_detail_path()}}">Go to Property</a></span>
                                             <br>
                                             <br>
 

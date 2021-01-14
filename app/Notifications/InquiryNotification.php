@@ -10,24 +10,27 @@ use Illuminate\Notifications\Notification;
 class InquiryNotification extends Notification
 {
     use Queueable;
+
     protected $data;
     protected $name;
+    protected $property;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($data,$name)
+    public function __construct($data, $name, $property)
     {
         $this->data = $data;
         $this->name = $name;
+        $this->property = $property;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -38,27 +41,17 @@ class InquiryNotification extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->view('website.custom-emails.agent-email', [
+                'property' => $this->property,
+                'data' => $this->data,
+                'user' => $this->name,
+            ]);
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
 }
