@@ -277,7 +277,7 @@
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
                                href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}">
-                                My Property Agencies</a>
+                                My Agencies</a>
                         </li>
                         @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
                         @if(count($agencies)> 0)
