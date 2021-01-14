@@ -62,16 +62,19 @@ class ContactAgentController extends Controller
                 }
 
 
-                DB::table('agent_inboxes')->insert([
-                    'sender_id' => Auth::user()->getAuthIdentifier(),
-                    'user_id' => User::getUserByEmail($sent_to)->id,
-                    'name' => $request->has('name') ? $request->name : Auth::user()->name,
-                    'email' => $request->has('email') ? $request->email : Auth::user()->email,
-                    'cell' => $request->has('cell') ? $request->cell : Auth::user()->cell,
-                    'message' => $request->input('message'),
-                    'type' => $request->input('i_am'),
-                    'ip_location' => $country
-                ]);
+                if(Auth::check()){
+                    DB::table('agent_inboxes')->insert([
+                        'sender_id' => Auth::user()->getAuthIdentifier(),
+                        'user_id' => User::getUserByEmail($sent_to)->id,
+                        'name' => $request->has('name') ? $request->input('name') : Auth::user()->name,
+                        'email' => $request->has('email') ? $request->input('email') : Auth::user()->email,
+                        'cell' => $request->has('cell') ? $request->input('cell') : Auth::user()->cell,
+                        'message' => $request->input('message'),
+                        'type' => $request->input('i_am'),
+                        'ip_location' => $country
+                    ]);
+                }
+
                 $data['ip_location'] = $country;
                 if ($property != '') {
                     $property = (new Property)->where('id', '=', $request->input('property'))->first();
