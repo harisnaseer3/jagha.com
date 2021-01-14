@@ -8,10 +8,13 @@ use App\Mail\ContactAgentMail;
 use App\Models\Agency;
 use App\Models\Dashboard\User;
 use App\Models\Property;
+use App\Notifications\InquiryNotification;
+use App\Notifications\SupportNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use IpLocation;
 
@@ -34,6 +37,7 @@ class ContactAgentController extends Controller
             $data = $request->all();
             $sent_to = '';
             $name = '';
+            $property = '';
             if ($request->filled('agency')) {
                 $agency = (new Agency)->select('email', 'user_id')->where('id', '=', $request->input('agency'))->first();
                 $user = (new User)->select('name')->where('id', '=', $agency->user_id)->first();
@@ -68,7 +72,11 @@ class ContactAgentController extends Controller
                     'ip_location' => $country
                 ]);
                 $data['ip_location'] = $country;
-                Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
+//                Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
+                if($property != ''){
+                    Notification::send($sent_to, new InquiryNotification($data,$name));
+                }
+
 
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else

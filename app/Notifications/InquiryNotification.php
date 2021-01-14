@@ -2,26 +2,26 @@
 
 namespace App\Notifications;
 
-use App\Models\Dashboard\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SupportNotification extends Notification
+class InquiryNotification extends Notification
 {
     use Queueable;
-    protected $support;
-
+    protected $data;
+    protected $name;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($support)
+    public function __construct($data,$name)
     {
-        $this->support = $support;
+        $this->data = $data;
+        $this->name = $name;
     }
 
     /**
@@ -43,21 +43,10 @@ class SupportNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        if($this->support->inquire_about === 'Property'){
-            $id = $this->support->property_id;
-        }
-        else{
-            $id = $this->support->agency_id;
-
-        }
-
         return (new MailMessage)
-            ->view('website.custom-emails.notification-email-template',[
-                'user' => 'Emails Administrator',
-                'title' => 'A new Support Ticket',
-                'content' => "{$this->support->message}",
-                'infoText'   => 'Thank you for using About Pakistan Properties.'
-            ]);
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
