@@ -365,7 +365,7 @@ class PropertySearchController extends Controller
                     ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%')
 //                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('term') . '%')
                     ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%');
-                $properties = $properties->orderBy('created_at', 'DESC');
+//                $properties = $properties->orderBy('created_at', 'DESC');
 
                 $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
                 $property_count = $properties->count();
@@ -377,18 +377,31 @@ class PropertySearchController extends Controller
 
                 $property_types = (new PropertyType)->all();
 
+                if ($request->ajax()) {
+                    $data['view'] = View('website.components.property-listings',
+                        [
+                            'limit' => $limit,
+                            'area_sort' => $sort_area,
+                            'sort' => $sort,
+                            'params' => $request->all(),
+                            'properties' => $properties->paginate($limit)
+                        ])->render();
+                    return $data;
+                } else {
+                    $data = [
+                        'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
+                        'property_types' => $property_types,
+                        'properties' => $properties->paginate($limit),
+                        'recent_properties' => $footer_content[0],
+                        'footer_agencies' => $footer_content[1]
+                    ];
+                    return view('website.pages.property_listing', $data);
+                }
 
-                $data = [
-                    'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
-                    'property_types' => $property_types,
-                    'properties' => $properties->paginate($limit),
-                    'recent_properties' => $footer_content[0],
-                    'footer_agencies' => $footer_content[1]
-                ];
-                return view('website.pages.property_listing', $data);
             }
         } else
             return redirect()->back()->with('error', 'No Record found, try again.');
+
 
     }
 
