@@ -255,10 +255,10 @@
                 });
             }
         });
-        $('#search-property-ref').submit(function (event) {
-            event.preventDefault();
-            searchWithId($('#ref-id').val());
-        });
+        // $('#search-property-ref').submit(function (event) {
+        //     event.preventDefault();
+        //     // searchWithId($('#ref-id').val());
+        // });
 
     });
 })(jQuery);
