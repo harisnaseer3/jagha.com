@@ -53,7 +53,7 @@
 
                                             <div class="card">
                                                 <div class="card-header theme-blue text-white">
-                                                    Inbox
+                                                    Customer Inquiry Mails
                                                 </div>
                                                 <div class="card-body">
                                                     <table id="customer-mails" class="display" style="width: 100%">
@@ -72,6 +72,7 @@
                                                         <tbody>
                                                         @if(count($agent_inboxes) > 0)
                                                             @foreach($agent_inboxes as $inbox)
+                                                                <tr>
                                                                 <td>{{$loop->iteration}}</td>
                                                                 <td>{{$inbox->name}}</td>
                                                                 <td>{{$inbox->email}}</td>
@@ -87,6 +88,7 @@
                                                                            data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
                                                                         </a> @endif</td>
                                                                 <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                                </tr>
                                                             @endforeach
                                                         @endif
                                                         </tbody>
