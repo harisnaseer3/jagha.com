@@ -96,12 +96,18 @@
 
     <!-- Footer start -->
     @include('website.includes.footer')
+    @include('website.layouts.change-user-status')
 @endsection
 
 @section('script')
-    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
-    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('website/js/user-profile.js')}}"></script>
+    <script src="{{asset('website/js/agency-users.js')}}"></script>
+    <script>
+        (function ($) {
+            $('#status-modal').on('show.bs.modal', function (event) {
+                let record_id = $(event.relatedTarget).data('record-id');
+                $(this).find('.modal-body #agency-user-id').val(record_id);
+            });
+        })(jQuery);
+    </script>
 @endsection
