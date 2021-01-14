@@ -77,8 +77,8 @@
                                                 @if(count($agency_users) > 0)
                                                     <span class="pull-right mx-1 my-2">
                                                     <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
-                                                        <option value disabled data-index="-1">Select Contact Person</option>
-                                                        <option value="all" selected>All</option>
+                                                        <option value disabled data-index="-1">Select Agency User</option>
+                                                        <option value="all" selected>All Agency Users</option>
                                                         @foreach (Auth::user()->agencies as $agency)
                                                             <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
                                                             @foreach ($agency->agencyUsers as $agency_user)
@@ -103,9 +103,9 @@
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
                                                                 <td>Added By</td>
-                                                                <td>Contact Person</td>
-                                                                <td>Contact #</td>
-                                                                <td>Property Type</td>
+{{--                                                                <td>Contact Person</td>--}}
+{{--                                                                <td>Contact #</td>--}}
+                                                                <td>Listed For</td>
                                                                 <td>Listed Date</td>
                                                                 @if($params['status'] == 'active')
                                                                     <td>Activation Date</td>
@@ -131,8 +131,8 @@
                                                                             <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                         @endif
                                                                         <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
-                                                                        <td>{{$all_listing->contact_person}}</td>
-                                                                        <td>{{$all_listing->cell}}</td>
+{{--                                                                        <td>{{$all_listing->contact_person}}</td>--}}
+{{--                                                                        <td>{{$all_listing->cell}}</td>--}}
                                                                         <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
                                                                         <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
 
