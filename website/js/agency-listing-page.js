@@ -148,7 +148,7 @@
             let agency = $(this).closest('.contact-container').find('input[name=agent]').val();
             // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
             let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
-            let message = 'I would like to gather information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest by phone or by email.';
+            let message = 'I would like to inquire information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest.';
 
             phone = $(this).closest('.contact-container').find('input[name=phone]').val();
             // console.log(property, agency, reference,);

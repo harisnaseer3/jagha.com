@@ -245,7 +245,7 @@
         let anchor_link = '<a href="' + property_link + '" style="text-decoration:underline; color:blue">' + property_link + ' </a>';
         let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>.';
 
-        let message = 'I would like to gather information about your property\n' + anchor_link + ' being displayed at ' + link + 'having ID' + property + '<br><br> Please contact me at your earliest by phone or by email.';
+        let message = 'I would like to inquire about your property\n' + anchor_link + 'Property ID <span style="text-decoration:underline; color:blue">' + property + '</span> displayed at ' + link + '<br><br> Please contact me at your earliest.';
 
         phone = $(this).closest('.contact-container').find('input[name=phone]').val();
         let editable_div = $('.editable-div');
