@@ -97,6 +97,7 @@
     <!-- Footer start -->
     @include('website.includes.footer')
     @include('website.layouts.change-user-status')
+
 @endsection
 
 @section('script')

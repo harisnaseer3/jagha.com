@@ -6,7 +6,7 @@
                     <span aria-hidden="true">×</span></a>
 
                 <div class="text-center">
-                    <p>Do you really want to @if($agency_user->is_active === '0')  activate @else deactivate @endif agency user account?</p>
+                    <p>Do you really want to @if(isset($agency_user)) @if($agency_user->is_active === '0')  activate @else deactivate @endif @endif agency user account?</p>
                     {!! Form::open(['route' => ['agencies.destroy-user'], 'method' => 'delete']) !!}
                     <input type="hidden" id="agency-user-id" name="agency_user_id" />
                     <button type="submit"  class="btn btn-sm btn-success">Confirm</button>
