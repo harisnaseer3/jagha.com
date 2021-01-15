@@ -38,7 +38,7 @@ class MessageCenterController extends Controller
     public function inbox()
     {
         $user_id = Auth::guard('web')->user()->getAuthIdentifier();
-        $agent_inboxes = (new AgentInbox)->where('user_id',$user_id)->get();
+        $agent_inboxes = (new AgentInbox)->where('user_id',$user_id)->orderBy('id','desc')->get();
 
         return view('website.message-center.inbox',
             [
@@ -51,8 +51,8 @@ class MessageCenterController extends Controller
     public function sent()
     {
         $user_id = Auth::guard('web')->user()->getAuthIdentifier();
-        $user_supports = (new Support)->where('user_id',$user_id)->get();
-        $agent_inboxes = (new AgentInbox)->where('sender_id',$user_id)->get();
+        $user_supports = (new Support)->where('user_id',$user_id)->orderBy('id','desc')->get();
+        $agent_inboxes = (new AgentInbox)->where('sender_id',$user_id)->orderBy('id','desc')->get();
         return view('website.message-center.sent',
             [
                 'agent_inboxes' => $agent_inboxes,

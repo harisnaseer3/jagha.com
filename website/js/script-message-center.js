@@ -2,16 +2,20 @@
 
     $(document).ready(function () {
         $('#user-notification').DataTable({
-            "scrollX": true
+            "scrollX": true, "ordering": false,
+            responsive: true
         });
         $('#customer-mails').DataTable({
-            "scrollX": true
+            "scrollX": true, "ordering": false,
+            responsive: true
         });
         $('#support-mails').DataTable({
-            "scrollX": true
+            "scrollX": true, "ordering": false,
+            responsive: true
         });
         $('#inquiry-mails').DataTable({
-            "scrollX": true
+            "scrollX": true, "ordering": false,
+            responsive: true
         });
         $('[data-toggle="popover"]').popover();
         $(document).on('click', '.mark-as-read', function () {
@@ -81,7 +85,7 @@
             const email = $(this).attr('data-email');
             const cell = $(this).attr('data-cell');
             const location = $(this).attr('data-location');
-            const message =$(this).attr('data-message');
+            const message = $(this).attr('data-message');
             const time = $(this).attr('data-time');
             $('#name').html(name);
             $('#user-email').html(email);
@@ -98,7 +102,7 @@
             const inquire_about = $(this).attr('data-inquire-about');
             const inquire_id = $(this).attr('data-inquire-id');
             const url = $(this).attr('data-url');
-            const message =$(this).attr('data-message');
+            const message = $(this).attr('data-message');
             const time = $(this).attr('data-time');
 
 

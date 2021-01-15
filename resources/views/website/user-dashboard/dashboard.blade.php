@@ -266,12 +266,16 @@
     <script>
         $('#sale-properties').DataTable(
             {
-                "scrollX": true
+                "scrollX": true,
+                "ordering": false,
+                responsive: true
             }
         );
         $('#rent-properties').DataTable(
             {
-                "scrollX": true
+                "scrollX": true,
+                "ordering": false,
+                responsive: true
             }
         );
         $('#delete').on('show.bs.modal', function (event) {
