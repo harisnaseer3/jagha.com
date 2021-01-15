@@ -749,7 +749,7 @@
             // $('.agency-user-block').hide();
             // $('.user-details-block').hide();
             // $('.contact-person-block').hide();
-            console.log('ji');
+
             $('.contact_person_spinner').show();
             let agency_val = $(this).val();
             $('#contact_person_input').removeAttr('required').attr('disable', 'true');
@@ -846,7 +846,6 @@
                     // console.log(xhr);
                 },
                 complete: function (url, options) {
-                    console.log('called 2');
                     getUserData($('#contact_person option:selected').val());
                 }
             });
