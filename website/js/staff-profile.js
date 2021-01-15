@@ -50,6 +50,18 @@
         input.addEventListener('change', reset);
         input.addEventListener('keyup', reset);
     }
+    $.validator.addMethod("checklower", function (value) {
+        return /[a-z]/.test(value);
+    });
+    $.validator.addMethod("checkupper", function (value) {
+        return /[A-Z]/.test(value);
+    });
+    $.validator.addMethod("checkdigit", function (value) {
+        return /[0-9]/.test(value);
+    });
+    $.validator.addMethod("checkspecialchr", function (value) {
+        return /[#?!@$%^&*-]/.test(value);
+    });
 
     $(document).ready(function () {
         // Initialize Select2 Elements
@@ -88,105 +100,29 @@
         const selected_value = $(this).val();
         if(selected_value === 'Existing User'){
             $('#new-user-details').hide();
+            $('input[name=name]').removeAttr('required').attr('disable', 'true');
+            $('input[name=account_password]').removeAttr('required').attr('disable', 'true');
+            $('input[name=confirm_password]').removeAttr('required').attr('disable', 'true');
+            $('input[name=mobile]').removeAttr('required').attr('disable', 'true');
+            $('input[name=phone]').removeAttr('required').attr('disable', 'true');
+            $('#phone').removeAttr('required').attr('disable', 'true');
+            $('input[name="mobile_#"]').removeAttr('required').attr('disable', 'true');
         }
         else{
             $('#new-user-details').show();
+            $('input[name=name]').attr('required','true').attr('disable', 'false');
+            $('input[name=account_password]').attr('required','true').attr('disable', 'false');
+            $('input[name=confirm_password]').attr('required','true').attr('disable', 'false');
+            $('input[name=mobile]').attr('required','true').attr('disable', 'false');
+            $('input[name=phone]').attr('required','true').attr('disable', 'false');
+            $('#phone').attr('required','true').attr('disable', 'false');
+            $('input[name="mobile_#"]').attr('required','true').attr('disable', 'false');
         }
 
     });
-    $('.btn-accept').on('click', function () {
-        let alert = $(this);
-        let agency_id = alert.attr('data-agency');
-        let user_id = alert.attr('data-user');
-        let notification_id = alert.attr('data-id');
 
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: window.location.origin + '/dashboard/agencies/accept-invitation',
-            data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                if (data.status === 200) {
-                    alert.closest('.alert').remove();
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            },
-            complete: function (url, options) {
 
-            }
-        });
-    });
-    $('.btn-reject').on('click', function () {
-        let alert = $(this);
-        let notification_id = alert.attr('data-id');
 
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: window.location.origin + '/dashboard/agencies/reject-invitation',
-            data: {'notification_id': notification_id},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                if (data.status === 200) {
-                    alert.closest('.alert').remove();
-                }
-            },
-            error: function (xhr, status, error) {
-                // console.log(xhr);
-                // console.log(status);
-                // console.log(error);
-            },
-            complete: function (url, options) {
-
-            }
-        });
-    });
-    $('.mark-as-read').on('click', function () {
-        let alert = $(this);
-        let notification_id = alert.attr('data-id');
-
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: window.location.origin + '/dashboard/property-notification',
-            data: {'notification_id': notification_id},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                if (data.status === 200) {
-                    // console.log(alert);
-                    alert.closest('.alert').remove();
-                }
-            },
-            error: function (xhr, status, error) {
-                // console.log(xhr);
-                // console.log(status);
-                // console.log(error);
-            },
-            complete: function (url, options) {
-
-            }
-        });
-    });
 
     let phone_num = $("#phone");
     let mobile_num = $("#cell");
@@ -223,23 +159,30 @@
     });
     form.validate({
         rules: {
-            'mobile_#': {
-                required: true,
+            'account_password': {
+                required: function (element) {
+                    console.log($('input[name=add]:checked').val());
+                    return $('input[name=add]:checked').val() === 'New User';
+                },
+                // minlength: 8,
+                // maxlength: 20,
+                // checklower: true,
+                // checkupper: true,
+                // checkdigit: true,
+                // checkspecialchr: true,
             },
-            'mobile': {
-                required: true,
-            },
-            'phone_check': {
-                empty: true,
-            },
-            contact_email: {
-                required: true,
-                email: true
-            },
+            // 'confirm_password': {
+            //     equalTo: "#account_password"
+            // }
         },
         messages: {
-            'mobile': " please enter a valid value.",
-            'phone_check': "",
+            // 'account_password': {
+            //     pwcheck: "Password is not strong enough",
+            //     checklower: "Need atleast 1 lowercase alphabet",
+            //     checkupper: "Need atleast 1 uppercase alphabet",
+            //     checkdigit: "Need atleast 1 digit",
+            //     checkspecialchr: "Need atleast 1 special character"
+            // },
         },
         errorElement: 'span',
         errorClass: 'error help-block text-red',

@@ -1,5 +1,7 @@
 {{ Form::open(['route' => ['agencies.store-staff'], 'method' => 'post', 'class'=> 'data-insertion-form']) }}
+
 <div class="card-body">
+    {{ Form::bsRadio('add','New User', ['required' => true, 'list' => ['New User','Existing User'],'display' => 'block','class'=>'mt-3']) }}
     @php $agencies = Auth::guard('web')->user()->agencies->where('status', 'verified') @endphp
     @if(!empty($agencies))
         <div class="form-group row">
@@ -22,6 +24,7 @@
     @endif
 
     {{ Form::bsEmail('email',null, ['required' => true]) }}
+    <div id="new-user-details">
     {{ Form::bsText('name', null, ['required' => true]) }}
     {{ Form::bsPassword('account_password', ['required' => true, 'id' => 'account_password', 'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
     {{ Form::bsPassword('confirm_password', ['required' => true, 'id'=>'confirm_password']) }}
@@ -35,6 +38,7 @@
     </div>
     <div id="city-name-div" style="display:none;">
         {{ Form::bsText('city_name', null, ['id'=>'city-name']) }}
+    </div>
     </div>
     {{ Form::bsRadio('send_verification_mail','No', ['required' => true, 'list' => ['No','Yes'],'display' => 'block','class'=>'mt-3']) }}
 </div>

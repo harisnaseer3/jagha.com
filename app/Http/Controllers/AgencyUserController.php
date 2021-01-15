@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agency;
+use App\Models\AgencyUser;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Models\UserInvite;
@@ -158,32 +159,58 @@ class AgencyUserController extends Controller
         if ($request->city != null && $request->country === 'Pakistan') {
             $request->city_name = $request->city;
         }
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'phone' => 'nullable|string', // +92-511234567
-            'mobile' => 'required', // +92-3001234567
-            'address' => 'nullable|string',
-            'zip_code' => 'nullable|digits:5',
-            'country' => 'required|string',
-            'community_string' => 'nullable|string',
-            'about_yourself' => 'nullable|string|max:4096',
-            'upload_new_picture.*' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
-            'city_name' => 'nullable|string|max:255'
-        ]);
+        if ($request->add === 'New User') {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users',
+                'phone' => 'nullable|string', // +92-511234567
+                'mobile' => 'required', // +92-3001234567
+                'address' => 'nullable|string',
+                'zip_code' => 'nullable|digits:5',
+                'country' => 'required|string',
+                'community_string' => 'nullable|string',
+                'about_yourself' => 'nullable|string|max:4096',
+                'upload_new_picture.*' => 'nullable|image|mimes:jpeg,png,jpg|max:128',
+                'city_name' => 'nullable|string|max:255'
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email',
+            ]);
+        }
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
-        $user = User::createUser($request->input());
         $agency = (new Agency)->where('id', $request->agency_id)->first();
-        if (isset($user->id) && isset($agency->id)) {
-            DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
-            if ($request->send_verification_mail === 'Yes') {
-                $user->notify(new SendMailToJoinNotification($agency));
+        if ($request->add === 'New User') {
+            $user = User::createUser($request->input());
+            if (isset($user->id) && isset($agency->id)) {
+                DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
+                if ($request->send_verification_mail === 'Yes') {
+                    $user->notify(new SendMailToJoinNotification($agency));
+                }
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
             }
-        } else {
+
+        } elseif ($request->add === 'Existing User') {
+            $user = User::getUserByEmail($request->email);
+            $condition = ['user_id' => $user->id, 'agency_id'=> $agency->id];
+            $agency_user = (new AgencyUser())->where($condition)->first();
+            if(isset($agency_user->id)){
+                return redirect()->back()->withInput()->with('error', 'Error storing record, user has already been registered to the agency');
+            }
+            if (isset($user->id) && isset($agency->id)) {
+                DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
+                if ($request->send_verification_mail === 'Yes') {
+                    $user->notify(new SendMailToJoinNotification($agency));
+                }
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
+            }
+        }
+        else {
             return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
         }
         return redirect()->back()->with('success', 'Agency user successfully added');
