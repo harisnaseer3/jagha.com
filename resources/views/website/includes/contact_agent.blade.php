@@ -60,7 +60,7 @@
         {{ Form::close() }}
         <button class="btn btn-block mt-2 btn-call" data-toggle="modal" data-target="#CallModel">Call</button>
         <a href="{{$links['whatsapp']}}" target="_blank" class="btn search-submit-btn btn-block btn-whatsapp text-center">
-            <i class="fab fa-whatsapp fa-2x  mr-2" style="color: #48C458;"></i>Share To Whatsapp
+            <i class="fab fa-whatsapp fa-2x  mr-2"></i>Share To Whatsapp
         </a>
     </div>
 </div>
