@@ -56,6 +56,7 @@
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('website/js/portfolio-page.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}"></script>
+{{--    <script src="{{asset('website/js/portfolio-page.js')}}"></script>--}}
+    <script src="{{asset('website/js/edit-portfolio-page.js')}}"></script>
 @endsection
