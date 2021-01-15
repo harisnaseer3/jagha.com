@@ -321,7 +321,7 @@ class PropertyController extends Controller
             }
             event(new NotifyAdminOfNewProperty($property));
 
-            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'asc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
+            return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
@@ -592,7 +592,7 @@ class PropertyController extends Controller
             }
 
             return redirect()->route('properties.listings',
-                ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '10',
+                ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
