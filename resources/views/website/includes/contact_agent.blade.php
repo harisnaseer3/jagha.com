@@ -51,7 +51,8 @@
         @endif
         <div class="text-center">
             @if($property->email == null)
-                <button class="btn btn-block mt-2 btn-email disabled" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>">Email</button>
+                <div  data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                        class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
             @else
                 {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
             @endif
