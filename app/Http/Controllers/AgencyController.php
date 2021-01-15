@@ -495,7 +495,7 @@ class AgencyController extends Controller
                     'purpose' => 'all',
                     'user' => Auth::user()->getAuthIdentifier(),
                     'sort' => 'id',
-                    'order' => 'asc',
+                    'order' => 'desc',
                     'page' => 10,
                 ])->with('success', 'Agency profile has been saved.');
         } catch (Throwable $e) {
@@ -638,7 +638,7 @@ class AgencyController extends Controller
                     'purpose' => 'all',
                     'user' => Auth::user()->getAuthIdentifier(),
                     'sort' => 'id',
-                    'order' => 'asc',
+                    'order' => 'desc',
                     'page' => 10,
                 ])->with('success', 'Agency profile has been updated.');
             }

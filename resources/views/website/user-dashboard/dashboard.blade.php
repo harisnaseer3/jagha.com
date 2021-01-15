@@ -23,7 +23,7 @@
 
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6 col-lg-3">
-                                        <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                        <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
                                                 <div class="info-box-content">
@@ -34,7 +34,7 @@
                                         </a>
                                     </div>
                                     <div class="col-sm-6 col-md-6 col-lg-3">
-                                        <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                        <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>
                                                 <div class="info-box-content">
@@ -45,7 +45,7 @@
                                         </a>
                                     </div>
                                     <div class="col-sm-6 col-md-6 col-lg-3">
-                                        <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                        <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>
                                                 <div class="info-box-content">
@@ -56,7 +56,7 @@
                                         </a>
                                     </div>
                                     <div class="col-sm-6 col-md-6 col-lg-3">
-                                        <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">
+                                        <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>
                                                 <div class="info-box-content">
