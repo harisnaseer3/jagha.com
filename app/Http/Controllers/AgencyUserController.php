@@ -198,12 +198,12 @@ class AgencyUserController extends Controller
         } elseif ($request->add === 'Existing User') {
 
             $current_user = User::getUserByEmail($request->email);
-            $condition = ['user_id' => $current_user->id, 'agency_id'=> $agency->id];
-            $agency_user = (new AgencyUser())->where($condition)->first();
-            if(isset($agency_user->id)){
-                return redirect()->back()->withInput()->with('error', 'Error storing record, user has already been registered to the agency');
-            }
             if (isset($current_user->id) && isset($agency->id)) {
+                $condition = ['user_id' => $current_user->id, 'agency_id'=> $agency->id];
+                $agency_user = (new AgencyUser())->where($condition)->first();
+                if(isset($agency_user->id)){
+                    return redirect()->back()->withInput()->with('error', 'Error storing record, user has already been registered to the agency');
+                }
                 DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $current_user->id]);
                 if ($request->send_verification_mail === 'Yes') {
                     $current_user->notify(new SendMailToJoinNotification($agency));
