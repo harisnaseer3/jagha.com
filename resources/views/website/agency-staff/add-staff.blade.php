@@ -59,5 +59,5 @@
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('website/js/user-profile.js')}}"></script>
+    <script src="{{asset('website/js/staff-profile.js')}}"></script>
 @endsection
