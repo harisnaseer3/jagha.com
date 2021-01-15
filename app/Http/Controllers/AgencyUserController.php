@@ -163,8 +163,9 @@ class AgencyUserController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users',
-                'phone' => 'nullable|string', // +92-511234567
-                'mobile' => 'required', // +92-3001234567
+                'account_password' => ['required', 'string', 'min:8', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+                'phone' => 'nullable|string',
+                'mobile' => 'required',
                 'address' => 'nullable|string',
                 'zip_code' => 'nullable|digits:5',
                 'country' => 'required|string',
@@ -195,16 +196,17 @@ class AgencyUserController extends Controller
             }
 
         } elseif ($request->add === 'Existing User') {
-            $user = User::getUserByEmail($request->email);
-            $condition = ['user_id' => $user->id, 'agency_id'=> $agency->id];
+
+            $current_user = User::getUserByEmail($request->email);
+            $condition = ['user_id' => $current_user->id, 'agency_id'=> $agency->id];
             $agency_user = (new AgencyUser())->where($condition)->first();
             if(isset($agency_user->id)){
                 return redirect()->back()->withInput()->with('error', 'Error storing record, user has already been registered to the agency');
             }
-            if (isset($user->id) && isset($agency->id)) {
-                DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
+            if (isset($current_user->id) && isset($agency->id)) {
+                DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $current_user->id]);
                 if ($request->send_verification_mail === 'Yes') {
-                    $user->notify(new SendMailToJoinNotification($agency));
+                    $current_user->notify(new SendMailToJoinNotification($agency));
                 }
             } else {
                 return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');

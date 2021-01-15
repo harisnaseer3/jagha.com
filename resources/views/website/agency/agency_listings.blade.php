@@ -40,7 +40,8 @@
                                         <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
-                                            <a class="btn btn-sm theme-blue text-white mr-2" href="{{route('agencies.create')}}">Add New Agency</a>
+                                            <a class="btn btn-sm theme-blue text-white mr-2" href="{{ route('agencies.add-staff') }}"><i class="fa fa-plus-circle mr-1"></i>Add Agency Staff</a>
+                                            <a class="btn btn-sm theme-blue text-white mr-2" href="{{route('agencies.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Agency</a>
                                         </div>
 
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
@@ -60,7 +61,7 @@
                                                         @if($params['status'] != 'verified_agencies')
                                                             <td>Status Controls</td>
                                                         @endif
-                                                        <td colspan="2" >Controls</td>
+                                                        <td>Controls</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -87,15 +88,15 @@
                                                                 </td>
                                                             @endif
 
-                                                                @if($params['status'] == 'verified_agencies')
-                                                                <td>
-                                                                    <a type="button" href="{{route('agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="Add user in agency">
-                                                                        <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
-                                                                    </a>
-                                                                </td>
-                                                                    @endif
+{{--                                                                @if($params['status'] == 'verified_agencies')--}}
+{{--                                                                <td>--}}
+{{--                                                                    <a type="button" href="{{route('agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"--}}
+{{--                                                                       data-toggle-1="tooltip"--}}
+{{--                                                                       data-placement="bottom" title="Add user in agency">--}}
+{{--                                                                        <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+{{--                                                                    </a>--}}
+{{--                                                                </td>--}}
+{{--                                                                    @endif--}}
 
 
 
@@ -154,7 +155,7 @@
                                                         @if($params['status'] != 'verified_agencies')
                                                             <td>Status Controls</td>
                                                         @endif
-                                                        <td colspan="2">Controls</td>
+                                                        <td>Controls</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -181,15 +182,15 @@
                                                                 </td>
                                                             @endif
 
-                                                                @if($params['status'] == 'verified_agencies')
-                                                                <td>
-                                                                    <a type="button" href="{{route('agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="Add user in agency">
-                                                                        <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
-                                                                    </a>
-                                                                </td>
-                                                                @endif
+{{--                                                                @if($params['status'] == 'verified_agencies')--}}
+{{--                                                                <td>--}}
+{{--                                                                    <a type="button" href="{{route('agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"--}}
+{{--                                                                       data-toggle-1="tooltip"--}}
+{{--                                                                       data-placement="bottom" title="Add user in agency">--}}
+{{--                                                                        <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+{{--                                                                    </a>--}}
+{{--                                                                </td>--}}
+{{--                                                                @endif--}}
 
 
 
@@ -249,7 +250,7 @@
                                                             <td>Status Controls</td>
                                                         @endif
 
-                                                        <td colspan="2">Controls</td>
+                                                        <td>Controls</td>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -275,17 +276,17 @@
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
                                                                 </td>
                                                             @endif
-                                                            @if($params['status'] == 'verified_agencies')
-                                                            <td>
+{{--                                                            @if($params['status'] == 'verified_agencies')--}}
+{{--                                                            <td>--}}
 
 
-                                                                    <a type="button" href="{{route('agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="Add user in agency">
-                                                                        <i class="fas fa-user-plus mr-2"></i>Add Agency Staff
-                                                                    </a>
-                                                            </td>
-                                                                    @endif
+{{--                                                                    <a type="button" href="{{route('agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"--}}
+{{--                                                                       data-toggle-1="tooltip"--}}
+{{--                                                                       data-placement="bottom" title="Add user in agency">--}}
+{{--                                                                        <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+{{--                                                                    </a>--}}
+{{--                                                            </td>--}}
+{{--                                                                    @endif--}}
 
 
 

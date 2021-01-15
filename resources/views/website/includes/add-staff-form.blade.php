@@ -1,6 +1,17 @@
 {{ Form::open(['route' => ['agencies.store-staff'], 'method' => 'post', 'class'=> 'data-insertion-form']) }}
 
 <div class="card-body">
+    <div class="form-group row">
+        <div class="col-12">
+            <ul class="square-list-style">
+                <li class="square-list-li">You can add staff only to your verified agencies.</li>
+                <li class="square-list-li">By choosing <b>"New User"</b> option, add a new agency staff by selecting agency and providing staff profile details.</li>
+                <li class="square-list-li">By choosing <b>"Existing User"</b> option, link already registered <a href="/"><u><strong class="theme-dark-blue">property.aboutpakistan.com</strong></u></a> user to your selected agency.</li>
+            </ul>
+
+        </div>
+
+    </div>
     {{ Form::bsRadio('add','New User', ['required' => true, 'list' => ['New User','Existing User'],'display' => 'block','class'=>'mt-3']) }}
     @php $agencies = Auth::guard('web')->user()->agencies->where('status', 'verified') @endphp
     @if(!empty($agencies))
@@ -28,7 +39,7 @@
     {{ Form::bsText('name', null, ['required' => true]) }}
     {{ Form::bsPassword('account_password', ['required' => true, 'id' => 'account_password', 'data-default'=>' Your password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.']) }}
     {{ Form::bsPassword('confirm_password', ['required' => true, 'id'=>'confirm_password']) }}
-    {{ Form::bsIntlTel('phone_#', null, ['required' => true, 'id'=>'phone']) }}
+    {{ Form::bsIntlTel('phone_#', null, [ 'id'=>'phone']) }}
     {{ Form::bsIntlTel('mobile_#',null, ['required' => true,'id'=>'cell']) }}
     {{ Form::bsText('address',null) }}
     {{ Form::bsText('zip_code',null) }}
