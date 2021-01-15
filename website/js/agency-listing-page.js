@@ -137,44 +137,54 @@
                 }
             });
         });
-        let phone = '';
-        $("input[name='phone']").keyup(function () {
-            $(this).val($(this).val().replace(/^(\d{1})(\d+)$/, "+92-$2"));
-        });
-        let form = $('#email-contact-form');
-        $('.btn-email').click(function (e) {
-            // console.log($(this).closest('.contact-container').find('input')[1]);
-            // let property = $(this).closest('.contact-container').find('input[name=property]').val();
-            let agency = $(this).closest('.contact-container').find('input[name=agent]').val();
-            // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
-            let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
-            let message = 'I would like to inquire information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest.';
+        let input = document.querySelector("#cell");
 
-            phone = $(this).closest('.contact-container').find('input[name=phone]').val();
-            // console.log(property, agency, reference,);
-            let editable_div = $('.editable-div');
-            editable_div.html(message);
-            $('input[name=message]').val(editable_div.html());
-            editable_div.click(function () {
-                if (editable_div.html() !== '') {
-                    $('input[name=message]').val(editable_div.html());
-                }
-            });
-            // if (!(property == null))
-            //     $('.selected').val(property).attr('name', 'property');
-            // else
-            if (!(agency == null))
-                $('.selected').val(agency).attr('name', 'agency');
-            $('textarea[name=message]').val(message);
-            call_btn.text('Call');
+        var errorMsg = document.querySelector("#error-msg");
+        var validMsg = document.querySelector("#valid-msg");
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        var ag_iti_cell = window.intlTelInput(input, {
+            preferredCountries: ["pk"],
+            preventInvalidNumbers: true,
+            separateDialCode: true,
+            numberType: "MOBILE",
+            utilsScript: "/../../plugins/intl-tel-input/js/utils.js?1603274336113"
         });
+        var reset = function () {
+            input.classList.remove("error");
+            input.classList.remove("valid");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+        input.addEventListener('blur', function () {
+            reset();
+            if (input.value.trim()) {
+                if (ag_iti_cell.isValidNumber()) {
+                    $('[name=phone]').val(ag_iti_cell.getNumber());
+                    validMsg.classList.remove("hide");
+                    $('#phone-error').hide();
+                } else {
+                    // input.classList.add("error");
+
+                    var errorCode = ag_iti_cell.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                    $('[name=phone]').val('');
+                }
+            }
+        });
+
+        input.addEventListener('change', reset);
+        input.addEventListener('keyup', reset);
+        let phone = '';
+
+        let form = $('#email-contact-form');
+
         let call_btn = $('.agent-call');
         call_btn.on('click', function () {
             call_btn.attr('href', 'tel:' + phone).text(phone);
         });
-        $.validator.addMethod("regx", function (value, element, regexpr) {
-            return regexpr.test(value);
-        }, "Please enter a valid value. (+92-3001234567)");
+
 
         form.validate({
             rules: {
@@ -183,6 +193,7 @@
                 },
                 'phone_#': {
                     required: true,
+                    // checkcellnum: true,
                 },
                 'phone': {
                     required: true,
@@ -221,6 +232,33 @@
                 }
             }
         });
+        $('.btn-email').click(function (e) {
+            // console.log($(this).closest('.contact-container').find('input')[1]);
+            // let property = $(this).closest('.contact-container').find('input[name=property]').val();
+            let agency = $(this).closest('.contact-container').find('input[name=agent]').val();
+            // let reference = $(this).closest('.contact-container').find('input[name=reference]').val();
+            let link = '<a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:blue">https://www.aboutpakistan.com</a>';
+            let message = 'I would like to inquire information about your properties as per your business listing on ' + link + '<br><br>Please contact me at your earliest.';
+
+            phone = $(this).closest('.contact-container').find('input[name=phone]').val();
+            // console.log(property, agency, reference,);
+            let editable_div = $('.editable-div');
+            editable_div.html(message);
+            $('input[name=message]').val(editable_div.html());
+            editable_div.click(function () {
+                if (editable_div.html() !== '') {
+                    $('input[name=message]').val(editable_div.html());
+                }
+            });
+            // if (!(property == null))
+            //     $('.selected').val(property).attr('name', 'property');
+            // else
+            if (!(agency == null))
+                $('.selected').val(agency).attr('name', 'agency');
+            $('textarea[name=message]').val(message);
+            call_btn.text('Call');
+        });
+
 
         $('#send-mail').click(function (event) {
             if (form.valid()) {

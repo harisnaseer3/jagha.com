@@ -204,8 +204,7 @@
     </div>
 
 
-
-    @if(!empty($agencies))
+    @if(!isset($property->agency))
         <div class="card-header theme-blue text-white">Property Advertisement Type</div>
         <div class="card-body">
             {{ Form::bsRadio('advertisement', old('advertisement')=='Agency'?'Agency':'Individual', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
@@ -213,9 +212,8 @@
         <div id="user-agency-block" style="display: none">
             <div class="card-header theme-blue text-white">Agency Details</div>
             <div class="card-body">
-                {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
+                {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency->id : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
                 <div class="agency-block" style="display:none"></div>
-{{--                <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>--}}
             </div>
         </div>
     @endif
@@ -226,7 +224,9 @@
         </div>
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}
+{{--            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}--}}
+            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency->id : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
+
             <div class="agency-block">
                 <div class="row">
                     <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
@@ -257,6 +257,8 @@
             </div>
         </div>
     @endif
+
+
     <div id="agency-user-block">
         <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
         <div class="card-body">
