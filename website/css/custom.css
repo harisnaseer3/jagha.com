@@ -2181,4 +2181,8 @@ input:checked + .slider:before {
 .subscribe-title-font{
     font-size: 20px;
 }
+tr{
+    line-height: 1.2rem;
+}
+
 

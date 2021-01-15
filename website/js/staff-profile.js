@@ -51,6 +51,19 @@
         input.addEventListener('keyup', reset);
     }
 
+    $.validator.addMethod("checklower", function (value) {
+        return /[a-z]/.test(value);
+    });
+    $.validator.addMethod("checkupper", function (value) {
+        return /[A-Z]/.test(value);
+    });
+    $.validator.addMethod("checkdigit", function (value) {
+        return /[0-9]/.test(value);
+    });
+    $.validator.addMethod("checkspecialchr", function (value) {
+        return /[#?!@$%^&*-]/.test(value);
+    });
+
     $(document).ready(function () {
         // Initialize Select2 Elements
         $('.select2').select2({
@@ -69,13 +82,12 @@
     });
     $('#add-country').on('change', function () {
         const selected_country = $('#add-country').val();
-        if(selected_country !== 'Pakistan'){
+        if (selected_country !== 'Pakistan') {
             $('#city-name-div').show();
             $('#city-dropdown-div').hide();
             $('#city-name').val('');
             $("#add_city").val('').trigger('change');
-        }
-        else{
+        } else {
             $('#city-name-div').hide();
             $('#city-dropdown-div').show();
             $('#city-name').val('');
@@ -86,107 +98,16 @@
     });
     $("input[name=add]").on('change', function () {
         const selected_value = $(this).val();
-        if(selected_value === 'Existing User'){
+        if (selected_value === 'Existing User') {
             $('#new-user-details').hide();
-        }
-        else{
+
+        } else {
             $('#new-user-details').show();
+
         }
 
     });
-    $('.btn-accept').on('click', function () {
-        let alert = $(this);
-        let agency_id = alert.attr('data-agency');
-        let user_id = alert.attr('data-user');
-        let notification_id = alert.attr('data-id');
 
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: window.location.origin + '/dashboard/agencies/accept-invitation',
-            data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                if (data.status === 200) {
-                    alert.closest('.alert').remove();
-                }
-            },
-            error: function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            },
-            complete: function (url, options) {
-
-            }
-        });
-    });
-    $('.btn-reject').on('click', function () {
-        let alert = $(this);
-        let notification_id = alert.attr('data-id');
-
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: window.location.origin + '/dashboard/agencies/reject-invitation',
-            data: {'notification_id': notification_id},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                if (data.status === 200) {
-                    alert.closest('.alert').remove();
-                }
-            },
-            error: function (xhr, status, error) {
-                // console.log(xhr);
-                // console.log(status);
-                // console.log(error);
-            },
-            complete: function (url, options) {
-
-            }
-        });
-    });
-    $('.mark-as-read').on('click', function () {
-        let alert = $(this);
-        let notification_id = alert.attr('data-id');
-
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'post',
-            url: window.location.origin + '/dashboard/property-notification',
-            data: {'notification_id': notification_id},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                if (data.status === 200) {
-                    // console.log(alert);
-                    alert.closest('.alert').remove();
-                }
-            },
-            error: function (xhr, status, error) {
-                // console.log(xhr);
-                // console.log(status);
-                // console.log(error);
-            },
-            complete: function (url, options) {
-
-            }
-        });
-    });
 
     let phone_num = $("#phone");
     let mobile_num = $("#cell");
@@ -215,7 +136,7 @@
     iti_contact_number(document.querySelector("#phone"),
         document.querySelector("#error-msg-phone"),
         document.querySelector("#valid-msg-phone"),
-        $('[name=phone]'), '#phone-error', "FIXED_LINE",'name=phone_check');
+        $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
 
     let form = $('.data-insertion-form');
     $.validator.addMethod('empty', function (value, element, param) {
@@ -223,21 +144,90 @@
     });
     form.validate({
         rules: {
+            'agency_id': {
+                required: true
+            },
+            name: {
+                required: function (element) {
+                    return $('input[name=add]:checked').val() === 'New User';
+                },
+            },
+            'account_password': {
+                required: function (element) {
+                    return $('input[name=add]:checked').val() === 'New User';
+                },
+                minlength: {
+                    param: 8,
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+                maxlength: {
+                    param: 20,
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+                checklower: {
+                    param: true,
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+                checkupper: {
+                    param: true,
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+                checkdigit: {
+                    param: true,
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+                checkspecialchr: {
+                    param: true,
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+            },
+            'confirm_password': {
+                required: function (element) {
+                    return $('input[name=add]:checked').val() === 'New User';
+                },
+                equalTo: {
+                    param: "#account_password",
+                    depends: function (element) {
+                        return $('input[name=add]:checked').val() === 'New User';
+                    }
+                },
+            },
             'mobile_#': {
-                required: true,
+                required: function (element) {
+                    return $('input[name=add]:checked').val() === 'New User';
+                }
             },
             'mobile': {
-                required: true,
+                required: function (element) {
+                    return $('input[name=add]:checked').val() === 'New User';
+                }
             },
             'phone_check': {
-                empty: true,
-            },
-            contact_email: {
-                required: true,
-                email: true
+                empty: function (element) {
+                    return $('input[name=add]:checked').val() === 'New User';
+                }
             },
         },
         messages: {
+            'account_password': {
+                pwcheck: "Password is not strong enough",
+                checklower: "Need atleast 1 lowercase alphabet",
+                checkupper: "Need atleast 1 uppercase alphabet",
+                checkdigit: "Need atleast 1 digit",
+                checkspecialchr: "Need atleast 1 special character"
+            },
             'mobile': " please enter a valid value.",
             'phone_check': "",
         },
@@ -264,7 +254,7 @@
             }
         }
     });
-    $(".custom-file-input").on("change", function() {
+    $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
