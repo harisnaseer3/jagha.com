@@ -2188,10 +2188,16 @@ tr{
 {
     border: 1px solid #48C458;
 }
+.fa-whatsapp{
+    color:#48C458;
+}
 .btn-whatsapp:hover
 {
     background-color: #48C458;
     border: 1px solid #48C458;
+    color:white;
+}
+.btn-whatsapp:hover .fa-whatsapp{
     color:white;
 }
 
