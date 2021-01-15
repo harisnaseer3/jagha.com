@@ -14,7 +14,7 @@
     <div class="sub-banner">
         <div class="container">
             <div class="page-name">
-                <h1>My Property Agencies</h1>
+                <h1>My Agencies</h1>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
 
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
                                              aria-labelledby="listings-all-tab">
-                                            <h6>My Property Agencies</h6>
+                                            <h6>My Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
                                                     <thead class="theme-blue text-white">
