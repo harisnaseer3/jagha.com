@@ -57,7 +57,11 @@
                         <div class="blog-widget-wrap left relative">
                             <ul class="blog-widget-list left relative" id="footer-blogs">
                                 @foreach($footer_agencies as $key => $agency)
-                                    <li><a href="javascript:void(0)"
+                                    <li><a href="{{route('agents.ads.listing',
+                                            [ 'city'=>strtolower(Str::slug($agency->city)),
+                                               'slug'=>\Illuminate\Support\Str::slug($agency->title),
+                                               'agency'=> $agency->id ,
+                                               ])}}"
                                            title="{{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}">
                                            {{\Illuminate\Support\Str::limit($agency->city, 25, $end='..')}}  |  {{\Illuminate\Support\Str::limit($agency->title, 70, $end='..')}}   |
                                         {{$agency->phone}}
