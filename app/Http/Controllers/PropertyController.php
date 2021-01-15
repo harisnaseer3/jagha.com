@@ -214,7 +214,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error','advertisement'
+                    'features-error', 'advertisement'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -369,6 +369,12 @@ class PropertyController extends Controller
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
 
+        $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
+
+        $agencies_data = (new Agency)->select('title', 'id')
+            ->whereIn('id', $agencies_ids)
+            ->where('status', '=', 'verified')->get();
+
         if (Auth::guard('admin')->user()) {
             return view('website.admin-pages.portfolio',
                 [
@@ -377,13 +383,39 @@ class PropertyController extends Controller
                     'counts' => $counts,
                 ]);
         }
+
+        $agencies = [];
+        $users = [];
+        foreach ($agencies_data as $agency) {
+            $agencies += array($agency->id => $agency->title);
+        }
+        if ($property->agency_id !== null) {
+            $agencies_users_ids = DB::table('agency_users')->select('user_id')
+                ->where('agency_id', $property->agency_id)
+                ->get()->pluck('user_id')->toArray();
+
+            if (!empty($agencies_users_ids)) {
+                $agencies_users = (new User)->select('name', 'id')
+                    ->whereIn('id', $agencies_users_ids)
+                    ->get();
+                $users = [];
+                foreach ($agencies_users as $user) {
+                    $users += array($user->id => $user->name);
+                }
+
+            }
+        }
+
+
         $footer_content = (new FooterController)->footerContent();
 
 
         return view('website.pages.portfolio',
             [
+                'agencies' => $agencies,
                 'property' => $property,
                 'property_types' => $property_types,
+                'users' => $users,
                 'counts' => $counts,
                 'recent_properties' => $footer_content[0],
                 'footer_agencies' => $footer_content[1]
@@ -443,13 +475,19 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error','advertisement'
+                    'property_subtype_Homes', 'features-error', 'advertisement'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
                     'features' => $features,
                     'icons' => $icon_value
                 ];
+            }
+            $agency = '';
+            if ($request->has('agency')) {
+                if (DB::table('agencies')->where('id', '=', $request->input('agency'))->exists()) {
+                    $agency = $request->input('agency');
+                }
             }
 
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
@@ -465,9 +503,9 @@ class PropertyController extends Controller
 //                $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
 //            }
             $subtype = '';
-            if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
-            else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
-            else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
+//            if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
+//            else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
+//            else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
 
             $status_before_update = $property->status;
 
@@ -476,7 +514,7 @@ class PropertyController extends Controller
 //                    'user_id' => $property->user_id,
 //                    'city_id' => $city->id,
 //                    'location_id' => $location['location_id'],
-//                    'agency_id' => $agency != '' ? $agency->id : $property->agency_id,
+                'agency_id' => $agency != '' ? $agency : null,
 //                    'purpose' => $request->input('purpose'),
 //                    'sub_purpose' => $request->has('wanted_for') ? $request->has('wanted_for') : null,
 //                    'type' => $request->input('property_type'),

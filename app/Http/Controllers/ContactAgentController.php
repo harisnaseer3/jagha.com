@@ -38,6 +38,7 @@ class ContactAgentController extends Controller
             $sent_to = '';
             $name = '';
             $property = '';
+            $agency = '';
             if ($request->filled('agency')) {
                 $agency = (new Agency)->select('email', 'user_id')->where('id', '=', $request->input('agency'))->first();
                 $user = (new User)->select('name')->where('id', '=', $agency->user_id)->first();
@@ -61,22 +62,27 @@ class ContactAgentController extends Controller
                 }
 
 
-                DB::table('agent_inboxes')->insert([
-                    'sender_id' => Auth::user()->getAuthIdentifier(),
-                    'user_id' => User::getUserByEmail($sent_to)->id,
-                    'name' => $request->has('name') ? $request->name : Auth::user()->name,
-                    'email' => $request->has('email') ? $request->email : Auth::user()->email,
-                    'cell' => $request->has('cell') ? $request->cell : Auth::user()->cell,
-                    'message' => $request->input('message'),
-                    'type' => $request->input('i_am'),
-                    'ip_location' => $country
-                ]);
-                $data['ip_location'] = $country;
-//                Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
-                if($property != ''){
-                    Notification::send($sent_to, new InquiryNotification($data,$name));
+                if(Auth::check()){
+                    DB::table('agent_inboxes')->insert([
+                        'sender_id' => Auth::user()->getAuthIdentifier(),
+                        'user_id' => User::getUserByEmail($sent_to)->id,
+                        'name' => $request->has('name') ? $request->input('name') : Auth::user()->name,
+                        'email' => $request->has('email') ? $request->input('email') : Auth::user()->email,
+                        'cell' => $request->has('cell') ? $request->input('cell') : Auth::user()->cell,
+                        'message' => $request->input('message'),
+                        'type' => $request->input('i_am'),
+                        'ip_location' => $country
+                    ]);
                 }
 
+                $data['ip_location'] = $country;
+                if ($property != '') {
+                    $property = (new Property)->where('id', '=', $request->input('property'))->first();
+                    Notification::send(User::getUserByEmail($sent_to), new InquiryNotification($data, $name, $property));
+                }
+                if ($agency != null) {
+                    Mail::to($sent_to)->send(new ContactAgentMail($data, $name));
+                }
 
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else
