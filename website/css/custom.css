@@ -2184,5 +2184,15 @@ input:checked + .slider:before {
 tr{
     line-height: 1.2rem;
 }
+.btn-whatsapp
+{
+    border: 1px solid #48C458;
+}
+.btn-whatsapp:hover
+{
+    background-color: #48C458;
+    border: 1px solid #48C458;
+    color:white;
+}
 
 
