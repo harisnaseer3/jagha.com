@@ -12,6 +12,12 @@
             background: lightgrey;
         }
 
+        .unread {
+            color: #721c24;
+            background-color: #f8d7da !important;
+            border-color: black;
+        }
+
     </style>
 
 @endsection
@@ -124,23 +130,23 @@
                                                         @if(count($agent_inboxes) > 0)
                                                             @foreach($agent_inboxes as $inbox)
                                                                 <tr>
-                                                                <td>{{$loop->iteration}}</td>
-                                                                <td>{{$inbox->name}}</td>
-                                                                <td>{{$inbox->email}}</td>
-                                                                <td>{{$inbox->cell}}</td>
-                                                                <td>{{$inbox->type}}</td>
-                                                                <td>{{$inbox->ip_location}}</td>
-                                                                <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
-                                                                    @if(strlen($inbox->message) > 30 )
-                                                                        <a class="color-blue" data-placement="bottom" title="Read More" data-toggle="modal" id="detail-modal"
-                                                                           data-target="#inbox-detail" data-name="{{$inbox->name}}" data-email="{{$inbox->email}}"
-                                                                           data-cell="{{$inbox->cell}}" data-type="{{$inbox->type}}" data-location="{{$inbox->ip_location}}"
-                                                                           data-message="{{strip_tags($inbox->message)}}"
-                                                                           data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
-                                                                           data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
-                                                                        </a>
-                                                                    @endif</td>
-                                                                <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                                    <td>{{$loop->iteration}}</td>
+                                                                    <td>{{$inbox->name}}</td>
+                                                                    <td>{{$inbox->email}}</td>
+                                                                    <td>{{$inbox->cell}}</td>
+                                                                    <td>{{$inbox->type}}</td>
+                                                                    <td>{{$inbox->ip_location}}</td>
+                                                                    <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
+                                                                        @if(strlen($inbox->message) > 30 )
+                                                                            <a class="color-blue" data-placement="bottom" title="Read More" data-toggle="modal" id="detail-modal"
+                                                                               data-target="#inbox-detail" data-name="{{$inbox->name}}" data-email="{{$inbox->email}}"
+                                                                               data-cell="{{$inbox->cell}}" data-type="{{$inbox->type}}" data-location="{{$inbox->ip_location}}"
+                                                                               data-message="{{strip_tags($inbox->message)}}"
+                                                                               data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                               data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
+                                                                            </a>
+                                                                        @endif</td>
+                                                                    <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
                                                                 </tr>
                                                             @endforeach
                                                         @endif

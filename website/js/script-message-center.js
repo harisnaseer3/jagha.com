@@ -78,8 +78,58 @@
             });
         });
 
+
         $(document).on('click', '#detail-modal', function ($this) {
             event.preventDefault();
+
+            const name = $(this).attr('data-name');
+            const type = $(this).attr('data-type');
+            const email = $(this).attr('data-email');
+            const cell = $(this).attr('data-cell');
+            const location = $(this).attr('data-location');
+            const message = $(this).attr('data-message');
+            const time = $(this).attr('data-time');
+            $('#name').html(name);
+            $('#user-email').html(email);
+            $('#cell').html(cell);
+            $('#type').html(type);
+            $('#location').html(location);
+            $('#message').html(message);
+            $('#time').html(time);
+
+        });
+
+        function readSentMail(td_row, id, user) {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/dashboard/read-inbox-message',
+                data: {'id': id, 'user': user},
+                dataType: 'json',
+                success: function (data) {
+                    // console.log(data);
+                    if (data.status === 200) {
+                        td_row.removeClass('unread');
+                    }
+                },
+                error: function (xhr, status, error) {
+                },
+                complete: function (url, options) {
+
+                }
+            });
+        }
+
+        $(document).on('click', '#inbox-detail-modal', function ($this) {
+            event.preventDefault();
+            let id = $(this).attr('data-id');
+            let user = $(this).attr('data-user');
+            console.log(user);
+            readSentMail($(this).closest('tr'), id, user);
             const name = $(this).attr('data-name');
             const type = $(this).attr('data-type');
             const email = $(this).attr('data-email');

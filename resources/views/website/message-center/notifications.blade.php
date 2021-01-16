@@ -28,13 +28,13 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" role="tabpanel">
                             <div class="row my-4">
-                                    <div class="col-12 mb-2">
-                                        <div class="float-right">
+                                <div class="col-12 mb-2">
+                                    <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
-                                        </div>
-
                                     </div>
+
+                                </div>
                                 <div class="col-md-3">
                                     @include('website.message-center.sidebar')
                                 </div>
@@ -45,68 +45,66 @@
                                         <div class="col-12">
 
 
-                                                <div class="card">
-                                                    <div class="card-header theme-blue text-white">
-                                                        Notifications
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <table id="user-notification" class="display" style="width: 100%">
-                                                            <thead>
+                                            <div class="card">
+                                                <div class="card-header theme-blue text-white">
+                                                    Notifications
+                                                </div>
+                                                <div class="card-body">
+                                                    <table id="user-notification" class="display" style="width: 100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Sr.</th>
+                                                            <th>Dated</th>
+                                                            <th>Message</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($notifications as $key=> $notification)
+                                                            {{--                                                    {{dd($notification, $key)}}--}}
                                                             <tr>
-                                                                <th>Sr.</th>
-                                                                <th>Dated</th>
-                                                                <th>Message</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            @foreach($notifications as $key=> $notification)
-                                                                {{--                                                    {{dd($notification, $key)}}--}}
-                                                                <tr>
-                                                                    <td>{{$key +1}}</td>
-                                                                    <td>{{ (new \Illuminate\Support\Carbon($notification->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
-                                                                    <td>
-                                                                        @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
+                                                                <td>{{$key +1}}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($notification->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                                <td>
+                                                                    @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
 
-                                                                            <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
+                                                                        <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
                                                                     <span>Status of Property ID = <strong> {{$notification->data['id']}} </strong> having Reference <strong> {{$notification->data['reference']}} </strong>
                                                                         has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
-                                                                            </div>
+                                                                        </div>
 
-                                                                        @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
+                                                                    @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
 
-                                                                            <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
-                                                                                <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
-                                                                            </div>
+                                                                        <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
+                                                                            <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
+                                                                        </div>
 
-                                                                        @endif
-                                                                    </td>
-                                                                    <td>
-                                                                        @if($notification->read_at === null)
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($notification->read_at === null)
 
-                                                                            <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
-                                                                               data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
-                                                                               data-id={{$notification->id}}>Mark as read</a>
+                                                                        <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
+                                                                           data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                                                                           data-id={{$notification->id}}>Mark as read</a>
 
-                                                                        @else
+                                                                    @else
+                                                                        <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
+                                                                           data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
+                                                                           data-id={{$notification->id}}>Mark as unread</a>
 
-                                                                            <a class="btn-read btn-sm btn-outline-info  pull-right mr-2 mark-as-read font-weight-bolder" href="javascript:void(0)"
-                                                                               data-user="{{\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()}}"
-                                                                               data-id={{$notification->id}}>Mark as unread</a>
-
-                                                                        @endif
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-
                                             </div>
 
                                         </div>
 
+                                    </div>
 
 
                                 </div>
