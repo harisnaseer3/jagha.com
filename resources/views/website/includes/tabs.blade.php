@@ -20,7 +20,7 @@
     </li>
     @if(Auth::user()->hasRole('Admin'))
     <li class="nav-item">
-        <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'asc', 'page' => 10]; ?>
+        <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'desc', 'page' => 10]; ?>
         <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}" id="agency_staff-tab" href="{{route('agencies.listings', array_merge($route_params, ['purpose' => 'all']))}}"
            role="tab"
            aria-selected="{{ \Illuminate\Support\Facades\Route::currentRouteName() === 'agencies.listing' ? 'true' : 'false' }}" style="border-radius: 0">Agency Listing</a>

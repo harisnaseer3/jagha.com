@@ -78,7 +78,7 @@ class PropertyAjaxCallController extends Controller
 
             return redirect()->route('admin.properties.listings',
                 ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
-                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'id' => $request->property_id]);
+                    'sort' => 'id', 'order' => 'desc', 'page' => 50, 'id' => $request->property_id]);
         }
 
     }
@@ -91,7 +91,7 @@ class PropertyAjaxCallController extends Controller
         else {
             return redirect()->route('admin.properties.listings',
                 ['status' => 'all', 'purpose' => 'all', 'user' => \Illuminate\Support\Facades\Auth::guard('admin')->user()->getAuthIdentifier(),
-                    'sort' => 'id', 'order' => 'asc', 'page' => 50, 'city' => str_replace(' ', '-', $request->city)]);
+                    'sort' => 'id', 'order' => 'desc', 'page' => 50, 'city' => str_replace(' ', '-', $request->city)]);
         }
 
     }
@@ -107,7 +107,7 @@ class PropertyAjaxCallController extends Controller
                 $purpose = lcfirst($property->purpose);
                 return redirect()->route('properties.listings',
                     ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
-                        'sort' => 'id', 'order' => 'asc', 'page' => 50, 'reference' => $request->property_ref]);
+                        'sort' => 'id', 'order' => 'desc', 'page' => 50, 'reference' => $request->property_ref]);
             }
         } else
             return redirect()->back()->withInput()->with('error', 'Please enter property reference.');
@@ -124,7 +124,7 @@ class PropertyAjaxCallController extends Controller
                 $purpose = lcfirst($property->purpose);
                 return redirect()->route('properties.listings',
                     ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
-                        'sort' => 'id', 'order' => 'asc', 'page' => 10, 'user-property-id' => $request->property_id]);
+                        'sort' => 'id','order' => 'desc', 'page' => 10, 'user-property-id' => $request->property_id]);
             }
         } else
             return redirect()->back()->withInput()->with('error', 'Please Enter Valid Property ID.');

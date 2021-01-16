@@ -61,7 +61,6 @@ class ContactAgentController extends Controller
                     $country = 'unavailable';
                 }
 
-
                 if(Auth::check()){
                     DB::table('agent_inboxes')->insert([
                         'sender_id' => Auth::user()->getAuthIdentifier(),

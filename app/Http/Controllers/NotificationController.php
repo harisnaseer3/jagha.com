@@ -49,4 +49,21 @@ class NotificationController extends Controller
 //            return "not found";
 //        }
 //    }
+
+
+    public function ReadInboxMessage(Request $request)
+    {
+        if ($request->ajax()) {
+            if ($request->has('id')) {
+                if (DB::table('agent_inboxes')->where('id', $request->input('id'))->exists()) {
+                    DB::table('agent_inboxes')
+                        ->where('id', $request->input('id'))
+                        ->update(['read_at' => Carbon::now()]);
+                    return response()->json(['status' => 200]);
+                }
+            }
+        } else {
+            return "not found";
+        }
+    }
 }

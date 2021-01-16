@@ -41,8 +41,8 @@ class UserDashboardController extends Controller
             [
                 'user' => $user,
                 'agencies' => $agencies,
-                'sale' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Sale')->get(),
-                'rent' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Rent')->get(),
+                'sale' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Sale')->orderBy('id','desc')->get(),
+                'rent' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Rent')->orderBy('id','desc')->get(),
                 'active_properties' => $active_properties,
                 'pending_properties' => $pending_properties,
                 'deleted_properties' => $deleted_properties,
