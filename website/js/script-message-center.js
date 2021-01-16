@@ -128,7 +128,6 @@
             event.preventDefault();
             let id = $(this).attr('data-id');
             let user = $(this).attr('data-user');
-            console.log(user);
             readSentMail($(this).closest('tr'), id, user);
             const name = $(this).attr('data-name');
             const type = $(this).attr('data-type');
