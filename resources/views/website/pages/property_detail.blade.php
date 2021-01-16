@@ -26,10 +26,10 @@
                                         ->getRawLinks(); @endphp
 
         <div>
-            <div class="container inline-search-area none-992 property-detail-bg-style">
+            <div class="container inline-search-area area-width property-detail-bg-style">
                 <div class="row">
-                    <div class="col-6 my-auto">
-                        <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2">
+                    <div class="col-xl-6 col-lg-6 col-md-7 col-sm-12 my-auto">
+                        <div itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs mb-2 breadcrumb-line-height">
                                 <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
                                         <span class="breadcrumb-link" itemprop="name">Home</span></a>
@@ -51,7 +51,7 @@
                                 </span>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-xl-6 col-lg-6 col-md-5 col-sm-12 ">
                         <div class="pull-right">
                             <span style="font-size: 14px;font-weight: 600;">Share To</span>
 

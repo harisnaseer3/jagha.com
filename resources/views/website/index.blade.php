@@ -17,8 +17,9 @@
     <div class="container-fluid">
     @include('website.includes.index-page-banner')
     <!-- Search Section start -->
-    @include('website.includes.search2')
-    <!-- Featured properties start -->
+    @include('website.includes.index-search')
+
+        <!-- Featured properties start -->
     @include('website.includes.property_counter')
     <!-- Featured properties start -->
     @include('website.includes.featured_properties')
