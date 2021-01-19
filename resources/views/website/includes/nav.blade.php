@@ -401,7 +401,7 @@
                             </a>
 
                         @else
-                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
+                            <a class="nav-link text-right" data-toggle="modal" data-target="#exampleModalCenter"
                                href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-user mr-3"></i>
                             </a>
