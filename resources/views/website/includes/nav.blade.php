@@ -269,7 +269,7 @@
                     </div><!--nav-out-->
                 </div><!--main-nav-wrap-->
             </div><!--head-main-wrap-->
-            <nav class="navbar navbar-expand-lg navbar-light">
+            <nav class="navbar navbar-expand-lg navbar-light desktop-nav">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -366,6 +366,49 @@
                         </li>
                     </ul>
                 </div>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light mobile-nav">
+                <div class="row">
+                    <div class="user-dropdown col-12">
+                        @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
+                            <div class="dropdown dropdown-min-width">
+                                <a class="nav-link dropdown-toggle text-right" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    <i class="fas fa-user mr-2"></i>
+                                    @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
+                                        <span
+                                            class="mr-1">{{\Illuminate\Support\Facades\Auth::guard('web')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('web')->user()->id}})</span>
+                                    @endif
+
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}"><i
+                                            class="far fa-user-cog mr-2"></i>Manage Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item"
+                                       href="{{route('properties.listings',
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">
+                                        <i class="fa fa-building-o mr-2"></i>Property Management</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
+                                            class="far fa-sign-out mr-2"></i>Logout</a>
+                                </div>
+                            </div>
+                        @elseif(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                            <a class="nav-link" data-toggle="modal" data-target="#adminLogoutModal"
+                               href="javascript:void(0);" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user mr-3"></i>
+                            </a>
+
+                        @else
+                            <a class="nav-link" data-toggle="modal" data-target="#exampleModalCenter"
+                               href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user mr-3"></i>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
             </nav>
 @include('website.layouts.sign-in-modal')
 @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
