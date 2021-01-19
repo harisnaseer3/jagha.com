@@ -21,7 +21,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-12">
                                     <h1 class="all-cities-header">
                                         @if($type === 'homes') Houses @else {{ucwords($type)}} @endif for Sale in All Cities of Pakistan</h1>
                                     <input type="hidden" name="type" id="type" value="{{$type}}" />

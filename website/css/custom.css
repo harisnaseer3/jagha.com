@@ -2284,6 +2284,10 @@ tr {
         left: auto;
         right: 0;
     }
+    .modal-dialog-centered
+    {
+        margin-top: 100px;
+    }
 
 }
 
