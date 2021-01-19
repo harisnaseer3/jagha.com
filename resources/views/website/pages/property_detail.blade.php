@@ -1,3 +1,4 @@
+
 @extends('website.layouts.app')
 @section('title')
     {!! SEO::generate(true) !!}
