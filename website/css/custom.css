@@ -2232,7 +2232,9 @@ tr {
 .btn-whatsapp:hover .fa-whatsapp {
     color: white;
 }
-
+.mobile-nav{
+    display:none;
+}
 @media (max-width: 992px) {
     .search-area-2 {
         padding: 105px 30px 0 32px;
@@ -2270,6 +2272,13 @@ tr {
     .content-area-7 {
         padding: 26px 0 30px;
     }
+    .desktop-nav{
+        display:none;
+    }
+    .mobile-nav {
+        display: block;
+    }
+
 }
 
 @media (max-width: 580px) {
@@ -2286,6 +2295,12 @@ tr {
         font-size: 16px !important;
         line-height: 1.4rem;
     }
+    .social-links {
+        display:none;
+    }
+}
+.mobile-ul li {
+    display:inline !important;
 }
 
 

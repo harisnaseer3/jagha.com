@@ -1,3 +1,4 @@
+
 @extends('website.layouts.app')
 @section('title')
     {!! SEO::generate(true) !!}
@@ -52,22 +53,20 @@
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-5 col-sm-12 ">
-                        <div class="pull-right">
+                        <div class="pull-right social-links">
                             <span style="font-size: 14px;font-weight: 600;">Share To</span>
-
-                            <a href="{{$links['facebook']}}" target="_blank">
-                                <i class="fab fa-facebook-square fa-2x icon-padding" style="color:#3b5997;"></i>
-                            </a>
                             <a href="{{$links['whatsapp']}}" target="_blank">
                                 <i class="fab fa-whatsapp fa-2x icon-padding" style="color: #48C458;"></i>
                             </a>
-                            <a href="{{$links['linkedin']}}" target="_blank">
-                                <i class="fab fa-linkedin fa-2x icon-padding" style="color: #069;"></i>
+                            <a href="{{$links['facebook']}}" target="_blank">
+                                <i class="fab fa-facebook-square fa-2x icon-padding" style="color:#3b5997;"></i>
                             </a>
                             <a href="{{$links['twitter']}}" target="_blank">
                                 <i class="fab fa-twitter fa-2x icon-padding" style="color:#00aced;"></i>
                             </a>
-
+                            <a href="{{$links['linkedin']}}" target="_blank">
+                                <i class="fab fa-linkedin fa-2x icon-padding" style="color: #069;"></i>
+                            </a>
                         </div>
 
                     </div>
