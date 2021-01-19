@@ -98,19 +98,41 @@
                                     <li id="menu-item-11"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
                                         <a href="https://www.aboutpakistan.com/medical">Medical</a></li>
-                                    <li id="menu-item-15"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                        <a href="/">Property</a>
-                                    </li>
                                     <li id="menu-item-12"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12 toggled tog-minus">
+                                        <a href="/">Property</a>
+                                        <ul class="sub-menu" style="display:block;">
+                                            <li id="menu-item-2508"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
+                                                    <a href="{{route('property.city.count.listing',['type'=>'homes'])}}">Houses</a>
+                                            </li>
+                                            <li id="menu-item-2469"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
+                                                <a href="{{route('property.city.count.listing', ['type'=>'plots'])}}">Plots</a>
+                                            </li>
+                                            <li id="menu-item-2509"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
+                                                <a href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">Commercial</a>
+                                            </li>
+                                            <li id="menu-item-2510"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
+                                                <a href="{{route('blogs.index')}}">Blogs</a>
+                                            </li>
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('agents.listing')}}">Partners</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-13"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                         <a href="https://www.aboutpakistan.com/mobile-packages">Mobile Packages</a>
                                     </li>
-                                    <li id="menu-item-13"
+                                    <li id="menu-item-14"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                         <a href="https://www.aboutpakistan.com/about-us.php">About Us</a>
                                     </li>
-                                    <li id="menu-item-14"
+                                    <li id="menu-item-15"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
                                         <a href="https://www.aboutpakistan.com/contact-us.php">Contact Us</a>
                                     </li>
