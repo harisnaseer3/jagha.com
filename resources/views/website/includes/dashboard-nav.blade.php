@@ -98,19 +98,54 @@
                                     <li id="menu-item-11"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
                                         <a href="https://aboutpakistan.com/medical">Medical</a></li>
-                                    <li id="menu-item-15"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
-                                        <a  href="/">Property</a>
-                                    </li>
                                     <li id="menu-item-12"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12 toggled tog-minus">
+                                        <a href="/">Property</a>
+                                        <ul class="sub-menu" style="display:block;">
+                                            <li id="menu-item-2508"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
+                                                <a href="{{route('user.dashboard')}}">Dashboard</a>
+                                            </li>
+                                            <li id="menu-item-2469"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
+                                                <a href="{{route('properties.listings',
+                                           ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">Property Management</a>
+                                            </li>
+                                            <li id="menu-item-2509"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
+                                                <a href="{{route('message-center.inbox')}}">Message Center</a>
+                                            </li>
+                                            <li id="menu-item-2510"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
+                                                <a href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">My Account Settings</a>
+                                            </li>
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('agents.listing')}}">My Agencies</a>
+                                            </li>
+                                            @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
+                                            @if(count($agencies)> 0)
+                                                <li id="menu-item-2511"
+                                                    class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                    <a href="{{route('agencies.staff')}}">Agency Staff</a>
+                                                </li>
+                                            @endif
+
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('aboutpakistan.support')}}">Support</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-13"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                         <a href="https://aboutpakistan.com/mobile-packages">Mobile Packages</a>
                                     </li>
-                                    <li id="menu-item-13"
+                                    <li id="menu-item-14"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                         <a href="https://aboutpakistan.com/about-us.php">About Us</a>
                                     </li>
-                                    <li id="menu-item-14"
+                                    <li id="menu-item-15"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
                                         <a href="https://aboutpakistan.com/contact-us.php">Contact Us</a>
                                     </li>
@@ -221,7 +256,7 @@
                                                 <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>
                                             </a>
                                             <a href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook">
-                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i>
+                                                <span class="nav-soc-but"><i class="fab fa-facebook-f"></i></span>
                                             </a>
                                             <a href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Twitter">
                                                 <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>
