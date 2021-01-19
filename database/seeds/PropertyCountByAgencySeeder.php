@@ -19,17 +19,18 @@ class PropertyCountByAgencySeeder extends Seeder
         foreach ($statuses as $status) {
             foreach ($purposes as $purpose) {
                 $data = DB::table('properties')
-                    ->select('properties.agency_id',
+                    ->select('properties.agency_id','properties.user_id',
                         DB::raw('COUNT(properties.id) AS count'))
                     ->join('agencies', 'properties.agency_id', '=', 'agencies.id')
                     ->where('properties.status', '=', $status)
                     ->where('properties.purpose', '=', $purpose)
                     ->where('properties.basic_listing', '=', 1)
-                    ->groupBy('agency_id')
+                    ->groupBy('properties.agency_id','properties.user_id')
                     ->get()->toArray();
                 foreach ($data as $value) {
                     if ($value->count > 0) {
                         DB::table('property_count_by_agencies')->insert([
+                            'user_id' => $value->user_id,
                             'agency_id' => $value->agency_id,
                             'property_count' => $value->count,
                             'property_purpose' => $purpose,
