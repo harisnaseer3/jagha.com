@@ -319,7 +319,7 @@
                                                     Hello {{ucwords($user->name)}}</h3>
                                                 <br>
 
-                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{wordwrap($content,15,"<br>\n")}}</span>
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$content}}</span>
                                                 <br>
                                                 <br>
                                                 <table border="0" cellspacing="0" cellpadding="0" width="100%">
