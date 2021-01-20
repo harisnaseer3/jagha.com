@@ -428,20 +428,12 @@ class PropertyController extends Controller
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
             } else {
-//                TODO: send an email to property user with reason of rejection
                 $reason = $request->input('rejection_reason');
                 $property_user = User::where('id', '=', $property->user_id)->first();
                 $property_user->notify(new PropertyRejectionMail($property, $reason));
             }
         }
-//        $validator = Validator::make($request->all(), Property::$rules);
         $validator = Validator::make($request->all(), [
-//            'city' => 'required',
-//            'location' => 'required',
-//            'purpose' => 'required',
-//            'property_type' => 'required',
-//            'property_subtype-*' => 'required',
-//            'property_title' => 'required|min:10|max:225',
             'description' => 'required|min:50|max:6144',
             'all_inclusive_price' => 'nullable|numeric|max:99999999999|min:1000',
             'call_for_price_inquiry' => 'numeric',
@@ -457,7 +449,6 @@ class PropertyController extends Controller
             'video_link' => 'nullable|url',
             'rejection_reason' => 'nullable|string'
         ]);
-
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -491,35 +482,10 @@ class PropertyController extends Controller
             }
 
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
-//
-//            $address = $prepAddr = str_replace(' ', '+', $location['location_name'] . ',' . $city->name . ' Pakistan');
-//            $apiKey = config('app.google_map_api_key');
-//            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
-//            $geo = json_decode($geo, true); // Convert the JSON to an array
-//            $latitude = '';
-//            $longitude = '';
-//            if (isset($geo['status']) && ($geo['status'] == 'OK')) {
-//                $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
-//                $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
-//            }
-            $subtype = '';
-//            if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
-//            else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
-//            else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
-
             $status_before_update = $property->status;
 
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
-//                    'reference' => $property->reference,
-//                    'user_id' => $property->user_id,
-//                    'city_id' => $city->id,
-//                    'location_id' => $location['location_id'],
                 'agency_id' => $agency != '' ? $agency : null,
-//                    'purpose' => $request->input('purpose'),
-//                    'sub_purpose' => $request->has('wanted_for') ? $request->has('wanted_for') : null,
-//                    'type' => $request->input('property_type'),
-//                    'sub_type' => $subtype,
-//                    'title' => $request->input('property_title'),
                 'description' => $request->input('description'),
                 'price' => $request->has('all_inclusive_price') ? $request->input('all_inclusive_price') : null,
                 'call_for_inquiry' => $request->input('call_for_price_inquiry') ? 1 : 0,
