@@ -484,6 +484,8 @@ class PropertyController extends Controller
 
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
             $status_before_update = $property->status;
+            (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
+
 
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
                 'agency_id' => $agency != '' ? $agency : null,
@@ -521,7 +523,6 @@ class PropertyController extends Controller
             if ($request->filled('video_link')) {
                 (new VideoController)->update($request, $property);
             }
-            (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
             (new CountTableController)->_insert_in_status_purpose_table($property);
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
