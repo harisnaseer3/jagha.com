@@ -291,7 +291,6 @@ class CountTableController extends Controller
 
     public function _insert_in_status_purpose_table($property)
     {
-        //        TODO : testing pending
         $listing_type = '';
         if ($property->basic_listing)
             $listing_type = 'basic_listing';

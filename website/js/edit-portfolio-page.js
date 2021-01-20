@@ -219,11 +219,7 @@
     user_default_email = $('[name=contact_email]').val();
 
     $(document).ready(function () {
-        // //file read script
-        // $(".custom-file-input").on("change", function() {
-        //     var fileName = $(this).val().split("\\").pop();
-        //     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        // });
+
         let sort = $("#sortable");
         sort.sortable({
             helper: "clone",
@@ -900,7 +896,7 @@
                 $('#user-agency-block').slideUp();
                 $('.contact-person-block').show();
                 $('[name=agency]').val('');
-
+                $('#agency option:first-child').prop('disabled', true);
                 $('#contact_person').removeAttr('required').attr('disable', 'true');
                 $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
                 $('[name="contact_person"]').val(user_default_name);
@@ -912,6 +908,9 @@
             }
 
         });
+        if ($('input[name="advertisement"]:checked').val() === 'Individual') {
+            $('#agency option:first-child').prop('disabled', true);
+        }
 
     });
 })
