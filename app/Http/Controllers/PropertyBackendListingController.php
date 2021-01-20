@@ -34,8 +34,7 @@ class PropertyBackendListingController extends Controller
     private function _listings(string $status, string $user, $condition, $city = '')
     {
         // TODO: make migration for handling quota_used and image_views
-        $listings = Property::
-        select('properties.id', 'sub_type AS type', 'properties.reference',
+        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.reference',
             'properties.status', 'locations.name AS location', 'cities.name as city',
             'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
             'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
@@ -62,6 +61,11 @@ class PropertyBackendListingController extends Controller
                 //get all individual properties
 
                 $agency_users = DB::table('agency_users')->whereIn('agency_id', $ceo_agencies)->distinct('user_id')->pluck('user_id')->toArray();
+                $ceo_agent_agencies = DB::table('agency_users')
+                    ->where('user_id', '=', $user)
+                    ->whereNotIn('agency_id', $ceo_agencies)->pluck('agency_id')->toArray();
+
+
                 $ceo_listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
@@ -72,9 +76,23 @@ class PropertyBackendListingController extends Controller
                     ->join('cities', 'properties.city_id', '=', 'cities.id')
                     ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
                     ->whereIn('properties.user_id', $agency_users);
-                $ceo_listings = $status == 'all' ? $ceo_listings : $ceo_listings->where('status', '=', $status);
-//                dd($ceo_listings->get());
-                return $ceo_listings->where($condition)->unionAll($listings->where($condition));
+
+                $ceo_agent_listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
+                    'properties.status', 'locations.name AS location', 'cities.name as city',
+                    'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
+                    'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
+                    'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id', 'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
+                    DB::raw("'0' AS image_views"))
+                    ->join('locations', 'properties.location_id', '=', 'locations.id')
+                    ->join('cities', 'properties.city_id', '=', 'cities.id')
+                    ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agent_agencies)
+                    ->where('properties.user_id', $user);
+
+                if ($status != 'all') {
+                    $ceo_listings = $ceo_listings->where('status', '=', $status);
+                    $ceo_agent_listings = $ceo_agent_listings->where('status', '=', $status);
+                }
+                return $ceo_listings->where($condition)->unionAll($listings->where($condition))->unionAll($ceo_agent_listings->where($condition));
             } elseif ($agent_agencies > 0) {
                 $agent_listings = Property::
                 select('properties.id', 'sub_type AS type', 'properties.reference',
@@ -392,26 +410,93 @@ class PropertyBackendListingController extends Controller
      */
     public function getPropertyListingCount(string $user)
     {
-        $counts = [];
-        foreach (['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold'] as $status) {
-            $counts[$status]['all'] = $this->listingsCount($status, $user)->first()->count;
-            $counts[$status]['sale'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'sale')->first()->count;
-            $counts[$status]['rent'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'rent')->first()->count;
-            $counts[$status]['wanted'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'wanted')->first()->count;
-
-//            if ($status === 'active') {
-//                $counts[$status]['basic'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'basic_listing')->first()->count;
-//                $counts[$status]['silver'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'silver_listing')->first()->count;
-//                $counts[$status]['bronze'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'bronze_listing')->first()->count;
-//                $counts[$status]['golden'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'golden_listing')->first()->count;
-//                $counts[$status]['platinum'] = $this->listingsCount($status, $user)->where('listing_type', '=', 'platinum_listing')->first()->count;
-//            }
+        if ($user == 1) {
+            $counts = [];
+            foreach (['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold'] as $status) {
+                $counts[$status]['all'] = $this->listingsCount($status, $user)->first()->count;
+                $counts[$status]['sale'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'sale')->first()->count;
+                $counts[$status]['rent'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'rent')->first()->count;
+                $counts[$status]['wanted'] = $this->listingsCount($status, $user)->where('property_purpose', '=', 'wanted')->first()->count;
+            }
+            return $counts;
+        } else {
+            $counts = [];
+            foreach (['active', 'edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected', 'sold'] as $status) {
+//            foreach (['edited'] as $status) {
+                $counts[$status]['all'] = $this->userListingsCount($status, $user, 'all');
+                $counts[$status]['sale'] = $this->userListingsCount($status, $user, 'sale');
+                $counts[$status]['rent'] = $this->userListingsCount($status, $user, 'rent');
+                $counts[$status]['wanted'] = $this->userListingsCount($status, $user, 'wanted');
+            }
+            return $counts;
         }
 
-
-        return $counts;
     }
 
+    function userListingsCount($status, $user, $purpose)
+    {
+        $ceo_property_count = 0;
+        $condition_1 = [];
+        $condition_2 = [];
+        if ($purpose == 'all') {
+            $condition_1 = ['property_status' => $status, 'user_id' => $user, 'listing_type' => 'basic_listing'];
+            $condition_2 = ['property_status' => $status, 'listing_type' => 'basic_listing'];
+
+        } else {
+            $condition_1 = ['property_status' => $status, 'user_id' => $user, 'listing_type' => 'basic_listing', 'property_purpose' => $purpose];
+            $condition_2 = ['property_status' => $status, 'listing_type' => 'basic_listing', 'property_purpose' => $purpose];
+
+        }
+
+        $individual_count = DB::table('property_count_by_user')
+            ->select(DB::raw('sum(individual_count) as count'))
+            ->where($condition_1)
+            ->where('agency_id', '=', null);
+        $individual_count_num = $individual_count->get()->pluck('count')[0];
+
+        $ceo = Agency::where('user_id', '=', $user);
+        $ceo_agencies = $ceo->pluck('id')->toArray(); //gives ceo of agency
+
+        $agents = DB::table('agency_users')->where('user_id', $user);
+        $agent_agencies = $agents->pluck('agency_id')->toArray(); //gives all agency users
+        $ceo_count_num = 0;
+        $agent_count_num = 0;
+        if (count($ceo_agencies) > 0) {
+            $ceo_property_count = DB::table('property_count_by_user')
+                ->select(DB::raw('sum(agency_count) as count'))
+                ->where('property_status', '=', $status)
+                ->whereIn('agency_id', $ceo_agencies);
+
+            $ceo_agency_count = DB::table('property_count_by_user')
+                ->select(DB::raw('sum(agency_count) as count'))
+                ->where('property_status', '=', $status)
+                ->where('user_id', '=', $user)
+                ->whereNotIn('agency_id', $ceo_agencies);
+
+
+            if ($purpose != 'all') {
+                $ceo_property_count = $ceo_property_count->where('property_purpose', '=', $purpose);
+                $ceo_agency_count = $ceo_agency_count->where('property_purpose', '=', $purpose);
+            }
+
+            $ceo_count_num = $ceo_property_count->get()->pluck('count')[0];
+            $ceo_agency_count = $ceo_agency_count->get()->pluck('count')[0];
+            return $ceo_count_num + $individual_count_num + $ceo_agency_count;
+        } else if (count($agent_agencies) > 0) {
+            $agent_property_count = DB::table('property_count_by_user')
+                ->select(DB::raw('sum(agency_count) as count'))
+                ->where('property_status', '=', $status)
+                ->where('user_id', '=', $user)
+                ->whereIn('agency_id', $agent_agencies);
+
+            if ($purpose != 'all')
+                $agent_property_count = $agent_property_count->where('property_purpose', '=', $purpose);
+
+            $agent_property_count = $agent_property_count->get()->pluck('count')[0];
+            return $agent_property_count + $individual_count_num;
+        } else
+            return $individual_count_num;
+    }
 
     private function _getPropertyAggregates()
     {
