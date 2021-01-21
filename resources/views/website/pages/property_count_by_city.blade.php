@@ -26,17 +26,6 @@
                                         @if($type === 'homes') Houses @else {{ucwords($type)}} @endif for Sale in All Cities of Pakistan</h1>
                                     <input type="hidden" name="type" id="type" value="{{$type}}" />
                                 </div>
-{{--                                <div class="col-6">--}}
-{{--                                    <div class="pull-right">--}}
-{{--                                        <strong>Sort Alphabetically</strong>--}}
-{{--                                        <label class="switch">--}}
-{{--                                            <input type="checkbox">--}}
-{{--                                            <span class="slider round"></span>--}}
-{{--                                        </label>--}}
-
-{{--                                    </div>--}}
-
-{{--                                </div>--}}
                             </div>
 
 
@@ -57,7 +46,7 @@
                             @if($properties)
                                 <div class="row">
                                     @foreach($properties as  $property)
-                                        <div class="col-sm-3 my-2">
+                                        <div class=" col-sm-6  col-md-3 my-2">
                                             <a href="{{route('sale.property.search', ['sub_type' => lcfirst($property->property_type),
                                                                                       'city' => lcfirst($property->city_name) ,
                                                                                       'purpose'=>lcfirst($property->property_purpose), 'sort'=>'newest','limit'=>15])}}"
