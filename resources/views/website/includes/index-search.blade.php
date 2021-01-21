@@ -229,15 +229,15 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
                             <div class="form-group mt-2">
-                                <div class="reset-search-banner2 search-button" style="text-transform:none;">
+                                <div class="reset-search-banner2 search-button search-mobile text-center" style="text-transform:none;">
                                     <strong style="color: white">Reset Search</strong>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-6">
                             <div class="form-group">
-                                <button class="search-button" style="margin-top:10px;text-transform:none;" type="submit">
-                                    <i class="fa fa-search"></i><strong style="color: white">Find</strong>
+                                <button class="search-button search-mobile text-center" style="margin-top:10px;text-transform:none;" type="submit">
+                                    <i class="fa fa-search mr-1"></i><strong style="color: white">Find</strong>
                                 </button>
                             </div>
                         </div>
