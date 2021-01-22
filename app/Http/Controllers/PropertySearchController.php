@@ -571,8 +571,7 @@ class PropertySearchController extends Controller
     }
 
     //  search from main  page
-    public
-    function search($data)
+    public function search($data)
     {
         $validator = Validator::make($data, [
             'purpose' => ['required', Rule::in(['sale', 'rent', 'wanted'])],
@@ -594,15 +593,19 @@ class PropertySearchController extends Controller
         $location = '';
         $city = (new City)->select('id', 'name')->where('name', '=', $data['city'])->first();
 
-        if ($data['location'] !== null && $data['location'] !== '')
-            $location = (new Location)->select('id')->where('city_id', '=', $city->id)->where('name', '=', $data['location'])->first();
+//        if ($data['location'] !== null && $data['location'] !== '')
+//            $properties->where('locations.name', 'LIKE', '%'.$data['location'].'%');
+//            $location = (new Location)->select('id')->where('city_id', '=', $city->id)->where('name', '=', $data['location'])->first();
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
         $properties = $this->listingFrontend()
             ->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
 
-        if ($location !== null && $location !== '') $properties->where('location_id', '=', $location->id);
+        if ($data['location'] !== null && $data['location'] !== '')
+            $properties = $properties->where('locations.name', 'LIKE', '%' . $data['location'] . '%');
+
+//        if ($location !== null && $location !== '') $properties->where('location_id', '=', $location->id);
 
         $properties->where('properties.purpose', '=', $data['purpose']);
 //        dd($properties->get());
