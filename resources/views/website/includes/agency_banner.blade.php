@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-lg-2 col-sm-1 col-4 search-col">
                     <button class="btn button-theme btn-search btn-block" type="submit">
-                        <i class="fa fa-search"></i><strong>Find</strong>
+                        <i class="fa fa-search mr-1"></i><strong>Find</strong>
                     </button>
                 </div>
             </div>

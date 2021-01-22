@@ -38,7 +38,7 @@
                         <div class="col-lg-3 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <button class="search-button" style="margin-top:10px;text-transform:none;" type="submit">
-                                    <i class="fa fa-search"></i><strong style="color: white">Find</strong>
+                                    <i class="fa fa-search mr-1"></i><strong style="color: white">Find</strong>
                                 </button>
                             </div>
                         </div>
