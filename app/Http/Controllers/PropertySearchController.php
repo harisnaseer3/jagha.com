@@ -590,26 +590,26 @@ class PropertySearchController extends Controller
             return (['error' => $validator->errors()]);
         }
 
-        $location = '';
+//        $location = '';
         $city = (new City)->select('id', 'name')->where('name', '=', $data['city'])->first();
 
 //        if ($data['location'] !== null && $data['location'] !== '')
-//            $properties->where('locations.name', 'LIKE', '%'.$data['location'].'%');
 //            $location = (new Location)->select('id')->where('city_id', '=', $city->id)->where('name', '=', $data['location'])->first();
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
-        $properties = $this->listingFrontend()
-            ->where('properties.status', '=', 'active')
+        $properties = $this->listingFrontend()->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
 
-        if ($data['location'] !== null && $data['location'] !== '')
-            $properties = $properties->where('locations.name', 'LIKE', '%' . $data['location'] . '%');
-
-//        if ($location !== null && $location !== '') $properties->where('location_id', '=', $location->id);
+        if ($data['location'] !== null && $data['location'] !== '') {
+            $loc = trim($data['location']);
+            $pattern = "/{$data['city']}/i";
+            if(preg_match($pattern, $loc,$match)){
+                $loc = trim(str_replace($match[0],'', $loc));
+            }
+            $properties = $properties->where('locations.name', 'LIKE', "%{$loc}%");
+        }
 
         $properties->where('properties.purpose', '=', $data['purpose']);
-//        dd($properties->get());
-//        dd($data['type']);
 
         if ($data['type'] !== '' && $data['type'] !== null) $properties->where('properties.type', '=', $data['type']);
         if ($data['subtype'] !== null && $data['subtype'] !== '') $properties->where('properties.sub_type', '=', str_replace('-', ' ', $data['subtype']));
@@ -672,5 +672,6 @@ class PropertySearchController extends Controller
             $properties->where($area_column_wrt_unit, '<=', $max_area);
         }
         return ['properties' => $properties];
+
     }
 }
