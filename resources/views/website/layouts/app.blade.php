@@ -23,6 +23,19 @@
     </script>
 
     @include('website.includes.styles')
+    <style>
+
+        .field-icon {
+            float: right;
+            margin-left: -25px;
+
+            position: relative;
+            z-index: 2;
+            margin-right:8px;
+            font-size:1.2rem;
+
+        }
+    </style>
 </head>
 <body>
 <div class="page_loader"></div>
@@ -52,6 +65,20 @@
 </div>
 @include('website.layouts.min-max-check-modal')
 @include('website.includes.scripts')
+<script>
+    (function ($) {
+        $(".toggle-password").click(function() {
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+    })(jQuery);
+</script>
 
 </body>
 </html>

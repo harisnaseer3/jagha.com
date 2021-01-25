@@ -33,6 +33,7 @@
                                     <input id="password" type="password" class="form-control input-text font-size-14 @error('password') is-invalid @enderror" name="password" required
                                            autocomplete="current-password"
                                            placeholder="Password">
+                                    <span toggle="#password" class="fa fa-fw fa-eye  field-icon toggle-password" style="margin-top: -27px;"></span>
 
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
