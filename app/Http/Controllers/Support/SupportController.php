@@ -90,7 +90,6 @@ class SupportController extends Controller
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
     }
-
     private function _listings()
     {
         $user = Auth::guard('web')->user()->getAuthIdentifier();
