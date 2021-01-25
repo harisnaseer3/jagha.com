@@ -29,7 +29,7 @@ class AgencyUserController extends Controller
         $user = Auth::user();
         $footer_data = (new FooterController)->footerContent();
         $agency_ids = $user->agencies->pluck('id')->toArray();
-        $current_agency_users = User::select('id', 'email', 'name', 'phone', 'city_name', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agency_ids)->pluck('user_id')->toArray())->get();
+        $current_agency_users = User::select('id', 'email', 'name', 'cell', 'city_name', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agency_ids)->pluck('user_id')->toArray())->get();
 
         return view('website.agency-staff.listings', [
             'recent_properties' => $footer_data[0],
