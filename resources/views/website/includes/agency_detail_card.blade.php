@@ -8,11 +8,22 @@
     <div class="card-body" id="locations-card">
         <div class="row">
             <div class="col-sm-12">
-                <span class="float-left color-blue">Total Properties: {{$agency_detail->count}}</span>
+                @if($agency_detail->count > 0)
+                    <span class="float-left color-blue">Total Properties: {{$agency_detail->count}}</span>
+                @endif
+
                 <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($agency_detail->created_at))->diffForHumans(['parts' => 2]) }}</span>
                 <br>
+            </div>
+
+            <div class="col-sm-12 mt-2">
+                <div class="float-left color-blue">Contact #: {{$agency_detail->cell}}</div>
+            </div>
+
+            <div class="col-sm-12">
                 <div class="property-description" style="line-height: 1.5rem; font-size: 14px;">{{$agency_detail->description}}</div>
             </div>
+
         </div>
     </div>
 </div>

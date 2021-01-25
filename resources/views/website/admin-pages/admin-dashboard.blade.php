@@ -143,9 +143,9 @@
                                                                         <td>{{$admin->ip_location}}</td>
                                                                         <td>{{$admin->os}}</td>
                                                                         <td>{{$admin->browser}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($admin->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($admin->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
                                                                         @if($admin->logout_at !== null)
-                                                                            <td>{{(new \Illuminate\Support\Carbon($admin->logout_at))->isoFormat('MMM Do YYYY, h:mm a')  }}</td>
+                                                                            <td>{{(new \Illuminate\Support\Carbon($admin->logout_at))->isoFormat('DD-MM-YYYY, h:mm a')  }}</td>
                                                                         @else
                                                                             <td><span class="badge-success p-1">Connected</span></td>
                                                                         @endif
@@ -187,7 +187,7 @@
                                                                         <td>{{$property->property_title}}</td>
                                                                         <td>{{ucwords($property->status)}}</td>
                                                                         <td>{{$property->rejection_reason}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                                 </tbody>
@@ -227,7 +227,7 @@
                                                                         <td>{{$agency->agency_title}}</td>
                                                                         <td>{{ucwords($agency->status)}}</td>
                                                                         <td>{{$agency->rejection_reason}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($agency->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($agency->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
                                                                     </tr>
                                                                 @endforeach
                                                                 </tbody>
@@ -254,7 +254,7 @@
                                                                     <th>IP Location</th>
                                                                     <th>Date</th>
                                                                     <th>Visit Count</th>
-                                                                    <th>Time</th>
+{{--                                                                    <th>Time</th>--}}
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -263,11 +263,8 @@
                                                                         <td>{{$visit->id}}</td>
                                                                         <td>{{$visit->ip}}</td>
                                                                         <td>{{$visit->ip_location}}</td>
-                                                                        <td>{{$visit->date}}</td>
-                                                                        {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($visit->$visit->date))->isoFormat('h:mm a') }}</td>--}}
+                                                                        <td>{{$visit->date}}, {{ (new \Illuminate\Support\Carbon($visit->visit_time))->isoFormat('h:mm a') }}</td>
                                                                         <td>{{$visit->count}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($visit->visit_time))->isoFormat('h:mm a') }}</td>
-
                                                                     </tr>
                                                                 @endforeach
                                                                 </tbody>

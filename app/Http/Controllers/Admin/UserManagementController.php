@@ -46,7 +46,7 @@ class UserManagementController extends Controller
     public function getUsers()
     {
         $reg_users = User::getAllUsers();
-        $users = DB::table('user_logs')->get()->all();
+        $users = DB::table('user_logs')->orderBy('id','desc')->get()->all();
         return view('website.admin-pages.manage-users', [
             'register_users' => $reg_users,
             'users' => $users,

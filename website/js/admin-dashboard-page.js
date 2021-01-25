@@ -1,18 +1,26 @@
 (function ($) {
     $(document).ready(function () {
         $('#admin-log').DataTable({
-            "scrollX": true
+            "scrollX": true,
+            "ordering": false,
+            responsive: true
         });
         $('#property-log').DataTable(
             {
-                "scrollX": true
+                "scrollX": true,
+                "ordering": false,
+                responsive: true
             }
         );
         $('#agency-log').DataTable({
-            "scrollX": true
+            "scrollX": true,
+            "ordering": false,
+            responsive: true
         });
         $('#user-log').DataTable({
-            "scrollX": true
+            "scrollX": true,
+            "ordering": false,
+            responsive: true
         });
 
         if ($('#myChart').length > 0) {
