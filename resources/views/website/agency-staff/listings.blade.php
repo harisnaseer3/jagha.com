@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" role="tabpanel" >
+                        <div class="tab-pane fade show active" role="tabpanel">
                             <div class="row my-4">
                                 <div class="col-md-3">
                                     @include('website.agency-staff.sidebar')
@@ -66,19 +66,23 @@
                                                                 <td>{{$loop->iteration}}</td>
                                                                 <td>{{$agency_user->name}}</td>
                                                                 <td>{{$agency_user->email}}</td>
-                                                                <td>{{$agency_user->phone}}</td>
+                                                                <td>{{$agency_user->cell}}</td>
                                                                 <td>{{$agency_user->city_name}}</td>
                                                                 <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
                                                                 <td>
+                                                                    @if($agency_user->id != Auth::guard('web')->user()->id)
 
                                                                         @if($agency_user->is_active === '0')
                                                                             <div class='btn-group'>
-                                                                                <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Activate</a>
+                                                                                <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}" data-toggle="modal"
+                                                                                   data-target="#status-modal">Activate</a>
                                                                             </div>
                                                                         @elseif($agency_user->is_active === '1')
                                                                             <div class='btn-group'>
-                                                                                <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Deactivate</a>
+                                                                                <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}" data-toggle="modal"
+                                                                                   data-target="#status-modal">Deactivate</a>
                                                                             </div>
+                                                                        @endif
                                                                     @endif
 
                                                                 </td>
