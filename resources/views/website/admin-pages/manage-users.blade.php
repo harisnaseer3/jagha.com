@@ -120,10 +120,10 @@
                                                 <td>{{$user->ip_location}}</td>
                                                 <td>{{$user->os}}</td>
                                                 <td>{{$user->browser}}</td>
-                                                <td>{{ (new \Illuminate\Support\Carbon($user->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                                <td>{{ (new \Illuminate\Support\Carbon($user->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
 
                                                 @if($user->logout_at !== null)
-                                                    <td>{{ (new \Illuminate\Support\Carbon($user->logout_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                                    <td>{{ (new \Illuminate\Support\Carbon($user->logout_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
                                                 @else
                                                     <td><span class="badge-success p-1">Connected</span></td>
                                                 @endif
@@ -149,10 +149,14 @@
             $(document).ready(function () {
 
                 $('#reg_users').DataTable({
-                    "scrollX": true
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
                 });
                 $('#user-log').DataTable({
-                    "scrollX": true
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
                 });
 
             });
