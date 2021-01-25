@@ -51,6 +51,11 @@ class Agency extends Model
 //    {
 //        return $this->belongsToMany('App\Models\Dashboard\User');
 //    }
+    public static function getAgencyById($id)
+    {
+
+        return Agency::where('id',$id)->first();
+    }
     public function agencyUsers()
     {
         return $this->hasMany('App\Models\AgencyUser');

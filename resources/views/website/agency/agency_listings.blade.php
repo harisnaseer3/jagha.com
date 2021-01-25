@@ -40,7 +40,10 @@
                                         <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                            @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
+                                            @if(count($agencies) > 0)
                                             <a class="btn btn-sm theme-blue text-white mr-2" href="{{ route('agencies.add-staff') }}"><i class="fa fa-plus-circle mr-1"></i>Add Agency Staff</a>
+                                            @endif
                                             <a class="btn btn-sm theme-blue text-white mr-2" href="{{route('agencies.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Agency</a>
                                         </div>
 

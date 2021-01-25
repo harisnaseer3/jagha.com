@@ -37,11 +37,15 @@
                                         <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                            @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
+                                            @if(count($agencies) > 0)
+                                                <a class="btn btn-sm theme-blue text-white mr-2" href="{{ route('agencies.add-staff') }}"><i class="fa fa-plus-circle mr-1"></i>Add Agency Staff</a>
+                                            @endif
                                         </div>
 
                                         <div class="tab-pane fade active show" id="listings-all" role="tabpanel"
                                              aria-labelledby="listings-all-tab">
-                                            <h6>Registered Staff</h6>
+                                            <h6>Registered Agency Staff</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
                                                     <thead class="theme-blue text-white">
@@ -66,6 +70,7 @@
                                                                 <td>{{$agency_user->city_name}}</td>
                                                                 <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
                                                                 <td>
+
                                                                         @if($agency_user->is_active === '0')
                                                                             <div class='btn-group'>
                                                                                 <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Activate</a>
@@ -75,6 +80,7 @@
                                                                                 <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}" data-toggle="modal" data-target="#status-modal">Deactivate</a>
                                                                             </div>
                                                                     @endif
+
                                                                 </td>
                                                             </tr>
                                                         @endforeach

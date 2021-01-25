@@ -183,6 +183,7 @@
                                     <option disabled selected>Select property</option>
                                     @if(count($properties) > 0)
                                         @foreach($properties as $property)
+
                                             <option value="{{$property->id}}">{{$property->id}}</option>
                                         @endforeach
                                     @endif
@@ -198,7 +199,9 @@
                                     <option disabled selected>Select Agency</option>
                                     @if(count($agencies) > 0)
                                         @foreach($agencies as $key => $value)
-                                            <option value="{{$value}}">{{$value}}</option>
+                                            @php $agency = \App\Models\Agency::getAgencyById($value)   @endphp
+
+                                            <option value="{{$value}}">{{$value}} - {{$agency->title}}</option>
                                         @endforeach
                                     @endif
 

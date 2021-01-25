@@ -18,5 +18,9 @@ class AgencyUser extends Model
     {
         return $this->belongsTo('App\Models\Dashboard\User','user_id');
     }
+    public function agency()
+    {
+        return $this->belongsTo('App\Models\Agency','agency_id');
+    }
     //
 }

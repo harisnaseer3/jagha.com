@@ -40,7 +40,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                         <label class="control-label">Password</label>
-                                        <input type="password" class="form-control mb-2" name="password">
+                                        <input type="password" class="form-control mb-2" name="password" id="admin-password">
+                                        <span toggle="#admin-password" class="fa fa-fw fa-eye  field-icon toggle-password" style="margin-top: -36px;"></span>
                                         @if ($errors->has('password'))
                                             <span class="help-block">
                                         <strong style="color:red;">{{ $errors->first('password') }}</strong>
@@ -72,6 +73,4 @@
 @section('script')
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-
-    </script>
 @endsection

@@ -113,3 +113,13 @@ body {
     margin-bottom: 20px;
     width: 100%;
 }
+.field-icon {
+    float: right;
+    margin-left: -25px;
+    margin-top: -36px;
+    position: relative;
+    z-index: 2;
+    margin-right:5px;
+    font-size:1.2rem;
+
+}

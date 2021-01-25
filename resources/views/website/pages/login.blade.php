@@ -5,9 +5,12 @@
 @endsection
 
 @section('css')
-    {{--        <script src="{{ asset('js/app.js') }}" defer></script>--}}
+
+
+
 
 @endsection
+
 
 <!-- Contact section start -->
 
@@ -46,7 +49,7 @@
                             <div class="form-group form-box clearfix">
                                 <input id="password" type="password" class="form-control input-text @error('password') is-invalid @enderror" name="password" required autocomplete="current-password"
                                        placeholder="Password">
-
+                                <span toggle="#password" class="fa fa-fw fa-eye  field-icon toggle-password" style="margin-top:-33px;"></span>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                         <strong style="color: #e3342f">{{ $message }}</strong>
@@ -102,4 +105,6 @@
         </div>
     </div>
 @endsection
+
+
 
