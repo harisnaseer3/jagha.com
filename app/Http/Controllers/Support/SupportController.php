@@ -87,11 +87,9 @@ class SupportController extends Controller
             return redirect()->back()->with('success', 'Message Sent Successfully.');
 
         } catch (Throwable $e) {
-
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
     }
-
     private function _listings()
     {
         $user = Auth::guard('web')->user()->getAuthIdentifier();

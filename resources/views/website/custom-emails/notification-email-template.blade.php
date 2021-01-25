@@ -315,7 +315,12 @@
 
                                             <h3 class="name"
                                                 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
-                                                Hello {{ucwords($user->name)}}</h3>
+                                                @if(isset($user->name))
+                                                    Hello {{ucwords($user->name)}}
+                                                @else
+                                                    Hello {{ucwords($user)}}
+                                                @endif
+                                            </h3>
                                             <br>
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$content}}</span>
                                             <br>
