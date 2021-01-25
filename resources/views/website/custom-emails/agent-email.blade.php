@@ -302,7 +302,7 @@
                         <tr style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                             <td style="padding: 0 2.5em;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;">
                                 <div class="text" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: rgba(0,0,0,.3);">
-                                    <h5 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 30px;margin-bottom: 0;line-height: 1.4;">
+                                    <h5 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
                                         <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Inquiry Mail</strong></h5>
                                 </div>
                             </td>
