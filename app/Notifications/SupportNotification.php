@@ -2,11 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Models\Agency;
 use App\Models\Dashboard\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use IpLocation;
+use phpDocumentor\Reflection\DocBlock\Tags\Property;
 
 class SupportNotification extends Notification
 {
@@ -43,20 +46,33 @@ class SupportNotification extends Notification
      */
     public function toMail($notifiable)
     {
+        $property = '';
+        $agency = '';
         if($this->support->inquire_about === 'Property'){
             $id = $this->support->property_id;
+            $property = \App\Models\Property::getPropertyById($id);
+
         }
         else{
             $id = $this->support->agency_id;
+            $agency = Agency::getAgencyById($id);
 
+        }
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $country = '';
+        if ($ip_location = IpLocation::get($ip)) {
+            $country = $ip_location->countryName;
+        } else {
+            $country = 'unavailable';
         }
 
         return (new MailMessage)
-            ->view('website.custom-emails.notification-email-template',[
+            ->view('website.custom-emails.support-email',[
                 'user' => 'Emails Administrator',
-                'title' => 'A new Support Ticket',
                 'content' => "{$this->support->message}",
-                'infoText'   => 'Thank you for using About Pakistan Properties.'
+                'country' => $country,
+                'agency' => $agency,
+                'property' => $property
             ]);
     }
 

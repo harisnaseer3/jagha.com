@@ -261,6 +261,7 @@
             margin-right: 10px;
         }
 
+
         @media screen and (max-width: 500px) {
 
 
@@ -301,8 +302,8 @@
                         <tr style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                             <td style="padding: 0 2.5em;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;">
                                 <div class="text" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: rgba(0,0,0,.3);">
-                                    <h2 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
-                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">{{$title}}</strong></h2>
+                                    <h5 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
+                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Support Ticket</strong></h5>
                                 </div>
                             </td>
                         </tr>
@@ -319,13 +320,91 @@
                                                     Hello {{ucwords($user->name)}}
                                                 @else
                                                     Hello {{ucwords($user)}}
-                                                @endif
-                                            </h3>
+                                                @endif</h3>
                                             <br>
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$content}}</span>
+
+                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an new support ticket. </span>
                                             <br>
+                                            <br>
+
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>
+                                            <br>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <b style="font-size: 16px; color:darkgrey">MESSAGE</b>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{strip_tags($content)}}</span>
+                                            <br>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <b style="font-size: 16px; color:darkgrey">USER DETAILS</b>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name: </strong>{{Auth::guard('web')->user()->name}}</span>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email: </strong>{{Auth::guard('web')->user()->email}}</span>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone: </strong>{{Auth::guard('web')->user()->cell}}</span>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>IP Location: </strong>{{$country}}</span>
+                                            <br>
+                                            <br>
+                                            @if(isset($property->id))
+                                                <b>-------------------------------</b>
+                                                <br>
+                                                <b style="font-size: 16px; color:darkgrey">PROPERTY DETAILS</b>
+                                                <br>
+                                                <b>-------------------------------</b>
+                                                <br>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property: </strong>{{$property->title}}</span>
+                                                <br>
+
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Location: </strong>{{ $property->location->name , $property->city->name }}</span>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property ID: </strong>{{$property->id}}</span>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property Url: </strong><a
+                                                        href="{{$property->property_detail_path()}}">Go to Property</a></span>
+                                                <br>
+                                                <br>
+                                            @endif
+                                            @if(isset($agency->id))
+                                                <b>-------------------------------</b>
+                                                <br>
+
+                                                <b style="font-size: 16px; color:darkgrey">AGENCY DETAILS</b>
+                                                <br>
+                                                <b>-------------------------------</b>
+                                                <br>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Agency: </strong>{{$agency->title}}</span>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Agency ID: </strong>{{$agency->id}}</span>
+                                                <br>
+                                                <br>
+                                            @endif
+
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">
-                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$infoText}}</span>
                                                 <h3 class="name"
                                                     style="margin-top: 30px;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;font-weight: 400;margin-bottom: 0;">
                                                     Regards,</h3>
