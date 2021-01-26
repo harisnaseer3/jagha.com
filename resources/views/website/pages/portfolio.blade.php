@@ -1,9 +1,7 @@
 @extends('website.layouts.app')
 @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
 @section('title')
-    @if ($current_route_name === 'properties.create')   <title> Post New Listing : Property Portal By https://www.aboutpakistan.com</title>
-    @elseif ($current_route_name === 'properties.edit') <title> Edit Listing : Property Portal By https://www.aboutpakistan.com </title>
-    @endif
+    <title>About Pakistan Properties by https://www.aboutpakistan.com</title>
 @endsection
 
 @section('css_library')
