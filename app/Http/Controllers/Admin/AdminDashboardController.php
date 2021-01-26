@@ -28,7 +28,7 @@ class AdminDashboardController extends Controller
     {
         $admin = Auth::guard('admin')->user();
         $admin_logs = DB::table('admin_session_logs')->orderBy('id','desc')->get()->all();
-        $visit_logs = DB::table('visits')->orderBy('id','desc')->get()->all();
+        $visit_logs = DB::table('visits')->orderBy('id','desc')->orderBy('visit_time','desc')->get()->all();
 
         return view('website.admin-pages.admin-dashboard', [
             'admin' => $admin,

@@ -164,42 +164,68 @@
                                                                     @elseif($params['status'] == 'rejected_agencies')
                                                                         <td>{{ucwords($all_listing->reviewed_by)}}</td>
                                                                     @endif
-{{--                                                                    <td>--}}
-{{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
-{{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"--}}
-{{--                                                                               data-toggle-1="tooltip"--}}
-{{--                                                                               data-placement="bottom" title="Add user in agency">--}}
-{{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
-{{--                                                                            </a>--}}
-{{--                                                                        @endif--}}
+                                                                    {{--                                                                    <td>--}}
+                                                                    {{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
+                                                                    {{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $all_listing->id)}}" class="btn btn-sm btn-primary"--}}
+                                                                    {{--                                                                               data-toggle-1="tooltip"--}}
+                                                                    {{--                                                                               data-placement="bottom" title="Add user in agency">--}}
+                                                                    {{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+                                                                    {{--                                                                            </a>--}}
+                                                                    {{--                                                                        @endif--}}
 
-{{--                                                                    </td>--}}
+                                                                    {{--                                                                    </td>--}}
                                                                     <td>
                                                                         @if($params['status'] != 'deleted_agencies')
 
                                                                             @if($params['status'] == 'pending_agencies')
-                                                                                <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}" class="btn btn-sm btn-warning"
+                                                                                <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-warning mb-1"
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="Edit Agency">
                                                                                     Review & Activate<span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                 </a>
-                                                                            @elseif($params['status'] != 'pending_agencies' )
-                                                                                <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}" class="btn btn-sm btn-warning"
+                                                                            @elseif($params['status'] == 'verified_agencies')
+                                                                                <a type="button" target="_blank"
+                                                                                   href="{{route('agents.ads.listing',
+                                                                                                [ 'city'=>strtolower(Str::slug($all_listing->city)),
+                                                                                                   'slug'=>\Illuminate\Support\Str::slug($all_listing->title),
+                                                                                                   'agency'=> $all_listing->id ,
+                                                                                                   ])}}"
+                                                                                   class="btn btn-sm btn-primary mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="view">
+                                                                                    <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                                </a>
+                                                                                <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-warning mb-1"
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="Edit Agency">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                 </a>
-                                                                                <a type="button" class="btn btn-sm btn-danger"
+                                                                                <a type="button" class="btn btn-sm btn-danger mb-1"
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="delete"
                                                                                    data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
                                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                                 </a>
+                                                                            @elseif($params['status'] != 'pending_agencies' )
 
+                                                                                <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-warning mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Edit Agency">
+                                                                                    <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                                </a>
+                                                                                <a type="button" class="btn btn-sm btn-danger mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="delete"
+                                                                                   data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
+                                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                </a>
                                                                             @endif
                                                                         @elseif($params['status'] == 'deleted_agencies')
                                                                             <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
-                                                                               class="btn btn-sm btn-success color-black restore-btn"
+                                                                               class="btn btn-sm btn-success color-black restore-btn mb-1"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 Review & Restore<span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -221,7 +247,7 @@
                                                             @endforelse
                                                             </tbody>
                                                         </table>
-{{--                                                        {{ $listings['all']->links() }}--}}
+                                                        {{--                                                        {{ $listings['all']->links() }}--}}
                                                         {{ $listings['all']->links('vendor.pagination.bootstrap-4') }}
                                                     </div>
                                                 </div>
@@ -279,33 +305,56 @@
                                                                     @elseif($params['status'] == 'deleted_agencies')
                                                                         <td></td>
                                                                     @endif
-{{--                                                                    <td>--}}
-{{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
-{{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"--}}
-{{--                                                                               data-toggle-1="tooltip"--}}
-{{--                                                                               data-placement="bottom" title="Add user in agency">--}}
-{{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
-{{--                                                                            </a>--}}
-{{--                                                                        @endif--}}
+                                                                    {{--                                                                    <td>--}}
+                                                                    {{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
+                                                                    {{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $key_listing->id)}}" class="btn btn-sm btn-primary"--}}
+                                                                    {{--                                                                               data-toggle-1="tooltip"--}}
+                                                                    {{--                                                                               data-placement="bottom" title="Add user in agency">--}}
+                                                                    {{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+                                                                    {{--                                                                            </a>--}}
+                                                                    {{--                                                                        @endif--}}
 
-{{--                                                                    </td>--}}
+                                                                    {{--                                                                    </td>--}}
                                                                     <td>
-                                                                        @if($params['status'] != 'deleted_agencies')
-
-                                                                            <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}" class="btn btn-sm btn-warning "
+                                                                        @if($params['status'] == 'verified_agencies')
+                                                                            <a type="button" target="_blank"
+                                                                               href="{{route('agents.ads.listing',
+                                                                                                [ 'city'=>strtolower(Str::slug($key_listing->city)),
+                                                                                                   'slug'=>\Illuminate\Support\Str::slug($key_listing->title),
+                                                                                                   'agency'=> $key_listing->id ,
+                                                                                                   ])}}"
+                                                                               class="btn btn-sm btn-primary mb-1"
+                                                                               data-toggle-1="tooltip"
+                                                                               data-placement="bottom" title="view">
+                                                                                <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                            </a>
+                                                                            <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}"
+                                                                               class="btn btn-sm btn-warning mb-1"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
-                                                                            <a type="button" class="btn btn-sm btn-danger
-                                                                {{$params['status'] == 'deleted' ?' anchor-disable':''}}
-                                                                                " data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                            <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
+                                                                               data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                               data-toggle="modal" data-target="#delete"
+                                                                               data-record-id="{{$key_listing->id}}">
+                                                                                <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                            </a>
+                                                                        @elseif($params['status'] != 'deleted_agencies')
+                                                                            <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}"
+                                                                               class="btn btn-sm btn-warning mb-1"
+                                                                               data-toggle-1="tooltip"
+                                                                               data-placement="bottom" title="Edit Agency">
+                                                                                <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                            </a>
+                                                                            <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
+                                                                               data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
                                                                                data-toggle="modal" data-target="#delete"
                                                                                data-record-id="{{$key_listing->id}}">
                                                                                 <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                             </a>
                                                                         @elseif($params['status'] == 'deleted_agencies')
-                                                                            <a type="button" class="btn btn-sm btn-success color-black restore-btn "
+                                                                            <a type="button" class="btn btn-sm btn-success color-black restore-btn mb-1"
                                                                                data-toggle-1="tooltip" data-placement="bottom"
                                                                                title="Restore Agency"
                                                                                href="javascript:void(0)"
@@ -323,13 +372,12 @@
                                                             </tbody>
                                                         </table>
 
-{{--                                                        {{ $listings['key']->links() }}--}}
+                                                        {{--                                                        {{ $listings['key']->links() }}--}}
                                                         {{ $listings['key']->links() }}
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'featured'? 'active show' : '' }}" id="listings-featured"
-                                                     role="tabpanel"
-                                                     aria-labelledby="listings-featured-tab">
+                                                     role="tabpanel" aria-labelledby="listings-featured-tab">
                                                     <h6>Featured Agencies</h6>
                                                     <div class="my-4">
                                                         <table class="table table-sm table-bordered">
@@ -382,33 +430,58 @@
                                                                     @elseif($params['status'] == 'deleted_agencies')
                                                                         <td></td>
                                                                     @endif
-{{--                                                                    <td>--}}
+                                                                    {{--                                                                    <td>--}}
 
-{{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
+                                                                    {{--                                                                        @if($params['status'] != 'deleted_agencies')--}}
 
-{{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"--}}
-{{--                                                                               data-toggle-1="tooltip"--}}
-{{--                                                                               data-placement="bottom" title="Add user in agency">--}}
-{{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
-{{--                                                                            </a>--}}
-{{--                                                                        @endif--}}
+                                                                    {{--                                                                            <a type="button" href="{{route('admin.agencies.add-users', $featured_listing->id)}}" class="btn btn-sm btn-primary"--}}
+                                                                    {{--                                                                               data-toggle-1="tooltip"--}}
+                                                                    {{--                                                                               data-placement="bottom" title="Add user in agency">--}}
+                                                                    {{--                                                                                <i class="fas fa-user-plus mr-2"></i>Add Agency Staff--}}
+                                                                    {{--                                                                            </a>--}}
+                                                                    {{--                                                                        @endif--}}
 
-{{--                                                                    </td>--}}
+                                                                    {{--                                                                    </td>--}}
                                                                     <td>
-                                                                        @if($params['status'] != 'deleted_agencies')
-                                                                            <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}" class="btn btn-sm btn-warning"
+                                                                        @if($params['status'] == 'verified_agencies')
+                                                                            <a type="button" target="_blank"
+                                                                               href="{{route('agents.ads.listing',
+                                                                                                [ 'city'=>strtolower(Str::slug($featured_listing->city)),
+                                                                                                   'slug'=>\Illuminate\Support\Str::slug($featured_listing->title),
+                                                                                                   'agency'=> $featured_listing->id ,
+                                                                                                   ])}}"
+                                                                               class="btn btn-sm btn-primary mb-1"
+                                                                               data-toggle-1="tooltip"
+                                                                               data-placement="bottom" title="view">
+                                                                                <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                            </a>
+                                                                            <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}"
+                                                                               class="btn btn-sm btn-warning mb-1"
                                                                                data-toggle-1="tooltip"
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
-                                                                            <a type="button" class="btn btn-sm btn-danger" data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                            <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                               data-toggle="modal" data-target="#delete"
+                                                                               data-record-id="{{$featured_listing->id}}">
+                                                                                <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                            </a>
+                                                                        @elseif($params['status'] != 'deleted_agencies')
+
+                                                                            <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}"
+                                                                               class="btn btn-sm btn-warning mb-1"
+                                                                               data-toggle-1="tooltip"
+                                                                               data-placement="bottom" title="Edit Agency">
+                                                                                <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                            </a>
+                                                                            <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
                                                                                data-toggle="modal" data-target="#delete"
                                                                                data-record-id="{{$featured_listing->id}}">
                                                                                 <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                             </a>
                                                                         @elseif($params['status'] == 'deleted_agencies')
                                                                             <a type="button"
-                                                                               class="btn btn-sm btn-success color-black restore-btn {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                               class="btn btn-sm btn-success color-black restore-btn mb-1{{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
                                                                                data-toggle-1="tooltip" data-placement="bottom"
                                                                                title="Restore Agency"
                                                                                href="javascript:void(0)"
@@ -426,7 +499,7 @@
                                                             </tbody>
                                                         </table>
 
-{{--                                                        {{ $listings['featured']->links() }}--}}
+                                                        {{--                                                        {{ $listings['featured']->links() }}--}}
                                                         {{ $listings['featured']->links('vendor.pagination.bootstrap-4') }}
                                                     </div>
                                                 </div>

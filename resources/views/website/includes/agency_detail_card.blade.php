@@ -7,18 +7,22 @@
 
     <div class="card-body" id="locations-card">
         <div class="row">
-            <div class="col-sm-12">
-                @if($agency_detail->count > 0)
-                    <span class="float-left color-blue">Total Properties: {{$agency_detail->count}}</span>
-                @endif
-
-                <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($agency_detail->created_at))->diffForHumans(['parts' => 2]) }}</span>
-                <br>
+            {{--            <div class="col-sm-12">--}}
+            @if($agency_property_count > 0)
+                <div class="col-sm-6">
+                    <span class="float-left property-title text-transform mb-2">Total Properties {{$agency_property_count}}</span>
+                </div>
+            @endif
+            <div class="col-sm-6">
+                <div class="{{$agency_property_count > 0 ? 'float-right':'float-left'}} property-title text-transform mb-2">Partner
+                    Since {{ (new \Illuminate\Support\Carbon($agency_detail->created_at))->diffForHumans(['parts' => 2]) }}</div>
             </div>
-
-            <div class="col-sm-12 mt-2">
-                <div class="float-left color-blue">Contact #: {{$agency_detail->cell}}</div>
-            </div>
+            {{--            </div>--}}
+            @if($agency_detail->cell !== '')
+                <div class="col-sm-6">
+                    <div class="{{$agency_property_count > 0 ? 'float-left':'float-right'}} property-title text-transform mb-2">Contact # {{$agency_detail->cell}}</div>
+                </div>
+            @endif
 
             <div class="col-sm-12">
                 <div class="property-description" style="line-height: 1.5rem; font-size: 14px;">{{$agency_detail->description}}</div>
