@@ -32,8 +32,8 @@ class AdminDashboardController extends Controller
 
         return view('website.admin-pages.admin-dashboard', [
             'admin' => $admin,
-            'property_log' => PropertyLog::all(),
-            'agency_log' => AgencyLog::all(),
+            'property_log' => PropertyLog::orderBy('id','desc')->get(),
+            'agency_log' => AgencyLog::orderBy('id','desc')->get(),
             'user_visit_log' => $visit_logs,
             'admin_log' => $admin_logs
         ]);
