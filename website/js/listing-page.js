@@ -11,16 +11,32 @@
     }
 
     function addPaginationLinks() {
+        let required_string = window.location.href;
         let current_search_params = window.location.search.split('&page')[0];
-        $('.page-item').each(function () {
-            let link = $(this).find('a');
-            if (link.length > 0) {
-                let fetched_link = link.attr('href');
-                let piece1 = fetched_link.split('?')[0];
-                let piece2 = fetched_link.split('?')[1];
-                link.attr('href', piece1 + current_search_params + '&' + piece2);
-            }
-        });
+
+        if (required_string.indexOf('?') > 0) {
+            $('.page-item').each(function () {
+                let link = $(this).find('a');
+                if (link.length > 0) {
+                    let fetched_link = link.attr('href');
+                    let piece1 = fetched_link.split('?')[0];
+                    let piece2 = fetched_link.split('?')[1];
+                    link.attr('href', piece1 + current_search_params + '&' + piece2);
+                }
+            });
+        } else {
+            $('.page-item').each(function () {
+                let link = $(this).find('a');
+                if (link.length > 0) {
+                    let fetched_link = link.attr('href');
+                    let piece1 = fetched_link.split('?')[0];
+                    let piece2 = fetched_link.split('?')[1];
+                    link.attr('href', piece1 + current_search_params + '?&' + piece2);
+                }
+            });
+        }
+
+
     }
 
     function addPaginationAjaxLinks(url) {
@@ -29,7 +45,7 @@
         let condition = '';
         $.each(current_search_params, function (index, value) {
             if (!value.includes('page'))
-                condition += value +'&'
+                condition += value + '&'
 
         });
         $('.page-item').each(function () {
