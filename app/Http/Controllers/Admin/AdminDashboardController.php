@@ -45,8 +45,8 @@ class AdminDashboardController extends Controller
             $total_count = array();
             $date = array();
             $unique_count = array();
-            $unique_result = Visit::select(DB::raw('Count(count) AS user_count'))->orderBy('date')->groupBy('date')->get()->toArray();
-            $result = Visit::select(DB::raw('SUM(count) AS user_count'), 'date')->orderBy('date')->groupBy('date')->get()->toArray();
+            $unique_result = Visit::select(DB::raw('Count(count) AS user_count'))->whereMonth('created_at', date('m'))->orderBy('date')->groupBy('date')->get()->toArray();
+            $result = Visit::select(DB::raw('SUM(count) AS user_count'), 'date')->whereMonth('created_at', date('m'))->orderBy('date')->groupBy('date')->get()->toArray();
 
             foreach ($result as $data) {
                 $total_count[] = $data['user_count'];
