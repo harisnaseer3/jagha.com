@@ -46,11 +46,12 @@ class AgencyStatusChangeMail extends Notification
         $user_id = $this->agency->user_id;
         $user = User::where('id',$user_id)->first();
         return (new MailMessage)
+            ->subject('Agency Status Update Notification')
             ->view('website.custom-emails.notification-email-template',[
                 'user' => $user,
                 'title' => 'About Pakistan Agency Status Update',
-                'content' => "Status of Agency titled {$this->agency->title} and id {$this->agency->id} has been changed to {$this->agency->status} on About Pakistan Property Properties",
-                'infoText'   => 'Thank you for using About Pakistan Property Portal!'
+                'content' => 'Status of Agency titled {$this->agency->title} and ID {$this->agency->id} has been changed to {$this->agency->status}  on About Pakistan Properties',
+                'infoText'   => 'Thank you for using About Pakistan Properties!'
             ]);
     }
 

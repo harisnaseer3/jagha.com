@@ -48,9 +48,10 @@ class AgencyRejectionMail extends Notification
         $user_id = $this->agency->user_id;
         $user = User::where('id',$user_id)->first();
         return (new MailMessage)
+            ->subject('Agency Rejection Notification')
             ->view('website.custom-emails.notification-email-template',[
                 'user' => $user,
-                'title' => 'Notification of Agency Rejection On About Pakistan Properties',
+                'title' => 'Agency Rejection On About Pakistan Properties',
                 'content' => "Agency of ID = {$this->agency->id} titled as {$this->agency->title} and has been rejected by the Admin due to the reason of {$this->reason}.",
                 'infoText'   => 'Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.'
             ]);

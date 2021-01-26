@@ -83,7 +83,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'About Paksistan Property Portal'),
+        'name' => env('MAIL_FROM_NAME', 'About Pakistan Properties'),
     ],
 
     /*

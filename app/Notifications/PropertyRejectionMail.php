@@ -48,9 +48,10 @@ class PropertyRejectionMail extends Notification
         $user_id = $this->property->user_id;
         $user = User::where('id',$user_id)->first();
         return (new MailMessage)
+            ->subject('Property Rejection Notification')
             ->view('website.custom-emails.notification-email-template',[
                 'user' => $user,
-                'title' => 'Notification of Property Rejection On About Pakistan Properties',
+                'title' => 'Property Rejection On About Pakistan Properties',
                 'content' => "Property of ID = {$this->property->id} and Reference = {$this->property->reference} has been rejected by the Admin due to the reason of {$this->reason}.",
                 'infoText'   => 'Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.'
             ]);
