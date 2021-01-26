@@ -29,7 +29,7 @@ class AgencyUserController extends Controller
         $user = Auth::user();
         $footer_data = (new FooterController)->footerContent();
         $agency_ids = $user->agencies->pluck('id')->toArray();
-        $current_agency_users = User::select('id', 'email', 'name', 'phone', 'city_name', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agency_ids)->pluck('user_id')->toArray())->get();
+        $current_agency_users = User::select('id', 'email', 'name', 'cell', 'city_name', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agency_ids)->pluck('user_id')->toArray())->get();
 
         return view('website.agency-staff.listings', [
             'recent_properties' => $footer_data[0],
@@ -126,6 +126,7 @@ class AgencyUserController extends Controller
             $request->city_name = $request->city;
         }
 
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -156,8 +157,10 @@ class AgencyUserController extends Controller
 
     public function storeStaff(Request $request)
     {
+        $data = $request->input();
         if ($request->city != null && $request->country === 'Pakistan') {
-            $request->city_name = $request->city;
+            $data['city_name'] = $request->input('city');
+
         }
         if ($request->add === 'New User') {
             $validator = Validator::make($request->all(), [
@@ -185,7 +188,7 @@ class AgencyUserController extends Controller
         }
         $agency = (new Agency)->where('id', $request->agency_id)->first();
         if ($request->add === 'New User') {
-            $user = User::createUser($request->input());
+            $user = User::createUser($data);
             if (isset($user->id) && isset($agency->id)) {
                 DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $user->id]);
                 if ($request->send_verification_mail === 'Yes') {
