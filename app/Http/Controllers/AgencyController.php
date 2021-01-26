@@ -52,8 +52,7 @@ class AgencyController extends Controller
                     ->groupBy('cities.name')
                     ->orderBy('cities.name')->get();
                 $sort = 'checked';
-            }
-            else if ($request->sort === 'unsort-alpha') {
+            } else if ($request->sort === 'unsort-alpha') {
                 $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
                     ->where('agencies.status', '=', 'verified')
                     ->where('agencies.featured_listing', '=', '0')
@@ -85,7 +84,7 @@ class AgencyController extends Controller
                 ])->render();
 
             return $data;
-            }
+        }
 
         $normal_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')
@@ -195,9 +194,34 @@ class AgencyController extends Controller
         return $properties;
     }
 
-    public function show(string $city, string $slug, string $agency)
+    public function show(Request $request,string $city, string $slug, string $agency)
     {
-        $properties = (new PropertySearchController)->listingFrontend()->where('properties.agency_id', '=', $agency);
+        $properties = (new Property)
+            ->select('properties.id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
+                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
+                'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
+                'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
+                'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at', 'agencies.description AS agency_description',
+
+                'users.community_nick AS user_nick_name', 'users.name AS user_name')
+            ->where('properties.status', '=', 'active')
+            ->whereNull('properties.deleted_at')
+            ->leftJoin('images as p', function ($q) {
+                $q->on('p.property_id', '=', 'properties.id')
+                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id and images.deleted_at IS null ORDER BY images.order  limit 1 )'));
+            })
+            ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->join('agencies', 'properties.agency_id', '=', 'agencies.id')
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
+            })
+            ->join('users', 'properties.user_id', '=', 'users.id')
+            ->where('properties.agency_id', '=', $agency);
 
         $sort = '';
         $limit = '';
@@ -229,23 +253,43 @@ class AgencyController extends Controller
 
 
         $agency_data = (new Agency)->select('agencies.title', 'agencies.description', 'agencies.status',
-            'agencies.phone', 'agencies.cell', 'agencies.optional_number','agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
-            'property_count_by_agencies.property_count AS count')
+            'agencies.phone', 'agencies.cell', 'agencies.optional_number', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')->where('agencies.id', '=', $agency)
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
-            ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
-            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
+            ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
 
-        $data = [
-            'agency_detail' => $agency_data->first(),
-            'params' => ['sort' => $sort],
-            'property_types' => $property_types,
-            'properties' => $properties->paginate($limit),
-            'recent_properties' => $footer_content[0],
-            'footer_agencies' => $footer_content[1],
+        $agency_property_count = DB::table('property_count_by_user')->select(DB::raw('sum(agency_count) as count'))
+            ->where('agency_id', '=', $agency)
+            ->where('individual_count', '=', 0)
+            ->where('property_status', '=', 'active')
+            ->get()->toArray();
 
-        ];
-        return view('website.pages.property_listing', $data);
+
+//        return view('website.pages.property_listing', $data);
+        if ($request->ajax()) {
+            $data['view'] = View('website.components.property-listings',
+                [
+                    'limit' => $limit,
+                    'area_sort' => $sort_area,
+                    'sort' => $sort,
+                    'params' => $request->all(),
+                    'properties' => $properties->paginate($limit)
+                ])->render();
+            return $data;
+        } else {
+
+            $data = [
+                'agency_detail' => $agency_data->first(),
+                'agency_property_count'=>$agency_property_count[0]->count,
+                'params' => ['sort' => $sort],
+                'property_types' => $property_types,
+                'properties' => $properties->paginate($limit),
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1],
+
+            ];
+            return view('website.pages.property_listing', $data);
+        }
 
     }
 
@@ -644,10 +688,9 @@ class AgencyController extends Controller
             }
 
         } catch (Throwable $e) {
-            if (Auth::guard('admin')->user()){
+            if (Auth::guard('admin')->user()) {
                 return redirect()->route('admin-agencies-edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
-            }
-            else
+            } else
                 return redirect()->route('agencies.edit', $agency->id)->withInput()->with('error', 'Error updating record. Try again');
         }
     }
