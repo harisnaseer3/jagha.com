@@ -1,7 +1,7 @@
 @extends('website.layouts.app')
 
 @section('title')
-    <title> Login Page : Property Management By https://www.aboutpakistan.com</title>
+    <title>About Pakistan Properties by https://www.aboutpakistan.com</title>
 @endsection
 
 @section('css')

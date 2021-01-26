@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title> Password Reset Page : About Pakistan Properties https://www.properties.aboutpakistan.com</title>
+    <title>About Pakistan Properties by https://www.aboutpakistan.com</title>
 @endsection
 
 @section('css')
