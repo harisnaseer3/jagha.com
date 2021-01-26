@@ -162,6 +162,10 @@ class AgencyUserController extends Controller
             $data['city_name'] = $request->input('city');
 
         }
+        $current_user = User::getUserByEmail($request->email);
+        if(isset($current_user->id) && $request->add === 'New User' ){
+            return redirect()->back()->withInput()->with('error', 'Email is already registered with us. By choosing "Existing User" option, link already registered property.aboutpakistan.com user to your agency.');
+        }
         if ($request->add === 'New User') {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -200,7 +204,7 @@ class AgencyUserController extends Controller
 
         } elseif ($request->add === 'Existing User') {
 
-            $current_user = User::getUserByEmail($request->email);
+
             if (isset($current_user->id) && isset($agency->id)) {
                 $condition = ['user_id' => $current_user->id, 'agency_id'=> $agency->id];
                 $agency_user = (new AgencyUser())->where($condition)->first();
