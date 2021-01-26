@@ -85,6 +85,10 @@
                                                                 <td>
                                                                     <div class="pending-status"><strong>Expired</strong></div>
                                                                 </td>
+                                                            @elseif($params['status'] == 'rejected_agencies')
+                                                                <td>
+                                                                    <div class="rejected-status"><strong>Rejected</strong></div>
+                                                                </td>
                                                             @elseif($params['status'] == 'deleted_agencies')
                                                                 <td>
                                                                     <div class="rejected-status"><strong>deleted</strong></div>
@@ -115,8 +119,8 @@
                                                                        data-placement="bottom" title="view">
                                                                         <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                     </a>
-                                                                    <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning mb-1"
+
+                                                                    <a type="button" href="{{route('agencies.edit', $all_listing->id)}}" class="btn btn-sm btn-warning mb-1"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Edit Agency">
                                                                         <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -231,8 +235,7 @@
                                                                        data-placement="bottom" title="view">
                                                                         <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                     </a>
-                                                                    <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning mb-1"
+                                                                    <a type="button" href="{{route('agencies.edit', $key_listing->id)}}" class="btn btn-sm btn-warning "
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Edit Agency">
                                                                         <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
@@ -350,8 +353,7 @@
                                                                        data-placement="bottom" title="view">
                                                                         <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                     </a>
-                                                                    <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}"
-                                                                       class="btn btn-sm btn-warning mb-1"
+                                                                    <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning mb-1"
                                                                        data-toggle-1="tooltip"
                                                                        data-placement="bottom" title="Edit Agency">
                                                                         <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
