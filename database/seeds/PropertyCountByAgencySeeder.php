@@ -24,7 +24,7 @@ class PropertyCountByAgencySeeder extends Seeder
                     ->join('agencies', 'properties.agency_id', '=', 'agencies.id')
                     ->where('properties.status', '=', $status)
                     ->where('properties.basic_listing', '=', 1)
-                    ->groupBy('properties.agency_id', 'properties.user_id')
+                    ->groupBy('properties.agency_id')
                     ->get()->toArray();
                 foreach ($data as $value) {
                     if ($value->count > 0) {
