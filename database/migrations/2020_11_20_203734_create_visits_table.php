@@ -23,7 +23,7 @@ class CreateVisitsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->unique(['ip', 'date']);
+//            $table->unique(['ip', 'date']);
         });
 
         DB::statement('ALTER TABLE `visits`
