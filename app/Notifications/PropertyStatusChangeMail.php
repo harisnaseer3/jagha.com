@@ -46,11 +46,12 @@ class PropertyStatusChangeMail extends Notification
         $user_id = $this->property->user_id;
         $user = User::where('id',$user_id)->first();
         return (new MailMessage)
+            ->subject('Property Status Update Notification')
             ->view('website.custom-emails.notification-email-template',[
                 'user' => $user,
                 'title' => 'About Pakistan Property Status Update',
-                'content' => "Status of property titled {$this->property->title} and reference # {$this->property->reference} has been changed to {$this->property->status} on About Pakistan Property Portal.",
-                'infoText'   => 'Thank you for using About Pakistan Property Portal!'
+                'content' => "Status of property titled {$this->property->title} and reference # {$this->property->reference} has been changed to {$this->property->status} on About Pakistan Properties.",
+                'infoText'   => 'Thank you for using About Pakistan Properties!'
             ]);
     }
 
