@@ -105,7 +105,7 @@
                                                                         <td>Added By</td>
                                                                         <td>Contact Person</td>
                                                                         <td>Contact #</td>
-                                                                        <td>Property Type</td>
+                                                                        <td>Listed For</td>
                                                                         <td>Listed Date</td>
 
                                                                         @if($params['status'] == 'active')
@@ -141,7 +141,7 @@
                                                                                 <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
 
                                                                                 {{--                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>--}}
-                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>
+                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                                 @if($params['status'] == 'active')
                                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }} <p>Will Expire
                                                                                             in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
