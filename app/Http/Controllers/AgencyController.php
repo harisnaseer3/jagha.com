@@ -142,6 +142,7 @@ class AgencyController extends Controller
 
     public function ListingCityAgencies(string $city, Request $request)
     {
+
         $city_name = ucwords(str_replace('-', ' ', $city));
         $city_id = City::select('id')->where('name', '=', $city_name)->first();
 
