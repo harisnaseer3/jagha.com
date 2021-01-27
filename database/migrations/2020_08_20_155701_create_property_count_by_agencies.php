@@ -18,6 +18,9 @@ class CreatePropertyCountByAgencies extends Migration
             $table->id();
             $table->foreignId('agency_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('property_count')->default(0);
+            $table->string('property_purpose', 225)->index();
+            $table->string('property_status', 255)->index();
+            $table->string('listing_type', 255);
             $table->softDeletes();
             $table->timestamps();
         });
