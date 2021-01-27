@@ -44,7 +44,7 @@ class PropertySearchController extends Controller
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->join('users', 'properties.user_id', '=', 'users.id')
-            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
+            ->leftjoin('property_count_by_agencies', 'properties.agency_id', '=', 'property_count_by_agencies.agency_id');
 
 
     }

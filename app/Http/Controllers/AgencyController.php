@@ -128,7 +128,8 @@ class AgencyController extends Controller
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
-            ->leftJoin('property_count_by_agencies', 'agencies.id', '=', 'property_count_by_agencies.agency_id');
+            ->leftJoin('property_count_by_agencies', 'property_count_by_agencies.agency_id', '=', 'agencies.id')
+            ->where('property_count_by_agencies.property_status', '=', 'active');
     }
 
     function _agencyCount()
@@ -346,6 +347,7 @@ class AgencyController extends Controller
 
         $agencies = $this->_listingFrontend()
             ->where('agency_cities.city_id', '=', $city_id->id);
+
         if ($agency === 'featured') $agencies->where('agencies.featured_listing', '=', 1);
         else if ($agency === 'key') $agencies->where('agencies.key_listing', '=', 1);
         else if ($agency === 'other') $agencies->where('agencies.featured_listing', '=', 0)->where('agencies.key_listing', '=', 0);
@@ -357,12 +359,12 @@ class AgencyController extends Controller
 
         $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
             ->orderBy('agencies.created_at', $sort === 'newest' ? 'DESC' : 'ASC');
+
         (new MetaTagController())->addMetaTagsOnPartnersListing();
 
 
         $property_types = (new PropertyType)->all();
         $footer_content = (new FooterController)->footerContent();
-
         $data = [
             'property_types' => $property_types,
             'agencies' => $agencies->paginate($limit),

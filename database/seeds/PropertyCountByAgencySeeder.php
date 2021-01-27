@@ -17,13 +17,12 @@ class PropertyCountByAgencySeeder extends Seeder
         $statuses = ['active', 'edited', 'pending', 'expired', 'deleted', 'rejected', 'sold'];
         $purposes = ['sale', 'rent', 'wanted'];
         foreach ($statuses as $status) {
-            foreach ($purposes as $purpose) {
+//            foreach ($purposes as $purpose) {
                 $data = DB::table('properties')
                     ->select('properties.agency_id',
                         DB::raw('COUNT(properties.id) AS count'))
                     ->join('agencies', 'properties.agency_id', '=', 'agencies.id')
                     ->where('properties.status', '=', $status)
-                    ->where('properties.purpose', '=', $purpose)
                     ->where('properties.basic_listing', '=', 1)
                     ->groupBy('properties.agency_id', 'properties.user_id')
                     ->get()->toArray();
@@ -32,7 +31,6 @@ class PropertyCountByAgencySeeder extends Seeder
                         DB::table('property_count_by_agencies')->insert([
                             'agency_id' => $value->agency_id,
                             'property_count' => $value->count,
-                            'property_purpose' => $purpose,
                             'property_status' => $status,
                             'listing_type' => 'basic_listing',
                         ]);
@@ -40,7 +38,7 @@ class PropertyCountByAgencySeeder extends Seeder
                     echo $value->agency_id . ', ';
                 }
             }
-        }
+//        }
     }
 }
 
