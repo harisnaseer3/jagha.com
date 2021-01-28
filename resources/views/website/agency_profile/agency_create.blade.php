@@ -85,15 +85,24 @@
 
                                         <div class="card-header theme-blue text-white text-capitalize">CEO / Owner Profile</div>
                                         <div class="card-body">
-                                            {{ Form::bsText('name', isset($agency->ceo_name)?$agency->ceo_name:null) }}
+                                            {{ Form::bsText('name', isset($agency->ceo_name)?$agency->ceo_name:\Illuminate\Support\Facades\Auth::user()->name) }}
                                             {{ Form::bsText('designation', isset($agency->ceo_designation)?$agency->ceo_designation:null) }}
-                                            {{ Form::bsTextArea('about_CEO', isset($agency->ceo_message)?$agency->ceo_message:null) }}
+                                            {{ Form::bsTextArea('about_CEO', isset($agency->ceo_message)?$agency->ceo_message:\Illuminate\Support\Facades\Auth::user()->about_yourself) }}
                                             @if(isset($agency->ceo_image))
                                                 <div class="form-group row">
                                                     <div class="col-sm-4 col-md-2 col-form-label col-form-label-sm">Picture</div>
                                                     <div class="col-sm-8 col-md-5">
                                                         <img class="img-fluid img-thumbnail w-25"
                                                              src="{{isset($agency->ceo_image)?asset('thumbnails/agency_ceo_images/'.explode('.',$agency->ceo_image)[0].'-450x350.webp'):''}}"
+                                                             onerror="this.src='{{asset('img/default_user.jpg')}}'" alt="image"/>
+                                                    </div>
+                                                </div>
+                                            @elseif(isset(\Illuminate\Support\Facades\Auth::user()->image))
+                                                <div class="form-group row">
+                                                    <div class="col-sm-4 col-md-2 col-form-label col-form-label-sm">Picture</div>
+                                                    <div class="col-sm-8 col-md-5">
+                                                        <img class="img-fluid img-thumbnail w-25"
+                                                             src="{{isset(\Illuminate\Support\Facades\Auth::user()->image)?asset('thumbnails/user_images/'.explode('.',\Illuminate\Support\Facades\Auth::user()->image)[0].'-450x350.webp'):''}}"
                                                              onerror="this.src='{{asset('img/default_user.jpg')}}'" alt="image"/>
                                                     </div>
                                                 </div>
