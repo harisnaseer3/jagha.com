@@ -338,7 +338,18 @@ class CountTableController extends Controller
                 DB::table('property_count_by_user')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
                     'agency_id' => $property->agency_id, 'user_id' => $property->user_id, 'listing_type' => $listing_type, 'agency_count' => 1]);
 
-        } else if($property->agency_id == null) {
+            if (DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)
+                ->where('property_status', '=', $property->status)->exists()) {
+                DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)
+                    ->where('property_status', '=', $property->status)->increment('property_count');
+
+            } else {
+                DB::table('property_count_by_agencies')->insert(
+                    ['agency_id' => $property->agency_id, 'property_status' => $property->status,
+                        'listing_type' => $listing_type, 'property_count' => 1]);
+            }
+
+        } else if ($property->agency_id == null) {
             if (DB::table('property_count_by_user')
                 ->where('property_status', '=', $property->status)
                 ->where('property_purpose', '=', $property->purpose)
@@ -409,6 +420,18 @@ class CountTableController extends Controller
                     ->where('listing_type', '=', $listing_type)
                     ->where('agency_count', '>', 0)
                     ->decrement('agency_count');
+            }
+            if (DB::table('property_count_by_agencies')
+                ->where('agency_id', '=', $property->agency_id)
+                ->where('property_status', '=', $status)
+                ->where('listing_type', '=', $listing_type)
+                ->exists()) {
+                DB::table('property_count_by_agencies')
+                    ->where('agency_id', '=', $property->agency_id)
+                    ->where('property_status', '=', $status)
+                    ->where('listing_type', '=', $listing_type)
+                    ->where('property_count', '>', 0)
+                    ->decrement('property_count');
             }
 
         } else if ($property->agency_id == null) {
