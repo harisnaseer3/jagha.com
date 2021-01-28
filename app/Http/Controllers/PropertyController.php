@@ -324,6 +324,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }

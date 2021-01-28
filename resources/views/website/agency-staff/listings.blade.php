@@ -67,7 +67,7 @@
                                                                 <td>{{$agency_user->name}}</td>
                                                                 <td>{{$agency_user->email}}</td>
                                                                 <td>{{$agency_user->cell}}</td>
-                                                                <td>{{$agency_user->city_name}}</td>
+                                                                <td>{{ucwords($agency_user->city_name)}}</td>
                                                                 <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
                                                                 <td>
                                                                     @if($agency_user->id != Auth::guard('web')->user()->id)
