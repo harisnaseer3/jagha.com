@@ -531,7 +531,7 @@ class AgencyController extends Controller
         if (Auth::guard('web') && Auth::guard('web')->user()->getAuthIdentifier() != $agency->user_id)
         {
             return redirect()->route('agencies.listings', [
-                'status' => 'pending_agencies',
+                'status' => 'verified_agencies',
                 'purpose' => 'all',
                 'user' => Auth::user()->getAuthIdentifier(),
                 'sort' => 'id',
@@ -750,7 +750,7 @@ class AgencyController extends Controller
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Agency)
 //            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
-            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.address', 'agencies.website', 'agencies..key_listing', 'agencies.featured_listing', 'agencies.status',
+            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.address', 'agencies.website', 'agencies.key_listing', 'agencies.featured_listing', 'agencies.status','agencies.user_id',
                 'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.reviewed_by', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
                 'agencies.created_at')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
