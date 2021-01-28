@@ -85,10 +85,10 @@
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="row">
-                                                            {{--                                                            <div class="col-2">--}}
-                                                            {{--                                                                <h4>Sort</h4>--}}
-                                                            {{--                                                            </div>--}}
-                                                            <div class="col-10">
+                                                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12 my-auto mb-sm-2">
+                                                                <strong class="font-14 ">Sort By</strong>
+                                                            </div>
+                                                            <div class="col-xl-10 col-lg-9 col-md-8 col-sm-10">
                                                                 <select class="w-100 sorting" style="width: 100%">
                                                                     <option value selected disabled data-index="0">Select Sorting Option</option>
                                                                     <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
