@@ -211,7 +211,7 @@
     @if(isset($property->agency))
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}
+            {{ Form::bsText('agency', isset($property->agency)? $property->agency->id : null, ['required' => true]) }}
             <div class="agency-block">
                 <div class="row">
                     <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
