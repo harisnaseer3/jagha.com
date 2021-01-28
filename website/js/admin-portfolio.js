@@ -669,23 +669,23 @@
             }
         });
 
-        $('#reset-agency').on('click', function (e) {
-            e.preventDefault();
-            let agency_data = $('#agency');
-            agency_data.val(null).trigger("change");
-            $('.agency-user-block').hide();
-            $('.user-details-block').show();
-            $('.contact-person-block').show();
-            $('.contact_person_spinner').hide();
-            $('#contact_person').removeAttr('required').attr('disable', 'true');
-
-            $('[name=contact_person]').val('');
-            $('[name=phone]').val('');
-            $('[name=mobile]').val('');
-            $('[name=fax]').val('');
-            $('[name=contact_email]').val('');
-            $('.agency-block').hide();
-        });
+        // $('#reset-agency').on('click', function (e) {
+        //     e.preventDefault();
+        //     let agency_data = $('#agency');
+        //     agency_data.val(null).trigger("change");
+        //     $('.agency-user-block').hide();
+        //     $('.user-details-block').show();
+        //     $('.contact-person-block').show();
+        //     $('.contact_person_spinner').hide();
+        //     $('#contact_person').removeAttr('required').attr('disable', 'true');
+        //
+        //     $('[name=contact_person]').val('');
+        //     $('[name=phone]').val('');
+        //     $('[name=mobile]').val('');
+        //     $('[name=fax]').val('');
+        //     $('[name=contact_email]').val('');
+        //     $('.agency-block').hide();
+        // });
 
         $('#contact_person').on('change', function (e) {
             $('input[name=contact_person]').val($(this).find(':selected').data('name'));
