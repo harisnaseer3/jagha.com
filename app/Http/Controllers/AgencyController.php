@@ -426,14 +426,21 @@ class AgencyController extends Controller
             if (!in_array($mime, $supported_mime_types)) {
                 $error_msg['image'] = ' image must be a file of type: jpeg, png, jpg';
             }
+            if (request()->file('upload_new_logo')->getSize() > 5000000) {
+                $error_msg['image'] = ' image size must be less or equal to 5 MBs';
+            }
             return $error_msg;
 
         } else if ($type == 'upload_new_picture') {
             $error_msg = [];
-            $mime = request()->file('upload_new_logo')->getMimeType();
+            $mime = request()->file('upload_new_picture')->getMimeType();
             if (!in_array($mime, $supported_mime_types)) {
                 $error_msg['image'] = ' image must be a file of type: jpeg, png, jpg';
             }
+            if (request()->file('upload_new_picture')->getSize() > 5000000) {
+                $error_msg['image'] = ' image size must be less or equal to 5 MBs';
+            }
+
             return $error_msg;
         }
     }
@@ -528,8 +535,7 @@ class AgencyController extends Controller
 
     public function edit(Agency $agency)
     {
-        if (Auth::guard('web') && Auth::guard('web')->user()->getAuthIdentifier() != $agency->user_id)
-        {
+        if (Auth::guard('web')->check() && Auth::guard('web')->user()->getAuthIdentifier() != $agency->user_id) {
             return redirect()->route('agencies.listings', [
                 'status' => 'verified_agencies',
                 'purpose' => 'all',
@@ -539,10 +545,10 @@ class AgencyController extends Controller
                 'page' => 10,
             ])->with('error', 'Something Went Wrong');
         }
-            $city = $agency->city->name;
+        $city = $agency->city->name;
         $agency->city = $city;
 
-        if (Auth::guard('admin')->user()) {
+        if (Auth::guard('admin')->check()) {
             $counts = $this->getAgencyListingCount(Auth::guard('admin')->user()->getAuthIdentifier());
             return view('website.admin-pages.agency_profile.agency',
                 ['table_name' => 'users',
@@ -750,7 +756,7 @@ class AgencyController extends Controller
         // TODO: make migration for handling quota_used and image_views
         $listings = (new Agency)
 //            ->select('agencies.id', 'agencies.title', 'agencies.address', 'agencies.city', 'agencies.website', 'agencies.phone', 'agencies.created_at AS listed_date')
-            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.address', 'agencies.website', 'agencies.key_listing', 'agencies.featured_listing', 'agencies.status','agencies.user_id',
+            ->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.address', 'agencies.website', 'agencies.key_listing', 'agencies.featured_listing', 'agencies.status', 'agencies.user_id',
                 'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.created_at', 'agencies.reviewed_by', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
                 'agencies.created_at')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
@@ -773,11 +779,10 @@ class AgencyController extends Controller
                     ->pluck('agency_users.user_id'));
             } else {
                 $agency_ids = DB::table('agency_users')
-                        ->select('agency_id')
-                        ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->pluck('agency_id')->toArray();
+                    ->select('agency_id')
+                    ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->pluck('agency_id')->toArray();
 
-                $listings->whereIn('agencies.id',$agency_ids)->get();
-
+                $listings->whereIn('agencies.id', $agency_ids)->get();
 
 
             }
