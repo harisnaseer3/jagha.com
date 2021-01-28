@@ -146,6 +146,9 @@
                                                                         <td>{{ (new \Illuminate\Support\Carbon($admin->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
                                                                         @if($admin->logout_at !== null)
                                                                             <td>{{(new \Illuminate\Support\Carbon($admin->logout_at))->isoFormat('DD-MM-YYYY, h:mm a')  }}</td>
+
+                                                                        @elseif(now() > \Illuminate\Support\Carbon::parse($admin->created_at)->addHours(2))
+                                                                            <td><span class="badge-danger p-1">Session Expired</span></td>
                                                                         @else
                                                                             <td><span class="badge-success p-1">Connected</span></td>
                                                                         @endif
@@ -254,7 +257,7 @@
                                                                     <th>IP Location</th>
                                                                     <th>Date</th>
                                                                     <th>Visit Count</th>
-{{--                                                                    <th>Time</th>--}}
+                                                                    {{--                                                                    <th>Time</th>--}}
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
