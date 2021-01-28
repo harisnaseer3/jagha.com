@@ -528,7 +528,18 @@ class AgencyController extends Controller
 
     public function edit(Agency $agency)
     {
-        $city = $agency->city->name;
+        if (Auth::guard('web') && Auth::guard('web')->user()->getAuthIdentifier() != $agency->user_id)
+        {
+            return redirect()->route('agencies.listings', [
+                'status' => 'pending_agencies',
+                'purpose' => 'all',
+                'user' => Auth::user()->getAuthIdentifier(),
+                'sort' => 'id',
+                'order' => 'desc',
+                'page' => 10,
+            ])->with('error', 'Something Went Wrong');
+        }
+            $city = $agency->city->name;
         $agency->city = $city;
 
         if (Auth::guard('admin')->user()) {
@@ -555,6 +566,8 @@ class AgencyController extends Controller
 
     public function update(Request $request, Agency $agency)
     {
+
+
         if ($request->hasFile('upload_new_logo')) {
             $error_msg = $this->_imageValidation('upload_new_logo');
             if (count($error_msg)) {
@@ -759,23 +772,14 @@ class AgencyController extends Controller
                         ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->value('agencies.id'))
                     ->pluck('agency_users.user_id'));
             } else {
-                if (intval($user) === Auth::user()->getAuthIdentifier()) {
-                    // listing of logged in user
-                    $listings->where('agencies.user_id', '=', $user);
-                } else {
-                    $agency_users = DB::table('agency_users')
-                        ->select('agency_users.user_id')->where('agency_id', '=', DB::table('agency_users')
-                            ->select('agency_id')
-                            ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->value('agency_id'));
+                $agency_ids = DB::table('agency_users')
+                        ->select('agency_id')
+                        ->where('agency_users.user_id', '=', Auth::user()->getAuthIdentifier())->pluck('agency_id')->toArray();
 
-                    // check if user is member of the agency
-                    if ($agency_users->count() === 0) {
-                        return redirect()->back(302)->withInput()->withErrors(['message', 'Invalid user provided.']);
-                    }
+                $listings->whereIn('agencies.id',$agency_ids)->get();
 
-                    // listing of user who is member of the agency
-                    $listings->whereIn('agencies.user_id', $agency_users->get()->toArray());
-                }
+
+
             }
         }
         if ($status == 'all') {
