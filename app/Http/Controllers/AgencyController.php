@@ -673,7 +673,7 @@ class AgencyController extends Controller
                     'sort' => 'id',
                     'order' => 'asc',
                     'page' => 10,
-                ])->with('success', 'Agency profile has been updated.');
+                ])->with('success', 'Agency profile has been updated and added to pending listings for admin approval on updated information.');
             } else {
                 return redirect()->route('agencies.listings', [
                     'status' => 'pending_agencies',
@@ -682,7 +682,7 @@ class AgencyController extends Controller
                     'sort' => 'id',
                     'order' => 'desc',
                     'page' => 10,
-                ])->with('success', 'Agency profile has been updated.');
+                ])->with('success', 'Agency profile has been updated and added to pending listings for admin approval on updated information.');
             }
 
         } catch (Throwable $e) {

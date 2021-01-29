@@ -32,7 +32,7 @@
                                             @include('website.layouts.flash-message')
                                             <div class="tab-content" id="listings-tabContent">
                                                 <div class="row mb-3 mt-3">
-                                                    <div class="col-md-4 col-sm-12 mb-2">
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3">
                                                         {{ Form::open(['route' => ['admin.property.search.city'], 'method' => 'post', 'role' => 'form','class'=>'color-555', 'id'=>'search-property-city']) }}
                                                         <div class="row">
                                                             <div class="col-10 pr-0 mr-0">
@@ -56,7 +56,7 @@
                                                         </div>
                                                         {{ Form::close() }}
                                                     </div>
-                                                    <div class="col-md-4  col-sm-12 mb-2">
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-3">
                                                         {{ Form::open(['route' => ['admin.property.search.id'], 'method' => 'post', 'role' => 'form' ,'id'=>'search-property-ref']) }}
                                                         <div class="row">
                                                             <div class="col-10 pr-0 mr-0">
@@ -69,12 +69,14 @@
                                                         </div>
                                                         {{ Form::close() }}
                                                     </div>
-                                                    <div class="col-md-4 col-sm-12">
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                         <div class="row">
-                                                            {{--                                                            <div class="col-2">--}}
-                                                            {{--                                                                <h4>Sort</h4>--}}
-                                                            {{--                                                            </div>--}}
-                                                            <div class="col-10">
+                                                            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-12 my-auto mb-sm-2">
+                                                                <strong class="font-14 ">Sort By</strong>
+                                                            </div>
+
+
+                                                            <div class="col-xl-10 col-lg-9 col-md-8 col-sm-10">
                                                                 <select class="w-100 sorting" style="width: 100%">
                                                                     <option value selected disabled data-index="0">Select Sorting Option</option>
                                                                     <option value="oldest" {{ $params['order'] === 'asc' || request()->query('sort') === 'oldest'  ? 'selected' : '' }}>Oldest
@@ -111,7 +113,7 @@
                                                                         @if($params['status'] == 'active')
                                                                             <td>Activation Date</td>
                                                                             <td>Activated By</td>
-{{--                                                                            <td>Boost</td>--}}
+                                                                            {{--                                                                            <td>Boost</td>--}}
                                                                         @endif
                                                                         @if($params['status'] == 'rejected')
                                                                             <td>Rejected By</td>
@@ -148,10 +150,10 @@
                                                                                             days </p>
                                                                                     </td>
                                                                                     <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
-{{--                                                                                    <td>--}}
-{{--                                                                                        <span>Boost Count : 0</span>--}}
-{{--                                                                                        <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a>--}}
-{{--                                                                                    </td>--}}
+                                                                                    {{--                                                                                    <td>--}}
+                                                                                    {{--                                                                                        <span>Boost Count : 0</span>--}}
+                                                                                    {{--                                                                                        <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">Click to Boost</a>--}}
+                                                                                    {{--                                                                                    </td>--}}
                                                                                 @endif
                                                                                 @if($params['status'] == 'rejected' || $params['status'] == 'deleted' )
                                                                                     <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
@@ -217,13 +219,13 @@
                                                                                             <span class="sr-only sr-only-focusable" aria-hidden="true">Verify and Activate</span>
                                                                                         </a>
                                                                                     @elseif($params['status'] != 'deleted')
-{{--                                                                                        @if($params['status'] != 'sold')--}}
-                                                                                            <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
-                                                                                               class="btn btn-sm btn-warning "
-                                                                                               data-toggle-1="tooltip" data-placement="bottom" title="edit">
-                                                                                                <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                                            </a>
-{{--                                                                                        @endif--}}
+                                                                                        {{--                                                                                        @if($params['status'] != 'sold')--}}
+                                                                                        <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
+                                                                                           class="btn btn-sm btn-warning "
+                                                                                           data-toggle-1="tooltip" data-placement="bottom" title="edit">
+                                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                                        </a>
+                                                                                        {{--                                                                                        @endif--}}
                                                                                         <a type="button" class="btn btn-sm btn-danger"
                                                                                            data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete"
                                                                                            data-record-id="{{$all_listing->id}}">
