@@ -50,7 +50,7 @@ class AgencyStatusChangeMail extends Notification
             ->view('website.custom-emails.notification-email-template',[
                 'user' => $user,
                 'title' => 'About Pakistan Agency Status Update',
-                'content' => 'Status of Agency titled {$this->agency->title} and ID {$this->agency->id} has been changed to {$this->agency->status}  on About Pakistan Properties',
+                'content' => "Status of Agency titled {$this->agency->title} and ID {$this->agency->id} has been changed to {$this->agency->status}  on About Pakistan Properties",
                 'infoText'   => 'Thank you for using About Pakistan Properties!'
             ]);
     }

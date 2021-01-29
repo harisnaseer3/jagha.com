@@ -68,14 +68,14 @@
                                                                 <td>
                                                                     @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
 
-                                                                        <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
+                                                                        <div class="{{$notification->read_at === null ? 'alert alert-danger':'alert alert-primary' }}">
                                                                     <span>Status of Property ID = <strong> {{$notification->data['id']}} </strong> having Reference <strong> {{$notification->data['reference']}} </strong>
                                                                         has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
                                                                         </div>
 
                                                                     @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
 
-                                                                        <div class="{{$notification->read_at === null ? 'alert alert-primary':'alert alert-danger' }}">
+                                                                        <div class="{{$notification->read_at === null ? 'alert alert-danger':'alert alert-primary' }}">
                                                                             <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
                                                                         </div>
 
