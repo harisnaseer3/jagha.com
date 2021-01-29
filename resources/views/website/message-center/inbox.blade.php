@@ -58,7 +58,7 @@
 
                                             <div class="card">
                                                 <div class="card-header theme-blue text-white">
-                                                    Customer Inquiry Mails
+                                                    Customer Inquiries
                                                 </div>
                                                 <div class="card-body">
                                                     <table id="customer-mails" class="display" style="width: 100%">

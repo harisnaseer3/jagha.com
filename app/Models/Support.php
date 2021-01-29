@@ -29,6 +29,15 @@ class Support extends Model
         'agency_id' => 'required_if:inquire_about,==,Agency',
         'url' => 'nullable|url',
     ];
+    public static function getSupportById($id){
+        return Support::where('id',$id)->first();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 
     public function resolveChildRouteBinding($childType, $value, $field)
     {
