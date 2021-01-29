@@ -87,7 +87,7 @@ class SupportController extends Controller
             return redirect()->back()->with('success', 'Message Sent Successfully.');
 
         } catch (Throwable $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
     }
