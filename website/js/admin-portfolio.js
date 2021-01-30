@@ -864,5 +864,9 @@
             let html = '<span>' + images.files.length + ' files selected</span>'
             $(this).siblings(".custom-file-label").addClass("selected").html(html);
         });
+        if ($('input[name=purpose]').val() === 'Wanted')
+            $('.property-media-block').hide();
+        else
+            $('.property-media-block').show();
     });
 })(jQuery);
