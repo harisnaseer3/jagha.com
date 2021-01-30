@@ -3,12 +3,13 @@
 namespace App\Listeners;
 
 use App\Models\Admin;
+use App\Models\Support;
 use App\Notifications\SupportNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Notification;
 
-class NotifySupportListener
+class NotifySupportListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -29,6 +30,7 @@ class NotifySupportListener
     public function handle($event)
     {
         $admins =  Admin::getAdminsByRoleName('Emails Administrator');
+
         Notification::send($admins, new SupportNotification($event->support));
     }
 }

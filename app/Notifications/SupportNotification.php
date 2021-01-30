@@ -58,19 +58,12 @@ class SupportNotification extends Notification
             $agency = Agency::getAgencyById($id);
 
         }
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $country = '';
-        if ($ip_location = IpLocation::get($ip)) {
-            $country = $ip_location->countryName;
-        } else {
-            $country = 'unavailable';
-        }
 
         return (new MailMessage)
             ->view('website.custom-emails.support-email',[
                 'user' => 'Emails Administrator',
+                'support' => $this->support,
                 'content' => "{$this->support->message}",
-                'country' => $country,
                 'agency' => $agency,
                 'property' => $property
             ]);

@@ -63,16 +63,16 @@
 
                                             <div class="card">
                                                 <div class="card-header theme-blue text-white">
-                                                    Support Mails
+                                                    Support Requests
                                                 </div>
                                                 <div class="card-body">
                                                     <table id="support-mails" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
                                                             <th>Sr.</th>
-                                                            <th>Inquire About</th>
                                                             <th>ID</th>
-                                                            <th>Url</th>
+                                                            <th>Support Topic</th>
+                                                            <th>Property/Agency ID</th>
                                                             <th>Message</th>
                                                             <th>Time</th>
                                                         </tr>
@@ -81,9 +81,9 @@
                                                         @foreach($user_supports as $user_support)
                                                             <tr>
                                                                 <td>{{$loop->iteration}}</td>
+                                                                <td>{{$user_support->id}}</td>
                                                                 <td>{{$user_support->inquire_about}}</td>
                                                                 <td>@if($user_support->inquire_about === 'Property') {{$user_support->property_id}}@else  {{$user_support->agency_id}} @endif</td>
-                                                                <td>{{$user_support->url}}</td>
                                                                 <td>{{\Illuminate\Support\Str::limit(strtolower($user_support->message), 30, $end='.....')}}
                                                                     @if(strlen($user_support->message) > 30 )
                                                                         <a class="color-blue" data-placement="bottom" title="Read More" data-toggle="modal" id="support-detail-modal"
@@ -110,7 +110,7 @@
 
                                             <div class="card">
                                                 <div class="card-header theme-blue text-white">
-                                                    Inquiry Mails
+                                                   My Inquiries
                                                 </div>
                                                 <div class="card-body">
                                                     <table id="inquiry-mails" class="display" style="width: 100%">

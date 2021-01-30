@@ -507,7 +507,7 @@ class PropertyController extends Controller
 //                'latitude' => $latitude,
 //                'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
-                'status' => $request->has('status') ? $request->input('status') : 'edited',
+                'status' => $request->has('status') ? $request->input('status') : 'pending',
                 'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
                 'basic_listing' => 1,
                 'contact_person' => $request->input('contact_person'),
@@ -557,11 +557,11 @@ class PropertyController extends Controller
 
             if (Auth::guard('admin')->user()) {
                 (new PropertyLogController())->store($property);
-                return redirect()->route('admin.properties.listings', ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
+                return redirect()->route('admin.properties.listings', [$property->status, 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
             }
 
             return redirect()->route('properties.listings',
-                ['edited', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
+                ['pending', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {

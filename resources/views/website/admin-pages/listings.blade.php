@@ -102,6 +102,9 @@
                                                                     <tr>
                                                                         <td>ID</td>
                                                                         <td>Type</td>
+                                                                        @if($option === 'all')
+                                                                           <td> Purpose</td>
+                                                                        @endif
                                                                         <td>Location</td>
                                                                         <td>Price (PKR)</td>
                                                                         <td>Added By</td>
@@ -130,6 +133,9 @@
                                                                         @forelse($listings[$option] as $all_listing)
                                                                             <tr>
                                                                                 <td>{{ $all_listing->id }}</td>
+                                                                                @if($option === 'all')
+                                                                                    <td>{{ $all_listing->purpose}}</td>
+                                                                                @endif
                                                                                 <td>{{ $all_listing->type }}</td>
                                                                                 <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
                                                                                 @if($all_listing->price != '0')
@@ -292,7 +298,7 @@
                     theme: 'bootstrap4',
                 });
                 $('select').select2({
-                    placeholder: 'Select Option',
+                    placeholder: 'Select City',
                     allowClear: true
                 });
                 $('.sorting').on('change', function (e) {

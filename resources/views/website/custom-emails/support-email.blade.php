@@ -350,16 +350,13 @@
                                             <br>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name: </strong>{{Auth::guard('web')->user()->name}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name: </strong>{{$support->user->name}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email: </strong>{{Auth::guard('web')->user()->email}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email: </strong>{{$support->user->email}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone: </strong>{{Auth::guard('web')->user()->cell}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>IP Location: </strong>{{$country}}</span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone: </strong>{{$support->user->cell}}</span>
                                             <br>
                                             <br>
                                             @if(isset($property->id))

@@ -286,7 +286,7 @@
     </div>
     <div class="card-header theme-blue text-white text-capitalize">Property Status</div>
     <div class="card-body">
-        {{ Form::bsSelect2('status', ['active' => 'Active', 'edited' => 'Edited', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
+        {{ Form::bsSelect2('status', ['active' => 'Active', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
           isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
         <div id="reason-of-rejection" style="display: none">
             {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}

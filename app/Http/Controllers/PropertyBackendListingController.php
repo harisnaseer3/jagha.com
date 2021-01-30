@@ -34,7 +34,7 @@ class PropertyBackendListingController extends Controller
     private function _listings(string $status, string $user, $condition, $city = '')
     {
         // TODO: make migration for handling quota_used and image_views
-        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.reference',
+        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.reference','properties.purpose',
             'properties.status', 'locations.name AS location', 'cities.name as city',
             'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
             'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
@@ -66,7 +66,7 @@ class PropertyBackendListingController extends Controller
                     ->whereNotIn('agency_id', $ceo_agencies)->pluck('agency_id')->toArray();
 
 
-                $ceo_listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
+                $ceo_listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference','properties.purpose',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
@@ -77,7 +77,7 @@ class PropertyBackendListingController extends Controller
                     ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
                     ->whereIn('properties.user_id', $agency_users);
 
-                $ceo_agent_listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference',
+                $ceo_agent_listings = Property::select('properties.id', 'sub_type AS type', 'properties.reference', 'properties.purpose',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
@@ -95,7 +95,7 @@ class PropertyBackendListingController extends Controller
                 return $ceo_listings->where($condition)->unionAll($listings->where($condition))->unionAll($ceo_agent_listings->where($condition));
             } elseif ($agent_agencies > 0) {
                 $agent_listings = Property::
-                select('properties.id', 'sub_type AS type', 'properties.reference',
+                select('properties.id', 'sub_type AS type', 'properties.reference', 'properties.purpose',
                     'properties.status', 'locations.name AS location', 'cities.name as city',
                     'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
                     'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',

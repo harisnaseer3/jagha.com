@@ -56,7 +56,7 @@
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
-                                                        <td>Ownership</td>
+                                                        <td>Current User Status</td>
                                                         <td>Address</td>
                                                         <td>City</td>
                                                         <td>Website</td>
@@ -184,7 +184,7 @@
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
-                                                        <td>Ownership</td>
+                                                        <td>Current User Status</td>
                                                         <td>Address</td>
                                                         <td>City</td>
                                                         <td>Website</td>
@@ -309,7 +309,7 @@
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>
-                                                        <td>Ownership</td>
+                                                        <td>Current User Status</td>
                                                         <td>Address</td>
                                                         <td>City</td>
                                                         <td>Website</td>

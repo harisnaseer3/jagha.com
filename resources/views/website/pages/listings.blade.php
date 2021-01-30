@@ -83,7 +83,8 @@
                                                             <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
                                                             @foreach ($agency->agencyUsers as $agency_user)
                                                                 @if($agency_user->user->id !== Auth::user()->id)
-                                                                    <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}" data-user="{{$agency_user->user->id}}">{{$agency_user->user->name}}</option>
+                                                                    <option value="{{$agency_user->user->id}}" data-agency="{{$agency->id}}"
+                                                                            data-user="{{$agency_user->user->id}}">{{$agency_user->user->name}}</option>
                                                                 @endif
                                                             @endforeach
                                                         @endforeach
@@ -99,12 +100,15 @@
                                                             <tr>
                                                                 <td>ID</td>
                                                                 {{-- <td>Reference</td>--}}
+                                                                @if($option === 'all')
+                                                                    <td>Purpose</td>
+                                                                @endif
                                                                 <td>Type</td>
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
                                                                 <td>Added By</td>
 {{--                                                                <td>Contact Person</td>--}}
-{{--                                                                <td>Contact #</td>--}}
+                                                                {{--                                                                <td>Contact #</td>--}}
                                                                 <td>Listed For</td>
                                                                 <td>Listed Date</td>
                                                                 @if($params['status'] == 'active')
@@ -122,7 +126,9 @@
                                                                 @forelse($listings[$option] as $all_listing)
                                                                     <tr>
                                                                         <td>{{ $all_listing->id }}</td>
-                                                                        {{-- <td>{{ $all_listing->reference}}</td>--}}
+                                                                        @if($option === 'all')
+                                                                         <td>{{ $all_listing->purpose}}</td>
+                                                                        @endif
                                                                         <td>{{ $all_listing->type }}</td>
                                                                         <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
                                                                         @if($all_listing->price != '0')
@@ -132,7 +138,7 @@
                                                                         @endif
                                                                         <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
 {{--                                                                        <td>{{$all_listing->contact_person}}</td>--}}
-{{--                                                                        <td>{{$all_listing->cell}}</td>--}}
+                                                                        {{--                                                                        <td>{{$all_listing->cell}}</td>--}}
                                                                         <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
                                                                         <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
 
@@ -145,10 +151,6 @@
                                                                                 in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                                 days
                                                                             </td>
-                                                                            {{--                                                                            <td class="cursor-not-allowed"><span>Boost Count : 0</span>--}}
-                                                                            {{--                                                                                <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">--}}
-                                                                            {{--                                                                                    Click to Boost</a>--}}
-                                                                            {{--                                                                            </td>--}}
                                                                         @endif
 
                                                                         @if($params['status'] != 'deleted')
