@@ -452,9 +452,11 @@
             if (selectedValue === 'Wanted') {
                 $('#purpose-Wanted').slideDown().find('input[type=radio]').attr('required', 'true');
                 $('[for=wanted_for]').append(' <span class="text-danger">*</span>');
+                $('.property-media-block').hide();
             } else {
                 $('#purpose-Wanted').slideUp().find('input[type=radio]').removeAttr('required');
                 $('[for=wanted_for] span').remove('span');
+                $('.property-media-block').show();
             }
         });
 
@@ -467,6 +469,7 @@
 
             $('.feature-alert').show();
             $('.feature-tag-badge').remove();
+            // if(selectedValue == 'wanted')
         });
 
         //if user edit a property then a property type must be selected then subtype must be visible
@@ -915,6 +918,11 @@
         if ($('input[name="advertisement"]:checked').val() === 'Individual') {
             $('#agency option:first-child').prop('disabled', true);
         }
+        if ($('input[name=purpose]').val() === 'Wanted')
+            $('.property-media-block').hide();
+        else
+            $('.property-media-block').show();
+
 
     });
 })
