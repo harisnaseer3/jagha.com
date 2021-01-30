@@ -123,8 +123,8 @@
 
 
     </div>
-    <div class="card-header theme-blue text-white">Property Images and Videos</div>
-    <div class="card-body">
+    <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
+    <div class="card-body property-media-block" style="display: block">
         @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
                 <div class="col-sm-12 text-bold my-2"><strong>Total Images
@@ -224,7 +224,7 @@
         </div>
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-{{--            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}--}}
+            {{--            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}--}}
             {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency->id : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
 
             <div class="agency-block">
