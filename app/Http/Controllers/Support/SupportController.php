@@ -92,7 +92,7 @@ class SupportController extends Controller
         select('properties.id', 'properties.agency_id')
             ->whereNull('properties.deleted_at');
         //if user owns agencies{}
-        $listings = $listings->where('properties.user_id', '=', $user)->get();
+        $listings = $listings->where('properties.user_id', '=', $user)->whereNull('deleted_at')->get();
         $ceo_agencies = Agency::where('user_id', '=', $user)->pluck('id')->toArray(); //gives ceo of agency
 
 //        $agent_agencies = DB::table('agency_users')->where('user_id', $user)->pluck('agency_id')->toArray();
