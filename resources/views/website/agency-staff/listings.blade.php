@@ -51,12 +51,12 @@
                                             <div class="my-4">
                                                 @if(isset($user_agencies) && count($user_agencies) > 0)
                                                     @foreach($user_agencies as $agencies)
-                                                        <div class="card my-2">
+                                                        <div class="card my-4">
                                                             <div class="card-header theme-blue text-white">
                                                                 <div class="font-14 font-weight-bold text-white">{{$agencies['title']}} Staff Members</div>
                                                             </div>
                                                             <div class="card-body">
-                                                                <table class="display staff-table mb-2" style="width: 100%">
+                                                                <table class="display staff-table" style="width: 100%">
                                                                     <thead>
                                                                     <tr>
                                                                         <th>#</th>
