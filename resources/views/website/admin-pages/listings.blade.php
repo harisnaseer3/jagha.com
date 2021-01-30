@@ -103,7 +103,7 @@
                                                                         <td>ID</td>
                                                                         <td>Type</td>
                                                                         @if($option === 'all')
-                                                                            Purpose
+                                                                           <td> Purpose</td>
                                                                         @endif
                                                                         <td>Location</td>
                                                                         <td>Price (PKR)</td>
