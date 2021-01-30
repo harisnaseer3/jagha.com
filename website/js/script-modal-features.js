@@ -28,11 +28,14 @@
     }
 
     function getDataOnError() {
-        $('input[name="features-error"]').val()
-        $('.feature-alert').remove();
-        $('.feature-tags').append($('input[name="features-error"]').val());
+        let tags = $('.feature-tag-badge');
+        if (!tags.length > 0) {
+            // $('input[name="features-error"]').val()
+            $('.feature-alert').remove();
+            $('.feature-tags').append($('input[name="features-error"]').val());
+        }
 
-        $('.feature-tag-badge').each(function (i, obj) {
+        tags.each(function (i, obj) {
             let div = $(this).find('a');
             let id = div.attr('data-id');
             let type = div.attr('data-type');
@@ -205,15 +208,23 @@
             //    if subtype exists in array
             $('.selection-hide').show();
             $('.btn-hide').show();
+            if ($('.feature-tag-badge').length == 0)
+                $('.feature-alert').show();
+
         } else if (subtype === 'Penthouse' || subtype === 'Room') {
             $('.selection-hide').show();
             $('.btn-hide').hide();
+            $('.feature-tag-badge').remove();
         } else if (subtype === 'Residential Plot' || subtype === 'Commercial Plot' || subtype === 'Agricultural Land') {
             $('.selection-hide').hide();
             $('.btn-hide').show();
+            if ($('.feature-tag-badge').length == 0)
+                $('.feature-alert').show();
+
         } else {
             $('.selection-hide').hide();
             $('.btn-hide').hide();
+            $('.feature-tag-badge').remove();
         }
     }
 
@@ -224,15 +235,13 @@
             if (selectValue !== 'Penthouse' && selectValue !== 'Room')
                 getFeatures(selectValue);
             displayFeatureBtn();
-
         });
         if ($('input[name="property_subtype-error"]').length > 0 && $('input[name="property_subtype-error"]').val() !== '') {
-            console.log('deit view');
+            // console.log('deit view');
             let value = $('input[name="property_subtype-error"]').val();
             if (value !== 'Penthouse' && value !== 'Room')
                 getFeatures(value);
             displayFeatureBtn();
-
         }
 
 

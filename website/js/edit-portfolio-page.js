@@ -463,6 +463,10 @@
             $('[id^=property_subtype-]').prop('checked', false).slideUp().removeAttr('required');
             $('#property_subtype-' + selectedValue).attr('required', 'true').slideDown();
             $('[for=property_subtype]').html('Property Subtype <span class="text-danger">*</span>');
+            // console.log('ff');
+
+            $('.feature-alert').show();
+            $('.feature-tag-badge').remove();
         });
 
         //if user edit a property then a property type must be selected then subtype must be visible
@@ -569,7 +573,7 @@
 
         function checkImagesCountLimit(count) {
             if (store_image_name.length + count + imageCountOnError > 60) {
-                console.log(store_image_name.length + count + imageCountOnError);
+                // console.log(store_image_name.length + count + imageCountOnError);
                 alert('You can select 60 images only');
                 return false;
             } else
