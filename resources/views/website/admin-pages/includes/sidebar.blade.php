@@ -18,7 +18,7 @@
                     @php $params['status'] = ''; @endphp
                 @endif
                 <div class="card">
-                    @foreach(['active', 'edited', 'pending', 'expired', 'deleted', 'rejected','sold'] as $status)
+                    @foreach(['active', 'pending', 'expired', 'deleted', 'rejected','sold'] as $status)
                         <div class="card-header {{ $params['status'] === $status ? 'secondary-grey' : '' }}" id="headingListing{{ ucfirst($status) }}">
                             <a href="#collapseListing{{ ucfirst($status) }}" class="{{ $params['status'] === $status ? '' : 'collapsed' }} {{ $params['status'] === $status ? 'text-white' : '' }}"
                                role="button" data-toggle="collapse" aria-expanded="{{ $params['status'] === $status ? 'true' : 'false' }}" aria-controls="collapseExample">{{ ucfirst($status) }}
