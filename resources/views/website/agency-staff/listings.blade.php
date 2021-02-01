@@ -6,6 +6,8 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
 
 @endsection
@@ -45,52 +47,69 @@
 
                                         <div class="tab-pane fade active show" id="listings-all" role="tabpanel"
                                              aria-labelledby="listings-all-tab">
-                                            <h6>Registered Agency Staff</h6>
+                                            <h6>Registered Agencies Staff</h6>
                                             <div class="my-4">
-                                                <table class="table table-sm table-bordered">
-                                                    <thead class="theme-blue text-white">
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Email</th>
-                                                        <th>Phone</th>
-                                                        <th>City</th>
-                                                        <th>Status</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    @if(isset($current_agency_users) && count($current_agency_users) > 0)
-                                                        @foreach($current_agency_users as $agency_user)
-                                                            <tr>
-                                                                <td>{{$loop->iteration}}</td>
-                                                                <td>{{$agency_user->name}}</td>
-                                                                <td>{{$agency_user->email}}</td>
-                                                                <td>{{$agency_user->cell}}</td>
-                                                                <td>{{ucwords($agency_user->city_name)}}</td>
-                                                                <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
-                                                                <td>
-                                                                    @if($agency_user->id != Auth::guard('web')->user()->id)
+                                                @if(isset($user_agencies) && count($user_agencies) > 0)
+                                                    @foreach($user_agencies as $agencies)
+                                                        <div class="card my-4">
+                                                            <div class="card-header theme-blue text-white">
+                                                                <div class="font-14 font-weight-bold text-white">{{$agencies['title']}} Staff Members</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <table class="display staff-table" style="width: 100%">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>Name</th>
+                                                                        <th>Membership</th>
+                                                                        <th>Email</th>
+                                                                        <th>Phone</th>
+                                                                        <th>City</th>
+                                                                        <th>Status</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    @if(isset($current_agency_users) && count($current_agency_users) > 0)
+                                                                        @foreach($current_agency_users as $agency_user)
+                                                                            @if($agency_user->agency_id == $agencies['id'])
+                                                                                <tr>
+                                                                                    <td>{{$loop->iteration}}</td>
+                                                                                    <td>{{$agency_user->name}}</td>
+                                                                                    <td>{{$agency_user->id == $agencies['user_id'] ? 'Owner':'Member'}}</td>
+                                                                                    <td>{{$agency_user->email}}</td>
+                                                                                    <td>{{$agency_user->cell}}</td>
+                                                                                    <td>{{ucwords($agency_user->city_name)}}</td>
+                                                                                    <td>@if($agency_user->is_active === '1') Active @else Inactive @endif</td>
+                                                                                    <td>
+                                                                                        @if($agency_user->id != Auth::guard('web')->user()->id)
 
-                                                                        @if($agency_user->is_active === '0')
-                                                                            <div class='btn-group'>
-                                                                                <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}" data-toggle="modal"
-                                                                                   data-target="#status-modal">Activate</a>
-                                                                            </div>
-                                                                        @elseif($agency_user->is_active === '1')
-                                                                            <div class='btn-group'>
-                                                                                <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}" data-toggle="modal"
-                                                                                   data-target="#status-modal">Deactivate</a>
-                                                                            </div>
-                                                                        @endif
+                                                                                            @if($agency_user->is_active === '0')
+                                                                                                <div class='btn-group'>
+                                                                                                    <a style="color: white" class="btn-sm btn btn-success" data-record-id="{{$agency_user->id}}"
+                                                                                                       data-toggle="modal"
+                                                                                                       data-target="#status-modal">Activate</a>
+                                                                                                </div>
+                                                                                            @elseif($agency_user->is_active === '1')
+                                                                                                <div class='btn-group'>
+                                                                                                    <a style="color: white" class="btn-sm btn btn-danger" data-record-id="{{$agency_user->id}}"
+                                                                                                       data-toggle="modal"
+                                                                                                       data-target="#status-modal">Deactivate</a>
+                                                                                                </div>
+                                                                                            @endif
+                                                                                        @endif
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
                                                                     @endif
-
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    @endif
-                                                    </tbody>
-                                                </table>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
                                             </div>
                                         </div>
 
@@ -113,12 +132,22 @@
 @section('script')
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('website/js/agency-users.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+
     <script>
         (function ($) {
             $('#status-modal').on('show.bs.modal', function (event) {
                 let record_id = $(event.relatedTarget).data('record-id');
                 $(this).find('.modal-body #agency-user-id').val(record_id);
             });
+
+            $('.staff-table').DataTable(
+                {
+                    "scrollX": true,
+                    "ordering": false,
+                    // responsive: true
+                }
+            );
         })(jQuery);
     </script>
 @endsection

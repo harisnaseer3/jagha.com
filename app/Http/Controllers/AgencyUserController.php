@@ -22,16 +22,26 @@ class AgencyUserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
         $user = Auth::user();
         $footer_data = (new FooterController)->footerContent();
-        $agency_ids = $user->agencies->pluck('id')->toArray();
-        $current_agency_users = User::select('id', 'email', 'name', 'cell', 'city_name', 'is_active')->whereIn('id', DB::table('agency_users')->select('user_id')->whereIn('agency_id', $agency_ids)->pluck('user_id')->toArray())->get();
+        $user_agencies = $user->agencies()->select('id', 'title','user_id')->get()->toArray();
+        $agency_ids = $user->agencies()->pluck('id')->toArray();
+//        dd($user_agencies);
+
+        $current_agency_users = User::select('users.id', 'users.email', 'users.name', 'users.cell', 'users.city_name', 'users.is_active', 'agency_users.agency_id')
+            ->join('agency_users', 'agency_users.user_id', '=', 'users.id')
+            ->whereIn('agency_users.agency_id', $agency_ids)
+//            ->whereIn('users.id', DB::table('agency_users')->select('agency_users.user_id')->whereIn('agency_users.agency_id', $agency_ids)->pluck('user_id')->toArray())
+            ->get();
+
+//        dd($current_agency_users);
 
         return view('website.agency-staff.listings', [
+            'user_agencies' => $user_agencies,
             'recent_properties' => $footer_data[0],
             'footer_agencies' => $footer_data[1],
             'current_agency_users' => $current_agency_users
@@ -163,7 +173,7 @@ class AgencyUserController extends Controller
 
         }
         $current_user = User::getUserByEmail($request->email);
-        if(isset($current_user->id) && $request->add === 'New User' ){
+        if (isset($current_user->id) && $request->add === 'New User') {
             return redirect()->back()->withInput()->with('error', 'Email is already registered with us. By choosing "Existing User" option, link already registered property.aboutpakistan.com user to your agency.');
         }
         if ($request->add === 'New User') {
@@ -206,9 +216,9 @@ class AgencyUserController extends Controller
 
 
             if (isset($current_user->id) && isset($agency->id)) {
-                $condition = ['user_id' => $current_user->id, 'agency_id'=> $agency->id];
+                $condition = ['user_id' => $current_user->id, 'agency_id' => $agency->id];
                 $agency_user = (new AgencyUser())->where($condition)->first();
-                if(isset($agency_user->id)){
+                if (isset($agency_user->id)) {
                     return redirect()->back()->withInput()->with('error', 'Error storing record, user has already been registered to the agency');
                 }
                 DB::table('agency_users')->insert(['agency_id' => $agency->id, 'user_id' => $current_user->id]);
@@ -218,8 +228,7 @@ class AgencyUserController extends Controller
             } else {
                 return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
             }
-        }
-        else {
+        } else {
             return redirect()->back()->withInput()->with('error', 'Error storing record, try again.');
         }
         return redirect()->back()->with('success', 'Agency user successfully added');
