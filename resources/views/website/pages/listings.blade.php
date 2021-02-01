@@ -127,7 +127,7 @@
                                                                     <tr>
                                                                         <td>{{ $all_listing->id }}</td>
                                                                         @if($option === 'all')
-                                                                         <td>{{ $all_listing->purpose}}</td>
+                                                                            <td>{{ $all_listing->purpose}}</td>
                                                                         @endif
                                                                         <td>{{ $all_listing->type }}</td>
                                                                         <td>{{ $all_listing->location }}, {{$all_listing->city}}</td>
@@ -147,7 +147,7 @@
                                                                             <td>
                                                                                 {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }}
                                                                                 <br>
-                                                                                Expired
+                                                                                Expires
                                                                                 in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
                                                                                 days
                                                                             </td>
@@ -156,27 +156,28 @@
                                                                         @if($params['status'] != 'deleted')
                                                                             <td>
                                                                                 @if($params['status'] === 'sold')
-                                                                                    <div class="sold-status"><strong>Property Sold</strong>
+                                                                                    <div class="badge badge-success p-2 "><strong class="color-white font-12">Property Sold Out</strong>
+                                                                                    </div>
+                                                                                @elseif($params['status'] === 'pending' )
+                                                                                    <div class="badge badge-warning p-2 "><strong class="font-12">Pending For Verification</strong>
                                                                                     </div>
                                                                                 @else
                                                                                     <form>
                                                                                         @if($params['status'] != 'expired')
 
                                                                                         @endif
-                                                                                        @if($params['status'] != 'active' && $params['status'] != 'pending')
+                                                                                        @if($params['status'] === 'active' && $params['status'] != 'pending')
                                                                                             <input type="radio" name="status" value="reactive" class="mb-1"
-                                                                                                   {{$all_listing->status === 'active'? 'disabled':'' }}
+                                                                                                   {{$all_listing->status === 'active'? 'checked':'' }}
                                                                                                    data-id="{{ $all_listing->id }}">
                                                                                             <label for="active">Active</label>
                                                                                         @endif
-                                                                                        @if($params['status'] != 'expired')
                                                                                             <input type="radio" name="status" value="expired" class="mb-1"
                                                                                                    {{$all_listing->status === 'expired'? 'checked':'' }}
                                                                                                    {{$all_listing->status === 'sold'? 'checked':'' }}
                                                                                                    data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
                                                                                             <label for="expired">Expired</label>
-                                                                                        @endif
-                                                                                        @if($params['status'] != 'sold')
+                                                                                        @if($params['status'] != 'sold' && $all_listing->purpose != 'wanted' )
                                                                                             <input type="radio" name="status" value="sold" class="mb-1"
                                                                                                    data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
                                                                                             <label for="sold">Sold</label>
@@ -194,6 +195,16 @@
                                                                                    data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="view">
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                                </a>
+                                                                            @endif
+                                                                            @if($params['status'] == 'expired')
+                                                                                <a type="button"
+                                                                                   class="btn btn-sm btn-success color-black restore-btn mb-1"
+                                                                                   data-toggle-1="tooltip" data-placement="bottom"
+                                                                                   title="restore"
+                                                                                   href="javascript:void(0)"
+                                                                                   data-record-id="{{$all_listing->id}}">
+                                                                                    <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
                                                                                 </a>
                                                                             @endif
                                                                             @if($params['status'] != 'deleted')
