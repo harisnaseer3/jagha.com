@@ -354,6 +354,7 @@ class PropertyController extends Controller
         (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
         $footer_content = (new FooterController)->footerContent();
         return view('website.pages.property_detail', [
+            'property_count' => $property->agency_id !== null ? $this->agencyCountOnDetailPage($property->agency_id) : 0,
             'property' => $property,
             'is_favorite' => $is_favorite,
             'property_types' => $property_types,
@@ -362,7 +363,16 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function edit(Property $property)
+    public function agencyCountOnDetailPage($id)
+    {
+        return DB::table('agencies')->select('property_count_by_agencies.property_count AS count')->where('agencies.id', '=', $id)
+            ->where('agencies.status', '=', 'verified')
+            ->leftJoin('property_count_by_agencies', 'property_count_by_agencies.agency_id', '=', 'agencies.id')
+            ->where('property_count_by_agencies.property_status', '=', 'active')->pluck('count')->toArray()[0];
+    }
+
+    public
+    function edit(Property $property)
     {
         $city = $property->location->city->name;
         $property->location = $property->location->name;
@@ -425,7 +435,8 @@ class PropertyController extends Controller
             ]);
     }
 
-    public function update(Request $request, Property $property)
+    public
+    function update(Request $request, Property $property)
     {
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
@@ -570,7 +581,8 @@ class PropertyController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public
+    function destroy(Request $request)
     {
 //        $user_id = Auth::user()->getAuthIdentifier();
         $property = (new Property)->where('id', '=', $request->input('record_id'))->first();
@@ -606,7 +618,8 @@ class PropertyController extends Controller
     }
 
 //    calculate area value for different units
-    public function calculateArea($area_unit, $land_area)
+    public
+    function calculateArea($area_unit, $land_area)
     {
         $area = number_format($land_area, 2, '.', '');
         $area_in_sqft = 0;
