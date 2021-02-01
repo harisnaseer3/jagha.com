@@ -33,7 +33,7 @@ class AgencyUserController extends Controller
 //        dd($user_agencies);
 
         $current_agency_users = User::select('users.id', 'users.email', 'users.name', 'users.cell', 'users.city_name', 'users.is_active', 'agency_users.agency_id')
-            ->leftJoin('agency_users', 'agency_users.user_id', '=', 'users.id')
+            ->join('agency_users', 'agency_users.user_id', '=', 'users.id')
             ->whereIn('agency_users.agency_id', $agency_ids)
 //            ->whereIn('users.id', DB::table('agency_users')->select('agency_users.user_id')->whereIn('agency_users.agency_id', $agency_ids)->pluck('user_id')->toArray())
             ->get();
