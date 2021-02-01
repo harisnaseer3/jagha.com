@@ -94,7 +94,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                separateDialCode: true,
+                // separateDialCode: true,
                 numberType: "MOBILE",
             });
         } else if (phone_type === "FIXED_LINE") {
@@ -102,7 +102,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                separateDialCode: true,
+                // separateDialCode: true,
                 placeholderNumberType: "FIXED_LINE",
                 numberType: "FIXED_LINE",
             });
@@ -869,8 +869,29 @@
                     let result = data.data
                     if (!jQuery.isEmptyObject({result})) {
                         $('.select_contact_person_spinner').hide();
-                        if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
-                        if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
+                        if (result.phone !== null) {
+                            $('[name="phone_#"]').val('');
+                            let selected_input_field = document.querySelector("#phone");
+                            var iti = intlTelInput(selected_input_field);
+                            iti.destroy();
+                            iti_contact_number(selected_input_field,
+                                document.querySelector("#error-msg-phone"),
+                                document.querySelector("#valid-msg-phone"),
+                                $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+                            $('#phone').val(result.phone);
+                        }
+                        if (result.cell !== null) {
+                            $('[name="mobile_#"]').val('');
+
+                            let selected_input_field = document.querySelector("#cell");
+                            var itii = intlTelInput(selected_input_field);
+                            itii.destroy();
+                            iti_contact_number(selected_input_field,
+                                document.querySelector("#error-msg-mobile"),
+                                document.querySelector("#valid-msg-mobile"),
+                                $('[name=mobile]'), '#mobile-error', "MOBILE");
+                            $('[name="mobile_#"]').val(result.cell);
+                        }
                         if (result.fax !== null) $('[name=fax]').val(result.fax);
                         if (result.email !== null) $('[name=contact_email]').val(result.email);
                     }
