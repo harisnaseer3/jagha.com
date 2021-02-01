@@ -539,8 +539,11 @@
                 }
 
                 return data;
-            }
+            },
+            placeholder: 'Select location in current city',
+            allowClear: true
         });
+
         $("#add_location").parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
 
 
@@ -628,6 +631,16 @@
         let form = $('.data-insertion-form');
         form.validate({
             rules: {
+                'purpose': {required: true},
+                'property_type': {required: true},
+                'city': {required: true},
+                'location': {required: $('[name="add_location"]').val() === ''},
+                'add_location': {required: $('#add_location').val() == null},
+                'property_title': {required: true},
+                'description': {required: true},
+                'all_inclusive_price': {required: true},
+                'land_area': {required: true},
+                'unit': {required: true},
                 'mobile_#': {
                     required: true,
                 },
