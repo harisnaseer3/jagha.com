@@ -196,6 +196,7 @@ class PropertyController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
+//        dd($request->all());
         try {
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
 
@@ -324,7 +325,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }

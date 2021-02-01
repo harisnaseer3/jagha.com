@@ -37,6 +37,9 @@
 
             {{ Form::bsSelect2('location', [], isset($property->location) ? $property->location : old('location'), ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
             <div class="text-center"><span><i class="fa fa-spinner fa-spin location-spinner" style="font-size:20px; display:none"></i></span></div>
+
+{{--            {{ Form::bsText('other_location',old('other_location'), ['placeholder' => 'Select city location','id' => 'other_location']) }}--}}
+
             {{Form::hidden('location-error')}}
         @endif
 
