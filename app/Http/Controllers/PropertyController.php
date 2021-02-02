@@ -216,7 +216,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error', 'advertisement'
+                    'features-error', 'advertisement','add_location'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -370,8 +370,7 @@ class PropertyController extends Controller
             ->where('property_count_by_agencies.property_status', '=', 'active')->pluck('count')->toArray()[0];
     }
 
-    public
-    function edit(Property $property)
+    public  function edit(Property $property)
     {
         $city = $property->location->city->name;
         $property->location = $property->location->name;
@@ -434,8 +433,7 @@ class PropertyController extends Controller
             ]);
     }
 
-    public
-    function update(Request $request, Property $property)
+    public  function update(Request $request, Property $property)
     {
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
@@ -479,7 +477,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error', 'advertisement'
+                    'property_subtype_Homes', 'features-error', 'advertisement','add_location'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
