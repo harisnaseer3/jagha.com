@@ -890,6 +890,9 @@
                     let result = data.data
                     if (!jQuery.isEmptyObject({result})) {
                         $('.select_contact_person_spinner').hide();
+                        let keyupEvent = new Event('keyup');
+
+
                         if (result.phone !== null) {
                             $('[name="phone_#"]').val('');
                             let selected_input_field = document.querySelector("#phone");
@@ -901,6 +904,8 @@
                                 document.querySelector("#valid-msg-phone"),
                                 $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
                             $('#phone').val(result.phone);
+                            selected_input_field.dispatchEvent(keyupEvent);
+                            // $('#phone').change();
                             $('[name="phone"]').val(iti.getNumber(intlTelInputUtils.numberFormat.E164));
                         }
                         if (result.cell !== null) {
@@ -915,6 +920,7 @@
                                 document.querySelector("#valid-msg-mobile"),
                                 $('[name=mobile]'), '#mobile-error', "MOBILE");
                             $('[name="mobile_#"]').val(result.cell);
+                            selected_input_field.dispatchEvent(keyupEvent);
                             $('[name="mobile"]').val(itii.getNumber(intlTelInputUtils.numberFormat.E164));
                         }
                         if (result.fax !== null) $('[name=fax]').val(result.fax);
@@ -946,6 +952,7 @@
                 $('#contact_person').attr('required', 'required').attr('disable', 'false');
                 getAgencyUsers($("#agency option:selected").val());
             } else {
+                let keyupEvent = new Event('keyup');
                 $('#user-agency-block').slideUp();
                 $('.contact-person-block').show();
                 $('[name=agency]').val('');
@@ -965,11 +972,16 @@
                     document.querySelector("#valid-msg-phone"),
                     $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
                 $('#phone').val(user_default_phone);
+                selected_input_field_1.dispatchEvent(keyupEvent);
+                // $('#phone').change();
                 $('[name="phone"]').val(iti.getNumber(intlTelInputUtils.numberFormat.E164));
                 // $('[name="mobile_#"]').val(user_default_mobile);
+
+
                 $('[name="mobile_#"]').val('');
                 let selected_input_field_2 = document.querySelector("#cell");
                 var itii = window.intlTelInputGlobals.getInstance(selected_input_field_2);
+
                 itii.destroy();
                 iti_contact_number(selected_input_field_2,
                     document.querySelector("#error-msg-mobile"),
@@ -978,8 +990,8 @@
                 $('[name="mobile_#"]').val(user_default_mobile);
                 $('[name="mobile"]').val(itii.getNumber(intlTelInputUtils.numberFormat.E164));
                 $('[name=contact_email]').val(user_default_email);
+                selected_input_field_2.dispatchEvent(keyupEvent);
                 $('.agency-user-block').hide();
-
             }
 
         });
