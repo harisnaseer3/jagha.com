@@ -28,7 +28,7 @@ class AgencyUserController extends Controller
     {
         $user = Auth::user();
         $footer_data = (new FooterController)->footerContent();
-        $user_agencies = $user->agencies()->select('id', 'title','user_id')->get()->toArray();
+        $user_agencies = $user->agencies()->select('id', 'title','user_id','status')->get()->toArray();
         $agency_ids = $user->agencies()->pluck('id')->toArray();
 //        dd($user_agencies);
 

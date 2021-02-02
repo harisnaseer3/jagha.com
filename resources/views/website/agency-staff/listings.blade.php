@@ -53,7 +53,7 @@
                                                     @foreach($user_agencies as $agencies)
                                                         <div class="card my-4">
                                                             <div class="card-header theme-blue text-white">
-                                                                <div class="font-14 font-weight-bold text-white">{{$agencies['title']}} Staff Members</div>
+                                                                <div class="font-14 font-weight-bold text-white">{{$agencies['title']}} Staff Members ({{ucwords($agencies['status'])}})</div>
                                                             </div>
                                                             <div class="card-body">
                                                                 <table class="display staff-table" style="width: 100%">
