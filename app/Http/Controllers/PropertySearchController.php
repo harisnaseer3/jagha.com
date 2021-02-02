@@ -59,7 +59,7 @@ class PropertySearchController extends Controller
         else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
         else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
 
-        return $properties;
+        return $properties->orderBy('properties.updated_at', 'ASC');
     }
 
     /* search function for houses at different locations*/
@@ -321,6 +321,7 @@ class PropertySearchController extends Controller
                     (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
                     $footer_content = (new FooterController)->footerContent();
                     return view('website.pages.property_detail', [
+                        'property_count' => $property->agency_id !== null ? (new PropertyController())->agencyCountOnDetailPage($property->agency_id) : 0,
                         'property' => $property,
                         'is_favorite' => $is_favorite,
                         'property_types' => $property_types,
