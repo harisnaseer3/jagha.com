@@ -951,6 +951,9 @@
                 $('#contact_person_input').removeAttr('required').attr('disable', 'true');
                 $('#contact_person').attr('required', 'required').attr('disable', 'false');
                 getAgencyUsers($("#agency option:selected").val());
+                if($('select[id=contact_person]').val() === null){
+                    $('select[id=contact_person]').val($("select[id=contact_person] option:first").val());
+                }
             } else {
                 let keyupEvent = new Event('keyup');
                 $('#user-agency-block').slideUp();
