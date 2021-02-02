@@ -538,7 +538,8 @@ class PropertyController extends Controller
             (new CountTableController)->_insert_in_status_purpose_table($property);
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
-                $property->activated_at = $dt;
+                $property->activated_at = $property->updated_at;
+                $property->save();
 
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
