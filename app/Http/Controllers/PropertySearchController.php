@@ -365,11 +365,12 @@ class PropertySearchController extends Controller
 //        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
 
                 $properties = $properties
+                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%')
                     ->Where('properties.title', 'LIKE', '%' . $request->input('term') . '%')
                     ->orWhere('cities.name', 'LIKE', '%' . $request->input('term') . '%')
-                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%')
+                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%');
 //                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('term') . '%')
-                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%');
+
 //                $properties = $properties->orderBy('created_at', 'DESC');
 
                 $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
