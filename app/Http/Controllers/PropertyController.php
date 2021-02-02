@@ -216,7 +216,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error', 'advertisement','add_location'
+                    'features-error', 'advertisement', 'add_location'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -370,7 +370,7 @@ class PropertyController extends Controller
             ->where('property_count_by_agencies.property_status', '=', 'active')->pluck('count')->toArray()[0];
     }
 
-    public  function edit(Property $property)
+    public function edit(Property $property)
     {
         $city = $property->location->city->name;
         $property->location = $property->location->name;
@@ -433,7 +433,7 @@ class PropertyController extends Controller
             ]);
     }
 
-    public  function update(Request $request, Property $property)
+    public function update(Request $request, Property $property)
     {
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
@@ -464,6 +464,7 @@ class PropertyController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
+//        dd($request->all());
         try {
             $json_features = '';
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
@@ -477,7 +478,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error', 'advertisement','add_location'
+                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -486,7 +487,8 @@ class PropertyController extends Controller
                 ];
             }
             $agency = '';
-            if ($request->has('agency')) {
+
+            if ($request->input('advertisement') == 'Agency' && $request->has('agency')) {
                 if (DB::table('agencies')->where('id', '=', $request->input('agency'))->exists()) {
                     $agency = $request->input('agency');
                 }
