@@ -316,7 +316,16 @@
                         {{--                        @if(!empty($agency))--}}
                         @if($property->agency)
                             <div class="sidebar widget mb-2 none-992">
-                                <h3 class="sidebar-title">{{ucwords($property->agency->title)}} </h3>
+                                <h3 class="sidebar-title" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
+                                    data-placement="bottom"
+                                    data-html='true'
+                                    data-content='<div>
+                                                @if($property_count > 0)
+                                        <span class="float-left color-blue">Total Properties: {{$property_count}}</span>
+                                                @endif
+                                        <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
+                                    <br \>
+                                    <div>@if($property->user_id !== 1){{$property->agency->description}}@endif</div>'>{{ucwords($property->agency->title)}} </h3>
                                 <div class="s-border"></div>
                                 <div class="m-border"></div>
                                 <div class="row">

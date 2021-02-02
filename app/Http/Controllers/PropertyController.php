@@ -366,7 +366,6 @@ class PropertyController extends Controller
     public function agencyCountOnDetailPage($id)
     {
         return DB::table('agencies')->select('property_count_by_agencies.property_count AS count')->where('agencies.id', '=', $id)
-            ->where('agencies.status', '=', 'verified')
             ->leftJoin('property_count_by_agencies', 'property_count_by_agencies.agency_id', '=', 'agencies.id')
             ->where('property_count_by_agencies.property_status', '=', 'active')->pluck('count')->toArray()[0];
     }
