@@ -634,8 +634,16 @@
                 'purpose': {required: true},
                 'property_type': {required: true},
                 'city': {required: true},
-                'location': {required: $('[name="add_location"]').val() === ''},
-                'add_location': {required: $('#add_location').val() == null},
+                'location': {
+                    required: function (element) {
+                        return $('[name="add_location"]').val() === '';
+                    }
+                },
+                'add_location': {
+                    required: function (element) {
+                        return $('[name="location"]').val() == null;
+                    }
+                },
                 'property_title': {required: true},
                 'description': {required: true},
                 'all_inclusive_price': {required: true},
@@ -885,25 +893,29 @@
                         if (result.phone !== null) {
                             $('[name="phone_#"]').val('');
                             let selected_input_field = document.querySelector("#phone");
-                            var iti = intlTelInput(selected_input_field);
+                            var iti = window.intlTelInputGlobals.getInstance(selected_input_field);
                             iti.destroy();
+
                             iti_contact_number(selected_input_field,
                                 document.querySelector("#error-msg-phone"),
                                 document.querySelector("#valid-msg-phone"),
                                 $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
                             $('#phone').val(result.phone);
+                            $('[name="phone"]').val(iti.getNumber(intlTelInputUtils.numberFormat.E164));
                         }
                         if (result.cell !== null) {
                             $('[name="mobile_#"]').val('');
 
                             let selected_input_field = document.querySelector("#cell");
-                            var itii = intlTelInput(selected_input_field);
+                            var itii = window.intlTelInputGlobals.getInstance(selected_input_field);
                             itii.destroy();
+
                             iti_contact_number(selected_input_field,
                                 document.querySelector("#error-msg-mobile"),
                                 document.querySelector("#valid-msg-mobile"),
                                 $('[name=mobile]'), '#mobile-error', "MOBILE");
                             $('[name="mobile_#"]').val(result.cell);
+                            $('[name="mobile"]').val(itii.getNumber(intlTelInputUtils.numberFormat.E164));
                         }
                         if (result.fax !== null) $('[name=fax]').val(result.fax);
                         if (result.email !== null) $('[name=contact_email]').val(result.email);
@@ -941,8 +953,30 @@
                 $('#contact_person').removeAttr('required').attr('disable', 'true');
                 $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
                 $('[name="contact_person"]').val(user_default_name);
-                $('[name="phone_#"]').val(user_default_phone);
+                // $('[name="phone_#"]').val(user_default_phone);
+
+                $('[name="phone_#"]').val('');
+                let selected_input_field_1 = document.querySelector("#phone");
+                var iti = window.intlTelInputGlobals.getInstance(selected_input_field_1);
+                iti.destroy();
+
+                iti_contact_number(selected_input_field_1,
+                    document.querySelector("#error-msg-phone"),
+                    document.querySelector("#valid-msg-phone"),
+                    $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+                $('#phone').val(user_default_phone);
+                $('[name="phone"]').val(iti.getNumber(intlTelInputUtils.numberFormat.E164));
+                // $('[name="mobile_#"]').val(user_default_mobile);
+                $('[name="mobile_#"]').val('');
+                let selected_input_field_2 = document.querySelector("#cell");
+                var itii = window.intlTelInputGlobals.getInstance(selected_input_field_2);
+                itii.destroy();
+                iti_contact_number(selected_input_field_2,
+                    document.querySelector("#error-msg-mobile"),
+                    document.querySelector("#valid-msg-mobile"),
+                    $('[name=mobile]'), '#mobile-error', "MOBILE");
                 $('[name="mobile_#"]').val(user_default_mobile);
+                $('[name="mobile"]').val(itii.getNumber(intlTelInputUtils.numberFormat.E164));
                 $('[name=contact_email]').val(user_default_email);
                 $('.agency-user-block').hide();
 
