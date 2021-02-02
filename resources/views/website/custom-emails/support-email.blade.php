@@ -325,7 +325,6 @@
 
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an new support ticket. </span>
                                             <br>
-                                            <br>
 
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>

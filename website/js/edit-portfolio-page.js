@@ -218,6 +218,7 @@
     user_default_name = $('input[name="contact_person"]').val();
     user_default_phone = $('[name="phone_#"]').val();
     user_default_mobile = $('[name="mobile_#"]').val();
+
     user_default_email = $('[name=contact_email]').val();
 
     $(document).ready(function () {
@@ -1000,6 +1001,7 @@
                     document.querySelector("#valid-msg-phone"),
                     $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
                 $('#phone').val(user_default_phone);
+
                 selected_input_field_1.dispatchEvent(keyupEvent);
                 $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
                 console.log(window.intlTelInputGlobals.getInstance(selected_input_field_1).getDialCode());
