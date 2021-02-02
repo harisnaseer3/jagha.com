@@ -333,7 +333,7 @@
                                     @if($property->agency->logo !==null)
                                         <div class="col-sm-6 text-center">
                                             <img
-                                                src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                                                src="{{ isset($property->agency->logo) && $property->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                                                 alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
                                                 data-placement="bottom"
                                                 data-html='true'
