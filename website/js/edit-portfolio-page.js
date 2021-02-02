@@ -120,7 +120,7 @@
             if (input.value.trim()) {
                 if (ag_iti_cell.isValidNumber()) {
                     field.val(ag_iti_cell.getNumber());
-                    console.log("4"+$('[name="phone"]').val());
+                    console.log("4" + $('[name="phone"]').val());
 
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
@@ -915,6 +915,14 @@
                             // $('#phone').change();
                             $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
 
+                        } else {
+                            $('#phone').val('');
+                            window.intlTelInputGlobals.getInstance(document.querySelector("#phone")).destroy();
+                            iti_contact_number(document.querySelector("#phone"),
+                                document.querySelector("#error-msg-phone"),
+                                document.querySelector("#valid-msg-phone"),
+                                $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+                            $('[name="phone"]').val('');
                         }
                         if (result.cell !== null) {
                             $('[name="mobile_#"]').val('');
@@ -929,9 +937,20 @@
                             $('[name="mobile_#"]').val(result.cell);
                             selected_input_field.dispatchEvent(keyupEvent);
                             $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
+                        } else {
+                            $('[name="mobile_#"]').val('');
+
+                            window.intlTelInputGlobals.getInstance(document.querySelector("#cell")).destroy();
+                            iti_contact_number(document.querySelector("#cell"),
+                                document.querySelector("#error-msg-mobile"),
+                                document.querySelector("#valid-msg-mobile"),
+                                $('[name=mobile]'), '#mobile-error', "MOBILE");
+                            $('[name="mobile"]').val('');
+
                         }
-                        if (result.fax !== null) $('[name=fax]').val(result.fax);
-                        if (result.email !== null) $('[name=contact_email]').val(result.email);
+
+                        if (result.fax !== null) $('[name=fax]').val(result.fax); else $('[name=fax]').val('');
+                        if (result.email !== null) $('[name=contact_email]').val(result.email); else $('[name=contact_email]').val(result.email);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -983,10 +1002,11 @@
                 $('#phone').val(user_default_phone);
                 selected_input_field_1.dispatchEvent(keyupEvent);
                 $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
+                console.log(window.intlTelInputGlobals.getInstance(selected_input_field_1).getDialCode());
 
                 $('[name="mobile_#"]').val('');
                 let selected_input_field_2 = document.querySelector("#cell");
-                 window.intlTelInputGlobals.getInstance(selected_input_field_2).destroy();
+                window.intlTelInputGlobals.getInstance(selected_input_field_2).destroy();
 
                 iti_contact_number(selected_input_field_2,
                     document.querySelector("#error-msg-mobile"),
