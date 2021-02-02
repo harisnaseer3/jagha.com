@@ -1,4 +1,3 @@
-
 @extends('website.layouts.app')
 @section('title')
     {!! SEO::generate(true) !!}
@@ -112,7 +111,7 @@
                     <div class="properties-details-section">
                         <div id="propertiesDetailsSlider" class="carousel properties-details-sliders slide mb-40">
                             <!-- Heading properties start -->
-                        @if(!$property->images->isEmpty())
+                        @if(!$property->images->isEmpty() && $property->user_id !== 1)
                             <!-- main slider carousel items -->
                                 @include('website.includes.property_detail_images')
                             @else
@@ -213,7 +212,7 @@
                                             </div>
                                         @endif
                                         <div class="col-md-4 col-sm-6 mb-3 fs-14">
-                                            <strong>Property Owner: </strong>{{$property->contact_person}}
+                                            <strong>Listed By: </strong>{{$property->contact_person}}
                                         </div>
                                         @if(isset($property->phone))
                                             <div class="col-md-4 col-sm-6 mb-3 fs-14">
@@ -229,11 +228,13 @@
                                     <h5 style="font-weight: 400">Description</h5>
                                     <div class="s-border"></div>
                                     <div class="m-border"></div>
-                                    <p class="description"
-                                       aria-label="property description">
-                                        {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',str_replace('zameen','AboutPakistan',$property->description)))))}}</p>
+                                    @if($property->user_id != 1)
+                                        <p class="description" aria-label="property description">
+                                            {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',str_replace('zameen','AboutPakistan',$property->description)))))}}</p>
+                                    @endif
                                     <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
-                                    <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>
+                                    @if($property->user_id != 1)
+                                        <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>@endif
                                 </div>
                                 <!-- Properties condition start -->
                                 <!-- Properties amenities start -->
@@ -319,17 +320,21 @@
                                 <div class="s-border"></div>
                                 <div class="m-border"></div>
                                 <div class="row">
+                                    {{--                                    {{dd($property->agency_property_count)}}--}}
                                     @if($property->agency->logo !==null)
                                         <div class="col-sm-6 text-center">
                                             <img
                                                 src="{{ isset($property->agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$property->agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                                                 alt="{{ucwords($property->agency->title)}}" style="max-width: 80%" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
                                                 data-placement="bottom"
-                                                data-html='true' data-content='
-                                    <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
-                                    <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
+                                                data-html='true'
+                                                data-content='<div>
+                                                @if($property_count > 0)
+                                                    <span class="float-left color-blue">Total Properties: {{$property_count}}</span>
+                                                @endif
+                                                    <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency->created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
-                                    <div>{{$property->agency->description}}</div>'>
+                                    <div>@if($property->user_id !== 1){{$property->agency->description}}@endif</div>'>
                                         </div>
                                     @endif
                                     <div class="col-sm-6 mt-1">

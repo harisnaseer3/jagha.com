@@ -88,8 +88,8 @@ class Property extends Model
     public static $rules = [
         'city' => 'required',
         'location' => 'required',
-        'purpose' => 'required',
-        'property_type' => 'required',
+        'purpose' => 'required|in:Sale,Rent,Wanted',
+        'property_type' => 'required|in:Homes,Plots,Commercial',
         'property_subtype-*' => 'required',
         'property_title' => 'required|min:10|max:225',
         'description' => 'required|min:50|max:6144',
@@ -120,7 +120,7 @@ class Property extends Model
 
     public function images()
     {
-        return $this->hasMany(Image::class)->orderBy('order','ASC');
+        return $this->hasMany(Image::class)->orderBy('order', 'ASC');
     }
 
     public function videos()
@@ -147,8 +147,10 @@ class Property extends Model
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
-    public static function getPropertyById($id){
-        return Property::where('id',$id)->first();
+
+    public static function getPropertyById($id)
+    {
+        return Property::where('id', $id)->first();
     }
 
     public function users()
@@ -156,6 +158,7 @@ class Property extends Model
         return $this->belongsToMany(User::class)->using(Favorite::class)->withTimestamps();
 
     }
+
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class);
