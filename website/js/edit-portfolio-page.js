@@ -94,7 +94,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                // separateDialCode: true,
+                separateDialCode: true,
                 numberType: "MOBILE",
             });
         } else if (phone_type === "FIXED_LINE") {
@@ -102,7 +102,7 @@
                 utilsScript: "../../../../plugins/intl-tel-input/js/utils.js",
                 preferredCountries: ["pk"],
                 preventInvalidNumbers: true,
-                // separateDialCode: true,
+                separateDialCode: true,
                 placeholderNumberType: "FIXED_LINE",
                 numberType: "FIXED_LINE",
             });
@@ -120,6 +120,8 @@
             if (input.value.trim()) {
                 if (ag_iti_cell.isValidNumber()) {
                     field.val(ag_iti_cell.getNumber());
+                    console.log("4"+$('[name="phone"]').val());
+
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
                     if (check_field !== '') $('[' + check_field + ']').val('');
@@ -588,10 +590,13 @@
 
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
+        let selected_input_field_phone = document.querySelector("#phone");
+        let selected_input_field_cell = document.querySelector("#cell");
 
         //on update form
         if (phone_num.val() !== '' && $("input[name='phone']").val() === '') {
             $("input[name='phone']").val(phone_num.val());
+
         }
         if (mobile_num.val() !== '' && $("input[name='mobile']").val() === '') {
             $("input[name='mobile']").val(mobile_num.val());
@@ -607,11 +612,15 @@
             if (phone_num.val() === '') {
                 $('input[name=phone_check]').val('');
             }
+            var it_1 = window.intlTelInputGlobals.getInstance(selected_input_field_phone);
+            $("input[name='phone']").val(it_1.getNumber());
 
-            $("input[name='phone']").val(phone_num.val());
+
         });
         mobile_num.on('change', function () {
-            $("input[name='mobile']").val(mobile_num.val());
+            // $("input[name='mobile']").val(mobile_num.val());
+            var it_2 = window.intlTelInputGlobals.getInstance(selected_input_field_cell);
+            $("input[name='mobile']").val(it_2.getNumber());
         });
 
         iti_contact_number(document.querySelector("#cell"),
@@ -639,11 +648,11 @@
                         return $('[name="add_location"]').val() === '';
                     }
                 },
-                'add_location': {
-                    required: function (element) {
-                        return $('[name="location"]').val() == null;
-                    }
-                },
+                // 'add_location': {
+                //     required: function (element) {
+                //         return $('[name="location"]').val() == null;
+                //     }
+                // },
                 'property_title': {required: true},
                 'description': {required: true},
                 'all_inclusive_price': {required: true},
@@ -896,9 +905,7 @@
                         if (result.phone !== null) {
                             $('[name="phone_#"]').val('');
                             let selected_input_field = document.querySelector("#phone");
-                            var iti = window.intlTelInputGlobals.getInstance(selected_input_field);
-                            iti.destroy();
-
+                            window.intlTelInputGlobals.getInstance(selected_input_field).destroy();
                             iti_contact_number(selected_input_field,
                                 document.querySelector("#error-msg-phone"),
                                 document.querySelector("#valid-msg-phone"),
@@ -906,14 +913,14 @@
                             $('#phone').val(result.phone);
                             selected_input_field.dispatchEvent(keyupEvent);
                             // $('#phone').change();
-                            $('[name="phone"]').val(iti.getNumber(intlTelInputUtils.numberFormat.E164));
+                            $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
+
                         }
                         if (result.cell !== null) {
                             $('[name="mobile_#"]').val('');
 
                             let selected_input_field = document.querySelector("#cell");
-                            var itii = window.intlTelInputGlobals.getInstance(selected_input_field);
-                            itii.destroy();
+                            window.intlTelInputGlobals.getInstance(selected_input_field).destroy();
 
                             iti_contact_number(selected_input_field,
                                 document.querySelector("#error-msg-mobile"),
@@ -921,7 +928,7 @@
                                 $('[name=mobile]'), '#mobile-error', "MOBILE");
                             $('[name="mobile_#"]').val(result.cell);
                             selected_input_field.dispatchEvent(keyupEvent);
-                            $('[name="mobile"]').val(itii.getNumber(intlTelInputUtils.numberFormat.E164));
+                            $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
                         }
                         if (result.fax !== null) $('[name=fax]').val(result.fax);
                         if (result.email !== null) $('[name=contact_email]').val(result.email);
@@ -951,7 +958,7 @@
                 $('#contact_person_input').removeAttr('required').attr('disable', 'true');
                 $('#contact_person').attr('required', 'required').attr('disable', 'false');
                 getAgencyUsers($("#agency option:selected").val());
-                if($('select[id=contact_person]').val() === null){
+                if ($('select[id=contact_person]').val() === null) {
                     $('select[id=contact_person]').val($("select[id=contact_person] option:first").val());
                 }
             } else {
@@ -967,8 +974,7 @@
 
                 $('[name="phone_#"]').val('');
                 let selected_input_field_1 = document.querySelector("#phone");
-                var iti = window.intlTelInputGlobals.getInstance(selected_input_field_1);
-                iti.destroy();
+                window.intlTelInputGlobals.getInstance(selected_input_field_1).destroy();
 
                 iti_contact_number(selected_input_field_1,
                     document.querySelector("#error-msg-phone"),
@@ -976,22 +982,18 @@
                     $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
                 $('#phone').val(user_default_phone);
                 selected_input_field_1.dispatchEvent(keyupEvent);
-                // $('#phone').change();
-                $('[name="phone"]').val(iti.getNumber(intlTelInputUtils.numberFormat.E164));
-                // $('[name="mobile_#"]').val(user_default_mobile);
-
+                $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
 
                 $('[name="mobile_#"]').val('');
                 let selected_input_field_2 = document.querySelector("#cell");
-                var itii = window.intlTelInputGlobals.getInstance(selected_input_field_2);
+                 window.intlTelInputGlobals.getInstance(selected_input_field_2).destroy();
 
-                itii.destroy();
                 iti_contact_number(selected_input_field_2,
                     document.querySelector("#error-msg-mobile"),
                     document.querySelector("#valid-msg-mobile"),
                     $('[name=mobile]'), '#mobile-error', "MOBILE");
                 $('[name="mobile_#"]').val(user_default_mobile);
-                $('[name="mobile"]').val(itii.getNumber(intlTelInputUtils.numberFormat.E164));
+                $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber());
                 $('[name=contact_email]').val(user_default_email);
                 selected_input_field_2.dispatchEvent(keyupEvent);
                 $('.agency-user-block').hide();

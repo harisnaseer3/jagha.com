@@ -38,9 +38,9 @@
             {{ Form::bsSelect2('location', [], isset($property->location) ? $property->location : old('location'), ['required' => true, 'placeholder' => 'Select location in current city','id' => 'add_location']) }}
             <div class="text-center"><span><i class="fa fa-spinner fa-spin location-spinner" style="font-size:20px; display:none"></i></span></div>
 
-            <div class="font-14 my-3"><span>OR</span></div>
+{{--            <div class="font-14 my-3"><span>OR</span></div>--}}
 
-            {{ Form::bsText('add_location',old('add_location'), ['placeholder' => 'Add Location','id' => 'other_location','data-default' => 'Select a location from dropdown above or add new location.' ]) }}
+{{--            {{ Form::bsText('add_location',old('add_location'), ['placeholder' => 'Add Location','id' => 'other_location','data-default' => 'Select a location from dropdown above or add new location.' ]) }}--}}
 
             {{Form::hidden('location-error')}}
         @endif
