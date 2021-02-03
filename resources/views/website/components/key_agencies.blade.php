@@ -16,8 +16,8 @@
                                                'slug'=>\Illuminate\Support\Str::slug($agency->title),
                                                'agency'=> $agency->id ,
                                                ])}}">
-                            <img src="{{$agency->user_id !== 1?asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp'):asset('storage/agency_logos/'.'img256by256_1588397752.jpg')}}" loading="lazy" alt="{{$agency->title}}"
-                                 class="img-fluid featured-agency-image" onerror="this.src='http://localhost/img/logo/dummy-logo.png'" style="height:53px; width: 60px ;">
+                            <img src="{{$agency->user_id !== 1?asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-100x100'.'.webp'):asset('img/logo/dummy-logo.png')}}" loading="lazy" alt="{{$agency->title}}"
+                                 class="img-fluid featured-agency-image" onerror="this.src='{{asset('img/logo/dummy-logo.png')}}'" style="height:53px; width: 60px ;">
                         </a>
                     </div>
                     <div class="col-8">
