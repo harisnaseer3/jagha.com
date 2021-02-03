@@ -57,7 +57,7 @@
                                             {{ Form::bsRadio('email_notification', isset($account->email_notification)?$account->email_notification:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
                                             {{ Form::bsRadio('newsletter', isset($account->newsletter)?$account->newsletter:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
                                             {{ Form::bsRadio('automated_reports', isset($account->automated_reports)?$account->automated_reports:'Subscribe', ['required' => true, 'list' => ['Subscribe', 'Unsubscribe']]) }}
-                                            {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'Text', ['required' => true, 'list' => ['HTML', 'Text']]) }}
+                                            {{ Form::bsRadio('email_format', isset($account->email_format)?$account->email_format:'HTML', ['required' => true, 'list' => ['HTML', 'Text']]) }}
                                         </div>
 
                                         <div class="card-header theme-blue text-white text-capitalize">General Settings</div>

@@ -53,7 +53,6 @@
                                                     <table id="user-notification" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
-                                                            <th>Sr.</th>
                                                             <th>Dated</th>
                                                             <th>Message</th>
                                                             <th>Action</th>
@@ -63,8 +62,7 @@
                                                         @foreach($notifications as $key=> $notification)
                                                             {{--                                                    {{dd($notification, $key)}}--}}
                                                             <tr>
-                                                                <td>{{$key +1}}</td>
-                                                                <td>{{ (new \Illuminate\Support\Carbon($notification->created_at))->isoFormat('MMMM Do YYYY, h:mm a') }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($notification->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                 <td>
                                                                     @if(isset($notification->data['type']) && $notification->data['type'] === 'property')
 
