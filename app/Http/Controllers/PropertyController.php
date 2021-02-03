@@ -526,7 +526,8 @@ class PropertyController extends Controller
                 'cell' => $request->input('mobile'),
                 'fax' => $request->input('fax'),
                 'email' => $request->input('contact_email'),
-                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null
+                'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null,
+                'activated_at' => null
             ]);
             if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
 //                (new ImageController)->update($request, $property);
@@ -539,7 +540,7 @@ class PropertyController extends Controller
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
                 $property->activated_at = $property->updated_at;
-                $property->save();
+//                $property->save();
 
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
@@ -558,6 +559,7 @@ class PropertyController extends Controller
                 }
 
             }
+
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
             Notification::send($user, new PropertyStatusChangeMail($property));
@@ -581,8 +583,7 @@ class PropertyController extends Controller
         }
     }
 
-    public
-    function destroy(Request $request)
+    public function destroy(Request $request)
     {
 //        $user_id = Auth::user()->getAuthIdentifier();
         $property = (new Property)->where('id', '=', $request->input('record_id'))->first();
@@ -593,6 +594,7 @@ class PropertyController extends Controller
                     $property->reviewed_by = Auth::guard('admin')->user()->name;
 
                 $property->status = 'deleted';
+                $property->activated_at = null;
                 $property->save();
 
                 $user = User::where('id', '=', $property->user_id)->first();
@@ -618,8 +620,7 @@ class PropertyController extends Controller
     }
 
 //    calculate area value for different units
-    public
-    function calculateArea($area_unit, $land_area)
+    public function calculateArea($area_unit, $land_area)
     {
         $area = number_format($land_area, 2, '.', '');
         $area_in_sqft = 0;
