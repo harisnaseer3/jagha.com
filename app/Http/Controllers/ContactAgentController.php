@@ -56,6 +56,8 @@ class ContactAgentController extends Controller
                 $country = '';
                 if ($ip_location = IpLocation::get($ip)) {
                     $country = $ip_location->countryName;
+                    if($country == null)
+                        $country = 'unavailable';
                 } else {
 
                     $country = 'unavailable';

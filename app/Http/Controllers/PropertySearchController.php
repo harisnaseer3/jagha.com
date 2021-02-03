@@ -59,6 +59,7 @@ class PropertySearchController extends Controller
         else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
         else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
 
+//        return $properties->orderBy('properties.activated_at', 'DESC');
         return $properties;
     }
 
@@ -321,6 +322,7 @@ class PropertySearchController extends Controller
                     (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
                     $footer_content = (new FooterController)->footerContent();
                     return view('website.pages.property_detail', [
+                        'property_count' => $property->agency_id !== null ? (new PropertyController())->agencyCountOnDetailPage($property->agency_id) : 0,
                         'property' => $property,
                         'is_favorite' => $is_favorite,
                         'property_types' => $property_types,
@@ -365,11 +367,12 @@ class PropertySearchController extends Controller
 //        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
 
                 $properties = $properties
+                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%')
                     ->Where('properties.title', 'LIKE', '%' . $request->input('term') . '%')
                     ->orWhere('cities.name', 'LIKE', '%' . $request->input('term') . '%')
-                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%')
+                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%');
 //                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('term') . '%')
-                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%');
+
 //                $properties = $properties->orderBy('created_at', 'DESC');
 
                 $properties = $this->sortPropertyListing($sort, $sort_area, $properties);

@@ -31,8 +31,9 @@ class PropertyAjaxCallController extends Controller
             $property = (new Property)->WHERE('id', '=', $request->id)->first();
             (new CountTableController)->_delete_in_status_purpose_table($property, $property->status);
 
-            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
-            $property = (new Property)->WHERE('id', '=', $request->id)->first();
+//            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
+            $property->update(['status' => $request->status, 'activated_at' => null]);
+//            $property = (new Property)->WHERE('id', '=', $request->id)->first();
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
             $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
             $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
@@ -124,7 +125,7 @@ class PropertyAjaxCallController extends Controller
                 $purpose = lcfirst($property->purpose);
                 return redirect()->route('properties.listings',
                     ['status' => $status, 'purpose' => $purpose, 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),
-                        'sort' => 'id','order' => 'desc', 'page' => 10, 'user-property-id' => $request->property_id]);
+                        'sort' => 'id', 'order' => 'desc', 'page' => 10, 'user-property-id' => $request->property_id]);
             }
         } else
             return redirect()->back()->withInput()->with('error', 'Please Enter Valid Property ID.');
