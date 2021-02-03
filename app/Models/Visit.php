@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\CountryController;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +53,7 @@ class Visit extends Model
                     if ($ip_location = IpLocation::get($ip)) {
                         $country = $ip_location->countryName;
                         if ($country == null)
-                            $country = 'unavailable';
+                            $country = (new CountryController())->Country_name();
                     } else {
 
                         $country = 'unavailable';
