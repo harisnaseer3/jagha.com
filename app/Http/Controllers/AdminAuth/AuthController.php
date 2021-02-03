@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\AdminAuth;
 
 
+use App\Http\Controllers\CountryController;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -101,7 +102,7 @@ class AuthController extends Controller
             if ($ip_location = IpLocation::get($ip)) {
                 $country = $ip_location->countryName;
                 if($country == null)
-                    $country = 'unavailable';
+                    $country = (new CountryController())->Country_name();
             } else {
 
                 $country = 'unavailable';

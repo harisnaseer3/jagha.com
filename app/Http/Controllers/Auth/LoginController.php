@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CountryController;
 use App\Models\Dashboard\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -107,7 +108,7 @@ class LoginController extends Controller
         if ($ip_location = IpLocation::get($ip)) {
             $country = $ip_location->countryName;
             if($country == null)
-                $country = 'unavailable';
+                $country = (new CountryController())->Country_name();
         } else {
 
             $country = 'unavailable';
