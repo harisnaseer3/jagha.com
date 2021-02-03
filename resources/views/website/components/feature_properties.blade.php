@@ -12,7 +12,7 @@
                     @elseif($feature_property->bronze_listing)
                         <div class="tag feature-tag">Bronze</div>
                     @endif
-                    @if($feature_property->image != null)
+                    @if($feature_property->user_id !== 1 && $feature_property->image != null)
                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
                              title="{{$feature_property->title}}" onerror="this.src='{{asset('img/logo/dummy-logo.png')}}'"/>

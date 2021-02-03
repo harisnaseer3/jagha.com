@@ -42,7 +42,7 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
-                    <img src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                    <img src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                          alt="{{$property->sub_type}} for {{$property->purpose}}"
                          title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
                     @if($property->platinum_listing == 1)
@@ -184,14 +184,14 @@
                             </div>
                             <div class="property-description">
                                 <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform property-description">
-                                    {{\Illuminate\Support\Str::limit(strtolower($property->description),75, $end='...more')}}
+                                    {{$property->user_id !== 1 ?\Illuminate\Support\Str::limit(strtolower($property->description),75, $end='...more'):'No description added'}}
                                 </a>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3 partner-logo-style" style="height:70px;">
                             {{--                            {{dd($property->logo)}}--}}
                             @if($property->agency)
-                                @if(isset($property->logo))
+                                @if($property->user_id !== 1 && isset($property->logo))
                                     <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}"
                                          onerror="this.src='http://localhost/img/logo/dummy-logo.png'"
                                          data-toggle="popover" data-trigger="hover" title="{{$property->agency}}" data-html='true' data-content='
@@ -205,7 +205,7 @@
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
                                     <br \>
-                                    <div>{{$property->agency_description}}</div>'>
+                                    <div>{{$property->user_id !== 1 ?$property->agency_description:''}}</div>'>
 
                                 @endif
                             @endif
@@ -295,7 +295,7 @@
                                                  title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                             <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property reference</div>
-                            <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
+                            <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>
                             <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
                         </div>
 

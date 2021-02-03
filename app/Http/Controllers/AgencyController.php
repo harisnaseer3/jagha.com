@@ -121,7 +121,7 @@ class AgencyController extends Controller
 
     function _listingFrontend()
     {
-        return (new Agency)->select('agencies.title', 'agencies.id', 'agencies.description', 'agencies.key_listing',
+        return (new Agency)->select('agencies.user_id', 'agencies.title', 'agencies.id', 'agencies.description', 'agencies.key_listing',
             'agencies.featured_listing', 'agencies.status', 'agencies.email',
             'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.optional_number', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
             'property_count_by_agencies.property_count AS count')
@@ -230,7 +230,7 @@ class AgencyController extends Controller
         $footer_content = (new FooterController)->footerContent();
 
 
-        $agency_data = (new Agency)->select('agencies.title', 'agencies.description', 'agencies.status',
+        $agency_data = (new Agency)->select('agencies.title', 'agencies.user_id', 'agencies.description', 'agencies.status',
             'agencies.phone', 'agencies.cell', 'agencies.optional_number', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')->where('agencies.id', '=', $agency)
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')

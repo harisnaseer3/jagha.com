@@ -1,7 +1,7 @@
 <div class="card mb-3">
     {{--        {{dd($agency_detail)}}--}}
     <div class="card-header bg-white">
-        <h2 class="pull-left all-cities-header title">{{ucwords($agency_detail['title'])}}</h2>
+        <h2 class="pull-left all-cities-header title">{{ ucwords($agency_detail['title'])}}</h2>
         <span class="btn btn-sm btn-outline pull-right clickable" id="close-icon" data-effect="fadeOut">close</span>
     </div>
 
@@ -25,7 +25,7 @@
             @endif
 
             <div class="col-sm-12">
-                <div class="property-description" style="line-height: 1.5rem; font-size: 14px;">{{$agency_detail->description}}</div>
+                <div class="property-description" style="line-height: 1.5rem; font-size: 14px;">{{$agency_detail->user_id !== 1? $agency_detail->description : ''}}</div>
             </div>
 
         </div>
