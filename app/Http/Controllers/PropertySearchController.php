@@ -18,7 +18,7 @@ class PropertySearchController extends Controller
     function listingFrontend()
     {
         return (new Property)
-            ->select('properties.id','properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
+            ->select('properties.id', 'properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
@@ -367,10 +367,10 @@ class PropertySearchController extends Controller
 //        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
 
                 $properties = $properties
-                    ->orWhere('agencies.title', 'LIKE', '%' . $request->input('term') . '%')
-                    ->Where('properties.title', 'LIKE', '%' . $request->input('term') . '%')
+                    ->Where('agencies.title', 'LIKE', '%' . $request->input('term') . '%')
                     ->orWhere('cities.name', 'LIKE', '%' . $request->input('term') . '%')
-                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%');
+                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%')
+                    ->orWhere('properties.title', 'LIKE', '%' . $request->input('term') . '%');
 //                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('term') . '%')
 
 //                $properties = $properties->orderBy('created_at', 'DESC');
