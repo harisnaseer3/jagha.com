@@ -148,7 +148,7 @@
                                                                 </td>
                                                                 <td>{{ucfirst($property->status)}}</td>
                                                                 <td>{{$property->views}}</td>
-                                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                 <td>
                                                                     <a type="button"  href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
                                                                        class="btn btn-sm btn-primary mb-1

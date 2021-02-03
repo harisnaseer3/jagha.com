@@ -64,7 +64,6 @@
                                                     <table id="customer-mails" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
-                                                            <th>Sr.</th>
                                                             <th>Name</th>
                                                             <th>Email</th>
                                                             <th>Mobile #</th>
@@ -78,7 +77,6 @@
                                                         @if(count($agent_inboxes) > 0)
                                                             @foreach($agent_inboxes as $inbox)
                                                                 <tr class="{{ $inbox->read_at == null? 'unread':''}}">
-                                                                    <td>{{$loop->iteration}}</td>
                                                                     <td>{{$inbox->name}}</td>
                                                                     <td>{{$inbox->email}}</td>
                                                                     <td>{{$inbox->cell}}</td>
@@ -91,12 +89,12 @@
                                                                            data-target="#inbox-detail" data-name="{{$inbox->name}}" data-email="{{$inbox->email}}"
                                                                            data-cell="{{$inbox->cell}}" data-type="{{$inbox->type}}" data-location="{{$inbox->ip_location}}"
                                                                            data-message="{{strip_tags($inbox->message)}}"
-                                                                           data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                           data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}"
                                                                            data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
                                                                         </a>
                                                                         {{--                                                                        @endif--}}
                                                                     </td>
-                                                                    <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                                    <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
                                                                 </tr>
                                                             @endforeach
                                                         @endif
