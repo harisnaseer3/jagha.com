@@ -69,33 +69,31 @@
                                                     <table id="support-mails" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
-                                                            <th>Sr.</th>
-                                                            <th>ID</th>
+                                                            <th>Ticket ID</th>
                                                             <th>Support Topic</th>
                                                             <th>Property/Agency ID</th>
-                                                            <th>Message</th>
+                                                            <th class="support-width">Message</th>
                                                             <th>Time</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
                                                         @foreach($user_supports as $user_support)
                                                             <tr>
-                                                                <td>{{$loop->iteration}}</td>
                                                                 <td>{{$user_support->id}}</td>
                                                                 <td>{{$user_support->inquire_about}}</td>
                                                                 <td>@if($user_support->inquire_about === 'Property') {{$user_support->property_id}}@else  {{$user_support->agency_id}} @endif</td>
-                                                                <td>{{\Illuminate\Support\Str::limit(strtolower($user_support->message), 30, $end='.....')}}
-                                                                    @if(strlen($user_support->message) > 30 )
+                                                                <td class="support-width">{{\Illuminate\Support\Str::limit(strtolower($user_support->message), 110, $end='.....')}}
+                                                                    @if(strlen($user_support->message) > 110 )
                                                                         <a class="color-blue" data-placement="bottom" title="Read More" data-toggle="modal" id="support-detail-modal"
                                                                            data-target="#support-detail" data-inquire-about="{{$user_support->inquire_about}}"
                                                                            data-inquire-id="@if($user_support->inquire_about === 'Property') {{$user_support->property_id}}@else  {{$user_support->agency_id}} @endif"
                                                                            data-url="{{$user_support->url}}"
                                                                            data-message="{{strip_tags($user_support->message)}}"
-                                                                           data-time="{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                           data-time="{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}"
                                                                         ><span class="color-blue">Read More</span>
                                                                         </a>
                                                                     @endif</td>
-                                                                <td>{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                                <td>{{(new \Illuminate\Support\Carbon($user_support->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
 
                                                             </tr>
                                                         @endforeach
@@ -116,12 +114,10 @@
                                                     <table id="inquiry-mails" class="display" style="width: 100%">
                                                         <thead>
                                                         <tr>
-                                                            <th>Sr.</th>
-                                                            <th>Name</th>
+                                                            <th>Inquiry Topic</th>
+                                                            <th>Property/Agency ID</th>
                                                             <th>Email</th>
                                                             <th>Mobile #</th>
-                                                            <th>Type</th>
-                                                            <th>Location</th>
                                                             <th>Message</th>
                                                             <th>Time</th>
                                                         </tr>
@@ -130,23 +126,21 @@
                                                         @if(count($agent_inboxes) > 0)
                                                             @foreach($agent_inboxes as $inbox)
                                                                 <tr>
-                                                                    <td>{{$loop->iteration}}</td>
                                                                     <td>{{$inbox->name}}</td>
                                                                     <td>{{$inbox->email}}</td>
                                                                     <td>{{$inbox->cell}}</td>
                                                                     <td>{{$inbox->type}}</td>
-                                                                    <td>{{$inbox->ip_location}}</td>
                                                                     <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
                                                                         @if(strlen($inbox->message) > 30 )
                                                                             <a class="color-blue" data-placement="bottom" title="Read More" data-toggle="modal" id="detail-modal"
                                                                                data-target="#inbox-detail" data-name="{{$inbox->name}}" data-email="{{$inbox->email}}"
                                                                                data-cell="{{$inbox->cell}}" data-type="{{$inbox->type}}" data-location="{{$inbox->ip_location}}"
                                                                                data-message="{{strip_tags($inbox->message)}}"
-                                                                               data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}"
+                                                                               data-time="{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}"
                                                                                data-record-id="{{$inbox->id}}"><span class="color-blue">Read More</span>
                                                                             </a>
                                                                         @endif</td>
-                                                                    <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('MMM Do YYYY, h:mm a')}}</td>
+                                                                    <td>{{(new \Illuminate\Support\Carbon($inbox->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
                                                                 </tr>
                                                             @endforeach
                                                         @endif
