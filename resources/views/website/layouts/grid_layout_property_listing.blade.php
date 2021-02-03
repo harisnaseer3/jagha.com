@@ -82,7 +82,7 @@
                                  data-num-stars="5" aria-label="rating"></div>
                         </div>
                         <img class="d-block w-100"
-                             src="{{ isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
+                             src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
                              onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"
                              alt="{{$property->sub_type}} for {{$property->purpose}}"
                              title="{{$property->sub_type}} for {{$property->purpose}}">
@@ -253,7 +253,7 @@
                                                      title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                                 <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class="mb-2">Please use property reference</div>
-                                <div class="mb-2" style="font-weight: bold"> {{ $property->reference }} </div>
+                                <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>
                                 <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
                             </div>
 
