@@ -96,7 +96,7 @@
                         @if(!empty($agency))
                             {{ Form::hidden('agent',$agency->id)}}
                         @endif
-                        @if($agency->description !='')
+                        @if($agency->user_id !== 1 && $agency->description !='')
                             <div class="col-sm-12 my-2">
                                 <a href="javascript:void(0)" title="{{$agency->title}}" class="custom-font text-transform">
                                     <h6 class="custom-font text-transform agent-description">{{\Illuminate\Support\Str::limit(strtolower($agency->description), 300, $end='...')}}
