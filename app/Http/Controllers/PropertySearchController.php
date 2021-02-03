@@ -59,7 +59,7 @@ class PropertySearchController extends Controller
         else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
         else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
 
-//        return $properties->orderBy('properties.updated_at', 'ASC');
+//        return $properties->orderBy('properties.activated_at', 'DESC');
         return $properties;
     }
 
