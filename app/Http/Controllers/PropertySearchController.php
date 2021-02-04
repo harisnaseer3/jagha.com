@@ -26,10 +26,10 @@ class PropertySearchController extends Controller
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
                 'agencies.phone AS agency_phone', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at',
-                'agencies.description AS agency_description',
-                'property_count_by_agencies.property_count AS agency_property_count',
+                'agencies.description AS agency_description','c.property_count AS agency_property_count',
+
                 'users.community_nick AS user_nick_name', 'users.name AS user_name')
-            ->where('property_count_by_agencies.property_status', '=', 'active')
+//            ->where('property_count_by_agencies.property_status', '=', 'active')
             ->where('properties.status', '=', 'active')
             ->whereNull('properties.deleted_at')
             ->leftJoin('images as p', function ($q) {
@@ -44,9 +44,10 @@ class PropertySearchController extends Controller
                     ->where('f.user_id', '=', Auth::user() ? Auth::user()->getAuthIdentifier() : 0);
             })
             ->join('users', 'properties.user_id', '=', 'users.id')
-            ->leftjoin('property_count_by_agencies', 'properties.agency_id', '=', 'property_count_by_agencies.agency_id');
-
-
+            ->leftJoin('property_count_by_agencies as c', function ($c) {
+                $c->on('properties.agency_id', '=', 'c.agency_id')
+                    ->where('c.property_status', '=', 'active');
+            });
     }
 
     function sortPropertyListing($sort, $sort_area, $properties)
