@@ -175,11 +175,18 @@
                                             Agency </label>
                                     </div>
                                 </div>
+                                <div class=" col-md-6 col-lg-4 col-xl-3">
+                                    <div class="custom-control custom-radio custom-control-inline align-items-center">
+                                        <input class="custom-control-input" type="radio" name="inquire_type" id="other_radio" value="Other">
+                                        <label class="custom-control-label" style="line-height:1.2rem;" for="other_radio">
+                                            Other </label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group" id="property-div">
                                 <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible property-select2"
                                         style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
-                                        name="property_id" id="property-id"  required>
+                                        name="property_id" id="property-id" >
                                     <option disabled selected>Select property</option>
                                     @if(count($properties) > 0)
                                         @foreach($properties as $property)
@@ -207,6 +214,10 @@
 
                                 </select>
 
+                            </div>
+                            <div class="form-group" style="display:none;" id="other-div">
+                                <input class="form-control" id="topic" name="topic" type="text" placeholder="Support Topic">
+                                <p class="help-block text-danger" id="topicHelp" style="display:none;">Please specify Topic</p>
                             </div>
                             <p class="help-block text-danger" id="agencyHelp" style="display:none;">Please select agency</p>
 

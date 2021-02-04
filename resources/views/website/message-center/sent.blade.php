@@ -80,7 +80,7 @@
                                                         @foreach($user_supports as $user_support)
                                                             <tr>
                                                                 <td>{{$user_support->id}}</td>
-                                                                <td>{{$user_support->inquire_about}}</td>
+                                                                <td>@if($user_support->inquire_about === 'Other') {{$user_support->topic}} @else {{$user_support->inquire_about}} @endif</td>
                                                                 <td>@if($user_support->inquire_about === 'Property') {{$user_support->property_id}}@else  {{$user_support->agency_id}} @endif</td>
                                                                 <td class="support-width">{{\Illuminate\Support\Str::limit(strtolower($user_support->message), 110, $end='.....')}}
                                                                     @if(strlen($user_support->message) > 110 )
