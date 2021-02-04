@@ -529,7 +529,7 @@ var isLoading = function isLoading() {
   return getPopup().hasAttribute('data-loading');
 };
 
-// Detect Node env
+// Detect Node .env
 var isNodeEnv = function isNodeEnv() {
   return typeof window === 'undefined' || typeof document === 'undefined';
 };
@@ -651,7 +651,7 @@ var handleJqueryElem = function handleJqueryElem(target, elem) {
 };
 
 var animationEndEvent = function () {
-  // Prevent run in Node env
+  // Prevent run in Node .env
 
   /* istanbul ignore if */
   if (isNodeEnv()) {
@@ -2840,7 +2840,7 @@ var instanceMethods = Object.freeze({
 var currentInstance; // SweetAlert constructor
 
 function SweetAlert() {
-  // Prevent run in Node env
+  // Prevent run in Node .env
 
   /* istanbul ignore if */
   if (typeof window === 'undefined') {

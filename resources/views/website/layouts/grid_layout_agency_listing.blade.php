@@ -74,7 +74,7 @@
                            aria-label="Agency location">
                             <i class="fa fa-map-marker"></i>
                             {{$agency->city}}
-                        </a>
+                        </a>z
                     </div>
                     <div class="color-555 mt-2 date-box"><span>Total Properties: </span> {{ $agency->count }}</div>
                     {{--                    <div class="color-555 mt-2 date-box"><span>Added on: </span> {{ Carbon\Carbon::parse($agency->created_at)->format('d.m.Y') }}</div>--}}
