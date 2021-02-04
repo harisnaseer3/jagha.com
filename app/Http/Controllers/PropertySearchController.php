@@ -21,7 +21,7 @@ class PropertySearchController extends Controller
             ->select('properties.id', 'properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at',
+                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at','properties.activated_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
@@ -48,6 +48,7 @@ class PropertySearchController extends Controller
                 $c->on('properties.agency_id', '=', 'c.agency_id')
                     ->where('c.property_status', '=', 'active');
             });
+
     }
 
     function sortPropertyListing($sort, $sort_area, $properties)
@@ -55,12 +56,10 @@ class PropertySearchController extends Controller
         if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
         else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
 
-        if ($sort === 'newest') $properties = $properties->orderBy('properties.created_at', 'DESC');
-        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.created_at', 'ASC');
+        if ($sort === 'newest') $properties = $properties->orderBy('properties.activated_at', 'DESC');
+        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
         else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
         else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
-
-//        return $properties->orderBy('properties.activated_at', 'DESC');
         return $properties;
     }
 

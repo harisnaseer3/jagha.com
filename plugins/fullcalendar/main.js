@@ -4398,7 +4398,7 @@ Docs & License: https://fullcalendar.io/
         var endMarker = framingRange.end;
         var instanceStarts = [];
         while (dayMarker < endMarker) {
-            var instanceStart 
+            var instanceStart
             // if everyday, or this particular day-of-week
             = void 0;
             // if everyday, or this particular day-of-week
@@ -8149,7 +8149,7 @@ Docs & License: https://fullcalendar.io/
             forcedTzo: dateMeta.forcedTzo
         });
     }
-    function formatRange(startInput, endInput, settings // mixture of env and formatter settings
+    function formatRange(startInput, endInput, settings // mixture of .env and formatter settings
     ) {
         var dateEnv = buildDateEnv$1(typeof settings === 'object' && settings ? settings : {}); // pass in if non-null object
         var formatter = createFormatter(settings, globalDefaults.defaultRangeSeparator);

@@ -184,14 +184,14 @@ class AgencyController extends Controller
 
     function sortPropertyListing($sort, $sort_area, $properties)
     {
-        if ($sort_area === 'higher_area') $properties = $properties->orderBy('area_in_sqft', 'DESC');
-        else if ($sort_area === 'lower_area') $properties = $properties->orderBy('area_in_sqft', 'ASC');
+        if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
+        else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
 //        else  $properties = $properties->orderBy('area_in_sqft', 'DESC');
 
-        if ($sort === 'newest') $properties = $properties->orderBy('created_at', 'DESC');
-        else if ($sort === 'oldest') $properties = $properties->orderBy('created_at', 'ASC');
-        else if ($sort === 'high_price') $properties = $properties->orderBy('price', 'DESC');
-        else if ($sort === 'low_price') $properties = $properties->orderBy('price', 'ASC');
+        if ($sort === 'newest') $properties = $properties->orderBy('properties.activated_at', 'DESC');
+        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
+        else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
+        else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
 
         return $properties;
     }
