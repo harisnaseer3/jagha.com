@@ -136,6 +136,7 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
+
         if (!(new Visit)->hit()) {
             return view('website.errors.404');
         }
@@ -307,8 +308,8 @@ class PropertyController extends Controller
             (new CountTableController)->_insert_in_status_purpose_table($property);
             // insertion in count tables when property status is active
             if ($request->has('status') && $request->input('status') === 'active') {
+                $property->activated_at = Carbon::now();
                 $dt = Carbon::now();
-                $property->activated_at = $dt;
 
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
@@ -379,21 +380,21 @@ class PropertyController extends Controller
 
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
-
+        if (Auth::guard('admin')->user()) {
+            return view('website.admin-pages.portfolio',
+                [
+//                    'agencies' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->get()->toArray(),
+                    'property' => $property,
+                    'property_types' => $property_types,
+                    'counts' => $counts,
+                ]);
+        }
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
 
         $agencies_data = (new Agency)->select('title', 'id')
             ->whereIn('id', $agencies_ids)
             ->where('status', '=', 'verified')->get();
 
-        if (Auth::guard('admin')->user()) {
-            return view('website.admin-pages.portfolio',
-                [
-                    'property' => $property,
-                    'property_types' => $property_types,
-                    'counts' => $counts,
-                ]);
-        }
 
         $agencies = [];
         $users = [];

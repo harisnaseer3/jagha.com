@@ -9,6 +9,7 @@ Route::get('/', 'PropertyController@index')->name('home');
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 Route::get('/agent-properties', 'AgencyUserController@getAgentProperties');
+Route::get('/get-admin-agencies', 'PropertyAjaxCallController@allAgencies');
 
 
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');

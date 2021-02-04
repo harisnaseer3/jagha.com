@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
@@ -129,6 +130,21 @@ class PropertyAjaxCallController extends Controller
             }
         } else
             return redirect()->back()->withInput()->with('error', 'Please Enter Valid Property ID.');
+    }
+
+
+    public function allAgencies(Request $request)
+    {
+        if ($request->ajax() && $request->has('agency')) {
+
+            if (Property::where('id', $request->input('agency'))->exists()) {
+                return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->limit(10)->get()->toArray(), 'status' => 200]);
+            }
+
+            dd($request->input('agency'));
+        } else
+            return 'not found';
+
     }
 
 
