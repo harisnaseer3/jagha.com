@@ -70,10 +70,6 @@ class SupportController extends Controller
                 $agency_id = $request->input('agency_id');
 
             }
-            elseif($inquire_type === 'Other'){
-                $topic = $request->input('topic');
-            }
-            dd($topic);
             $support = (new Support)->Create([
                 'user_id' => Auth::guard('web')->user()->getAuthIdentifier(),
                 'url' => $request->input('url'),
@@ -81,7 +77,7 @@ class SupportController extends Controller
                 'inquire_about' => $inquire_type,
                 'property_id' => $property_id,
                 'agency_id' => $agency_id,
-                'topic' => $topic
+                'topic' => $inquire_type == 'Other'? $request->input('topic'): null
 
             ]);
             event(new NotifyAdminOfSupportMessage($support));
