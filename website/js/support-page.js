@@ -118,8 +118,10 @@
                 minlength: 25,
                 maxlength: 1024
             },
-            topic: {
-                required: $('[name=inquire_type]').val() === 'Other'
+            'topic': {
+                required: function (element) {
+                    return $('[name=inquire_type]:checked').val() == 'Other';
+                }
             },
             'url': {
                 url: true

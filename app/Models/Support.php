@@ -19,15 +19,13 @@ class Support extends Model
     public $table = 'supports';
 
     protected $fillable = [
-        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id'
+        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id','topic'
     ];
 
     public static $rules = [
         'message' => 'string|required|max:1024|min:25',
         'inquire_type' => 'required|in:Property,Agency,Other',
-        'property_id' => 'required_if:inquire_about,==,Property',
-        'agency_id' => 'required_if:inquire_about,==,Agency',
-        'topic' => 'required_if:inquire_about,==,Other',
+        'topic' => 'required_if:inquire_about,=,Other',
         'url' => 'nullable|url',
     ];
     public static function getSupportById($id){
