@@ -372,6 +372,29 @@ class CountTableController extends Controller
 
         }
     }
+    public function getSupportCountByType($inquire_type){
+        if (DB::table('support_counts_by_types')
+            ->where('inquire_type', '=', $inquire_type)->exists()) {
+           $ticket = DB::table('support_counts_by_types')->where('inquire_type', '=', $inquire_type)->first();
+           return $ticket->count;
+
+        }
+        else{
+            return 0;
+        }
+    }
+    public function updateSupportCountByType($inquire_type){
+        if (DB::table('support_counts_by_types')
+            ->where('inquire_type', '=', $inquire_type)->exists()) {
+            DB::table('support_counts_by_types')
+                ->where('inquire_type', '=', $inquire_type)->increment('count');
+
+        }
+        else{
+            DB::table('support_counts_by_types')->insert(['inquire_type' => $inquire_type, 'count' => 1]);
+        }
+
+    }
 
     public function _delete_in_status_purpose_table($property, $status)
     {
