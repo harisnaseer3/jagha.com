@@ -138,10 +138,19 @@ class SupportController extends Controller
         $agent_agencies = DB::table('agency_users')->where('user_id', $user)->pluck('agency_id')->toArray();
         if (count($ceo_agencies) > 0) {
             $agency_users = DB::table('agency_users')->whereIn('agency_id', $ceo_agencies)->distinct('user_id')->pluck('user_id')->toArray();
+            $ceo_agent_agencies = DB::table('agency_users')
+                ->where('user_id', '=', $user)
+                ->whereNotIn('agency_id', $ceo_agencies)->pluck('agency_id')->toArray();
             $ceo_listings = Property::select('properties.id', 'properties.agency_id')
                 ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
                 ->whereIn('properties.user_id', $agency_users);
-            return [$ceo_listings->union($listings), $ceo_agencies, $agent_agencies];
+
+            $ceo_agent_listings = Property::select('properties.id', 'properties.agency_id')
+                ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agent_agencies)
+                ->where('properties.user_id', $user);
+
+
+            return [$ceo_listings->unionAll($listings)->unionAll($ceo_agent_listings), $ceo_agencies, $agent_agencies];
         } elseif ($agent_agencies > 0) {
             $agent_listings = Property::
             select('properties.id', 'properties.agency_id')
