@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Support;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\NotifyAdminOfSupportMessage;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CountTableController;
 use App\Models\Agency;
 use App\Models\Property;
 use App\Models\Support;
@@ -61,15 +62,40 @@ class SupportController extends Controller
             $property_id = null;
             $agency_id = null;
             $topic = null;
+            $ticket_id = null;
             $inquire_type = $request->input('inquire_type');
-            if($inquire_type === 'Property'){
+            $last_ticket_id =  (new CountTableController)->getSupportCountByType($inquire_type);
+
+
+            if ($inquire_type === 'Property') {
                 $property_id = $request->input('property_id');
+                if ($last_ticket_id > 0) {
+                    $ticket_id = 'SP-'.str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
 
-            }
-            elseif($inquire_type === 'Agency'){
+                } else {
+                    $ticket_id = 'SP-00000001';
+                }
+
+
+            } elseif ($inquire_type === 'Agency') {
                 $agency_id = $request->input('agency_id');
+                if ($last_ticket_id > 0) {
+                    $ticket_id = 'SA-'.str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
 
+                } else {
+                    $ticket_id = 'SA-00000001';
+
+                }
             }
+            else {
+                if ($last_ticket_id > 0) {
+                    $ticket_id = 'SO-'.str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
+                } else {
+                    $ticket_id = 'SO-00000001';
+
+                }
+            }
+
             $support = (new Support)->Create([
                 'user_id' => Auth::guard('web')->user()->getAuthIdentifier(),
                 'url' => $request->input('url'),
@@ -77,17 +103,20 @@ class SupportController extends Controller
                 'inquire_about' => $inquire_type,
                 'property_id' => $property_id,
                 'agency_id' => $agency_id,
-                'topic' => $inquire_type == 'Other'? $request->input('topic'): null
+                'topic' => $inquire_type == 'Other' ? $request->input('topic') : null,
+                'ticket_id' => $ticket_id
 
             ]);
+            (new CountTableController)->updateSupportCountByType($inquire_type);
             event(new NotifyAdminOfSupportMessage($support));
 
-            return redirect()->back()->with('success','Support ticket raised successfully.');
+            return redirect()->back()->with('success', 'Support ticket '.$support->ticket_id. ' raised successfully.');
 
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
         }
     }
+
     private function _listings()
     {
         $user = Auth::guard('web')->user()->getAuthIdentifier();
