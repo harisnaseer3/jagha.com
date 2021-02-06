@@ -303,7 +303,7 @@
                             <td style="padding: 0 2.5em;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;">
                                 <div class="text" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: rgba(0,0,0,.3);">
                                     <h5 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
-                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Support Ticket</strong></h5>
+                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Support Ticket {{$support->ticket_id}}</strong></h5>
                                 </div>
                             </td>
                         </tr>
@@ -322,31 +322,35 @@
                                                     Hello {{ucwords($user)}}
                                                 @endif</h3>
                                             <br>
+                                            @if(isset($user_mail))
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Support Ticket has been successfully generated. A copy of this inquiry has also been added to your <b>"My Inquiries & Support Requests"</b>  in the Message Center. </span>
+                                                <br>
+                                                <br>
 
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an new support ticket. </span>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Thank you for using About Pakistan Properties.</span>
+                                            @else
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an new support ticket. </span>
+                                                <br>
                                             <br>
 
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>
+                                            @endif
+                                            <br>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <b style="font-size: 16px; color:darkgrey">TICKET & USER DETAILS</b>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">MESSAGE</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Ticket ID: </strong>{{$support->ticket_id}}</span>
                                             <br>
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{strip_tags($content)}}</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">USER DETAILS</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Raised At: </strong>{{(new \Illuminate\Support\Carbon($support->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</span>
                                             <br>
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name: </strong>{{$support->user->name}}</span>
@@ -357,15 +361,11 @@
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone: </strong>{{$support->user->cell}}</span>
                                             <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Topic: </strong>@if($support->inquire_about === 'Other') {{$support->topic}} @else {{$support->inquire_about}} @endif</span>
                                             <br>
                                             @if(isset($property->id))
-                                                <b>-------------------------------</b>
-                                                <br>
-                                                <b style="font-size: 16px; color:darkgrey">PROPERTY DETAILS</b>
-                                                <br>
-                                                <b>-------------------------------</b>
-                                                <br>
-                                                <br>
+
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property: </strong>{{$property->title}}</span>
                                                 <br>
@@ -380,25 +380,29 @@
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property Url: </strong><a
                                                         href="{{$property->property_detail_path()}}">Go to Property</a></span>
                                                 <br>
-                                                <br>
                                             @endif
                                             @if(isset($agency->id))
-                                                <b>-------------------------------</b>
-                                                <br>
-
-                                                <b style="font-size: 16px; color:darkgrey">AGENCY DETAILS</b>
-                                                <br>
-                                                <b>-------------------------------</b>
-                                                <br>
-                                                <br>
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Agency: </strong>{{$agency->title}}</span>
                                                 <br>
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Agency ID: </strong>{{$agency->id}}</span>
                                                 <br>
-                                                <br>
                                             @endif
+
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <b style="font-size: 16px; color:darkgrey">MESSAGE</b>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{strip_tags($content)}}</span>
+                                            <br>
+                                            <br>
+
 
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">
                                                 <h3 class="name"

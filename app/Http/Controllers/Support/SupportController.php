@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Support;
 
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\NotifyAdminOfSupportMessage;
+use App\Events\NotifyUserofSupportTicket;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountTableController;
 use App\Models\Agency;
@@ -107,8 +108,11 @@ class SupportController extends Controller
                 'ticket_id' => $ticket_id
 
             ]);
+
             (new CountTableController)->updateSupportCountByType($inquire_type);
+            $user = Auth::guard('web')->user();
             event(new NotifyAdminOfSupportMessage($support));
+            event(new NotifyUserofSupportTicket($support,$user));
 
             return redirect()->back()->with('success', 'Support ticket '.$support->ticket_id. ' raised successfully.');
 

@@ -7,10 +7,12 @@ use App\Events\NewPropertyActivatedEvent;
 use App\Events\NewUserRegisteredEvent;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\NotifyAdminOfSupportMessage;
+use App\Events\NotifyUserofSupportTicket;
 use App\Listeners\AddUserInSubscriberListener;
 use App\Listeners\NotifyAdminListener;
 use App\Listeners\NotifySubscriberListener;
 use App\Listeners\NotifySupportListener;
+use App\Listeners\NotifyUserSupportListener;
 use App\Listeners\SendMailToAgentListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -42,6 +44,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NotifyAdminOfSupportMessage::class => [
             NotifySupportListener::class
+        ],
+        NotifyUserofSupportTicket::class => [
+            NotifyUserSupportListener::class
         ],
     ];
 
