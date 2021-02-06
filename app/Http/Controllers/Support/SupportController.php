@@ -150,7 +150,7 @@ class SupportController extends Controller
                 ->where('properties.user_id', $user);
 
 
-            return [$ceo_listings->unionAll($listings)->unionAll($ceo_agent_listings), $ceo_agencies, $agent_agencies];
+            return [$ceo_listings->unionAll($listings)->unionAll($ceo_agent_listings), array_unique(array_merge($ceo_agencies,$ceo_agent_agencies)), $agent_agencies];
         } elseif ($agent_agencies > 0) {
             $agent_listings = Property::
             select('properties.id', 'properties.agency_id')
