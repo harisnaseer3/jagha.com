@@ -55,7 +55,7 @@
                            </span>
                             @endif
                         </div>
-                        <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                        <img src="{{ isset($agency->logo)&& $agency->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                              alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
                     </a>
                 </div>
