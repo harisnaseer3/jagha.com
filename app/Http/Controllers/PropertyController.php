@@ -194,9 +194,10 @@ class PropertyController extends Controller
     {
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
-
+            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
+//        dd($request->all());
 //        dd($request->all());
         try {
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
@@ -204,7 +205,16 @@ class PropertyController extends Controller
             $json_features = '';
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
-            $location = (new LocationController)->store($request, $city);
+            $location = '';
+            if ($request->has('location'))
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+            else if ($request->has('add_location')) {
+
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
+                if (!$location) {
+                    $location = (new LocationController)->store($request->input('add_location'), $city);
+                }
+            }
 
             $user_id = Auth::user()->getAuthIdentifier();
 
@@ -217,7 +227,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error', 'advertisement', 'add_location','property_agency','agencies-table_length'
+                    'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -226,7 +236,7 @@ class PropertyController extends Controller
                 ];
             }
 
-            $address = $prepAddr = str_replace(' ', '+', $location['location_name'] . ',' . $city->name . ' Pakistan');
+            $address = $prepAddr = str_replace(' ', '+', $location->name . ',' . $city->name . ' Pakistan');
             $apiKey = config('app.google_map_api_key');
             $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
             $geo = json_decode($geo, true); // Convert the JSON to an array
@@ -258,11 +268,12 @@ class PropertyController extends Controller
                 }
             }
 
+
             $property = (new Property)->Create([
                 'reference' => $reference,
                 'user_id' => $user_id,
                 'city_id' => $city->id,
-                'location_id' => $location['location_id'],
+                'location_id' => $location->id,
                 'agency_id' => $agency != '' ? $agency : null,
                 'purpose' => $request->input('purpose'),
                 'sub_purpose' => $request->has('wanted_for') ? $request->input('wanted_for') : null,
@@ -326,7 +337,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
-//            dd($e->getMessage());
+            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -374,7 +385,8 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $city = $property->location->city->name;
-        $property->location = $property->location->name;
+//        $property->location = $property->location->name;
+
         $property->city = $city;
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
 
@@ -468,8 +480,9 @@ class PropertyController extends Controller
 //        dd($request->all());
         try {
             $json_features = '';
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-            $location = (new LocationController)->update($request, $city);
+//            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+//            $location = (new LocationController)->update($request, $city);
+
             if ($request->has('features')) {
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
                 $icon_value = $request->only($icon_inputs);
@@ -479,7 +492,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location','property_agency','agencies-table_length'
+                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [

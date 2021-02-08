@@ -11,7 +11,7 @@
 
         {{ Form::bsText('property_subtype ' . $property->type, isset($property->sub_type)? $property->sub_type : '', ['readonly' => 'readonly','id'=>'subtype']) }}
         {{ Form::bsText('city', isset($property->city)? $property->city : null, ['readonly' => 'readonly']) }}
-        {{ Form::bsText('location', isset($property->location)? $property->location : null, ['readonly' => 'readonly']) }}
+        {{ Form::bsText('location', isset($property->location)? $property->location->name : null, ['readonly' => 'readonly']) }}
     </div>
 
     <div class="card-header theme-blue text-white">Property Details</div>

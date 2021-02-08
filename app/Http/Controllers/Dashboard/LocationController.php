@@ -36,19 +36,19 @@ class LocationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Http\RedirectResponse
+
      */
-    public function store(Request $request, $city)
+    public function store($loc, $city)
     {
         $user_id = Auth::user()->getAuthIdentifier();
         try {
-            $location = (new Location)->updateOrCreate(['name' => $request->input('location'), 'city_id' => $city->id], [
+            $location = (new Location)->updateOrInsert(['city_id' => $city->id, 'name' => $loc], [
                 'user_id' => $user_id,
                 'city_id' => $city->id,
-                'name' => $request->input('location'),
-            ]);
-            return ['location_id' => $location->id, 'location_name' => $location->name];
+                'name' => $loc,
+                'is_active' => '0',
+            ])->first();
+            return $location;
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
@@ -92,8 +92,7 @@ class LocationController extends Controller
      * @param \App\Models\Dashboard\Location $location
      * @return array|\Illuminate\Http\RedirectResponse
      */
-    public
-    function update(Request $request, $city)
+    public function update(Request $request, $city)
     {
         $user_id = Auth::user()->getAuthIdentifier();
         $location = (new Location)->updateOrCreate(['name' => $request->input('location'), 'city_id' => $city->id], [
@@ -130,8 +129,8 @@ class LocationController extends Controller
     function cityLocations(Request $request)
     {
         if ($request->ajax()) {
-            $city_id = (new City)->select('id')->where('name', '=', str_replace('_',' ', $request->input('city')))->first();
-            $location = (new Location)->select('name')->where('city_id', '=', $city_id->id)->get()->toArray();
+            $city_id = (new City)->select('id')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $location = (new Location)->select('name')->where('city_id', '=', $city_id->id)->where('is_active', '=', '1')->get()->toArray();
 
             return response()->json(['data' => $location, 'status' => 200]);
 
