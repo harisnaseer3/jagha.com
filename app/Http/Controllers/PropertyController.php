@@ -194,11 +194,8 @@ class PropertyController extends Controller
     {
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
-            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
-//        dd($request->all());
-//        dd($request->all());
         try {
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
 
@@ -227,7 +224,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length'
+                    'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -337,7 +334,6 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
-            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -456,6 +452,10 @@ class PropertyController extends Controller
                 $property_user = User::where('id', '=', $property->user_id)->first();
                 $property_user->notify(new PropertyRejectionMail($property, $reason));
             }
+        } elseif ($request->has('location_verified') && $request->input('location_verified') == 'No' &&
+            $request->has('status') && $request->input('status') != 'rejected') {
+
+            return redirect()->back()->withInput()->with('error', 'Please verify the location or set status to Rejected and specify Rejection Reason as unverified location.');
         }
         $validator = Validator::make($request->all(), [
             'description' => 'required|min:50|max:6144',
@@ -479,9 +479,13 @@ class PropertyController extends Controller
         }
 //        dd($request->all());
         try {
+
             $json_features = '';
-//            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-//            $location = (new LocationController)->update($request, $city);
+            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $location = (new LocationController)->update($request, $city);
+            if ($request->has('location_verified') && $request->input('location_verified') == 'Yes') {
+                (new LocationController)->activate_location($property->location);
+            }
 
             if ($request->has('features')) {
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
@@ -492,7 +496,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length'
+                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -593,6 +597,7 @@ class PropertyController extends Controller
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }

@@ -13,7 +13,22 @@
 
             {{ Form::bsText('property_subtype ' . $property->type, isset($property->sub_type)? $property->sub_type : '', ['readonly' => 'readonly','id'=>'subtype']) }}
             {{ Form::bsText('city', isset($property->city)? $property->city : null, ['readonly' => 'readonly']) }}
-            {{ Form::bsText('location', isset($property->location)?$property->location->name  : null, ['readonly' => 'readonly']) }}
+            @if($property->location->is_active == 0)
+                {{--                {{ Form::bsText('location', isset($property->location)?$property->location->name  : null, ['readonly' => 'readonly']) }}--}}
+                <div class="map my-2" id="property_map" data-lat="{{$property->latitude}}" data-lng="{{$property->longitude}}">
+                    <div class="contact-map">
+                        <iframe
+                            class="map-iframe"
+                            src="https://www.google.com/maps/embed/v1/place?&amp;zoom=15&amp;q={{$property->latitude}},{{$property->longitude}}&amp;key={{env('GOOGLE_API_KEY')}}"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+                {{ Form::bsRadio('location_verified','No', ['id'=>'location_verification','list' => ['Yes', 'No'],'required' => true]) }}
+            @else
+                {{ Form::bsText('location', isset($property->location)?$property->location->name  : null, ['readonly' => 'readonly']) }}
+            @endif
+
         @else
             {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
             {{Form::hidden('purpose-error')}}

@@ -1,114 +1,67 @@
 (function ($) {
+    let map;
+    let service;
+    var infowindow;
+    var get_location;
+
+    let container = $('#property_map');
+
+    var latitude = container.data('lat');
+    var longitude = container.data('lng');
+
+    function initMap(value) {
+        map = '';
+        service = '';
+        _markers = [];
+        // let place;
+        // if (value === 'school') place = 'school college and university';
+        // else if (value === 'park') place = 'park';
+        // else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
+        // else if (value === 'restaurant') place = 'restaurant and cafe'
+        get_location = new google.maps.LatLng(latitude, longitude);
+        infowindow = new google.maps.InfoWindow();
+        map = new google.maps.Map(
+            document.getElementById(value), {center: get_location, zoom: 15});
+        var request = {
+            location: get_location,
+            radius: '500',
+            // query: place,
+        };
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, callback);
+
+        function callback(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < results.length; i++) {
+                    createMarker(results[i], value);
+                }
+                // const markerCluster = new MarkerClusterer(map, _markers,
+                //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            }
+        }
+    }
+
+    function createMarker(place, value) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            icon: {url: '../website/img/marker/' + value + '.png', scaledSize: new google.maps.Size(45, 45)},
+        });
+        _markers.push(marker);
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.setContent(place.name);
+            infowindow.open(map, this);
+        });
+    }
+
+
     var store_image_name = [];
     var store_image_name_order = [];
     let get_badge_value = 0;
 
-    // function getUserData(user) {
-    //     jQuery.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     jQuery.ajax({
-    //         type: 'get',
-    //         url: window.location.origin + '/user-info',
-    //         data: {user: user},
-    //         dataType: 'json',
-    //         success: function (data) {
-    //             let result = data.data
-    //             if (!jQuery.isEmptyObject({result})) {
-    //                 $('.select_contact_person_spinner').hide();
-    //                 $('.user-details-block').show();
-    //                 if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
-    //                 if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
-    //                 if (result.fax !== null) $('[name=fax]').val(result.fax);
-    //                 if (result.email !== null) $('[name=contact_email]').val(result.email);
-    //             }
-    //         },
-    //         error: function (xhr, status, error) {
-    //             // console.log(error);
-    //             // console.log(status);
-    //             // console.log(xhr);
-    //         },
-    //         complete: function (url, options) {
-    //         }
-    //     });
-    // }
 
     //this value is only used check the image count
     var imageCountOnError = 0;
-
-    // function getAgencyUsers(agency) {
-    //     jQuery.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     jQuery.ajax({
-    //         type: 'get',
-    //         url: window.location.origin + '/agency-users',
-    //         data: {agency: agency},
-    //         dataType: 'json',
-    //         success: function (data) {
-    //             // console.log(data);
-    //             let user_data = data.data
-    //             let agency_data = data.agency;
-    //             // console.log(user_data);
-    //             if (!jQuery.isEmptyObject({user_data})) {
-    //                 $('.agency-user-block').show();
-    //
-    //                 let add_select = $("#contact_person");
-    //                 add_select.empty();
-    //
-    //                 add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
-    //
-    //                 $.each(user_data, function (key, value) {
-    //                     add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
-    //                 });
-    //
-    //                 $('#contact_person_input').removeAttr('required').attr('disable', 'true');
-    //                 $('.contact_person_spinner').hide();
-    //                 $('.contact-person-block').hide();
-    //                 $('#contact_person').attr('required', 'required').attr('disable', 'false');
-    //             }
-    //             if (!jQuery.isEmptyObject({agency_data})) {
-    //                 let html = '' +
-    //                     '<div class="row">' +
-    //                     '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
-    //                     '   <div class="my-2"> Agency Information</div>' +
-    //                     '</div>' +
-    //                     '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
-    //                     '<div class="col-md-6 my-2">' +
-    //                     ' <strong>Title: </strong>' + agency_data['title'] +
-    //                     '</div>' +
-    //                     '<div class="col-md-6 my-2">' +
-    //                     '<strong>Address: </strong>' + agency_data['address'] +
-    //                     '</div>' +
-    //                     '<div class="col-md-6 my-2">' +
-    //                     '    <strong>City: </strong>' + data.agency_city +
-    //                     '</div>' +
-    //                     '   <div class="col-md-6 my-2">' +
-    //                     '      <strong>Phone: </strong>' + agency_data['phone'] +
-    //                     '</div>' +
-    //                     '   <div class="col-md-6 my-2">' +
-    //                     '      <strong>Cell: </strong>' + agency_data['cell'] +
-    //                     '</div>' +
-    //                     '</div>';
-    //
-    //                 $('.agency-block').show().html(html);
-    //
-    //             }
-    //         },
-    //         error: function (xhr, status, error) {
-    //             // console.log(error);
-    //             // console.log(status);
-    //             // console.log(xhr);
-    //         },
-    //         complete: function (url, options) {
-    //         }
-    //     });
-    // }
-
 
     function checkImagesCountLimit(count) {
         if (store_image_name.length + count + imageCountOnError > 60) {

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Dashboard\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
@@ -101,6 +102,18 @@ class LocationController extends Controller
             'name' => $request->input('location'),
         ]);
         return ['location_id' => $location->id, 'location_name' => $location->name];
+    }
+
+    public function activate_location($location)
+    {
+//        (new Location)->update(['id' => $location], [
+//            'is_active' => '1'
+//        ]);
+//        DB::table('locations')
+//            ->where('id', $location)
+//            ->update(['is_active' => '1']);
+        $location->is_active = '1';
+        $location->save();
     }
 
     /**

@@ -14,7 +14,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
-
+    <style>
+        .map-iframe {
+            border: 0;
+            height: inherit !important;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -57,4 +62,6 @@
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}"></script>
     <script src="{{asset('website/js/admin-portfolio.js')}}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
+
 @endsection
