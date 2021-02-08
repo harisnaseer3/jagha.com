@@ -80,11 +80,17 @@
 
         const selectedValue = $(this).val();
         if (selectedValue === 'Property') {
-            $('#property-div').slideDown().find('#property-id').attr('required', 'true');
-            $('#agency-div').slideUp().find('#agency-id').removeAttr('required');
-        } else {
-            $('#property-div').slideUp().find('#property-id').removeAttr('required');
-            $('#agency-div').slideDown().find('#agency-id').attr('required', 'true');
+            $('#property-div').slideDown();
+            $('#agency-div').slideUp();
+            $('#other-div').slideUp();
+        } else if (selectedValue === 'Agency') {
+            $('#property-div').slideUp();
+            $('#agency-div').slideDown();
+            $('#other-div').slideUp();
+        } else if (selectedValue === 'Other') {
+            $('#property-div').slideUp();
+            $('#agency-div').slideUp();
+            $('#other-div').slideDown();
         }
     });
 
@@ -112,11 +118,10 @@
                 minlength: 25,
                 maxlength: 1024
             },
-            'property-id': {
-                required: $('[name=inquire_type]').val() === 'Property'
-            },
-            'agency-id': {
-                required: $('[name=inquire_type]').val() === 'Agency'
+            'topic': {
+                required: function (element) {
+                    return $('[name=inquire_type]:checked').val() == 'Other';
+                }
             },
             'url': {
                 url: true

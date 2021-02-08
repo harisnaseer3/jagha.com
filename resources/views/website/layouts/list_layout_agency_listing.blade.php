@@ -38,7 +38,7 @@
                                                'slug'=>\Illuminate\Support\Str::slug($agency->title),
                                                'agency'=> $agency->id ,
                                                ])}}" class="agency-logo" title="{{$agency->title}}">
-                    <img src="{{ isset($agency->logo)? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
+                    <img src="{{ isset($agency->logo) && $agency->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
                          title="{{$agency->title}}" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                 </a>
             </div>

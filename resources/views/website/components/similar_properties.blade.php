@@ -50,7 +50,7 @@
                         <div class="mt-2 property-description">
                             <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->sub_type}} for {{$feature_property->purpose}}"
                                class="color-blue text-transform">
-                                {{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 25, $end='..')}}
+                                {{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 22, $end='..')}}
                             </a>
                         </div>
                     </div>

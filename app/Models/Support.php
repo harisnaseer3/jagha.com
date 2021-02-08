@@ -19,14 +19,13 @@ class Support extends Model
     public $table = 'supports';
 
     protected $fillable = [
-        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id'
+        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id','topic','ticket_id'
     ];
 
     public static $rules = [
         'message' => 'string|required|max:1024|min:25',
-        'inquire_type' => 'required|in:Property,Agency',
-        'property_id' => 'required_if:inquire_about,==,Property',
-        'agency_id' => 'required_if:inquire_about,==,Agency',
+        'inquire_type' => 'required|in:Property,Agency,Other',
+        'topic' => 'required_if:inquire_about,=,Other',
         'url' => 'nullable|url',
     ];
     public static function getSupportById($id){
@@ -36,6 +35,10 @@ class Support extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public static function getSupportByType($type){
+        return (new Support)->where('inquire_about',$type)->orderBy('id','DESC')->count();
+
     }
 
 
