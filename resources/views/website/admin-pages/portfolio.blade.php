@@ -18,6 +18,7 @@
         .map-iframe {
             border: 0;
             height: inherit !important;
+            width:100%
         }
     </style>
 @endsection

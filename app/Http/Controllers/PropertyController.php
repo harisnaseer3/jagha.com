@@ -481,8 +481,6 @@ class PropertyController extends Controller
         try {
 
             $json_features = '';
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-            $location = (new LocationController)->update($request, $city);
             if ($request->has('location_verified') && $request->input('location_verified') == 'Yes') {
                 (new LocationController)->activate_location($property->location);
             }
@@ -565,6 +563,9 @@ class PropertyController extends Controller
                 $property->save();
 //                comment out new property up event
 //                event(new NewPropertyActivatedEvent($property));
+                $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
                 //if property has images and status is going to live than add water mark on images
                 if (count($property->images) > 0) {
