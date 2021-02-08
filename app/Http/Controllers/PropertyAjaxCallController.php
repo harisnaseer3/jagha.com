@@ -135,10 +135,14 @@ class PropertyAjaxCallController extends Controller
 
     public function allAgencies(Request $request)
     {
-        if ($request->ajax() && $request->has('agency')) {
+        if ($request->ajax() && $request->has('property')) {
 
-            if (Property::where('id', $request->input('agency'))->exists()) {
-                return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->limit(10)->get()->toArray(), 'status' => 200]);
+            if (Property::where('id', $request->input('property'))->exists()) {
+
+                return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')->select('agencies.id', 'agencies.title',
+                    'agencies.address', 'agencies.cell', 'agencies.phone', 'cities.name AS city')
+                    ->join('cities', 'cities.id', '=', 'agencies.city_id')
+                    ->get()->toArray(), 'default_agency' => $request->input('id'), 'status' => 200]);
             }
 
             dd($request->input('agency'));

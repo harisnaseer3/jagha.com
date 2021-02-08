@@ -240,89 +240,64 @@
     {{--        </div>--}}
 
     {{--    @endif--}}
-    @if(isset($property->agency))
-        <div class="card-header theme-blue text-white">Property Advertisement Type</div>
-        <div class="card-body">
+    {{--    @if(isset($property->agency))--}}
+    <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+    <div class="card-body">
+        @if(isset($property->agency))
             {{ Form::bsRadio('advertisement', 'Agency', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
-        </div>
-
-        <div class="agency_category">
-            <div class="card-header theme-blue text-white">Agency Details</div>
-            <div class="card-body">
-                {{--            {{ Form::bsText('agency', isset($property->agency)? $property->agency->id : null, ['required' => true]) }}--}}
-                <div class="form-group row">
-                    <label for="agency" class="col-sm-4 col-md-3 col-lg-2  col-xl-2 col-form-label col-form-label-sm">
-                        {{ ucwords(str_replace('[]', '',str_replace('_', ' ', 'agency'))) }}
-
-                        @if(!empty($selectAttributes['required']))
-                            <span class="text-danger">*</span>
-                        @endif
-                    </label>
-
-                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                        <select class="custom-select custom-select-sm select2 select2-hidden-accessible"
-                                style="width: 100%; border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;" tabindex="-1" aria-hidden="true"
-                                aria-describedby="agency-error" aria-invalid="false" name="agency" data-select2-id="10" id="agency">
-                            <option disabled selected>Select Agency</option>
-                            @php $agency = \App\Models\Agency::getAgencyById($property->agency->id)   @endphp
-                            <option selected value="{{$property->agency->id}}">{{$property->agency->id}} - {{$agency->title}}</option>
-                            {{--                            @if(count($agencies) > 0)--}}
-                            {{--                                @foreach($agencies as $value)--}}
-                            {{--                                    <option value="{{$value['id']}}" {{$property->agency->id == $value['id'] ?'selected':'' }} data-address="{{$value['address']}}"--}}
-                            {{--                                            data-cell="{{$value['cell']}}" data-title="{{$value['title']}}">--}}
-                            {{--                                        {{$value['id']}} - {{$value['title']}}--}}
-                            {{--                                    </option>--}}
-                            {{--                                @endforeach--}}
-                            {{--                            @endif--}}
-                        </select>
-
-                        @error('agency')
-                        <small class="text-danger">{{ $message }}</small>
-                        @enderror
-
-                    </div>
-                </div>
-                <div class="agency-block">
-                    <div class="row">
-                        <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
-                            <div class="my-2"> Agency Information</div>
-                        </div>
-                        <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
-                            <div class="col-md-6 my-2">
-                                <strong>Title: </strong>{{$property->agency->title}}
-                            </div>
-
-                            <div class="col-md-6 my-2">
-                                <strong>Address: </strong> {{$property->agency->address}}
-                            </div>
-
-                            {{--                            <div class="col-md-6 my-2">--}}
-                            {{--                                <strong>City: </strong> {{$property->agency->city->name}}--}}
-                            {{--                            </div>--}}
-
-                            {{--                            <div class="col-md-6 my-2">--}}
-                            {{--                                <strong>Phone: </strong> {{$property->agency->phone}}--}}
-                            {{--                            </div>--}}
-
-                            <div class="col-md-6 my-2">
-                                <strong>Cell: </strong> {{$property->agency->cell}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @else
-        <div class="card-header theme-blue text-white">Property Advertisement Type</div>
-        <div class="card-body">
+        @else
             {{ Form::bsRadio('advertisement', old('advertisement')=='Agency'?'Agency':'Individual', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
-        </div>
-        <div class="selected-agency-detail" style="display: none">
-            <div class="card-header theme-blue text-white">Agency Details</div>
-        </div>
+        @endif
 
-    @endif
+    </div>
 
+    <div class="agency_category">
+        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-body">
+            @if(isset($property->agency))
+                {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
+                    ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
+                {{Form::hidden('agency',$property->agency->id)}}
+                <div class="agency-block">
+                    @if(isset($property->agency))
+                        <div class="row">
+                            <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
+                                <div class="my-2"> Agency Information</div>
+                            </div>
+                            <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
+                                <div class="col-md-6 my-2">
+                                    <strong>Title: </strong>{{$property->agency->title}}
+                                </div>
+
+                                <div class="col-md-6 my-2">
+                                    <strong>Address: </strong> {{$property->agency->address}}
+                                </div>
+
+                                <div class="col-md-6 my-2">
+                                    <strong>City: </strong> {{$property->agency->city->name}}
+                                </div>
+
+                                <div class="col-md-6 my-2">
+                                    <strong>Phone: </strong> {{$property->agency->phone}}
+                                </div>
+
+                                <div class="col-md-6 my-2">
+                                    <strong>Cell: </strong> {{$property->agency->cell}}
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endif
+            <div id="agency-loading">
+                Fetching Agencies <i class="fa fa-spinner fa-spin" style="font-size:20px;"></i>
+            </div>
+            <div id="agency-loaded" style="display: none">
+                <a style="background-color: #007bff; color: white;" class="btn-sm" data-toggle="modal" data-target="#agenciesModalCenter" id="agency-change">Select/Change Agency</a>
+            </div>
+
+        </div>
+    </div>
 
     <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
     <div class="card-body">
@@ -393,6 +368,47 @@
             </div>
             <!--Body-->
             <div class="modal-body" id="features-model"></div>
+        </div>
+    </div>
+</div>
+
+<!--Agencies modal-->
+
+<div class="modal fade" id="agenciesModalCenter" tabindex="-1" role="dialog" aria-labelledby="agenciesModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px">
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Select Agencies</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body" id="features-model">
+                <div class="card my-2">
+                    <div class="card-header theme-blue text-white">
+                        Select Agency
+                    </div>
+                    <div class="card-body">
+                        <table class="display" style="width: 100%" id="agencies-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>city</th>
+                                <th>Address</th>
+                                <th>Cell</th>
+                                <th>Phone</th>
+                                <th>Controls</th>
+                            </tr>
+                            </thead>
+                            <tbody id="agencies-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

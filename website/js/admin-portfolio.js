@@ -109,49 +109,6 @@
     //     });
     // }
 
-    function getAgencies(agency) {
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'get',
-            url: window.location.origin + '/get-admin-agencies',
-            data: {agency: agency},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                let agency_data = data.agency;
-                // console.log(user_data);
-                if (!jQuery.isEmptyObject({agency_data})) {
-                    // $('.agency-user-block').show();
-
-                    let add_select = $("#agency");
-                    add_select.empty();
-
-                    add_select.append($('<option>', {value: -1, text: "Select Agency", style: "color: #999"}));
-
-                    $.each(agency_data, function (key, value) {
-                        // add_select.append($('<option>', {value: value.id, text: value.id+"-"+ value.title, 'data-address': value.address}));
-                        add_select.append(
-                            ('<option value="' + value.id + '"' + ' data-address="' + value.address + '"' + ' data-title="' + value.title + '"' + ' data-cell="' + value.cell + '"' + ' >'
-                                + value.id + '-' + value.title + '</option>'));
-                    });
-
-
-                }
-
-            },
-            error: function (xhr, status, error) {
-                // console.log(error);
-                // console.log(status);
-                // console.log(xhr);
-            },
-            complete: function (url, options) {
-            }
-        });
-    }
 
     function checkImagesCountLimit(count) {
         if (store_image_name.length + count + imageCountOnError > 60) {
@@ -916,44 +873,244 @@
             // console.log($('input[name="advertisement"]:checked').val());
             if ($('input[name="advertisement"]:checked').val() === 'Agency') {
                 $('.agency_category').slideDown();
+                $('[name=agency]').val($('[name=property_agency]').attr('data-id'));
+
             } else {
                 $('.agency_category').slideUp();
-                agency.val('').trigger("change");
-                $('.agency-block').html('');
+                $('[name=agency]').val('');
+                // agency.val('').trigger("change");
+                // $('.agency-block').html('');
 
             }
         });
-        agency.on('select2:select', function (e) {
+        if ($('input[name="advertisement"]:checked').val() == 'Individual') {
+            $('.agency_category').slideUp();
+            $('[name=agency]').val('');
+        }
+        getAgencies($('[name=property_id]').val(), $('[name=agency]').val());
+    });
+    var checker_flag = false;
+    var check_id = 0;
 
-            // $('.contact_person_spinner').show();
-            let agency_id = $(this).val();
-            let agency_title = $(":selected", this).attr('data-title');
-            let agency_address = $(":selected", this).attr('data-address');
-            let agency_cell = $(":selected", this).attr('data-cell');
-            let html = '' +
-                '<div class="row">' +
-                '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
-                '   <div class="my-2"> Agency Information</div>' +
-                '</div>' +
-                '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
-                '<div class="col-md-6 my-2">' +
-                ' <strong>Title: </strong>' + agency_title +
-                '</div>' +
-                '<div class="col-md-6 my-2">' +
-                '<strong>Address: </strong>' + agency_address +
-                '</div>' +
-                '   <div class="col-md-6 my-2">' +
-                '      <strong>Cell: </strong>' + agency_cell +
-                '</div>' +
-                '</div>';
+    function datatable_btnpress() {
+        var $row = jQuery(this).closest('tr');
+        var $columns = $row.find('td');
 
-            $('.agency-block').show().html(html);
+        let agency_id = $columns[0].innerHTML;
+        let agency_title = $columns[1].innerHTML;
+        let agency_city = $columns[2].innerHTML;
+        let agency_address = $columns[3].innerHTML;
+        let agency_cell = $columns[4].innerHTML;
+        let agency_phone = $columns[5].innerHTML;
+
+        $('[name=property_agency]').val(agency_id + ' - ' + agency_title);
+        $('[name=agency]').val(agency_id);
+
+        let html = '' +
+            '<div class="row">' +
+            '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
+            '   <div class="my-2"> Agency Information</div>' +
+            '</div>' +
+            '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
+            '<div class="col-md-6 my-2">' +
+            ' <strong>Title: </strong>' + agency_title +
+            '</div>' +
+            '<div class="col-md-6 my-2">' +
+            '<strong>Address: </strong>' + agency_address +
+            '</div>' +
+            '<div class="col-md-6 my-2">' +
+            '<strong>City: </strong>' + agency_city +
+            '</div>' +
+            '   <div class="col-md-6 my-2">' +
+            '      <strong>Phone: </strong>' + agency_phone +
+            '</div>' +
+            '   <div class="col-md-6 my-2">' +
+            '      <strong>Cell: </strong>' + agency_cell +
+            '</div>' +
+            '</div>';
 
 
+        $('.agency-block').show().html(html);
+
+        let checker = $('.fa-check-circle');
+        //prevent more than 1 on same page of datatable
+        if (checker.length > 0) {
+            check_id = checker.attr('id');
+            checker.closest('td').html('<button class="btn btn-sm btn-primary select-agency">Select Agency</button>');
+        }
+        var column = $('#agencies-table').DataTable().column($row.attr('data-column'));
+
+        // if(check_id  != 0){
+        //     $('#agencies-table').DataTable().search(check_id ).draw();
+        // }
+        // $('#myInputTextField').keyup(function(){
+
+        // })
+
+        console.log(column);
+
+
+        jQuery(this).closest('td').html("<i class='fa-3x fas fa-check-circle' id=check-" + agency_id + " style = 'color: green'></i>");
+    }
+
+    $(document).on('click', '.select-agency', function (e) {
+
+        e.preventDefault();
+        var $row = jQuery(this).closest('tr');
+        var $columns = $row.find('td');
+
+        let agency_id = $columns[0].innerHTML;
+        let agency_title = $columns[1].innerHTML;
+        let agency_city = $columns[2].innerHTML;
+        let agency_address = $columns[3].innerHTML;
+        let agency_cell = $columns[4].innerHTML;
+        let agency_phone = $columns[5].innerHTML;
+
+        $('[name=property_agency]').val(agency_id + ' - ' + agency_title);
+        $('[name=agency]').val(agency_id);
+
+        let html = '' +
+            '<div class="row">' +
+            '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
+            '   <div class="my-2"> Agency Information</div>' +
+            '</div>' +
+            '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
+            '<div class="col-md-6 my-2">' +
+            ' <strong>Title: </strong>' + agency_title +
+            '</div>' +
+            '<div class="col-md-6 my-2">' +
+            '<strong>Address: </strong>' + agency_address +
+            '</div>' +
+            '<div class="col-md-6 my-2">' +
+            '<strong>City: </strong>' + agency_city +
+            '</div>' +
+            '   <div class="col-md-6 my-2">' +
+            '      <strong>Phone: </strong>' + agency_phone +
+            '</div>' +
+            '   <div class="col-md-6 my-2">' +
+            '      <strong>Cell: </strong>' + agency_cell +
+            '</div>' +
+            '</div>';
+
+
+        $('.agency-block').show().html(html);
+
+        // let checker = $('.fa-check-circle');
+        //prevent more than 1 on same page of datatable
+        // if (checker.length > 0) {
+        //     check_id = checker.attr('id');
+        //     checker.closest('td').html('<button class="btn btn-sm btn-primary select-agency">Select Agency</button>');
+        // }
+        // var column = $('#agencies-table').DataTable().column($row.attr('data-column'));
+        // var table = $('#agencies-table').DataTable();
+
+        // table
+        //     .column(6)
+        //     .data()
+        //     .each(function (value, index) {
+        //         if (value.indexOf(".fa-check-circle") > 0)
+        //             value = '<td><button class="btn btn-sm btn-primary select-agency">Select Agency</button></td>';
+        //         console.log(value);
+        // console.log('Data in index: ' + index + ' is: ' + value);
+        // });
+
+        // if(check_id  != 0){
+        //     $('#agencies-table').DataTable().search(check_id ).draw();
+        // }
+        // $('#myInputTextField').keyup(function(){
+
+        // })
+
+        // console.log(column);
+
+
+        // jQuery(this).closest('td').html("<i class='fa-3x fas fa-check-circle' id=check-" + agency_id + " style = 'color: green'></i>");
+        $('.fa-check-circle').hide();
+        $('.fa-check-circle').prev('button').show();
+        $(this).next('.fa-check-circle').show();
+        console.log($(this).closest('.fa-check-circle'));
+        $(this).hide();
+    });
+
+    function getAgencies(property, id) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
+        jQuery.ajax({
+            type: 'get',
+            url: window.location.origin + '/get-admin-agencies',
+            data: {property: property, id: id},
+            dataType: 'json',
+            success: function (data) {
+                let agency_data = data.agency;
+                let default_agency = data.default_agency;
+                if (!jQuery.isEmptyObject({agency_data})) {
+
+                    var data_table = [];
+                    $.each(agency_data, function (key, value) {
+                        if (value.cell !== null)
+                            value.cell = value.cell.replace(/-/g, '');
+                        if (value.phone !== null)
+                            value.phone = value.phone.replace(/-/g, '');
+                        if (value.id == data.default_agency)
+                            data_table.push([value.id, value.title, value.city, value.address, value.cell, value.phone,
+                                "<td><button class='btn btn-sm btn-primary select-agency' style='display:none'>Select Agency</button><i class='fa-3x fas fa-check-circle'  style = 'color: green;display:block'></i></td >"]);
+                        else
+                            data_table.push([value.id, value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
+                    });
+                    $('#agencies-table').DataTable({
+                        // dom: 'tp',
+                        data: data_table,
+                        deferRender: true,
+                        "scrollX": true,
+                        "ordering": false,
+                        responsive: true,
+                        // "drawCallback": function (settings) {
+                        // var api = this.api();
+
+                        // Output the data for the visible rows to the browser's console
+                        // $.each(api.rows({page: 'current'}).data(), function (idx, val) {
+                        //     console.log(val[6]);
+                        //
+                        // });
+                        // console.log(api.rows({page: 'current'}).data());
+                        // },
+                        // "initComplete": function () {
+                        //     var api = this.api();
+                        //     api.$('td').click( function () {
+                        //         console.log(this.innerHTML);
+                        //         api.search( this.innerHTML ).draw();
+                        //     } );
+                        // }
+                    });
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+            },
+            complete: function (url, options) {
+                $('#agency-loading').hide();
+                $('#agency-loaded').show();
+            }
+        });
+    }
 
 
-        getAgencies($('[name=property_id]').val());
+//    stop page to scroll on page model oopen
+
+    $(document).on('show.bs.modal', '#agenciesModalCenter', function (e) {
+        var $body = $(document.body);
+        var oldWidth = $body.innerWidth();
+        $body.css("overflow", "hidden");
+        $body.width(oldWidth);
+    });
+    $(document).on('hidden.bs.modal', '#agenciesModalCenter', function (e) {
+        var $body = $(document.body);
+        $body.css("overflow", "auto");
+        $body.width("auto");
     });
 })
 (jQuery);
