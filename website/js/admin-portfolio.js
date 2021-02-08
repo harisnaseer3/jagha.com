@@ -892,67 +892,6 @@
     var checker_flag = false;
     var check_id = 0;
 
-    function datatable_btnpress() {
-        var $row = jQuery(this).closest('tr');
-        var $columns = $row.find('td');
-
-        let agency_id = $columns[0].innerHTML;
-        let agency_title = $columns[1].innerHTML;
-        let agency_city = $columns[2].innerHTML;
-        let agency_address = $columns[3].innerHTML;
-        let agency_cell = $columns[4].innerHTML;
-        let agency_phone = $columns[5].innerHTML;
-
-        $('[name=property_agency]').val(agency_id + ' - ' + agency_title);
-        $('[name=agency]').val(agency_id);
-
-        let html = '' +
-            '<div class="row">' +
-            '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
-            '   <div class="my-2"> Agency Information</div>' +
-            '</div>' +
-            '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
-            '<div class="col-md-6 my-2">' +
-            ' <strong>Title: </strong>' + agency_title +
-            '</div>' +
-            '<div class="col-md-6 my-2">' +
-            '<strong>Address: </strong>' + agency_address +
-            '</div>' +
-            '<div class="col-md-6 my-2">' +
-            '<strong>City: </strong>' + agency_city +
-            '</div>' +
-            '   <div class="col-md-6 my-2">' +
-            '      <strong>Phone: </strong>' + agency_phone +
-            '</div>' +
-            '   <div class="col-md-6 my-2">' +
-            '      <strong>Cell: </strong>' + agency_cell +
-            '</div>' +
-            '</div>';
-
-
-        $('.agency-block').show().html(html);
-
-        let checker = $('.fa-check-circle');
-        //prevent more than 1 on same page of datatable
-        if (checker.length > 0) {
-            check_id = checker.attr('id');
-            checker.closest('td').html('<button class="btn btn-sm btn-primary select-agency">Select Agency</button>');
-        }
-        var column = $('#agencies-table').DataTable().column($row.attr('data-column'));
-
-        // if(check_id  != 0){
-        //     $('#agencies-table').DataTable().search(check_id ).draw();
-        // }
-        // $('#myInputTextField').keyup(function(){
-
-        // })
-
-        console.log(column);
-
-
-        jQuery(this).closest('td').html("<i class='fa-3x fas fa-check-circle' id=check-" + agency_id + " style = 'color: green'></i>");
-    }
-
     $(document).on('click', '.select-agency', function (e) {
 
         e.preventDefault();
@@ -1028,8 +967,8 @@
         $('.fa-check-circle').hide();
         $('.fa-check-circle').prev('button').show();
         $(this).next('.fa-check-circle').show();
-        console.log($(this).closest('.fa-check-circle'));
         $(this).hide();
+        $('#agenciesModalCenter').modal('hide');
     });
 
     function getAgencies(property, id) {
