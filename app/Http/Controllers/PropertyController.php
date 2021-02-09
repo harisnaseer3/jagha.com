@@ -623,8 +623,10 @@ class PropertyController extends Controller
                 Notification::send($user, new PropertyStatusChangeMail($property));
 
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+//                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
+//                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+
 
                 if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                     (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);

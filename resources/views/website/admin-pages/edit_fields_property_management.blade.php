@@ -269,10 +269,10 @@
     <div class="agency_category">
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            @if(isset($property->agency))
+{{--            @if(isset($property->agency))--}}
                 {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
                     ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
-                {{Form::hidden('agency',$property->agency->id)}}
+                {{Form::hidden('agency',isset($property->agency)?$property->agency->id:null)}}
                 <div class="agency-block">
                     @if(isset($property->agency))
                         <div class="row">
@@ -303,7 +303,7 @@
                         </div>
                     @endif
                 </div>
-            @endif
+{{--            @endif--}}
             <div id="agency-loading">
                 Fetching Agencies <i class="fa fa-spinner fa-spin" style="font-size:20px;"></i>
             </div>

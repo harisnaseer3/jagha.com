@@ -36,8 +36,9 @@ class PropertyAjaxCallController extends Controller
             $property->update(['status' => $request->status, 'activated_at' => null]);
 //            $property = (new Property)->WHERE('id', '=', $request->id)->first();
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+            $location = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
+//            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
 

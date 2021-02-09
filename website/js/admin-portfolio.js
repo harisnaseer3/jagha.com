@@ -823,21 +823,23 @@
 
         let agency = $('#agency');
         $(document).on('change', '[name=advertisement]', function () {
-            // console.log($('input[name="advertisement"]:checked').val());
             if ($('input[name="advertisement"]:checked').val() === 'Agency') {
                 $('.agency_category').slideDown();
+                $('[name=property_agency]').attr('required', true);
+
                 $('[name=agency]').val($('[name=property_agency]').attr('data-id'));
 
             } else {
                 $('.agency_category').slideUp();
+                $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
                 $('[name=agency]').val('');
-                // agency.val('').trigger("change");
-                // $('.agency-block').html('');
-
             }
         });
         if ($('input[name="advertisement"]:checked').val() == 'Individual') {
             $('.agency_category').slideUp();
+            $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
+
+
             $('[name=agency]').val('');
         }
         getAgencies($('[name=property_id]').val(), $('[name=agency]').val());
@@ -947,10 +949,10 @@
                         if (value.phone !== null)
                             value.phone = value.phone.replace(/-/g, '');
                         if (value.id == data.default_agency)
-                            data_table.push([value.id, value.title, value.city, value.address, value.cell, value.phone,
+                            data_table.push([value.id, value.id+" - "+value.title, value.city, value.address, value.cell, value.phone,
                                 "<td><button class='btn btn-sm btn-primary select-agency' style='display:none'>Select Agency</button><i class='fa-3x fas fa-check-circle'  style = 'color: green;display:block'></i></td >"]);
                         else
-                            data_table.push([value.id, value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
+                            data_table.push([value.id, value.id+" - "+value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
                     });
                     $('#agencies-table').DataTable({
                         // dom: 'tp',
@@ -992,15 +994,14 @@
 
 
 //    stop page to scroll on page model oopen
-
+    var $body = $(document.body);
     $(document).on('show.bs.modal', '#agenciesModalCenter', function (e) {
-        var $body = $(document.body);
+
         var oldWidth = $body.innerWidth();
         $body.css("overflow", "hidden");
         $body.width(oldWidth);
     });
     $(document).on('hidden.bs.modal', '#agenciesModalCenter', function (e) {
-        var $body = $(document.body);
         $body.css("overflow", "auto");
         $body.width("auto");
     });
