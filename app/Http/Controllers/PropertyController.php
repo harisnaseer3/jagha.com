@@ -136,6 +136,7 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
+
         if (!(new Visit)->hit()) {
             return view('website.errors.404');
         }
@@ -193,17 +194,24 @@ class PropertyController extends Controller
     {
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
-
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
-//        dd($request->all());
         try {
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
 
             $json_features = '';
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
-            $location = (new LocationController)->store($request, $city);
+            $location = '';
+            if ($request->has('location'))
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+            else if ($request->has('add_location')) {
+
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
+                if (!$location) {
+                    $location = (new LocationController)->store($request->input('add_location'), $city);
+                }
+            }
 
             $user_id = Auth::user()->getAuthIdentifier();
 
@@ -216,7 +224,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error', 'advertisement', 'add_location'
+                    'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -225,7 +233,7 @@ class PropertyController extends Controller
                 ];
             }
 
-            $address = $prepAddr = str_replace(' ', '+', $location['location_name'] . ',' . $city->name . ' Pakistan');
+            $address = $prepAddr = str_replace(' ', '+', $location->name . ',' . $city->name . ' Pakistan');
             $apiKey = config('app.google_map_api_key');
             $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
             $geo = json_decode($geo, true); // Convert the JSON to an array
@@ -257,11 +265,12 @@ class PropertyController extends Controller
                 }
             }
 
+
             $property = (new Property)->Create([
                 'reference' => $reference,
                 'user_id' => $user_id,
                 'city_id' => $city->id,
-                'location_id' => $location['location_id'],
+                'location_id' => $location->id,
                 'agency_id' => $agency != '' ? $agency : null,
                 'purpose' => $request->input('purpose'),
                 'sub_purpose' => $request->has('wanted_for') ? $request->input('wanted_for') : null,
@@ -307,8 +316,8 @@ class PropertyController extends Controller
             (new CountTableController)->_insert_in_status_purpose_table($property);
             // insertion in count tables when property status is active
             if ($request->has('status') && $request->input('status') === 'active') {
+                $property->activated_at = Carbon::now();
                 $dt = Carbon::now();
-                $property->activated_at = $dt;
 
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
@@ -325,7 +334,6 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
-//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -373,27 +381,28 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $city = $property->location->city->name;
-        $property->location = $property->location->name;
+//        $property->location = $property->location->name;
+
         $property->city = $city;
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
 
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
-
+        if (Auth::guard('admin')->user()) {
+            return view('website.admin-pages.portfolio',
+                [
+//                    'agencies' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->get()->toArray(),
+                    'property' => $property,
+                    'property_types' => $property_types,
+                    'counts' => $counts,
+                ]);
+        }
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
 
         $agencies_data = (new Agency)->select('title', 'id')
             ->whereIn('id', $agencies_ids)
             ->where('status', '=', 'verified')->get();
 
-        if (Auth::guard('admin')->user()) {
-            return view('website.admin-pages.portfolio',
-                [
-                    'property' => $property,
-                    'property_types' => $property_types,
-                    'counts' => $counts,
-                ]);
-        }
 
         $agencies = [];
         $users = [];
@@ -443,6 +452,10 @@ class PropertyController extends Controller
                 $property_user = User::where('id', '=', $property->user_id)->first();
                 $property_user->notify(new PropertyRejectionMail($property, $reason));
             }
+        } elseif ($request->has('location_verified') && $request->input('location_verified') == 'No' &&
+            $request->has('status') && $request->input('status') != 'rejected') {
+
+            return redirect()->back()->withInput()->with('error', 'Please verify the location or set status to Rejected and specify Rejection Reason as unverified location.');
         }
         $validator = Validator::make($request->all(), [
             'description' => 'required|min:50|max:6144',
@@ -466,9 +479,12 @@ class PropertyController extends Controller
         }
 //        dd($request->all());
         try {
+
             $json_features = '';
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-            $location = (new LocationController)->update($request, $city);
+            if ($request->has('location_verified') && $request->input('location_verified') == 'Yes') {
+                (new LocationController)->activate_location($property->location);
+            }
+
             if ($request->has('features')) {
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
                 $icon_value = $request->only($icon_inputs);
@@ -478,7 +494,7 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location'
+                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -547,6 +563,9 @@ class PropertyController extends Controller
                 $property->save();
 //                comment out new property up event
 //                event(new NewPropertyActivatedEvent($property));
+                $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
                 //if property has images and status is going to live than add water mark on images
                 if (count($property->images) > 0) {
@@ -579,6 +598,7 @@ class PropertyController extends Controller
                     'recent_properties' => $footer_content[0],
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
         } catch (Exception $e) {
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }
@@ -603,8 +623,10 @@ class PropertyController extends Controller
                 Notification::send($user, new PropertyStatusChangeMail($property));
 
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+//                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
+//                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+
 
                 if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                     (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);

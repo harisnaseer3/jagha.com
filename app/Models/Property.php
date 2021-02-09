@@ -87,7 +87,9 @@ class Property extends Model
     ];
     public static $rules = [
         'city' => 'required',
-        'location' => 'required',
+//        'location' => 'required',
+        'add_location' => 'nullable|string',
+        'location' => 'required_if:add_location,==,""|string',
         'purpose' => 'required|in:Sale,Rent,Wanted',
         'property_type' => 'required|in:Homes,Plots,Commercial',
         'property_subtype-*' => 'required',

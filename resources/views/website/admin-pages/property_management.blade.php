@@ -6,7 +6,7 @@
     {{ Form::open(['route' => 'properties.store', 'method' => 'post', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
 @endif
 
-@include('website.admin-pages.fields_property_management')
+@include('website.admin-pages.edit_fields_property_management')
 
 {{ Form::close() }}
 

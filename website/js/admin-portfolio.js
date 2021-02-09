@@ -1,114 +1,67 @@
 (function ($) {
+    let map;
+    let service;
+    var infowindow;
+    var get_location;
+
+    let container = $('#property_map');
+
+    var latitude = container.data('lat');
+    var longitude = container.data('lng');
+
+    function initMap(value) {
+        map = '';
+        service = '';
+        _markers = [];
+        // let place;
+        // if (value === 'school') place = 'school college and university';
+        // else if (value === 'park') place = 'park';
+        // else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
+        // else if (value === 'restaurant') place = 'restaurant and cafe'
+        get_location = new google.maps.LatLng(latitude, longitude);
+        infowindow = new google.maps.InfoWindow();
+        map = new google.maps.Map(
+            document.getElementById(value), {center: get_location, zoom: 15});
+        var request = {
+            location: get_location,
+            radius: '500',
+            // query: place,
+        };
+        service = new google.maps.places.PlacesService(map);
+        service.textSearch(request, callback);
+
+        function callback(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < results.length; i++) {
+                    createMarker(results[i], value);
+                }
+                // const markerCluster = new MarkerClusterer(map, _markers,
+                //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            }
+        }
+    }
+
+    function createMarker(place, value) {
+        var marker = new google.maps.Marker({
+            map: map,
+            position: place.geometry.location,
+            icon: {url: '../website/img/marker/' + value + '.png', scaledSize: new google.maps.Size(45, 45)},
+        });
+        _markers.push(marker);
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.setContent(place.name);
+            infowindow.open(map, this);
+        });
+    }
+
+
     var store_image_name = [];
     var store_image_name_order = [];
     let get_badge_value = 0;
 
-    function getUserData(user) {
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'get',
-            url: window.location.origin + '/user-info',
-            data: {user: user},
-            dataType: 'json',
-            success: function (data) {
-                let result = data.data
-                if (!jQuery.isEmptyObject({result})) {
-                    $('.select_contact_person_spinner').hide();
-                    $('.user-details-block').show();
-                    if (result.phone !== null) $('[name="phone_#"]').val(result.phone);
-                    if (result.cell !== null) $('[name="mobile_#"]').val(result.cell);
-                    if (result.fax !== null) $('[name=fax]').val(result.fax);
-                    if (result.email !== null) $('[name=contact_email]').val(result.email);
-                }
-            },
-            error: function (xhr, status, error) {
-                // console.log(error);
-                // console.log(status);
-                // console.log(xhr);
-            },
-            complete: function (url, options) {
-            }
-        });
-    }
 
     //this value is only used check the image count
     var imageCountOnError = 0;
-
-    function getAgencyUsers(agency) {
-        jQuery.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        jQuery.ajax({
-            type: 'get',
-            url: window.location.origin + '/agency-users',
-            data: {agency: agency},
-            dataType: 'json',
-            success: function (data) {
-                // console.log(data);
-                let user_data = data.data
-                let agency_data = data.agency;
-                // console.log(user_data);
-                if (!jQuery.isEmptyObject({user_data})) {
-                    $('.agency-user-block').show();
-
-                    let add_select = $("#contact_person");
-                    add_select.empty();
-
-                    add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
-
-                    $.each(user_data, function (key, value) {
-                        add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
-                    });
-
-                    $('#contact_person_input').removeAttr('required').attr('disable', 'true');
-                    $('.contact_person_spinner').hide();
-                    $('.contact-person-block').hide();
-                    $('#contact_person').attr('required', 'required').attr('disable', 'false');
-                }
-                if (!jQuery.isEmptyObject({agency_data})) {
-                    let html = '' +
-                        '<div class="row">' +
-                        '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
-                        '   <div class="my-2"> Agency Information</div>' +
-                        '</div>' +
-                        '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
-                        '<div class="col-md-6 my-2">' +
-                        ' <strong>Title: </strong>' + agency_data['title'] +
-                        '</div>' +
-                        '<div class="col-md-6 my-2">' +
-                        '<strong>Address: </strong>' + agency_data['address'] +
-                        '</div>' +
-                        '<div class="col-md-6 my-2">' +
-                        '    <strong>City: </strong>' + data.agency_city +
-                        '</div>' +
-                        '   <div class="col-md-6 my-2">' +
-                        '      <strong>Phone: </strong>' + agency_data['phone'] +
-                        '</div>' +
-                        '   <div class="col-md-6 my-2">' +
-                        '      <strong>Cell: </strong>' + agency_data['cell'] +
-                        '</div>' +
-                        '</div>';
-
-                    $('.agency-block').show().html(html);
-
-                }
-            },
-            error: function (xhr, status, error) {
-                // console.log(error);
-                // console.log(status);
-                // console.log(xhr);
-            },
-            complete: function (url, options) {
-            }
-        });
-    }
-
 
     function checkImagesCountLimit(count) {
         if (store_image_name.length + count + imageCountOnError > 60) {
@@ -643,7 +596,6 @@
             getCityLocations(city);
         });
 
-        let agency = $('#agency');
 
         $('#add_city').on('select2:select', function (e) {
             let city = $('#add_city').val();
@@ -658,16 +610,16 @@
         //     getCityLocations(city);
         // }
 
-        agency.on('select2:select', function (e) {
-            $('.agency-user-block').hide();
-            $('.user-details-block').hide();
-            $('.contact-person-block').hide();
-            $('.contact_person_spinner').show();
-            let agency_val = $(this).val();
-            if (agency_val !== '' && agency_val !== null) {
-                getAgencyUsers(agency_val);
-            }
-        });
+        // agency.on('select2:select', function (e) {
+        //     $('.agency-user-block').hide();
+        //     $('.user-details-block').hide();
+        //     $('.contact-person-block').hide();
+        //     $('.contact_person_spinner').show();
+        //     let agency_val = $(this).val();
+        //     if (agency_val !== '' && agency_val !== null) {
+        //         getAgencyUsers(agency_val);
+        //     }
+        // });
 
         // $('#reset-agency').on('click', function (e) {
         //     e.preventDefault();
@@ -687,19 +639,19 @@
         //     $('.agency-block').hide();
         // });
 
-        $('#contact_person').on('change', function (e) {
-            $('input[name=contact_person]').val($(this).find(':selected').data('name'));
-            let user = $(this).val();
-            if (user !== '' && user !== '-1') {
-                $('.select_contact_person_spinner').show();
-                getUserData(user);
-            } else {
-                $('[name=phone]').val('');
-                $('[name=mobile]').val('');
-                $('[name=fax]').val('');
-                $('[name=contact_email]').val('');
-            }
-        });
+        // $('#contact_person').on('change', function (e) {
+        //     $('input[name=contact_person]').val($(this).find(':selected').data('name'));
+        //     let user = $(this).val();
+        //     if (user !== '' && user !== '-1') {
+        //         $('.select_contact_person_spinner').show();
+        //         getUserData(user);
+        //     } else {
+        //         $('[name=phone]').val('');
+        //         $('[name=mobile]').val('');
+        //         $('[name=fax]').val('');
+        //         $('[name=contact_email]').val('');
+        //     }
+        // });
 
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
@@ -868,5 +820,190 @@
             $('.property-media-block').hide();
         else
             $('.property-media-block').show();
+
+        let agency = $('#agency');
+        $(document).on('change', '[name=advertisement]', function () {
+            if ($('input[name="advertisement"]:checked').val() === 'Agency') {
+                $('.agency_category').slideDown();
+                $('[name=property_agency]').attr('required', true);
+
+                $('[name=agency]').val($('[name=property_agency]').attr('data-id'));
+
+            } else {
+                $('.agency_category').slideUp();
+                $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
+                $('[name=agency]').val('');
+            }
+        });
+        if ($('input[name="advertisement"]:checked').val() == 'Individual') {
+            $('.agency_category').slideUp();
+            $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
+
+
+            $('[name=agency]').val('');
+        }
+        getAgencies($('[name=property_id]').val(), $('[name=agency]').val());
     });
-})(jQuery);
+    var checker_flag = false;
+    var check_id = 0;
+
+    $(document).on('click', '.select-agency', function (e) {
+
+        e.preventDefault();
+        var $row = jQuery(this).closest('tr');
+        var $columns = $row.find('td');
+
+        let agency_id = $columns[0].innerHTML;
+        let agency_title = $columns[1].innerHTML;
+        let agency_city = $columns[2].innerHTML;
+        let agency_address = $columns[3].innerHTML;
+        let agency_cell = $columns[4].innerHTML;
+        let agency_phone = $columns[5].innerHTML;
+
+        $('[name=property_agency]').val(agency_id + ' - ' + agency_title);
+        $('[name=agency]').val(agency_id);
+
+        let html = '' +
+            '<div class="row">' +
+            '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
+            '   <div class="my-2"> Agency Information</div>' +
+            '</div>' +
+            '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
+            '<div class="col-md-6 my-2">' +
+            ' <strong>Title: </strong>' + agency_title +
+            '</div>' +
+            '<div class="col-md-6 my-2">' +
+            '<strong>Address: </strong>' + agency_address +
+            '</div>' +
+            '<div class="col-md-6 my-2">' +
+            '<strong>City: </strong>' + agency_city +
+            '</div>' +
+            '   <div class="col-md-6 my-2">' +
+            '      <strong>Phone: </strong>' + agency_phone +
+            '</div>' +
+            '   <div class="col-md-6 my-2">' +
+            '      <strong>Cell: </strong>' + agency_cell +
+            '</div>' +
+            '</div>';
+
+
+        $('.agency-block').show().html(html);
+
+        // let checker = $('.fa-check-circle');
+        //prevent more than 1 on same page of datatable
+        // if (checker.length > 0) {
+        //     check_id = checker.attr('id');
+        //     checker.closest('td').html('<button class="btn btn-sm btn-primary select-agency">Select Agency</button>');
+        // }
+        // var column = $('#agencies-table').DataTable().column($row.attr('data-column'));
+        // var table = $('#agencies-table').DataTable();
+
+        // table
+        //     .column(6)
+        //     .data()
+        //     .each(function (value, index) {
+        //         if (value.indexOf(".fa-check-circle") > 0)
+        //             value = '<td><button class="btn btn-sm btn-primary select-agency">Select Agency</button></td>';
+        //         console.log(value);
+        // console.log('Data in index: ' + index + ' is: ' + value);
+        // });
+
+        // if(check_id  != 0){
+        //     $('#agencies-table').DataTable().search(check_id ).draw();
+        // }
+        // $('#myInputTextField').keyup(function(){
+
+        // })
+
+        // console.log(column);
+
+
+        // jQuery(this).closest('td').html("<i class='fa-3x fas fa-check-circle' id=check-" + agency_id + " style = 'color: green'></i>");
+        $('.fa-check-circle').hide();
+        $('.fa-check-circle').prev('button').show();
+        $(this).next('.fa-check-circle').show();
+        $(this).hide();
+        $('#agenciesModalCenter').modal('hide');
+    });
+
+    function getAgencies(property, id) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: window.location.origin + '/get-admin-agencies',
+            data: {property: property, id: id},
+            dataType: 'json',
+            success: function (data) {
+                let agency_data = data.agency;
+                let default_agency = data.default_agency;
+                if (!jQuery.isEmptyObject({agency_data})) {
+
+                    var data_table = [];
+                    $.each(agency_data, function (key, value) {
+                        if (value.cell !== null)
+                            value.cell = value.cell.replace(/-/g, '');
+                        if (value.phone !== null)
+                            value.phone = value.phone.replace(/-/g, '');
+                        if (value.id == data.default_agency)
+                            data_table.push([value.id, value.id+" - "+value.title, value.city, value.address, value.cell, value.phone,
+                                "<td><button class='btn btn-sm btn-primary select-agency' style='display:none'>Select Agency</button><i class='fa-3x fas fa-check-circle'  style = 'color: green;display:block'></i></td >"]);
+                        else
+                            data_table.push([value.id, value.id+" - "+value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
+                    });
+                    $('#agencies-table').DataTable({
+                        // dom: 'tp',
+                        data: data_table,
+                        deferRender: true,
+                        "scrollX": true,
+                        "ordering": false,
+                        responsive: true,
+                        // "drawCallback": function (settings) {
+                        // var api = this.api();
+
+                        // Output the data for the visible rows to the browser's console
+                        // $.each(api.rows({page: 'current'}).data(), function (idx, val) {
+                        //     console.log(val[6]);
+                        //
+                        // });
+                        // console.log(api.rows({page: 'current'}).data());
+                        // },
+                        // "initComplete": function () {
+                        //     var api = this.api();
+                        //     api.$('td').click( function () {
+                        //         console.log(this.innerHTML);
+                        //         api.search( this.innerHTML ).draw();
+                        //     } );
+                        // }
+                    });
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+            },
+            complete: function (url, options) {
+                $('#agency-loading').hide();
+                $('#agency-loaded').show();
+            }
+        });
+    }
+
+
+//    stop page to scroll on page model oopen
+    var $body = $(document.body);
+    $(document).on('show.bs.modal', '#agenciesModalCenter', function (e) {
+
+        var oldWidth = $body.innerWidth();
+        $body.css("overflow", "hidden");
+        $body.width(oldWidth);
+    });
+    $(document).on('hidden.bs.modal', '#agenciesModalCenter', function (e) {
+        $body.css("overflow", "auto");
+        $body.width("auto");
+    });
+})
+(jQuery);

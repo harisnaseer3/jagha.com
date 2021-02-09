@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
@@ -35,8 +36,9 @@ class PropertyAjaxCallController extends Controller
             $property->update(['status' => $request->status, 'activated_at' => null]);
 //            $property = (new Property)->WHERE('id', '=', $request->id)->first();
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-            $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+            $location = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
+//            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
+
             $user = User::where('id', '=', $property->user_id)->first();
             $user->notify(new PropertyStatusChange($property));
 
@@ -129,6 +131,25 @@ class PropertyAjaxCallController extends Controller
             }
         } else
             return redirect()->back()->withInput()->with('error', 'Please Enter Valid Property ID.');
+    }
+
+
+    public function allAgencies(Request $request)
+    {
+        if ($request->ajax() && $request->has('property')) {
+
+            if (Property::where('id', $request->input('property'))->exists()) {
+
+                return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')->select('agencies.id', 'agencies.title',
+                    'agencies.address', 'agencies.cell', 'agencies.phone', 'cities.name AS city')
+                    ->join('cities', 'cities.id', '=', 'agencies.city_id')
+                    ->get()->toArray(), 'default_agency' => $request->input('id'), 'status' => 200]);
+            }
+
+            dd($request->input('agency'));
+        } else
+            return 'not found';
+
     }
 
 

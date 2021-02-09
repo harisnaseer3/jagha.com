@@ -247,7 +247,7 @@
                                         <div class="features-list">
                                             <div class="row amenities custom-amenities">
                                                 @foreach(json_decode($property->features,true)['features'] as $key => $value)
-                                                    @if(!(in_array($value, ['0',  'null', 'no', 'None', null])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
+                                                    @if(!(in_array($value, ['0',  'null', 'no', 'None', null,'undefined'])) && !(in_array($key, ['data-index',  '_method', 'call_for_price_inquiry',  'property_id', 'agency','property_reference','property_subtype_Homes','property_subtype_Plots','property_subtype_Commercial','phone_#','mobile_#'])))
 
                                                         <div class="col-sm-4 my-2 py-2 icon-list">
                                                             @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
