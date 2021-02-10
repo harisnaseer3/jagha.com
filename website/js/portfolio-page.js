@@ -856,6 +856,7 @@
         });
         $('#add_location').on('change.select2', function (e) {
             $('input[name="location-error"]').val($(this).val());
+            $('#other_location').val('');
         });
 
         if ($('input[name="purpose-error"]').val() === '') {
@@ -905,6 +906,14 @@
 
         });
         $('#agency option:first-child').prop('disabled', false);
+        let loc = $('#add_location');
+        let new_loc = $('#other_location');
+        new_loc.on('change', function () {
+            console.log('jj');
+            loc.val('').trigger('change');
+        });
+
+
     });
 })
 (jQuery);

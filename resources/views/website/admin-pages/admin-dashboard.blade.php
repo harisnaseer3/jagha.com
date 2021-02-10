@@ -21,53 +21,6 @@
                     <div class="tab-content" id="ListingsTabContent">
                         <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <div class="m-4">
-
-                                {{--                        <div class="row">--}}
-                                {{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
-                                {{--                                <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
-                                {{--                                    <div class="info-box">--}}
-                                {{--                                        <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>--}}
-                                {{--                                        <div class="info-box-content">--}}
-                                {{--                                            <span class="info-box-text"> Active Properties</span>--}}
-                                {{--                                            <span class="info-box-number"></span>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </a>--}}
-                                {{--                            </div>--}}
-                                {{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
-                                {{--                                <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
-                                {{--                                    <div class="info-box">--}}
-                                {{--                                        <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>--}}
-                                {{--                                        <div class="info-box-content">--}}
-                                {{--                                            <span class="info-box-text"> Pending Properties</span>--}}
-                                {{--                                            <span class="info-box-number"></span>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </a>--}}
-                                {{--                            </div>--}}
-                                {{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
-                                {{--                                <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
-                                {{--                                    <div class="info-box">--}}
-                                {{--                                        <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>--}}
-                                {{--                                        <div class="info-box-content">--}}
-                                {{--                                            <span class="info-box-text"> Deleted Properties</span>--}}
-                                {{--                                            <span class="info-box-number"></span>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </a>--}}
-                                {{--                            </div>--}}
-                                {{--                            <div class="col-sm-6 col-md-6 col-lg-3">--}}
-                                {{--                                <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','asc','1'])}}">--}}
-                                {{--                                    <div class="info-box">--}}
-                                {{--                                        <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>--}}
-                                {{--                                        <div class="info-box-content">--}}
-                                {{--                                            <span class="info-box-text"> Total Agencies</span>--}}
-                                {{--                                            <span class="info-box-number"></span>--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </a>--}}
-                                {{--                            </div>--}}
-                                {{--                        </div>--}}
                                 <div class="row">
                                     <div class="col-lg-2 col-md-4 col-sm-6">
                                         <div class="team-1">
@@ -266,7 +219,7 @@
                                                                         <td>{{$visit->id}}</td>
                                                                         <td>{{$visit->ip}}</td>
                                                                         <td>{{$visit->ip_location}}</td>
-                                                                        <td>{{$visit->date}}, {{ (new \Illuminate\Support\Carbon($visit->visit_time))->isoFormat('h:mm a') }}</td>
+                                                                        <td>{{$visit->date}}, {{ (new \Illuminate\Support\Carbon($visit->visit_time))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
                                                                         <td>{{$visit->count}}</td>
                                                                     </tr>
                                                                 @endforeach

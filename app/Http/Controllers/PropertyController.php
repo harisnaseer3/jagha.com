@@ -590,13 +590,14 @@ class PropertyController extends Controller
 
             if (Auth::guard('admin')->user()) {
                 (new PropertyLogController())->store($property);
-                return redirect()->route('admin.properties.listings', [$property->status, 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])->with('success', 'Property updated successfully');
+                return redirect()->route('admin.properties.listings', [$property->status, 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])
+                    ->with('success', 'Property with ID ' . $property->id . ' updated successfully.');
             }
 
             return redirect()->route('properties.listings',
                 ['pending', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
                     'recent_properties' => $footer_content[0],
-                    'footer_agencies' => $footer_content[1]])->with('success', 'Property updated successfully');
+                    'footer_agencies' => $footer_content[1]])->with('success', 'Property with ID ' . $property->id . ' updated successfully.');
         } catch (Exception $e) {
 //            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');

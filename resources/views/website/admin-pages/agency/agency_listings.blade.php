@@ -193,7 +193,7 @@
                                                                                                    ])}}"
                                                                                    class="btn btn-sm btn-primary mb-1"
                                                                                    data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="view">
+                                                                                   data-placement="bottom" title="View Agency Properties">
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                                 </a>
                                                                                 <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
@@ -204,7 +204,7 @@
                                                                                 </a>
                                                                                 <a type="button" class="btn btn-sm btn-danger mb-1"
                                                                                    data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="delete"
+                                                                                   data-placement="bottom" title="Delete Agency"
                                                                                    data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
                                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                                 </a>
@@ -218,7 +218,7 @@
                                                                                 </a>
                                                                                 <a type="button" class="btn btn-sm btn-danger mb-1"
                                                                                    data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="delete"
+                                                                                   data-placement="bottom" title="Delete Agency"
                                                                                    data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
                                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                                 </a>
@@ -325,7 +325,7 @@
                                                                                                    ])}}"
                                                                                class="btn btn-sm btn-primary mb-1"
                                                                                data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="view">
+                                                                               data-placement="bottom" title="View Agency Properties">
                                                                                 <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                             </a>
                                                                             <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}"
@@ -453,7 +453,7 @@
                                                                                                    ])}}"
                                                                                class="btn btn-sm btn-primary mb-1"
                                                                                data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="view">
+                                                                               data-placement="bottom" title="View Agency Properties">
                                                                                 <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                             </a>
                                                                             <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}"
@@ -462,7 +462,8 @@
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
-                                                                            <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                            <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
+                                                                               data-placement="bottom" title="Delete Agency"
                                                                                data-toggle="modal" data-target="#delete"
                                                                                data-record-id="{{$featured_listing->id}}">
                                                                                 <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>

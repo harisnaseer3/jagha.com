@@ -757,6 +757,7 @@
         });
         $('#add_location').on('change.select2', function (e) {
             $('input[name="location-error"]').val($(this).val());
+            $('#other_location').val('');
         });
 
         if ($('input[name="purpose-error"]').val() === '') {
@@ -1029,6 +1030,12 @@
             $('.property-media-block').hide();
         else
             $('.property-media-block').show();
+        let new_loc = $('#other_location');
+
+        new_loc.on('click', function () {
+            $('#add_location').val('').trigger('change');
+
+        });
 
 
     });

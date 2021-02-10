@@ -134,8 +134,12 @@
                             '   </div>';
                     });
                     html += '</div>' +
+                        '<div class="row"><div class="col-sm-6">' +
                         '<a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; margin-top: 10px; color: white"' +
-                        ' data-dismiss="modal" id="area-unit-save">SAVE</a>';
+                        ' data-dismiss="modal" id="area-unit-save">Save</a>'
+                        + '</div><div class="col-sm-6">' +
+                        '<a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: red; margin-top: 10px; color: white"' +
+                        ' data-dismiss="modal" id="area-unit-save">Cancel</a>' + '</div></div>';
 
                     $('#features-model').html(html);
                     $('.read-features').show();
@@ -195,8 +199,12 @@
 
         });
         html += '</div>' +
+            '<div class="row"><div class="col-sm-6">' +
             '<a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: #274abb; margin-top: 10px; color: white"' +
-            ' data-dismiss="modal" id="area-unit-save">SAVE</a>';
+            ' data-dismiss="modal" id="area-unit-save">Save</a>'
+            + '</div><div class="col-sm-6">' +
+            '<a href="javascript:void(0)" type="button" class="btn d-block" style="background-color: red; margin-top: 10px; color: white"' +
+            ' data-dismiss="modal" id="area-unit-save">Cancel</a>' + '</div></div>';
 
         $('#features-model').html(html);
     }
