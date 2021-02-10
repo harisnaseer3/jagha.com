@@ -25,7 +25,7 @@
                                     <div class="col-sm-6 col-md-6 col-lg-3">
                                         <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
-                                                <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
+                                                <span class="info-box-icon bg-success"><i class="fas fa-city  color-white"></i></span>
                                                 <div class="info-box-content">
                                                     <span class="info-box-text"> Active Properties</span>
                                                     <span class="info-box-number">{{$active_properties}}</span>
@@ -36,7 +36,7 @@
                                     <div class="col-sm-6 col-md-6 col-lg-3">
                                         <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
-                                                <span class="info-box-icon bg-warning"><i class="fas fa-home"></i></span>
+                                                <span class="info-box-icon bg-warning"><i class="fas fa-city color-white"></i></span>
                                                 <div class="info-box-content">
                                                     <span class="info-box-text"> Pending Properties</span>
                                                     <span class="info-box-number">{{$pending_properties}}</span>
@@ -47,7 +47,7 @@
                                     <div class="col-sm-6 col-md-6 col-lg-3">
                                         <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
-                                                <span class="info-box-icon bg-danger"><i class="fas fa-home"></i></span>
+                                                <span class="info-box-icon bg-danger"><i class="fas fa-city color-white"></i></span>
                                                 <div class="info-box-content">
                                                     <span class="info-box-text"> Deleted Properties</span>
                                                     <span class="info-box-number">{{$deleted_properties}}</span>
@@ -58,7 +58,7 @@
                                     <div class="col-sm-6 col-md-6 col-lg-3">
                                         <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
-                                                <span class="info-box-icon bg-info"><i class="fas fa-home"></i></span>
+                                                <span class="info-box-icon bg-info"><i class="fas fa-users"></i></span>
                                                 <div class="info-box-content">
                                                     <span class="info-box-text">Verified Agencies & Memberships</span>
                                                     <span class="info-box-number">{{$agencies}}</span>
@@ -150,22 +150,22 @@
                                                                 <td>{{$property->views}}</td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                 <td>
-                                                                    <a type="button"  href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
+                                                                    <a type="button" href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
                                                                        class="btn btn-sm btn-primary mb-1
                                                                            {{$property->status === 'active' ? '':'anchor-disable'}}"
                                                                        data-toggle-1="tooltip"
                                                                        target="_blank"
-                                                                       data-placement="bottom" title="view">
+                                                                       data-placement="bottom" title="View Property">
                                                                         <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                     </a>
                                                                     <a type="button" href="{{route('properties.edit', $property->id)}}"
                                                                        class="btn btn-sm btn-warning mb-1"
                                                                        data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="edit">
+                                                                       data-placement="bottom" title="Edit Property">
                                                                         <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                     </a>
                                                                     <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="delete"
+                                                                       data-placement="bottom" title="Delete Property"
                                                                        data-toggle="modal" data-target="#delete"
                                                                        data-record-id="{{$property->id}}">
                                                                         <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>

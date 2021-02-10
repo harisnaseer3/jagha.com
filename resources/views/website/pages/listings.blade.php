@@ -145,11 +145,13 @@
                                                                         {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
                                                                         @if($params['status'] == 'active')
                                                                             <td>
+                                                                                <div>
                                                                                 {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
-                                                                                <br>
-                                                                                Expires
-                                                                                in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
-                                                                                days
+                                                                                </div>
+                                                                                <div class="badge badge-success p-2">
+                                                                                    <strong class="color-white font-12"> Expires in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
+                                                                                    days  </strong>
+                                                                               </div>
                                                                             </td>
                                                                         @endif
 
@@ -177,7 +179,8 @@
                                                                                                    {{$all_listing->status === 'sold'? 'checked':'' }}
                                                                                                    data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
                                                                                             <label for="expired">Expired</label>
-                                                                                        @if($params['status'] != 'sold' && $all_listing->purpose != 'wanted' )
+
+                                                                                        @if($params['status'] != 'sold' && $all_listing->purpose != 'Wanted' )
                                                                                             <input type="radio" name="status" value="sold" class="mb-1"
                                                                                                    data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
                                                                                             <label for="sold">Sold</label>
@@ -193,7 +196,7 @@
                                                                                 <a type="button" target="_blank" href="{{$all_listing->property_detail_path()}}"
                                                                                    class="btn btn-sm btn-primary mb-1"
                                                                                    data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="view">
+                                                                                   data-placement="bottom" title="View Property">
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                                 </a>
                                                                             @endif
@@ -201,7 +204,7 @@
                                                                                 <a type="button"
                                                                                    class="btn btn-sm btn-success color-black restore-btn mb-1"
                                                                                    data-toggle-1="tooltip" data-placement="bottom"
-                                                                                   title="restore"
+                                                                                   title="Restore Property"
                                                                                    href="javascript:void(0)"
                                                                                    data-record-id="{{$all_listing->id}}">
                                                                                     <i class="fas fa-redo-alt"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
@@ -214,11 +217,11 @@
                                                                                    class="btn btn-sm btn-warning mb-1
                                                                                     {{$params['status'] == 'deleted' ? 'anchor-disable':'' }}"
                                                                                    data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="edit">
+                                                                                   data-placement="bottom" title="Edit Property">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                 </a>
                                                                                 <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="delete"
+                                                                                   data-placement="bottom" title="Delete Property"
                                                                                    data-toggle="modal" data-target="#delete"
                                                                                    data-record-id="{{$all_listing->id}}">
                                                                                     <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
