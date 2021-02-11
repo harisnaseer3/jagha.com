@@ -86,7 +86,7 @@
                             add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
                         });
 
-                        $('#contact_person option:first-child').prop('disabled', false);
+
                     }
 
                 },
@@ -548,7 +548,7 @@
                 });
             }
 
-            $('select option:first-child').prop('disabled', true);
+
 
             function priceInWords() {
 
@@ -929,6 +929,7 @@
 
                     $('[name=agency]').val($('[name=property_agency]').attr('data-id'));
                     $('#user-agency-block').slideDown();
+                    $('#contact_person option:first-child').prop('disabled', false);
 
 
                     // getAgencyUsers($("#agency option:selected").val());
@@ -940,7 +941,7 @@
                     $('.agency-user-block').hide();
                     $('.contact-person-block').show();
                     $('.agency_category').slideUp();
-                    $('#agency option:first-child').prop('disabled', true);
+                    // $('#agency option:first-child').prop('disabled', true);
                     let keyupEvent = new Event('keyup');
 
                     $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
@@ -1102,9 +1103,9 @@
 
         let select_contact = $('#contact_person');
         if (select_contact.length > 0) {
-            $('#contact_person option:first-child').prop('disabled', false);
+           $('#contact_person option:first-child').prop('disabled', false);
         }
-
+        else   $('select option:first-child').prop('disabled', true);
 
         select_contact.on('change', function (e) {
             $('input[name=contact_person]').val($(this).find(':selected').data('name'));
