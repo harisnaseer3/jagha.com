@@ -18,7 +18,7 @@
         .map-iframe {
             border: 0;
             height: inherit !important;
-            width:100%
+            width: 100%
         }
     </style>
 @endsection
@@ -63,6 +63,71 @@
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}"></script>
     <script src="{{asset('website/js/admin-portfolio.js')}}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
-
+{{--    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>--}}
 @endsection
+
+@if($property->location->is_active == 0)
+@section('script')
+    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
+    <script>
+        (function ($) {
+            let map;
+            let service;
+            var infowindow;
+            var get_location;
+            let container = $('#property_map');
+            var latitude = container.data('lat');
+            var longitude = container.data('lng');
+
+            function initMap(value) {
+                map = '';
+                service = '';
+                _markers = [];
+                // let place;
+                // if (value === 'school') place = 'school college and university';
+                // else if (value === 'park') place = 'park';
+                // else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
+                // else if (value === 'restaurant') place = 'restaurant and cafe'
+                get_location = new google.maps.LatLng(latitude, longitude);
+                infowindow = new google.maps.InfoWindow();
+                map = new google.maps.Map(
+                    document.getElementById(value), {center: get_location, zoom: 15});
+                var request = {
+                    location: get_location,
+                    radius: '500',
+                    // query: place,
+                };
+                service = new google.maps.places.PlacesService(map);
+                service.textSearch(request, callback);
+
+                function callback(results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        for (let i = 0; i < results.length; i++) {
+                            createMarker(results[i], value);
+                        }
+                        // const markerCluster = new MarkerClusterer(map, _markers,
+                        //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+                    }
+                }
+            }
+
+            function createMarker(place, value) {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location,
+                    icon: {url: '../website/img/marker/' + value + '.png', scaledSize: new google.maps.Size(45, 45)},
+                });
+                _markers.push(marker);
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent(place.name);
+                    infowindow.open(map, this);
+                });
+            }
+        })
+        (jQuery);
+
+    </script>
+@endsection
+@endif
+
+
