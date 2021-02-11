@@ -388,9 +388,27 @@ class PropertyController extends Controller
 
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
+        if ($property->agency_id !== null) {
+            $agencies_users_ids = DB::table('agency_users')->select('user_id')
+                ->where('agency_id', $property->agency_id)
+                ->get()->pluck('user_id')->toArray();
+
+            if (!empty($agencies_users_ids)) {
+                $agencies_users = (new User)->select('name', 'id')
+                    ->whereIn('id', $agencies_users_ids)
+                    ->get();
+                $users = [];
+                foreach ($agencies_users as $user) {
+                    $users += array($user->id => $user->name);
+                }
+
+            }
+        }
         if (Auth::guard('admin')->user()) {
+
             return view('website.admin-pages.portfolio',
                 [
+                    'users' => $users,
 //                    'agencies' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->get()->toArray(),
                     'property' => $property,
                     'property_types' => $property_types,
@@ -408,22 +426,6 @@ class PropertyController extends Controller
         $users = [];
         foreach ($agencies_data as $agency) {
             $agencies += array($agency->id => $agency->title);
-        }
-        if ($property->agency_id !== null) {
-            $agencies_users_ids = DB::table('agency_users')->select('user_id')
-                ->where('agency_id', $property->agency_id)
-                ->get()->pluck('user_id')->toArray();
-
-            if (!empty($agencies_users_ids)) {
-                $agencies_users = (new User)->select('name', 'id')
-                    ->whereIn('id', $agencies_users_ids)
-                    ->get();
-                $users = [];
-                foreach ($agencies_users as $user) {
-                    $users += array($user->id => $user->name);
-                }
-
-            }
         }
 
 

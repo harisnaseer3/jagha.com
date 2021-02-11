@@ -54,10 +54,164 @@
         });
     }
 
+    function getAgencyUsers(agency) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: window.location.origin + '/agency-users',
+            data: {agency: agency},
+            dataType: 'json',
+            success: function (data) {
+                // console.log(data);
+                let user_data = data.data
+                // let agency_data = data.agency;
+                if (!jQuery.isEmptyObject({user_data})) {
+                    $('.agency-user-block').show();
 
+                    let add_select = $("#contact_person");
+                    add_select.empty();
+
+                    // add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
+
+                    $.each(user_data, function (key, value) {
+                        add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
+                    });
+
+                    $('#contact_person option:first-child').prop('disabled', false);
+                }
+                // if (!jQuery.isEmptyObject({agency_data})) {
+                //     let html = '' +
+                //         '<div class="row">' +
+                //         '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
+                //         '   <div class="my-2"> Agency Information</div>' +
+                //         '</div>' +
+                //         '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
+                //         '<div class="col-md-6 my-2">' +
+                //         ' <strong>Title: </strong>' + agency_data['title'] +
+                //         '</div>' +
+                //         '<div class="col-md-6 my-2">' +
+                //         '<strong>Address: </strong>' + agency_data['address'] +
+                //         '</div>' +
+                //         '<div class="col-md-6 my-2">' +
+                //         '    <strong>City: </strong>' + data.agency_city +
+                //         '</div>' +
+                //         '   <div class="col-md-6 my-2">' +
+                //         '      <strong>Phone: </strong>' + agency_data['phone'] +
+                //         '</div>' +
+                //         '   <div class="col-md-6 my-2">' +
+                //         '      <strong>Cell: </strong>' + agency_data['cell'] +
+                //         '</div>' +
+                //         '</div>';
+                //
+                //     $('.agency-block').show().html(html);
+                //
+                // }
+
+            },
+            error: function (xhr, status, error) {
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
+            },
+            complete: function (url, options) {
+                getUserData($('#contact_person option:selected').val());
+            }
+        });
+    }
+
+    function getUserData(user) {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        jQuery.ajax({
+            type: 'get',
+            url: window.location.origin + '/user-info',
+            data: {user: user},
+            dataType: 'json',
+            success: function (data) {
+                let result = data.data
+                if (!jQuery.isEmptyObject({result})) {
+                    $('.select_contact_person_spinner').hide();
+                    let keyupEvent = new Event('keyup');
+
+
+                    if (result.phone !== null) {
+                        $('[name="phone_#"]').val('');
+                        let selected_input_field = document.querySelector("#phone");
+                        window.intlTelInputGlobals.getInstance(selected_input_field).destroy();
+                        iti_contact_number(selected_input_field,
+                            document.querySelector("#error-msg-phone"),
+                            document.querySelector("#valid-msg-phone"),
+                            $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+                        $('#phone').val(result.phone);
+                        selected_input_field.dispatchEvent(keyupEvent);
+                        // $('#phone').change();
+                        $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
+
+                    } else {
+                        $('#phone').val('');
+                        window.intlTelInputGlobals.getInstance(document.querySelector("#phone")).destroy();
+                        iti_contact_number(document.querySelector("#phone"),
+                            document.querySelector("#error-msg-phone"),
+                            document.querySelector("#valid-msg-phone"),
+                            $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+                        $('[name="phone"]').val('');
+                    }
+                    if (result.cell !== null) {
+                        $('[name="mobile_#"]').val('');
+
+                        let selected_input_field = document.querySelector("#cell");
+                        window.intlTelInputGlobals.getInstance(selected_input_field).destroy();
+
+                        iti_contact_number(selected_input_field,
+                            document.querySelector("#error-msg-mobile"),
+                            document.querySelector("#valid-msg-mobile"),
+                            $('[name=mobile]'), '#mobile-error', "MOBILE");
+                        $('[name="mobile_#"]').val(result.cell);
+                        selected_input_field.dispatchEvent(keyupEvent);
+                        $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
+                    } else {
+                        $('[name="mobile_#"]').val('');
+
+                        window.intlTelInputGlobals.getInstance(document.querySelector("#cell")).destroy();
+                        iti_contact_number(document.querySelector("#cell"),
+                            document.querySelector("#error-msg-mobile"),
+                            document.querySelector("#valid-msg-mobile"),
+                            $('[name=mobile]'), '#mobile-error', "MOBILE");
+                        $('[name="mobile"]').val('');
+
+                    }
+
+                    if (result.fax !== null) $('[name=fax]').val(result.fax); else $('[name=fax]').val('');
+                    if (result.email !== null) $('[name=contact_email]').val(result.email); else $('[name=contact_email]').val(result.email);
+                }
+            },
+            error: function (xhr, status, error) {
+                // console.log(error);
+                // console.log(status);
+                // console.log(xhr);
+            },
+            complete: function (url, options) {
+                $('.contact_person_spinner').hide();
+                $('.select_contact_person_spinner').hide();
+
+
+            }
+        });
+    }
     var store_image_name = [];
     var store_image_name_order = [];
     let get_badge_value = 0;
+    var user_default_name = $('input[name="contact_person"]').val();
+    var user_default_phone = $('[name="phone_#"]').val();
+    var user_default_mobile = $('[name="mobile_#"]').val();
+    var user_default_email = $('[name=contact_email]').val();
 
 
     //this value is only used check the image count
@@ -653,11 +807,24 @@
         //     }
         // });
 
+        // let phone_num = $("#phone");
+        // let mobile_num = $("#cell");
+        // //on update form
+        // if (phone_num.val() !== '' && $("input[name='phone']").val() === '') {
+        //     $("input[name='phone']").val(phone_num.val());
+        // }
+        // if (mobile_num.val() !== '' && $("input[name='mobile']").val() === '') {
+        //     $("input[name='mobile']").val(mobile_num.val());
+        // }
         let phone_num = $("#phone");
         let mobile_num = $("#cell");
+        let selected_input_field_phone = document.querySelector("#phone");
+        let selected_input_field_cell = document.querySelector("#cell");
+
         //on update form
         if (phone_num.val() !== '' && $("input[name='phone']").val() === '') {
             $("input[name='phone']").val(phone_num.val());
+
         }
         if (mobile_num.val() !== '' && $("input[name='mobile']").val() === '') {
             $("input[name='mobile']").val(mobile_num.val());
@@ -673,21 +840,27 @@
             if (phone_num.val() === '') {
                 $('input[name=phone_check]').val('');
             }
-
-            $("input[name='phone']").val(phone_num.val());
+            var it_1 = window.intlTelInputGlobals.getInstance(selected_input_field_phone);
+            $("input[name='phone']").val(it_1.getNumber());
         });
         mobile_num.on('change', function () {
-            $("input[name='mobile']").val(mobile_num.val());
+            // $("input[name='mobile']").val(mobile_num.val());
+            var it_2 = window.intlTelInputGlobals.getInstance(selected_input_field_cell);
+            $("input[name='mobile']").val(it_2.getNumber());
         });
-        iti_contact_number(document.querySelector("#cell"),
-            document.querySelector("#error-msg-mobile"),
-            document.querySelector("#valid-msg-mobile"),
-            $('[name=mobile]'), '#mobile-error', "MOBILE");
 
-        iti_contact_number(document.querySelector("#phone"),
-            document.querySelector("#error-msg-phone"),
-            document.querySelector("#valid-msg-phone"),
-            $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+
+
+        if (document.querySelector("#cell") != null)
+            iti_contact_number(document.querySelector("#cell"),
+                document.querySelector("#error-msg-mobile"),
+                document.querySelector("#valid-msg-mobile"),
+                $('[name=mobile]'), '#mobile-error', "MOBILE");
+        if (document.querySelector("#phone") != null)
+            iti_contact_number(document.querySelector("#phone"),
+                document.querySelector("#error-msg-phone"),
+                document.querySelector("#valid-msg-phone"),
+                $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
 
         $.validator.addMethod('empty', function (value, element, param) {
             return (value === '');
@@ -696,6 +869,9 @@
         let form = $('.data-insertion-form');
         form.validate({
             rules: {
+                'all_inclusive_price': {required: true},
+                'land_area': {required: true},
+                'unit': {required: true},
                 'mobile_#': {
                     required: true,
                 },
@@ -844,8 +1020,6 @@
         }
         getAgencies($('[name=property_id]').val(), $('[name=agency]').val());
     });
-    var checker_flag = false;
-    var check_id = 0;
 
     $(document).on('click', '.select-agency', function (e) {
 
@@ -888,6 +1062,9 @@
 
 
         $('.agency-block').show().html(html);
+        if (agency_id !== '' && agency_id !== null) {
+            getAgencyUsers(agency_id);
+        }
 
         // let checker = $('.fa-check-circle');
         //prevent more than 1 on same page of datatable
@@ -949,10 +1126,10 @@
                         if (value.phone !== null)
                             value.phone = value.phone.replace(/-/g, '');
                         if (value.id == data.default_agency)
-                            data_table.push([value.id, value.id+" - "+value.title, value.city, value.address, value.cell, value.phone,
+                            data_table.push([value.id, value.id + " - " + value.title, value.city, value.address, value.cell, value.phone,
                                 "<td><button class='btn btn-sm btn-primary select-agency' style='display:none'>Select Agency</button><i class='fa-3x fas fa-check-circle'  style = 'color: green;display:block'></i></td >"]);
                         else
-                            data_table.push([value.id, value.id+" - "+value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
+                            data_table.push([value.id, value.id + " - " + value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
                     });
                     $('#agencies-table').DataTable({
                         // dom: 'tp',

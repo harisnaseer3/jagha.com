@@ -615,8 +615,6 @@
             }
             var it_1 = window.intlTelInputGlobals.getInstance(selected_input_field_phone);
             $("input[name='phone']").val(it_1.getNumber());
-
-
         });
         mobile_num.on('change', function () {
             // $("input[name='mobile']").val(mobile_num.val());
