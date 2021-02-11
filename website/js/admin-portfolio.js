@@ -1,4 +1,5 @@
-(function ($) {
+(
+    function ($) {
     let map;
     let service;
     var infowindow;
@@ -8,6 +9,8 @@
 
     var latitude = container.data('lat');
     var longitude = container.data('lng');
+
+    console.log(latitude,longitude );
 
     function initMap(value) {
         map = '';
@@ -70,6 +73,8 @@
                 let user_data = data.data
                 // let agency_data = data.agency;
                 if (!jQuery.isEmptyObject({user_data})) {
+                    $('#contact_person_input').removeAttr('required').attr('disable', 'true');
+                    $('#contact_person').attr('required', 'required').attr('disable', 'false');
                     $('.agency-user-block').show();
 
                     let add_select = $("#contact_person");
@@ -118,6 +123,9 @@
                 // console.log(xhr);
             },
             complete: function (url, options) {
+                $('.agency-user-block').show();
+                $('.contact-person-block').hide();
+
                 getUserData($('#contact_person option:selected').val());
             }
         });
@@ -205,6 +213,7 @@
             }
         });
     }
+
     var store_image_name = [];
     var store_image_name_order = [];
     let get_badge_value = 0;
@@ -850,7 +859,6 @@
         });
 
 
-
         if (document.querySelector("#cell") != null)
             iti_contact_number(document.querySelector("#cell"),
                 document.querySelector("#error-msg-mobile"),
@@ -1003,15 +1011,60 @@
                 $('.agency_category').slideDown();
                 $('[name=property_agency]').attr('required', true);
 
-                $('[name=agency]').val($('[name=property_agency]').attr('data-id'));
 
-            } else {
-                $('.agency_category').slideUp();
+                $('[name=agency]').val($('[name=property_agency]').attr('data-id'));
+                $('#user-agency-block').slideDown();
+
+
+                // getAgencyUsers($("#agency option:selected").val());
+                // if ($('select[id=contact_person]').val() === null) {
+                //     $('select[id=contact_person]').val($("select[id=contact_person] option:first").val());
+                // }
+
+            } else if ($('input[name="advertisement"]:checked').val() === 'Individual') {
+                $('.agency-user-block').hide();
+                $('.contact-person-block').show();
+                $('.agency_category').slideUp(); $('#agency option:first-child').prop('disabled', true);
+                let keyupEvent = new Event('keyup');
+
                 $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
                 $('[name=agency]').val('');
+                $('#contact_person').removeAttr('required').attr('disable', 'true');
+                $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
+                $('[name="contact_person"]').val(user_default_name);
+                // $('[name="phone_#"]').val(user_default_phone);
+
+                $('[name="phone_#"]').val('');
+                let selected_input_field_1 = document.querySelector("#phone");
+                window.intlTelInputGlobals.getInstance(selected_input_field_1).destroy();
+
+                iti_contact_number(selected_input_field_1,
+                    document.querySelector("#error-msg-phone"),
+                    document.querySelector("#valid-msg-phone"),
+                    $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+                $('#phone').val(user_default_phone);
+
+                selected_input_field_1.dispatchEvent(keyupEvent);
+                $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
+                // console.log(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
+
+                $('[name="mobile_#"]').val('');
+                let selected_input_field_2 = document.querySelector("#cell");
+                window.intlTelInputGlobals.getInstance(selected_input_field_2).destroy();
+
+                iti_contact_number(selected_input_field_2,
+                    document.querySelector("#error-msg-mobile"),
+                    document.querySelector("#valid-msg-mobile"),
+                    $('[name=mobile]'), '#mobile-error', "MOBILE");
+                $('[name="mobile_#"]').val(user_default_mobile);
+                $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber());
+                $('[name=contact_email]').val(user_default_email);
+                selected_input_field_2.dispatchEvent(keyupEvent);
             }
         });
         if ($('input[name="advertisement"]:checked').val() == 'Individual') {
+            $('.agency-user-block').hide();
+            $('.contact-person-block').show();
             $('.agency_category').slideUp();
             $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
 
@@ -1168,6 +1221,26 @@
             }
         });
     }
+    let select_contact = $('#contact_person');
+    if (select_contact.length > 0) {
+        $('#contact_person option:first-child').prop('disabled', false);
+    }
+
+
+    select_contact.on('change', function (e) {
+        $('input[name=contact_person]').val($(this).find(':selected').data('name'));
+        let user = $(this).val();
+        if (user !== '' && user !== '-1') {
+            $('input[name=contact_person]').val()
+            $('.select_contact_person_spinner').show();
+            getUserData(user);
+        } else {
+            $('[name=phone]').val('');
+            $('[name=mobile]').val('');
+            $('[name=fax]').val('');
+            $('[name=contact_email]').val('');
+        }
+    });
 
 
 //    stop page to scroll on page model oopen

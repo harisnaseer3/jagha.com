@@ -316,30 +316,57 @@
         <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
         <div class="card-body">
             <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="agency-user-block" style="display: block">
-                <div class="form-group row">
-                    <label for="contact_person" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
-                        Contact Person
-                    </label>
-                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                        <select class="custom-select custom-select-sm valid" aria-describedby="contact_person-error" aria-invalid="false"
-                                id="contact_person" name="contact_person" required="required"
-                                style="border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;">
-                            @foreach($users as $key=>$option)
-                                <option {{$option === $property->contact_person? 'selected' : '' }} value={{$key}} data-name={{$option}}>{{$option}}</option>
-                            @endforeach
-                        </select>
+{{--            @if(count($users) > 0)--}}
+                <div class="agency-user-block" style="display: block">
+                    <div class="form-group row">
+                        <label for="contact_person" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                            Contact Person
+                        </label>
+                        <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                            <select class="custom-select custom-select-sm valid" aria-describedby="contact_person-error" aria-invalid="false"
+                                    id="contact_person" name="contact_person" required="required"
+                                    style="border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;">
+                                @foreach($users as $key=>$option)
+                                    <option {{$option === $property->contact_person? 'selected' : '' }} value={{$key}} data-name={{$option}}>{{$option}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
+                <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
 
 
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+                <div class="contact-person-block" style="display: none">
+                    {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : '', ['required' => true, 'id'=>'contact_person_input']) }}
+                </div>
+{{--            @else--}}
+{{--                <div class="agency-user-block" style="display: none">--}}
+{{--                    <div class="form-group row">--}}
+{{--                        <label for="contact_person" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">--}}
+{{--                            Contact Person--}}
+{{--                        </label>--}}
+{{--                        <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">--}}
+{{--                            <select class="custom-select custom-select-sm valid" aria-describedby="contact_person-error" aria-invalid="false"--}}
+{{--                                    id="contact_person" name="contact_person" required="required"--}}
+{{--                                    style="border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;">--}}
+{{--                                @foreach($users as $key=>$option)--}}
+{{--                                    <option {{$option === $property->contact_person? 'selected' : '' }} value={{$key}} data-name={{$option}}>{{$option}}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
 
-            <div class="contact-person-block" style="display: none">
-                {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : '', ['required' => true, 'id'=>'contact_person_input']) }}
-            </div>
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>--}}
+
+
+{{--                <div class="contact-person-block" style="display: block">--}}
+{{--                    {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : '', ['required' => true, 'id'=>'contact_person_input']) }}--}}
+{{--                </div>--}}
+
+{{--            @endif--}}
+
 
             <div class="user-details-block" style="display:block">
                 {{ Form::bsIntlTel('phone_#',isset($property->phone)? $property->phone:'', ['id'=>'phone']) }}

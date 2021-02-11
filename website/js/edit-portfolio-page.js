@@ -1003,7 +1003,6 @@
 
                 selected_input_field_1.dispatchEvent(keyupEvent);
                 $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
-                console.log(window.intlTelInputGlobals.getInstance(selected_input_field_1).getDialCode());
 
                 $('[name="mobile_#"]').val('');
                 let selected_input_field_2 = document.querySelector("#cell");
