@@ -425,7 +425,6 @@ class PropertyController extends Controller
 
 
         $agencies = [];
-        $users = [];
         foreach ($agencies_data as $agency) {
             $agencies += array($agency->id => $agency->title);
         }
