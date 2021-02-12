@@ -271,6 +271,9 @@
         <div class="card-body">
             {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
                 ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
+            {{Form::hidden('property_agency-error')}}
+            {{Form::hidden('property_user-error')}}
+
             {{Form::hidden('agency',isset($property->agency)?$property->agency->id:null)}}
             <div class="agency-block">
                 @if(isset($property->agency))
@@ -374,7 +377,7 @@
         <div id="reason-of-rejection" style="display: none">
             {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}
         </div>
-        <div class="alert alert-warning alert-dismissible fade show w-50 mb-1"><i class="fas fa-warning"></i>  <span class="mx-1">Verify Location</span></div>
+        <div class="alert alert-warning alert-dismissible fade show w-50 mb-1"><i class="fas fa-warning"></i> <span class="mx-1">Verify Location</span></div>
     </div>
 
     <div class="card-footer">

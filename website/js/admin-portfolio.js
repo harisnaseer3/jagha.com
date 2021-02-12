@@ -1,60 +1,60 @@
 (
     function ($) {
-        let map;
-        let service;
-        var infowindow;
-        var get_location;
-
-        let container = $('#property_map');
-
-        var latitude = container.data('lat');
-        var longitude = container.data('lng');
-
-
-        function initMap(value) {
-            map = '';
-            service = '';
-            _markers = [];
-            // let place;
-            // if (value === 'school') place = 'school college and university';
-            // else if (value === 'park') place = 'park';
-            // else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
-            // else if (value === 'restaurant') place = 'restaurant and cafe'
-            get_location = new google.maps.LatLng(latitude, longitude);
-            infowindow = new google.maps.InfoWindow();
-            map = new google.maps.Map(
-                document.getElementById(value), {center: get_location, zoom: 15});
-            var request = {
-                location: get_location,
-                radius: '500',
-                // query: place,
-            };
-            service = new google.maps.places.PlacesService(map);
-            service.textSearch(request, callback);
-
-            function callback(results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    for (let i = 0; i < results.length; i++) {
-                        createMarker(results[i], value);
-                    }
-                    // const markerCluster = new MarkerClusterer(map, _markers,
-                    //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-                }
-            }
-        }
-
-        function createMarker(place, value) {
-            var marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-                icon: {url: '../website/img/marker/' + value + '.png', scaledSize: new google.maps.Size(45, 45)},
-            });
-            _markers.push(marker);
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(place.name);
-                infowindow.open(map, this);
-            });
-        }
+        // let map;
+        // let service;
+        // var infowindow;
+        // var get_location;
+        //
+        // let container = $('#property_map');
+        //
+        // var latitude = container.data('lat');
+        // var longitude = container.data('lng');
+        //
+        //
+        // function initMap(value) {
+        //     map = '';
+        //     service = '';
+        //     _markers = [];
+        //     // let place;
+        //     // if (value === 'school') place = 'school college and university';
+        //     // else if (value === 'park') place = 'park';
+        //     // else if (value === 'hospital') place = 'hospital, medical center and  Naval Hospital'
+        //     // else if (value === 'restaurant') place = 'restaurant and cafe'
+        //     get_location = new google.maps.LatLng(latitude, longitude);
+        //     infowindow = new google.maps.InfoWindow();
+        //     map = new google.maps.Map(
+        //         document.getElementById(value), {center: get_location, zoom: 15});
+        //     var request = {
+        //         location: get_location,
+        //         radius: '500',
+        //         // query: place,
+        //     };
+        //     service = new google.maps.places.PlacesService(map);
+        //     service.textSearch(request, callback);
+        //
+        //     function callback(results, status) {
+        //         if (status === google.maps.places.PlacesServiceStatus.OK) {
+        //             for (let i = 0; i < results.length; i++) {
+        //                 createMarker(results[i], value);
+        //             }
+        //             // const markerCluster = new MarkerClusterer(map, _markers,
+        //             //     {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        //         }
+        //     }
+        // }
+        //
+        // function createMarker(place, value) {
+        //     var marker = new google.maps.Marker({
+        //         map: map,
+        //         position: place.geometry.location,
+        //         icon: {url: '../website/img/marker/' + value + '.png', scaledSize: new google.maps.Size(45, 45)},
+        //     });
+        //     _markers.push(marker);
+        //     google.maps.event.addListener(marker, 'click', function () {
+        //         infowindow.setContent(place.name);
+        //         infowindow.open(map, this);
+        //     });
+        // }
 
 
         function getAgencyUsers(agency) {
@@ -98,8 +98,11 @@
                 complete: function (url, options) {
                     $('.agency-user-block').show();
                     $('.contact-person-block').hide();
-
-                    getUserData($('#contact_person option:selected').val());
+                    let select_user = $('#contact_person option:selected');
+                    $('input[name=contact_person]').val(select_user.data('name'));
+                    let user_id = select_user.val();
+                    $('input[name="property_user-error"]').val(user_id);
+                    getUserData(user_id);
                 }
             });
         }
@@ -119,6 +122,7 @@
                     let result = data.data
                     if (!jQuery.isEmptyObject({result})) {
                         $('.select_contact_person_spinner').hide();
+                        // $('input[name=contact_person]').val(
                         let keyupEvent = new Event('keyup');
 
 
@@ -331,6 +335,72 @@
 
             input.addEventListener('change', reset);
             input.addEventListener('keyup', reset);
+        }
+
+        function getAgencyUsersOnError(agency) {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/agency-users',
+                data: {agency: agency},
+                dataType: 'json',
+                success: function (data) {
+                    // console.log(data);
+                    let user_data = data.data
+                    let agency_data = data.agency;
+                    if (!jQuery.isEmptyObject({user_data})) {
+                        $('.agency-user-block').show();
+
+                        let add_select = $("#contact_person");
+                        add_select.empty();
+
+                        // add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
+
+                        $.each(user_data, function (key, value) {
+                            add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
+                        });
+
+                        $('#contact_person option:first-child').prop('disabled', false);
+
+                        add_select.val($('input[name="property_user-error"]').val()).trigger('change');
+
+                    }
+                    if (!jQuery.isEmptyObject({agency_data})) {
+                        let html = '' +
+                            '<div class="row">' +
+                            '<div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">' +
+                            '   <div class="my-2"> Agency Information</div>' +
+                            '</div>' +
+                            '<div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">' +
+                            '<div class="col-md-6 my-2">' +
+                            ' <strong>Title: </strong>' + agency_data['title'] +
+                            '</div>' +
+                            '<div class="col-md-6 my-2">' +
+                            '<strong>Address: </strong>' + agency_data['address'] +
+                            '</div>' +
+                            '<div class="col-md-6 my-2">' +
+                            '    <strong>City: </strong>' + data.agency_city +
+                            '</div>' +
+                            '   <div class="col-md-6 my-2">' +
+                            '      <strong>Phone: </strong>' + agency_data['phone'] +
+                            '</div>' +
+                            '   <div class="col-md-6 my-2">' +
+                            '      <strong>Cell: </strong>' + agency_data['cell'] +
+                            '</div>' +
+                            '</div>';
+
+                        $('.agency-block').show().html(html);
+
+                    }
+
+
+                },
+
+            });
         }
 
         $(document).ready(function () {
@@ -549,7 +619,6 @@
             }
 
 
-
             function priceInWords() {
 
                 let val = $('[name=all_inclusive_price]').val();
@@ -725,12 +794,6 @@
                     rejection_div.slideUp();
                 }
             });
-            $('#add_city').on('select2:select', function (e) {
-                let city = $('#add_city').val();
-                $("#add_location").val(null).trigger("change");
-                $('.fa-spinner').show();
-                getCityLocations(city);
-            });
 
 
             $('#add_city').on('select2:select', function (e) {
@@ -744,6 +807,18 @@
             let mobile_num = $("#cell");
             let selected_input_field_phone = document.querySelector("#phone");
             let selected_input_field_cell = document.querySelector("#cell");
+
+
+            if (document.querySelector("#cell") != null)
+                iti_contact_number(document.querySelector("#cell"),
+                    document.querySelector("#error-msg-mobile"),
+                    document.querySelector("#valid-msg-mobile"),
+                    $('[name=mobile]'), '#mobile-error', "MOBILE");
+            if (document.querySelector("#phone") != null)
+                iti_contact_number(document.querySelector("#phone"),
+                    document.querySelector("#error-msg-phone"),
+                    document.querySelector("#valid-msg-phone"),
+                    $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
 
             //on update form
             if (phone_num.val() !== '' && $("input[name='phone']").val() === '') {
@@ -773,17 +848,6 @@
                 $("input[name='mobile']").val(it_2.getNumber());
             });
 
-
-            if (document.querySelector("#cell") != null)
-                iti_contact_number(document.querySelector("#cell"),
-                    document.querySelector("#error-msg-mobile"),
-                    document.querySelector("#valid-msg-mobile"),
-                    $('[name=mobile]'), '#mobile-error', "MOBILE");
-            if (document.querySelector("#phone") != null)
-                iti_contact_number(document.querySelector("#phone"),
-                    document.querySelector("#error-msg-phone"),
-                    document.querySelector("#valid-msg-phone"),
-                    $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
 
             $.validator.addMethod('empty', function (value, element, param) {
                 return (value === '');
@@ -872,6 +936,9 @@
                 }
 
             }
+            if ($('input[name="property_agency-error"]').val() !== '') {
+                getAgencyUsersOnError($('input[name="property_agency-error"]').val());
+            }
 
 
             $(document).on('change', $('.feature-tags .badge').length, function () {
@@ -920,7 +987,6 @@
             else
                 $('.property-media-block').show();
 
-            let agency = $('#agency');
             $(document).on('change', '[name=advertisement]', function () {
                 if ($('input[name="advertisement"]:checked').val() === 'Agency') {
                     $('.agency_category').slideDown();
@@ -944,8 +1010,9 @@
                     // $('#agency option:first-child').prop('disabled', true);
                     let keyupEvent = new Event('keyup');
 
-                    $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
+                    $('[name=property_agency]').removeAttr('required').attr('disable', 'true').val('');
                     $('[name=agency]').val('');
+                    $('.agency-block').html('');
                     $('#contact_person').removeAttr('required').attr('disable', 'true');
                     $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
                     $('[name="contact_person"]').val(user_default_name);
@@ -983,7 +1050,8 @@
                 $('.agency-user-block').hide();
                 $('.contact-person-block').show();
                 $('.agency_category').slideUp();
-                $('[name=property_agency]').removeAttr('required').attr('disable', 'true');
+                $('[name=property_agency]').removeAttr('required').attr('disable', 'true').val('');
+                $('.agency-block').html('');
 
 
                 $('[name=agency]').val('');
@@ -998,6 +1066,8 @@
             var $columns = $row.find('td');
 
             let agency_id = $columns[0].innerHTML;
+
+            $('input[name=property_agency-error]').val(agency_id);
             let agency_title = $columns[1].innerHTML;
             let agency_city = $columns[2].innerHTML;
             let agency_address = $columns[3].innerHTML;
@@ -1036,10 +1106,10 @@
                 getAgencyUsers(agency_id);
             }
 
-            $('.fa-check-circle').hide();
-            $('.fa-check-circle').prev('button').show();
-            $(this).next('.fa-check-circle').show();
-            $(this).hide();
+            // $('.fa-check-circle').hide();
+            // $('.fa-check-circle').prev('button').show();
+            // $(this).next('.fa-check-circle').show();
+            // $(this).hide();
             $('#agenciesModalCenter').modal('hide');
         });
 
@@ -1067,7 +1137,7 @@
                             if (value.phone !== null)
                                 value.phone = value.phone.replace(/-/g, '');
                             if (value.id == data.default_agency)
-                                data_table.push([value.id,  value.title, value.city, value.address, value.cell, value.phone,
+                                data_table.push([value.id, value.title, value.city, value.address, value.cell, value.phone,
                                     "<td><button class='btn btn-sm btn-primary select-agency' style='display:none'>Select Agency</button><i class='fa-3x fas fa-check-circle'  style = 'color: green;display:block'></i></td >"]);
                             else
                                 data_table.push([value.id, value.title, value.city, value.address, value.cell, value.phone, '<td> <button class="btn btn-sm btn-primary select-agency" style="display:block">Select Agency</button><i class="fa-3x fas fa-check-circle"  style = "color: green;display:none"></i></td>']);
@@ -1103,15 +1173,15 @@
 
         let select_contact = $('#contact_person');
         if (select_contact.length > 0) {
-           $('#contact_person option:first-child').prop('disabled', false);
-        }
-        else   $('select option:first-child').prop('disabled', true);
+            $('#contact_person option:first-child').prop('disabled', false);
+        } else $('select option:first-child').prop('disabled', true);
 
         select_contact.on('change', function (e) {
             $('input[name=contact_person]').val($(this).find(':selected').data('name'));
             let user = $(this).val();
             if (user !== '' && user !== '-1') {
-                $('input[name=contact_person]').val()
+                $('input[name=contact_person]').val(user);
+                $('input[name="property_user-error"]').val(user);
                 $('.select_contact_person_spinner').show();
                 getUserData(user);
             } else {
