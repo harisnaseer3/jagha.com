@@ -108,7 +108,7 @@
 
                                             <div class="card">
                                                 <div class="card-header theme-blue text-white">
-                                                   My Inquiries
+                                                    My Inquiries
                                                 </div>
                                                 <div class="card-body">
                                                     <table id="inquiry-mails" class="display" style="width: 100%">
@@ -128,7 +128,7 @@
                                                                 <tr>
                                                                     <td>{{$inbox->name}}</td>
                                                                     <td>{{$inbox->email}}</td>
-                                                                    <td>{{$inbox->cell}}</td>
+                                                                    <td>{{str_replace('-','',$inbox->cell)}}</td>
                                                                     <td>{{$inbox->type}}</td>
                                                                     <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}
                                                                         @if(strlen($inbox->message) > 30 )
