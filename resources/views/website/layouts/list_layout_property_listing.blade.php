@@ -55,7 +55,13 @@
                     @elseif($property->bronze_listing  == 1)
                         <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>
                     @endif
-                    <div class="listing-time opening" aria-label="purpose label">For {{ $property->purpose }}</div>
+                    <div class="listing-time opening" aria-label="purpose label">
+                        @if( $property->purpose === 'Wanted')
+                            {{ $property->purpose }} Property
+                        @else
+                            For {{ $property->purpose }}
+                        @endif
+                    </div>
                     <div class="price-ratings-box">
                         @if($property->price != 0)
                             <p class="price">
