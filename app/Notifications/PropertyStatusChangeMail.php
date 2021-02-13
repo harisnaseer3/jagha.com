@@ -50,7 +50,7 @@ class PropertyStatusChangeMail extends Notification
             ->view('website.custom-emails.notification-email-template',[
                 'user' => $user,
                 'title' => 'About Pakistan Property Status Update',
-                'content' => "Status of property titled {$this->property->title} and reference # {$this->property->reference} has been changed to {$this->property->status} on About Pakistan Properties.",
+                'content' => "Status of property titled {$this->property->title} and ID {$this->property->id} has been changed to {$this->property->status} on About Pakistan Properties.",
                 'infoText'   => 'Thank you for using About Pakistan Properties!'
             ]);
     }
