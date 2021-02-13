@@ -56,7 +56,7 @@
                                                 <td>{{$user->name}}</td>
                                                 <td>{{$user->community_nick}}</td>
                                                 <td>{{$user->email}}</td>
-                                                <td>{{$user->phone}}</td>
+                                                <td>{{str_replace('-','',$user->cell)}}</td>
                                                 <td>{{$user->country}}</td>
                                                 <td>{{$user->address}}</td>
 
