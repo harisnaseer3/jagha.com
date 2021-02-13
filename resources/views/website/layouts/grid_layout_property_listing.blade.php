@@ -261,14 +261,14 @@
                                 <tbody>
                                 <tr>
                                     <td class="w-30">Mobile</td>
-                                    <td class="w-70 font-weight-bold">{{ $property->cell !== null  ? $property->cell: '-'}}</td>
+                                    <td class="w-70 font-weight-bold">{{ isset($property->cell) && $property->cell !== '' ? str_replace('-','',$property->cell): '-'}}</td>
                                 </tr>
                                 <tr>
                                     <td>Phone No</td>
-                                    @if($property->phone !== null)
-                                        <td class="font-weight-bold">{{$property->phone}}</td>
-                                    @elseif($property->agency_phone !== null)
-                                        <td class="font-weight-bold">{{$property->phone}}</td>
+                                    @if(isset($property->phone) && $property->phone !== '')
+                                        <td class="font-weight-bold">{{str_replace('-','',$property->phone)}}</td>
+                                    @elseif(isset($property->agency_phone) && $property->agency_phone !== '')
+                                        <td class="font-weight-bold">{{str_replace('','',$property->phone)}}</td>
                                     @else
                                         <td class="font-weight-bold">-</td>
                                     @endif

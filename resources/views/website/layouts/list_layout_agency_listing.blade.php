@@ -2,7 +2,7 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-{{--            <span class="heading-icon"><i class="fa fa-th-list"></i></span>--}}
+            {{--            <span class="heading-icon"><i class="fa fa-th-list"></i></span>--}}
             <span class="title-name ml-2 text-transform">Partners List</span>
         </h4>
     </div>
@@ -38,7 +38,8 @@
                                                'slug'=>\Illuminate\Support\Str::slug($agency->title),
                                                'agency'=> $agency->id ,
                                                ])}}" class="agency-logo" title="{{$agency->title}}">
-                    <img src="{{ isset($agency->logo) && $agency->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}" alt="{{$agency->title}}"
+                    <img src="{{ isset($agency->logo) && $agency->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                         alt="{{$agency->title}}"
                          title="{{$agency->title}}" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                 </a>
             </div>
@@ -152,8 +153,8 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                @if($agency->cell !== null)
-                                    <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number : ''}}</td>
+                                @if(isset($agency->cell) && $agency->cell  !== '')
+                                    <td class="w-70 font-weight-bold">{{ str_replace('-','',$agency->cell)}}  {{isset($agency->optional_number) ? ' ,'.str_replace('-','',$agency->optional_number) : ''}}</td>
                                 @else
                                     <td class="font-weight-bold"> -</td>
                                 @endif
@@ -161,8 +162,8 @@
                             <tr>
                                 <td>Phone No</td>
 
-                                @if($agency->phone !== null)
-                                    <td class="font-weight-bold">{{$agency->phone}}</td>
+                                @if(isset($agency->phone) && $agency->phone !== '')
+                                    <td class="font-weight-bold">{{str_replace('-','',$agency->phone)}}</td>
                                 @else
                                     <td class="font-weight-bold"> -</td>
                                 @endif

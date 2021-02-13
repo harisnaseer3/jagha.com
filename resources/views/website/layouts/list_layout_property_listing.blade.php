@@ -42,9 +42,10 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
-                    <img src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                         alt="{{$property->sub_type}} for {{$property->purpose}}"
-                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
+                    <img
+                        src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                        alt="{{$property->sub_type}} for {{$property->purpose}}"
+                        title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
                     @if($property->platinum_listing == 1)
                         <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>
                     @elseif($property->golden_listing == 1)
@@ -303,14 +304,14 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                <td class="w-70 font-weight-bold">{{ $property->cell !== null  ? $property->cell: '-'}}</td>
+                                <td class="w-70 font-weight-bold">{{ isset($property->cell) && $property->cell !== '' ? str_replace('-','',$property->cell): '-'}}</td>
                             </tr>
                             <tr>
                                 <td>Phone No</td>
-                                @if($property->phone !== null)
-                                    <td class="font-weight-bold">{{$property->phone}}</td>
-                                @elseif($property->agency_phone !== null)
-                                    <td class="font-weight-bold">{{$property->phone}}</td>
+                                @if(isset($property->phone) && $property->phone !== '')
+                                    <td class="font-weight-bold">{{str_replace('-','',$property->phone)}}</td>
+                                @elseif(isset($property->agency_phone) && $property->agency_phone !== '')
+                                    <td class="font-weight-bold">{{str_replace('-','',$property->phone)}}</td>
                                 @else
                                     <td class="font-weight-bold">-</td>
                                 @endif
