@@ -38,7 +38,7 @@ class Account extends Model
         'email_notification' => 'required',
         'newsletter' => 'required',
         'automated_reports' => 'required',
-        'email_format' => 'required',
+//        'email_format' => 'required',
         'default_currency' => 'required',
         'default_area_unit' => 'required',
         'default_language' => 'required',
