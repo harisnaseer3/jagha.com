@@ -59,12 +59,13 @@
 
                                                 <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                     <input class="form-control form-control-sm valid" aria-describedby="email-error" aria-invalid="false" required="" readonly="readonly"
-                                                           data-default="Email is locked for security reasons, contact support for help." name="email" type="email" value="{{ \Illuminate\Support\Facades\Auth::guard('web')->user()->email}}">
+                                                           data-default="Email is locked for security reasons, contact support for help." name="email" type="email"
+                                                           value="{{ \Illuminate\Support\Facades\Auth::guard('web')->user()->email}}">
                                                 </div>
 
                                                 <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height my-sm-auto">
-                                                    Email is locked for security reasons, contact <a href="{{route('aboutpakistan.support')}}"><u><strong
-                                                                class="theme-dark-blue">Support</strong></u></a> for help.
+                                                    Email Address is locked for security reasons. Please contact
+                                                    <a href="{{route('aboutpakistan.support')}}"><u><strong class="theme-dark-blue">Support</strong></u></a> for any change.
                                                 </div>
                                             </div>
                                             {{ Form::bsText('name', \Illuminate\Support\Facades\Auth::user()->name, ['required' => true]) }}
