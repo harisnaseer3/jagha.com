@@ -472,7 +472,7 @@ class PropertyController extends Controller
             'mobile' => 'required', // +92-3001234567
             'contact_person' => 'required|max:225',
             'contact_email' => 'required|email',
-            'video_host' => 'string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
+            'video_host' => 'nullable|string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
             'video_link' => 'nullable|url',
             'rejection_reason' => 'nullable|string'
         ]);

@@ -882,6 +882,7 @@
                 errorClass: 'error help-block text-red',
                 ignore: [],
                 submitHandler: function (form) {
+
                     form.submit();
                 },
                 invalidHandler: function (event, validator) {
@@ -941,9 +942,8 @@
             }
             if ($('input[name="property_agency-error"]').val() !== '') {
                 getAgencyUsersOnError($('input[name="property_agency-error"]').val());
-            }else{
+            } else {
                 //get user data
-                console.log('calling');
                 getUserData($('#contact_person').val());
             }
 
@@ -1187,7 +1187,7 @@
             $('input[name=contact_person]').val($(this).find(':selected').data('name'));
             let user = $(this).val();
             if (user !== '' && user !== '-1') {
-                $('input[name=contact_person]').val(user);
+                // $('input[name=contact_person]').val(user);
                 $('input[name="property_user-error"]').val(user);
                 $('.select_contact_person_spinner').show();
                 getUserData(user);
@@ -1198,6 +1198,15 @@
                 $('[name=contact_email]').val('');
             }
         });
+        //
+        let location_verified = $('[name=location_verified]');
+        if (location_verified.length > 0) {
+            $('[name=location_verified]:checked').val() === 'No' ? $('#verification-badge').slideDown() : $('#verification-badge').slideUp();
+            location_verified.on('change', function () {
+                    $('[name=location_verified]:checked').val() === 'No' ? $('#verification-badge').slideDown() : $('#verification-badge').slideUp();
+                }
+            );
+        }
 
 
 //    stop page to scroll on page model oopen
