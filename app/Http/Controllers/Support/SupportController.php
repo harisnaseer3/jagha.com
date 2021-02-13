@@ -129,7 +129,7 @@ class SupportController extends Controller
     {
         $user = Auth::guard('web')->user()->getAuthIdentifier();
         $listings = Property::
-        select('properties.id', 'properties.agency_id')
+        select('properties.id', 'properties.agency_id','properties.title')
             ->whereNull('properties.deleted_at');
         //if user owns agencies{}
         $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
@@ -141,11 +141,11 @@ class SupportController extends Controller
             $ceo_agent_agencies = DB::table('agency_users')
                 ->where('user_id', '=', $user)
                 ->whereNotIn('agency_id', $ceo_agencies)->pluck('agency_id')->toArray();
-            $ceo_listings = Property::select('properties.id', 'properties.agency_id')
+            $ceo_listings = Property::select('properties.id', 'properties.agency_id','properties.title')
                 ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
                 ->whereIn('properties.user_id', $agency_users);
 
-            $ceo_agent_listings = Property::select('properties.id', 'properties.agency_id')
+            $ceo_agent_listings = Property::select('properties.id', 'properties.agency_id','properties.title')
                 ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agent_agencies)
                 ->where('properties.user_id', $user);
 
@@ -153,7 +153,7 @@ class SupportController extends Controller
             return [$ceo_listings->unionAll($listings)->unionAll($ceo_agent_listings), array_unique(array_merge($ceo_agencies,$ceo_agent_agencies)), $agent_agencies];
         } elseif ($agent_agencies > 0) {
             $agent_listings = Property::
-            select('properties.id', 'properties.agency_id')
+            select('properties.id', 'properties.agency_id','properties.title')
                 ->whereNull('properties.deleted_at')
                 ->whereIn('properties.agency_id', $agent_agencies)
                 ->where('properties.user_id', $user);

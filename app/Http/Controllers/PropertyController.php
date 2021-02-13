@@ -194,6 +194,7 @@ class PropertyController extends Controller
     {
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
+//            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
@@ -224,7 +225,8 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference', 'property_subtype_Homes',
-                    'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified'
+                    'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified', 'property_user-error',
+                    'property_agency-error'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -289,8 +291,8 @@ class PropertyController extends Controller
                 'area_in_new_marla' => $area_values['new_marla'],
                 'area_in_kanal' => $area_values['kanal'],
                 'area_in_new_kanal' => $area_values['new_kanal'],
-                'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
-                'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
+                'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null  ? $request->input('bedrooms') : 0,
+                'bathrooms' => $request->has('bathrooms')  && $request->input('bathrooms') != null? $request->input('bathrooms') : 0,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
@@ -334,6 +336,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -381,16 +384,33 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $city = $property->location->city->name;
-//        $property->location = $property->location->name;
-
         $property->city = $city;
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
 
         $property_types = (new PropertyType)->all();
         $counts = (new PropertyBackendListingController)->getPropertyListingCount(Auth::user()->getAuthIdentifier());
+        $users = [];
+        if ($property->agency_id !== null) {
+            $agencies_users_ids = DB::table('agency_users')->select('user_id')
+                ->where('agency_id', $property->agency_id)
+                ->get()->pluck('user_id')->toArray();
+
+
+            if (!empty($agencies_users_ids)) {
+                $agencies_users = (new User)->select('name', 'id')
+                    ->whereIn('id', $agencies_users_ids)
+                    ->get();
+                foreach ($agencies_users as $user) {
+                    $users += array($user->id => $user->name);
+                }
+
+            }
+        }
         if (Auth::guard('admin')->user()) {
+
             return view('website.admin-pages.portfolio',
                 [
+                    'users' => $users,
 //                    'agencies' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->get()->toArray(),
                     'property' => $property,
                     'property_types' => $property_types,
@@ -405,25 +425,8 @@ class PropertyController extends Controller
 
 
         $agencies = [];
-        $users = [];
         foreach ($agencies_data as $agency) {
             $agencies += array($agency->id => $agency->title);
-        }
-        if ($property->agency_id !== null) {
-            $agencies_users_ids = DB::table('agency_users')->select('user_id')
-                ->where('agency_id', $property->agency_id)
-                ->get()->pluck('user_id')->toArray();
-
-            if (!empty($agencies_users_ids)) {
-                $agencies_users = (new User)->select('name', 'id')
-                    ->whereIn('id', $agencies_users_ids)
-                    ->get();
-                $users = [];
-                foreach ($agencies_users as $user) {
-                    $users += array($user->id => $user->name);
-                }
-
-            }
         }
 
 
@@ -443,6 +446,7 @@ class PropertyController extends Controller
     }
 
     public function update(Request $request, Property $property)
+
     {
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
@@ -454,7 +458,6 @@ class PropertyController extends Controller
             }
         } elseif ($request->has('location_verified') && $request->input('location_verified') == 'No' &&
             $request->has('status') && $request->input('status') != 'rejected') {
-
             return redirect()->back()->withInput()->with('error', 'Please verify the location or set status to Rejected and specify Rejection Reason as unverified location.');
         }
         $validator = Validator::make($request->all(), [
@@ -469,12 +472,13 @@ class PropertyController extends Controller
             'mobile' => 'required', // +92-3001234567
             'contact_person' => 'required|max:225',
             'contact_email' => 'required|email',
-            'video_host' => 'string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
+            'video_host' => 'nullable|string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
             'video_link' => 'nullable|url',
             'rejection_reason' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
+//            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
 //        dd($request->all());
@@ -494,7 +498,8 @@ class PropertyController extends Controller
                     'unit', 'status', 'bedrooms', 'bathrooms', 'contact_person', 'phone', 'mobile', 'fax', 'contact_email', 'features', 'image', 'video_link',
                     'video_host', 'floor_plans', 'purpose-error', 'wanted_for-error', 'property_type-error', 'property_subtype-error', 'location-error', 'mobile_#',
                     'phone_check', 'agency', 'phone_#', 'data-index', 'phone_check', 'property_id', 'rejection_reason', 'property_reference',
-                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified'
+                    'property_subtype_Homes', 'features-error', 'advertisement', 'add_location', 'property_agency', 'agencies-table_length', 'location_verified', 'property_user-error',
+                    'property_agency-error'
                 ]));
                 $features = json_decode(json_encode($features_input), true);
                 $json_features = [
@@ -529,8 +534,8 @@ class PropertyController extends Controller
                 'area_in_new_marla' => $area_values['new_marla'],
                 'area_in_kanal' => $area_values['kanal'],
                 'area_in_new_kanal' => $area_values['new_kanal'],
-                'bedrooms' => $request->has('bedrooms') ? $request->input('bedrooms') : 0,
-                'bathrooms' => $request->has('bathrooms') ? $request->input('bathrooms') : 0,
+                'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null ? $request->input('bedrooms') : 0,
+                'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') !== null ? $request->input('bathrooms') : 0,
 //                'latitude' => $latitude,
 //                'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,

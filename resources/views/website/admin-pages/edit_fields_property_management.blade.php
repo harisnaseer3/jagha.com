@@ -134,128 +134,87 @@
         @endif
         {{Form::hidden('features-error')}}
     </div>
-    <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
-    <div class="card-body property-media-block" style="display: block">
-        @if(isset($property) and !$property->images->isEmpty())
-            <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2"><strong>Total Images
-                        <span id="edit-count" class="badge badge-primary badge-pill ml-2 f-12" data-count="{{count($property->images)}}"></span>
-                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-                    </strong>
-                </div>
-                <ul id="sortable" class="row m-2">
-                    @foreach($property->images as $available_image)
-                        <li class="ui-state-default m-2 upload-image-block ui-sortable-handle">
-                            <div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">
-                                <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
-                                     width="100%" class="img-responsive" alt="image not available" data-num="{{$available_image->order}}" data-value="{{$available_image->name}}"/>
-                            </div>
-                            <div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">{{$available_image->order}}</div>
-                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" data-record-id="{{$available_image->id}}"
-                               title="delete" style="position: absolute; margin-left: 146px;
+    @if($property->purpose != 'Wanted')
+        <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
+        <div class="card-body property-media-block" style="display: block">
+            @if(isset($property) and !$property->images->isEmpty())
+                <div class="row border-bottom my-2">
+                    <div class="col-sm-12 text-bold my-2"><strong>Total Images
+                            <span id="edit-count" class="badge badge-primary badge-pill ml-2 f-12" data-count="{{count($property->images)}}"></span>
+                            <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                        </strong>
+                    </div>
+                    <ul id="sortable" class="row m-2">
+                        @foreach($property->images as $available_image)
+                            <li class="ui-state-default m-2 upload-image-block ui-sortable-handle">
+                                <div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">
+                                    <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
+                                         width="100%" class="img-responsive" alt="image not available" data-num="{{$available_image->order}}" data-value="{{$available_image->name}}"/>
+                                </div>
+                                <div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">{{$available_image->order}}</div>
+                                <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" data-record-id="{{$available_image->id}}"
+                                   title="delete" style="position: absolute; margin-left: 146px;
                             margin-top: 56px; z-index: 1"> <i class="fad fa-trash fa-1x" style="color: red;font-size: 30px"></i> </a>
-                        </li>
+                            </li>
 
 
-                    @endforeach
-                </ul>
-            </div>
-            <div id="edit-count" data-count="{{count($property->images)}}"></div>
-            <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="add-images" style="display: none"></div>
-        @else
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="add-images" style="display: none">
-                <div class="col-sm-12 text-bold my-2">
-                    <strong>Total Images
-                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-                    </strong>
+                        @endforeach
+                    </ul>
                 </div>
-                <ul id="sortable" class="row border-bottom my-2 ">
-                </ul>
+                <div id="edit-count" data-count="{{count($property->images)}}"></div>
+                <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+
+                <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+                <div class="add-images" style="display: none"></div>
+            @else
+                <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+                <div class="add-images" style="display: none">
+                    <div class="col-sm-12 text-bold my-2">
+                        <strong>Total Images
+                            <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                        </strong>
+                    </div>
+                    <ul id="sortable" class="row border-bottom my-2 ">
+                    </ul>
+                </div>
+            @endif
+
+
+            {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
+            {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
+            <div class="mb-2 ">
+                <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
+                    Upload Images</a>
             </div>
-        @endif
-
-
-        {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
-        {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
-        <div class="mb-2 ">
-            <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
-                Upload Images</a>
-        </div>
-        @if(isset($property) and !$property->video->isEmpty())
-            {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
-            <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2">Video</div>
-                <div class="col-md-4 col-sm-6 my-2">
-                    <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                        <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-video"
-                           data-record-id="{{$property->video[0]->id}}"
-                           style="position: absolute; top: 0; z-index: 1">
-                            <i class="fad fa-times-circle fa-2x" style="color: red"></i>
-                        </a>
-                        <div>
-                            @if($property->video[0]->host === 'Youtube')
-                                <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]->name)[1])[0]}}></iframe>
-                            @elseif($property->video[0]->host === 'Vimeo')
-                                <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]->name)[1]}}></iframe>
-                            @else
-                                <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]->name)[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
-                            @endif
+            @if(isset($property) and !$property->video->isEmpty())
+                {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
+                <div class="row border-bottom my-2">
+                    <div class="col-sm-12 text-bold my-2">Video</div>
+                    <div class="col-md-4 col-sm-6 my-2">
+                        <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
+                            <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-video"
+                               data-record-id="{{$property->video[0]->id}}"
+                               style="position: absolute; top: 0; z-index: 1">
+                                <i class="fad fa-times-circle fa-2x" style="color: red"></i>
+                            </a>
+                            <div>
+                                @if($property->video[0]->host === 'Youtube')
+                                    <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]->name)[1])[0]}}></iframe>
+                                @elseif($property->video[0]->host === 'Vimeo')
+                                    <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]->name)[1]}}></iframe>
+                                @else
+                                    <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]->name)[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @else
-            {{ Form::bsSelect2('video_host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null ,['required' => false,'placeholder' => 'Select video host']) }}
-            {{ Form::bsText('video_link', null, ['required' => false]) }}
-        @endif
-    </div>
-
-    {{--    @if(!empty($agencies))--}}
-    {{--        <div class="card-header theme-blue text-white">Agency Details</div>--}}
-    {{--        <div class="card-body">--}}
-    {{--            <div class="form-group row">--}}
-    {{--                <label for="agency" class="col-sm-4 col-md-3 col-lg-2  col-xl-2 col-form-label col-form-label-sm">--}}
-    {{--                    {{ ucwords(str_replace('[]', '',str_replace('_', ' ', 'agency'))) }}--}}
-
-    {{--                    @if(!empty($selectAttributes['required']))--}}
-    {{--                        <span class="text-danger">*</span>--}}
-    {{--                    @endif--}}
-    {{--                </label>--}}
-
-    {{--                <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">--}}
-    {{--                    <select class="custom-select custom-select-sm select2 select2-hidden-accessible"--}}
-    {{--                            style="width: 100%; border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;" tabindex="-1" aria-hidden="true"--}}
-    {{--                            aria-describedby="agency-error" aria-invalid="false" name="agency" data-select2-id="10">--}}
-    {{--                        <option disabled selected>Select Agency</option>--}}
-    {{--                        @if(count($agencies) > 0)--}}
-    {{--                            @foreach($agencies as $key => $value)--}}
-    {{--                                <option value="{{$value}}" {{$p}}>{{$value}} - {{$key}}</option>--}}
-    {{--                            @endforeach--}}
-    {{--                        @endif--}}
-    {{--                    </select>--}}
-
-    {{--                    @error('agency')--}}
-    {{--                    <small class="text-danger">{{ $message }}</small>--}}
-    {{--                    @enderror--}}
-
-    {{--                </div>--}}
-
-    {{--                @if(!empty($selectAttributes['data-default']))--}}
-    {{--                    <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-0 col-md-4 col-lg-4 col-xl-5 text-muted data-default-line-height my-sm-auto">--}}
-    {{--                        {{ $selectAttributes['data-default'] }}--}}
-    {{--                    </div>--}}
-    {{--                @endif--}}
-    {{--            </div>--}}
-
-
-    {{--        </div>--}}
-
-    {{--    @endif--}}
-    {{--    @if(isset($property->agency))--}}
+            @else
+                {{ Form::bsSelect2('video_host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null ,['required' => false,'placeholder' => 'Select video host']) }}
+                {{ Form::bsText('video_link', null, ['required' => false]) }}
+            @endif
+        </div>
+    @endif
     <div class="card-header theme-blue text-white">Property Advertisement Type</div>
     <div class="card-body">
         @if(isset($property->agency))
@@ -269,41 +228,43 @@
     <div class="agency_category">
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-{{--            @if(isset($property->agency))--}}
-                {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
-                    ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
-                {{Form::hidden('agency',isset($property->agency)?$property->agency->id:null)}}
-                <div class="agency-block">
-                    @if(isset($property->agency))
-                        <div class="row">
-                            <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
-                                <div class="my-2"> Agency Information</div>
+            {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
+                ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
+            {{Form::hidden('property_agency-error')}}
+            {{Form::hidden('property_user-error')}}
+
+            {{Form::hidden('agency',isset($property->agency)?$property->agency->id:null)}}
+            <div class="agency-block">
+                @if(isset($property->agency))
+                    <div class="row">
+                        <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
+                            <div class="my-2"> Agency Information</div>
+                        </div>
+                        <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
+                            <div class="col-md-6 my-2">
+                                <strong>Title: </strong>{{$property->agency->title}}
                             </div>
-                            <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
-                                <div class="col-md-6 my-2">
-                                    <strong>Title: </strong>{{$property->agency->title}}
-                                </div>
 
-                                <div class="col-md-6 my-2">
-                                    <strong>Address: </strong> {{$property->agency->address}}
-                                </div>
+                            <div class="col-md-6 my-2">
+                                <strong>Address: </strong> {{$property->agency->address}}
+                            </div>
 
-                                <div class="col-md-6 my-2">
-                                    <strong>City: </strong> {{$property->agency->city->name}}
-                                </div>
+                            <div class="col-md-6 my-2">
+                                <strong>City: </strong> {{$property->agency->city->name}}
+                            </div>
 
-                                <div class="col-md-6 my-2">
-                                    <strong>Phone: </strong> {{$property->agency->phone}}
-                                </div>
+                            <div class="col-md-6 my-2">
+                                <strong>Phone: </strong> {{$property->agency->phone}}
+                            </div>
 
-                                <div class="col-md-6 my-2">
-                                    <strong>Cell: </strong> {{$property->agency->cell}}
-                                </div>
+                            <div class="col-md-6 my-2">
+                                <strong>Cell: </strong> {{$property->agency->cell}}
                             </div>
                         </div>
-                    @endif
-                </div>
-{{--            @endif--}}
+                    </div>
+                @endif
+            </div>
+            {{--            @endif--}}
             <div id="agency-loading">
                 Fetching Agencies <i class="fa fa-spinner fa-spin" style="font-size:20px;"></i>
             </div>
@@ -313,29 +274,44 @@
 
         </div>
     </div>
+    <div id="agency-user-block">
+        <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
+        <div class="card-body">
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+            {{--            @if(count($users) > 0)--}}
+            <div class="agency-user-block" style="display: block">
+                <div class="form-group row">
+                    <label for="contact_person" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                        Contact Person
+                    </label>
+                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                        <select class="custom-select custom-select-sm valid" aria-describedby="contact_person-error" aria-invalid="false"
+                                id="contact_person" name="contact_person" required="required"
+                                style="border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;">
+                            @foreach($users as $key=>$option)
+                                <option {{$option === $property->contact_person? 'selected' : '' }} value={{$key}} data-name={{$option}}>{{$option}}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-    <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
-    <div class="card-body">
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
-        <div class="agency-user-block" style="display: none">
-            {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
-        </div>
+                </div>
+            </div>
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
 
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
 
-        <div class="contact-person-block" style="display: block">
-            {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : \Illuminate\Support\Facades\Auth::user()->name, ['required' => true, 'id'=>'contact_person_input']) }}
-        </div>
+            <div class="contact-person-block" style="display: none">
+                {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : '', ['required' => true, 'id'=>'contact_person_input']) }}
+            </div>
+            <div class="user-details-block" style="display:block">
+                {{ Form::bsIntlTel('phone_#',isset($property->phone)? $property->phone:'', ['id'=>'phone']) }}
 
-        <div class="user-details-block" style="display:block">
-            {{ Form::bsIntlTel('phone_#', isset($property->phone) ? $property->phone:null, ['id'=>'phone']) }}
-            {{Form::hidden('phone_check')}}
+                {{Form::hidden('phone_check')}}
 
-            {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
-            {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
+                {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell :'',  ['required' => true,'id'=>'cell']) }}
+                {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email :'', ['required' => true]) }}
+            </div>
         </div>
     </div>
-
     <div class="card-header theme-blue text-white text-capitalize">Property Package</div>
     <div class="card-body">
         @if($property->basic_listing)
@@ -360,6 +336,9 @@
         <div id="reason-of-rejection" style="display: none">
             {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}
         </div>
+        @if($property->location->is_active == 0)
+            <div class="m-0 pb-2" id="verification-badge" style=""><i class="fas fa-warning color-red"></i> <span class="mx-1 color-red font-12">Verify Property Location</span></div>
+        @endif
     </div>
 
     <div class="card-footer">
@@ -389,41 +368,4 @@
 
 <!--Agencies modal-->
 
-<div class="modal fade" id="agenciesModalCenter" tabindex="-1" role="dialog" aria-labelledby="agenciesModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 800px">
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Select Agencies</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <!--Body-->
-            <div class="modal-body" id="features-model">
-                <div class="card my-2">
-                    <div class="card-header theme-blue text-white">
-                        Select Agency
-                    </div>
-                    <div class="card-body">
-                        <table class="display" style="width: 100%" id="agencies-table">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>city</th>
-                                <th>Address</th>
-                                <th>Cell</th>
-                                <th>Phone</th>
-                                <th>Controls</th>
-                            </tr>
-                            </thead>
-                            <tbody id="agencies-table-body">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+

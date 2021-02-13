@@ -192,7 +192,7 @@
                                     <option disabled selected>Select property</option>
                                     @if(count($properties) > 0)
                                         @foreach($properties as $property)
-                                            <option value="{{$property->id}}" {{ (old('property_id') == $property->id) ? ' selected' : '' }}>{{$property->id}}</option>
+                                            <option value="{{$property->id}}" {{ (old('property_id') == $property->id) ? ' selected' : '' }}>{{$property->id}} - {{$property->title}}</option>
                                         @endforeach
                                     @endif
 
