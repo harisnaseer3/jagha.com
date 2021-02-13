@@ -914,6 +914,8 @@
             if ($('input[name="property_type-error"]').val() !== '') {
                 property_type = $('input[name="property_type-error"]').val();
                 $("input[name=property_type][value=" + property_type + "]").prop('checked', true);
+
+
             }
             if ($('input[name="property_subtype-error"]').val() !== '') {
                 if ($('input[name="property_subtype-error"]').val() === 'Homes') {
@@ -935,9 +937,14 @@
                         getCityLocations(city, selected_location);
                 }
 
+
             }
             if ($('input[name="property_agency-error"]').val() !== '') {
                 getAgencyUsersOnError($('input[name="property_agency-error"]').val());
+            }else{
+                //get user data
+                console.log('calling');
+                getUserData($('#contact_person').val());
             }
 
 
