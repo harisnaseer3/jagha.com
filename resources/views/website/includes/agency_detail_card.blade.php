@@ -33,7 +33,8 @@
                         </div>
                         <div class="col-sm-8">
                              <span class="{{$agency_property_count > 0 ? 'float-left':'float-right'}} property-title text-transform mb-2">
-                                {{str_replace('-','',$agency_detail->cell)}}
+{{--                                {{str_replace('-','',$agency_detail->cell)}}--}}
+                                {{$agency_detail->cell}}
                             </span>
                         </div>
                     </div>

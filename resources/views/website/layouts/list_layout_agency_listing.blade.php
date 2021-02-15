@@ -154,7 +154,7 @@
                             <tr>
                                 <td class="w-30">Mobile</td>
                                 @if(isset($agency->cell) && $agency->cell  !== '')
-                                    <td class="w-70 font-weight-bold">{{ str_replace('-','',$agency->cell)}}  {{isset($agency->optional_number) ? ' ,'.str_replace('-','',$agency->optional_number) : ''}}</td>
+                                    <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number : ''}}</td>
                                 @else
                                     <td class="font-weight-bold"> -</td>
                                 @endif
@@ -163,7 +163,7 @@
                                 <td>Phone No</td>
 
                                 @if(isset($agency->phone) && $agency->phone !== '')
-                                    <td class="font-weight-bold">{{str_replace('-','',$agency->phone)}}</td>
+                                    <td class="font-weight-bold">{{$agency->phone}}</td>
                                 @else
                                     <td class="font-weight-bold"> -</td>
                                 @endif

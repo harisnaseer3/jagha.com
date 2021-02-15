@@ -223,11 +223,11 @@
                                         @if(isset($property->phone))
 
                                             <div class="col-md-4 col-sm-6 mb-3 fs-14">
-                                                <strong>Phone: </strong>{{str_replace('-','',$property->phone)}}
+                                                <strong>Phone: </strong>{{$property->phone}}
                                             </div>
                                         @elseif(isset($property->cell) && $property->cell != '' )
                                             <div class="col-md-4 col-sm-6 mb-3 fs-14">
-                                                <strong>Phone: </strong>{{str_replace('-','',$property->cell)}}
+                                                <strong>Phone: </strong>{{$property->cell}}
                                             </div>
                                         @endif
 
