@@ -937,13 +937,8 @@
                 getAgencyUsersOnError($('input[name="property_agency-error"]').val());
             } else if ($('#contact_person').val() !== null) {
                 //get user data
-
                 getUserData($('#contact_person').val());
-                // else{
-                //     // console.log('called');
-                //     getUserData($('input[name="contact_person"]').val());
-                // }
-
+                console.log($('#contact_person').val());
             }
 
 
@@ -1221,23 +1216,5 @@
             $body.css("overflow", "auto");
             $body.width("auto");
         });
-
-        //on update form
-        // if ( $('#phone').val() !== '' && $("input[name='phone']").val() === '') {
-        //
-        //     // let keyupEvent = new Event('keyup');
-        //     $('#phone').change();
-        //     // $("input[name='phone']").val(phone_num.val());
-        //
-        // }
-        // if ( $('#cell').val() !== '' && $("input[name='mobile']").val() === '') {
-        //     // $("input[name='mobile']").val(mobile_num.val());
-        //     $('#cell').change();
-        //     console.log('hh');
-        //     // var it_2 = window.intlTelInputGlobals.getInstance(selected_input_field_cell);
-        //     // $("input[name='mobile']").val(it_2.getNumber());
-        //     // console.log(it_2.getNumber());
-        //     // mobile_num.trigger('change');
-        // }
     })
 (jQuery);
