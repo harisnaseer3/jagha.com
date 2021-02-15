@@ -211,12 +211,23 @@
                                                 <strong>Bedrooms: </strong>{{ number_format($property->bedrooms) }}
                                             </div>
                                         @endif
-                                        <div class="col-md-4 col-sm-6 mb-3 fs-14">
-                                            <strong>Listed By: </strong>{{$property->contact_person}}
-                                        </div>
+                                        @if(isset($property->contact_person) && $property->contact_person !== '')
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Listed By: </strong>{{ucwords($property->contact_person)}}
+                                            </div>
+                                        @elseif(isset($property->agency->ceo_name) && $property->agency->ceo_name !== '')
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Listed By: </strong>{{ucwords($property->agency->ceo_name)}}
+                                            </div>
+                                        @endif
                                         @if(isset($property->phone))
+
                                             <div class="col-md-4 col-sm-6 mb-3 fs-14">
                                                 <strong>Phone: </strong>{{$property->phone}}
+                                            </div>
+                                        @elseif(isset($property->cell) && $property->cell != '' )
+                                            <div class="col-md-4 col-sm-6 mb-3 fs-14">
+                                                <strong>Phone: </strong>{{$property->cell}}
                                             </div>
                                         @endif
 
@@ -372,7 +383,7 @@
                                                 </div>
                                             @endif
                                             @if($property->agency->ceo_name !== null)
-                                                <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{$property->agency->ceo_name}} </span></div>
+                                                <div style="font-size: 14px !important;"><i class="fas fa-user p-1"></i><span>{{ucwords($property->agency->ceo_name)}} </span></div>
                                             @endif
                                         </div>
                                     </div>

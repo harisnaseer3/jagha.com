@@ -136,7 +136,7 @@
                                                                     <td>{{ $all_listing->address }}</td>
                                                                     <td class="pr-3">{{ $all_listing->city}}</td>
                                                                     <td>{{ $all_listing->website }}</td>
-                                                                    <td>{{ $all_listing->phone }}</td>
+                                                                    <td>{{ str_replace('-','',$all_listing->cell) }}</td>
                                                                     {{--                                                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                     @if($params['status'] == 'pending_agencies')

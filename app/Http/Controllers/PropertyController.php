@@ -6,6 +6,7 @@ use App\Events\NewPropertyActivatedEvent;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
+use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Account;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
@@ -291,8 +292,8 @@ class PropertyController extends Controller
                 'area_in_new_marla' => $area_values['new_marla'],
                 'area_in_kanal' => $area_values['kanal'],
                 'area_in_new_kanal' => $area_values['new_kanal'],
-                'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null  ? $request->input('bedrooms') : 0,
-                'bathrooms' => $request->has('bathrooms')  && $request->input('bathrooms') != null? $request->input('bathrooms') : 0,
+                'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null ? $request->input('bedrooms') : 0,
+                'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') != null ? $request->input('bathrooms') : 0,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
@@ -584,9 +585,10 @@ class PropertyController extends Controller
 
             }
 
-            $user = User::where('id', '=', $property->user_id)->first();
-            $user->notify(new PropertyStatusChange($property));
-            Notification::send($user, new PropertyStatusChangeMail($property));
+//            $user = User::where('id', '=', $property->user_id)->first();
+//            $user->notify(new PropertyStatusChange($property));
+//            Notification::send($user, new PropertyStatusChangeMail($property));
+            $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
@@ -623,10 +625,11 @@ class PropertyController extends Controller
                 $property->activated_at = null;
                 $property->save();
 
-                $user = User::where('id', '=', $property->user_id)->first();
-                $user->notify(new PropertyStatusChange($property));
-
-                Notification::send($user, new PropertyStatusChangeMail($property));
+//                $user = User::where('id', '=', $property->user_id)->first();
+//                $user->notify(new PropertyStatusChange($property));
+//
+//                Notification::send($user, new PropertyStatusChangeMail($property));
+                $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
 //                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();

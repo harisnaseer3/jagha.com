@@ -77,7 +77,7 @@
                                                             <td>{{ $all_listing->address }}</td>
                                                             <td class="pr-3">{{ $all_listing->city}}</td>
                                                             <td>{{ $all_listing->website }}</td>
-                                                            <td>{{ $all_listing->phone }}</td>
+                                                            <td>{{ str_replace('-','', $all_listing->cell) }}</td>
                                                             <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a')  }}</td>
                                                             @if($params['status'] == 'pending_agencies')
                                                                 <td>
@@ -277,14 +277,14 @@
                                                                     @endif
                                                                 @elseif($params['status'] == 'deleted_agencies')
                                                                     @if(Auth::guard('web')->user()->id == $key_listing->user_id)
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn mb-1"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="Restore Agency"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$key_listing->id}}">
-                                                                        <i class="fas fa-redo-alt color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
-                                                                        @endif
+                                                                        <a type="button" class="btn btn-sm btn-success color-black restore-btn mb-1"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="Restore Agency"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$key_listing->id}}">
+                                                                            <i class="fas fa-redo-alt color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
                                                             </td>
                                                         </tr>
@@ -362,42 +362,43 @@
                                                                         <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                     </a>
                                                                     @if(Auth::guard('web')->user()->id == $featured_listing->user_id)
-                                                                    <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning mb-1"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="Edit Agency">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="Delete Agency"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$featured_listing->id}}">
-                                                                        <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                        @endif
+                                                                        <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning mb-1"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Edit Agency">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="Delete Agency"
+                                                                           data-toggle="modal" data-target="#delete"
+                                                                           data-record-id="{{$featured_listing->id}}">
+                                                                            <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                    @endif
                                                                 @elseif($params['status'] != 'deleted_agencies')
 
                                                                     @if(Auth::guard('web')->user()->id == $featured_listing->user_id)
-                                                                    <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning mb-1"
-                                                                       data-toggle-1="tooltip"
-                                                                       data-placement="bottom" title="Edit Agency">
-                                                                        <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
-                                                                    </a>
-                                                                    <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
-                                                                       data-toggle="modal" data-target="#delete"
-                                                                       data-record-id="{{$featured_listing->id}}">
-                                                                        <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                    </a>
-                                                                        @endif
+                                                                        <a type="button" href="{{route('agencies.edit', $featured_listing->id)}}" class="btn btn-sm btn-warning mb-1"
+                                                                           data-toggle-1="tooltip"
+                                                                           data-placement="bottom" title="Edit Agency">
+                                                                            <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                           data-toggle="modal" data-target="#delete"
+                                                                           data-record-id="{{$featured_listing->id}}">
+                                                                            <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                        </a>
+                                                                    @endif
                                                                 @elseif($params['status'] == 'deleted_agencies')
                                                                     @if(Auth::guard('web')->user()->id == $featured_listing->user_id)
-                                                                    <a type="button" class="btn btn-sm btn-success color-black restore-btn mb-1 {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
-                                                                       data-toggle-1="tooltip" data-placement="bottom"
-                                                                       title="Restore Agency"
-                                                                       href="javascript:void(0)"
-                                                                       data-record-id="{{$featured_listing->id}}">
-                                                                        <i class="fas fa-redo-alt color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
-                                                                    </a>
-                                                                        @endif
+                                                                        <a type="button"
+                                                                           class="btn btn-sm btn-success color-black restore-btn mb-1 {{$params['status'] == 'deleted' ?'':'anchor-disable'}}"
+                                                                           data-toggle-1="tooltip" data-placement="bottom"
+                                                                           title="Restore Agency"
+                                                                           href="javascript:void(0)"
+                                                                           data-record-id="{{$featured_listing->id}}">
+                                                                            <i class="fas fa-redo-alt color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Restore</span>
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
                                                             </td>
                                                         </tr>

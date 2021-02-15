@@ -10,7 +10,12 @@
             {{--            <div class="col-sm-12">--}}
             @if($agency_property_count > 0)
                 <div class="col-sm-6">
-                    <span class="float-left property-title text-transform mb-2">Total Properties {{$agency_property_count}}</span>
+                    <div class="row">
+                        <div class="col-sm-4"><span class="float-left property-title text-transform mb-2">Total Properties</span>
+                        </div>
+                        <div class="col-sm-8"><span class="float-left property-title text-transform mb-2">{{$agency_property_count}}</span>
+                        </div>
+                    </div>
                 </div>
             @endif
             <div class="col-sm-6">
@@ -18,9 +23,22 @@
                     Since {{ (new \Illuminate\Support\Carbon($agency_detail->created_at))->diffForHumans(['parts' => 2]) }}</div>
             </div>
             {{--            </div>--}}
-            @if($agency_detail->cell !== '')
+            @if(isset($agency_detail->cell) && $agency_detail->cell  !== '')
                 <div class="col-sm-6">
-                    <div class="{{$agency_property_count > 0 ? 'float-left':'float-right'}} property-title text-transform mb-2">Contact # {{$agency_detail->cell}}</div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <span class="{{$agency_property_count > 0 ? 'float-left':'float-right'}} property-title text-transform mb-2">
+                                Contact #
+                            </span>
+                        </div>
+                        <div class="col-sm-8">
+                             <span class="{{$agency_property_count > 0 ? 'float-left':'float-right'}} property-title text-transform mb-2">
+{{--                                {{str_replace('-','',$agency_detail->cell)}}--}}
+                                {{$agency_detail->cell}}
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
             @endif
 

@@ -42,9 +42,10 @@
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
                 <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
-                    <img src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                         alt="{{$property->sub_type}} for {{$property->purpose}}"
-                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
+                    <img
+                        src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                        alt="{{$property->sub_type}} for {{$property->purpose}}"
+                        title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
                     @if($property->platinum_listing == 1)
                         <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>
                     @elseif($property->golden_listing == 1)
@@ -54,7 +55,13 @@
                     @elseif($property->bronze_listing  == 1)
                         <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>
                     @endif
-                    <div class="listing-time opening" aria-label="purpose label">For {{ $property->purpose }}</div>
+                    <div class="listing-time opening" aria-label="purpose label">
+                        @if( $property->purpose === 'Wanted')
+                            {{ $property->purpose }} Property
+                        @else
+                            For {{ $property->purpose }}
+                        @endif
+                    </div>
                     <div class="price-ratings-box">
                         @if($property->price != 0)
                             <p class="price">
@@ -303,14 +310,20 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                <td class="w-70 font-weight-bold">{{ $property->cell !== null  ? $property->cell: '-'}}</td>
+                                @if(isset($property->phone) && $property->phone !== '')
+                                    <td class="w-70 font-weight-bold">{{ isset($property->cell) && $property->cell !== '' ? str_replace('-','',$property->cell): '-'}}</td>
+                                @elseif(isset($property->agency_cell) && $property->agency_cell !== '')
+                                    <td class="w-70 font-weight-bold">{{ $property->agency_cell}}</td>
+                                @else
+                                    <td class="font-weight-bold">-</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td>Phone No</td>
-                                @if($property->phone !== null)
+                                @if(isset($property->phone) && $property->phone !== '')
                                     <td class="font-weight-bold">{{$property->phone}}</td>
-                                @elseif($property->agency_phone !== null)
-                                    <td class="font-weight-bold">{{$property->phone}}</td>
+                                @elseif(isset($property->agency_phone) && $property->agency_phone !== '')
+                                    <td class="font-weight-bold">{{$property->agency_phone}}</td>
                                 @else
                                     <td class="font-weight-bold">-</td>
                                 @endif

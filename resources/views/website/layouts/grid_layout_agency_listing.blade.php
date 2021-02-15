@@ -2,7 +2,7 @@
 <div class="option-bar">
     <div class="float-left">
         <h4>
-{{--            <span class="heading-icon"><i class="fa fa-th-large"></i></span>--}}
+            {{--            <span class="heading-icon"><i class="fa fa-th-large"></i></span>--}}
             <span class="title-name ml-2 text-transform">Partners Grid</span>
         </h4>
     </div>
@@ -55,8 +55,9 @@
                            </span>
                             @endif
                         </div>
-                        <img src="{{ isset($agency->logo)&& $agency->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                             alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
+                        <img
+                            src="{{ isset($agency->logo)&& $agency->user_id !== 1? asset('thumbnails/agency_logos/'.explode('.',$agency->logo)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                            alt="{{$agency->title}}" title="{{$agency->title}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
                     </a>
                 </div>
                 <div class="detail">
@@ -90,7 +91,8 @@
                     @if($agency->email !== null)
                         <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
                     @else
-                        <div class="col-sm-6 p-1"  data-toggle="tooltip" data-placement="top" data-html="true" title= "<div>Currently not available</div>"><a class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+                        <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                                class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
 
                     @endif
                 </div>
@@ -119,8 +121,8 @@
                                 <tbody>
                                 <tr>
                                     <td class="w-30">Mobile</td>
-                                    @if($agency->cell !== null)
-                                        <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number : ''}}</td>
+                                    @if(isset($agency->cell) && $agency->cell !== '')
+                                        <td class="w-70 font-weight-bold">{{ $agency->cell}}  {{isset($agency->optional_number) ? ' ,'.$agency->optional_number: ''}}</td>
                                     @else
                                         <td class="font-weight-bold"> -</td>
                                     @endif
@@ -128,7 +130,7 @@
                                 <tr>
                                     <td>Phone No</td>
 
-                                    @if($agency->phone !== null)
+                                    @if(isset($agency->phone) && $agency->phone !== '')
                                         <td class="font-weight-bold">{{$agency->phone}}</td>
                                     @else
                                         <td class="font-weight-bold"> -</td>

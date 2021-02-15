@@ -29,7 +29,7 @@ class AgencyRejectionMail extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -40,20 +40,24 @@ class AgencyRejectionMail extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
         $user_id = $this->agency->user_id;
-        $user = User::where('id',$user_id)->first();
+        $user = User::where('id', $user_id)->first();
         return (new MailMessage)
             ->subject('Agency Rejection Notification')
-            ->view('website.custom-emails.notification-email-template',[
+            ->view('website.custom-emails.rejection-notification-email-template', [
                 'user' => $user,
                 'title' => 'Agency Rejection On About Pakistan Properties',
-                'content' => "Agency of ID = {$this->agency->id} titled as {$this->agency->title} and has been rejected by the Admin due to the reason of {$this->reason}.",
-                'infoText'   => 'Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.'
+                'content1' => "Agency",
+                'content2' => "by the Admin due to the reason of {$this->reason}.",
+                'data_id' => $this->agency->id,
+                'data_title' => $this->agency->title,
+                'data_status' => 'Rejected',
+                'infoText' => 'Please contact our Admin on info@aboutpakistan.com with agency/property ID to resolve the issue.'
             ]);
 
     }
@@ -61,7 +65,7 @@ class AgencyRejectionMail extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function toArray($notifiable)

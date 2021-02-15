@@ -79,7 +79,7 @@
                                                                 <tr class="{{ $inbox->read_at == null? 'unread':''}}">
                                                                     <td>{{$inbox->name}}</td>
                                                                     <td>{{$inbox->email}}</td>
-                                                                    <td>{{$inbox->cell}}</td>
+                                                                    <td>{{str_replace('-','',$inbox->cell)}}</td>
                                                                     <td>{{$inbox->type}}</td>
                                                                     <td>{{$inbox->ip_location}}</td>
                                                                     <td>{{\Illuminate\Support\Str::limit(strip_tags(strtolower($inbox->message)), 30, $end='.....')}}

@@ -36,11 +36,11 @@
 
                 </div>
                 <div class="col-lg-3 col-xl-3">
-                <div class="custom-control custom-radio custom-control-inline align-items-center">
-                    <input class="custom-control-input" type="radio" name="i am" id="i am_radio_1" value="Agent" aria-describedby="i am-error">
-                    <label class="custom-control-label" style="line-height:1.2rem;" for="i am_radio_1">
-                        Agent </label>
-                </div>
+                    <div class="custom-control custom-radio custom-control-inline align-items-center">
+                        <input class="custom-control-input" type="radio" name="i am" id="i am_radio_1" value="Agent" aria-describedby="i am-error">
+                        <label class="custom-control-label" style="line-height:1.2rem;" for="i am_radio_1">
+                            Agent </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
         @endif
         <div class="text-center">
             @if($property->email == null)
-                <div  data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                <div data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
                         class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
             @else
                 {{ Form::submit('Email', ['class' => 'btn search-submit-btn btn-block btn-email','id'=>'send-mail']) }}
@@ -95,14 +95,20 @@
                         <tbody>
                         <tr>
                             <td class="w-30">Mobile</td>
-                            <td class="w-70 font-weight-bold">{{ $property->cell !== null ? $property->cell: '-'}}</td>
+                            @if(isset($property->phone) && $property->phone !== '')
+                                <td class="w-70 font-weight-bold">{{ isset($property->cell) && $property->cell !== '' ? str_replace('-','',$property->cell): '-'}}</td>
+                            @elseif(isset($property->agency->cell) && $property->agency->cell !== '')
+                                <td class="w-70 font-weight-bold">{{ $property->agency->cell}}</td>
+                            @else
+                                <td class="font-weight-bold">-</td>
+                            @endif
                         </tr>
                         <tr>
                             <td>Phone No</td>
-                            @if($property->phone !== null)
+                            @if(isset($property->phone) && $property->phone !== '')
                                 <td class="font-weight-bold">{{$property->phone}}</td>
-                            @elseif($property->agency_cell !== null)
-                                <td class="font-weight-bold">{{$property->agency_cell}}</td>
+                            @elseif(isset($property->agency->phone) && $property->agency->phone !== '')
+                                <td class="font-weight-bold">{{$property->agency->phone}}</td>
                             @else
                                 <td class="font-weight-bold">-</td>
                             @endif

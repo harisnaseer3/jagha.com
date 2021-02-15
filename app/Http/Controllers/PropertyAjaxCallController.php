@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
@@ -39,8 +40,10 @@ class PropertyAjaxCallController extends Controller
             $location = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
 //            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
 
-            $user = User::where('id', '=', $property->user_id)->first();
-            $user->notify(new PropertyStatusChange($property));
+//            $user = User::where('id', '=', $property->user_id)->first();
+//            $user->notify(new PropertyStatusChange($property));
+            $this->dispatch(new SendNotificationOnPropertyUpdate($property));
+
 
 
             (new CountTableController)->_insert_in_status_purpose_table($property);

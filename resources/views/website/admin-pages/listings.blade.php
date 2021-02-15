@@ -145,7 +145,7 @@
                                                                                 @endif
                                                                                 <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
                                                                                 <td>{{$all_listing->contact_person}}</td>
-                                                                                <td>{{$all_listing->cell}}</td>
+                                                                                <td>{{str_replace('-','',$all_listing->cell)}}</td>
                                                                                 <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
 
                                                                                 {{--                                                                                <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->isoFormat('MMMM Do YYYY, h:mm:ss a') }}</td>--}}
