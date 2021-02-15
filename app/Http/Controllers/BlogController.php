@@ -21,7 +21,7 @@ class BlogController extends Controller
         (new MetaTagController())->addMetaTagsOnBlog();
 
         $result = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
-                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
+                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'property\' AS `source`, `post_content`
                     FROM `wp_posts`
                         LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
@@ -54,7 +54,7 @@ class BlogController extends Controller
     {
 
         $result = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
-                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
+                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'property\' AS `source`, `post_content`
                     FROM `wp_posts`
                         LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
@@ -72,7 +72,7 @@ class BlogController extends Controller
 
 
         $similar_result = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
-                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
+                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'property\' AS `source`, `post_content`
                     FROM `wp_posts`
                         LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
@@ -105,7 +105,7 @@ class BlogController extends Controller
             if ($request->id > 0) {
                 $prev_id = $request->input('id');
                 $more_results = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
-                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
+                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`, `wp_users`.`display_name` AS `author`, `post_date`, \'property\' AS `source`, `post_content`
                     FROM `wp_posts`
                         LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
                         LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
@@ -172,7 +172,7 @@ class BlogController extends Controller
 
 
 //        $blogs = DB::connection('mysql2')->select('SELECT `t1`.*, `t2`.`image` FROM (
-//                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`,SUM(`wp_statistics_pages`.`count`) AS `view_count`, `wp_users`.`display_name` AS `author`, `post_date`, \'medical\' AS `source`, `post_content`
+//                    SELECT `wp_posts`.`ID` AS `id`, `wp_terms`.`name` AS `category`,`post_title`,SUM(`wp_statistics_pages`.`count`) AS `view_count`, `wp_users`.`display_name` AS `author`, `post_date`, \'property\' AS `source`, `post_content`
 //                    FROM `wp_posts`
 //                        LEFT JOIN `wp_term_relationships` ON `wp_posts`.`ID` = `wp_term_relationships`.`object_id`
 //                        LEFT JOIN `wp_term_taxonomy` ON `wp_term_relationships`.`term_taxonomy_id` = `wp_term_taxonomy`.`term_taxonomy_id`
