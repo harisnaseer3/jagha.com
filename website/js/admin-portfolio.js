@@ -842,7 +842,6 @@
             });
 
 
-
             $.validator.addMethod('empty', function (value, element, param) {
                 return (value === '');
             });
@@ -936,11 +935,10 @@
             }
             if ($('input[name="property_agency-error"]').val() !== '') {
                 getAgencyUsersOnError($('input[name="property_agency-error"]').val());
-            } else if ($('input[name="purpose-error"]').val() !== '') {
-
+            } else if ($('#contact_person').val() !== null) {
                 //get user data
-                if ($('#contact_person').val() !== null)
-                    getUserData($('#contact_person').val());
+
+                getUserData($('#contact_person').val());
                 // else{
                 //     // console.log('called');
                 //     getUserData($('input[name="contact_person"]').val());
