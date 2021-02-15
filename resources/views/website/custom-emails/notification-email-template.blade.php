@@ -327,7 +327,8 @@
                                                 {{$content1}} titled
                                                 <span style="font-weight: bold;">{{ucwords($data_title)}}</span> and ID
                                                 <span style="font-weight: bold;">{{$data_id}}</span> has been changed to
-                                                <span style="font-weight: bold;">{{ucwords($data_status)}} {{$content2}}</span>
+                                                <span style="font-weight: bold;">{{ucwords($data_status)}}</span>
+                                                <span>{{$content2}}</span>
                                             </span>
                                             <br>
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">

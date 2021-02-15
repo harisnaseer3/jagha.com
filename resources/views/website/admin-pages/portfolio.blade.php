@@ -64,6 +64,7 @@
     <script src="{{asset('website/js/script-modal-features.js')}}"></script>
     <script src="{{asset('website/js/admin-portfolio.js')}}"></script>
 {{--    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>--}}
+
 @endsection
 
 @if($property->location->is_active == 0)
