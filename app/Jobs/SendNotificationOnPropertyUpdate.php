@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Dashboard\User;
 use App\Models\Property;
+use App\Notifications\PropertyRejectionMail;
 use App\Notifications\PropertyStatusChange;
 use App\Notifications\PropertyStatusChangeMail;
 use Illuminate\Bus\Queueable;
@@ -38,6 +39,9 @@ class SendNotificationOnPropertyUpdate implements ShouldQueue
     {
         $user = User::where('id', '=', $this->property->user_id)->first();
         $user->notify(new PropertyStatusChange($this->property));
-        Notification::send($user, new PropertyStatusChangeMail($this->property));
+        if ($this->property->status === 'rejected')
+            Notification::send($user, new PropertyRejectionMail($this->property, $this->property->rejection_reason));
+        else
+            Notification::send($user, new PropertyStatusChangeMail($this->property));
     }
 }

@@ -44,14 +44,18 @@ class AgencyStatusChangeMail extends Notification
     public function toMail($notifiable)
     {
         $user_id = $this->agency->user_id;
-        $user = User::where('id',$user_id)->first();
+        $user = User::where('id', $user_id)->first();
         return (new MailMessage)
             ->subject('Agency Status Update Notification')
-            ->view('website.custom-emails.notification-email-template',[
+            ->view('website.custom-emails.notification-email-template', [
                 'user' => $user,
                 'title' => 'About Pakistan Agency Status Update',
-                'content' => "Status of Agency titled {$this->agency->title} and ID {$this->agency->id} has been changed to {$this->agency->status}  on About Pakistan Properties",
-                'infoText'   => 'Thank you for using About Pakistan Properties!'
+                'data_title' => $this->agency->title,
+                'data_id' => $this->agency->id,
+                'data_status' => $this->agency->status,
+                'content1' => "Status of Agency",
+                'content2' => "on About Pakistan Properties",
+                'infoText' => 'Thank you for using About Pakistan Properties!'
             ]);
     }
 

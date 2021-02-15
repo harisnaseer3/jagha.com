@@ -315,48 +315,23 @@
 
                                             <h3 class="name"
                                                 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
-                                                Hello {{ucwords($user->name)}}</h3>
+                                                @if(isset($user->name))
+                                                    Hello {{ucwords($user->name)}}
+                                                @else
+                                                    Hello {{ucwords($user)}}
+                                                @endif
+                                            </h3>
                                             <br>
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$content}}</span>
+                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                                {{$content1}} of ID
+                                                <span style="font-weight: bold">{{$data_id}}</span> and Title
+                                                <span style="font-weight: bold">{{ucwords($data_title)}} </span> has been
+                                                <span style="font-weight: bold">{{ucwords($data_status)}} </span> by the Admin due to the reason of
+                                                <span style="font-weight: bold">{{$content2}}.</span>
+                                            </span>
                                             <br>
-                                            <br>
-                                            <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                                                <tr>
-                                                    <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
-                                                        <a href="{{$url}}" target="_blank"
-                                                           style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
-                                                            <table>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td style="color:#ffffff ">
-                                                                        {{$buttonText}}
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
-                                            <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                <a href="{{$url}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
-                                                    <table>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td style="color: #17bebb;">
-                                                                {{$url}}
-                                                            </td>
-                                                        </tr>
-
-                                                        </tbody>
-
-                                                    </table>
-
-                                                </a>
-                                            </p>
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$infoText}}</span>
                                                 <h3 class="name"
                                                     style="margin-top: 30px;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;font-weight: 400;margin-bottom: 0;">
                                                     Regards,</h3>
