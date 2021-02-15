@@ -303,11 +303,11 @@
                 {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : '', ['required' => true, 'id'=>'contact_person_input']) }}
             </div>
             <div class="user-details-block" style="display:block">
-                {{ Form::bsIntlTel('phone_#',isset($property->phone)? $property->phone:'', ['id'=>'phone']) }}
+                {{ Form::bsIntlTel('phone_#',isset($property->phone)? $property->phone:'', ['id'=>'phone','value'=>isset($property->phone)?$property->phone:'']) }}
 
                 {{Form::hidden('phone_check')}}
 
-                {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell :'',  ['required' => true,'id'=>'cell']) }}
+                {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell :'',  ['required' => true,'id'=>'cell','value'=>isset($property->cell)?$property->cell:'']) }}
                 {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email :'', ['required' => true]) }}
             </div>
         </div>
@@ -333,6 +333,7 @@
     <div class="card-body">
         {{ Form::bsSelect2('status', ['active' => 'Active', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
           isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
+
         <div id="reason-of-rejection" style="display: none">
             {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}
         </div>

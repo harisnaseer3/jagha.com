@@ -11,7 +11,8 @@
         {{ Form::tel($name, $value, array_merge(['class' => 'form-control form-control-sm', 'aria-describedby' => $name . '-error', 'aria-invalid' => 'false'], $attributes)) }}
         <span id="{{'valid-msg-'.explode("_",$name)[0]}}" class="hide validated mt-2">✓ Valid</span>
         <span id="{{'error-msg-'.explode("_",$name)[0]}}" class="hide error mt-2"></span>
-        <input class="form-control" name="{{explode("_",$name)[0]}}" type="hidden">
+        <input class="form-control" name="{{explode("_",$name)[0]}}" type="hidden"
+               value="{{!empty($attributes['value'])?$attributes['value']:''}}">
 
         @error($name)
         <small class="text-danger">{{ $message }}</small>
