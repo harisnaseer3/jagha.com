@@ -138,8 +138,8 @@
                             $('#phone').val(result.phone);
                             selected_input_field.dispatchEvent(keyupEvent);
                             // $('#phone').change();
-                            $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
-                            console.log('h1');
+                            // $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
+                            $('[name="phone"]').val(result.phone);
 
                         } else {
                             $('#phone').val('');
@@ -149,7 +149,6 @@
                                 document.querySelector("#valid-msg-phone"),
                                 $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
                             $('[name="phone"]').val('');
-                            console.log('h2');
 
                         }
                         if (result.cell !== null) {
@@ -164,8 +163,8 @@
                                 $('[name=mobile]'), '#mobile-error', "MOBILE");
                             $('[name="mobile_#"]').val(result.cell);
                             selected_input_field.dispatchEvent(keyupEvent);
-                            $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
-                            console.log('h3');
+                            // $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field).getNumber());
+                            $('[name="mobile"]').val(result.cell);
 
                         } else {
                             $('[name="mobile_#"]').val('');
@@ -176,9 +175,6 @@
                                 document.querySelector("#valid-msg-mobile"),
                                 $('[name=mobile]'), '#mobile-error', "MOBILE");
                             $('[name="mobile"]').val('');
-                            console.log('h4');
-
-
                         }
 
                         if (result.fax !== null) $('[name=fax]').val(result.fax); else $('[name=fax]').val('');
@@ -946,7 +942,6 @@
             else if ($('#contact_person').val() !== null) {
                 //get user data
                 getUserData($('#contact_person').val());
-                console.log($('#contact_person').val());
             }
 
 
