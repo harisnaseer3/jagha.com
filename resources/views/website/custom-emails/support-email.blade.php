@@ -330,12 +330,12 @@
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Thank you for using About Pakistan Properties.</span>
                                             @else
-                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an new support ticket. </span>
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">We have a new support ticket. </span>
                                                 <br>
                                             <br>
 
                                                 <span class="position"
-                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Please respond to the inquirer quickly and immediately.</span>
                                             @endif
                                             <br>
                                             <br>

@@ -317,7 +317,12 @@
                                                 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
                                                 Hello {{ucwords($user->name)}}</h3>
                                             <br>
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$content}}</span>
+                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                             {{$content1}}
+                                                <span style="font-weight: bold;">Title:  {{ucwords($data_title)}}</span> and
+                                                <span style="font-weight: bold;">ID: {{$data_id}}</span>
+                                                <span> has been added on our site.</span>
+                                            </span>
                                             <br>
                                             <br>
                                             <table border="0" cellspacing="0" cellpadding="0" width="100%">
