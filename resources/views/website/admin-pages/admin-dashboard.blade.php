@@ -125,7 +125,7 @@
                                                                 <tr>
                                                                     <th>Sr.</th>
                                                                     <th>Admin ID</th>
-                                                                    <th>Name</th>
+                                                                    <th>Admin Name</th>
                                                                     <th>Property ID</th>
                                                                     <th>Property Title</th>
                                                                     <th>Status</th>
@@ -165,7 +165,7 @@
                                                                 <tr>
                                                                     <th>Sr.</th>
                                                                     <th>Admin ID</th>
-                                                                    <th>Name</th>
+                                                                    <th>Admin Name</th>
                                                                     <th>Agency ID</th>
                                                                     <th>Agency Title</th>
                                                                     <th>Status</th>
