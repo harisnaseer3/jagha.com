@@ -162,6 +162,8 @@
                                                                                 @elseif($params['status'] === 'pending' )
                                                                                     <div class="badge badge-warning p-2 "><strong class="font-12">Pending For Verification</strong>
                                                                                     </div>
+                                                                                    {{--                                                                                @elseif($params['status'] === 'rejected')--}}
+                                                                                    {{--                                                                                    <div class="rejected-status"><strong>Rejected</strong></div>--}}
                                                                                 @else
                                                                                     <form>
                                                                                         @if($params['status'] != 'expired')
@@ -173,6 +175,9 @@
                                                                                                    data-id="{{ $all_listing->id }}">
                                                                                             <label for="active">Active</label>
                                                                                         @endif
+                                                                                            @if($params['status'] === 'rejected')
+                                                                                                <div class="rejected-status"><strong>Rejected</strong></div>
+                                                                                            @endif
                                                                                             <input type="radio" name="status" value="expired" class="mb-1"
                                                                                                    {{$all_listing->status === 'expired'? 'checked':'' }}
                                                                                                    {{$all_listing->status === 'sold'? 'checked':'' }}
