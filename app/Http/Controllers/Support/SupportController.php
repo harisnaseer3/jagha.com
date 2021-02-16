@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
 use Illuminate\Support\Facades\DB;
 
-//use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -57,10 +56,11 @@ class SupportController extends Controller
 
     public function sendSupportMail(Request $request)
     {
+
         $validator = Validator::make($request->all(), Support::$rules);
         if ($validator->fails()) {
-
-            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error inserting record, try again.');
+//            dd($validator);
+            return redirect()->back()->withInput()->withErrors($validator)->with('error', 'Error inserting record, try again.');
         }
         try {
 
@@ -69,13 +69,13 @@ class SupportController extends Controller
             $topic = null;
             $ticket_id = null;
             $inquire_type = $request->input('inquire_type');
-            $last_ticket_id =  (new CountTableController)->getSupportCountByType($inquire_type);
+            $last_ticket_id = (new CountTableController)->getSupportCountByType($inquire_type);
 
 
             if ($inquire_type === 'Property') {
                 $property_id = $request->input('property_id');
                 if ($last_ticket_id > 0) {
-                    $ticket_id = 'SP-'.str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
+                    $ticket_id = 'SP-' . str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
 
                 } else {
                     $ticket_id = 'SP-00000001';
@@ -85,16 +85,15 @@ class SupportController extends Controller
             } elseif ($inquire_type === 'Agency') {
                 $agency_id = $request->input('agency_id');
                 if ($last_ticket_id > 0) {
-                    $ticket_id = 'SA-'.str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
+                    $ticket_id = 'SA-' . str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
 
                 } else {
                     $ticket_id = 'SA-00000001';
 
                 }
-            }
-            else {
+            } else {
                 if ($last_ticket_id > 0) {
-                    $ticket_id = 'SO-'.str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
+                    $ticket_id = 'SO-' . str_pad($last_ticket_id + 1, 8, '0', STR_PAD_LEFT);
                 } else {
                     $ticket_id = 'SO-00000001';
 
@@ -116,9 +115,9 @@ class SupportController extends Controller
             (new CountTableController)->updateSupportCountByType($inquire_type);
             $user = Auth::guard('web')->user();
             event(new NotifyAdminOfSupportMessage($support));
-            event(new NotifyUserofSupportTicket($support,$user));
+            event(new NotifyUserofSupportTicket($support, $user));
 
-            return redirect()->back()->with('success', 'Support ticket '.$support->ticket_id. ' raised successfully.');
+            return redirect()->back()->with('success', 'Support ticket ' . $support->ticket_id . ' raised successfully.');
 
         } catch (Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
@@ -129,7 +128,7 @@ class SupportController extends Controller
     {
         $user = Auth::guard('web')->user()->getAuthIdentifier();
         $listings = Property::
-        select('properties.id', 'properties.agency_id','properties.title')
+        select('properties.id', 'properties.agency_id', 'properties.title')
             ->whereNull('properties.deleted_at');
         //if user owns agencies{}
         $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
@@ -141,19 +140,19 @@ class SupportController extends Controller
             $ceo_agent_agencies = DB::table('agency_users')
                 ->where('user_id', '=', $user)
                 ->whereNotIn('agency_id', $ceo_agencies)->pluck('agency_id')->toArray();
-            $ceo_listings = Property::select('properties.id', 'properties.agency_id','properties.title')
+            $ceo_listings = Property::select('properties.id', 'properties.agency_id', 'properties.title')
                 ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agencies)
                 ->whereIn('properties.user_id', $agency_users);
 
-            $ceo_agent_listings = Property::select('properties.id', 'properties.agency_id','properties.title')
+            $ceo_agent_listings = Property::select('properties.id', 'properties.agency_id', 'properties.title')
                 ->whereNull('properties.deleted_at')->whereIn('properties.agency_id', $ceo_agent_agencies)
                 ->where('properties.user_id', $user);
 
 
-            return [$ceo_listings->unionAll($listings)->unionAll($ceo_agent_listings), array_unique(array_merge($ceo_agencies,$ceo_agent_agencies)), $agent_agencies];
+            return [$ceo_listings->unionAll($listings)->unionAll($ceo_agent_listings), array_unique(array_merge($ceo_agencies, $ceo_agent_agencies)), $agent_agencies];
         } elseif ($agent_agencies > 0) {
             $agent_listings = Property::
-            select('properties.id', 'properties.agency_id','properties.title')
+            select('properties.id', 'properties.agency_id', 'properties.title')
                 ->whereNull('properties.deleted_at')
                 ->whereIn('properties.agency_id', $agent_agencies)
                 ->where('properties.user_id', $user);

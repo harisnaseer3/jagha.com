@@ -51,11 +51,11 @@
 
     $('#message').on('keyup', function () {
         const message = $('#message').val();
-        message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
+        message === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
     });
     $('#name').on('keyup', function () {
         const name = $('#name').val();
-        name.trim() === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
+        name === '' ? $('#nameHelp').slideDown() : $('#nameHelp').slideUp();
     });
     $('#your-email').on('keyup', function () {
         const email = $('#your-email').val();
@@ -64,7 +64,7 @@
     });
     $('#id').on('keyup', function () {
         const name = $('#id').val();
-        name.trim() === '' ? $('#idHelp').slideDown() : $('#idHelp').slideUp();
+        name=== '' ? $('#idHelp').slideDown() : $('#idHelp').slideUp();
     });
 
     function IsEmail(email) {
@@ -108,7 +108,7 @@
     }
 
 
-    // let form = $('#supportform');
+    let form = $('#supportform');
 
     $('#supportform').validate({
         rules: {
@@ -167,39 +167,6 @@
         }
     });
 
-    // $('#sendMessageButton').on('click', function (e) {
-    //     const url = $('#url').val();
-    //     const email = $('#your-email').val();
-    //     const message = $('#message').val();
-    //     const type = $('[name=inquire_type]').val();
-    //     const property_id = $('#property-id').val();
-    //     const agency_id = $('#agency-id').val();
-    //     if (email.trim() === '' || message.trim() === '') {
-    //         e.preventDefault();
-    //         email.trim() === '' ? $('#emailHelp').slideDown() : $('#emailHelp').slideUp();
-    //         message.trim() === '' ? $('#messageHelp').slideDown() : $('#messageHelp').slideUp();
-    //         return;
-    //     }
-    //
-    //     if (IsEmail(email) === false) {
-    //         e.preventDefault();
-    //         $('#emailHelp').html('Incorrect email format').slideDown();
-    //
-    //     }
-    //     if (type === 'Property' && property_id === null) {
-    //         e.preventDefault();
-    //         $('#propertyHelp').slideDown();
-    //         $('#agencyHelp').slideUp();
-    //     } else if (type === 'Agency' && agency_id === null) {
-    //         e.preventDefault();
-    //         $('#propertyHelp').slideUp();
-    //         $('#agencyHelp').slideDown();
-    //     }
-    //     if (message.length < 25) {
-    //         e.preventDefault();
-    //         $('#messageHelp').html('Minimum of 25 characters required').slideDown();
-    //     }
-    //
-    // });
+
 
 })(jQuery);

@@ -100,6 +100,7 @@
         .mt-support {
             margin-top: 40px;
         }
+
     </style>
 @endsection
 
@@ -137,10 +138,12 @@
                             </div>
                             <div class="form-group">
                                 <input class="form-control" id="name" name="name" type="text" readonly value="{{Auth::guard('web')->user()->name}}" required="required">
+                                @error('name')<span class="error help-block text-red">{{ $message }}</span>@enderror
                                 <p class="help-block text-danger" id="nameHelp" style="display:none;">Please specify your name</p>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" id="your-email" type="email" readonly name="email" value="{{Auth::guard('web')->user()->email}}" required="required">
+                                @error('email')<span class="error help-block text-red">{{ $message }}</span>@enderror
                                 <p class="help-block text-danger" id="emailHelp" style="display:none;">Please specify your email</p>
                             </div>
                             <div class="form-group">
@@ -184,6 +187,7 @@
                                             Other </label>
                                     </div>
                                 </div>
+                                @error('inquire_type') <span class="error help-block text-red">{{ $message }}</span> @enderror
                             </div>
                             <div class="form-group" id="property-div">
                                 <select class="custom-select custom-select-lg select2bs4 select2-hidden-accessible property-select2"
@@ -219,16 +223,20 @@
                                 <input class="form-control" id="topic" name="topic" type="text" placeholder="Support Topic" value="{{old('topic')}}">
                                 <p class="help-block text-danger" id="topicHelp" style="display:none;">Please specify Topic</p>
                             </div>
+                            @error('topic') <span class="error help-block text-red">{{ $message }}</span> @enderror
                             <p class="help-block text-danger" id="agencyHelp" style="display:none;">Please select agency</p>
 
                             <div class="form-group">
                                 <input class="form-control" id="url" name="url" type="url" placeholder="Url" value="{{old('url')}}">
                                 <p class="help-block text-danger" id="urlHelp" style="display:none;">Please specify url</p>
+                                @error('url')<span class="error help-block text-red">{{ $message }}</span>@enderror
                             </div>
 
                             <div class="form-group">
                                 <textarea class="form-control" id="message" name="message" placeholder="Your Message *" rows="8" required="required" minlength="25">{{old('message')}}</textarea>
+                                @error('message')<span class="error help-block text-red">{{ $message }} Avoid blank space in the end.</span>@enderror
                                 <p class="help-block text-danger" id="messageHelp" style="display:none;">Please specify your message</p>
+
                             </div>
 
                             <div class="form-group text-center">

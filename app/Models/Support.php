@@ -19,7 +19,7 @@ class Support extends Model
     public $table = 'supports';
 
     protected $fillable = [
-        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id','topic','ticket_id'
+        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id', 'topic', 'ticket_id'
     ];
 
     public static $rules = [
@@ -28,16 +28,20 @@ class Support extends Model
         'topic' => 'required_if:inquire_about,=,Other',
         'url' => 'nullable|url',
     ];
-    public static function getSupportById($id){
-        return Support::where('id',$id)->first();
+
+    public static function getSupportById($id)
+    {
+        return Support::where('id', $id)->first();
     }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public static function getSupportByType($type){
-        return (new Support)->where('inquire_about',$type)->orderBy('id','DESC')->count();
+
+    public static function getSupportByType($type)
+    {
+        return (new Support)->where('inquire_about', $type)->orderBy('id', 'DESC')->count();
 
     }
 

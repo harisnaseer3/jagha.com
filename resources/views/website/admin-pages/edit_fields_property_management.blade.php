@@ -312,23 +312,23 @@
             </div>
         </div>
     </div>
-    <div class="card-header theme-blue text-white text-capitalize">Property Package</div>
-    <div class="card-body">
-        @if($property->basic_listing)
-            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->bronze_listing)
-            {{ Form::bsRadio('property_package','Bronze', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->silver_listing)
-            {{ Form::bsRadio('property_package','Silver', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->golden_listing)
-            {{ Form::bsRadio('property_package','Golden', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->platinum_listing)
-            {{ Form::bsRadio('property_package','Platinum', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @else
-            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @endif
+{{--    <div class="card-header theme-blue text-white text-capitalize">Property Package</div>--}}
+{{--    <div class="card-body">--}}
+{{--        @if($property->basic_listing)--}}
+{{--            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}--}}
+{{--        @elseif($property->bronze_listing)--}}
+{{--            {{ Form::bsRadio('property_package','Bronze', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}--}}
+{{--        @elseif($property->silver_listing)--}}
+{{--            {{ Form::bsRadio('property_package','Silver', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}--}}
+{{--        @elseif($property->golden_listing)--}}
+{{--            {{ Form::bsRadio('property_package','Golden', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}--}}
+{{--        @elseif($property->platinum_listing)--}}
+{{--            {{ Form::bsRadio('property_package','Platinum', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}--}}
+{{--        @else--}}
+{{--            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}--}}
+{{--        @endif--}}
 
-    </div>
+{{--    </div>--}}
     <div class="card-header theme-blue text-white text-capitalize">Property Status</div>
     <div class="card-body">
         {{ Form::bsSelect2('status', ['active' => 'Active', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
