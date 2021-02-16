@@ -323,9 +323,9 @@
                                             </h3>
                                             <br>
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
-                                                {{$content1}} of ID
-                                                <span style="font-weight: bold">{{$data_id}}</span> and Title
-                                                <span style="font-weight: bold">{{ucwords($data_title)}} </span> has been
+                                                {{$content1}} of
+                                                <span style="font-weight: bold">ID: {{$data_id}}</span> and
+                                                <span style="font-weight: bold">Title: {{ucwords($data_title)}} </span> has been
                                                 <span style="font-weight: bold">{{ucwords($data_status)}} </span> by the Admin due to the reason of
                                                 <span style="font-weight: bold">{{$content2}}.</span>
                                             </span>

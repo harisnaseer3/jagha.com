@@ -46,16 +46,18 @@ class PendingPropertyNotification extends Notification
         $title = $this->property->title;
         $id = $this->property->id;
         $user_id = $this->property->user_id;
-        $user = User::where('id',$user_id)->first();
+        $user = User::where('id', $user_id)->first();
 
         return (new MailMessage)
-            ->view('website.custom-emails.notification-link-template',[
+            ->view('website.custom-emails.notification-link-template', [
                 'user' => $user,
                 'title' => 'A new Property is up on About Pakistan Properties!!',
-                'content' => "A new Property with ID {$id} and title {$title} has been added on our site.",
+                'content1' => "A new Property",
+                'data_title' => $title,
+                'data_id' => $id,
                 'url' => route('admin-properties-edit', $id),
                 'buttonText' => 'Activate Property',
-                'infoText'   => 'Thank you for using About Pakistan Properties.'
+                'infoText' => 'Thank you for using About Pakistan Properties.'
             ]);
 
     }

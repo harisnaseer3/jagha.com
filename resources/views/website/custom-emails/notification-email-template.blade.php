@@ -324,9 +324,9 @@
                                             <br>
 {{--                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{$content}}</span>--}}
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
-                                                {{$content1}} titled
-                                                <span style="font-weight: bold;">{{ucwords($data_title)}}</span> and ID
-                                                <span style="font-weight: bold;">{{$data_id}}</span> has been changed to
+                                                {{$content1}}
+                                                <span style="font-weight: bold;">Title:  {{ucwords($data_title)}}</span> and
+                                                <span style="font-weight: bold;">ID: {{$data_id}}</span> has been changed to
                                                 <span style="font-weight: bold;">{{ucwords($data_status)}}</span>
                                                 <span>{{$content2}}</span>
                                             </span>
