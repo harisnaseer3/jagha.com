@@ -234,7 +234,7 @@
 
                             <div class="form-group">
                                 <textarea class="form-control" id="message" name="message" placeholder="Your Message *" rows="8" required="required" minlength="25">{{old('message')}}</textarea>
-                                @error('message')<span class="error help-block text-red">{{ $message }} Avoid blank space in the end.</span>@enderror
+                                @error('message')<span class="error help-block text-red">{{ $message }}</span>@enderror
                                 <p class="help-block text-danger" id="messageHelp" style="display:none;">Please specify your message</p>
 
                             </div>
