@@ -21,19 +21,20 @@
                         </figcaption>
                     </figure>
                     <div class="card-body">
-                        <p class="card-text">
+                        <div class="card-text">
                         <h2 class="property-title">
                             <!-- method to convert price in number into price in words -->
                             <a href="{{$feature_property->property_detail_path()}}">
-                                <span class="font-size-14 color-blue">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
+                                <span class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                             </a>
                         </h2>
                         <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 27, $end='..')}}</h6>
                         <li class="text-capitalize page-font text-muted property-list mb-2">
                             <span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>
                             <a href="" class="text-muted" target="_blank" data-toggle="tooltip" data-placement="top" title=""
-                               data-original-title="Click to see on Google Maps"> {{ \Illuminate\Support\Str::limit($feature_property->location , 12, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 11, $end='...') }}<</a></li>
-                        </p>
+                               data-original-title="Click to see on Google Maps"> {{ \Illuminate\Support\Str::limit($feature_property->location , 20, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</a></li>
+
+                        </div>
                         <ul class="facilities-list property-ul clearfix">
                             <li style="width: 40%; margin-top: 3px;text-align: center" data-toggle="tooltip" data-placement="top" data-html="true"
                                 title='<div class="row mt-1">
