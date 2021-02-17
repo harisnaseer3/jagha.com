@@ -127,6 +127,13 @@
                 success: function (data) {
                     if (data.status === 200) {
                         window.location.reload(true);
+                    } else if (data.status === 201) {
+                        let html = '' +
+                            '<div class="alert alert-danger alert-block text-white">' +
+                            '        <button type="button" class="close" data-dismiss="alert">×</button>' +
+                            '        <strong>' + data.message + '</strong>' +
+                            '</div>';
+                        $('#limit-message').html(html);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -234,8 +241,7 @@
             // let user_id = $(this).val();
             if ($(this).val() === 'all') {
                 window.location.reload(true)
-            }
-            else{
+            } else {
                 let user_id = $('option:selected', this).data("user");
                 let agency_id = $('option:selected', this).data("agency");
                 let purpose = 'sale';
@@ -265,7 +271,7 @@
             let listing_block = $('#listings-tabContent');
             $('tbody').html(
                 '<tr><td colspan="12" class="p-4 text-center">' +
-                '<i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px;"></i>'+
+                '<i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px;"></i>' +
                 '</td></tr>'
             );
             jQuery.ajaxSetup({

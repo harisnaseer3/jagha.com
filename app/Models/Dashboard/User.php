@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
@@ -123,6 +124,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function getUserName($id)
     {
         return (new User)->where('id', $id)->pluck('name')->first();
+    }
+
+    public static function getUserUpdateCountById()
+    {
+        if (Auth::user()->date === date('Y-m-d')) {
+            if (Auth::user()->property_update_count < 5) {
+                Auth::user()->property_update_count = Auth::user()->property_update_count + 1;
+                Auth::user()->update();
+                return true;
+            } else
+                return false;
+
+        } else {
+
+            Auth::user()->date = date('Y-m-d');
+            Auth::user()->property_update_count = 1;
+            Auth::user()->update();
+            return true;
+
+        }
+
     }
 
     public static function destroyUser($id)

@@ -137,7 +137,6 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
-
         if (!(new Visit)->hit()) {
             return view('website.errors.404');
         }
@@ -447,8 +446,17 @@ class PropertyController extends Controller
     }
 
     public function update(Request $request, Property $property)
-
     {
+        $footer_content = (new FooterController)->footerContent();
+        if (Auth::guard('web')->check()) {
+            if (!(User::getUserUpdateCountById())) {
+                return redirect()->route('properties.listings',
+                    ['pending', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
+                        'recent_properties' => $footer_content[0],
+                        'footer_agencies' => $footer_content[1]])->with('error', 'Maximum Property Update Limit Reached.');
+            }
+
+        }
 
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
@@ -483,7 +491,6 @@ class PropertyController extends Controller
 //            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
-//        dd($request->all());
         try {
 
             $json_features = '';
