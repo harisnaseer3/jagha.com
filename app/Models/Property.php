@@ -79,6 +79,7 @@ class Property extends Model
         'views',
         'visits',
         'activated_at',
+        'expired_at',
         'click_through_rate',
         'status',
         'reviewed_by',

@@ -10,6 +10,7 @@ use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
 use App\Models\Property;
 use App\Notifications\PropertyStatusChange;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,19 +30,17 @@ class PropertyAjaxCallController extends Controller
     public function changePropertyStatus(Request $request)
     {
         if ($request->ajax()) {
-
             $property = (new Property)->WHERE('id', '=', $request->id)->first();
             (new CountTableController)->_delete_in_status_purpose_table($property, $property->status);
 
-//            (new Property)->WHERE('id', '=', $request->id)->update(['status' => $request->status]);
-            $property->update(['status' => $request->status, 'activated_at' => null]);
-//            $property = (new Property)->WHERE('id', '=', $request->id)->first();
+            $property->update([
+                'status' => $request->status,
+                'activated_at' => null,
+                'expired_at' => $request->status=='expired' ? date('Y-m-d H:i:s') : null,
+            ]);
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
             $location = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-//            $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
 
-//            $user = User::where('id', '=', $property->user_id)->first();
-//            $user->notify(new PropertyStatusChange($property));
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
 
@@ -56,17 +55,6 @@ class PropertyAjaxCallController extends Controller
                 }
 
             }
-//            if ($request->status === 'active') {
-//                $dt = Carbon::now();
-//                $property->activated_at = $dt;
-//
-//                $expiry = $dt->addMonths(3)->toDateTimeString();
-//                $property->expired_at = $expiry;
-//                $property->save();
-//
-//                event(new NewPropertyActivatedEvent($property));
-//                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
-//            }
             return response()->json(['status' => 200]);
         } else {
             return "not found";

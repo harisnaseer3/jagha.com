@@ -37,11 +37,13 @@ class SendNotificationOnPropertyUpdate implements ShouldQueue
      */
     public function handle()
     {
-        $user = User::where('id', '=', $this->property->user_id)->first();
-        $user->notify(new PropertyStatusChange($this->property));
-        if ($this->property->status === 'rejected')
-            Notification::send($user, new PropertyRejectionMail($this->property, $this->property->rejection_reason));
-        else
-            Notification::send($user, new PropertyStatusChangeMail($this->property));
+        if ($this->property->user_id !== 1) {
+            $user = User::where('id', '=', $this->property->user_id)->first();
+            $user->notify(new PropertyStatusChange($this->property));
+            if ($this->property->status === 'rejected')
+                Notification::send($user, new PropertyRejectionMail($this->property, $this->property->rejection_reason));
+            else
+                Notification::send($user, new PropertyStatusChangeMail($this->property));
+        }
     }
 }

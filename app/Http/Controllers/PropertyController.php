@@ -449,6 +449,7 @@ class PropertyController extends Controller
     public function update(Request $request, Property $property)
 
     {
+
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
                 return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
@@ -537,8 +538,6 @@ class PropertyController extends Controller
                 'area_in_new_kanal' => $area_values['new_kanal'],
                 'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null ? $request->input('bedrooms') : 0,
                 'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') !== null ? $request->input('bathrooms') : 0,
-//                'latitude' => $latitude,
-//                'longitude' => $longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
                 'status' => $request->has('status') ? $request->input('status') : 'pending',
                 'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
@@ -549,28 +548,26 @@ class PropertyController extends Controller
                 'fax' => $request->input('fax'),
                 'email' => $request->input('contact_email'),
                 'rejection_reason' => $request->has('rejection_reason') ? $request->input('rejection_reason') : null,
-                'activated_at' => null
+                'activated_at' => null,
+                'expired_at' => $request->has('status') && $request->input('status') == 'expired' ? date('Y-m-d H:i:s') : null,
             ]);
             if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
-//                (new ImageController)->update($request, $property);
                 (new ImageController)->storeImage($request->input('image'), $property);
             }
             if ($request->filled('video_link')) {
                 (new VideoController)->update($request, $property);
             }
             (new CountTableController)->_insert_in_status_purpose_table($property);
+
+            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+
             if ($request->has('status') && $request->input('status') === 'active') {
                 $dt = Carbon::now();
-                $property->activated_at = $property->updated_at;
-//                $property->save();
-
+                $property->activated_at = date('Y-m-d H:i:s');
                 $expiry = $dt->addMonths(3)->toDateTimeString();
                 $property->expired_at = $expiry;
                 $property->save();
-//                comment out new property up event
-//                event(new NewPropertyActivatedEvent($property));
-                $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
 
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
                 //if property has images and status is going to live than add water mark on images
@@ -584,10 +581,6 @@ class PropertyController extends Controller
                 }
 
             }
-
-//            $user = User::where('id', '=', $property->user_id)->first();
-//            $user->notify(new PropertyStatusChange($property));
-//            Notification::send($user, new PropertyStatusChangeMail($property));
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
