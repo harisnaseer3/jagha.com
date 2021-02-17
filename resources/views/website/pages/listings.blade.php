@@ -99,7 +99,6 @@
                                                             <thead class="theme-blue text-white">
                                                             <tr>
                                                                 <td>ID</td>
-                                                                {{-- <td>Reference</td>--}}
                                                                 @if($option === 'all')
                                                                     <td>Purpose</td>
                                                                 @endif
@@ -107,16 +106,16 @@
                                                                 <td>Location</td>
                                                                 <td>Price (PKR)</td>
                                                                 <td>Added By</td>
-{{--                                                                <td>Contact Person</td>--}}
-                                                                {{--                                                                <td>Contact #</td>--}}
                                                                 <td>Listed For</td>
                                                                 <td>Listed Date</td>
                                                                 @if($params['status'] == 'active')
                                                                     <td>Activation Date</td>
-                                                                    {{--  <td>Boost</td>--}}
                                                                 @endif
                                                                 @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
                                                                     <td>Status Controls</td>
+                                                                @endif
+                                                                @if($params['status'] == 'expired')
+                                                                    <td>Expired At</td>
                                                                 @endif
                                                                 <td>Controls</td>
                                                             </tr>
@@ -148,8 +147,13 @@
                                                                                 {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
                                                                                 </div>
                                                                                 <div class="badge badge-success p-2">
-                                                                                    <strong class="color-white font-12"> Expires in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
-                                                                                    days  </strong>
+                                                                                    @if(str_contains ( (new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1]), 'ago' ))
+                                                                                        <strong
+                                                                                            class="color-white font-12"> Expired {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1])}}</strong>
+                                                                                    @else
+                                                                                        <strong
+                                                                                            class="color-white font-12"> Expires in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1])}}</strong>
+                                                                                    @endif
                                                                                </div>
                                                                             </td>
                                                                         @endif
@@ -162,38 +166,53 @@
                                                                                 @elseif($params['status'] === 'pending' )
                                                                                     <div class="badge badge-warning p-2 "><strong class="font-12">Pending For Verification</strong>
                                                                                     </div>
-                                                                                    {{--                                                                                @elseif($params['status'] === 'rejected')--}}
-                                                                                    {{--                                                                                    <div class="rejected-status"><strong>Rejected</strong></div>--}}
+                                                                                    {{--                                                                                @elseif($params['status'] === 'deleted')--}}
+
                                                                                 @else
                                                                                     <form>
-                                                                                        @if($params['status'] != 'expired')
+{{--                                                                                        @if($params['status'] != 'expired')--}}
 
-                                                                                        @endif
+                                                                                        {{--                                                                                        @endif--}}
                                                                                         @if($params['status'] === 'active' && $params['status'] != 'pending')
                                                                                             <input type="radio" name="status" value="reactive" class="mb-1"
                                                                                                    {{$all_listing->status === 'active'? 'checked':'' }}
                                                                                                    data-id="{{ $all_listing->id }}">
                                                                                             <label for="active">Active</label>
                                                                                         @endif
-                                                                                            @if($params['status'] === 'rejected')
-                                                                                                <div class="rejected-status"><strong>Rejected</strong></div>
-                                                                                            @endif
+                                                                                        @if($params['status'] === 'rejected')
+                                                                                            <div class="badge badge-danger p-2 "><strong class="color-white font-12">Property Rejected</strong></div>
+                                                                                        @else
                                                                                             <input type="radio" name="status" value="expired" class="mb-1"
                                                                                                    {{$all_listing->status === 'expired'? 'checked':'' }}
                                                                                                    {{$all_listing->status === 'sold'? 'checked':'' }}
                                                                                                    data-id="{{ $all_listing->id }}" {{$all_listing->status === 'expired'? 'checked':'' }}>
                                                                                             <label for="expired">Expired</label>
 
-                                                                                        @if($params['status'] != 'sold' && $all_listing->purpose != 'Wanted' )
-                                                                                            <input type="radio" name="status" value="sold" class="mb-1"
-                                                                                                   data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
-                                                                                            <label for="sold">Sold</label>
+                                                                                            @if($params['status'] != 'sold' && $all_listing->purpose != 'Wanted' )
+                                                                                                <input type="radio" name="status" value="sold" class="mb-1"
+                                                                                                       data-id="{{ $all_listing->id }}" {{$all_listing->status === 'sold'? 'checked':'' }}>
+                                                                                                <label for="sold">Sold</label>
+                                                                                            @endif
                                                                                         @endif
                                                                                     </form>
                                                                                 @endif
                                                                             </td>
                                                                         @else
-                                                                            <td></td>
+                                                                            <td>
+                                                                                <div class="badge badge-danger p-2 "><strong class="color-white font-12">Property Deleted</strong>
+                                                                                    </div>
+                                                                            </td>
+                                                                        @endif
+                                                                        @if($params['status'] == 'expired')
+                                                                            <td>
+                                                                                <div>
+                                                                                {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
+                                                                                </div>
+                                                                                <div class="badge badge-danger p-2">
+                                                                                    <strong
+                                                                                        class="color-white font-12"> Expired {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1])}}</strong>
+                                                                               </div>
+                                                                            </td>
                                                                         @endif
                                                                         <td>
                                                                             @if($params['status'] == 'active')
