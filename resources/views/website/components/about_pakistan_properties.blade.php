@@ -2,7 +2,7 @@
     <div class="carousel-inner property-inner row w-100 mx-auto" role="listbox">
 
         @foreach($featured_properties as $index => $feature_property)
-            <div class="carousel-item property-item col-sm-12 col-md-6 col-lg-3 @if($index == 0) active @endif">
+            <div class="carousel-item property-item col-sm-12 col-md-6 col-lg-4 col-xl-3 @if($index == 0) active @endif">
                 <div class="card property-card">
                     <figure>
                         @if($feature_property->user_id !== 1 && $feature_property->image != null)
@@ -28,11 +28,10 @@
                                 <span class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                             </a>
                         </h2>
-                        <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 27, $end='..')}}</h6>
+                        <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 70, $end='..')}}</h6>
                         <li class="text-capitalize page-font text-muted property-list mb-2">
                             <span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>
-                            <a href="" class="text-muted" target="_blank" data-toggle="tooltip" data-placement="top" title=""
-                               data-original-title="Click to see on Google Maps"> {{ \Illuminate\Support\Str::limit($feature_property->location , 20, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</a></li>
+                            <div class="text-muted"> {{ \Illuminate\Support\Str::limit($feature_property->location , 20, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</div></li>
 
                         </div>
                         <ul class="facilities-list property-ul clearfix">
