@@ -58,6 +58,20 @@ class IndexPageController extends Controller
         return $data;
     }
 
+    function getAboutPakistanProperties()
+    {
+        $featured_properties = (new PropertySearchController)->listingfrontend()
+            ->where('properties.platinum_listing', '=', 1)
+            ->orderBy('views', 'DESC')
+            ->limit(10)
+            ->get();
+
+        $data['view'] = View('website.components.about_pakistan_properties',
+            ['featured_properties' => $featured_properties])->render();
+
+        return $data;
+    }
+
     function getKeyAgencies()
     {
         $key_agencies = (new AgencyController)->keyAgencies();
