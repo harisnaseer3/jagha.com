@@ -31,7 +31,7 @@
                         <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 50, $end='..')}}</h6>
                         <li class="text-capitalize page-font text-muted property-list mb-2">
                             <span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>
-                            <span class="text-muted"> {{ \Illuminate\Support\Str::limit($feature_property->location , 20, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</span></li>
+                            <span class="text-muted"> {{ \Illuminate\Support\Str::limit($feature_property->location , 12, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</span></li>
 
                         </div>
                         <ul class="facilities-list property-ul clearfix">
