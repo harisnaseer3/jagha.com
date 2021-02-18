@@ -15,9 +15,9 @@
                         <figcaption class="project-description-overlay p-3 text-center">
                             <h3 class="m-2 mt-3 property-heading-tag">Property For {{ $feature_property->purpose }}</h3>
                             <p class="property-line-height mb-2">
-                                Contact us for more details. While calling please mention aboutpakistan.com
+                                Contact us for more details. While calling please mention <a href="https://www.aboutpakistan.com" class="theme-blue">aboutpakistan.com</a>
                             </p>
-                            <p><a href="{{$feature_property->property_detail_path()}}">Read More</a></p>
+                            <p><a style="color: #FF8E00" href="{{$feature_property->property_detail_path()}}">Read More</a></p>
                         </figcaption>
                     </figure>
                     <div class="card-body">
