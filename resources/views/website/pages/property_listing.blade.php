@@ -6,6 +6,11 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+    <style>
+    .call-model-btn{
+        background-color: white;
+    }
+    </style>
 
 @endsection
 
