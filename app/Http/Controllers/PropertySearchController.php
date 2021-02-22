@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
 use App\Models\Property;
@@ -21,12 +22,12 @@ class PropertySearchController extends Controller
             ->select('properties.id', 'properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
                 'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
-                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at','properties.activated_at',
+                'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.activated_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
-                'agencies.phone AS agency_phone','agencies.cell AS agency_cell', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at',
-                'agencies.description AS agency_description','c.property_count AS agency_property_count',
+                'agencies.phone AS agency_phone', 'agencies.cell AS agency_cell', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at',
+                'agencies.description AS agency_description', 'c.property_count AS agency_property_count',
 
                 'users.community_nick AS user_nick_name', 'users.name AS user_name')
 //            ->where('property_count_by_agencies.property_status', '=', 'active')
@@ -346,8 +347,6 @@ class PropertySearchController extends Controller
                 }
 
             } else {
-                $properties = $this->listingFrontend();
-                (new MetaTagController())->addMetaTags();
                 $sort = '';
                 $limit = '';
                 $sort_area = '';
@@ -364,59 +363,124 @@ class PropertySearchController extends Controller
                 if (request()->input('area_sort') !== null)
                     $sort_area = request()->input('area_sort');
 
-//        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-                $properties = $properties
-                    ->Where('agencies.title', 'LIKE', '%' . $request->input('term') . '%')
-                    ->orWhere('cities.name', 'LIKE', '%' . $request->input('term') . '%');
-//                    ->orWhere('locations.name', 'LIKE', '%' . $request->input('term') . '%')
-//                    ->orWhere('properties.title', 'LIKE', '%' . $request->input('term') . '%');
-//                    ->orWhere('properties.description', 'LIKE', '%' . $request->input('term') . '%')
-
-//                $properties = $properties->orderBy('created_at', 'DESC');
-
-                $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-                $property_count = $properties->count();
-
-                if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-                    $lastPage = ceil((int)$property_count / $limit);
-                    request()->merge(['page' => (int)$lastPage]);
-                }
-
                 $property_types = (new PropertyType)->all();
+                (new MetaTagController())->addMetaTags();
 
-                if ($request->ajax()) {
-                    $data['view'] = View('website.components.property-listings',
-                        [
-                            'limit' => $limit,
-                            'area_sort' => $sort_area,
-                            'sort' => $sort,
-                            'params' => $request->all(),
-                            'properties' => $properties->paginate($limit)
-                        ])->render();
-                    return $data;
+                $result2 = City::select('id')->where('name', 'LIKE', $request->input('term') . '%')->first();
+                if ($result2) {
+                    $footer_content = (new FooterController)->footerContent();
+                    (new MetaTagController())->addMetaTags();
+
+                    $properties = $this->sortPropertyListing($sort, $sort_area, $this->listingFrontend()->Where('cities.id', '=', $result2->id));
+                    $property_count = $properties->count();
+
+                    if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+                        $lastPage = ceil((int)$property_count / $limit);
+                        request()->merge(['page' => (int)$lastPage]);
+                    }
+
+                    $property_types = (new PropertyType)->all();
+
+                    if ($request->ajax()) {
+                        $data['view'] = View('website.components.property-listings',
+                            [
+                                'limit' => $limit,
+                                'area_sort' => $sort_area,
+                                'sort' => $sort,
+                                'params' => $request->all(),
+                                'properties' => $properties->paginate($limit)
+                            ])->render();
+                        return $data;
+                    } else {
+                        $data = [
+                            'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
+                            'property_types' => $property_types,
+                            'properties' => $properties->paginate($limit),
+                            'recent_properties' => $footer_content[0],
+                            'footer_agencies' => $footer_content[1]
+                        ];
+                        return view('website.pages.property_listing', $data);
+                    }
+
+
                 } else {
-                    $data = [
-                        'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
-                        'property_types' => $property_types,
-                        'properties' => $properties->paginate($limit),
-                        'recent_properties' => $footer_content[0],
-                        'footer_agencies' => $footer_content[1]
-                    ];
-                    return view('website.pages.property_listing', $data);
-                }
+                    $result = Agency::select('id')->where('title', 'LIKE', $request->input('term') . '%')->first();
+                    if ($result) {
+                        $footer_content = (new FooterController)->footerContent();
+                        (new MetaTagController())->addMetaTags();
 
+                        $properties = $this->sortPropertyListing($sort, $sort_area, $this->listingFrontend()->Where('agencies.id', '=', $result->id));
+                        $property_count = $properties->count();
+
+                        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+                            $lastPage = ceil((int)$property_count / $limit);
+                            request()->merge(['page' => (int)$lastPage]);
+                        }
+
+                        $property_types = (new PropertyType)->all();
+
+                        if ($request->ajax()) {
+                            $data['view'] = View('website.components.property-listings',
+                                [
+                                    'limit' => $limit,
+                                    'area_sort' => $sort_area,
+                                    'sort' => $sort,
+                                    'params' => $request->all(),
+                                    'properties' => $properties->paginate($limit)
+                                ])->render();
+                            return $data;
+                        } else {
+                            $data = [
+                                'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
+                                'property_types' => $property_types,
+                                'properties' => $properties->paginate($limit),
+                                'recent_properties' => $footer_content[0],
+                                'footer_agencies' => $footer_content[1]
+                            ];
+                            return view('website.pages.property_listing', $data);
+
+                        }
+                    } else {
+                        $properties = (new Property)->newCollection();
+
+                        $property_types = (new PropertyType)->all();
+                        (new MetaTagController())->addMetaTags();
+                        $data = [
+                            'params' => ['sort' => 'newest'],
+                            'property_types' => $property_types,
+                            'properties' => $properties,
+                            'recent_properties' => $footer_content[0],
+                            'footer_agencies' => $footer_content[1]
+                        ];
+
+                        return view('website.pages.property_listing', $data);
+                    }
+
+                }
             }
-        } else
-            return redirect()->back()->with('error', 'No Record found, try again.');
+        } else {
+            $properties = (new Property)->newCollection();
+
+            $property_types = (new PropertyType)->all();
+            (new MetaTagController())->addMetaTags();
+            $data = [
+                'params' => ['sort' => 'newest'],
+                'property_types' => $property_types,
+                'properties' => $properties,
+                'recent_properties' => (new FooterController)->footerContent()[0],
+                'footer_agencies' => (new FooterController)->footerContent()[1]
+            ];
+
+            return view('website.pages.property_listing', $data);
+        }
 
 
     }
 
-
     /*   search from index page bottom property listing  */
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
-    public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
+    public
+    function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
         $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
 
@@ -580,7 +644,8 @@ class PropertySearchController extends Controller
     }
 
     //  search from main  page
-    public function search($data)
+    public
+    function search($data)
     {
         $validator = Validator::make($data, [
             'purpose' => ['required', Rule::in(['sale', 'rent', 'wanted'])],
