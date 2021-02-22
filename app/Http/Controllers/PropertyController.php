@@ -137,7 +137,6 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
-
         if (!(new Visit)->hit()) {
             return view('website.errors.404');
         }
@@ -384,6 +383,13 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        if (Auth::guard('web')->check()) {
+            if (!(Property::getPropertyUpdateCountById($property))) {
+                return redirect()->back()->with('error', 'Maximum Update Limit Reached for Property ID: ' . $property->id);
+            }
+
+        }
+
         $city = $property->location->city->name;
         $property->city = $city;
         $property->video = (new Property)->find($property->id)->videos()->where('name', '<>', 'null')->get(['name', 'id', 'host']);
@@ -418,6 +424,9 @@ class PropertyController extends Controller
                     'counts' => $counts,
                 ]);
         }
+
+
+
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
 
         $agencies_data = (new Agency)->select('title', 'id')
@@ -429,10 +438,7 @@ class PropertyController extends Controller
         foreach ($agencies_data as $agency) {
             $agencies += array($agency->id => $agency->title);
         }
-
-
         $footer_content = (new FooterController)->footerContent();
-
 
         return view('website.pages.portfolio',
             [
@@ -447,8 +453,17 @@ class PropertyController extends Controller
     }
 
     public function update(Request $request, Property $property)
-
     {
+//        $footer_content = (new FooterController)->footerContent();
+//        if (Auth::guard('web')->check()) {
+//            if (!(User::getUserUpdateCountById())) {
+//                return redirect()->route('properties.listings',
+//                    ['pending', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
+//                        'recent_properties' => $footer_content[0],
+//                        'footer_agencies' => $footer_content[1]])->with('error', 'Maximum Property Update Limit Reached.');
+//            }
+//
+//        }
 
         if ($request->has('status') && $request->input('status') == 'rejected') {
             if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
@@ -483,7 +498,6 @@ class PropertyController extends Controller
 //            dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
-//        dd($request->all());
         try {
 
             $json_features = '';

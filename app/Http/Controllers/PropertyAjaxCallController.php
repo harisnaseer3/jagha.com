@@ -31,18 +31,24 @@ class PropertyAjaxCallController extends Controller
     {
         if ($request->ajax()) {
             $property = (new Property)->WHERE('id', '=', $request->id)->first();
+            if (Auth::guard('web')->check()) {
+                if (!(Property::getPropertyUpdateCountById($property))) {
+                    return response()->json(['status' => 201, 'message' => 'Maximum Update Limit Reached for Property ID: ' . $property->id]);
+                }
+
+            }
+
             (new CountTableController)->_delete_in_status_purpose_table($property, $property->status);
 
             $property->update([
                 'status' => $request->status,
                 'activated_at' => null,
-                'expired_at' => $request->status=='expired' ? date('Y-m-d H:i:s') : null,
+                'expired_at' => $request->status == 'expired' ? date('Y-m-d H:i:s') : null,
             ]);
             $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
             $location = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
 
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
-
 
 
             (new CountTableController)->_insert_in_status_purpose_table($property);

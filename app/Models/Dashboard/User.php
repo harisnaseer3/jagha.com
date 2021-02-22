@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 
@@ -124,6 +125,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return (new User)->where('id', $id)->pluck('name')->first();
     }
+
+
 
     public static function destroyUser($id)
     {

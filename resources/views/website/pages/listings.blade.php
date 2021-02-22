@@ -36,6 +36,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
+                                    <div id="limit-message"></div>
                                     <div class="row m-0">
                                         <div class="col-12 my-2">
                                             <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i

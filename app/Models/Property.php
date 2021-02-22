@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -84,7 +85,9 @@ class Property extends Model
         'status',
         'reviewed_by',
         'video_host',
-        'rejection_reason'
+        'rejection_reason',
+        'property_update_count',
+        'date'
     ];
     public static $rules = [
         'city' => 'required',
@@ -178,5 +181,26 @@ class Property extends Model
             return url("/properties/" . Str::slug($this->location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
 
 //        return url("/properties/{$this->id}-" . Str::slug($this->location) . '-' . Str::slug($this->title) . '-' . $this->reference);
+    }
+
+    public static function getPropertyUpdateCountById($property)
+    {
+        if ($property->date === date('Y-m-d')) {
+            if ($property->property_update_count < 5) {
+                $property->property_update_count = $property->property_update_count + 1;
+                $property->update();
+                return true;
+            } else
+                return false;
+
+        } else {
+
+            $property->date = date('Y-m-d');
+            $property->property_update_count = 1;
+            $property->update();
+            return true;
+
+        }
+
     }
 }
