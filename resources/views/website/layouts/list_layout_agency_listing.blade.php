@@ -118,12 +118,12 @@
                                     <h6 class="custom-font text-transform agent-description">No Description Added..</h6>
                                 </a>
                             </div>
-                            <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-call" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</a></div>
+                            <div class="col-sm-6 p-1"><button class="btn btn-block  mb-1 btn-call call-model-btn" data-toggle="modal" data-target="{{'#CallModelCenter'.$agency->id}}" aria-label="Call">Call</button></div>
                             @if($agency->email !== null)
-                                <div class="col-sm-6 p-1"><a class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</a></div>
+                                <div class="col-sm-6 p-1"><button class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</button></div>
                             @else
-                                <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
-                                        class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
+                                <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>">
+                                    <button class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</button></div>
                             @endif
                         @endif
                     </div>
