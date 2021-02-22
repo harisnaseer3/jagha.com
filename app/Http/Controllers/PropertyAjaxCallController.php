@@ -30,13 +30,14 @@ class PropertyAjaxCallController extends Controller
     public function changePropertyStatus(Request $request)
     {
         if ($request->ajax()) {
+            $property = (new Property)->WHERE('id', '=', $request->id)->first();
             if (Auth::guard('web')->check()) {
-                if (!(User::getUserUpdateCountById())) {
-                    return response()->json(['status' => 201, 'message' => 'Maximum Property Update Limit Reached.']);
+                if (!(Property::getPropertyUpdateCountById($property))) {
+                    return response()->json(['status' => 201, 'message' => 'Maximum Update Limit Reached for Property ID: ' . $property->id]);
                 }
 
             }
-            $property = (new Property)->WHERE('id', '=', $request->id)->first();
+
             (new CountTableController)->_delete_in_status_purpose_table($property, $property->status);
 
             $property->update([
