@@ -100,13 +100,17 @@ class PropertySearchController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-        $property_count = $properties->count();
+        $page = (isset($request->page)) ? $request->page : 1;
+        $last_id = ($page - 1) * $limit;
+        $properties = $properties->where('properties.id', '>', $last_id);
 
-        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-            $lastPage = ceil((int)$property_count / $limit);
-            request()->merge(['page' => (int)$lastPage]);
-        }
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+//        $property_count = $properties->count();
+//
+//        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+//            $lastPage = ceil((int)$property_count / $limit);
+//            request()->merge(['page' => (int)$lastPage]);
+//        }
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
@@ -200,13 +204,17 @@ class PropertySearchController extends Controller
             $sort_area = request()->input('area_sort');
 
 //        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $page = (isset($request->page)) ? $request->page : 1;
+        $last_id = ($page - 1) * $limit;
+        $properties = $properties->where('properties.id', '>', $last_id);
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-        $property_count = $properties->count();
 
-        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-            $lastPage = ceil((int)$property_count / $limit);
-            request()->merge(['page' => (int)$lastPage]);
-        }
+//        $property_count = $properties->count();
+//
+//        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+//            $lastPage = ceil((int)$property_count / $limit);
+//            request()->merge(['page' => (int)$lastPage]);
+//        }
 
         (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
 
@@ -250,13 +258,17 @@ class PropertySearchController extends Controller
             if (request()->input('area_sort') !== null)
                 $sort_area = request()->input('area_sort');
 
-            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-            $property_count = $properties->count();
+            $page = (isset($request->page)) ? $request->page : 1;
+            $last_id = ($page - 1) * $limit;
+            $properties = $properties->where('properties.id', '>', $last_id);
 
-            if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-                $lastPage = ceil((int)$property_count / $limit);
-                request()->merge(['page' => (int)$lastPage]);
-            }
+            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+//            $property_count = $properties->count();
+//
+//            if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+//                $lastPage = ceil((int)$property_count / $limit);
+//                request()->merge(['page' => (int)$lastPage]);
+//            }
 
             $property_types = (new PropertyType)->all();
             (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
@@ -371,13 +383,19 @@ class PropertySearchController extends Controller
                     $footer_content = (new FooterController)->footerContent();
                     (new MetaTagController())->addMetaTags();
 
-                    $properties = $this->sortPropertyListing($sort, $sort_area, $this->listingFrontend()->Where('cities.id', '=', $result2->id));
-                    $property_count = $properties->count();
 
-                    if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-                        $lastPage = ceil((int)$property_count / $limit);
-                        request()->merge(['page' => (int)$lastPage]);
-                    }
+                    $properties = $this->listingFrontend()->Where('cities.id', '=', $result2->id);
+                    $page = (isset($request->page)) ? $request->page : 1;
+                    $last_id = ($page - 1) * $limit;
+                    $properties = $properties->where('properties.id', '>', $last_id);
+                    $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
+//                    $property_count = $properties->count();
+//
+//                    if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+//                        $lastPage = ceil((int)$property_count / $limit);
+//                        request()->merge(['page' => (int)$lastPage]);
+//                    }
 
                     $property_types = (new PropertyType)->all();
 
@@ -409,13 +427,20 @@ class PropertySearchController extends Controller
                         $footer_content = (new FooterController)->footerContent();
                         (new MetaTagController())->addMetaTags();
 
-                        $properties = $this->sortPropertyListing($sort, $sort_area, $this->listingFrontend()->Where('agencies.id', '=', $result->id));
-                        $property_count = $properties->count();
+                        $properties = $this->listingFrontend()->Where('agencies.id', '=', $result->id);
+                        $page = (isset($request->page)) ? $request->page : 1;
+                        $last_id = ($page - 1) * $limit;
+                        $properties = $properties->where('properties.id', '>', $last_id);
 
-                        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-                            $lastPage = ceil((int)$property_count / $limit);
-                            request()->merge(['page' => (int)$lastPage]);
-                        }
+                        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+
+
+//                        $property_count = $properties->count();
+//
+//                        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
+//                            $lastPage = ceil((int)$property_count / $limit);
+//                            request()->merge(['page' => (int)$lastPage]);
+//                        }
 
                         $property_types = (new PropertyType)->all();
 
@@ -482,12 +507,10 @@ class PropertySearchController extends Controller
     public
     function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
-        if ($city == 'Islamabad-Rawalpindi'){
+        if ($city == 'Islamabad-Rawalpindi') {
             $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', 'Islamabad'))->first();
-        }
-        else
+        } else
             $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
-
 
 
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
@@ -610,13 +633,23 @@ class PropertySearchController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
+        $page = (isset($request->page)) ? $request->page : 1;
+        $last_id = ($page - 1) * $limit;
+        $properties = $properties->where('properties.id', '>', $last_id);
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-        $property_count = $properties->count();
 
-        if ($request->has('page') && $request->input('page') > ceil($property_count / $limit)) {
-            $lastPage = ceil((int)$property_count / $limit);
-            $request->merge(['page' => (int)$lastPage]);
-        }
+//        $property_count = $properties->count();
+//
+//        if ($request->has('page') && $request->input('page') > ceil($property_count / $limit)) {
+//            $lastPage = ceil((int)$property_count / $limit);
+//            $request->merge(['page' => (int)$lastPage]);
+//        }
+
+//        dd($properties->count());
+//        dd($last_id);
+//        $properties = $properties
+//            ->limit($limit)
+//            ->get();
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
