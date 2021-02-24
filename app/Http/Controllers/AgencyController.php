@@ -217,14 +217,17 @@ class AgencyController extends Controller
         if (request()->input('area_sort') !== null)
             $sort_area = request()->input('area_sort');
 
+        $page = (isset($request->page)) ? $request->page : 1;
+        $last_id = ($page - 1) * $limit;
+        $properties = $properties->where('properties.id', '>', $last_id);
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
 
 
-        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
-            $lastPage = ceil((int)$properties->count() / $limit);
-            request()->merge(['page' => (int)$lastPage]);
-        }
+//        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
+//            $lastPage = ceil((int)$properties->count() / $limit);
+//            request()->merge(['page' => (int)$lastPage]);
+//        }
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
