@@ -482,7 +482,13 @@ class PropertySearchController extends Controller
     public
     function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
-        $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
+        if ($city == 'Islamabad-Rawalpindi'){
+            $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', 'Islamabad'))->first();
+        }
+        else
+            $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
+
+
 
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
             count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page')) {
@@ -615,7 +621,6 @@ class PropertySearchController extends Controller
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
-
 
         $location_data = $this->_getLocationsWiseCount($purpose, $sub_type, $location_city->id, $location_city->name, $type);
         if ($request->ajax()) {
