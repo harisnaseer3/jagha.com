@@ -222,10 +222,14 @@
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                         </a>
                     </div> -->
-                        <div class="col-sm-6 p-1"><button class="btn btn-block mb-1 btn-call call-model-btn" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</button></div>
+                        <div class="col-sm-6 p-1">
+                            <button class="btn btn-block mb-1 btn-call call-model-btn" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</button>
+                        </div>
 
                         @if($property->email != null)
-                            <div class="col-sm-6 p-1"><button class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</button></div>
+                            <div class="col-sm-6 p-1">
+                                <button class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</button>
+                            </div>
                         @else
                             <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
                                     class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
@@ -265,12 +269,12 @@
                     <div class="pull-left days">
                         <a><i class="fa fa-user"></i>
                             @if($property->contact_person != '')
-                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{$property->contact_person}}</div>">
-                                    {{count(explode(',',$property->contact_person)) > 1 ? \Illuminate\Support\Str::limit(explode(',',$property->contact_person)[0], 20, $end='..').'..' : \Illuminate\Support\Str::limit(explode(',',$property->contact_person)[0], 20, $end='...')}}
+                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{ucwords($property->contact_person)}}</div>">
+                                    {{count(explode(',',$property->contact_person)) > 1 ? \Illuminate\Support\Str::limit(ucwords(explode(',',$property->contact_person)[0]), 20, $end='..').'..' : \Illuminate\Support\Str::limit(ucwords(explode(',',$property->contact_person)[0]), 20, $end='...')}}
                                 </span>
                             @else
-                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{$property->agent}}</div>">
-                                    {{count(explode(',',$property->agent)) > 1 ? \Illuminate\Support\Str::limit(explode(',',$property->agent)[0], 20, $end='..').'..' : \Illuminate\Support\Str::limit(explode(',',$property->agent)[0], 20, $end='...')}}
+                                <span data-toggle="tooltip" data-placement="top" data-html="true" title="<div>{{ucwords($property->agent)}}</div>">
+                                    {{count(explode(',',$property->agent)) > 1 ? \Illuminate\Support\Str::limit(ucwords(explode(',',$property->agent)[0]), 20, $end='..').'..' : \Illuminate\Support\Str::limit(ucwords(explode(',',$property->agent)[0]), 20, $end='...')}}
                                 </span>
                             @endif
                         </a>
@@ -310,8 +314,8 @@
                             <tbody>
                             <tr>
                                 <td class="w-30">Mobile</td>
-                                @if(isset($property->phone) && $property->phone !== '')
-                                    <td class="w-70 font-weight-bold">{{ isset($property->cell) && $property->cell !== '' ? str_replace('-','',$property->cell): '-'}}</td>
+                                @if(isset($property->cell) && $property->cell !== '')
+                                    <td class="w-70 font-weight-bold">{{$property->cell}}</td>
                                 @elseif(isset($property->agency_cell) && $property->agency_cell !== '')
                                     <td class="w-70 font-weight-bold">{{ $property->agency_cell}}</td>
                                 @else
@@ -331,9 +335,9 @@
                             <tr>
                                 <td>Agent</td>
                                 @if($property->contact_person != '' || $property->agent!= '' )
-                                    <td class="font-weight-bold">{{ $property->contact_person != ''? $property->contact_person : $property->agent}}</td>
+                                    <td class="font-weight-bold">{{ $property->contact_person != ''? ucwords($property->contact_person) : ucwords($property->agent)}}</td>
                                 @else
-                                    <td class="font-weight-bold">{{ $property->user_nick_name != ''? $property->user_nick_name : $property->user_name}}</td>
+                                    <td class="font-weight-bold">{{ $property->user_nick_name != ''? ucwords($property->user_nick_name) : ucwords($property->user_name)}}</td>
 
                                 @endif
 
