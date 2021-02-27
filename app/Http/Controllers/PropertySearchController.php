@@ -315,7 +315,7 @@ class PropertySearchController extends Controller
         if ($request->input('term') != null) {
             $footer_content = (new FooterController)->footerContent();
             if (preg_match('/^[0-9]*$/', $request->input('term'))) {
-                $property = (new Property)->where('id', '=', $request->input('term'))->first();
+                $property = (new Property)->where('id', '=', $request->input('term'))->where('status','=','active')->first();
                 if ($property) {
                     $views = $property->views;
                     $property->views = $views + 1;

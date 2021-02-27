@@ -623,6 +623,7 @@ class PropertyController extends Controller
 //        $user_id = Auth::user()->getAuthIdentifier();
         $property = (new Property)->where('id', '=', $request->input('record_id'))->first();
         $status_before_update = $property->status;
+
         if ($property->exists) {
             try {
                 if (Auth::guard('admin')->user())
@@ -632,20 +633,15 @@ class PropertyController extends Controller
                 $property->activated_at = null;
                 $property->save();
 
-//                $user = User::where('id', '=', $property->user_id)->first();
-//                $user->notify(new PropertyStatusChange($property));
-//
-//                Notification::send($user, new PropertyStatusChangeMail($property));
                 $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
-//                $location_obj = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
-//                $location = ['location_id' => $location_obj->id, 'location_name' => $location_obj->name];
-                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+                $location = Location::select('id', 'name')->where('id', '=', $property->location_id)->where('city_id', '=', $city->id)->first();
 
-
-                if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
+                if ($status_before_update === 'active'){
                     (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+                }
+
                 (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
                 (new CountTableController)->_insert_in_status_purpose_table($property);
 
