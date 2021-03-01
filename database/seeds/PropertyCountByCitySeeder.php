@@ -7,6 +7,8 @@ class PropertyCountByCitySeeder extends Seeder
 {
     public function run()
     {
+        DB::table('property_count_by_cities')->truncate();
+
         $cities = DB::table('properties')
             ->select('properties.city_id', 'cities.name AS city_name', DB::raw('COUNT(properties.id) AS count'))
             ->join('cities', 'properties.city_id', '=', 'cities.id')

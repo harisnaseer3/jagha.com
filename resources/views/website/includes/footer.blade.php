@@ -40,7 +40,17 @@
                                     @if($route_name === 'properties.show' && $footer_property->id === $property->id)
                                         @continue
                                     @else
-                                        <li><a href="{{$footer_property->property_detail_path()}}"
+                                        <li>
+                                            @if($footer_property->id < 104280)
+                                                        <a href="{{route('properties.show',[
+                                                'slug'=>Str::slug($footer_property->location) . '-' . Str::slug($footer_property->title) . '-' . $footer_property->reference,
+                                                'property'=>$footer_property->id])}}"
+                                            @else
+                                                <a href="{{route('properties.show',[
+                                                    'slug'=>Str::slug($footer_property->city) . '-' .Str::slug($footer_property->location) . '-' . Str::slug($footer_property->title) . '-' . $footer_property->reference,
+                                                    'property'=>$footer_property->id])}}" @endif
+
+
                                                title="{{\Illuminate\Support\Str::limit($footer_property->title, 70, $end='..')}}">
                                                {{\Illuminate\Support\Str::limit($footer_property->city,25, $end='..')}} |   {{\Illuminate\Support\Str::limit($footer_property->location, 25, $end='..')}} |  {{\Illuminate\Support\Str::limit(str_replace($footer_property->city,'',$footer_property->title), 25, $end='..')}} |  PKR {{ Helper::getPriceInWords($footer_property->price)}}
 

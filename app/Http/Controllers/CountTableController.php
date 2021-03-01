@@ -534,15 +534,13 @@ class CountTableController extends Controller
 
         // insertion in count tables
 //        DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)->decrement('property_count');
-
         if (DB::table('property_count_by_cities')
             ->where('city_id', '=', $city->id)->exists()) {
             DB::table('property_count_by_cities')
                 ->where('city_id', '=', $city->id)
                 ->where('property_count', '>', 0)
-                ->decrement('property_count');
+                ->update(['property_count' => DB::raw('property_count - 1')]);
         }
-
 
         if (DB::table('property_count_by_locations')
             ->where('city_id', '=', $city->id)
@@ -551,7 +549,7 @@ class CountTableController extends Controller
                 ->where('city_id', '=', $city->id)
                 ->where('location_id', '=', $location->id)
                 ->where('property_count', '>', 0)
-                ->decrement('property_count');
+                ->update(['property_count' => DB::raw('property_count - 1')]);
 
         }
         if (DB::table('property_count_by_property_types')
@@ -566,7 +564,7 @@ class CountTableController extends Controller
                 ->where('property_type', '=', $property->type)
                 ->where('property_sub_type', '=', $property->sub_type)
                 ->where('property_count', '>', 0)
-                ->decrement('property_count');
+                ->update(['property_count' => DB::raw('property_count - 1')]);
         }
         if (DB::table('property_count_by_property_purposes')
             ->where('city_id', '=', $city->id)
@@ -581,7 +579,7 @@ class CountTableController extends Controller
                 ->where('property_sub_type', '=', $property->sub_type)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('property_count', '>', 0)
-                ->decrement('property_count');
+                ->update(['property_count' => DB::raw('property_count - 1')]);
         }
 
         $this->updateTotalPropertyCount();

@@ -1,17 +1,24 @@
 @foreach($similar_properties as $feature_property)
     <div class="slick-slide-item">
         <div class="property-box-3" aria-label="listing link">
+            @if($feature_property->id < 104280)
             <a href="{{$feature_property->property_detail_path()}}" class="property-img" title="{{$feature_property->title}}">
-                <div class="property-thumbnail">
-                    @if($feature_property->platinum_listing)
-                        <div class="tag feature-tag">Platinum</div>
-                    @elseif($feature_property->silver_listing)
-                        <div class="tag feature-tag">Silver</div>
-                    @elseif($feature_property->golden_listing)
-                        <div class="tag feature-tag">Golden</div>
-                    @elseif($feature_property->bronze_listing)
-                        <div class="tag feature-tag">Bronze</div>
+                @else
+                    <a href="{{route('properties.show',[
+                    'slug'=>Str::slug($feature_property->city) . '-' .Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                    'property'=>$feature_property->id])}}" class="property-img" title="{{$feature_property->title}}">
                     @endif
+
+                <div class="property-thumbnail">
+{{--                    @if($feature_property->platinum_listing)--}}
+{{--                        <div class="tag feature-tag">Platinum</div>--}}
+{{--                    @elseif($feature_property->silver_listing)--}}
+{{--                        <div class="tag feature-tag">Silver</div>--}}
+{{--                    @elseif($feature_property->golden_listing)--}}
+{{--                        <div class="tag feature-tag">Golden</div>--}}
+{{--                    @elseif($feature_property->bronze_listing)--}}
+{{--                        <div class="tag feature-tag">Bronze</div>--}}
+{{--                    @endif--}}
                     @if($feature_property->user_id !== 1 && $feature_property->image != null)
                         <img class="d-block w-100" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                              alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}"
@@ -30,8 +37,17 @@
             <div class="details m-0" style="width: 100%">
                 <div class="top">
                     <h2 class="title">
-                        <!-- method to convert price in number into price in words -->
-                        <a href="{{$feature_property->property_detail_path()}}" data-toggle="tooltip" data-placement="right" data-html="true"
+
+                        @if($feature_property->id < 104280)
+                            <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}"
+                        @else
+                            <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->city) . '-' .Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}" @endif
+
+                           data-toggle="tooltip" data-placement="right" data-html="true"
                            title='<div class="row mt-1">
                            <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($feature_property->area_in_sqft,2) }} Sq.Ft.</div>
@@ -48,7 +64,16 @@
                         {{ \Illuminate\Support\Str::limit($feature_property->location , 10, $end='...')}}
                         {{\Illuminate\Support\Str::limit($feature_property->city, 11, $end='...')}}
                         <div class="mt-2 property-description">
-                            <a href="{{$feature_property->property_detail_path()}}" title="{{$feature_property->sub_type}} for {{$feature_property->purpose}}"
+                            @if($feature_property->id < 104280)
+                                <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}"
+                            @else
+                                <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->city) . '-' .Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}" @endif
+
+                                title="{{$feature_property->sub_type}} for {{$feature_property->purpose}}"
                                class="color-blue text-transform">
                                 {{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 22, $end='..')}}
                             </a>

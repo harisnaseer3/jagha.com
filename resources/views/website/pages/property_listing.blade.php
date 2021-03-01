@@ -139,6 +139,8 @@
                         </div>
                     @endif
 
+{{--                    {{dd( number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2))}}--}}
+{{--                    {{dd( $properties)}}--}}
                 <!-- Search Result Count -->
                     @if(count($properties) == 0)
                         <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
@@ -168,7 +170,7 @@
                     @if($properties->count())
                         <!-- Pagination -->
                             <div class="pagination-box hidden-mb-45 text-center" role="navigation">
-                                {{ $properties->links('vendor.pagination.bootstrap-4') }}
+                                {{ $properties->render('vendor.pagination.bootstrap-4') }}
                             </div>
                         @endif
                     </div>
