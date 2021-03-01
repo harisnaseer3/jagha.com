@@ -183,6 +183,16 @@ class Property extends Model
 //        return url("/properties/{$this->id}-" . Str::slug($this->location) . '-' . Str::slug($this->title) . '-' . $this->reference);
     }
 
+    public function property_detail_path_with_city($location = null)
+    {
+        if ($location != null) {
+            return url("/properties/" . Str::slug($this->city->name) . '-'. Str::slug($location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
+
+        } else
+            return url("/properties/" . Str::slug($this->city->name) . '-' .Str::slug($this->location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
+
+    }
+
     public static function getPropertyUpdateCountById($property)
     {
         if ($property->date === date('Y-m-d')) {

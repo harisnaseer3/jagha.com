@@ -346,7 +346,7 @@ class PropertyController extends Controller
     {
         if ($property->id > 104280) {  //new properties have city name in url
             if ($slug !== Str::slug($property->city->name) . '-' . Str::slug($property->location->name) . '-' . Str::slug($property->title) . '-' . $property->reference)
-                return redirect($property->property_detail_path($property->location->name));
+                return redirect($property->property_detail_path_with_city($property->location->name));
         } else {
             if ($slug !== Str::slug($property->location->name) . '-' . Str::slug($property->title) . '-' . $property->reference)
                 return redirect($property->property_detail_path($property->location->name));
