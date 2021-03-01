@@ -344,8 +344,13 @@ class PropertyController extends Controller
     // Display detailed page of property
     public function show($slug, Property $property)
     {
-        if ($slug !== Str::slug($property->location->name) . '-' . Str::slug($property->title) . '-' . $property->reference)
-            return redirect($property->property_detail_path($property->location->name));
+        if ($property->id > 104280) {  //new properties have city name in url
+            if ($slug !== Str::slug($property->city->name) . '-' . Str::slug($property->location->name) . '-' . Str::slug($property->title) . '-' . $property->reference)
+                return redirect($property->property_detail_path($property->location->name));
+        } else {
+            if ($slug !== Str::slug($property->location->name) . '-' . Str::slug($property->title) . '-' . $property->reference)
+                return redirect($property->property_detail_path($property->location->name));
+        }
 
         $views = $property->views;
         $property->views = $views + 1;
@@ -424,7 +429,6 @@ class PropertyController extends Controller
                     'counts' => $counts,
                 ]);
         }
-
 
 
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
@@ -638,7 +642,7 @@ class PropertyController extends Controller
                 $city = (new City)->select('id', 'name')->where('id', '=', $property->city_id)->first();
                 $location = Location::select('id', 'name')->where('id', '=', $property->location_id)->where('city_id', '=', $city->id)->first();
 
-                if ($status_before_update === 'active'){
+                if ($status_before_update === 'active') {
                     (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
                 }
 

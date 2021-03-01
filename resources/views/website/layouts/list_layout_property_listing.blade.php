@@ -41,20 +41,25 @@
     <div class="property-box-2">
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
-                <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
+                <a href="{{route('properties.show',[
+                    'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                    'property'=>$property->id
+                     ])}}"
+
+                   class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                     <img
                         src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                         alt="{{$property->sub_type}} for {{$property->purpose}}"
                         title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
-                    @if($property->platinum_listing == 1)
-                        <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>
-                    @elseif($property->golden_listing == 1)
-                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>
-                    @elseif($property->silver_listing  == 1)
-                        <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>
-                    @elseif($property->bronze_listing  == 1)
-                        <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>
-                    @endif
+                    {{--                    @if($property->platinum_listing == 1)--}}
+                    {{--                        <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>--}}
+                    {{--                    @elseif($property->golden_listing == 1)--}}
+                    {{--                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>--}}
+                    {{--                    @elseif($property->silver_listing  == 1)--}}
+                    {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>--}}
+                    {{--                    @elseif($property->bronze_listing  == 1)--}}
+                    {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>--}}
+                    {{--                    @endif--}}
                     <div class="listing-time opening" aria-label="purpose label">
                         @if( $property->purpose === 'Wanted')
                             {{ $property->purpose }} Property
@@ -79,36 +84,44 @@
             <div class="col-lg-7 col-md-7 col-pad">
                 <div class="detail">
                     <h2 class="title">
-                        <a href="{{$property->property_detail_path()}}"
-                           data-toggle="tooltip" data-placement="right" data-html="true"
-                           title='<div class="row mt-1">
+                        @if($property->id < 104280)
+                            <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}"
+                        @else
+                            <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}" @endif
+
+
+                            data-toggle="tooltip" data-placement="right" data-html="true"
+                               title='<div class="row mt-1">
                            <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
-
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
                            </div>'>
-                            @if($property->price != 0)
-                                <span aria-label="currency" class="font-16"> PKR </span>
-                                <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
-                            @else
-                                <span aria-label="currency" class="font-16"></span><span aria-label="price">Call Us for Price Details</span></span>
-                            @endif
-                        </a>
-                        <div class="pull-right" style="font-size: 1rem">
-                            @if(isset($property->agency_status) && $property->agency_status === 'verified')
-                                <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title=" {{$property->agency}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 315 5141959"><i
-                                        class="far fa-shield-check"></i></span>
-                            @endif
-                            @if(isset($property->featured_listing) && $property->featured_listing === 1)
-                                <span class="premium-badge">
+                                @if($property->price != 0)
+                                    <span aria-label="currency" class="font-16"> PKR </span>
+                                    <span aria-label="price"> {{Helper::getPriceInWords($property->price)}} </span>
+                                @else
+                                    <span aria-label="currency" class="font-16"></span><span aria-label="price">Call Us for Price Details</span></span>
+                                @endif
+                            </a>
+                            <div class="pull-right" style="font-size: 1rem">
+                                @if(isset($property->agency_status) && $property->agency_status === 'verified')
+                                    <span style="color:green" data-toggle="tooltip" data-placement="top"
+                                          title=" {{$property->agency}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 315 5141959"><i
+                                            class="far fa-shield-check"></i></span>
+                                @endif
+                                @if(isset($property->featured_listing) && $property->featured_listing === 1)
+                                    <span class="premium-badge">
                                <span style="color:#ffcc00 ;"><i class="fas fa-star"></i><span class="color-white"> FEATURED PARTNER</span></span>
                            </span>
-                            @endif
-                        </div>
+                                @endif
+                            </div>
                     </h2>
                     <h5 class="location">
                         <a aria-label="Listing location" title="{{$property->title}}"><i class="flaticon-location"></i>
@@ -134,7 +147,6 @@
                            <div class="col-md-12 mb-1  mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqm,2) }} Sq.M.</div>
-
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla </div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_kanal,2) }} Kanal </div>
                            </div>'>
@@ -169,7 +181,6 @@
                         </li>
                     <!-- <li class="property-agency-logo">
                         @if(isset($property->logo))
-
                         <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}"  alt="{{$property->agency}}" title="{{$property->agency}}" class="d-block ml-auto mr-auto w-50 mt-5 mb-5" aria-label="Listing photo">
                         @endif
                         </li>    -->
@@ -185,12 +196,29 @@
                         @endif
                         <div class="col-sm-12 col-md-9" style="height:70px;">
                             <div class="mb-2">
-                                <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
+                                @if($property->id < 104280)
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}"
+                                @else
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}" @endif
+                                   title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
                                     {{\Illuminate\Support\Str::limit(strtolower($property->title), 30, $end='...')}}
                                 </a>
                             </div>
                             <div class="property-description">
-                                <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform property-description">
+                                @if($property->id < 104280)
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}"
+                                @else
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}" @endif
+
+                                   title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform property-description">
                                     {{$property->user_id !== 1 ?\Illuminate\Support\Str::limit(strtolower($property->description),75, $end='...more'):'No description added'}}
                                 </a>
                             </div>
@@ -218,7 +246,17 @@
                             @endif
                         </div>
                     <!-- <div class="col-sm-12 property-description">
-                            <a href="{{$property->property_detail_path()}}" title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
+                               @if($property->id < 104280)
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}"
+                        @else
+                        <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}" @endif
+
+
+                            title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                         </a>
                     </div> -->
@@ -302,8 +340,18 @@
                 <div class="modal-body">
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center">
-                            <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font"
-                                                 title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
+                            <div class="mb-2">
+
+                                @if($property->id < 104280)
+                                    <a href="{{route('properties.show',[
+                                                'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                                'property'=>$property->id])}}"
+                                @else
+                                    <a href="{{route('properties.show',[
+                                                    'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                                    'property'=>$property->id])}}" @endif
+                                    class="font-weight-bold title-font"
+                                    title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                             <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property ID</div>
                             <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>
@@ -350,8 +398,3 @@
         </div>
     </div>
 @endforeach
-
-
-
-
-

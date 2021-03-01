@@ -40,58 +40,77 @@
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="property-box">
                 <div class="property-thumbnail">
-                    <a href="{{$property->property_detail_path()}}" class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
-                        <div class="listing-badges">
-                            @if($property->platinum_listing == 1)
-                                <span class="featured bg-red" aria-label="premium label">Platinum</span>
-                            @elseif($property->silver_listing == 1)
-                                <span class="featured bg-red" aria-label="super hot label">Silver</span>
-                            @elseif($property->bronze_listing  == 1)
-                                <span class="featured" aria-label="hot label">Bronze</span>
-                            @elseif($property->golden_listing  == 1)
-                                <span class="featured" aria-label="hot label">Golden</span>
-                            @endif
-                            @if(isset($property->featured_listing)  && $property->featured_listing == 1)
-                                <span class="featured float-right tag-padding" style="background-color: #555">
+                    @if($property->id < 104280)
+                        <a href="{{route('properties.show',[
+                        'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                        'property'=>$property->id])}}"
+                    @else
+                        <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}"
+                           @endif
+
+                           class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
+                            <div class="listing-badges">
+                                {{--                            @if($property->platinum_listing == 1)--}}
+                                {{--                                <span class="featured bg-red" aria-label="premium label">Platinum</span>--}}
+                                {{--                            @elseif($property->silver_listing == 1)--}}
+                                {{--                                <span class="featured bg-red" aria-label="super hot label">Silver</span>--}}
+                                {{--                            @elseif($property->bronze_listing  == 1)--}}
+                                {{--                                <span class="featured" aria-label="hot label">Bronze</span>--}}
+                                {{--                            @elseif($property->golden_listing  == 1)--}}
+                                {{--                                <span class="featured" aria-label="hot label">Golden</span>--}}
+                                {{--                            @endif--}}
+                                @if(isset($property->featured_listing)  && $property->featured_listing == 1)
+                                    <span class="featured float-right tag-padding" style="background-color: #555">
                                     <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
                                         <span class="color-white">FEATURED PARTNER</span>
                                     </span>
                                 </span>
-                            @endif
-                            @if(isset($property->key_listing)  && $property->key_listing == 1)
-                                <span class="featured float-right tag-padding" style="background-color: #555">
+                                @endif
+                                @if(isset($property->key_listing)  && $property->key_listing == 1)
+                                    <span class="featured float-right tag-padding" style="background-color: #555">
                                     <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
                                         <span class="color-white">KEY PARTNER</span>
                                     </span>
                                 </span>
-                            @endif
-                        </div>
+                                @endif
+                            </div>
 
-                        <div class="price-ratings-box">
-                            @if($property->price != 0 )
-                                <p class="price">
-                                    <span aria-label="currency" class="color-white"> PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
-                                </p>
-                            @else
-                                <p class="price"><span aria-label="currency" class="color-white"> Call Us for Price Details </span>
-                                </p>
-                            @endif
+                            <div class="price-ratings-box">
+                                @if($property->price != 0 )
+                                    <p class="price">
+                                        <span aria-label="currency" class="color-white"> PKR </span> <span aria-label="price" class="color-white">{{ $property->price}}</span>
+                                    </p>
+                                @else
+                                    <p class="price"><span aria-label="currency" class="color-white"> Call Us for Price Details </span>
+                                    </p>
+                                @endif
 
 
-                            <div class="ratings grid-stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
-                                 data-num-stars="5" aria-label="rating"></div>
-                        </div>
-                        <img class="d-block w-100"
-                             src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
-                             onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"
-                             alt="{{$property->sub_type}} for {{$property->purpose}}"
-                             title="{{$property->sub_type}} for {{$property->purpose}}">
-                    </a>
+                                <div class="ratings grid-stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}"
+                                     data-num-stars="5" aria-label="rating"></div>
+                            </div>
+                            <img class="d-block w-100"
+                                 src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("img/logo/dummy-logo.png")}}"
+                                 onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'"
+                                 alt="{{$property->sub_type}} for {{$property->purpose}}"
+                                 title="{{$property->sub_type}} for {{$property->purpose}}">
+                        </a>
                 </div>
                 <div class="detail">
                     <h2 class="title">
-                        <a href="{{$property->property_detail_path()}}" data-toggle="tooltip" data-placement="right" data-html="true"
-                           title='<div class="row mt-1">
+                        @if($property->id < 104280)
+                            <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}"
+                        @else
+                            <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}" @endif
+
+                            data-toggle="tooltip" data-placement="right" data-html="true"
+                               title='<div class="row mt-1">
                            <div class="col-md-12 color-white"><h6 class="color-white">Area Info</h6> <hr class="solid"></div>
                            <div class="col-md-12 mb-1 mt-1"> {{ number_format($property->area_in_sqft,2) }} Sq.Ft.</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_sqyd,2) }} Sq.Yd.</div>
@@ -99,22 +118,22 @@
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_marla,2) }} Marla</div>
                            <div class="col-md-12 mb-1"> {{ number_format($property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
-                            @if($property->price != 0 )
-                                <span aria-label="currency" class="font-size-14 color-blue">PKR </span>
-                                <span aria-label="price" class="color-blue"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
-                            @else
-                                <span aria-label="currency" class="font-size-14 color-blue"> </span>
-                                <span aria-label="price" class="font-size-14 color-blue">Call Us for Price Details</span>
-                            @endif
+                                @if($property->price != 0 )
+                                    <span aria-label="currency" class="font-size-14 color-blue">PKR </span>
+                                    <span aria-label="price" class="color-blue"> {{str_replace('Thousand','K',Helper::getPriceInWords($property->price))}}</span>
+                                @else
+                                    <span aria-label="currency" class="font-size-14 color-blue"> </span>
+                                    <span aria-label="price" class="font-size-14 color-blue">Call Us for Price Details</span>
+                                @endif
 
-                        </a>
-                        <div class="pull-right" style="font-size: 1rem">
-                            @if(isset($property->agency_status)  && $property->agency_status === 'verified')
-                                <span style="color:green" data-toggle="tooltip" data-placement="top"
-                                      title="{{$property->agency}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 315 5141959"><i
-                                        class="far fa-shield-check"></i></span>
-                            @endif
-                        </div>
+                            </a>
+                            <div class="pull-right" style="font-size: 1rem">
+                                @if(isset($property->agency_status)  && $property->agency_status === 'verified')
+                                    <span style="color:green" data-toggle="tooltip" data-placement="top"
+                                          title="{{$property->agency}} is our verified partner. To become our trusted partner, simply contact us or call us at +92 51 4862317 OR +92 315 5141959"><i
+                                            class="far fa-shield-check"></i></span>
+                                @endif
+                            </div>
                     </h2>
                     <div class="location">
                         <a href="javascript:void(0)" aria-label="Listing location">
@@ -256,8 +275,18 @@
                     <div class="modal-body">
                         <div class="container" style="font-size: 12px; color: #555">
                             <div class="text-center">
-                                <div class="mb-2"><a href="{{$property->property_detail_path()}}" class="font-weight-bold title-font"
-                                                     title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
+                                <div class="mb-2">
+                                    @if($property->id < 104280)
+                                        <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}"
+                                    @else
+                                        <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                        'property'=>$property->id])}}" @endif
+
+                                        class="font-weight-bold title-font"
+                                           title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                                 <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class="mb-2">Please use property ID</div>
                                 <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>

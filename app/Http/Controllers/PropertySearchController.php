@@ -9,6 +9,8 @@ use App\Models\Dashboard\Location;
 use App\Models\Property;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -236,6 +238,8 @@ class PropertySearchController extends Controller
     {
         $city = str_replace('_', ' ', $city);
         $city = City::select('id', 'name')->where('name', '=', $city)->first();
+        $total_count = DB::table('property_count_by_cities')
+            ->select('property_count AS count')->where('city_id', '=', $city->id)->first()->count;
         $footer_content = (new FooterController)->footerContent();
 
         if ($city) {
@@ -245,9 +249,17 @@ class PropertySearchController extends Controller
             $sort = '';
             $limit = '';
             $sort_area = '';
-            if (request()->input('sort') !== null)
+            $sort_area_value = '';
+            $activated_at_value = '';
+            $price_value = '';
+            if (request()->input('sort') !== null) {
                 $sort = request()->input('sort');
-            else
+                if ($sort === 'newest') $activated_at_value = 'DESC';
+                else if ($sort === 'oldest') $activated_at_value = 'ASC';
+                else if ($sort === 'high_price') $price_value = 'DESC';
+                else if ($sort === 'low_price') $price_value = 'ASC';
+
+            } else
                 $sort = 'newest';
 
             if (request()->input('limit') !== null)
@@ -255,20 +267,19 @@ class PropertySearchController extends Controller
             else
                 $limit = '15';
 
-            if (request()->input('area_sort') !== null)
+            if (request()->input('area_sort') !== null) {
                 $sort_area = request()->input('area_sort');
+                if ($sort_area === 'higher_area') $sort_area_value = 'DESC';
+                else if ($sort_area === 'lower_area') $sort_area_value = 'ASC';
+            }
+
 
             $page = (isset($request->page)) ? $request->page : 1;
             $last_id = ($page - 1) * $limit;
-            $properties = $properties->where('properties.id', '>', $last_id);
-
-            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-//            $property_count = $properties->count();
-//
-//            if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-//                $lastPage = ceil((int)$property_count / $limit);
-//                request()->merge(['page' => (int)$lastPage]);
-//            }
+            $properties = DB::select('call getPropertiesByCityId("' . $last_id . '","' . $city->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
+            $properties = new Collection($properties);
+            $paginatedSearchResults= new LengthAwarePaginator($properties, $total_count, $limit);
+            $paginatedSearchResults->setPath($request->url());
 
             $property_types = (new PropertyType)->all();
             (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
@@ -280,7 +291,7 @@ class PropertySearchController extends Controller
                         'area_sort' => $sort_area,
                         'sort' => $sort,
                         'params' => $request->all(),
-                        'properties' => $properties->paginate($limit)
+                        'properties' => $paginatedSearchResults,
                     ])->render();
                 return $data;
             }
@@ -289,7 +300,7 @@ class PropertySearchController extends Controller
             $data = [
                 'params' => request()->all(),
                 'property_types' => $property_types,
-                'properties' => $properties->paginate($limit),
+                'properties' => $paginatedSearchResults,
                 'recent_properties' => $footer_content[0],
                 'footer_agencies' => $footer_content[1]
             ];
