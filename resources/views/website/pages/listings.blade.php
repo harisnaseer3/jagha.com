@@ -217,12 +217,31 @@
                                                                         @endif
                                                                         <td>
                                                                             @if($params['status'] == 'active')
-                                                                                <a type="button" target="_blank" href="{{$all_listing->property_detail_path()}}"
-                                                                                   class="btn btn-sm btn-primary mb-1"
-                                                                                   data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="View Property">
+                                                                                @if($all_listing->id < 104280)
+                                                                                    <a type="button" target="_blank"
+
+                                                                                       href="{{route('properties.show',[
+                                                                                                'slug'=>Str::slug($all_listing->location) . '-' . Str::slug($all_listing->title) . '-' . $all_listing->reference,
+                                                                                                'property'=>$all_listing->id])}}"
+
+                                                                                       class="btn btn-sm btn-primary mb-1"
+                                                                                       data-toggle-1="tooltip"
+                                                                                       data-placement="bottom" title="View Property">
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                                 </a>
+                                                                                @else
+                                                                                    <a type="button" target="_blank"
+                                                                                       href="{{route('properties.show',[
+                                                                                                'slug'=>Str::slug($all_listing->city) . '-' .Str::slug($all_listing->location) . '-' . Str::slug($all_listing->title) . '-' . $all_listing->reference,
+                                                                                                'property'=>$all_listing->id])}}"
+
+                                                                                       class="btn btn-sm btn-primary mb-1"
+                                                                                       data-toggle-1="tooltip"
+                                                                                       data-placement="bottom" title="View Property">
+                                                                                    <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                                </a>
+                                                                                @endif
+
                                                                             @endif
                                                                             @if($params['status'] == 'expired')
                                                                                 <a type="button"

@@ -150,14 +150,31 @@
                                                                 <td>{{$property->views}}</td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                 <td>
-                                                                    <a type="button" href="{{$property->status === 'active' ? $property->property_detail_path():'#'}}"
-                                                                       class="btn btn-sm btn-primary mb-1
+                                                                    @if($property->id < 104280)
+                                                                        <a type="button" href="{{$property->status === 'active' ? route('properties.show',[
+                                                                        'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                                                        'property'=>$property->id]):'#'}}"
+                                                                           class="btn btn-sm btn-primary mb-1
                                                                            {{$property->status === 'active' ? '':'anchor-disable'}}"
-                                                                       data-toggle-1="tooltip"
-                                                                       target="_blank"
-                                                                       data-placement="bottom" title="View Property">
-                                                                        <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
-                                                                    </a>
+                                                                           data-toggle-1="tooltip"
+                                                                           target="_blank"
+                                                                           data-placement="bottom" title="View Property">
+                                                                            <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                        </a>
+                                                                    @else
+                                                                        <a type="button" href="{{$property->status === 'active' ? route('properties.show',[
+                                                                            'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                                                                            'property'=>$property->id]):'#'}}"
+                                                                           class="btn btn-sm btn-primary mb-1
+                                                                           {{$property->status === 'active' ? '':'anchor-disable'}}"
+                                                                           data-toggle-1="tooltip"
+                                                                           target="_blank"
+                                                                           data-placement="bottom" title="View Property">
+                                                                            <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
+                                                                        </a>
+                                                                    @endif
+
+
                                                                     <a type="button" href="{{route('properties.edit', $property->id)}}"
                                                                        class="btn btn-sm btn-warning mb-1"
                                                                        data-toggle-1="tooltip"

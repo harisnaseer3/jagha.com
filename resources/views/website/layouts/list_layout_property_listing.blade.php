@@ -41,45 +41,49 @@
     <div class="property-box-2">
         <div class="row">
             <div class="col-lg-5 col-md-5 col-pad">
-                <a href="{{route('properties.show',[
-                    'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                    'property'=>$property->id
-                     ])}}"
+                @if($property->id < 104280)
+                    <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}"
+                @else
+                    <a href="{{route('properties.show',[
+                            'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
+                            'property'=>$property->id])}}" @endif
 
-                   class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
-                    <img
-                        src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
-                        alt="{{$property->sub_type}} for {{$property->purpose}}"
-                        title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
-                    {{--                    @if($property->platinum_listing == 1)--}}
-                    {{--                        <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>--}}
-                    {{--                    @elseif($property->golden_listing == 1)--}}
-                    {{--                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>--}}
-                    {{--                    @elseif($property->silver_listing  == 1)--}}
-                    {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>--}}
-                    {{--                    @elseif($property->bronze_listing  == 1)--}}
-                    {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>--}}
-                    {{--                    @endif--}}
-                    <div class="listing-time opening" aria-label="purpose label">
-                        @if( $property->purpose === 'Wanted')
-                            {{ $property->purpose }} Property
-                        @else
-                            For {{ $property->purpose }}
-                        @endif
-                    </div>
-                    <div class="price-ratings-box">
-                        @if($property->price != 0)
-                            <p class="price">
-                                <span class="color-white" aria-label="currency">PKR</span> <span class="color-white" aria-label="price"> {{ $property->price }}</span>
-                            </p>
-                        @else
-                            <p class="price">
-                                <span class="color-white" aria-label="currency"></span> <span class="color-white" aria-label="price">Call Us for Price Details</span>
-                            </p>
-                        @endif
-                        <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}" data-num-stars="5" aria-label="rating"></div>
-                    </div>
-                </a>
+                    class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
+                        <img
+                            src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
+                            alt="{{$property->sub_type}} for {{$property->purpose}}"
+                            title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
+                        {{--                    @if($property->platinum_listing == 1)--}}
+                        {{--                        <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>--}}
+                        {{--                    @elseif($property->golden_listing == 1)--}}
+                        {{--                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>--}}
+                        {{--                    @elseif($property->silver_listing  == 1)--}}
+                        {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>--}}
+                        {{--                    @elseif($property->bronze_listing  == 1)--}}
+                        {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>--}}
+                        {{--                    @endif--}}
+                        <div class="listing-time opening" aria-label="purpose label">
+                            @if( $property->purpose === 'Wanted')
+                                {{ $property->purpose }} Property
+                            @else
+                                For {{ $property->purpose }}
+                            @endif
+                        </div>
+                        <div class="price-ratings-box">
+                            @if($property->price != 0)
+                                <p class="price">
+                                    <span class="color-white" aria-label="currency">PKR</span> <span class="color-white" aria-label="price"> {{ $property->price }}</span>
+                                </p>
+                            @else
+                                <p class="price">
+                                    <span class="color-white" aria-label="currency"></span> <span class="color-white" aria-label="price">Call Us for Price Details</span>
+                                </p>
+                            @endif
+                            <div class="ratings stars" data-rating="{{$property->views > 0 ? (($property->favorites/$property->views)*5) : 0}}" data-num-stars="5" aria-label="rating"></div>
+                        </div>
+                    </a>
             </div>
             <div class="col-lg-7 col-md-7 col-pad">
                 <div class="detail">
@@ -204,9 +208,9 @@
                                     <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
                                         'property'=>$property->id])}}" @endif
-                                   title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
-                                    {{\Illuminate\Support\Str::limit(strtolower($property->title), 30, $end='...')}}
-                                </a>
+                                    title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
+                                        {{\Illuminate\Support\Str::limit(strtolower($property->title), 30, $end='...')}}
+                                    </a>
                             </div>
                             <div class="property-description">
                                 @if($property->id < 104280)
@@ -218,9 +222,9 @@
                                         'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
                                         'property'=>$property->id])}}" @endif
 
-                                   title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform property-description">
-                                    {{$property->user_id !== 1 ?\Illuminate\Support\Str::limit(strtolower($property->description),75, $end='...more'):'No description added'}}
-                                </a>
+                                    title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform property-description">
+                                        {{$property->user_id !== 1 ?\Illuminate\Support\Str::limit(strtolower($property->description),75, $end='...more'):'No description added'}}
+                                    </a>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-3 partner-logo-style" style="height:70px;">
@@ -247,7 +251,7 @@
                         </div>
                     <!-- <div class="col-sm-12 property-description">
                                @if($property->id < 104280)
-                                    <a href="{{route('properties.show',[
+                        <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
                                         'property'=>$property->id])}}"
                         @else
@@ -256,7 +260,7 @@
                                         'property'=>$property->id])}}" @endif
 
 
-                            title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
+                        title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                         </a>
                     </div> -->
@@ -351,7 +355,7 @@
                                                     'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
                                                     'property'=>$property->id])}}" @endif
                                     class="font-weight-bold title-font"
-                                    title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
+                                       title="{{$property->sub_type}} for {{$property->purpose}}">{{ $property->title }}</a></div>
                             <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                             <div class="mb-2">Please use property ID</div>
                             <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>
