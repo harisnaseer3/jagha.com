@@ -95,8 +95,8 @@
                         <tbody>
                         <tr>
                             <td class="w-30">Mobile</td>
-                            @if(isset($property->phone) && $property->phone !== '')
-                                <td class="w-70 font-weight-bold">{{ isset($property->cell) && $property->cell !== '' ? str_replace('-','',$property->cell): '-'}}</td>
+                            @if(isset($property->cell) && $property->cell !== '')
+                                <td class="w-70 font-weight-bold">{{ $property->cell}}</td>
                             @elseif(isset($property->agency->cell) && $property->agency->cell !== '')
                                 <td class="w-70 font-weight-bold">{{ $property->agency->cell}}</td>
                             @else
