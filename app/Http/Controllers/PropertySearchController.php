@@ -243,8 +243,8 @@ class PropertySearchController extends Controller
         $footer_content = (new FooterController)->footerContent();
 
         if ($city) {
-            $properties = $this->listingFrontend();
-            $properties->where('properties.city_id', '=', $city->id);
+//            $properties = $this->listingFrontend();
+//            $properties->where('properties.city_id', '=', $city->id);
 
             $sort = '';
             $limit = '';
@@ -278,7 +278,7 @@ class PropertySearchController extends Controller
             $last_id = ($page - 1) * $limit;
             $properties = DB::select('call getPropertiesByCityId("' . $last_id . '","' . $city->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
             $properties = new Collection($properties);
-            $paginatedSearchResults= new LengthAwarePaginator($properties, $total_count, $limit);
+            $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
             $paginatedSearchResults->setPath($request->url());
 
             $property_types = (new PropertyType)->all();
@@ -326,7 +326,7 @@ class PropertySearchController extends Controller
         if ($request->input('term') != null) {
             $footer_content = (new FooterController)->footerContent();
             if (preg_match('/^[0-9]*$/', $request->input('term'))) {
-                $property = (new Property)->where('id', '=', $request->input('term'))->where('status','=','active')->first();
+                $property = (new Property)->where('id', '=', $request->input('term'))->where('status', '=', 'active')->first();
                 if ($property) {
                     $views = $property->views;
                     $property->views = $views + 1;
@@ -373,9 +373,17 @@ class PropertySearchController extends Controller
                 $sort = '';
                 $limit = '';
                 $sort_area = '';
-                if (request()->input('sort') !== null)
+                $sort_area_value = '';
+                $activated_at_value = '';
+                $price_value = '';
+                if (request()->input('sort') !== null) {
                     $sort = request()->input('sort');
-                else
+                    if ($sort === 'newest') $activated_at_value = 'DESC';
+                    else if ($sort === 'oldest') $activated_at_value = 'ASC';
+                    else if ($sort === 'high_price') $price_value = 'DESC';
+                    else if ($sort === 'low_price') $price_value = 'ASC';
+
+                } else
                     $sort = 'newest';
 
                 if (request()->input('limit') !== null)
@@ -383,8 +391,11 @@ class PropertySearchController extends Controller
                 else
                     $limit = '15';
 
-                if (request()->input('area_sort') !== null)
+                if (request()->input('area_sort') !== null) {
                     $sort_area = request()->input('area_sort');
+                    if ($sort_area === 'higher_area') $sort_area_value = 'DESC';
+                    else if ($sort_area === 'lower_area') $sort_area_value = 'ASC';
+                }
 
                 $property_types = (new PropertyType)->all();
                 (new MetaTagController())->addMetaTags();
@@ -393,20 +404,16 @@ class PropertySearchController extends Controller
                 if ($result2) {
                     $footer_content = (new FooterController)->footerContent();
                     (new MetaTagController())->addMetaTags();
+                    $total_count = DB::table('property_count_by_cities')
+                        ->select('property_count AS count')->where('city_id', '=', $result2->id)->first()->count;
 
 
-                    $properties = $this->listingFrontend()->Where('cities.id', '=', $result2->id);
                     $page = (isset($request->page)) ? $request->page : 1;
                     $last_id = ($page - 1) * $limit;
-                    $properties = $properties->where('properties.id', '>', $last_id);
-                    $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-//                    $property_count = $properties->count();
-//
-//                    if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-//                        $lastPage = ceil((int)$property_count / $limit);
-//                        request()->merge(['page' => (int)$lastPage]);
-//                    }
+                    $properties = DB::select('call getPropertiesByCityId("' . $last_id . '","' . $result2->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
+                    $properties = new Collection($properties);
+                    $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+                    $paginatedSearchResults->setPath($request->url());
 
                     $property_types = (new PropertyType)->all();
 
@@ -417,14 +424,14 @@ class PropertySearchController extends Controller
                                 'area_sort' => $sort_area,
                                 'sort' => $sort,
                                 'params' => $request->all(),
-                                'properties' => $properties->paginate($limit)
+                                'properties' => $paginatedSearchResults
                             ])->render();
                         return $data;
                     } else {
                         $data = [
                             'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
                             'property_types' => $property_types,
-                            'properties' => $properties->paginate($limit),
+                            'properties' => $paginatedSearchResults,
                             'recent_properties' => $footer_content[0],
                             'footer_agencies' => $footer_content[1]
                         ];
@@ -437,21 +444,15 @@ class PropertySearchController extends Controller
                     if ($result) {
                         $footer_content = (new FooterController)->footerContent();
                         (new MetaTagController())->addMetaTags();
+                        $total_count = DB::table('property_count_by_agencies')
+                            ->select('property_count AS count')->where('agency_id', '=', $result->id)->first()->count;
 
-                        $properties = $this->listingFrontend()->Where('agencies.id', '=', $result->id);
                         $page = (isset($request->page)) ? $request->page : 1;
                         $last_id = ($page - 1) * $limit;
-                        $properties = $properties->where('properties.id', '>', $last_id);
-
-                        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-
-//                        $property_count = $properties->count();
-//
-//                        if (request()->has('page') && request()->input('page') > ceil($property_count / $limit)) {
-//                            $lastPage = ceil((int)$property_count / $limit);
-//                            request()->merge(['page' => (int)$lastPage]);
-//                        }
+                        $properties = DB::select('call getPropertiesByAgencyId("' . $last_id . '","' . $result->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
+                        $properties = new Collection($properties);
+                        $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+                        $paginatedSearchResults->setPath($request->url());
 
                         $property_types = (new PropertyType)->all();
 
@@ -462,14 +463,14 @@ class PropertySearchController extends Controller
                                     'area_sort' => $sort_area,
                                     'sort' => $sort,
                                     'params' => $request->all(),
-                                    'properties' => $properties->paginate($limit)
+                                    'properties' => $paginatedSearchResults
                                 ])->render();
                             return $data;
                         } else {
                             $data = [
                                 'params' => ['sort' => 'newest', 'search_term' => $request->input('term')],
                                 'property_types' => $property_types,
-                                'properties' => $properties->paginate($limit),
+                                'properties' => $paginatedSearchResults,
                                 'recent_properties' => $footer_content[0],
                                 'footer_agencies' => $footer_content[1]
                             ];
