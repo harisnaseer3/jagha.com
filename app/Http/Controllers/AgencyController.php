@@ -14,6 +14,8 @@ use App\Notifications\AgencyStatusChangeMail;
 use App\Notifications\PropertyStatusChange;
 use App\Notifications\PropertyStatusChangeMail;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -198,36 +200,44 @@ class AgencyController extends Controller
 
     public function show(Request $request, string $city, string $slug, string $agency)
     {
-        $properties = (new PropertySearchController())->listingFrontend()
-            ->where('properties.agency_id', '=', $agency);
-
         $sort = '';
         $limit = '';
         $sort_area = '';
+        $sort_area_value = '';
+        $activated_at_value = '';
+        $price_value = '';
+        if (request()->input('sort') !== null) {
+            $sort = request()->input('sort');
+            if ($sort === 'newest') $activated_at_value = 'DESC';
+            else if ($sort === 'oldest') $activated_at_value = 'ASC';
+            else if ($sort === 'high_price') $price_value = 'DESC';
+            else if ($sort === 'low_price') $price_value = 'ASC';
+
+        } else
+            $sort = 'newest';
+
         if (request()->input('limit') !== null)
             $limit = request()->input('limit');
         else
             $limit = '15';
 
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
-
-        if (request()->input('area_sort') !== null)
+        if (request()->input('area_sort') !== null) {
             $sort_area = request()->input('area_sort');
+            if ($sort_area === 'higher_area') $sort_area_value = 'DESC';
+            else if ($sort_area === 'lower_area') $sort_area_value = 'ASC';
+        }
+
+
+        $total_count = DB::table('property_count_by_agencies')
+            ->select('property_count AS count')->where('agency_id', '=', $agency)->first()->count;
 
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
-        $properties = $properties->where('properties.id', '>', $last_id);
+        $properties = DB::select('call getPropertiesByAgencyId("' . $last_id . '","' . $agency . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
+        $properties = new Collection($properties);
+        $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+        $paginatedSearchResults->setPath($request->url());
 
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-
-//        if (request()->has('page') && request()->input('page') > ceil($properties->count() / $limit)) {
-//            $lastPage = ceil((int)$properties->count() / $limit);
-//            request()->merge(['page' => (int)$lastPage]);
-//        }
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
         $footer_content = (new FooterController)->footerContent();
@@ -239,14 +249,6 @@ class AgencyController extends Controller
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id');
 
-        $agency_property_count = DB::table('property_count_by_user')->select(DB::raw('sum(agency_count) as count'))
-            ->where('agency_id', '=', $agency)
-            ->where('individual_count', '=', 0)
-            ->where('property_status', '=', 'active')
-            ->get()->toArray();
-
-
-//        return view('website.pages.property_listing', $data);
         if ($request->ajax()) {
             $data['view'] = View('website.components.property-listings',
                 [
@@ -254,17 +256,17 @@ class AgencyController extends Controller
                     'area_sort' => $sort_area,
                     'sort' => $sort,
                     'params' => $request->all(),
-                    'properties' => $properties->paginate($limit)
+                    'properties' => $paginatedSearchResults
                 ])->render();
             return $data;
         } else {
 
             $data = [
                 'agency_detail' => $agency_data->first(),
-                'agency_property_count' => $agency_property_count[0]->count,
+                'agency_property_count' => $total_count,
                 'params' => ['sort' => $sort],
                 'property_types' => $property_types,
-                'properties' => $properties->paginate($limit),
+                'properties' => $paginatedSearchResults,
                 'recent_properties' => $footer_content[0],
                 'footer_agencies' => $footer_content[1],
 
