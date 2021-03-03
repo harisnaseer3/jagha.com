@@ -278,7 +278,9 @@ class PropertySearchController extends Controller
             $last_id = ($page - 1) * $limit;
             $properties = DB::select('call getPropertiesByCityId("' . $last_id . '","' . $city->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
             $properties = new Collection($properties);
+
             $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+
             $paginatedSearchResults->setPath($request->url());
 
             $property_types = (new PropertyType)->all();
@@ -516,14 +518,32 @@ class PropertySearchController extends Controller
 
     /*   search from index page bottom property listing  */
     /* search function Popular Cities to Buy Properties (houses, flats, plots)*/
-    public
-    function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
+    public function searchWithArgumentsForProperty(string $sub_type, string $purpose, string $city, Request $request)
     {
         if ($city == 'Islamabad-Rawalpindi') {
             $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', 'Islamabad'))->first();
         } else
             $location_city = City::select('id', 'name')->where('name', '=', str_replace('-', ' ', $city))->first();
+        $total_count = 0;
+        $sort = '';
+        $limit = '';
+        $sort_area = '';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
 
+        if (request()->input('limit') !== null)
+            $limit = request()->input('limit');
+        else
+            $limit = '15';
+        if (request()->input('area_sort') !== null)
+            $sort_area = request()->input('area_sort');
+
+
+        $property_types = (new PropertyType)->all();
+        (new MetaTagController())->addMetaTags();
+        $footer_content = (new FooterController)->footerContent();
 
         if (count($request->all()) == 2 && $request->filled('sort') && $request->filled('limit') ||
             count($request->all()) == 3 && $request->filled('sort') && $request->filled('limit') && $request->filled('page')) {
@@ -550,14 +570,43 @@ class PropertySearchController extends Controller
                     (new MetaTagController())->addMetaTagsAccordingToCity($city->name);
                 }
                 $properties = $this->listingFrontend();
-                if ($city != '') $properties->where('properties.city_id', '=', $city->id);
-                else {
+                if ($city != '') {
+                    $properties->where('properties.city_id', '=', $city->id);
+
+                    $total_count = DB::table('property_count_by_property_purposes')
+                        ->select(DB::raw('SUM(property_count) AS count'))
+                        ->where([
+                            ['city_id', '=', $city->id],
+                            ['property_purpose', '=', $purpose],
+                            ['property_type', '=', $type],
+                        ])->first()->count;
+
+                } else {
                     $properties
                         ->where('properties.city_id', '=', $city_1->id)
                         ->orwhere('properties.city_id', '=', $city_2->id);
+                    $count_1 = DB::table('property_count_by_property_purposes')
+                        ->select(DB::raw('SUM(property_count) AS count'))
+                        ->where([
+                            ['city_id', '=', $city_1->id],
+                            ['property_purpose', '=', $purpose],
+                            ['property_type', '=', $type],
+                        ])->first()->count;
+                    $count_2 = DB::table('property_count_by_property_purposes')
+                        ->select(DB::raw('SUM(property_count) AS count'))
+                        ->where([
+                            ['city_id', '=', $city_2->id],
+                            ['property_purpose', '=', $purpose],
+                            ['property_type', '=', $type],
+                        ])->first()->count;
+
+                    $total_count = $count_1 + $count_2;
+
                 }
                 $properties->where('properties.purpose', '=', $purpose);
                 $properties->where('properties.type', '=', $type);
+
+
                 (new MetaTagController())->addMetaTags();
 
             } else {
@@ -581,7 +630,22 @@ class PropertySearchController extends Controller
                 $properties->where('properties.city_id', '=', $city->id);
                 $properties->where('properties.purpose', '=', $purpose);
                 $properties->where('properties.type', '=', $type);
-                if ($sub_type !== '') $properties->where('properties.sub_type', '=', $sub_type);
+
+                $total_count = DB::table('property_count_by_property_purposes')
+                    ->select(DB::raw('SUM(property_count) AS count'))
+                    ->where([
+                        ['city_id', '=', $city->id],
+                        ['property_purpose', '=', $purpose],
+                        ['property_type', '=', $type],
+                    ]);
+
+                if ($sub_type !== '') {
+                    $total_count->where('property_sub_type', '=', $sub_type);
+                    $properties->where('properties.sub_type', '=', $sub_type);
+                }
+
+                $total_count = $total_count->first()->count;
+
             }
 
 
@@ -628,44 +692,39 @@ class PropertySearchController extends Controller
                 return redirect('/');
             }
             $properties = $search_result['properties'];
+            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+            $location_data = $this->_getLocationsWiseCount($purpose, $sub_type, $location_city->id, $location_city->name, $type);
+            if ($request->ajax()) {
+                $data['view'] = View('website.components.property-listings',
+                    [
+                        'limit' => $limit,
+                        'area_sort' => $sort_area,
+                        'sort' => $sort,
+                        'params' => $request->all(),
+                        'properties' => $properties->paginate($limit)
+                    ])->render();
+                return $data;
+            }
+
+            $data = [
+                'params' => $request->all(),
+                'property_types' => $property_types,
+                'locations_data' => $location_data,
+                'properties' => $properties->paginate($limit),
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
+            ];
+//        dd($properties->get());
+            return view('website.pages.property_listing', $data);
+
         }
-
-        $sort = '';
-        $limit = '';
-        $sort_area = '';
-        if (request()->input('sort') !== null)
-            $sort = request()->input('sort');
-        else
-            $sort = 'newest';
-
-        if (request()->input('limit') !== null)
-            $limit = request()->input('limit');
-        else
-            $limit = '15';
-        if (request()->input('area_sort') !== null)
-            $sort_area = request()->input('area_sort');
-
         $page = (isset($request->page)) ? $request->page : 1;
-        $last_id = ($page - 1) * $limit;
-        $properties = $properties->where('properties.id', '>', $last_id);
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $properties = new Collection($properties->get());
+        //Slice the collection to get the items to display in current page
+        $properties = $properties->slice(($page - 1) * $limit, $limit)->all();
+        $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+        $paginatedSearchResults->setPath($request->url());
 
-//        $property_count = $properties->count();
-//
-//        if ($request->has('page') && $request->input('page') > ceil($property_count / $limit)) {
-//            $lastPage = ceil((int)$property_count / $limit);
-//            $request->merge(['page' => (int)$lastPage]);
-//        }
-
-//        dd($properties->count());
-//        dd($last_id);
-//        $properties = $properties
-//            ->limit($limit)
-//            ->get();
-
-        $property_types = (new PropertyType)->all();
-        (new MetaTagController())->addMetaTags();
-        $footer_content = (new FooterController)->footerContent();
 
         $location_data = $this->_getLocationsWiseCount($purpose, $sub_type, $location_city->id, $location_city->name, $type);
         if ($request->ajax()) {
@@ -675,7 +734,7 @@ class PropertySearchController extends Controller
                     'area_sort' => $sort_area,
                     'sort' => $sort,
                     'params' => $request->all(),
-                    'properties' => $properties->paginate($limit)
+                    'properties' => $paginatedSearchResults
                 ])->render();
             return $data;
         }
@@ -684,7 +743,7 @@ class PropertySearchController extends Controller
             'params' => $request->all(),
             'property_types' => $property_types,
             'locations_data' => $location_data,
-            'properties' => $properties->paginate($limit),
+            'properties' => $paginatedSearchResults,
             'recent_properties' => $footer_content[0],
             'footer_agencies' => $footer_content[1]
         ];
@@ -694,8 +753,7 @@ class PropertySearchController extends Controller
     }
 
     //  search from main  page
-    public
-    function search($data)
+    public function search($data)
     {
         $validator = Validator::make($data, [
             'purpose' => ['required', Rule::in(['sale', 'rent', 'wanted'])],
@@ -724,6 +782,12 @@ class PropertySearchController extends Controller
         $properties = $this->listingFrontend()->where('properties.status', '=', 'active')
             ->where('properties.city_id', '=', $city->id);
 
+        $total_count = DB::table('property_count_by_property_purposes')
+            ->select(DB::raw('SUM(property_count) AS count'))
+            ->where([
+                ['city_id', '=', $city->id],
+            ]);
+
         if ($data['location'] !== null && $data['location'] !== '') {
             $loc = trim($data['location']);
             $pattern = "/{$data['city']}/i";
@@ -731,12 +795,20 @@ class PropertySearchController extends Controller
                 $loc = trim(str_replace($match[0], '', $loc));
             }
             $properties = $properties->where('locations.name', 'LIKE', "%{$loc}%");
+            $total_count = $total_count->where('location_name', 'LIKE', "%{$loc}%");
         }
 
         $properties->where('properties.purpose', '=', $data['purpose']);
+        $total_count = $total_count->where('property_purpose', '=', $data['purpose']);
 
-        if ($data['type'] !== '' && $data['type'] !== null) $properties->where('properties.type', '=', $data['type']);
-        if ($data['subtype'] !== null && $data['subtype'] !== '') $properties->where('properties.sub_type', '=', str_replace('-', ' ', $data['subtype']));
+        if ($data['type'] !== '' && $data['type'] !== null) {
+            $properties->where('properties.type', '=', $data['type']);
+            $total_count = $total_count->where('property_type', '=', $data['type']);
+        }
+        if ($data['subtype'] !== null && $data['subtype'] !== '') {
+            $properties->where('properties.sub_type', '=', str_replace('-', ' ', $data['subtype']));
+            $total_count = $total_count->where('property_sub_type', '=', str_replace('-', ' ', $data['subtype']));
+        }
 
 
         if ($data['beds']) $properties->where('properties.bedrooms', '=', $data['beds']);
