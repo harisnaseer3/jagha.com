@@ -113,7 +113,7 @@ class PropertySearchController extends Controller
 
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
-
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
         $properties = new Collection($properties->get());
         //Slice the collection to get the items to display in current page
         $properties = $properties->slice($last_id, $limit)->all();
@@ -222,7 +222,7 @@ class PropertySearchController extends Controller
 
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
-
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
         $properties = new Collection($properties->get());
         $properties = $properties->slice($last_id, $limit)->all();
         $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
@@ -740,6 +740,7 @@ class PropertySearchController extends Controller
 
         }
         $page = (isset($request->page)) ? $request->page : 1;
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
         $properties = new Collection($properties->get());
         //Slice the collection to get the items to display in current page
         $properties = $properties->slice(($page - 1) * $limit, $limit)->all();
@@ -853,7 +854,6 @@ class PropertySearchController extends Controller
             $properties->where('price', '>=', $min_price);
         } //      if max price is selected
         else if ($min_price === 0 and $max_price !== 0) {
-//            dd('if min=0 and max == 0');
             $properties->where('price', '<=', $max_price);
         }
 
