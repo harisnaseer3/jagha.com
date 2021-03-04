@@ -30,6 +30,10 @@
                     for (let [index, options] of locations.entries()) {
                         add_select.append($('<option>', {value: options.name, text: options.name}));
                     }
+                    add_select.select2({
+                        sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+                    });
+                    add_select.parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
                     $('.fa-spinner').hide();
                     if (location !== '') {
                         add_select.val(location).trigger('change');
