@@ -463,20 +463,26 @@ class PropertySearchController extends Controller
 
 
                 } else {
-                    $result = Agency::select('id')->where('title', 'LIKE', $request->input('term') . '%')->first();
-                    if ($result) {
+                    $result = Agency::select('id')->where('title', 'LIKE', $request->input('term') . '%')->get()->toArray();
+
+                    if (count($result) > 0) {
                         $footer_content = (new FooterController)->footerContent();
                         (new MetaTagController())->addMetaTags();
-                        $total_count = DB::table('property_count_by_agencies')
-                            ->select('property_count AS count')->where('agency_id', '=', $result->id)->first()->count;
+                        $total_count = 0;
+                        $total_counts = DB::table('property_count_by_agencies')
+                            ->select('property_count AS count')->where('property_status','=','active')->whereIn('agency_id', $result)->get()->toArray();
+                        foreach ($total_counts as $count){
+                            $total_count += $count->count;
+                        }
 
+                        $properties = $this->listingFrontend()->whereIn('properties.agency_id',$result);
                         $page = (isset($request->page)) ? $request->page : 1;
                         $last_id = ($page - 1) * $limit;
-                        $properties = DB::select('call getPropertiesByAgencyId("' . $last_id . '","' . $result->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
-                        $properties = new Collection($properties);
+                        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+                        $properties = new Collection($properties->get());
+                        $properties = $properties->slice($last_id, $limit)->all();
                         $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
                         $paginatedSearchResults->setPath($request->url());
-
                         $property_types = (new PropertyType)->all();
 
                         if ($request->ajax()) {
