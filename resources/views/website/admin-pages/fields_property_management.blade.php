@@ -286,8 +286,31 @@
     </div>
     <div class="card-header theme-blue text-white text-capitalize">Property Status</div>
     <div class="card-body">
-        {{ Form::bsSelect2('status', ['active' => 'Active', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
+{{--        {{ Form::bsSelect2('status', ['active' => 'Active', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],--}}
+{{--          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}--}}
+        <div class="form-group row">
+            <label for="status" class="col-sm-4 col-md-3 col-lg-2  col-xl-2 col-form-label col-form-label-sm">
+                Status
+                <span class="text-danger">*</span>
+            </label>
+
+            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                <select class="custom-select custom-select-sm select2 select2-hidden-accessible" style="width: 100%; border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;" tabindex="-1"
+                        aria-hidden="true" aria-describedby="status-error" aria-invalid="false" required="" id="status" name="status" data-select2-id="status">
+                    <option value="" disabled>Select Status</option>
+                    <option value="active" {{$property->status === 'active' ? 'selected':''}}>Active</option>
+                    <option value="pending" {{$property->status === 'pending' ? 'selected':''}}>Pending</option>
+                    <option value="expired" {{$property->status === 'expired' ? 'selected':''}}>Expired</option>
+                    <option value="sold" {{$property->status === 'sold' ? 'selected':''}}>Sold</option>
+                    <option value="rejected" {{$property->status === 'rejected' ? 'selected':''}}>Rejected</option>
+                    @can('Delete Properties')
+                        <option value="deleted" {{$property->status === 'deleted' ? 'selected':''}}>Deleted</option>
+                    @endcan
+                </select>
+            </div>
+
+        </div>
+
         <div id="reason-of-rejection" style="display: none">
             {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}
         </div>

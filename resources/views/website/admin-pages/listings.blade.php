@@ -271,12 +271,14 @@
                                                                                             <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                         </a>
                                                                                         {{--                                                                                        @endif--}}
-                                                                                        <a type="button" class="btn btn-sm btn-danger mb-1"
-                                                                                           data-toggle-1="tooltip" data-placement="bottom" title="Delete Property" data-toggle="modal"
-                                                                                           data-target="#delete"
-                                                                                           data-record-id="{{$all_listing->id}}">
-                                                                                            <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                                        </a>
+                                                                                        @can('Delete Properties')
+                                                                                            <a type="button" class="btn btn-sm btn-danger mb-1"
+                                                                                               data-toggle-1="tooltip" data-placement="bottom" title="Delete Property" data-toggle="modal"
+                                                                                               data-target="#delete"
+                                                                                               data-record-id="{{$all_listing->id}}">
+                                                                                                <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                            </a>
+                                                                                        @endcan
                                                                                     @elseif($params['status'] == 'deleted')
                                                                                         <a type="button" href="{{route('admin-properties-edit', $all_listing->id)}}"
                                                                                            class="btn btn-sm btn-warning mb-1 {{$params['status'] == 'sold' ? 'anchor-disable':'' }}"
