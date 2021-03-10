@@ -60,7 +60,7 @@ class SupportController extends Controller
         $validator = Validator::make($request->all(), Support::$rules);
         if ($validator->fails()) {
 //            dd($validator);
-            return redirect()->back()->withInput()->withErrors($validator)->with('error', 'Error inserting record, try again.');
+            return redirect()->back()->withInput()->withErrors($validator)->with('error', 'Error in submitting request, Please resolve the following error(s).');
         }
         try {
 
@@ -120,7 +120,7 @@ class SupportController extends Controller
             return redirect()->back()->with('success', 'Support ticket ' . $support->ticket_id . ' raised successfully.');
 
         } catch (Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Error storing record. Try again');
+            return redirect()->back()->withInput()->with('error', 'Error in submitting request, Please try again.');
         }
     }
 
