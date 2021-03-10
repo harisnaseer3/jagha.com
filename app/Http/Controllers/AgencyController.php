@@ -593,6 +593,13 @@ class AgencyController extends Controller
                 return redirect()->back()->withErrors($error_msg)->withInput()->with('error', 'Error storing record, Resolve following error(s).');
             }
         }
+        if ($request->has('status') && $request->input('status') == 'deleted') {
+            if (Auth()->guard('admin')->check()) {
+                if (!Auth::guard('admin')->user()->can('Delete Agencies')) {
+                    return redirect()->back()->withInput()->with('error', 'User does not have the right permissions.');
+                }
+            }
+        }
 
         $validator = Validator::make($request->all(), [
             'city' => 'required|string',
@@ -701,6 +708,13 @@ class AgencyController extends Controller
     public function destroy(Request $request)
     {
         $agency = (new Agency)->where('id', '=', $request->input('record_id'))->first();
+        if ($request->has('status') && $request->input('status') == 'deleted') {
+            if (Auth()->guard('admin')->check()) {
+                if (!Auth::guard('admin')->user()->can('Delete Agencies')) {
+                    return redirect()->back()->with('error', 'User does not have the right permissions.');
+                }
+            }
+        }
         if ($agency->exists) {
             try {
                 if (Auth::guard('admin')->user())

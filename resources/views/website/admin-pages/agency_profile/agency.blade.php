@@ -119,7 +119,7 @@
 
 
                                             <div id="reason-of-rejection" style="display: none">
-                                                {{ Form::bsText('rejection_reason',isset($agency->rejection_reason)? $agency->rejection_reason:null,['required'=> 'true']) }}
+                                                {{ Form::bsText('rejection_reason',isset($agency->rejection_reason)? $agency->rejection_reason:null) }}
                                             </div>
                                         </div>
                                         <div class="card-footer">
