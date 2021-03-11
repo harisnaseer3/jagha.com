@@ -202,6 +202,15 @@
                                                                                    data-placement="bottom" title="Edit Agency">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                 </a>
+                                                                                @if($all_listing->user_id == 1)
+                                                                                    <a type="button" href="{{route('admin-agencies-owner-edit', $all_listing->id)}}"
+                                                                                       class="btn btn-sm btn-success mb-1"
+                                                                                       data-toggle-1="tooltip"
+                                                                                       data-placement="bottom" title="Add Agency Owner">
+                                                                                        <i class="fas fa-user"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Owner</span>
+                                                                                    </a>
+                                                                                @endif
+
                                                                                 @can('Delete Agencies')
                                                                                     <a type="button" class="btn btn-sm btn-danger mb-1"
                                                                                        data-toggle-1="tooltip"
@@ -338,6 +347,14 @@
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
+                                                                            @if($all_listing->user_id == 1)
+                                                                                <a type="button" href="{{route('admin-agencies-owner-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-success mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Add Agency Owner">
+                                                                                    <i class="fas fa-user"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Owner</span>
+                                                                                </a>
+                                                                            @endif
                                                                             @can('Delete Agencies')
                                                                                 <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
                                                                                    data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
@@ -470,6 +487,14 @@
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
+                                                                            @if($all_listing->user_id == 1)
+                                                                                <a type="button" href="{{route('admin-agencies-owner-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-success mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Add Agency Owner">
+                                                                                    <i class="fas fa-user"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Owner </span>
+                                                                                </a>
+                                                                            @endif
                                                                             @can('Delete Agencies')
                                                                                 <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
                                                                                    data-placement="bottom" title="Delete Agency"
