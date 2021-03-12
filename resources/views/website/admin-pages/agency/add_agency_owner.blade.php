@@ -30,40 +30,79 @@
                                     </div>
                                     <div class="card-body">
                                         <h6> Agency Information</h6>
-                                        <div class="row mb-3 mt-3">
-                                            <div class="col-md-12">
-                                                <strong>Agency ID:</strong> {{$agency->id}}
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                Agency ID :
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->id}}
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <strong>Title:</strong> {{$agency->title}}
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                Title :
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->title}}
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <strong>Address:</strong> {{$agency->address}}
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                City :
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->city}}
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-4">
-                                                <strong>City:</strong> {{$agency->address}}
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                Address:
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->address}}
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                Phone :
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->phone}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                Cell :
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->cell}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                Website :
+                                            </div>
+                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                {{$agency->website}}
+                                            </div>
+                                        </div>
 
-                                            <div class="col-md-4">
-                                                <strong>Phone:</strong> {{$agency->phone}}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-4">
-                                                <strong>Website:</strong>{{$agency->website}}
-                                            </div>
-                                        </div>
                                         <div>
                                             {{ Form::open(['route' => ['admin-agencies-owner-update',$agency], 'method' => 'put','role' => 'form','class'=>'data-insertion-form',]) }}
-                                            {{ Form::bsEmail('email',null, ['required' => true]) }}
+{{--                                            {{ Form::bsEmail('email',null, ['required' => true]) }}--}}
+                                            <div class="form-group row">
+                                                <label for="email" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                                                    Owner Email
+
+                                                    <span class="text-danger">*</span>
+                                                </label>
+
+                                                <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                    <input class="form-control form-control-sm" aria-describedby="email-error" aria-invalid="false" required="" name="email" type="email">
+
+                                                </div>
+
+                                            </div>
                                             {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                             {{ Form::close() }}
                                         </div>
