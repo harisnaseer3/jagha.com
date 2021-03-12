@@ -244,7 +244,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('agencies/{agency}/edit', 'AgencyController@edit')->name('admin-agencies-edit')->middleware(['permission:Manage Agency']);
     Route::get('agencies/{agency}/owner-edit', 'AgencyOwnerController@edit')->name('admin-agencies-owner-edit')->middleware(['permission:Manage Agency']);
     Route::put('agencies/{agency}', 'AgencyController@update')->name('admin-agencies-update')->middleware(['permission:Manage Agency']);
-    Route::put('agencies/{agency}', 'AgencyOwnerController@update')->name('admin-agencies-owner-update')->middleware(['permission:Manage Agency']);
+    Route::put('agencies/{agency}/owner-update', 'AgencyOwnerController@update')->name('admin-agencies-owner-update')->middleware(['permission:Manage Agency']);
     Route::delete('agencies/{agency}', 'AgencyController@destroy')->name('admin-agencies-destroy')->middleware(['permission:Manage Agency']);
 
 
