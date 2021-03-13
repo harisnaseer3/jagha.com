@@ -99,6 +99,7 @@
                                         <th>Email</th>
                                         <th>IP Address</th>
                                         <th>IP Location</th>
+                                        <th>City</th>
                                         <th>Operating System</th>
                                         <th>Browser</th>
                                         <th>LoggedIn_at</th>
@@ -118,6 +119,7 @@
                                                 <td>{{$user->email}}</td>
                                                 <td>{{$user->ip}}</td>
                                                 <td>{{$user->ip_location}}</td>
+                                                <td>{{$user->city}}</td>
                                                 <td>{{$user->os}}</td>
                                                 <td>{{$user->browser}}</td>
                                                 <td>{{ (new \Illuminate\Support\Carbon($user->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
