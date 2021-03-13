@@ -47,11 +47,11 @@
                                             {{ Form::bsTextArea('description', isset($agency->description)? $agency->description : null, ['required' => true, 'data-default' => 'Please provided detailed information about your agency services. For example, does your company provide sales and rental services or both.Description should have almost 4096 characters.']) }}
 
 
-                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone : null, ['id'=>'phone']) }}
+                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone :'',  ['required' => true,'id'=>'phone','value'=>isset($agency->phone)?$agency->phone:'']) }}
                                             {{Form::hidden('phone_check')}}
-                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['required' => true,'id'=>'cell']) }}
+                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell) ? $agency->cell :'',  ['required' => true,'id'=>'cell','value'=>isset($agency->cell)?$agency->cell:'']) }}
 
-                                            {{ Form::bsIntlTel('optional_mobile_#', isset($agency->optional_number)? $agency->optional_number :null, ['id'=>'optional_mobile']) }}
+                                            {{ Form::bsIntlTel('optional_mobile_#', isset($agency->optional_number)? $agency->optional_number :null, ['id'=>'optional_mobile','value'=>isset($agency->optional_number)?$agency->optional_number:'']) }}
                                             {{Form::hidden('optional_mobile_check')}}
 
                                             {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}

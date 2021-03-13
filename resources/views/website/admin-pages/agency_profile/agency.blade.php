@@ -41,12 +41,17 @@
                                             {{ Form::bsText('company_title', isset($agency->title)? $agency->title : null, ['required' => true, 'data-default' => 'Please provide the official and registered name of your agency.','readonly' => 'readonly']) }}
                                             {{ Form::bsTextArea('description', isset($agency->description)? $agency->description : null, ['required' => true, 'data-default' => 'Please provided detailed information about your agency services. For example, does your company provide sales and rental services or both.Description should have almost 4096 characters.']) }}
 
-                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone : null, ['id'=>'phone']) }}
+{{--                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone : null, ['id'=>'phone']) }}--}}
+                                            {{ Form::bsIntlTel('phone_#', isset($agency->phone)? $agency->phone :'',  ['required' => true,'id'=>'phone','value'=>isset($agency->phone)?$agency->phone:'']) }}
+
                                             {{Form::hidden('phone_check')}}
 
-                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['required' => true,'id'=>'cell']) }}
+{{--                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell)? $agency->cell : null, ['required' => true,'id'=>'cell']) }}--}}
+                                            {{ Form::bsIntlTel('mobile_#', isset($agency->cell) ? $agency->cell :'',  ['required' => true,'id'=>'cell','value'=>isset($agency->cell)?$agency->cell:'']) }}
 
-                                            {{ Form::bsIntlTel('optional_mobile_#', isset($agency->optional_number)? $agency->optional_number :null, ['id'=>'optional_mobile']) }}
+
+{{--                                            {{ Form::bsIntlTel('optional_mobile_#', isset($agency->optional_number)? $agency->optional_number :null, ['id'=>'optional_mobile']) }}--}}
+                                            {{ Form::bsIntlTel('optional_mobile_#', isset($agency->optional_number)? $agency->optional_number :null, ['id'=>'optional_mobile','value'=>isset($agency->optional_number)?$agency->optional_number:'']) }}
                                             {{Form::hidden('optional_mobile_check')}}
 
                                             {{ Form::bsText('address', isset($agency->address)? $agency->address : null, ['required' => true]) }}
@@ -91,10 +96,35 @@
                                         </div>
                                         <div class="card-header theme-blue text-white text-capitalize">Agency Status</div>
                                         <div class="card-body">
-                                            {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],
-                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}
+
+{{--                                            {{ Form::bsSelect2('status', ['verified' => 'Verified', 'pending' => 'pending', 'expired' => 'Expired', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],--}}
+{{--                                                 isset($agency->status) ? strtolower($agency->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}--}}
+
+                                            <div class="form-group row">
+                                                <label for="status" class="col-sm-4 col-md-3 col-lg-2  col-xl-2 col-form-label col-form-label-sm">
+                                                    Status
+                                                    <span class="text-danger">*</span>
+                                                </label>
+
+                                                <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                    <select class="custom-select custom-select-sm select2 select2-hidden-accessible" style="width: 100%; border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;" tabindex="-1"
+                                                            aria-hidden="true" aria-describedby="status-error" aria-invalid="false" required="" id="status" name="status" data-select2-id="status">
+                                                        <option value="" disabled>Select Status</option>
+                                                        <option value="verified" {{$agency->status === 'verified' ? 'selected':''}}>Verified</option>
+                                                        <option value="pending" {{$agency->status === 'pending' ? 'selected':''}}>Pending</option>
+                                                        <option value="expired" {{$agency->status === 'expired' ? 'selected':''}}>Expired</option>
+                                                        <option value="rejected" {{$agency->status === 'rejected' ? 'selected':''}}>Rejected</option>
+                                                        @can('Delete Agencies')
+                                                            <option value="deleted" {{$agency->status === 'deleted' ? 'selected':''}}>Deleted</option>
+                                                        @endcan
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+
                                             <div id="reason-of-rejection" style="display: none">
-                                                {{ Form::bsText('rejection_reason',isset($agency->rejection_reason)? $agency->rejection_reason:null,['required'=> 'true']) }}
+                                                {{ Form::bsText('rejection_reason',isset($agency->rejection_reason)? $agency->rejection_reason:null) }}
                                             </div>
                                         </div>
                                         <div class="card-footer">

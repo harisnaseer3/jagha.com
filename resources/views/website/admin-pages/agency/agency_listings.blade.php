@@ -202,12 +202,23 @@
                                                                                    data-placement="bottom" title="Edit Agency">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                 </a>
-                                                                                <a type="button" class="btn btn-sm btn-danger mb-1"
-                                                                                   data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="Delete Agency"
-                                                                                   data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
-                                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                                </a>
+                                                                                @if($all_listing->user_id == 1)
+                                                                                    <a type="button" href="{{route('admin-agencies-owner-edit', $all_listing->id)}}"
+                                                                                       class="btn btn-sm btn-success mb-1"
+                                                                                       data-toggle-1="tooltip"
+                                                                                       data-placement="bottom" title="Add Agency Owner">
+                                                                                        <i class="fas fa-user"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Owner</span>
+                                                                                    </a>
+                                                                                @endif
+
+                                                                                @can('Delete Agencies')
+                                                                                    <a type="button" class="btn btn-sm btn-danger mb-1"
+                                                                                       data-toggle-1="tooltip"
+                                                                                       data-placement="bottom" title="Delete Agency"
+                                                                                       data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
+                                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                    </a>
+                                                                                @endcan
                                                                             @elseif($params['status'] != 'pending_agencies' )
 
                                                                                 <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
@@ -216,12 +227,14 @@
                                                                                    data-placement="bottom" title="Edit Agency">
                                                                                     <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                                 </a>
-                                                                                <a type="button" class="btn btn-sm btn-danger mb-1"
-                                                                                   data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="Delete Agency"
-                                                                                   data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
-                                                                                    <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                                </a>
+                                                                                @can('Delete Agencies')
+                                                                                    <a type="button" class="btn btn-sm btn-danger mb-1"
+                                                                                       data-toggle-1="tooltip"
+                                                                                       data-placement="bottom" title="Delete Agency"
+                                                                                       data-toggle="modal" data-target="#delete" data-record-id="{{$all_listing->id}}">
+                                                                                        <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                    </a>
+                                                                                @endcan
                                                                             @endif
                                                                         @elseif($params['status'] == 'deleted_agencies')
                                                                             <a type="button" href="{{route('admin-agencies-edit', $all_listing->id)}}"
@@ -334,12 +347,22 @@
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
-                                                                            <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
-                                                                               data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
-                                                                               data-toggle="modal" data-target="#delete"
-                                                                               data-record-id="{{$key_listing->id}}">
-                                                                                <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                            </a>
+                                                                            @if($all_listing->user_id == 1)
+                                                                                <a type="button" href="{{route('admin-agencies-owner-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-success mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Add Agency Owner">
+                                                                                    <i class="fas fa-user"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Owner</span>
+                                                                                </a>
+                                                                            @endif
+                                                                            @can('Delete Agencies')
+                                                                                <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
+                                                                                   data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                                   data-toggle="modal" data-target="#delete"
+                                                                                   data-record-id="{{$key_listing->id}}">
+                                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                </a>
+                                                                            @endcan
                                                                         @elseif($params['status'] != 'deleted_agencies')
                                                                             <a type="button" href="{{route('admin-agencies-edit', $key_listing->id)}}"
                                                                                class="btn btn-sm btn-warning mb-1"
@@ -347,12 +370,14 @@
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
-                                                                            <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
-                                                                               data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
-                                                                               data-toggle="modal" data-target="#delete"
-                                                                               data-record-id="{{$key_listing->id}}">
-                                                                                <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                            </a>
+                                                                            @can('Delete Agencies')
+                                                                                <a type="button" class="btn btn-sm btn-danger  {{$params['status'] == 'deleted' ?' anchor-disable':''}}"
+                                                                                   data-toggle-1="tooltip" data-placement="bottom" title="Delete Agency"
+                                                                                   data-toggle="modal" data-target="#delete"
+                                                                                   data-record-id="{{$key_listing->id}}">
+                                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                </a>
+                                                                            @endcan
                                                                         @elseif($params['status'] == 'deleted_agencies')
                                                                             <a type="button" class="btn btn-sm btn-success color-black restore-btn mb-1"
                                                                                data-toggle-1="tooltip" data-placement="bottom"
@@ -462,12 +487,22 @@
                                                                                data-placement="bottom" title="Edit Agency">
                                                                                 <i class="fas fa-pencil"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Edit</span>
                                                                             </a>
-                                                                            <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="Delete Agency"
-                                                                               data-toggle="modal" data-target="#delete"
-                                                                               data-record-id="{{$featured_listing->id}}">
-                                                                                <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                            </a>
+                                                                            @if($all_listing->user_id == 1)
+                                                                                <a type="button" href="{{route('admin-agencies-owner-edit', $all_listing->id)}}"
+                                                                                   class="btn btn-sm btn-success mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Add Agency Owner">
+                                                                                    <i class="fas fa-user"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Agency Owner </span>
+                                                                                </a>
+                                                                            @endif
+                                                                            @can('Delete Agencies')
+                                                                                <a type="button" class="btn btn-sm btn-danger mb-1" data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Delete Agency"
+                                                                                   data-toggle="modal" data-target="#delete"
+                                                                                   data-record-id="{{$featured_listing->id}}">
+                                                                                    <i class="fas fa-trash color-white"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
+                                                                                </a>
+                                                                            @endcan
                                                                         @elseif($params['status'] != 'deleted_agencies')
 
                                                                             <a type="button" href="{{route('admin-agencies-edit', $featured_listing->id)}}"

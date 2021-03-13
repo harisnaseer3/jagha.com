@@ -539,6 +539,14 @@ class PropertyController extends Controller
             $status_before_update = $property->status;
             (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
 
+            if ($request->has('status') && $request->input('status') == 'deleted') {
+                if (Auth()->guard('admin')->check()) {
+                    if (!Auth::guard('admin')->user()->can('Delete Properties')) {
+                        return redirect()->back()->withErrors($validator)->withInput()->with('error', 'User does not have the right permissions.');
+                    }
+                }
+            }
+
 
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
                 'agency_id' => $agency != '' ? $agency : null,
@@ -626,6 +634,14 @@ class PropertyController extends Controller
     {
 //        $user_id = Auth::user()->getAuthIdentifier();
         $property = (new Property)->where('id', '=', $request->input('record_id'))->first();
+
+        if ($request->has('status') && $request->input('status') == 'deleted') {
+            if (Auth()->guard('admin')->check()) {
+                if (!Auth::guard('admin')->user()->can('Delete Properties')) {
+                    return redirect()->back()->with('error', 'User does not have the right permissions.');
+                }
+            }
+        }
         $status_before_update = $property->status;
 
         if ($property->exists) {

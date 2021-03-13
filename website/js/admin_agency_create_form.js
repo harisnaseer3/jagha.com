@@ -172,6 +172,7 @@
                     const message = errors === 1
                         ? 'You missed 1 field. It has been highlighted'
                         : 'You missed ' + errors + ' fields. They have been highlighted';
+
                     $('div.error.text-red.invalid-feedback strong').html(message);
                     error_tag.show();
                 } else {
