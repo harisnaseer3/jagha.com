@@ -12,6 +12,7 @@ class PropertyCountByPropertyTypeSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('property_count_by_property_types')->truncate();
         $types = DB::table('properties')
             ->select('properties.type', 'properties.sub_type', 'properties.city_id', 'properties.location_id', 'cities.name AS city_name', 'locations.name AS location_name',
                 DB::raw('COUNT(properties.id) AS count'))
