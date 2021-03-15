@@ -32,6 +32,13 @@ Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUs
 Route::post('/property-image-upload', 'TempImageController@ajaxImageUpload');
 Route::post('/admin-user-count', 'Admin\AdminDashboardController@getUserCount');
 Route::post('/admin-cron-job', 'CronJobController@executeTasks');
+Route::get('/get-admin-logs', 'Admin\AdminDashboardController@getAdminLogs');
+Route::get('/get-property-logs', 'Admin\AdminDashboardController@getPropertyLogs');
+Route::get('/get-agency-logs', 'Admin\AdminDashboardController@getAgencyLogs');
+Route::get('/get-visit-logs', 'Admin\AdminDashboardController@getVisitLogs');
+Route::get('/get-visit-logs', 'Admin\AdminDashboardController@getVisitLogs');
+Route::get('/get-user-logs', 'Admin\UserManagementController@getUserLogs');
+Route::get('/get-reg-user', 'Admin\UserManagementController@getRegisteredUser');
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');

@@ -66,168 +66,19 @@
                                         </div>
                                         <div class="row">
                                             @can('Manage Users')
-                                                <div class="col-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header theme-blue text-white">
-                                                            Admins Session Log
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table id="admin-log" class="display" style="width: 100%">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Sr.</th>
-                                                                    <th>Admin ID</th>
-                                                                    <th>Email</th>
-                                                                    <th>IP Address</th>
-                                                                    <th>IP Location</th>
-                                                                    <th>Operating System</th>
-                                                                    <th>Browser</th>
-                                                                    <th>LoggedIn_at</th>
-                                                                    <th>LoggedOut_at</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                @foreach($admin_log as $admin)
-                                                                    <tr>
-                                                                        <td>{{$admin->id}}</td>
-                                                                        <td>{{$admin->admin_id}}</td>
-                                                                        <td>{{$admin->email}}</td>
-                                                                        <td>{{$admin->ip}}</td>
-                                                                        <td>{{$admin->ip_location}}</td>
-                                                                        <td>{{$admin->os}}</td>
-                                                                        <td>{{$admin->browser}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($admin->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
-                                                                        @if($admin->logout_at !== null)
-                                                                            <td>{{(new \Illuminate\Support\Carbon($admin->logout_at))->isoFormat('DD-MM-YYYY, h:mm a')  }}</td>
-
-                                                                        @elseif(now() > \Illuminate\Support\Carbon::parse($admin->created_at)->addHours(2))
-                                                                            <td><span class="badge-danger p-1">Session Expired</span></td>
-                                                                        @else
-                                                                            <td><span class="badge-success p-1">Connected</span></td>
-                                                                        @endif
-                                                                    </tr>
-                                                                @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @include('website.admin-pages.includes.admin-logs')
                                             @endcan
                                             @can('Manage Property')
-                                                <div class="col-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header theme-blue text-white">
-                                                            Property Log
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table id="property-log" class="display" style="width: 100%">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Sr.</th>
-                                                                    <th>Admin ID</th>
-                                                                    <th>Admin Name</th>
-                                                                    <th>Property ID</th>
-                                                                    <th>Property Title</th>
-                                                                    <th>Status</th>
-                                                                    <th>Rejection Reason</th>
-                                                                    <th>Date/Time</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                @foreach($property_log as $property)
-                                                                    <tr>
-                                                                        <td>{{$property->id}}</td>
-                                                                        <td>{{$property->admin_id}}</td>
-                                                                        <td>{{ucwords($property->admin_name)}}</td>
-                                                                        <td>{{$property->property_id}}</td>
-                                                                        <td>{{$property->property_title}}</td>
-                                                                        <td>@if($property->status == 'active') Activated @else {{ucwords($property->status)}} @endif</td>
-                                                                        <td>{{$property->rejection_reason}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                                </tbody>
-                                                            </table>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @include('website.admin-pages.includes.property-logs')
                                             @endcan
                                             @can('Manage Agency')
-                                                <div class="col-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header theme-blue text-white">
-                                                            Agency Log
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table id="agency-log" class="display" style="width: 100%">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Sr.</th>
-                                                                    <th>Admin ID</th>
-                                                                    <th>Admin Name</th>
-                                                                    <th>Agency ID</th>
-                                                                    <th>Agency Title</th>
-                                                                    <th>Status</th>
-                                                                    <th>Rejection Reason</th>
-                                                                    <th>Date/Time</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                @foreach($agency_log as $agency)
-                                                                    <tr>
-                                                                        <td>{{$agency->id}}</td>
-                                                                        <td>{{$agency->admin_id}}</td>
-                                                                        <td>{{ucwords($agency->admin_name)}}</td>
-                                                                        <td>{{$agency->agency_id}}</td>
-                                                                        <td>{{$agency->agency_title}}</td>
-                                                                        <td>{{ucwords($agency->status)}}</td>
-                                                                        <td>{{$agency->rejection_reason}}</td>
-                                                                        <td>{{ (new \Illuminate\Support\Carbon($agency->created_at))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                    @include('website.admin-pages.includes.agency-logs')
                                             @endcan
                                             @can('Manage Users')
                                                 <div class="col-12 mb-4">
                                                     <canvas id="myChart" class="w-100" height="300px"></canvas>
                                                 </div>
-                                                <div class="col-12 mb-4">
-                                                    <div class="card">
-                                                        <div class="card-header theme-blue text-white">
-                                                            User Visit Log
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table id="user-log" class="display" style="width: 100%">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Sr.</th>
-                                                                    <th>IP</th>
-                                                                    <th>IP Location</th>
-                                                                    <th>Date</th>
-                                                                    <th>Visit Count</th>
-                                                                    {{--                                                                    <th>Time</th>--}}
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                @foreach($user_visit_log as $visit)
-                                                                    <tr>
-                                                                        <td>{{$visit->id}}</td>
-                                                                        <td>{{$visit->ip}}</td>
-                                                                        <td>{{$visit->ip_location}}</td>
-                                                                        <td>{{$visit->date}}, {{ (new \Illuminate\Support\Carbon($visit->visit_time))->isoFormat('DD-MM-YYYY, h:mm a') }}</td>
-                                                                        <td>{{$visit->count}}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                    @include('website.admin-pages.includes.visit-logs')
                                             @endcan
                                         </div>
                                     </div>

@@ -75,11 +75,20 @@ class CountryController extends Controller
     {
         $ip = $_SERVER['REMOTE_ADDR'];
         $country = $this->ip_info($ip, "Country");
-        if ($country) {
-            if ($country !== '')
-                return $this->ip_info($ip, "Country");
-        } else
-            return 'unavailable';
+        if ($country !== '')
+            return $country;
+        else
+            return 'Unavailable';
+    }
+
+    function city_name()
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $city = $this->ip_info($ip, "city");
+        if ($city)
+            return $city;
+        else
+            return 'Unavailable';
     }
 
 
