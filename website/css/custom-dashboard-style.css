@@ -103,48 +103,26 @@ body {
     color: #555 !important;
     margin-right: 15px;
 }
-
 .footer-inline-ul li a {
     text-decoration: none;
     color: #555 !important;
     font-size: .7rem !important;
 }
-
 .footer-logo {
     line-height: 0;
     margin-bottom: 20px;
     width: 100%;
 }
-
 .field-icon {
     float: right;
     margin-left: -25px;
     margin-top: -36px;
     position: relative;
     z-index: 2;
-    margin-right: 5px;
-    font-size: 1.2rem;
+    margin-right:5px;
+    font-size:1.2rem;
 
 }
-
-.support-width {
+.support-width{
     width: 60%;
-}
-@keyframes spinner-border {
-    to { transform: rotate(360deg); }
-}
-.spinner-border{
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    vertical-align: text-bottom;
-    border: .20em solid #fff;
-    border-right-color: transparent;
-    border-radius: 50%;
-    -webkit-animation: spinner-border .75s linear infinite;
-    animation: spinner-border .75s linear infinite;
-}
-.spinner-border-sm{
-    height: 1rem;
-    border-width: .2em;
 }

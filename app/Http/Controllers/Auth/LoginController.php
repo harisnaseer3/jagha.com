@@ -107,15 +107,15 @@ class LoginController extends Controller
         $country = '';
         if ($ip_location = IpLocation::get($ip)) {
             $country = $ip_location->countryName;
-            if ($country == null)
+            if($country == null)
                 $country = (new CountryController())->Country_name();
         } else {
+
             $country = 'unavailable';
         }
-        $city = (new CountryController())->city_name();
         $id = DB::table('user_logs')->insertGetId(
-            ['user_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => $country, 'city' => $city,
-                'browser' => Browser::browserName(), 'os' => Browser::platformName()]);
+            ['user_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => $country,
+        'browser' => Browser::browserName(), 'os' => Browser::platformName()]);
         Session::put('logged_user_session_id', $id);
     }
 

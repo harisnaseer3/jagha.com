@@ -332,7 +332,7 @@
                                             @else
                                                 <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">We have a new support ticket. </span>
                                                 <br>
-                                                <br>
+                                            <br>
 
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Please respond to the inquirer quickly and immediately.</span>
@@ -360,6 +360,7 @@
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>User Location: </strong> {{ucwords($support->ip_location)}}</span>
                                                 <br>
                                             @endif
+
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email: </strong>{{$support->user->email}}</span>
                                             <br>
@@ -369,7 +370,6 @@
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Topic: </strong>@if($support->inquire_about === 'Other') {{$support->topic}} @else {{$support->inquire_about}} @endif</span>
                                             <br>
-
                                             @if(isset($property->id))
 
                                                 <span class="position"

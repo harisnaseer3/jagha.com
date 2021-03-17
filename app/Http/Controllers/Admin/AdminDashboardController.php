@@ -27,18 +27,17 @@ class AdminDashboardController extends Controller
     public function index()
     {
         $admin = Auth::guard('admin')->user();
-//        $admin_logs = DB::table('admin_session_logs')->orderBy('id', 'desc')->get()->all();
-//        $visit_logs = DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc')->get()->all();
+        $admin_logs = DB::table('admin_session_logs')->orderBy('id','desc')->get()->all();
+        $visit_logs = DB::table('visits')->orderBy('id','desc')->orderBy('visit_time','desc')->get()->all();
 
         return view('website.admin-pages.admin-dashboard', [
             'admin' => $admin,
-//            'property_log' => PropertyLog::orderBy('id', 'desc')->get(),
-//            'agency_log' => AgencyLog::orderBy('id', 'desc')->get(),
-//            'user_visit_log' => $visit_logs,
-//            'admin_log' => $admin_logs
+            'property_log' => PropertyLog::orderBy('id','desc')->get(),
+            'agency_log' => AgencyLog::orderBy('id','desc')->get(),
+            'user_visit_log' => $visit_logs,
+            'admin_log' => $admin_logs
         ]);
     }
-
 
     public function getUserCount(Request $request)
     {
@@ -62,39 +61,4 @@ class AdminDashboardController extends Controller
         }
 
     }
-
-
-    function getAdminLogs()
-    {
-        $admin_logs = DB::table('admin_session_logs')->orderBy('id', 'desc')->get()->all();
-        $data['view'] = View('website.admin-pages.components.admin-logs',
-            ['admin_log' => $admin_logs])->render();
-        return $data;
-    }
-
-    function getPropertyLogs()
-    {
-        $data['view'] = View('website.admin-pages.components.property-logs',
-            ['property_log' => PropertyLog::orderBy('id', 'desc')->get(),
-            ])->render();
-        return $data;
-    }
-
-    function getAgencyLogs()
-    {
-        $data['view'] = View('website.admin-pages.components.agency-logs',
-            ['agency_log' => AgencyLog::orderBy('id', 'desc')->get(),
-            ])->render();
-        return $data;
-    }
-
-    function getVisitLogs()
-    {
-        $data['view'] = View('website.admin-pages.components.visit-logs',
-            ['user_visit_log' => DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc')->get()->all()
-            ])->render();
-        return $data;
-    }
-
-
 }
