@@ -38,7 +38,7 @@ class PropertyController extends Controller
     public function featuredProperties(Request $request)
     {
         $properties = (new PropertySearchController)->listingfrontend()
-            ->where('properties.golden_listing', '=', 1);
+            ->where('properties.platinum_listing', '=', 1);
 
         $sort = '';
         $limit = '';

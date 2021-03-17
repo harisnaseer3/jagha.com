@@ -19,7 +19,7 @@ class Support extends Model
     public $table = 'supports';
 
     protected $fillable = [
-        'user_id', 'url', 'message', 'inquire_about', 'property_id', 'agency_id', 'topic', 'ticket_id'
+        'user_id', 'url', 'message','ip_location', 'inquire_about', 'property_id', 'agency_id', 'topic', 'ticket_id'
     ];
 
     public static $rules = [

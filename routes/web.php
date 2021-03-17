@@ -32,6 +32,13 @@ Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUs
 Route::post('/property-image-upload', 'TempImageController@ajaxImageUpload');
 Route::post('/admin-user-count', 'Admin\AdminDashboardController@getUserCount');
 Route::post('/admin-cron-job', 'CronJobController@executeTasks');
+Route::get('/get-admin-logs', 'Admin\AdminDashboardController@getAdminLogs');
+Route::get('/get-property-logs', 'Admin\AdminDashboardController@getPropertyLogs');
+Route::get('/get-agency-logs', 'Admin\AdminDashboardController@getAgencyLogs');
+Route::get('/get-visit-logs', 'Admin\AdminDashboardController@getVisitLogs');
+Route::get('/get-visit-logs', 'Admin\AdminDashboardController@getVisitLogs');
+Route::get('/get-user-logs', 'Admin\UserManagementController@getUserLogs');
+Route::get('/get-reg-user', 'Admin\UserManagementController@getRegisteredUser');
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
@@ -130,16 +137,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/agencies/add-staff', 'AgencyUserController@addStaff')->name('agencies.add-staff');
     Route::post('/agencies/store-staff', 'AgencyUserController@storeStaff')->name('agencies.store-staff');
     Route::post('/sendSupportMail', 'Support\SupportController@sendSupportMail')->name('support.mail');
-
-    Route::get('/packages', 'Package\PackageController@index')->name('package.index');
-    Route::get('/packages/create', 'Package\PackageController@create')->name('package.create');
-    Route::post('/packages', 'Package\PackageController@store')->name('package.store');
-    Route::delete('/packages/{package}', 'Package\PackageController@destroy')->name('package.destroy');
-    Route::get('/packages/{package}/add-properties', 'Package\PackageController@AddProperties')->name('package.add.properties');
-    Route::post('/packages/{package}/search-property', 'Package\PackageController@AddProperties')->name('package.search.properties');
-//    Route::get('/packages/{package}/edit', 'Package\PackageController@edit')->name('package.edit');
-//    Route::get('/packages/{package}/edit', 'Package\PackageController@AddProperties')->name('package.property.search.id');
-//    Route::resource('package', 'Package\PackageController');
 
 
     Route::get('/user-logs', 'Log\UserLogController@index')->name('user.logs');
