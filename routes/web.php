@@ -138,6 +138,16 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::post('/agencies/store-staff', 'AgencyUserController@storeStaff')->name('agencies.store-staff');
     Route::post('/sendSupportMail', 'Support\SupportController@sendSupportMail')->name('support.mail');
 
+    Route::get('/packages', 'Package\PackageController@index')->name('package.index');
+    Route::get('/packages/create', 'Package\PackageController@create')->name('package.create');
+    Route::post('/packages', 'Package\PackageController@store')->name('package.store');
+    Route::delete('/packages/{package}', 'Package\PackageController@destroy')->name('package.destroy');
+    Route::get('/packages/{package}/add-properties', 'Package\PackageController@AddProperties')->name('package.add.properties');
+    Route::post('/packages/{package}/search-property', 'Package\PackageController@AddProperties')->name('package.search.properties');
+//    Route::get('/packages/{package}/edit', 'Package\PackageController@edit')->name('package.edit');
+//    Route::get('/packages/{package}/edit', 'Package\PackageController@AddProperties')->name('package.property.search.id');
+//    Route::resource('package', 'Package\PackageController');
+
 
     Route::get('/user-logs', 'Log\UserLogController@index')->name('user.logs');
 

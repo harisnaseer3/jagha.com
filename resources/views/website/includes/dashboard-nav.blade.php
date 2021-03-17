@@ -322,6 +322,10 @@
                         </li>
                         @endif
                         <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link theme-dark-blue" href="{{route('package.create')}}">
+                                Packages</a>
+                        </li>
+                        <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link theme-dark-blue" href="{{route('aboutpakistan.support')}}">
                                 Support</a>
                         </li>
