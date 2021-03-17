@@ -54,7 +54,10 @@ class UpdateDBTables implements ShouldQueue
         DB::table('properties')
             ->where('agency_id', '=', $this->agency->id)
             ->update(
-                ['user_id' => $this->user->id]
+                ['user_id' => $this->user->id,
+                    'contact_person' => $this->user->name,
+                    'email' => $this->user->email,
+                ]
             );
         DB::table('property_count_by_user')
             ->updateOrInsert(
