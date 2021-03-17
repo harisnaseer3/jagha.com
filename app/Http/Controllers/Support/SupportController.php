@@ -6,6 +6,7 @@ use App\Events\NotifyAdminOfNewProperty;
 use App\Events\NotifyAdminOfSupportMessage;
 use App\Events\NotifyUserofSupportTicket;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CountTableController;
 use App\Models\Agency;
 use App\Models\Property;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
+use IpLocation;
 
 class SupportController extends Controller
 {
@@ -99,10 +101,19 @@ class SupportController extends Controller
 
                 }
             }
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $country = '';
+            if ($ip_location = IpLocation::get($ip)) {
+                $country = $ip_location->countryName;
+                if ($country == null)
+                    $country = (new CountryController())->Country_name();
+            } else
+                $country = 'unavailable';
 
             $support = (new Support)->Create([
                 'user_id' => Auth::guard('web')->user()->getAuthIdentifier(),
                 'url' => $request->input('url'),
+                'ip_location' => $country,
                 'message' => $request->input('message'),
                 'inquire_about' => $inquire_type,
                 'property_id' => $property_id,
@@ -119,7 +130,9 @@ class SupportController extends Controller
 
             return redirect()->back()->with('success', 'Support ticket ' . $support->ticket_id . ' raised successfully.');
 
-        } catch (Throwable $e) {
+        } catch
+        (Throwable $e) {
+//            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Error in submitting request, Please try again.');
         }
     }

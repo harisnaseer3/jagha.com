@@ -45,12 +45,14 @@ class UserManagementController extends Controller
 
     public function getUsers()
     {
-        $reg_users = User::getAllUsers();
-        $users = DB::table('user_logs')->orderBy('id','desc')->get()->all();
-        return view('website.admin-pages.manage-users', [
-            'register_users' => $reg_users,
-            'users' => $users,
-        ]);
+//        $reg_users = User::getAllUsers();
+//        $users = DB::table('user_logs')->orderBy('id','desc')->get()->all();
+//        return view('website.admin-pages.manage-users', [
+//            'register_users' => $reg_users,
+//            'users' => $users,
+//        ]
+//        );
+        return view('website.admin-pages.manage-users');
     }
 
     public function showAdminRegisterForm()
@@ -163,6 +165,22 @@ class UserManagementController extends Controller
             return redirect()->route('admin.manage-users')->with('success', 'User deactived successfully.');
 
         }
+    }
+
+    function getUserLogs()
+    {
+        $data['view'] = View('website.admin-pages.components.user-logs',
+            ['users' => DB::table('user_logs')->orderBy('id', 'desc')->get()->all()
+            ])->render();
+        return $data;
+    }
+
+    function getRegisteredUser()
+    {
+        $data['view'] = View('website.admin-pages.components.registered-user',
+            ['register_users' => User::getAllUsers()
+            ])->render();
+        return $data;
     }
 
 
