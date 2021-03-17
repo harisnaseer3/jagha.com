@@ -1,58 +1,27 @@
 (function ($) {
     $(document).ready(function () {
-
-        $.get('/get-admin-logs',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-admin-logs').hide();
-                $('#admins-logs-block').slideDown();
-                $('#tbody-admin-logs').html(data.view);
-
-                $('#admin-log').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
+        $('#admin-log').DataTable({
+            "scrollX": true,
+            "ordering": false,
+            responsive: true
+        });
+        $('#property-log').DataTable(
+            {
+                "scrollX": true,
+                "ordering": false,
+                responsive: true
             }
         );
-        $.get('/get-property-logs',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-property-logs').hide();
-                $('#property-logs-block').slideDown();
-                $('#tbody-property-logs').html(data.view);
-
-                $('#property-log').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
-        $.get('/get-agency-logs',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-agency-logs').hide();
-                $('#agency-logs-block').slideDown();
-                $('#tbody-agency-logs').html(data.view);
-
-                $('#agency-log').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
-        $.get('/get-visit-logs',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-visit-logs').hide();
-                $('#visit-logs-block').slideDown();
-                $('#tbody-visit-logs').html(data.view);
-
-                $('#user-log').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
+        $('#agency-log').DataTable({
+            "scrollX": true,
+            "ordering": false,
+            responsive: true
+        });
+        $('#user-log').DataTable({
+            "scrollX": true,
+            "ordering": false,
+            responsive: true
+        });
 
         if ($('#myChart').length > 0) {
             jQuery.ajaxSetup({
