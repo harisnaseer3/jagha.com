@@ -355,6 +355,12 @@
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name: </strong>{{$support->user->name}}</span>
                                             <br>
+                                            @if(!(isset($user_mail)))
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>User Location: </strong> {{ucwords($support->ip_location)}}</span>
+                                                <br>
+                                            @endif
+
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email: </strong>{{$support->user->email}}</span>
                                             <br>

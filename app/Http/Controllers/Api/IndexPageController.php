@@ -47,9 +47,9 @@ class IndexPageController extends Controller
     function getFeaturedProperties()
     {
         $featured_properties = (new PropertySearchController)->listingfrontend()
-            ->where('properties.platinum_listing', '=', 1)
-            ->orderBy('views', 'DESC')
-            ->limit(10)
+            ->where('properties.golden_listing', '=', 1)
+            ->orderBy('id', 'DESC')
+//            ->orderBy('views', 'DESC')
             ->get();
 
         $data['view'] = View('website.components.feature_properties',
@@ -61,9 +61,10 @@ class IndexPageController extends Controller
     function getAboutPakistanProperties()
     {
         $featured_properties = (new PropertySearchController)->listingfrontend()
-            ->where('properties.platinum_listing', '=', 1)
-            ->orderBy('views', 'DESC')
-            ->limit(10)
+            ->where('properties.golden_listing', '=', 1)
+            ->orderBy('id', 'DESC')
+//            ->orderBy('views', 'DESC')
+//            ->limit(10)
             ->get();
 
         $data['view'] = View('website.components.about_pakistan_properties',
