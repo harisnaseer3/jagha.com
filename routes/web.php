@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PropertyController@index')->name('home');
 
-Route::get('/user-location', 'TestController@index');
+//Route::get('/user-location', 'TestController@index');
 
 
 
