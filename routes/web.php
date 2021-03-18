@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'PropertyController@index')->name('home');
 
+Route::get('/user-location', 'TestController@index');
+
+
+
 //ajax calls
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');

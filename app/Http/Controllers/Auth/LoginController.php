@@ -105,14 +105,19 @@ class LoginController extends Controller
         $user = Auth::guard('web')->user();
         $ip = $_SERVER['REMOTE_ADDR'];
         $country = '';
+        $city = '';
         if ($ip_location = IpLocation::get($ip)) {
             $country = $ip_location->countryName;
+            $city = $ip_location->cityName;
             if ($country == null)
                 $country = (new CountryController())->Country_name();
+            if ($city == '')
+                $city = (new CountryController())->city_name();
         } else {
             $country = 'unavailable';
+            $city = 'unavailable';
         }
-        $city = (new CountryController())->city_name();
+
         $id = DB::table('user_logs')->insertGetId(
             ['user_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => $country, 'city' => $city,
                 'browser' => Browser::browserName(), 'os' => Browser::platformName()]);
