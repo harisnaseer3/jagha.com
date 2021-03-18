@@ -27,6 +27,7 @@ class TestController extends Controller
             $country = 'unavailable';
             $city = 'unavailable';
         }
-        print($country . ',' . $city);
+        print($ip_location->countryName
+            . ',' . $ip_location->cityName);
     }
 }
