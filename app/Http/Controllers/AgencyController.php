@@ -756,13 +756,13 @@ class AgencyController extends Controller
     public function FeaturedAgencies()
     {
         return $this->_listingFrontend()
-            ->where('agencies.featured_listing', '=', 1)->get();
+            ->where('agencies.featured_listing', '=', 1)->orderBy('agencies.featured_listing', 'desc')->get();
     }
 
     public function keyAgencies()
     {
         return $this->_listingFrontend()
-            ->where('key_listing', '=', 1)->get();
+            ->where('agencies.key_listing', '=', 1)->orderBy('agencies.key_listing', 'desc')->get();
     }
 
     public static function getAgencyById($id)

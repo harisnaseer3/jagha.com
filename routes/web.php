@@ -8,7 +8,6 @@ Route::get('/', 'PropertyController@index')->name('home');
 //Route::get('/user-location', 'TestController@index');
 
 
-
 //ajax calls
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
@@ -142,12 +141,21 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::post('/agencies/store-staff', 'AgencyUserController@storeStaff')->name('agencies.store-staff');
     Route::post('/sendSupportMail', 'Support\SupportController@sendSupportMail')->name('support.mail');
 
+    Route::get('/packages', 'Package\PackageController@index')->name('package.index');
+    Route::get('/packages/create', 'Package\PackageController@create')->name('package.create');
+    Route::post('/packages', 'Package\PackageController@store')->name('package.store');
+    Route::delete('/packages/{package}', 'Package\PackageController@destroy')->name('package.destroy');
+    Route::get('/packages/{package}/add-properties', 'Package\PackageController@AddProperties')->name('package.add.properties');
+    Route::post('/packages/{package}/search-property', 'Package\PackageController@AddProperties')->name('package.search.properties');
+//    Route::get('/packages/{package}/edit', 'Package\PackageController@edit')->name('package.edit');
+//    Route::get('/packages/{package}/edit', 'Package\PackageController@AddProperties')->name('package.property.search.id');
+//    Route::resource('package', 'Package\PackageController');
+
 
     Route::get('/user-logs', 'Log\UserLogController@index')->name('user.logs');
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
-//        Route::get('/logout', 'AccountController@userLogout')->name('accounts.logout');
         Route::get('/logout', 'Auth\LoginController@logout')->name('accounts.logout');;
 
         Route::get('/roles', 'AccountController@editRoles')->name('user_roles.edit');
@@ -169,7 +177,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 //    read notification about property
     Route::post('/property-notification', 'NotificationController@ReadPropertyStatus');
     Route::post('/read-inbox-message', 'NotificationController@ReadInboxMessage');
-//    Route::post('/agency-notification', 'NotificationController@ReadAgencyStatus');
 
 });
 
@@ -181,7 +188,6 @@ Route::group(['prefix' => 'properties'], function () {
 
 
 Auth::routes(['verify' => true]);
-//Route::get('/dashboard/accounts/logout', 'AccountController@userLogout')->name('accounts.logout');
 Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');
 
 
@@ -270,6 +276,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     Route::post('agencies/reject-invitation', 'AgencyUserController@rejectInvitation')
         ->name('admin.agencies.reject_invitation')->middleware(['permission:Manage Agency']);
+
+    Route::get('/packages', 'Package\AdminPackageController@index')->name('admin.package.index')->middleware(['permission:Manage Packages']);
+    Route::delete('/packages/{package}', 'Package\AdminPackageController@destroy')->name('admin.package.destroy')->middleware(['permission:Manage Packages']);
+    Route::get('/packages/{package}/edit', 'Package\AdminPackageController@edit')->name('admin.package.edit')->middleware(['permission:Manage Packages']);
+    Route::post('/packages/{package}', 'Package\AdminPackageController@update')->name('admin.package.update')->middleware(['permission:Manage Packages']);
 
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);

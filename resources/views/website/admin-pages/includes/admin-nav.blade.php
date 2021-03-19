@@ -347,7 +347,7 @@
                 @endcan
                 @can('Manage Packages')
                     <li class="nav-item hide-nav navbar-li">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{route('admin.package.index')}}">
                             Packages Management
                         </a>
                     </li>
