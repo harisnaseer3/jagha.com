@@ -7,6 +7,7 @@ use App\Http\Controllers\FooterController;
 use App\Models\Agency;
 use App\Models\AgencyLog;
 use App\Models\Package;
+use App\Models\Property;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -120,6 +121,29 @@ class AdminPackageController extends Controller
 
     }
 
+    public function show(Package $package, Request $request)
+    {
+        $order = '';
+        if ($request->has('sort')) {
+            if ($request->input('sort') == 'oldest') {
+                $sort = 'id';
+                $order = 'asc';
+            } else if ($request->input('sort') == 'newest') {
+                $sort = 'id';
+                $order = 'desc';
+            }
+        }
+        $package_agency = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
+
+        return view('website.admin-pages.package.package_detail', [
+            'data' => $this->_property_listing($package, $request),
+            'package' => $package,
+            'package_agency'=>$package_agency,
+            'sort' => $order,
+            'pack_properties' => (new \App\Models\Package)->getPropertiesFromPackageID($package->id),
+        ]);
+    }
+
     public function destroy(Request $request)
     {
         $package = (new Package)->where('id', '=', $request->input('record_id'))->first();
@@ -141,6 +165,70 @@ class AdminPackageController extends Controller
             }
         }
         return redirect()->back()->with('error', 'Record not found');
+    }
+
+    public function _property_listing($package, $request)
+    {
+        $user = $package->user_id;
+        $sort = 'activated_at';
+        $order = 'desc';
+
+        // pagination
+        $condition = [];
+        if ($request->has('property_id')) {
+            $condition = ['properties.id' => $request->input('property_id')];
+        }
+        if ($request->has('sort')) {
+            if ($request->input('sort') == 'oldest') {
+                $sort = 'id';
+                $order = 'asc';
+            } else if ($request->input('sort') == 'newest') {
+                $sort = 'id';
+                $order = 'desc';
+            }
+        }
+
+        $page = 10;
+        return $this->_getPropertiesByPurpose('all', $condition, 'active', $order, $user, $sort, $page, $package);
+
+    }
+
+
+    private function _getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page, $package)
+    {
+        return $this->_listings($status, $user, $package)->where($condition)->orderBy($sort, $order)->paginate($page);
+    }
+
+    private function _listings(string $status, string $user, $package)
+    {
+
+        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.reference', 'properties.purpose',
+            'properties.status', 'locations.name AS location', 'cities.name as city', 'properties.views',
+            'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
+            'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
+            'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person',
+            'properties.user_id', 'properties.cell', 'properties.agency_id')
+            ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->whereNull('properties.deleted_at');
+
+//        if (!Auth::guard('admin')->user()) {
+        if (empty($user)) {
+            $user = $package->user_id;
+        }
+        //if user owns agencies{}
+        if ($package->package_for != 'agency') {
+            $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
+            $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
+            return $listings;
+        }
+        //get agency from package agency table
+        if ($package->package_for == 'agency') {
+            $package_agency_id = (new \App\Models\Package)->getAgencyFromPackageID($package->id)->agency_id;
+            $listings = $listings->where('properties.agency_id', '=', $package_agency_id);
+            $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
+            return $listings;
+        }
     }
 
 }

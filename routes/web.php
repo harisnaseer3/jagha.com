@@ -147,7 +147,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::delete('/packages/{package}', 'Package\PackageController@destroy')->name('package.destroy');
     Route::get('/packages/{package}/add-properties', 'Package\PackageController@AddProperties')->name('package.add.properties');
     Route::post('/packages/{package}/search-property', 'Package\PackageController@AddProperties')->name('package.search.properties');
-//    Route::get('/packages/{package}/edit', 'Package\PackageController@edit')->name('package.edit');
+    Route::get('/packages/add-property', 'Package\PackageController@add')->name('package.property.add');
 //    Route::get('/packages/{package}/edit', 'Package\PackageController@AddProperties')->name('package.property.search.id');
 //    Route::resource('package', 'Package\PackageController');
 
@@ -281,6 +281,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::delete('/packages/{package}', 'Package\AdminPackageController@destroy')->name('admin.package.destroy')->middleware(['permission:Manage Packages']);
     Route::get('/packages/{package}/edit', 'Package\AdminPackageController@edit')->name('admin.package.edit')->middleware(['permission:Manage Packages']);
     Route::post('/packages/{package}', 'Package\AdminPackageController@update')->name('admin.package.update')->middleware(['permission:Manage Packages']);
+    Route::get('/packages/{package}/show', 'Package\AdminPackageController@show')->name('admin.package.show')->middleware(['permission:Manage Packages']);
+    Route::post('/packages/{package}/search-property', 'Package\AdminPackageController@show')->name('admin.package.search.properties')->middleware(['permission:Manage Packages']);
 
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);

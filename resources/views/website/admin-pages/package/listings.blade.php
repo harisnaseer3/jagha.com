@@ -47,7 +47,7 @@
                                                                         <tr>
                                                                             <th>#</th>
                                                                             <th>Type</th>
-                                                                            <th>Duration</th>
+                                                                            <th>Duration in Months</th>
                                                                             <th>Package For</th>
                                                                             <th>Properties Count</th>
                                                                             <th>Added Properties Count</th>
@@ -79,14 +79,14 @@
                                                                                 <td>
                                                                                     {{--                                                                            <div class='btn-group'>--}}
                                                                                     <a type="button"
-                                                                                       href="{{route('package.add.properties', $sub_package->id)}}"
+                                                                                       href="{{route('admin.package.show', $sub_package->id)}}"
                                                                                        class="btn btn-sm btn-success mb-1"
                                                                                        data-toggle-1="tooltip"
-                                                                                       data-placement="bottom" title="Add Properties">
-                                                                                        <i class="fas fa-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Properties</span>
+                                                                                       data-placement="bottom" title="View Package">
+                                                                                        <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View Package</span>
                                                                                     </a>
 
-                                                                                    <a style="color: black" class="btn-sm btn btn-danger mb-1" data-record-id="{{$sub_package->id}}"
+                                                                                    <a style="color: black" class="btn-sm btn btn-danger mb-1" data-record-id="{{$sub_package->id}}"  title="Delete Package"
                                                                                        data-toggle="modal" data-target="#package-modal">
                                                                                         <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
                                                                                     </a>
@@ -152,11 +152,11 @@
                                                                                        href="{{route('admin.package.edit', $package->id)}}"
                                                                                        class="btn btn-sm btn-info mb-1"
                                                                                        data-toggle-1="tooltip"
-                                                                                       data-placement="bottom" title="Add Properties">
+                                                                                       data-placement="bottom" title="Verify & Activate">
                                                                                         Verify & Activate
                                                                                     </a>
                                                                                     <div class='btn-group'>
-                                                                                        <a style="color: black" class="btn-sm btn btn-danger" data-record-id="{{$package->id}}"
+                                                                                        <a style="color: black" class="btn-sm btn btn-danger" data-record-id="{{$package->id}}" title="Delete Package"
                                                                                            data-toggle="modal"
                                                                                            data-target="#package-modal"><i class="fas fa-trash"></i><span class="sr-only sr-only-focusable"
                                                                                                                                                           aria-hidden="true">Delete</span></a>

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Spatie\SchemaOrg\Car;
 use Throwable;
 
 class PackageController extends Controller
@@ -24,18 +25,18 @@ class PackageController extends Controller
     {
         $sub_packages = DB::table('packages')
             ->select(DB::raw('Count(package_properties.property_id) AS added_properties'), 'packages.id', 'packages.type', 'packages.package_for',
-                'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration','package_agency.agency_id')
+                'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration', 'package_agency.agency_id')
             ->where('packages.user_id', '=', Auth::user()->id)
             ->where('packages.status', '=', 'active')
             ->Leftjoin('package_properties', 'packages.id', '=', 'package_properties.package_id')
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
-                'packages.status','package_agency.agency_id')
+                'packages.status', 'package_agency.agency_id')
             ->get()->toArray();
 
         $req_packages = DB::table('packages')
-            ->select('packages.id','packages.type', 'packages.package_for', 'packages.property_count',
-                'packages.status', 'packages.created_at','packages.duration', 'package_agency.agency_id')
+            ->select('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count',
+                'packages.status', 'packages.created_at', 'packages.duration', 'package_agency.agency_id')
             ->where('user_id', '=', Auth::user()->id)
             ->where('status', '!=', 'active')
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
@@ -126,11 +127,13 @@ class PackageController extends Controller
                 $order = 'desc';
             }
         }
+        $package_agency = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
         $footer_content = (new FooterController)->footerContent();
         return view('website.package.properties.add-properties', [
             'data' => $this->_property_listing($package, $request),
             'package' => $package,
             'sort' => $order,
+            'package_agency' => $package_agency,
             'pack_properties' => (new \App\Models\Package)->getPropertiesFromPackageID($package->id),
             'recent_properties' => $footer_content[0],
             'footer_agencies' => $footer_content[1]
@@ -166,19 +169,7 @@ class PackageController extends Controller
 
     private function _getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page, $package)
     {
-//        if ($purpose === 'all') {
         return $this->_listings($status, $user, $package)->where($condition)->orderBy($sort, $order)->paginate($page);
-
-//        }
-//        if ($purpose === 'sale') {
-//            return $this->_listings($status, $user, $package)->where('purpose', '=', 'sale')->where($condition)->orderBy($sort, $order)->paginate($page);
-//        }
-//        if ($purpose === 'rent') {
-//            return $this->_listings($status, $user, $package)->where('purpose', '=', 'rent')->orderBy($sort, $order)->where($condition)->paginate($page);
-//        }
-//        if ($purpose === 'wanted') {
-//            return $this->_listings($status, $user, $package)->where('purpose', '=', 'wanted')->orderBy($sort, $order)->where($condition)->paginate($page);
-//        }
     }
 
     private function _listings(string $status, string $user, $package)
@@ -200,22 +191,48 @@ class PackageController extends Controller
             }
             //if user owns agencies{}
 
-            if ($package->package_for != 'Agency') {
+            if ($package->package_for != 'agency') {
                 $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
                 $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
                 return $listings;
+            } else {
+                //get agency from package agency table
+                $package_agency_id = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
+                $listings = $listings->where('properties.agency_id', '=', $package_agency_id->agency_id);
+                $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
+                return $listings;
             }
-            //get agency from package agency table
-            $package_agency_id = Package::getAgencyFromPackageID($package->id);
-            $listings = $listings->where('properties.agency_id', '=', $package_agency_id);
-            $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
-            return $listings;
+
         }
     }
 
-//    public function searchProperty(Request $request)
-//    {
-//
-//
-//    }
+    public function add(Request $request)
+    {
+        if ($request->ajax()) {
+            if ($request->has('package') && $request->has('property') && $request->has('duration')) {
+                $duration = $request->input('duration');
+                $package_id = $request->input('package');
+                $property = $request->input('property');
+                $package = (new \App\Models\Package)->getPackageFromId($package_id);
+                if ($package) {
+                    $remaining_days = Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
+                    if ($duration < $remaining_days) {
+                        DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property], [
+                            'duration' => $duration,
+                            'activated_at' => Carbon::now()->toDateTimeString(),
+                            'expired_at' => Carbon::now()->addDays($duration)->toDateTimeString(),
+                        ]);
+                        //TODO create an event to do rest of the db insertion
+                    }
+                    else{
+                        return "duration is not allowed";
+                    }
+                }
+            }
+        } else {
+            return "not found";
+        }
+
+    }
+
 }

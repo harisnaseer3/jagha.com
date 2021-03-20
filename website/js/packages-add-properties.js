@@ -44,24 +44,53 @@
         $(document).on('change', '.sorting', function (e) {
             $('#sort-form').submit();
         });
+        $(document).on('click', '.add-property', function (e) {
+            addToPackage($(this).attr('data-package-id'), $(this).attr('data-property-id'), $(this), $(this).closest("tr").find('td:eq(10) input').val());
 
-        // $(document).on('click', '#listings-tab a', function () {
-        //     var tab = $(this).attr('href').split('#');
-        //     var special_listing = ['listings-super_hot', 'listings-magazine', 'listings-hot'];
-        //     if (tab[1] != null) {
-        //         let purpose;
-        //         if (special_listing.includes(tab[1])) purpose = tab[1].split("-")[1] + '_listing';
-        //         else purpose = tab[1].split("-")[1];
-        //         $('.pagination li a').each(function (index) {
-        //             let url = $(this).attr('href');
-        //             let url_piece_1 = url.split('purpose/')[0];
-        //             let url_piece_2 = url.split('purpose/')[1];
-        //             let url_piece_3 = url_piece_2.split('user/')[1];
-        //             let new_url = url_piece_1 + 'purpose/' + purpose + '/user/' + url_piece_3;
-        //             $(this).attr('href', new_url)
-        //         })
-        //     }
-        // });
+        });
+
+        function addToPackage(pack, property, div, duration) {
+
+            div.hide();
+            div.next().show();
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/dashboard/packages/add-property',
+                data: {package: pack, property: property, duration: duration},
+                dataType: 'json',
+                success: function (data) {
+                    console.log('gg');
+                    console.log(div.next().hide());
+                    console.log(div.prev().show());
+                    // let locations = data.data
+                    // console.log(data.data);
+                    // if (!jQuery.isEmptyObject({locations})) {
+                    //
+                    //     let add_select = $("#add_location");
+                    //     add_select.empty();
+                    //     for (let [index, options] of locations.entries()) {
+                    //         add_select.append($('<option>', {value: options.name, text: options.name}));
+                    //     }
+                    //     add_select.select2({
+                    //         sorter: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+                    //     });
+                    //     add_select.parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+                    //     $('.fa-spinner').hide();
+                    //     if (location !== '') {
+                    //         add_select.val(location).trigger('change');
+                    //     } else
+                    //         add_select.trigger('change');
+                    // }
+                },
+            });
+
+        }
     });
 
 })

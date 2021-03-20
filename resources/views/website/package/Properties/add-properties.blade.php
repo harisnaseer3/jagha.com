@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 
-{{--    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">--}}
+    {{--    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">--}}
 
 @endsection
 
@@ -69,7 +69,33 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Total Properties of Package :</strong>
+                                                                <strong> Package For :</strong>
+                                                            </div>
+                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                {{ucwords($package->package_for)}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                                <strong> Package Duration :</strong>
+                                                            </div>
+                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                {{ucwords($package->duration)}} months
+                                                            </div>
+                                                        </div>
+                                                        @if(isset($package_agency))
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                                    <strong> Agency :</strong>
+                                                                </div>
+                                                                <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                    {{\App\Models\Agency::getAgencyTitle($package_agency->agency_id)}} - {{$package_agency->agency_id}}
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                                <strong> Total Properties :</strong>
                                                             </div>
                                                             <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                                 {{$package->property_count}}
@@ -77,7 +103,7 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Added Properties of Package :</strong>
+                                                                <strong> Added Properties :</strong>
                                                             </div>
                                                             <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                                 @if(isset($pack_properties))
@@ -89,7 +115,7 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Remaining Properties of Package:</strong>
+                                                                <strong> Remaining Properties :</strong>
                                                             </div>
                                                             <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                                 @if(isset($pack_properties))
@@ -155,6 +181,7 @@
                                                             <td>Listed Date</td>
                                                             <td>Activation Date</td>
                                                             <td>Views</td>
+                                                            <td>Duration </td>
                                                             <td>Status Controls</td>
                                                             <td>Controls</td>
                                                         </tr>
@@ -194,18 +221,30 @@
                                                                         {{$all_listing->views}}
                                                                     </td>
                                                                     <td>
+                                                                        <input class="form-control form-control-sm" aria-describedby="property_duration"  placeholder="Days" aria-invalid="false"  min="1" step="1" name="duration" type="number">
+                                                                    </td>
+                                                                    <td>
                                                                         @if(in_array($all_listing->id,$pack_properties))
                                                                             <div class="badge badge-success p-2 ">
                                                                                 <strong class="font-12 color-white">Added</strong>
                                                                             </div>
                                                                         @else
-                                                                            <a type="button" target="_blank"
-                                                                               href=""
-                                                                               class="btn btn-sm btn-primary mb-1"
-                                                                               data-toggle-1="tooltip"
-                                                                               data-placement="bottom" title="View Property">
-                                                                                Add To Package
-                                                                            </a>
+                                                                            <div class="badge badge-success p-2" style="display: none">
+                                                                                <strong class="font-12 color-white">Added</strong>
+                                                                            </div>
+                                                                            <button type="button"
+                                                                                    class="btn btn-sm btn-primary mb-1 add-property"
+                                                                                    data-package-id="{{$package->id}}"
+                                                                                    data-property-id="{{$all_listing->id}}"
+                                                                                    data-toggle-1="tooltip"
+                                                                                    data-placement="bottom" title="Add To Package">
+                                                                                <span class="color-white"> Add To Package</span>
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                    class="btn btn-sm btn-primary mb-1 loading-btn" disabled style="display: none">
+                                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                                                <span class="color-white"> Working ..</span>
+                                                                            </button>
                                                                         @endif
 
 
