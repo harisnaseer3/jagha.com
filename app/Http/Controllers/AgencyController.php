@@ -125,13 +125,17 @@ class AgencyController extends Controller
     {
         return (new Agency)->select('agencies.user_id', 'agencies.title', 'agencies.id', 'agencies.description', 'agencies.key_listing',
             'agencies.featured_listing', 'agencies.status', 'agencies.email',
-            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.optional_number', 'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
-            'property_count_by_agencies.property_count AS count')
+            'agency_cities.city_id', 'agencies.phone', 'agencies.cell', 'agencies.optional_number',
+            'agencies.created_at', 'agencies.ceo_name AS agent', 'agencies.logo', 'cities.name AS city',
+            'c.property_count AS count')
             ->where('agencies.status', '=', 'verified')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
-            ->leftJoin('property_count_by_agencies', 'property_count_by_agencies.agency_id', '=', 'agencies.id')
-            ->where('property_count_by_agencies.property_status', '=', 'active');
+            ->leftJoin('property_count_by_agencies as c', function ($c) {
+                $c->on('agencies.id', '=', 'c.agency_id')
+                    ->where('c.property_status', '=', 'active');
+            });
+
     }
 
     function _agencyCount()
@@ -166,7 +170,8 @@ class AgencyController extends Controller
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
-        $agencies = $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
+        $agencies = $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id',
+            'c.property_count')
             ->orderBy('agencies.created_at', $sort === 'newest' ? 'DESC' : 'ASC');
 
         $property_types = (new PropertyType)->all();
@@ -229,7 +234,10 @@ class AgencyController extends Controller
 
 
         $total_count = DB::table('property_count_by_agencies')
-            ->select('property_count AS count')->where('agency_id', '=', $agency)->first()->count;
+            ->select('property_count AS count')->where('agency_id', '=', $agency)->first();
+        if ($total_count) $total_count = $total_count->count;
+        else $total_count = 0;
+
 
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
@@ -363,7 +371,7 @@ class AgencyController extends Controller
             $request->merge(['page' => (int)$lastPage]);
         }
 
-        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
+        $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'c.property_count')
             ->orderBy('agencies.created_at', $sort === 'newest' ? 'DESC' : 'ASC');
 
         (new MetaTagController())->addMetaTagsOnPartnersListing();

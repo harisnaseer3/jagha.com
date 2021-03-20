@@ -185,7 +185,7 @@
         </div>
     </div>
     <!-- Footer start -->
-    @include('website.includes.footer')
+{{--    @include('website.includes.footer')--}}
     @include('website.admin-pages.layouts.package-delete-modal', array('route'=>'admin.package'))
 
 

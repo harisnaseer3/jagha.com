@@ -20,15 +20,14 @@ class AdminPackageController extends Controller
 {
     public function index()
     {
-        $footer = (new FooterController)->footerContent();
         $sub_packages = DB::table('packages')
             ->select(DB::raw('Count(package_properties.property_id) AS added_properties'), 'packages.id', 'packages.type', 'packages.package_for',
-                'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration','package_agency.agency_id')
+                'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration', 'package_agency.agency_id')
             ->where('packages.status', '=', 'active')
             ->Leftjoin('package_properties', 'packages.id', '=', 'package_properties.package_id')
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
-                'packages.status','package_agency.agency_id')
+                'packages.status', 'package_agency.agency_id')
             ->get()->toArray();
 
 
@@ -40,8 +39,6 @@ class AdminPackageController extends Controller
         return view('website.admin-pages.package.listings', [
             'sub_packages' => $sub_packages,
             'req_packages' => $req_packages,
-            'recent_properties' => $footer[0],
-            'footer_agencies' => $footer[1],
         ]);
 
     }
@@ -52,19 +49,14 @@ class AdminPackageController extends Controller
             ->select('package_agency.agency_id AS id')
             ->where('package_agency.package_id', $package->id)
             ->first();
-        $footer = (new FooterController)->footerContent();
         return view('website.admin-pages.package.edit-package', [
             'agency_id' => $agency_id,
             'package' => $package,
-            'recent_properties' => $footer[0],
-            'footer_agencies' => $footer[1],
         ]);
     }
 
     public function update(Package $package, Request $request)
     {
-
-        $admin = Auth::guard('admin')->user();
         if ($request->status == 'rejected' && !($request->has('rejection_reason'))) {
             return redirect()->back()->withInput()->with('error', 'Please specify the rejection reason.');
         }
@@ -78,6 +70,7 @@ class AdminPackageController extends Controller
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
         try {
+            $admin = Auth::guard('admin')->user();
             $package->admin_id = $admin->id;
             if ($request->status != 'active') {
                 $package->status = $request->status;
@@ -89,12 +82,11 @@ class AdminPackageController extends Controller
             } else if ($request->status == 'active') {
                 $package->status = $request->status;
                 $package->activated_at = Carbon::now()->toDateTimeString();
-                $package->expired_at = Carbon::now()->addMonths(3)->toDateTimeString();
+                $package->expired_at = Carbon::now()->addMonths($package->duration)->toDateTimeString();
 
 
                 //TODO:send email to user about status change along with expiry date
                 $agency = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
-
                 if ($agency) {
                     if ($package->type == 'Silver') {
                         DB::table('agencies')
@@ -108,22 +100,23 @@ class AdminPackageController extends Controller
                             ->update(['featured_listing' => 1]);
                     }
                 }
-                $package->save();
-                DB::table('package_logs')->insert([
-                    'admin_id' => $admin->id,
-                    'admin_name' => $admin->name,
-                    'package_id' => $package->id,
-                    'status' => $package->status,
-                    'rejection_reason' => $package->rejection_reason,
-                ]);
-
             }
+
+            $package->save();
+
+            DB::table('package_logs')->insert([
+                'admin_id' => $admin->id,
+                'admin_name' => $admin->name,
+                'package_id' => $package->id,
+                'status' => $package->status,
+                'rejection_reason' => $package->rejection_reason,
+            ]);
 
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
 
-        return redirect()->route('admin.package.index')->with('success', 'Package status changed to ' . $package->status . '.');
+        return redirect()->route('admin.package.index')->with('success', 'Package status changed to ' . ucwords($package->status) . '.');
 
     }
 

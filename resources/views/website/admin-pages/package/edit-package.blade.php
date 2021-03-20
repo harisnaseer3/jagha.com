@@ -111,7 +111,6 @@
     </div>
 
     <!-- Footer start -->
-    @include('website.includes.footer')
 
 @endsection
 
