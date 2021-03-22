@@ -133,17 +133,28 @@ class PropertyAjaxCallController extends Controller
 
     public function allAgencies(Request $request)
     {
-        if ($request->ajax() && $request->has('property')) {
+        if ($request->ajax()) {
+            if ($request->has('property')) {
+                if (Property::where('id', $request->input('property'))->exists()) {
 
-            if (Property::where('id', $request->input('property'))->exists()) {
+                    return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')
+                        ->select('agencies.id', 'agencies.title',
+                            'agencies.address', 'agencies.cell', 'agencies.phone', 'cities.name AS city')
+                        ->join('cities', 'cities.id', '=', 'agencies.city_id')
+                        ->get()->toArray(), 'default_agency' => $request->input('id'), 'status' => 200]);
+                }
+            }  //get all agencies
 
-                return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')->select('agencies.id', 'agencies.title',
-                    'agencies.address', 'agencies.cell', 'agencies.phone', 'cities.name AS city')
+            else {
+                return response()->json(['agency' => (new Agency())->where('status', '=', 'verified')
+                    ->select('agencies.id', 'agencies.title',
+                        'agencies.address', 'agencies.cell', 'agencies.phone', 'cities.name AS city')
                     ->join('cities', 'cities.id', '=', 'agencies.city_id')
-                    ->get()->toArray(), 'default_agency' => $request->input('id'), 'status' => 200]);
+                    ->get()->toArray(), 'default_agency' => '', 'status' => 200]);
             }
 
-            dd($request->input('agency'));
+
+//            dd($request->input('agency'));
         } else
             return 'not found';
 

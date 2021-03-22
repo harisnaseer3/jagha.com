@@ -62,12 +62,16 @@
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/script-modal-features.js')}}"></script>
-    <script src="{{asset('website/js/admin-portfolio.js')}}"></script>
-{{--    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>--}}
-
+    @if(isset($property))
+        <script src="{{asset('website/js/admin-portfolio.js')}}"></script>
+    @else
+        <script src="{{asset('website/js/admin-create-portfolio.js')}}"></script>
+    @endif
 @endsection
 
-@if($property->location->is_active == 0)
+
+
+@if(isset($property) && $property->location->is_active == 0)
 @section('script')
     <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
     <script>

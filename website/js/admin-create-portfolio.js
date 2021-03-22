@@ -812,6 +812,9 @@
                     'mobile': {
                         required: true,
                     },
+                    'user_email': {
+                        required: true,
+                    },
 
                 },
                 messages: {
@@ -1153,19 +1156,5 @@
                 }
             );
         }
-
-
-//    stop page to scroll on page model oopen
-//         var $body = $(document.body);
-//         $(document).on('show.bs.modal', '#agenciesModalCenter', function (e) {
-//
-//             var oldWidth = $body.innerWidth();
-//             $body.css("overflow", "hidden");
-//             $body.width(oldWidth);
-//         });
-//         $(document).on('hidden.bs.modal', '#agenciesModalCenter', function (e) {
-//             $body.css("overflow", "auto");
-//             $body.width("auto");
-//         });
     })
 (jQuery);

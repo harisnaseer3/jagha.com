@@ -325,42 +325,83 @@
                                             </span>
                                             <br>
                                             <br>
-                                            <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                                                <tr>
-                                                    <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
-                                                        <a href="{{$url}}" target="_blank"
-                                                           style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
-                                                            <table>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td style="color:#ffffff ">
-                                                                        {{$buttonText}}
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
+                                            @if(isset($status) && $status =='active')
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                    <tr>
+                                                        <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
+                                                            <a href="{{$view_property}}" target="_blank"
+                                                               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
+                                                                <table>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td style="color:#ffffff ">
+                                                                            {{$buttonText2}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
 
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
-                                            <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                <a href="{{$url}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
-                                                    <table>
-                                                        <tbody>
-                                                        <tr>
-                                                            <td style="color: #17bebb;">
-                                                                {{$url}}
-                                                            </td>
-                                                        </tr>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
+                                                <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                    <a href="{{$view_property}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="color: #17bebb;">
+                                                                    {{$url}}
+                                                                </td>
+                                                            </tr>
 
-                                                        </tbody>
+                                                            </tbody>
 
-                                                    </table>
+                                                        </table>
 
-                                                </a>
-                                            </p>
+                                                    </a>
+                                                </p>
+                                            @else
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                    <tr>
+                                                        <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
+                                                            <a href="{{$url}}" target="_blank"
+                                                               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
+                                                                <table>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td style="color:#ffffff ">
+                                                                            {{$buttonText}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
+                                                <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                    <a href="{{$url}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="color: #17bebb;">
+                                                                    {{$url}}
+                                                                </td>
+                                                            </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </a>
+                                                </p>
+                                            @endif
+
+
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">
                                                 <h3 class="name"
                                                     style="margin-top: 30px;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;font-weight: 400;margin-bottom: 0;">

@@ -2,11 +2,13 @@
 
 @if(isset($property))
     {{ Form::model($property,['route' => ['admin-properties-update', $property->id], 'method' => 'PUT', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
+    @include('website.admin-pages.edit_fields_property_management')
+
 @else
-    {{ Form::open(['route' => 'properties.store', 'method' => 'post', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
+    {{ Form::open(['route' => 'admin-properties-store', 'method' => 'post', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
+    @include('website.admin-pages.fields_property_management')
 @endif
 
-@include('website.admin-pages.edit_fields_property_management')
 
 {{ Form::close() }}
 <div class="modal fade" id="agenciesModalCenter" tabindex="-1" role="dialog" aria-labelledby="agenciesModalCenterTitle" aria-hidden="true">
