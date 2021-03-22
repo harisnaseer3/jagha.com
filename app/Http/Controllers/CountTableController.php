@@ -306,37 +306,37 @@ class CountTableController extends Controller
 //        if (Auth::guard('web')->user()) {
         if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
             ->where('property_purpose', '=', $property->purpose)->where('user_id', '=', $property->user_id)
-            ->where('listing_type', '=', $listing_type)->exists()) {
+            ->where('listing_type', '=', 'basic_listing')->exists()) {
             DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', $property->user_id)
-                ->where('listing_type', '=', $listing_type)->increment('property_count');
+                ->where('listing_type', '=', 'basic_listing')->increment('property_count');
         } else {
             DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
-                'user_id' => $property->user_id, 'listing_type' => $listing_type, 'property_count' => 1]);
+                'user_id' => $property->user_id, 'listing_type' => 'basic_listing', 'property_count' => 1]);
         }
         if ($property->user_id != 1) {
             DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', 1)
-                ->where('listing_type', '=', $listing_type)->increment('property_count');
+                ->where('listing_type', '=', 'basic_listing')->increment('property_count');
         }
         if (isset($property->agency_id)) {
             if (DB::table('property_count_by_user')->where('property_status', '=', $property->status)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', $property->user_id)
                 ->where('agency_id', '=', $property->agency_id)
-                ->where('listing_type', '=', $listing_type)->exists())
+                ->where('listing_type', '=', 'basic_listing')->exists())
                 DB::table('property_count_by_user')
                     ->where('property_status', '=', $property->status)
                     ->where('property_purpose', '=', $property->purpose)
                     ->where('user_id', '=', $property->user_id)
                     ->where('agency_id', '=', $property->agency_id)
-                    ->where('listing_type', '=', $listing_type)
+                    ->where('listing_type', '=', 'basic_listing')
                     ->increment('agency_count');
             else
                 DB::table('property_count_by_user')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
-                    'agency_id' => $property->agency_id, 'user_id' => $property->user_id, 'listing_type' => $listing_type, 'agency_count' => 1]);
+                    'agency_id' => $property->agency_id, 'user_id' => $property->user_id, 'listing_type' => 'basic_listing', 'agency_count' => 1]);
 
             if (DB::table('property_count_by_agencies')->where('agency_id', '=', $property->agency_id)
                 ->where('property_status', '=', $property->status)->exists()) {
@@ -346,7 +346,7 @@ class CountTableController extends Controller
             } else {
                 DB::table('property_count_by_agencies')->insert(
                     ['agency_id' => $property->agency_id, 'property_status' => $property->status,
-                        'listing_type' => $listing_type, 'property_count' => 1]);
+                        'listing_type' => 'basic_listing', 'property_count' => 1]);
             }
 
         } else if ($property->agency_id == null) {
@@ -355,28 +355,28 @@ class CountTableController extends Controller
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('agency_id', '=', null)
                 ->where('user_id', '=', $property->user_id)
-                ->where('listing_type', '=', $listing_type)->exists())
+                ->where('listing_type', '=', 'basic_listing')->exists())
                 DB::table('property_count_by_user')
                     ->where('property_status', '=', $property->status)
                     ->where('property_purpose', '=', $property->purpose)
                     ->where('user_id', '=', $property->user_id)
                     ->where('agency_id', '=', null)
-                    ->where('listing_type', '=', $listing_type)
+                    ->where('listing_type', '=', 'basic_listing')
                     ->increment('individual_count');
             else
                 DB::table('property_count_by_user')->insert([
                     'property_status' => $property->status,
                     'property_purpose' => $property->purpose,
                     'agency_id' => null, 'user_id' => $property->user_id,
-                    'listing_type' => $listing_type, 'individual_count' => 1]);
+                    'listing_type' => 'basic_listing', 'individual_count' => 1]);
 
         }
     }
     public function getSupportCountByType($inquire_type){
         if (DB::table('support_counts_by_types')
             ->where('inquire_type', '=', $inquire_type)->exists()) {
-           $ticket = DB::table('support_counts_by_types')->where('inquire_type', '=', $inquire_type)->first();
-           return $ticket->count;
+            $ticket = DB::table('support_counts_by_types')->where('inquire_type', '=', $inquire_type)->first();
+            return $ticket->count;
 
         }
         else{
@@ -413,18 +413,18 @@ class CountTableController extends Controller
         if (DB::table('property_count_by_status_and_purposes')
             ->where('property_status', '=', $status)->where('property_purpose', '=', $property->purpose)
             ->where('user_id', '=', $property->user_id)
-            ->where('listing_type', '=', $listing_type)->exists()) {
+            ->where('listing_type', '=', 'basic_listing')->exists()) {
             DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', $property->user_id)
-                ->where('listing_type', '=', $listing_type)
+                ->where('listing_type', '=', 'basic_listing')
                 ->where('property_count', '>', 0)->decrement('property_count');
         }
         if ($property->user_id != 1) {
             DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $status)
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', 1)
-                ->where('listing_type', '=', $listing_type)
+                ->where('listing_type', '=', 'basic_listing')
                 ->where('property_count', '>', 0)->decrement('property_count');
         }
 
@@ -434,25 +434,25 @@ class CountTableController extends Controller
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('user_id', '=', $property->user_id)
                 ->where('agency_id', '=', $property->agency_id)
-                ->where('listing_type', '=', $listing_type)->exists()) {
+                ->where('listing_type', '=', 'basic_listing')->exists()) {
                 DB::table('property_count_by_user')
                     ->where('property_status', '=', $status)
                     ->where('property_purpose', '=', $property->purpose)
                     ->where('agency_id', '=', $property->agency_id)
                     ->where('user_id', '=', $property->user_id)
-                    ->where('listing_type', '=', $listing_type)
+                    ->where('listing_type', '=', 'basic_listing')
                     ->where('agency_count', '>', 0)
                     ->decrement('agency_count');
             }
             if (DB::table('property_count_by_agencies')
                 ->where('agency_id', '=', $property->agency_id)
                 ->where('property_status', '=', $status)
-                ->where('listing_type', '=', $listing_type)
+                ->where('listing_type', '=', 'basic_listing')
                 ->exists()) {
                 DB::table('property_count_by_agencies')
                     ->where('agency_id', '=', $property->agency_id)
                     ->where('property_status', '=', $status)
-                    ->where('listing_type', '=', $listing_type)
+                    ->where('listing_type', '=', 'basic_listing')
                     ->where('property_count', '>', 0)
                     ->decrement('property_count');
             }
@@ -463,13 +463,13 @@ class CountTableController extends Controller
                 ->where('property_purpose', '=', $property->purpose)
                 ->where('agency_id', '=', null)
                 ->where('user_id', '=', $property->user_id)
-                ->where('listing_type', '=', $listing_type)->exists()) {
+                ->where('listing_type', '=', 'basic_listing')->exists()) {
                 DB::table('property_count_by_user')
                     ->where('property_status', '=', $status)
                     ->where('property_purpose', '=', $property->purpose)
                     ->where('user_id', '=', $property->user_id)
                     ->where('agency_id', '=', null)
-                    ->where('listing_type', '=', $listing_type)
+                    ->where('listing_type', '=', 'basic_listing')
                     ->where('individual_count', '>', 0)
                     ->decrement('individual_count');
             }
