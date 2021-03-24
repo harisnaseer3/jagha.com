@@ -6,11 +6,6 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}" async derfer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
-    <style>
-
-
-    </style>
-
 @endsection
 
 @section('content')
@@ -23,6 +18,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="tab-content" id="ListingsTabContent">
+
                                 <div class="tab-pane fade show active" id="property_management" role="tabpanel" aria-labelledby="property_management-tab">
                                     <div class="row my-4">
                                         <div class="col-md-3">
@@ -88,6 +84,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-properties-create')}}">Add New Advertisement</a></span>
 
                                                 @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
                                                     <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="listings-{{$option}}"

@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 class PendingPropertyNotification extends Notification
 {
@@ -51,12 +52,17 @@ class PendingPropertyNotification extends Notification
         return (new MailMessage)
             ->view('website.custom-emails.notification-link-template', [
                 'user' => $user,
+                'status' => $this->property->status,
+                'view_property' => route('properties.show', [
+                    'slug' => Str::slug($this->property->city->name) . '-' . Str::slug($this->property->location->name) . '-' . Str::slug($title) . '-' . $this->property->reference,
+                    'property' => $id]),
                 'title' => 'A new Property is up on About Pakistan Properties!!',
                 'content1' => "A new Property",
                 'data_title' => $title,
                 'data_id' => $id,
                 'url' => route('admin-properties-edit', $id),
                 'buttonText' => 'Activate Property',
+                'buttonText2' => 'View Property',
                 'infoText' => 'Thank you for using About Pakistan Properties.'
             ]);
 

@@ -597,14 +597,14 @@ class PropertyController extends Controller
 
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
                 //if property has images and status is going to live than add water mark on images
-                if (count($property->images) > 0) {
-                    foreach ($property->images as $property_image) {
-                        if ($property_image->watermarked == 0) {
-                            $this->dispatch(new AddWaterMark($property_image));
-                        }
-                    }
-
-                }
+//                if (count($property->images) > 0) {
+//                    foreach ($property->images as $property_image) {
+//                        if ($property_image->watermarked == 0) {
+//                            $this->dispatch(new AddWaterMark($property_image));
+//                        }
+//                    }
+//
+//                }
 
             }
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));

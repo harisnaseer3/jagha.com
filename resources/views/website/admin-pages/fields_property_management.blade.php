@@ -1,75 +1,56 @@
 <div class="card">
+
+    <div class="card-header theme-blue text-white">User Detail</div>
+    <div class="card-body">
+        {{ Form::bsEmail('user_email',null, ['required' => true]) }}
+
+    </div>
     <div class="card-header theme-blue text-white">Property Type and Location</div>
     <div class="card-body">
+        {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
+        {{Form::hidden('purpose-error')}}
+        <div id="purpose-Wanted" style="display: none;">
+            {{ Form::bsRadio('wanted_for', isset($property->sub_purpose)? $property->sub_purpose : '', ['list' => ['Buy', 'Rent']]) }}
+            {{Form::hidden('wanted_for-error')}}
+        </div>
 
-        @if(isset($property->id))
-            {{ Form::bsText('property_id', isset($property->id)?$property->id:null, ['readonly' => 'readonly']) }}
-            {{ Form::bsText('property_reference', isset($property->reference)?$property->reference:null, ['readonly' => 'readonly']) }}
-            {{ Form::bsText('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['readonly' => 'readonly']) }}
-            @if(isset($property->sub_purpose))
-                {{ Form::bsText('wanted_for', $property->sub_type, ['readonly' => 'readonly']) }}
-            @endif
-            {{ Form::bsText('property_type', isset($property->type)? $property->type : 'Homes', ['readonly' => 'readonly']) }}
-
-            {{ Form::bsText('property_subtype ' . $property->type, isset($property->sub_type)? $property->sub_type : '', ['readonly' => 'readonly','id'=>'subtype']) }}
-            {{ Form::bsText('city', isset($property->city)? $property->city : null, ['readonly' => 'readonly']) }}
-            {{ Form::bsText('location', isset($property->location)? $property->location->name : null, ['readonly' => 'readonly']) }}
-        @else
-            {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
-            {{Form::hidden('purpose-error')}}
-            <div id="purpose-Wanted" style="display: none;">
-                {{ Form::bsRadio('wanted_for', isset($property->sub_purpose)? $property->sub_purpose : '', ['list' => ['Buy', 'Rent']]) }}
-                {{Form::hidden('wanted_for-error')}}
+        {{ Form::bsRadio('property_type',isset($property->type)? $property->type : 'Homes', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
+        {{Form::hidden('property_type-error')}}
+        @foreach($property_types as $property_type)
+            <div id="property_subtype-{{ $property_type->name }}" style="display: none;">
+                {{ Form::bsRadio('property_subtype-' . $property_type->name, isset($property->sub_type)? $property->sub_type : '',
+                ['list' => json_decode($property_type->sub_types)]) }}
             </div>
+        @endforeach
+        {{Form::hidden('property_subtype-error')}}
 
-            {{ Form::bsRadio('property_type',isset($property->type)? $property->type : 'Homes', ['required' => true, 'list' => ['Homes', 'Plots', 'Commercial']]) }}
-            {{Form::hidden('property_type-error')}}
-            @foreach($property_types as $property_type)
-                <div id="property_subtype-{{ $property_type->name }}" style="display: none;">
-                    {{ Form::bsRadio('property_subtype-' . $property_type->name, isset($property->sub_type)? $property->sub_type : '',
-                    ['list' => json_decode($property_type->sub_types)]) }}
-                </div>
-            @endforeach
-            {{Form::hidden('property_subtype-error')}}
+        {{ Form::bsSelect2('city', ['islamabad' => 'Islamabad', 'karachi' => 'Karachi', 'lahore' => 'Lahore', 'rawalpindi' => 'Rawalpindi', 'abbottabad' => 'Abbottabad', 'abdul_hakim' => 'Abdul Hakim', 'ahmedpur east' => 'Ahmedpur East', 'alipur' => 'Alipur', 'arifwala' => 'Arifwala', 'astore' => 'Astore', 'attock' => 'Attock', 'awaran' => 'Awaran', 'badin' => 'Badin', 'bagh' => 'Bagh', 'bahawalnagar' => 'Bahawalnagar', 'bahawalpur' => 'Bahawalpur', 'balakot' => 'Balakot', 'bannu' => 'Bannu', 'barnala' => 'Barnala', 'batkhela' => 'Batkhela', 'bhakkar' => 'Bhakkar', 'bhalwal' => 'Bhalwal', 'bhimber' => 'Bhimber', 'buner' => 'Buner', 'burewala' => 'Burewala', 'chaghi' => 'Chaghi', 'chakwal' => 'Chakwal', 'charsadda' => 'Charsadda', 'chichawatni' => 'Chichawatni', 'chiniot' => 'Chiniot', 'chishtian sharif' => 'Chishtian Sharif', 'chitral' => 'Chitral', 'choa_saidan_shah' => 'Choa Saidan Shah', 'chunian' => 'Chunian', 'dadu' => 'Dadu', 'daharki' => 'Daharki', 'daska' => 'Daska', 'daur' => 'Daur', 'depalpur' => 'Depalpur', 'dera_ghazi_khan' => 'Dera Ghazi Khan', 'dera_ismail_khan' => 'Dera Ismail Khan', 'dijkot' => 'Dijkot', 'dina' => 'Dina', 'dobian' => 'Dobian', 'duniya_pur' => 'Duniya Pur', 'fata' => 'FATA', 'faisalabad' => 'Faisalabad', 'fateh_jang' => 'Fateh Jang', 'gaarho' => 'Gaarho', 'gadoon' => 'Gadoon', 'galyat' => 'Galyat', 'ghakhar' => 'Ghakhar', 'gharo' => 'Gharo', 'ghotki' => 'Ghotki', 'gilgit' => 'Gilgit', 'gojra' => 'Gojra', 'gujar_khan' => 'Gujar Khan', 'gujranwala' => 'Gujranwala', 'gujrat' => 'Gujrat', 'gwadar' => 'Gwadar', 'hafizabad' => 'Hafizabad', 'hala' => 'Hala', 'hangu' => 'Hangu', 'harappa' => 'Harappa', 'haripur' => 'Haripur', 'haroonabad' => 'Haroonabad', 'hasilpur' => 'Hasilpur', 'hassan_abdal' => 'Hassan Abdal', 'haveli_lakha' => 'Haveli Lakha', 'hazro' => 'Hazro', 'hub_chowki' => 'Hub Chowki', 'hujra_shah_muqeem' => 'Hujra Shah Muqeem', 'hunza' => 'Hunza', 'hyderabad' => 'Hyderabad', 'islamabad' => 'Islamabad', 'jacobabad' => 'Jacobabad', 'jahanian' => 'Jahanian', 'jalalpur_jattan' => 'Jalalpur Jattan', 'jampur' => 'Jampur', 'jamshoro' => 'Jamshoro', 'jatoi' => 'Jatoi', 'jauharabad' => 'Jauharabad', 'jhang' => 'Jhang', 'jhelum' => 'Jhelum', 'kaghan' => 'Kaghan', 'kahror_pakka' => 'Kahror Pakka', 'kalat' => 'Kalat', 'kamalia' => 'Kamalia', 'kamoki' => 'Kamoki', 'kandiaro' => 'Kandiaro', 'karachi' => 'Karachi', 'karak' => 'Karak', 'kasur' => 'Kasur', 'khairpur' => 'Khairpur', 'khanewal' => 'Khanewal', 'khanpur' => 'Khanpur', 'kharian' => 'Kharian', 'khipro' => 'Khipro', 'khushab' => 'Khushab', 'khuzdar' => 'Khuzdar', 'kohat' => 'Kohat', 'kot_addu' => 'Kot Addu', 'kotli' => 'Kotli', 'kotri' => 'Kotri', 'lahore' => 'Lahore', 'lakki_marwat' => 'Lakki Marwat', 'lalamusa' => 'Lalamusa', 'larkana' => 'Larkana', 'lasbela' => 'Lasbela', 'layyah' => 'Layyah', 'liaquatpur' => 'Liaquatpur', 'lodhran' => 'Lodhran', 'loralai' => 'Loralai', 'lower_dir' => 'Lower Dir', 'mailsi' => 'Mailsi', 'makran' => 'Makran', 'malakand' => 'Malakand', 'mandi_bahauddin' => 'Mandi Bahauddin', 'mangla' => 'Mangla', 'mansehra' => 'Mansehra', 'mardan' => 'Mardan', 'matiari' => 'Matiari', 'matli' => 'Matli', 'mian_channu' => 'Mian Channu', 'mianwali' => 'Mianwali', 'mingora' => 'Mingora', 'mirpur' => 'Mirpur', 'mirpur_khas' => 'Mirpur Khas', 'mirpur_sakro' => 'Mirpur Sakro', 'mitha_tiwana' => 'Mitha Tiwana', 'moro' => 'Moro', 'multan' => 'Multan', 'muridke' => 'Muridke', 'murree' => 'Murree', 'muzaffarabad' => 'Muzaffarabad', 'muzaffargarh' => 'Muzaffargarh', 'nankana_sahib' => 'Nankana Sahib', 'naran' => 'Naran', 'narowal' => 'Narowal', 'nasar_ullah_khan_town' => 'Nasar Ullah Khan Town', 'nasirabad' => 'Nasirabad', 'naushahro_feroze' => 'Naushahro Feroze', 'nawabshah' => 'Nawabshah', 'neelum' => 'Neelum', 'new_mirpur_city' => 'New Mirpur City', 'nowshera' => 'Nowshera', 'okara' => 'Okara', 'others' => 'Others', 'others_azad kashmir' => 'Others Azad Kashmir', 'others_balochistan' => 'Others Balochistan', 'others_gilgit baltistan' => 'Others Gilgit Baltistan', 'others_khyber pakhtunkhwa' => 'Others Khyber Pakhtunkhwa', 'others_punjab' => 'Others Punjab', 'others_sindh' => 'Others Sindh', 'pakpattan' => 'Pakpattan', 'peshawar' => 'Peshawar', 'pind_dadan_khan' => 'Pind Dadan Khan', 'pindi_bhattian' => 'Pindi Bhattian', 'pir_mahal' => 'Pir Mahal', 'qazi_ahmed' => 'Qazi Ahmed', 'quetta' => 'Quetta', 'rahim_yar_khan' => 'Rahim Yar Khan', 'rajana' => 'Rajana', 'rajanpur' => 'Rajanpur', 'ratwal' => 'Ratwal', 'rawalkot' => 'Rawalkot', 'rawalpindi' => 'Rawalpindi', 'rohri' => 'Rohri', 'sadiqabad' => 'Sadiqabad', 'sahiwal' => 'Sahiwal', 'sakrand' => 'Sakrand', 'samundri' => 'Samundri', 'sanghar' => 'Sanghar', 'sarai_alamgir' => 'Sarai Alamgir', 'sargodha' => 'Sargodha', 'sehwan' => 'Sehwan', 'shabqadar' => 'Shabqadar', 'shahdadpur' => 'Shahdadpur', 'shahkot' => 'Shahkot', 'shahpur_chakar' => 'Shahpur Chakar', 'shakargarh' => 'Shakargarh', 'shehr_sultan' => 'Shehr Sultan', 'sheikhupura' => 'Sheikhupura', 'sher_garh' => 'Sher Garh', 'shikarpur' => 'Shikarpur', 'shorkot' => 'Shorkot', 'sialkot' => 'Sialkot', 'sibi' => 'Sibi', 'skardu' => 'Skardu', 'sudhnoti' => 'Sudhnoti', 'sujawal' => 'Sujawal', 'sukkur' => 'Sukkur', 'swabi' => 'Swabi', 'swat' => 'Swat', 'talagang' => 'Talagang', 'tando_adam' => 'Tando Adam', 'tando_allahyar' => 'Tando Allahyar', 'tando_bago' => 'Tando Bago', 'tando_muhammad_khan' => 'Tando Muhammad Khan', 'taxila' => 'Taxila', 'tharparkar' => 'Tharparkar', 'thatta' => 'Thatta', 'toba_tek_singh' => 'Toba Tek Singh', 'turbat' => 'Turbat', 'vehari' => 'Vehari', 'wah' => 'Wah', 'wazirabad' => 'Wazirabad', 'waziristan' => 'Waziristan', 'yazman' => 'Yazman', 'zhob' => 'Zhob'],
+        isset($property->city) ? str_replace(' ', '_',strtolower($property->city)) : null, ['required' => true, 'placeholder' => 'Select city','id' => 'add_city']) }}
 
-            {{ Form::bsSelect2('city', ['islamabad' => 'Islamabad', 'karachi' => 'Karachi', 'lahore' => 'Lahore', 'rawalpindi' => 'Rawalpindi', 'abbottabad' => 'Abbottabad', 'abdul_hakim' => 'Abdul Hakim', 'ahmedpur east' => 'Ahmedpur East', 'alipur' => 'Alipur', 'arifwala' => 'Arifwala', 'astore' => 'Astore', 'attock' => 'Attock', 'awaran' => 'Awaran', 'badin' => 'Badin', 'bagh' => 'Bagh', 'bahawalnagar' => 'Bahawalnagar', 'bahawalpur' => 'Bahawalpur', 'balakot' => 'Balakot', 'bannu' => 'Bannu', 'barnala' => 'Barnala', 'batkhela' => 'Batkhela', 'bhakkar' => 'Bhakkar', 'bhalwal' => 'Bhalwal', 'bhimber' => 'Bhimber', 'buner' => 'Buner', 'burewala' => 'Burewala', 'chaghi' => 'Chaghi', 'chakwal' => 'Chakwal', 'charsadda' => 'Charsadda', 'chichawatni' => 'Chichawatni', 'chiniot' => 'Chiniot', 'chishtian sharif' => 'Chishtian Sharif', 'chitral' => 'Chitral', 'choa_saidan_shah' => 'Choa Saidan Shah', 'chunian' => 'Chunian', 'dadu' => 'Dadu', 'daharki' => 'Daharki', 'daska' => 'Daska', 'daur' => 'Daur', 'depalpur' => 'Depalpur', 'dera_ghazi_khan' => 'Dera Ghazi Khan', 'dera_ismail_khan' => 'Dera Ismail Khan', 'dijkot' => 'Dijkot', 'dina' => 'Dina', 'dobian' => 'Dobian', 'duniya_pur' => 'Duniya Pur', 'fata' => 'FATA', 'faisalabad' => 'Faisalabad', 'fateh_jang' => 'Fateh Jang', 'gaarho' => 'Gaarho', 'gadoon' => 'Gadoon', 'galyat' => 'Galyat', 'ghakhar' => 'Ghakhar', 'gharo' => 'Gharo', 'ghotki' => 'Ghotki', 'gilgit' => 'Gilgit', 'gojra' => 'Gojra', 'gujar_khan' => 'Gujar Khan', 'gujranwala' => 'Gujranwala', 'gujrat' => 'Gujrat', 'gwadar' => 'Gwadar', 'hafizabad' => 'Hafizabad', 'hala' => 'Hala', 'hangu' => 'Hangu', 'harappa' => 'Harappa', 'haripur' => 'Haripur', 'haroonabad' => 'Haroonabad', 'hasilpur' => 'Hasilpur', 'hassan_abdal' => 'Hassan Abdal', 'haveli_lakha' => 'Haveli Lakha', 'hazro' => 'Hazro', 'hub_chowki' => 'Hub Chowki', 'hujra_shah_muqeem' => 'Hujra Shah Muqeem', 'hunza' => 'Hunza', 'hyderabad' => 'Hyderabad', 'islamabad' => 'Islamabad', 'jacobabad' => 'Jacobabad', 'jahanian' => 'Jahanian', 'jalalpur_jattan' => 'Jalalpur Jattan', 'jampur' => 'Jampur', 'jamshoro' => 'Jamshoro', 'jatoi' => 'Jatoi', 'jauharabad' => 'Jauharabad', 'jhang' => 'Jhang', 'jhelum' => 'Jhelum', 'kaghan' => 'Kaghan', 'kahror_pakka' => 'Kahror Pakka', 'kalat' => 'Kalat', 'kamalia' => 'Kamalia', 'kamoki' => 'Kamoki', 'kandiaro' => 'Kandiaro', 'karachi' => 'Karachi', 'karak' => 'Karak', 'kasur' => 'Kasur', 'khairpur' => 'Khairpur', 'khanewal' => 'Khanewal', 'khanpur' => 'Khanpur', 'kharian' => 'Kharian', 'khipro' => 'Khipro', 'khushab' => 'Khushab', 'khuzdar' => 'Khuzdar', 'kohat' => 'Kohat', 'kot_addu' => 'Kot Addu', 'kotli' => 'Kotli', 'kotri' => 'Kotri', 'lahore' => 'Lahore', 'lakki_marwat' => 'Lakki Marwat', 'lalamusa' => 'Lalamusa', 'larkana' => 'Larkana', 'lasbela' => 'Lasbela', 'layyah' => 'Layyah', 'liaquatpur' => 'Liaquatpur', 'lodhran' => 'Lodhran', 'loralai' => 'Loralai', 'lower_dir' => 'Lower Dir', 'mailsi' => 'Mailsi', 'makran' => 'Makran', 'malakand' => 'Malakand', 'mandi_bahauddin' => 'Mandi Bahauddin', 'mangla' => 'Mangla', 'mansehra' => 'Mansehra', 'mardan' => 'Mardan', 'matiari' => 'Matiari', 'matli' => 'Matli', 'mian_channu' => 'Mian Channu', 'mianwali' => 'Mianwali', 'mingora' => 'Mingora', 'mirpur' => 'Mirpur', 'mirpur_khas' => 'Mirpur Khas', 'mirpur_sakro' => 'Mirpur Sakro', 'mitha_tiwana' => 'Mitha Tiwana', 'moro' => 'Moro', 'multan' => 'Multan', 'muridke' => 'Muridke', 'murree' => 'Murree', 'muzaffarabad' => 'Muzaffarabad', 'muzaffargarh' => 'Muzaffargarh', 'nankana_sahib' => 'Nankana Sahib', 'naran' => 'Naran', 'narowal' => 'Narowal', 'nasar_ullah_khan_town' => 'Nasar Ullah Khan Town', 'nasirabad' => 'Nasirabad', 'naushahro_feroze' => 'Naushahro Feroze', 'nawabshah' => 'Nawabshah', 'neelum' => 'Neelum', 'new_mirpur_city' => 'New Mirpur City', 'nowshera' => 'Nowshera', 'okara' => 'Okara', 'others' => 'Others', 'others_azad kashmir' => 'Others Azad Kashmir', 'others_balochistan' => 'Others Balochistan', 'others_gilgit baltistan' => 'Others Gilgit Baltistan', 'others_khyber pakhtunkhwa' => 'Others Khyber Pakhtunkhwa', 'others_punjab' => 'Others Punjab', 'others_sindh' => 'Others Sindh', 'pakpattan' => 'Pakpattan', 'peshawar' => 'Peshawar', 'pind_dadan_khan' => 'Pind Dadan Khan', 'pindi_bhattian' => 'Pindi Bhattian', 'pir_mahal' => 'Pir Mahal', 'qazi_ahmed' => 'Qazi Ahmed', 'quetta' => 'Quetta', 'rahim_yar_khan' => 'Rahim Yar Khan', 'rajana' => 'Rajana', 'rajanpur' => 'Rajanpur', 'ratwal' => 'Ratwal', 'rawalkot' => 'Rawalkot', 'rawalpindi' => 'Rawalpindi', 'rohri' => 'Rohri', 'sadiqabad' => 'Sadiqabad', 'sahiwal' => 'Sahiwal', 'sakrand' => 'Sakrand', 'samundri' => 'Samundri', 'sanghar' => 'Sanghar', 'sarai_alamgir' => 'Sarai Alamgir', 'sargodha' => 'Sargodha', 'sehwan' => 'Sehwan', 'shabqadar' => 'Shabqadar', 'shahdadpur' => 'Shahdadpur', 'shahkot' => 'Shahkot', 'shahpur_chakar' => 'Shahpur Chakar', 'shakargarh' => 'Shakargarh', 'shehr_sultan' => 'Shehr Sultan', 'sheikhupura' => 'Sheikhupura', 'sher_garh' => 'Sher Garh', 'shikarpur' => 'Shikarpur', 'shorkot' => 'Shorkot', 'sialkot' => 'Sialkot', 'sibi' => 'Sibi', 'skardu' => 'Skardu', 'sudhnoti' => 'Sudhnoti', 'sujawal' => 'Sujawal', 'sukkur' => 'Sukkur', 'swabi' => 'Swabi', 'swat' => 'Swat', 'talagang' => 'Talagang', 'tando_adam' => 'Tando Adam', 'tando_allahyar' => 'Tando Allahyar', 'tando_bago' => 'Tando Bago', 'tando_muhammad_khan' => 'Tando Muhammad Khan', 'taxila' => 'Taxila', 'tharparkar' => 'Tharparkar', 'thatta' => 'Thatta', 'toba_tek_singh' => 'Toba Tek Singh', 'turbat' => 'Turbat', 'vehari' => 'Vehari', 'wah' => 'Wah', 'wazirabad' => 'Wazirabad', 'waziristan' => 'Waziristan', 'yazman' => 'Yazman', 'zhob' => 'Zhob'],
-            isset($property->city) ? str_replace(' ', '_',strtolower($property->city)) : null, ['required' => true, 'placeholder' => 'Select city','id' => 'add_city']) }}
+        {{ Form::bsSelect2('location', [], null, ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin" style="font-size:20px; display:none"></i></span></div>
 
-            {{ Form::bsSelect2('location', [], null, ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin" style="font-size:20px; display:none"></i></span></div>
-            {{Form::hidden('location-error')}}
+        <div class="font-14 my-3"><span>OR</span></div>
 
-        @endif
+        {{ Form::bsText('add_location',old('add_location'), ['placeholder' => 'Add Location','id' => 'other_location']) }}
+        {{--            {{ Form::bsText('add_location', old('add_location'), ['readonly' => 'readonly']) }}--}}
+
+        {{Form::hidden('location-error')}}
     </div>
 
     <div class="card-header theme-blue text-white">Property Details</div>
     <div class="card-body">
-        @if(isset($property))
-            {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['readonly' => 'readonly']) }}
-        @else
-            {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
-        @endif
+        {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true,'data-default' => 'Minimum of 50 characters required' ,'minlength' => '50']) }}
 
-
-        @if(isset($property->price) && $property->price == 0)
-            <div class="price-block" style="display:none">
-                {{ Form::bsNumber('all_inclusive_price', null,['data-default' => 'Price has a minimum value of PKR 1000', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
-            </div>
-        @else
-            <div class="price-block">
-                {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Price has a minimum value of PKR 1000', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
-            </div>
-        @endif
+        <div class="price-block">
+            {{ Form::bsNumber('all_inclusive_price', isset($property->price) ? str_replace(',', '', $property->price) : null, ['required' => true, 'data-default' => 'Price has a minimum value of PKR 1000', 'min' => 0, 'step' => 1000, 'data-help' => 'PKR']) }}
+        </div>
 
         {{ Form::bsNumber('land_area', isset($property->land_area) ? $property->land_area : null, ['required' => true, 'min' => 0, 'step' => 0.01]) }}
-        @if(isset($default_area_unit))
-            {{ Form::bsSelect2('unit',  ['Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Marla' => 'Marla', 'Kanal'=>'Kanal'],
-                isset($default_area_unit->default_area_unit) ? $default_area_unit->default_area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
-        @else
-            {{ Form::bsSelect2('unit',  ['Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Marla' => 'Marla', 'Kanal'=>'Kanal'],
-                isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
-        @endif
+
+        {{ Form::bsSelect2('unit',  ['Square Feet' => 'Square Feet', 'Square Meters' => 'Square Meters', 'Square Yards' => 'Square Yards','Marla' => 'Marla', 'Kanal'=>'Kanal'],
+            isset($property->area_unit) ? $property->area_unit : null, ['required' => true, 'placeholder' => 'Select unit']) }}
         <div class="selection-hide" style="display: none">
             {{ Form::bsSelect2('bedrooms', ['1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5','6'=>'6','7'=>'7','8'=>'8','9'=>'9','10+'=>'10+'],
                    isset($property->bedrooms) ? strtolower($property->bedrooms) : null, [ 'placeholder' => 'Select Bedrooms']) }}
@@ -82,7 +63,7 @@
                     Features
                 </label>
                 <div class="col-sm-8 col-md-5">
-                    <a style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Add Features</a>
+                    <button style="background-color: #007bff; color: white" class="btn-sm" data-toggle="modal" data-target="#featuresModalCenter">Add Features</button>
                 </div>
             </div>
             <div class="row">
@@ -121,173 +102,128 @@
     </div>
     <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
     <div class="card-body property-media-block" style="display: block">
-        @if(isset($property) and !$property->images->isEmpty())
-            <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2"><strong>Total Images
-                        <span id="edit-count" class="badge badge-primary badge-pill ml-2 f-12" data-count="{{count($property->images)}}"></span>
-                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-                    </strong>
-                </div>
-                <ul id="sortable" class="row m-2">
-                    @foreach($property->images as $available_image)
-                        <li class="ui-state-default m-2 upload-image-block ui-sortable-handle">
-                            <div style="position: relative; width: 100%; height: 50% ;margin:0 auto;">
-                                <img src="{{asset('thumbnails/properties/'.explode('.' , $available_image->name)[0].'-450x350.webp')}}"
-                                     width="100%" class="img-responsive" alt="image not available" data-num="{{$available_image->order}}" data-value="{{$available_image->name}}"/>
-                            </div>
-                            <div class="badge badge-primary badge-pill p-2 f-12" style="position: absolute; ; margin-left: 130px;  margin-top: 65px; z-index: 99;">{{$available_image->order}}</div>
-                            <a class="btn delete-image-btn" data-toggle-1="tooltip" data-placement="bottom" data-record-id="{{$available_image->id}}"
-                               title="delete" style="position: absolute; margin-left: 146px;
-                            margin-top: 56px; z-index: 1"> <i class="fad fa-trash fa-1x" style="color: red;font-size: 30px"></i> </a>
-                        </li>
 
-
-                    @endforeach
-                </ul>
+        <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
+        <div class="add-images" style="display: none">
+            <div class="col-sm-12 text-bold my-2">
+                <strong>Total Images
+                    <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
+                </strong>
             </div>
-            <div id="edit-count" data-count="{{count($property->images)}}"></div>
-            <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="add-images" style="display: none"></div>
-        @else
-            <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
-            <div class="add-images" style="display: none">
-                <div class="col-sm-12 text-bold my-2">
-                    <strong>Total Images
-                        <span id="image-count" class="badge badge-primary badge-pill ml-2 f-12" style="display: none" data-count=0></span>
-                    </strong>
-                </div>
-                <ul id="sortable" class="row border-bottom my-2 ">
-                </ul>
-            </div>
-        @endif
-
+            <ul id="sortable" class="row border-bottom my-2 ">
+            </ul>
+        </div>
 
         {{ Form::bsFile('image[]', null, ['required' => false, 'multiple'=>'multiple', 'data-default' => 'Supported formats: (png, jpg, jpeg), File size: 256 KB']) }}
         {{form::bsHidden('image', old('image'),['id'=>'store-images'])}}
+
         <div class="mb-2 ">
             <a style="background-color: #007bff; color: white;display: none" id="property-image-btn" class="btn-sm btn image-upload-btn">
                 Upload Images</a>
         </div>
-        @if(isset($property) and !$property->video->isEmpty())
-            {{ Form::bsSelect2('video host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'],$property->video[0]->host,['required' => false, 'placeholder' => 'Select video host']) }}
-            <div class="row border-bottom my-2">
-                <div class="col-sm-12 text-bold my-2">Video</div>
-                <div class="col-md-4 col-sm-6 my-2">
-                    <div style="position: relative; width: 70%; height: 50% ;margin:0 auto;">
-                        <a class="btn" data-toggle-1="tooltip" data-placement="bottom" title="delete" data-toggle="modal" data-target="#delete-video"
-                           data-record-id="{{$property->video[0]->id}}"
-                           style="position: absolute; top: 0; z-index: 1">
-                            <i class="fad fa-times-circle fa-2x" style="color: red"></i>
-                        </a>
-                        <div>
-                            @if($property->video[0]->host === 'Youtube')
-                                <iframe src={{"https://www.youtube.com/embed/".explode('#',explode('?v=',$property->video[0]->name)[1])[0]}}></iframe>
-                            @elseif($property->video[0]->host === 'Vimeo')
-                                <iframe src={{"https://player.vimeo.com/video/".explode('.com/',$property->video[0]->name)[1]}}></iframe>
-                            @else
-                                <iframe src={{"//www.dailymotion.com/embed/video/".explode('?',explode('video/',$property->video[0]->name)[1])[0]."?quality=240&info=0&logo=0"}}></iframe>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        {{ Form::bsSelect2('video_host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null ,['required' => false,'placeholder' => 'Select video host']) }}
+        {{ Form::bsText('video_link', null, ['required' => false]) }}
+    </div>
+    <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+    <div class="card-body">
+        @if(isset($property->agency))
+            {{ Form::bsRadio('advertisement', 'Agency', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
         @else
-            {{ Form::bsSelect2('video_host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null ,['required' => false,'placeholder' => 'Select video host']) }}
-            {{ Form::bsText('video_link', null, ['required' => false]) }}
+            {{ Form::bsRadio('advertisement', old('advertisement')=='Agency'?'Agency':'Individual', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
         @endif
+
     </div>
 
-    @if(!empty($agencies))
+    <div class="agency_category">
         <div class="card-header theme-blue text-white">Agency Details</div>
         <div class="card-body">
-            {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency : null, ['placeholder' => 'Select agency', 'data-default' => 'Select agency of the property','id'=>'agency']) }}
-            <div class="agency-block" style="display:none"></div>
-            <a class="btn btn-sm theme-blue" id="reset-agency" style="color: white">Reset Agency/Contact Setting</a>
-        </div>
+            {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
+                ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
+            {{Form::hidden('property_agency-error')}}
+            {{Form::hidden('property_user-error')}}
 
-    @endif
-    @if(isset($property->agency))
-        <div class="card-header theme-blue text-white">Agency Details</div>
-        <div class="card-body">
-            {{ Form::bsText('agency', isset($property->agency)? $property->agency->id : null, ['required' => true]) }}
+            {{Form::hidden('agency',isset($property->agency)?$property->agency->id:null)}}
             <div class="agency-block">
-                <div class="row">
-                    <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
-                        <div class="my-2"> Agency Information</div>
+                @if(isset($property->agency))
+                    <div class="row">
+                        <div class="col-sm-4 col-md-3 col-lg-2  col-xl-2">
+                            <div class="my-2"> Agency Information</div>
+                        </div>
+                        <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
+                            <div class="col-md-6 my-2">
+                                <strong>Title: </strong>{{$property->agency->title}}
+                            </div>
+
+                            <div class="col-md-6 my-2">
+                                <strong>Address: </strong> {{$property->agency->address}}
+                            </div>
+
+                            <div class="col-md-6 my-2">
+                                <strong>City: </strong> {{$property->agency->city->name}}
+                            </div>
+
+                            <div class="col-md-6 my-2">
+                                <strong>Phone: </strong> {{$property->agency->phone}}
+                            </div>
+
+                            <div class="col-md-6 my-2">
+                                <strong>Cell: </strong> {{$property->agency->cell}}
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-8 col-md-9 col-lg-10 col-xl-10">
-                        <div class="col-md-6 my-2">
-                            <strong>Title: </strong>{{$property->agency->title}}
-                        </div>
+                @endif
+            </div>
+            {{--            @endif--}}
+            <div id="agency-loading">
+                Fetching Agencies <i class="fa fa-spinner fa-spin" style="font-size:20px;"></i>
+            </div>
+            <div id="agency-loaded" style="display: none">
+                <button style="background-color: #007bff; color: white;" class="btn btn-sm" data-toggle="modal" data-target="#agenciesModalCenter" id="agency-change">
+                    Select/Change Agency
+                </button>
+            </div>
 
-                        <div class="col-md-6 my-2">
-                            <strong>Address: </strong> {{$property->agency->address}}
-                        </div>
+        </div>
+    </div>
+    <div id="agency-user-block">
+        <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
+        <div class="card-body">
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+            <div class="agency-user-block" style="display: none">
+                <div class="form-group row">
+                    <label for="contact_person" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                        Contact Person
+                    </label>
+                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                        <select class="custom-select custom-select-sm valid" aria-describedby="contact_person-error" aria-invalid="false"
+                                id="contact_person" name="contact_person" required="required"
+                                style="border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;">
+                        </select>
 
-                        <div class="col-md-6 my-2">
-                            <strong>City: </strong> {{$property->agency->city->name}}
-                        </div>
-
-                        <div class="col-md-6 my-2">
-                            <strong>Phone: </strong> {{$property->agency->phone}}
-                        </div>
-
-                        <div class="col-md-6 my-2">
-                            <strong>Cell: </strong> {{$property->agency->cell}}
-                        </div>
                     </div>
+
                 </div>
             </div>
-        </div>
-
-    @endif
+            <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
 
 
-    <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
-    <div class="card-body">
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
-        <div class="agency-user-block" style="display: none">
-            {{ Form::bsSelect('contact_person', [] ,null, ['placeholder' => 'Select contact person','id'=>'contact_person']) }}
-        </div>
+            <div class="contact-person-block" style="display: block">
+                {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : '', ['required' => true, 'id'=>'contact_person_input']) }}
+            </div>
+            <div class="user-details-block" style="display:block">
+                {{ Form::bsIntlTel('phone_#',isset($property->phone)? $property->phone:'', ['id'=>'phone','value'=>isset($property->phone)?$property->phone:'']) }}
 
-        <div class="text-center"><span><i class="fa fa-spinner fa-spin select_contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
+                {{Form::hidden('phone_check')}}
 
-        <div class="contact-person-block" style="display: block">
-            {{ Form::bsText('contact_person', isset($property->contact_person) ? $property->contact_person : \Illuminate\Support\Facades\Auth::user()->name, ['required' => true, 'id'=>'contact_person_input']) }}
-        </div>
-
-        <div class="user-details-block" style="display:block">
-            {{ Form::bsIntlTel('phone_#', isset($property->phone) ? $property->phone:null, ['id'=>'phone']) }}
-            {{Form::hidden('phone_check')}}
-
-            {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
-            {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
+                {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell :'',  ['required' => true,'id'=>'cell','value'=>isset($property->cell)?$property->cell:'']) }}
+                {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email :'', ['required' => true]) }}
+            </div>
         </div>
     </div>
 
-    <div class="card-header theme-blue text-white text-capitalize">Property Package</div>
-    <div class="card-body">
-        @if($property->basic_listing)
-            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->bronze_listing)
-            {{ Form::bsRadio('property_package','Bronze', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->silver_listing)
-            {{ Form::bsRadio('property_package','Silver', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->golden_listing)
-            {{ Form::bsRadio('property_package','Golden', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @elseif($property->platinum_listing)
-            {{ Form::bsRadio('property_package','Platinum', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @else
-            {{ Form::bsRadio('property_package','Basic', ['id'=>'property-package','list' => ['Basic', 'Bronze', 'Silver','Golden','Platinum']]) }}
-        @endif
-
-    </div>
     <div class="card-header theme-blue text-white text-capitalize">Property Status</div>
     <div class="card-body">
-{{--        {{ Form::bsSelect2('status', ['active' => 'Active', 'pending' => 'Pending', 'expired' => 'Expired','sold' => 'Sold','rejected' => 'Rejected', 'deleted'=>'Deleted', 'rejected'=> 'Rejected'],--}}
-{{--          isset($property->status) ? strtolower($property->status) : null, ['required' => true, 'placeholder' => 'Select Status','id'=>'status']) }}--}}
         <div class="form-group row">
             <label for="status" class="col-sm-4 col-md-3 col-lg-2  col-xl-2 col-form-label col-form-label-sm">
                 Status
@@ -298,22 +234,26 @@
                 <select class="custom-select custom-select-sm select2 select2-hidden-accessible" style="width: 100%; border: 1px solid rgb(206, 212, 218); border-radius: 0.25rem;" tabindex="-1"
                         aria-hidden="true" aria-describedby="status-error" aria-invalid="false" required="" id="status" name="status" data-select2-id="status">
                     <option value="" disabled>Select Status</option>
-                    <option value="active" {{$property->status === 'active' ? 'selected':''}}>Active</option>
-                    <option value="pending" {{$property->status === 'pending' ? 'selected':''}}>Pending</option>
-                    <option value="expired" {{$property->status === 'expired' ? 'selected':''}}>Expired</option>
-                    <option value="sold" {{$property->status === 'sold' ? 'selected':''}}>Sold</option>
-                    <option value="rejected" {{$property->status === 'rejected' ? 'selected':''}}>Rejected</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="expired">Expired</option>
+                    <option value="sold">Sold</option>
+                    <option value="rejected">Rejected</option>
                     @can('Delete Properties')
-                        <option value="deleted" {{$property->status === 'deleted' ? 'selected':''}}>Deleted</option>
+                        <option value="deleted">Deleted</option>
                     @endcan
                 </select>
             </div>
 
         </div>
 
+
         <div id="reason-of-rejection" style="display: none">
             {{ Form::bsText('rejection_reason',isset($property->rejection_reason)? $property->rejection_reason:null) }}
         </div>
+        {{--        @if($property->location->is_active == 0)--}}
+        {{--            <div class="m-0 pb-2" id="verification-badge" style=""><i class="fas fa-warning color-red"></i> <span class="mx-1 color-red font-12">Verify Property Location</span></div>--}}
+        {{--        @endif--}}
     </div>
 
     <div class="card-footer">
@@ -340,3 +280,7 @@
         </div>
     </div>
 </div>
+
+<!--Agencies modal-->
+
+
