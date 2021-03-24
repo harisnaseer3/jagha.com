@@ -352,7 +352,7 @@
                                                             <tbody>
                                                             <tr>
                                                                 <td style="color: #17bebb;">
-                                                                    {{$url}}
+                                                                    {{$view_property}}
                                                                 </td>
                                                             </tr>
 
