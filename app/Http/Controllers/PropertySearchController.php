@@ -21,16 +21,17 @@ class PropertySearchController extends Controller
     function listingFrontend()
     {
         return (new Property)
-            ->select('properties.id', 'properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type', 'properties.type', 'properties.title', 'properties.description',
-                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features', 'properties.premium_listing',
-                'properties.super_hot_listing', 'properties.hot_listing', 'properties.magazine_listing', 'properties.contact_person', 'properties.phone', 'properties.cell',
+            ->select('properties.id', 'properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type',
+                'properties.type', 'properties.title', 'properties.description',
+                'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features',
+                'properties.silver_listing', 'properties.golden_listing',
+                'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.activated_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
                 'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_new_marla', 'area_in_kanal', 'area_in_new_kanal', 'area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
                 'agencies.phone AS agency_phone', 'agencies.cell AS agency_cell', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at',
                 'agencies.description AS agency_description', 'c.property_count AS agency_property_count',
-
                 'users.community_nick AS user_nick_name', 'users.name AS user_name')
 //            ->where('property_count_by_agencies.property_status', '=', 'active')
             ->where('properties.status', '=', 'active')
@@ -56,6 +57,9 @@ class PropertySearchController extends Controller
 
     function sortPropertyListing($sort, $sort_area, $properties)
     {
+        $properties = $properties->orderBy('properties.golden_listing', 'DESC');
+        $properties = $properties->orderBy('properties.silver_listing', 'DESC');
+
         if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
         else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
 
@@ -63,6 +67,9 @@ class PropertySearchController extends Controller
         else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
         else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
         else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
+
+
+
         return $properties;
     }
 
@@ -271,7 +278,7 @@ class PropertySearchController extends Controller
             $limit = '';
             $sort_area = '';
             $sort_area_value = '';
-            $activated_at_value = '';
+            $activated_at_value = 'DESC';
             $price_value = '';
             if (request()->input('sort') !== null) {
                 $sort = request()->input('sort');
@@ -470,12 +477,12 @@ class PropertySearchController extends Controller
                         (new MetaTagController())->addMetaTags();
                         $total_count = 0;
                         $total_counts = DB::table('property_count_by_agencies')
-                            ->select('property_count AS count')->where('property_status','=','active')->whereIn('agency_id', $result)->get()->toArray();
-                        foreach ($total_counts as $count){
+                            ->select('property_count AS count')->where('property_status', '=', 'active')->whereIn('agency_id', $result)->get()->toArray();
+                        foreach ($total_counts as $count) {
                             $total_count += $count->count;
                         }
 
-                        $properties = $this->listingFrontend()->whereIn('properties.agency_id',$result);
+                        $properties = $this->listingFrontend()->whereIn('properties.agency_id', $result);
                         $page = (isset($request->page)) ? $request->page : 1;
                         $last_id = ($page - 1) * $limit;
                         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);

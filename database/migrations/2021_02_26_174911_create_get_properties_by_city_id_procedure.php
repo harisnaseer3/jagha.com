@@ -36,8 +36,8 @@ class CreateGetPropertiesByCityIdProcedure extends Migration
          BEGIN
     SELECT
         `properties`.`id`,
-        `properties`.`user_id`,
         `properties`.`reference`,
+        `properties`.`user_id`,
         `properties`.`purpose`,
         `properties`.`sub_purpose`,
         `properties`.`sub_type`,
@@ -50,10 +50,8 @@ class CreateGetPropertiesByCityIdProcedure extends Migration
         `properties`.`bedrooms`,
         `properties`.`bathrooms`,
         `properties`.`features`,
-        `properties`.`premium_listing`,
-        `properties`.`super_hot_listing`,
-        `properties`.`hot_listing`,
-        `properties`.`magazine_listing`,
+        `properties`.`silver_listing`,
+        `properties`.`golden_listing`,
         `properties`.`contact_person`,
         `properties`.`phone`,
         `properties`.`cell`,
@@ -115,7 +113,11 @@ ON
     `properties`.`agency_id` = `c`.`agency_id` AND `c`.`property_status` = "active"
 WHERE
     `properties`.`status` = "active" AND `properties`.`deleted_at` IS NULL AND `properties`.`city_id` = city_id
-ORDER BY CASE WHEN
+ORDER BY
+`properties`.`golden_listing` DESC,
+`properties`.`silver_listing` DESC,
+
+CASE WHEN
     activated_at_value = "ASC" THEN `properties`.`activated_at`
 END ASC,
 CASE WHEN activated_at_value = "DESC" THEN `properties`.`activated_at`
