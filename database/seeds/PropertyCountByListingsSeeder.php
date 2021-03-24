@@ -63,11 +63,11 @@ class PropertyCountByListingsSeeder extends Seeder
             'listing_type' => 'golden_listing',
             'property_count' => $golden_sale
         ]);
-        DB::table('properties')
-            ->where('agency_id', 2571)
-            ->update([''
-
-            ]);
+//        DB::table('properties')
+//            ->where('agency_id', 2571)
+//            ->update([''
+//
+//            ]);
 
     }
 }

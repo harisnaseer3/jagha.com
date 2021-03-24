@@ -33,6 +33,7 @@
                                     @include('website.package.properties.sidebar')
                                 </div>
                                 <div class="col-md-9">
+                                    <div class="message-block"></div>
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
@@ -181,7 +182,7 @@
                                                             <td>Listed Date</td>
                                                             <td>Activation Date</td>
                                                             <td>Views</td>
-                                                            <td>Duration </td>
+                                                            <td>Duration</td>
                                                             <td>Status Controls</td>
                                                             <td>Controls</td>
                                                         </tr>
@@ -220,15 +221,29 @@
                                                                     <td class="text-right pr-3">
                                                                         {{$all_listing->views}}
                                                                     </td>
-                                                                    <td>
-                                                                        <input class="form-control form-control-sm" aria-describedby="property_duration"  placeholder="Days" aria-invalid="false"  min="1" step="1" name="duration" type="number">
-                                                                    </td>
-                                                                    <td>
-                                                                        @if(in_array($all_listing->id,$pack_properties))
+                                                                    @if(in_array($all_listing->id,$pack_properties))
+                                                                        <td>
+                                                                            {{--                                                                            <input class="form-control form-control-sm" aria-describedby="property_duration" placeholder="Days" aria-invalid="false"--}}
+                                                                            {{--                                                                                   min="1"--}}
+                                                                            {{--                                                                                   step="1" name="duration" type="number" required>--}}
+{{--                                                                            {{\App\Models\Package::getDuration($all_listing->id)}}--}}
+                                                                            {{(new \App\Models\Package)->getDuration($all_listing->id)->duration}}
+                                                                        </td>
+                                                                        <td>
                                                                             <div class="badge badge-success p-2 ">
                                                                                 <strong class="font-12 color-white">Added</strong>
                                                                             </div>
-                                                                        @else
+                                                                        </td>
+                                                                    @else
+                                                                        <td>
+                                                                            <input class="form-control form-control-sm" aria-describedby="property_duration" placeholder="Days" aria-invalid="false"
+                                                                                   min="1"
+                                                                                   step="1" name="duration" type="number" required>
+                                                                        </td>
+                                                                        <td>
+                                                                            {{--                                                                        @if(in_array($all_listing->id,$pack_properties))--}}
+                                                                            {{--                                                                           --}}
+                                                                            {{--                                                                        @else--}}
                                                                             <div class="badge badge-success p-2" style="display: none">
                                                                                 <strong class="font-12 color-white">Added</strong>
                                                                             </div>
@@ -245,10 +260,11 @@
                                                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                                                 <span class="color-white"> Working ..</span>
                                                                             </button>
-                                                                        @endif
+                                                                            {{--                                                                        @endif--}}
 
 
-                                                                    </td>
+                                                                        </td>
+                                                                    @endif
                                                                     <td>
                                                                         @if($all_listing->id < 104280)
                                                                             <a type="button" target="_blank"
