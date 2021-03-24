@@ -35,7 +35,23 @@ use Illuminate\Support\Str;
 use Throwable;
 
 class AdminPropertyController extends Controller
+
 {
+    public function LocationStore($loc, $city)
+    {
+        $user_id = Auth::user()->getAuthIdentifier();
+        try {
+            $location = (new Location)->updateOrInsert(['city_id' => $city->id, 'name' => $loc], [
+                'user_id' => $user_id,
+                'city_id' => $city->id,
+                'name' => $loc,
+                'is_active' => '1',
+            ])->first();
+            return $location;
+        } catch (\Mockery\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
+        }
+    }
     public function create()
     {
         $property_types = (new PropertyType)->all();
@@ -87,10 +103,9 @@ class AdminPropertyController extends Controller
             if ($request->has('location'))
                 $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
             else if ($request->has('add_location')) {
-
                 $location = Location::select('id', 'name')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
                 if (!$location) {
-                    $location = (new LocationController)->store($request->input('add_location'), $city);
+                    $location = $this->LocationStore($request->input('add_location'), $city);
                 }
             }
 

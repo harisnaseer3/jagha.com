@@ -796,6 +796,14 @@
             let form = $('.data-insertion-form');
             form.validate({
                 rules: {
+                    'purpose': {required: true},
+                    'property_type': {required: true},
+                    'city': {required: true},
+                    'location': {
+                        required: function (element) {
+                            return $('[name="add_location"]').val() === '';
+                        }
+                    },
                     'all_inclusive_price': {required: true},
                     'land_area': {required: true},
                     'unit': {required: true},
@@ -1156,5 +1164,22 @@
                 }
             );
         }
+        if ($('input[name="advertisement"]:checked').val() === 'Individual') {
+            $('#agency option:first-child').prop('disabled', true);
+        }
+        if ($('input[name=purpose]').val() === 'Wanted')
+            $('.property-media-block').hide();
+        else
+            $('.property-media-block').show();
+        let new_loc = $('#other_location');
+
+        new_loc.on('click', function () {
+            $('#add_location').val('').trigger('change');
+
+        });
+        $('#add_location').on('change.select2', function (e) {
+            $('input[name="location-error"]').val($(this).val());
+            $('#other_location').val('');
+        });
     })
 (jQuery);

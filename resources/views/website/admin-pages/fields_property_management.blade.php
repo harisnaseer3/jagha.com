@@ -29,6 +29,12 @@
 
         {{ Form::bsSelect2('location', [], null, ['required' => true, 'placeholder' => 'Select city location','id' => 'add_location']) }}
         <div class="text-center"><span><i class="fa fa-spinner fa-spin" style="font-size:20px; display:none"></i></span></div>
+
+        <div class="font-14 my-3"><span>OR</span></div>
+
+        {{ Form::bsText('add_location',old('add_location'), ['placeholder' => 'Add Location','id' => 'other_location']) }}
+        {{--            {{ Form::bsText('add_location', old('add_location'), ['readonly' => 'readonly']) }}--}}
+
         {{Form::hidden('location-error')}}
     </div>
 
