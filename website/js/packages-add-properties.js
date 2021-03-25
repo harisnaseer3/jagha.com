@@ -48,6 +48,8 @@
             let days = $(this).closest("tr").find('td:eq(10) input').val();
             if (days === '') {
                 alert('Please mention days in Duration column.');
+            } else if (days < 0) {
+                alert('Minimum value of Duration is 1.');
             } else {
                 addToPackage($(this).attr('data-package-id'), $(this).attr('data-property-id'), $(this), days);
 
