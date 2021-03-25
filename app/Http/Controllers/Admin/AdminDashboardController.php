@@ -27,15 +27,8 @@ class AdminDashboardController extends Controller
     public function index()
     {
         $admin = Auth::guard('admin')->user();
-//        $admin_logs = DB::table('admin_session_logs')->orderBy('id', 'desc')->get()->all();
-//        $visit_logs = DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc')->get()->all();
-
         return view('website.admin-pages.admin-dashboard', [
             'admin' => $admin,
-//            'property_log' => PropertyLog::orderBy('id', 'desc')->get(),
-//            'agency_log' => AgencyLog::orderBy('id', 'desc')->get(),
-//            'user_visit_log' => $visit_logs,
-//            'admin_log' => $admin_logs
         ]);
     }
 
@@ -92,6 +85,14 @@ class AdminDashboardController extends Controller
     {
         $data['view'] = View('website.admin-pages.components.visit-logs',
             ['user_visit_log' => DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc')->get()->all()
+            ])->render();
+        return $data;
+    }
+
+    function getPackageLogs()
+    {
+        $data['view'] = View('website.admin-pages.components.package-logs',
+            ['package_log' => DB::table('packages')->orderBy('id', 'desc')->get()->all()
             ])->render();
         return $data;
     }

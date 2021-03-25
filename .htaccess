@@ -7,6 +7,27 @@
     </IfModule>
 
     RewriteEngine On
+    # Prevent viewing of .htaccess file
+    <Files ".htaccess">
+    order allow,deny
+    deny from all
+    </Files>
+
+    <Files ".env">
+        Order allow,deny
+        Deny from all
+    </Files>
+
+    <Files "composer.json">
+        Order allow,deny
+        Deny from all
+    </Files>
+
+#    ErrorDocument 403 /errors/404.blade.php
+
+
+    # Prevent directory listings
+    Options All -Indexes
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

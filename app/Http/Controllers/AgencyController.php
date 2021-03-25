@@ -191,6 +191,10 @@ class AgencyController extends Controller
 
     function sortPropertyListing($sort, $sort_area, $properties)
     {
+
+        $properties = $properties->orderBy('properties.golden_listing', 'DESC');
+        $properties = $properties->orderBy('properties.silver_listing', 'DESC');
+
         if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
         else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
 //        else  $properties = $properties->orderBy('area_in_sqft', 'DESC');
@@ -199,6 +203,7 @@ class AgencyController extends Controller
         else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
         else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
         else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
+
 
         return $properties;
     }
@@ -209,7 +214,7 @@ class AgencyController extends Controller
         $limit = '';
         $sort_area = '';
         $sort_area_value = '';
-        $activated_at_value = '';
+        $activated_at_value = 'DESC';
         $price_value = '';
         if (request()->input('sort') !== null) {
             $sort = request()->input('sort');

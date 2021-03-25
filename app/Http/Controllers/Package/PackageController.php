@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Package;
 
+use App\Events\AddPropertyInPackageEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\Agency;
@@ -175,12 +176,13 @@ class PackageController extends Controller
     private function _listings(string $status, string $user, $package)
     {
 
-        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.reference', 'properties.purpose',
+        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.purpose',
             'properties.status', 'locations.name AS location', 'cities.name as city', 'properties.views',
-            'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
-            'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-            'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id', 'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
-            DB::raw("'0' AS image_views"))
+            'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by',
+            'properties.silver_listing', 'properties.golden_listing',
+            'price', 'properties.created_at AS listed_date', 'properties.created_at',
+            'properties.contact_person', 'properties.user_id',
+            'properties.cell', 'properties.agency_id')
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')
             ->whereNull('properties.deleted_at');
@@ -212,25 +214,38 @@ class PackageController extends Controller
             if ($request->has('package') && $request->has('property') && $request->has('duration')) {
                 $duration = $request->input('duration');
                 $package_id = $request->input('package');
-                $property = $request->input('property');
+                $property_id = $request->input('property');
                 $package = (new \App\Models\Package)->getPackageFromId($package_id);
                 if ($package) {
                     $remaining_days = Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
-                    if ($duration < $remaining_days) {
-                        DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property], [
-                            'duration' => $duration,
-                            'activated_at' => Carbon::now()->toDateTimeString(),
-                            'expired_at' => Carbon::now()->addDays($duration)->toDateTimeString(),
-                        ]);
-                        //TODO create an event to do rest of the db insertion
+                    $added_property = DB::table('package_properties')
+                        ->select(DB::raw('Count(property_id) AS count'))
+                        ->where('package_id', $package_id)
+                        ->where('activated_at', '!=', null)->get()->pluck('count');
+
+                    if ($added_property[0] < $package->property_count) {
+                        if ($duration < $remaining_days) {
+                            DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property_id], [
+                                'duration' => $duration,
+                                'activated_at' => Carbon::now()->toDateTimeString(),
+                                'expired_at' => Carbon::now()->addDays($duration)->toDateTimeString(),
+                            ]);
+                            event(new AddPropertyInPackageEvent($property_id, $package));
+//                        TODO:send an email to user as a record
+                            return response()->json(['status' => 200, 'message' => 'Added']);
+                        } else {
+                            return response()->json(['status' => 201, 'message' => 'Duration is not allowed.']);
+                        }
+                    } else {
+                        return response()->json(['status' => 201, 'message' => 'Property limit reached.']);
                     }
-                    else{
-                        return "duration is not allowed";
-                    }
+
                 }
+            } else {
+                return response()->json(['status' => 201, 'message' => 'Not found']);
             }
         } else {
-            return "not found";
+            return response()->json(['status' => 201, 'message' => 'Not found']);
         }
 
     }
