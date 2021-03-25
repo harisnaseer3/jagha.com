@@ -80,6 +80,9 @@
                                                 </div>
                                                     @include('website.admin-pages.includes.visit-logs')
                                             @endcan
+                                                @can('Manage Packages')
+                                                    @include('website.admin-pages.includes.package-logs')
+                                                @endcan
                                         </div>
                                     </div>
                                 </div>
