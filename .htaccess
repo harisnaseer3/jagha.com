@@ -8,6 +8,26 @@
 
     RewriteEngine On
 
+	# Prevent directory listings
+	Options All -Indexes
+	
+	# Prevent viewing of .htaccess file
+	<Files .htaccess>
+	Require all denied
+	</Files>
+
+	<Files .env>
+	   Require all denied
+	</Files>
+
+	<Files composer.json>
+	   Require all denied
+	</Files>
+	
+	<Files web.config>
+	   Require all denied
+	</Files>
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
 
