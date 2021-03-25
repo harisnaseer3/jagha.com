@@ -55,15 +55,13 @@
                             src="{{ $property->user_id !== 1 && isset($property->image)? asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp'): asset("/img/logo/dummy-logo.png")}}"
                             alt="{{$property->sub_type}} for {{$property->purpose}}"
                             title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
-                        {{--                    @if($property->platinum_listing == 1)--}}
-                        {{--                        <div class="listing-badges"><span aria-label="premium label" class="featured">Platinum</span></div>--}}
-                        {{--                    @elseif($property->golden_listing == 1)--}}
-                        {{--                        <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>--}}
-                        {{--                    @elseif($property->silver_listing  == 1)--}}
-                        {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>--}}
-                        {{--                    @elseif($property->bronze_listing  == 1)--}}
-                        {{--                        <div class="listing-badges"><span aria-label="hot label" class="featured">Bronze</span></div>--}}
-                        {{--                    @endif--}}
+
+{{--                        {{dd($property)}}--}}
+                        @if(isset($property->golden_listing) && $property->golden_listing == 1)
+                            <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>
+                        @elseif(isset($property->silver_listing) && $property->silver_listing  == 1)
+                            <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>
+                        @endif
                         <div class="listing-time opening" aria-label="purpose label">
                             @if( $property->purpose === 'Wanted')
                                 {{ $property->purpose }} Property

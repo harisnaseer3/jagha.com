@@ -52,15 +52,15 @@
 
                            class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                             <div class="listing-badges">
-                                {{--                            @if($property->platinum_listing == 1)--}}
-                                {{--                                <span class="featured bg-red" aria-label="premium label">Platinum</span>--}}
-                                {{--                            @elseif($property->silver_listing == 1)--}}
-                                {{--                                <span class="featured bg-red" aria-label="super hot label">Silver</span>--}}
-                                {{--                            @elseif($property->bronze_listing  == 1)--}}
-                                {{--                                <span class="featured" aria-label="hot label">Bronze</span>--}}
-                                {{--                            @elseif($property->golden_listing  == 1)--}}
-                                {{--                                <span class="featured" aria-label="hot label">Golden</span>--}}
-                                {{--                            @endif--}}
+                                @if($property->silver_listing == 1)
+                                    <span class="featured bg-red" aria-label="premium label">Silver</span>
+                                @elseif($property->golden_listing == 1)
+                                    <span class="featured bg-red" aria-label="super hot label">Golden</span>
+                                    {{--                                @elseif($property->bronze_listing  == 1)--}}
+                                    {{--                                    <span class="featured" aria-label="hot label">Bronze</span>--}}
+                                    {{--                                @elseif($property->golden_listing  == 1)--}}
+                                    {{--                                    <span class="featured" aria-label="hot label">Golden</span>--}}
+                                @endif
                                 @if(isset($property->featured_listing)  && $property->featured_listing == 1)
                                     <span class="featured float-right tag-padding" style="background-color: #555">
                                     <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>

@@ -45,5 +45,11 @@ class Package extends Model
         return DB::table('package_properties')->select('property_id')->where('package_id', $package)->get()->pluck('property_id')->toArray();
     }
 
+    function getDuration($property)
+    {
+
+        return DB::table('package_properties')->select('duration')->where('property_id', $property)->first();
+    }
+
 
 }

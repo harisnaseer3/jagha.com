@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\AddPropertyInPackageEvent;
 use App\Events\ContactAgentEvent;
 use App\Events\NewPropertyActivatedEvent;
 use App\Events\NewUserRegisteredEvent;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\NotifyAdminOfSupportMessage;
 use App\Events\NotifyUserofSupportTicket;
+use App\Listeners\AddPropertyInPackageListener;
 use App\Listeners\AddUserInSubscriberListener;
 use App\Listeners\NotifyAdminListener;
 use App\Listeners\NotifySubscriberListener;
@@ -47,6 +49,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NotifyUserofSupportTicket::class => [
             NotifyUserSupportListener::class
+        ],
+        AddPropertyInPackageEvent::class => [
+            AddPropertyInPackageListener::class
         ],
     ];
 

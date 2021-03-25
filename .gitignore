@@ -5,6 +5,7 @@
 /vendor
 /thumbnails
 /property_media
+.htaccess
 .env
 .env.backup
 .phpunit.result.cache

@@ -53,6 +53,19 @@
                 });
             }
         );
+        $.get('/get-package-logs',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-package-logs').hide();
+                $('#package-logs-block').slideDown();
+                $('#tbody-package-logs').html(data.view);
+
+                $('#package-log').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
 
         if ($('#myChart').length > 0) {
             jQuery.ajaxSetup({
@@ -157,9 +170,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log(error);
-                    console.log(status);
-                    console.log(xhr);
+                    // console.log(error);
+                    // console.log(status);
+                    // console.log(xhr);
                 },
                 complete: function (url, options) {
                 }
