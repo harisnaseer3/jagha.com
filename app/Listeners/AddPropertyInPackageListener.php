@@ -29,7 +29,7 @@ class AddPropertyInPackageListener implements ShouldQueue
         $property_id = $event->property_id;
         $package = $event->package;
         $property = DB::table('properties')->where('id', '=', $property_id)->first();
-        if ($package->type == 'Golden') {
+        if ($package->type == 'Gold') {
 
             DB::table('properties')
                 ->where('id', $property->id)
