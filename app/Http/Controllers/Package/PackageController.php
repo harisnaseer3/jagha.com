@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Package;
 
 use App\Events\AddPropertyInPackageEvent;
+use App\Events\NotifyAdminOfPackageRequestEvent;
+use App\Events\NotifyAdminOfSupportMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
+use App\Models\Admin;
 use App\Models\Agency;
 use App\Models\Package;
 use App\Models\Property;
+use App\Notifications\PendingPackageNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -85,6 +89,10 @@ class PackageController extends Controller
                 }
             }
             //TODO: send admin email about package registration
+            event(new NotifyAdminOfPackageRequestEvent($package));
+//            $admins = Admin::getAdminsByRoleName('Emails Administrator');
+//            Notification::send($admins, new PendingPackageNotification($package));
+
             return redirect()->route('package.index')
                 ->with('success', 'Request submitted successfully. You will be notified about the progress in 2 hours.');
 
