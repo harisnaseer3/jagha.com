@@ -88,10 +88,7 @@ class PackageController extends Controller
                     ]);
                 }
             }
-            //TODO: send admin email about package registration
             event(new NotifyAdminOfPackageRequestEvent($package));
-//            $admins = Admin::getAdminsByRoleName('Emails Administrator');
-//            Notification::send($admins, new PendingPackageNotification($package));
 
             return redirect()->route('package.index')
                 ->with('success', 'Request submitted successfully. You will be notified about the progress in 2 hours.');

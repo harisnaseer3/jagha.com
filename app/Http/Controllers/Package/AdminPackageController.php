@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Package;
 
+use App\Events\NotifyAdminOfPackageRequestEvent;
+use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\Agency;
 use App\Models\AgencyLog;
+use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\Property;
+use App\Notifications\PackageStatusChange;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +105,13 @@ class AdminPackageController extends Controller
                             ->update(['featured_listing' => 1]);
                     }
                 }
+
+//                TODO:send user mail and notification of package update
+                $user = User::where('id', '=', $package->user_id)->first();
+                $user->notify(new PackageStatusChange($package));
+                event(new NotifyUserPackageStatusChangeEvent($package));
+
+
             }
 
             $package->save();
@@ -138,7 +149,7 @@ class AdminPackageController extends Controller
         return view('website.admin-pages.package.package_detail', [
             'data' => $this->_property_listing($package, $request),
             'package' => $package,
-            'package_agency'=>$package_agency,
+            'package_agency' => $package_agency,
             'sort' => $order,
             'pack_properties' => (new \App\Models\Package)->getPropertiesFromPackageID($package->id),
         ]);

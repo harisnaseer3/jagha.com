@@ -76,6 +76,11 @@
                                                                         <div class="{{$notification->read_at === null ? 'alert alert-danger':'alert alert-primary' }}">
                                                                             <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
                                                                         </div>
+                                                                    @elseif(isset($notification->data['type']) && $notification->data['type'] === 'package')
+
+                                                                        <div class="{{$notification->read_at === null ? 'alert alert-danger':'alert alert-primary' }}">
+                                                                            <span>Status of Package ID = <strong> {{$notification->data['id']}} </strong> type <strong> {{$notification->data['pack_type']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
+                                                                        </div>
 
                                                                     @endif
                                                                 </td>
