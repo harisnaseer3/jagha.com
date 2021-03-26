@@ -132,7 +132,7 @@
                                                                 <strong> Activated At: </strong>
                                                             </div>
                                                             <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{$package->activated_at}}
+                                                                {{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
                                                             </div>
                                                         </div>
 
