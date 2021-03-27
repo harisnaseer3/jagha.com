@@ -170,9 +170,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    // console.log(error);
-                    // console.log(status);
-                    // console.log(xhr);
+                    console.log(error);
+                    console.log(status);
+                    console.log(xhr);
                 },
                 complete: function (url, options) {
                 }

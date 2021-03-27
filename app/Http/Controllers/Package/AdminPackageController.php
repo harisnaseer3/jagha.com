@@ -23,6 +23,10 @@ use Exception;
 
 class AdminPackageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
     public function index()
     {
         $sub_packages = DB::table('packages')
@@ -33,6 +37,7 @@ class AdminPackageController extends Controller
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
                 'packages.status', 'package_agency.agency_id')
+            ->orderBy('id','DESC')
             ->get()->toArray();
 
 
@@ -40,6 +45,7 @@ class AdminPackageController extends Controller
             ->select('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.status', 'packages.created_at', 'packages.duration', 'package_agency.agency_id')
             ->where('status', '!=', 'active')
             ->leftJoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
+            ->orderBy('id','DESC')
             ->get()->toArray();
         return view('website.admin-pages.package.listings', [
             'sub_packages' => $sub_packages,
@@ -77,20 +83,23 @@ class AdminPackageController extends Controller
         try {
             $admin = Auth::guard('admin')->user();
             $package->admin_id = $admin->id;
+
+
+            $user = User::where('id', '=', $package->user_id)->first();
+            $user->notify(new PackageStatusChange($package));
             if ($request->status != 'active') {
                 $package->status = $request->status;
                 if ($request->status == 'rejected')
                     $package->rejection_reason = $request->rejection_reason;
-
-                //TODO:send email to user about status change along with reason
-
+                if ($request->status == 'expired') {
+                    $package->expired_at = Carbon::now()->toDateTimeString();
+                }
             } else if ($request->status == 'active') {
                 $package->status = $request->status;
                 $package->activated_at = Carbon::now()->toDateTimeString();
                 $package->expired_at = Carbon::now()->addMonths($package->duration)->toDateTimeString();
 
 
-                //TODO:send email to user about status change along with expiry date
                 $agency = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
                 if ($agency) {
                     if ($package->type == 'Silver') {
@@ -106,15 +115,10 @@ class AdminPackageController extends Controller
                     }
                 }
 
-//                TODO:send user mail and notification of package update
-                $user = User::where('id', '=', $package->user_id)->first();
-                $user->notify(new PackageStatusChange($package));
-                event(new NotifyUserPackageStatusChangeEvent($package));
-
-
             }
 
             $package->save();
+            event(new NotifyUserPackageStatusChangeEvent($package));
 
             DB::table('package_logs')->insert([
                 'admin_id' => $admin->id,

@@ -8,7 +8,7 @@
                 <thead>
                 <tr>
                     <th>Package ID</th>
-                    <th>Admin Name</th>
+                    <th>Admin ID</th>
                     <th>Package Type</th>
                     <th>Package For</th>
                     <th>Duration</th>

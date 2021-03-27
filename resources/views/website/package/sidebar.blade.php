@@ -2,9 +2,9 @@
     <div class="card-header theme-grey text-white text-capitalize">Manage Packages</div>
     <ul class="list-group">
         <li class="list-group-item  {{ $current_route_name === 'package.create' ? 'active' : '' }}">
-            <a href="{{ route('package.create') }}" class="{{ $current_route_name === 'package.create' ? 'text-white' : '' }}">Buy Packages</a></li>
+            <a href="{{ route('package.create') }}" class="{{ $current_route_name === 'package.create' ? 'text-white' : '' }}">Buy Package</a></li>
         <li class="list-group-item {{ $current_route_name === 'package.index' ? 'active' : '' }}"><a
-                href="{{ route('package.index') }}" class="{{ $current_route_name === 'package.index' ? 'text-white' : '' }}">Packages Listings</a></li>
+                href="{{ route('package.index') }}" class="{{ $current_route_name === 'package.index' ? 'text-white' : '' }}">Package Listing</a></li>
 
     </ul>
 </div>
