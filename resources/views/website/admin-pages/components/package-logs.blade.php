@@ -1,7 +1,7 @@
 @foreach($package_log as $package)
     <tr>
         <td>{{$package->id}}</td>
-        <td>{{ucwords((new \App\Models\Admin)->getAdminById($package->admin_id)->name)}}</td>
+        <td>{{$package->admin_id}}</td>
         <td>{{$package->type}}</td>
         <td>{{$package->package_for}}</td>
         <td>{{$package->duration}}</td>

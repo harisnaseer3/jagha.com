@@ -261,7 +261,6 @@
             margin-right: 10px;
         }
 
-
         @media screen and (max-width: 500px) {
 
 
@@ -302,8 +301,8 @@
                         <tr style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                             <td style="padding: 0 2.5em;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;">
                                 <div class="text" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: rgba(0,0,0,.3);">
-                                    <h5 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
-                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Inquiry Mail</strong></h5>
+                                    <h2 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
+                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">{{$title}}</strong></h2>
                                 </div>
                             </td>
                         </tr>
@@ -316,89 +315,95 @@
 
                                             <h3 class="name"
                                                 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
-                                                Hello {{ ucwords($user) }}</h3>
+                                                Hello {{ucwords($user)}}</h3>
                                             <br>
-
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an inquiry for  property listing at <a
-                                                    href="https://www.aboutpakistan.com">www.aboutpakistan.com</a>  A copy of this inquiry has also been added to your AboutPakistan.com  Inbox in the Message Center.</span>
-                                            <br>
-                                            <br>
-
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">MESSAGE</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{strip_tags($data['message'])}}</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">DETAILS</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name:</strong>{{$data['name']}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email:</strong>{{$data['email']}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone:</strong>{{$data['phone']}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>IP Location:</strong>{{$data['ip_location']}}</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">PROPERTY DETAILS</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property:</strong>{{$property->title}}</span>
-                                            <br>
-
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Location:</strong>{{ $property->location->name , $property->city->name }}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property ID:</strong>{{$property->id}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property Url:</strong>
-                                                 @if($property->id < 104280)
-                                                    <a
-                                                        href="{{route('properties.show',[
-                                                    'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                                                                                                'property'=>$property->id])}}">
-
-                                                    Go to Property
-                                                </a>
-                                                @else
-                                                    <a
-                                                        href="{{route('properties.show',[
-                                                        'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                                                        'property'=>$property->id])}}">
-
-                                                    Go to Property
-                                                </a>
+                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                             {{$content1}}
+                                                <span style="font-weight: bold;">Package Type:  {{ucwords($package->type)}}</span> and
+                                                <span style="font-weight: bold;">Package For: {{ucwords($package->package_for)}}</span>
+                                                @if($package->package_for =='agency')
+                                                    <span style="font-weight: bold;">Agency:  {{\App\Models\Agency::getAgencyTitle($agency)}} - {{$agency}}</span>
                                                 @endif
-
+                                                <span style="font-weight: bold;">Duration: {{ucwords($package->duration)}} month(s)</span>
+                                                <span> has been added on our site.</span>
                                             </span>
                                             <br>
                                             <br>
+                                            @if(isset($status) && $status =='active')
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                    <tr>
+                                                        <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
+                                                            <a href="{{$view_property}}" target="_blank"
+                                                               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
+                                                                <table>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td style="color:#ffffff ">
+                                                                            {{$buttonText2}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
+                                                <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                    <a href="{{$view_property}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="color: #17bebb;">
+                                                                    {{$view_property}}
+                                                                </td>
+                                                            </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </a>
+                                                </p>
+                                            @else
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                    <tr>
+                                                        <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
+                                                            <a href="{{$url}}" target="_blank"
+                                                               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
+                                                                <table>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td style="color:#ffffff ">
+                                                                            {{$buttonText}}
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
+                                                <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                    <a href="{{$url}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="color: #17bebb;">
+                                                                    {{$url}}
+                                                                </td>
+                                                            </tr>
+
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </a>
+                                                </p>
+                                            @endif
+
 
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">
                                                 <h3 class="name"
