@@ -11,10 +11,12 @@ use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\Property;
 use App\Models\TempImage;
+use App\Notifications\AddPropertiesInPackageNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class CronJobController extends Controller
 {
@@ -93,10 +95,26 @@ class CronJobController extends Controller
 
                 }
             } elseif ($package->status == 'active' && $package->expired_at != null && $package->expired_at >= Carbon::now()) {
+                if (count((new Package)->getPropertiesFromPackageID($package->id)) == 0) {
+                    $total_duration =Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
+                    $margin_time = ceil($total_duration / 2);
+                    $difference = Carbon::parse($package->activated_at)->diffInDays(Carbon::now()->toDateTimeString());
+                    $user = User::where('id', '=', $package->user_id)->first();
+
+                    if ($difference <= $margin_time) {
+                        $package->expired_at = Carbon::parse($package->expired_at)->addDays($difference);
+                        $package->save();
+                        Notification::send($user, new AddPropertiesInPackageNotification($user, $package));
+                    } else {
+                        Notification::send($user, new AddPropertiesInPackageNotification($user, $package));
+                    }
+                }
+
+
                 $properties = DB::table('package_properties')
                     ->select('property_id')
                     ->where('package_id', $package->id)
-                    ->where('expired_at', '<', Carbon::now()->toDateTimeString())->get()->toArray();
+                    ->whereDate('expired_at', '<', Carbon::now()->toDateTimeString())->get()->toArray();
                 foreach ($properties as $property_obj) {
                     $property = $property_obj->property_id;
                     DB::table('properties')->where('id', $property)->update([$property_update => 0]);
