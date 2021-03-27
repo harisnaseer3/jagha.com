@@ -303,7 +303,7 @@
                             <td style="padding: 0 2.5em;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;mso-table-lspace: 0 !important;mso-table-rspace: 0 !important;">
                                 <div class="text" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: rgba(0,0,0,.3);">
                                     <h5 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000;margin-top: 0;font-weight: 200;font-size: 24px;margin-bottom: 0;line-height: 1.4;">
-                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Inquiry Mail</strong></h5>
+                                        <strong style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">{{$title}}</strong></h5>
                                 </div>
                             </td>
                         </tr>
@@ -319,86 +319,59 @@
                                                 Hello {{ ucwords($user) }}</h3>
                                             <br>
 
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You have an inquiry for  property listing at <a
-                                                    href="https://www.aboutpakistan.com">www.aboutpakistan.com</a>  A copy of this inquiry has also been added to your AboutPakistan.com  Inbox in the Message Center.</span>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Status of your requested Package has been changed. </span>
+                                            <br>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <b style="font-size: 16px; color:darkgrey">PACKAGE DETAILS</b>
+                                            <br>
+                                            <b>-------------------------------</b>
+                                            <br>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>ID: </strong>{{$package->id}}</span>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Status: </strong>{{ucwords($package->status)}}</span>
+                                            <br>
+                                            @if($package->status == 'rejected')
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Reason: </strong>{{$package->rejection_reason}}</span>
+                                                <br>
+                                            @endif
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Type: </strong>{{$package->type}}</span>
+                                            <br>
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Package for: </strong>{{ucwords($package->package_for)}}</span>
+                                            <br>
+                                            @if($package->package_for == 'agency')
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Agency: </strong>{{\App\Models\Agency::getAgencyTitle($agency)}} - {{$agency}}</span>
+                                                <br>
+                                            @endif
+                                            <span class="position"
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Duration: </strong>{{$package->duration}} month(s)</span>
+                                            <br>
+                                            @if($package->status == 'active')
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Activated_at: </strong>{{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</span>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Expire in : </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans()}}</span>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                                <strong>Add Properties in Package: </strong><a
+                                                        href="{{route('package.add.properties',$package->id)}}">Click</a></span>
+                                                <br>
+                                                <br>
+                                            @endif
                                             <br>
                                             <br>
 
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">You may please reply to the inquirer directly.</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">MESSAGE</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">{{strip_tags($data['message'])}}</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">DETAILS</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Name:</strong>{{$data['name']}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Email:</strong>{{$data['email']}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Phone:</strong>{{$data['phone']}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>IP Location:</strong>{{$data['ip_location']}}</span>
-                                            <br>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <b style="font-size: 16px; color:darkgrey">PROPERTY DETAILS</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property:</strong>{{$property->title}}</span>
-                                            <br>
-
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Location:</strong>{{ $property->location->name , $property->city->name }}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property ID:</strong>{{$property->id}}</span>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Property Url:</strong>
-                                                 @if($property->id < 104280)
-                                                    <a
-                                                        href="{{route('properties.show',[
-                                                    'slug'=>Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                                                                                                'property'=>$property->id])}}">
-
-                                                    Go to Property
-                                                </a>
-                                                @else
-                                                    <a
-                                                        href="{{route('properties.show',[
-                                                        'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                                                        'property'=>$property->id])}}">
-
-                                                    Go to Property
-                                                </a>
-                                                @endif
-
-                                            </span>
-                                            <br>
-                                            <br>
 
                                             <div class="text-author-1" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0 auto;margin-top: 30px;">
                                                 <h3 class="name"
