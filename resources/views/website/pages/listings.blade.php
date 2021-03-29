@@ -111,6 +111,7 @@
                                                                 <td>Listed Date</td>
                                                                 @if($params['status'] == 'active')
                                                                     <td>Activation Date</td>
+                                                                    <td>Package</td>
                                                                 @endif
                                                                 @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
                                                                     <td>Status Controls</td>
@@ -137,11 +138,8 @@
                                                                             <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                                                         @endif
                                                                         <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
-{{--                                                                        <td>{{$all_listing->contact_person}}</td>--}}
-                                                                        {{--                                                                        <td>{{$all_listing->cell}}</td>--}}
                                                                         <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
                                                                         <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
-
                                                                         @if($params['status'] == 'active')
                                                                             <td>
                                                                                 <div>
@@ -156,6 +154,15 @@
                                                                                             class="color-white font-12"> Expires in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1])}}</strong>
                                                                                     @endif
                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                @if($all_listing->golden_listing == 1)
+                                                                                    Gold
+                                                                                @elseif($all_listing->silver_listing == 1)
+                                                                                    Silver
+                                                                                @else
+                                                                                    Basic
+                                                                                @endif
                                                                             </td>
                                                                         @endif
 
@@ -219,7 +226,6 @@
                                                                             @if($params['status'] == 'active')
                                                                                 @if($all_listing->id < 104280)
                                                                                     <a type="button" target="_blank"
-
                                                                                        href="{{route('properties.show',[
                                                                                                 'slug'=>Str::slug($all_listing->location) . '-' . Str::slug($all_listing->title) . '-' . $all_listing->reference,
                                                                                                 'property'=>$all_listing->id])}}"
@@ -241,7 +247,13 @@
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                                 </a>
                                                                                 @endif
-
+                                                                                <a type="button" target="_blank"
+                                                                                   href="{{ route('package.index') }}"
+                                                                                   class="btn btn-sm btn-success mb-1"
+                                                                                   data-toggle-1="tooltip"
+                                                                                   data-placement="bottom" title="Add To Package">
+                                                                                    <i class="fas fa-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true"> Add To Package</span>
+                                                                                </a>
                                                                             @endif
                                                                             @if($params['status'] == 'expired')
                                                                                 <a type="button"

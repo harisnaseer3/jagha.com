@@ -113,6 +113,7 @@
                                                                         @if($params['status'] == 'active')
                                                                             <td>Activation Date</td>
                                                                             <td>Activated By</td>
+                                                                            <td>Package</td>
                                                                             {{--                                                                            <td>Boost</td>--}}
                                                                         @endif
                                                                         @if($params['status'] == 'rejected')
@@ -170,6 +171,13 @@
 
                                                                                     </td>
                                                                                     <td>@if(isset($all_listing->reviewed_by)) {{ucwords($all_listing->reviewed_by)}}@endif</td>
+                                                                                    <td>@if($all_listing->golden_listing == 1)
+                                                                                            Gold
+                                                                                        @elseif($all_listing->silver_listing == 1)
+                                                                                            Silver
+                                                                                        @else
+                                                                                            Basic
+                                                                                        @endif</td>
 
                                                                                 @endif
                                                                                 @if($params['status'] == 'rejected' || $params['status'] == 'deleted' )
