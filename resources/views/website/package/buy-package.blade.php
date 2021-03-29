@@ -92,8 +92,10 @@
 
                                                         {{ Form::bsNumber('property_count', 0, ['required' => true, 'data-default' => 'Enter the number of Properties for selected package', 'min' => 1, 'step' => 1]) }}
                                                         {{ Form::bsNumber('duration', 1, ['required' => true, 'data-default' => 'Enter Package Duration in Months', 'min' => 1, 'step' => 1]) }}
-
+                                                        <div><span class="text-danger">* </span>Package will not renewed automatically.</div>
                                                     </div>
+
+
                                                     <div class="card-footer">
                                                         {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                                                     </div>
@@ -103,78 +105,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    {{--                                    <div class="row">--}}
-                                    {{--                                        <div class="col-xl-4 col-lg-4 col-md-12">--}}
-                                    {{--                                            <div class="pricing-1 plan">--}}
-                                    {{--                                                <div class="plan-header">--}}
-                                    {{--                                                    <h5>Ultimate Plan</h5>--}}
-                                    {{--                                                    <p>Plan short description</p>--}}
-                                    {{--                                                    <div class="plan-price"><sup>$</sup>80<span>/mo</span> </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <div class="plan-list">--}}
-                                    {{--                                                    <ul>--}}
-                                    {{--                                                        <li><i class="fa fa-globe"></i>Unlimited Websites</li>--}}
-                                    {{--                                                        <li><i class="fa fa-thumbs-up"></i>Unlimited Storage</li>--}}
-                                    {{--                                                        <li><i class="fa fa-signal"></i>Unlimited Bandwidth</li>--}}
-                                    {{--                                                        <li><i class="fa fa-user"></i>1000 Email Addresses</li>--}}
-                                    {{--                                                        <li><i class="fa fa-star"></i>Free domain with annual plan</li>--}}
-                                    {{--                                                        <li><i class="fa fa-rocket"></i>4X Processing Power</li>--}}
-                                    {{--                                                        <li><i class="fa fa-server"></i>Premium DNS</li>--}}
-                                    {{--                                                    </ul>--}}
-                                    {{--                                                    <div class="plan-button text-center">--}}
-                                    {{--                                                        <a href="#" class="btn btn-outline pricing-btn">Get Started</a>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                        <div class="col-xl-4 col-lg-4 col-md-12">--}}
-                                    {{--                                            <div class="pricing-1 plan">--}}
-                                    {{--                                                <div class="plan-header">--}}
-                                    {{--                                                    <h5>Deluxe Plan</h5>--}}
-                                    {{--                                                    <p>Plan short description</p>--}}
-                                    {{--                                                    <div class="plan-price text-color"><sup>$</sup>80<span>/mo</span> </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <div class="plan-list">--}}
-                                    {{--                                                    <ul>--}}
-                                    {{--                                                        <li><i class="fa fa-globe"></i>Unlimited Websites</li>--}}
-                                    {{--                                                        <li><i class="fa fa-thumbs-up"></i>Unlimited Storage</li>--}}
-                                    {{--                                                        <li><i class="fa fa-signal"></i>Unlimited Bandwidth</li>--}}
-                                    {{--                                                        <li><i class="fa fa-user"></i>1000 Email Addresses</li>--}}
-                                    {{--                                                        <li><i class="fa fa-star"></i>Free domain with annual plan</li>--}}
-                                    {{--                                                        <li><i class="fa fa-rocket"></i>4X Processing Power</li>--}}
-                                    {{--                                                        <li><i class="fa fa-server"></i>Premium DNS</li>--}}
-                                    {{--                                                    </ul>--}}
-                                    {{--                                                    <div class="plan-button text-center">--}}
-                                    {{--                                                        <a href="#" class="btn btn-outline pricing-btn button-theme">Get Started</a>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                        <div class="col-xl-4 col-lg-4 col-md-12">--}}
-                                    {{--                                            <div class="pricing-1 plan">--}}
-                                    {{--                                                <div class="plan-header">--}}
-                                    {{--                                                    <h5>Professional Plan</h5>--}}
-                                    {{--                                                    <p>Plan short description</p>--}}
-                                    {{--                                                    <div class="plan-price"><sup>$</sup>80<span>/mo</span> </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                                <div class="plan-list">--}}
-                                    {{--                                                    <ul>--}}
-                                    {{--                                                        <li><i class="fa fa-globe"></i>Unlimited Websites</li>--}}
-                                    {{--                                                        <li><i class="fa fa-thumbs-up"></i>Unlimited Storage</li>--}}
-                                    {{--                                                        <li><i class="fa fa-signal"></i>Unlimited Bandwidth</li>--}}
-                                    {{--                                                        <li><i class="fa fa-user"></i>1000 Email Addresses</li>--}}
-                                    {{--                                                        <li><i class="fa fa-star"></i>Free domain with annual plan</li>--}}
-                                    {{--                                                        <li><i class="fa fa-rocket"></i>4X Processing Power</li>--}}
-                                    {{--                                                        <li><i class="fa fa-server"></i>Premium DNS</li>--}}
-                                    {{--                                                    </ul>--}}
-                                    {{--                                                    <div class="plan-button text-center">--}}
-                                    {{--                                                        <a href="#" class="btn btn-outline pricing-btn">Get Started</a>--}}
-                                    {{--                                                    </div>--}}
-                                    {{--                                                </div>--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </div>--}}
                                     <div class="" style="background: white">
                                         <div class="main-title pt-3">
                                             <h1>Packages</h1>
@@ -188,13 +118,13 @@
                                                         <ul>
                                                             <li>Free Account</li>
                                                             <li>Add Multiple Properties</li>
-                                                            <li>Mange Multiple Agencies</li>
+                                                            <li>Manage Multiple Agencies</li>
                                                             <li></li>
                                                             <li></li>
                                                         </ul>
                                                     </div>
                                                     <div class="price-for-user">
-                                                        <div class="price"><sup>$</sup><span class="dolar">54</span><small class="month">per month</small></div>
+                                                        <div class="price"><sup>$</sup><span class="dolar">0</span><small class="month">per month</small></div>
                                                     </div>
                                                     {{--                                                    <div class="button"><a href="#" class="btn btn-outline pricing-btn">Get started</a></div>--}}
                                                 </div>
@@ -206,31 +136,33 @@
                                                         <ul>
                                                             <li>Free Account</li>
                                                             <li>Add Multiple Properties</li>
-                                                            <li>Mange Multiple Agencies</li>
+                                                            <li>Manage Multiple Agencies</li>
                                                             <li>Display Properties in top Search Results</li>
                                                             <li></li>
                                                         </ul>
                                                     </div>
                                                     <div class="price-for-user">
-                                                        <div class="price text-color"><sup>$</sup><span class="dolar">35</span><small class="month">per month</small></div>
+                                                        <div class="price text-color"><sup>$</sup><span class="dolar">0</span><small class="month">per month</small></div>
                                                     </div>
                                                     {{--                                                    <div class="button"><a href="#" class="btn btn-outline pricing-btn button-theme">Get started</a></div>--}}
                                                 </div>
                                             </div>
                                             <div class="col-xl-4 col-lg-4 col-md-12">
                                                 <div class="pricing-3">
-                                                    <div class="title">Gold Plan</div>
+                                                    <div class="title">Golden Plan</div>
                                                     <div class="content">
                                                         <ul>
-                                                            <li>20 Projects</li>
-                                                            <li>32GB Storage</li>
-                                                            <li>50 Email Accounts</li>
-                                                            <li>12GB Bandwidth</li>
-                                                            <li>32GB Storage</li>
+                                                            <li>Free Account</li>
+                                                            <li>Add Multiple Properties</li>
+                                                            <li>Manage Multiple Agencies</li>
+                                                            <li>Properties Displayed on Main Page</li>
+                                                            <li>Agency Featured on Main Page</li>
+                                                            <li>Display Properties in Top Search Results</li>
+                                                            <li>Details of User Visits</li>
                                                         </ul>
                                                     </div>
                                                     <div class="price-for-user">
-                                                        <div class="price"><sup>$</sup><span class="dolar">38</span><small class="month">per month</small></div>
+                                                        <div class="price"><sup>$</sup><span class="dolar">0</span><small class="month">per month</small></div>
                                                     </div>
                                                     {{--                                                    <div class="button"><a href="#" class="btn btn-outline pricing-btn">Get started</a></div>--}}
                                                 </div>

@@ -27,7 +27,8 @@ class CronJobController extends Controller
             if (
 //                $this->updatePropertyStatus() &&
                 $this->HourlyUpdate()
-                && $this->packageExpiry()) {
+//                && $this->packageExpiry()
+            ) {
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else {
                 return response()->json(['data' => 'Error!', 'status' => 200]);
@@ -104,6 +105,7 @@ class CronJobController extends Controller
                     if ($difference <= $margin_time) {
                         $package->expired_at = Carbon::parse($package->expired_at)->addDays($difference);
                         $package->save();
+                        //TODO :: send user notification
                         Notification::send($user, new AddPropertiesInPackageNotification($user, $package));
                     } else {
                         Notification::send($user, new AddPropertiesInPackageNotification($user, $package));
