@@ -9,9 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\Admin;
 use App\Models\Agency;
+use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\Property;
 use App\Notifications\PendingPackageNotification;
+use App\Notifications\PropertyAddedInPackage;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -93,7 +95,7 @@ class PackageController extends Controller
             event(new NotifyAdminOfPackageRequestEvent($package));
 
             return redirect()->route('package.index')
-                ->with('success', 'Request submitted successfully. You will be notified about the progress in 2 hours.');
+                ->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
 
         } catch (Exception $e) {
@@ -248,12 +250,14 @@ class PackageController extends Controller
                         ->where('activated_at', '!=', null)->get()->pluck('count');
 
                     if ($added_property[0] < $package->property_count) {
-                        if ($duration < $remaining_days) {
+                        if ($duration > 0 && $duration < $remaining_days) {
                             DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property_id], [
                                 'duration' => $duration,
                                 'activated_at' => Carbon::now()->toDateTimeString(),
                                 'expired_at' => Carbon::now()->addDays($duration)->toDateTimeString(),
                             ]);
+                            $user = User::where('id', '=', $package->user_id)->first();
+                            $user->notify(new PropertyAddedInPackage($property_id,$package));
                             event(new AddPropertyInPackageEvent($property_id, $package));
 //                        TODO:send an email to user as a record
                             return response()->json(['status' => 200, 'message' => 'Added']);

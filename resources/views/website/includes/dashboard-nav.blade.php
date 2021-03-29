@@ -297,16 +297,12 @@
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['properties.create', 'properties.edit', 'properties.listings']) ? 'active' : '' }}">
                             <a class="nav-link theme-dark-blue" href="{{route('properties.listings',
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">
-                                Property Management
+                                My Properties
                             </a>
                         </li>
                         <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="{{route('message-center.inbox')}}">
-                                Message Center</a>
-                        </li>
-                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
-                            <a class="nav-link theme-dark-blue" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
-                                My Account Settings</a>
+                            <a class="nav-link" href="{{route('package.create')}}">
+                                Packages</a>
                         </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'desc', 'page' => 10]; ?>
@@ -316,15 +312,21 @@
                         </li>
                         @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
                         @if(count($agencies)> 0)
-                        <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="{{route('agencies.staff')}}">
-                                Agency Staff</a>
-                        </li>
+                            <li class="nav-item hide-nav navbar-li">
+                                <a class="nav-link" href="{{route('agencies.staff')}}">
+                                    Agency Staff</a>
+                            </li>
                         @endif
+
                         <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link theme-dark-blue" href="{{route('package.create')}}">
-                                Packages</a>
+                            <a class="nav-link" href="{{route('message-center.inbox')}}">
+                                Message Center</a>
                         </li>
+                        <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
+                            <a class="nav-link theme-dark-blue" href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">
+                                My Account Settings</a>
+                        </li>
+
                         <li class="nav-item hide-nav navbar-li">
                             <a class="nav-link theme-dark-blue" href="{{route('aboutpakistan.support')}}">
                                 Support</a>
