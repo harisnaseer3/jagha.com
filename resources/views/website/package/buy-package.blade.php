@@ -92,7 +92,7 @@
 
                                                         {{ Form::bsNumber('property_count', 0, ['required' => true, 'data-default' => 'Enter the number of Properties for selected package', 'min' => 1, 'step' => 1]) }}
                                                         {{ Form::bsNumber('duration', 1, ['required' => true, 'data-default' => 'Enter Package Duration in Months', 'min' => 1, 'step' => 1]) }}
-                                                        <div><span class="text-danger">* </span>Package will not renewed automatically.</div>
+                                                        <div><span class="text-danger">* </span>The Package will not renew automatically.</div>
                                                     </div>
 
 
