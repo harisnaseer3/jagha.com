@@ -86,7 +86,7 @@ class AdminPackageController extends Controller
 
 
             $user = User::where('id', '=', $package->user_id)->first();
-            $user->notify(new PackageStatusChange($package));
+
             if ($request->status != 'active') {
                 $package->status = $request->status;
                 if ($request->status == 'rejected')
@@ -118,6 +118,7 @@ class AdminPackageController extends Controller
             }
 
             $package->save();
+            $user->notify(new PackageStatusChange($package));
             event(new NotifyUserPackageStatusChangeEvent($package));
 
             DB::table('package_logs')->insert([
