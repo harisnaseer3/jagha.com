@@ -139,7 +139,7 @@
                         @endif
                     </ul>
                     <div class="days">
-                        <p> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans(['parts' => 2]) }}</p>
+                        <p> {{ (new \Illuminate\Support\Carbon($feature_property->activated_at))->diffForHumans(['parts' => 2]) }}</p>
                     </div>
                 </div>
 

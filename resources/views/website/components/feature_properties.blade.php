@@ -146,7 +146,7 @@
                                     @endif
                                 </ul>
                                 <div class="days">
-                                    <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->created_at))->diffForHumans(['parts' => 2]) }}</p>
+                                    <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->activated_at))->diffForHumans(['parts' => 2]) }}</p>
                                 </div>
                             </div>
 
