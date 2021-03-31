@@ -230,7 +230,7 @@
                             @if($property->agency)
                                 @if($property->user_id !== 1 && isset($property->logo))
                                     <img src="{{asset('thumbnails/agency_logos/'.explode('.',$property->logo)[0].'-100x100.webp')}}" alt="{{$property->agency}}"
-                                         onerror="this.src='http://localhost/img/logo/dummy-logo.png'"
+                                         onerror="this.src='{{asset('img/logo/dummy-logo.png')}}'"
                                          data-toggle="popover" data-trigger="hover" title="{{$property->agency}}" data-html='true' data-content='
                                     <div><span class="float-left color-blue">Total Properties: {{$property->agency_property_count}}</span>
                                     <span class="float-right color-blue">Partner Since: {{ (new \Illuminate\Support\Carbon($property->agency_created_at))->diffForHumans(['parts' => 2]) }}</span>
