@@ -59,7 +59,7 @@
                                                                     <th>Package For</th>
                                                                     <th>Properties Count</th>
                                                                     <th>Added Properties Count</th>
-                                                                    <th>Activated At</th>
+                                                                    <th>Package Activation</th>
                                                                     <th>Status</th>
                                                                     <th>Action</th>
                                                                 </tr>
@@ -79,7 +79,7 @@
                                                                         </td>
                                                                         <td class="text-right pr-3">{{$sub_package->property_count}}</td>
                                                                         <td class="text-right pr-3">{{$sub_package->added_properties}}</td>
-                                                                        <td>{{$sub_package->activated_at}}</td>
+                                                                        <td>{{ (new \Illuminate\Support\Carbon($sub_package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
                                                                         <td>
                                                                             <div class="badge badge-success p-2 "><strong class="font-12 color-white">{{ucwords($sub_package->status)}}</strong>
                                                                             </div>
@@ -94,10 +94,10 @@
                                                                                 <i class="fas fa-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Add Properties</span>
                                                                             </a>
 
-                                                                            <a style="color: black" class="btn-sm btn btn-danger mb-1" data-record-id="{{$sub_package->id}}"
-                                                                               data-toggle="modal" data-target="#package-modal">
-                                                                                <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>
-                                                                            </a>
+                                                                            {{--                                                                            <a style="color: black" class="btn-sm btn btn-danger mb-1" data-record-id="{{$sub_package->id}}"--}}
+                                                                            {{--                                                                               data-toggle="modal" data-target="#package-modal">--}}
+                                                                            {{--                                                                                <i class="fas fa-trash"></i><span class="sr-only sr-only-focusable" aria-hidden="true">Delete</span>--}}
+                                                                            {{--                                                                            </a>--}}
 
                                                                         </td>
                                                                     </tr>
@@ -143,7 +143,9 @@
                                                                             {{ucwords($package->package_for)}}
                                                                         @endif</td>
                                                                     <td class="text-right pr-3">{{ucwords($package->property_count)}}</td>
-                                                                    <td>{{ucwords($package->created_at)}}</td>
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($package->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}
+                                                                    </td>
                                                                     <td>
                                                                         @if($package->status == 'deleted')
                                                                             <div class="badge badge-danger p-2 "><strong class="font-12 color-white">{{ucwords($package->status)}}</strong>

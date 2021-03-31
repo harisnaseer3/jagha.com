@@ -52,14 +52,14 @@
                                                     </div>
                                                     <div class="card-body">
 
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong>Package ID :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{$package->id}}
-                                                            </div>
-                                                        </div>
+                                                        {{--                                                        <div class="form-group row">--}}
+                                                        {{--                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">--}}
+                                                        {{--                                                                <strong>Package ID :</strong>--}}
+                                                        {{--                                                            </div>--}}
+                                                        {{--                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">--}}
+                                                        {{--                                                                {{$package->id}}--}}
+                                                        {{--                                                            </div>--}}
+                                                        {{--                                                        </div>--}}
                                                         <div class="form-group row">
                                                             <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
                                                                 <strong> Package Type :</strong>
@@ -90,7 +90,8 @@
                                                                     <strong> Agency :</strong>
                                                                 </div>
                                                                 <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                    {{\App\Models\Agency::getAgencyTitle($package_agency->agency_id)}} - {{$package_agency->agency_id}}
+                                                                    @php $agency_name = \App\Models\Agency::getAgencyTitle($package_agency->agency_id);  @endphp
+                                                                    {{ $agency_name}} - {{ $package_agency->agency_id}}
                                                                 </div>
                                                             </div>
                                                         @endif
@@ -129,12 +130,22 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Activated At: </strong>
+                                                                <strong> Package Activation Date: </strong>
                                                             </div>
                                                             <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                                 {{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
                                                             </div>
                                                         </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                                <strong> Package Expiry Date: </strong>
+                                                            </div>
+                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                {{ (new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="pt-1"><span class="text-danger">* </span>The package will not renew automatically.</div>
 
 
                                                     </div>
@@ -189,6 +200,9 @@
                                                         </thead>
                                                         <tbody>
                                                         @if($data !== null)
+                                                            @php  $user_id = \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier() ;
+                                                                        $user_name = \Illuminate\Support\Facades\Auth::user()->name
+                                                            @endphp
                                                             @forelse($data as $all_listing)
                                                                 <tr>
                                                                     <td>{{ $all_listing->id }}</td>
@@ -198,8 +212,14 @@
                                                                     @if($all_listing->price != '0')
                                                                         <td class="text-right pr-3">{{  $all_listing->price}}</td>
                                                                     @endif
-                                                                    <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
-                                                                    <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
+                                                                    <td>
+                                                                        @if($all_listing->user_id == $user_id)
+                                                                            {{$user_name}}
+                                                                        @else
+                                                                            {{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.$agency_name .')'}}</td>
                                                                     <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
 
                                                                     <td>
@@ -226,7 +246,7 @@
                                                                             {{--                                                                            <input class="form-control form-control-sm" aria-describedby="property_duration" placeholder="Days" aria-invalid="false"--}}
                                                                             {{--                                                                                   min="1"--}}
                                                                             {{--                                                                                   step="1" name="duration" type="number" required>--}}
-{{--                                                                            {{\App\Models\Package::getDuration($all_listing->id)}}--}}
+                                                                            {{--                                                                            {{\App\Models\Package::getDuration($all_listing->id)}}--}}
                                                                             {{(new \App\Models\Package)->getDuration($all_listing->id)->duration}}
                                                                         </td>
                                                                         <td>

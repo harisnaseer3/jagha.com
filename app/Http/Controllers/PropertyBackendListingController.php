@@ -38,7 +38,8 @@ class PropertyBackendListingController extends Controller
             'properties.status', 'locations.name AS location', 'cities.name as city',
             'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by', 'properties.basic_listing', 'properties.bronze_listing',
             'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
-            'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id', 'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
+            'price', 'properties.created_at AS listed_date', 'properties.created_at', 'properties.contact_person', 'properties.user_id',
+            'properties.cell', 'properties.agency_id', DB::raw("'0' AS quota_used"),
             DB::raw("'0' AS image_views"))
             ->join('locations', 'properties.location_id', '=', 'locations.id')
             ->join('cities', 'properties.city_id', '=', 'cities.id')

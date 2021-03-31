@@ -41,14 +41,14 @@
                                                             </div>
                                                             <div class="card-body">
 
-                                                                <div class="form-group row">
-                                                                    <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                        <strong>Package ID :</strong>
-                                                                    </div>
-                                                                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                        {{$package->id}}
-                                                                    </div>
-                                                                </div>
+{{--                                                                <div class="form-group row">--}}
+{{--                                                                    <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">--}}
+{{--                                                                        <strong>Package ID :</strong>--}}
+{{--                                                                    </div>--}}
+{{--                                                                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">--}}
+{{--                                                                        {{$package->id}}--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
                                                                 <div class="form-group row">
                                                                     <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
                                                                         <strong> Package Type :</strong>
@@ -110,10 +110,18 @@
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                        <strong> Activated At: </strong>
+                                                                        <strong> Package Activation Date: </strong>
                                                                     </div>
                                                                     <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                        {{$package->activated_at}}
+                                                                        {{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a')}}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
+                                                                        <strong> Package Expiry Date: </strong>
+                                                                    </div>
+                                                                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                        {{ (new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
                                                                     </div>
                                                                 </div>
 

@@ -9,10 +9,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\Admin;
 use App\Models\Agency;
+use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\Property;
 use App\Notifications\PendingPackageNotification;
+use App\Notifications\PropertyAddedInPackage;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Exception;
@@ -91,7 +95,7 @@ class PackageController extends Controller
             event(new NotifyAdminOfPackageRequestEvent($package));
 
             return redirect()->route('package.index')
-                ->with('success', 'Request submitted successfully. You will be notified about the progress in 2 hours.');
+                ->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
 
         } catch (Exception $e) {
@@ -166,51 +170,68 @@ class PackageController extends Controller
                 $order = 'desc';
             }
         }
+        $result = $this->_listings($user, $package);
+        $limit = 10;
+        $page = (isset($request->page)) ? $request->page : 1;
+        $last_id = ($page - 1) * $limit;
+        $properties = $result[0]->where($condition)->orderBy($sort, $order);
+        $properties = new Collection($properties->get());
+        $properties = $properties->slice($last_id, $limit)->all();
+        $paginatedSearchResults = new LengthAwarePaginator($properties, $result[1], $limit);
+        return $paginatedSearchResults->setPath($request->url());
 
-        $page = 10;
-        return $this->_getPropertiesByPurpose('all', $condition, 'active', $order, $user, $sort, $page, $package);
 
     }
 
-
-    private function _getPropertiesByPurpose($purpose, $condition, $status, $order, $user, $sort, $page, $package)
+    private function _listings(string $user, $package)
     {
-        return $this->_listings($status, $user, $package)->where($condition)->orderBy($sort, $order)->paginate($page);
-    }
+        if ($package->package_for != 'agency') {
+            $total_count = DB::table('property_count_by_user')
+                ->select(DB::raw('sum(individual_count) as count'))
+                ->where(['property_status' => 'active', 'user_id' => $user, 'listing_type' => 'basic_listing'])
+                ->where('agency_id', '=', null)
+                ->get()->pluck('count')[0];
+//            dd($total_count);
 
-    private function _listings(string $status, string $user, $package)
-    {
+            $listing = Property::select('properties.id', 'sub_type AS type', 'properties.purpose',
+                'properties.status', 'locations.name AS location', 'cities.name as city', 'properties.views',
+                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by',
+                'properties.silver_listing', 'properties.golden_listing',
+                'price', 'properties.created_at AS listed_date', 'properties.created_at',
+                'properties.contact_person', 'properties.user_id',
+                'properties.cell', 'properties.agency_id')
+                ->where('status', '=', 'active')
+                ->where('properties.user_id', '=', $user)
+                ->where('properties.agency_id', '=', null)
+                ->whereNull('properties.deleted_at')
+                ->join('locations', 'properties.location_id', '=', 'locations.id')
+                ->join('cities', 'properties.city_id', '=', 'cities.id');
 
-        $listings = Property:: select('properties.id', 'sub_type AS type', 'properties.purpose',
-            'properties.status', 'locations.name AS location', 'cities.name as city', 'properties.views',
-            'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by',
-            'properties.silver_listing', 'properties.golden_listing',
-            'price', 'properties.created_at AS listed_date', 'properties.created_at',
-            'properties.contact_person', 'properties.user_id',
-            'properties.cell', 'properties.agency_id')
-            ->join('locations', 'properties.location_id', '=', 'locations.id')
-            ->join('cities', 'properties.city_id', '=', 'cities.id')
-            ->whereNull('properties.deleted_at');
+            return [$listing, $total_count];
 
-        if (!Auth::guard('admin')->user()) {
-            if (empty($user)) {
-                $user = Auth::user()->getAuthIdentifier();
-            }
-            //if user owns agencies{}
+        } else {
+            //get agency from package agency table
+            $package_agency_id = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
+            $total_count = DB::table('property_count_by_user')
+                ->select(DB::raw('sum(agency_count) as count'))
+                ->where('agency_id', $package_agency_id->agency_id)
+                ->where(['property_status' => 'active', 'listing_type' => 'basic_listing'])->get()->pluck('count')[0];
+            $listing = Property::select('properties.id', 'sub_type AS type', 'properties.purpose',
+                'properties.status', 'locations.name AS location', 'cities.name as city', 'properties.views',
+                'properties.activated_at', 'properties.expired_at', 'properties.reviewed_by',
+                'properties.silver_listing', 'properties.golden_listing',
+                'price', 'properties.created_at AS listed_date', 'properties.created_at',
+                'properties.contact_person', 'properties.user_id',
+                'properties.cell', 'properties.agency_id')
+                ->where('properties.agency_id', '=', $package_agency_id->agency_id)
+                ->where('status', '=', 'active')
+                ->whereNull('properties.deleted_at')
+                ->join('locations', 'properties.location_id', '=', 'locations.id')
+                ->join('cities', 'properties.city_id', '=', 'cities.id');
 
-            if ($package->package_for != 'agency') {
-                $listings = $listings->where('properties.user_id', '=', $user)->where('properties.agency_id', '=', null);
-                $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
-                return $listings;
-            } else {
-                //get agency from package agency table
-                $package_agency_id = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
-                $listings = $listings->where('properties.agency_id', '=', $package_agency_id->agency_id);
-                $listings = $status == 'all' ? $listings : $listings->where('status', '=', $status);
-                return $listings;
-            }
-
+            return [$listing, $total_count];
         }
+
     }
 
     public function add(Request $request)
@@ -229,12 +250,14 @@ class PackageController extends Controller
                         ->where('activated_at', '!=', null)->get()->pluck('count');
 
                     if ($added_property[0] < $package->property_count) {
-                        if ($duration < $remaining_days) {
+                        if ($duration > 0 && $duration < $remaining_days) {
                             DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property_id], [
                                 'duration' => $duration,
                                 'activated_at' => Carbon::now()->toDateTimeString(),
                                 'expired_at' => Carbon::now()->addDays($duration)->toDateTimeString(),
                             ]);
+                            $user = User::where('id', '=', $package->user_id)->first();
+                            $user->notify(new PropertyAddedInPackage($property_id,$package));
                             event(new AddPropertyInPackageEvent($property_id, $package));
 //                        TODO:send an email to user as a record
                             return response()->json(['status' => 200, 'message' => 'Added']);
