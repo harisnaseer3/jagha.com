@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotifyAdminOfNewProperty;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Agency;
@@ -49,6 +50,9 @@ class PropertyAjaxCallController extends Controller
             $location = (new Location)->select('id', 'name')->where('id', '=', $property->location_id)->first();
 
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
+
+            if ($property->status == 'pending')
+                event(new NotifyAdminOfNewProperty($property));
 
 
             (new CountTableController)->_insert_in_status_purpose_table($property);
