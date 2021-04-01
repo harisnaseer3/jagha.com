@@ -124,7 +124,6 @@
             if (input.value.trim()) {
                 if (ag_iti_cell.isValidNumber()) {
                     field.val(ag_iti_cell.getNumber());
-                    console.log("4" + $('[name="phone"]').val());
 
                     validMsg.classList.remove("hide");
                     $(error_div).hide();
@@ -496,16 +495,7 @@
         $('[name=all_inclusive_price]').on('input', function (e) {
             priceInWords();
         });
-        //hide or show bedroom, bathroom and features btn
 
-        // $('#delete-image').on('show.bs.modal', function (event) {
-        //     let record_id = $(event.relatedTarget).data('record-id');
-        //     $(this).find('.modal-body #image-record-id').val(record_id);
-        // });
-        $('#delete-plan').on('show.bs.modal', function (event) {
-            let record_id = $(event.relatedTarget).data('record-id');
-            $(this).find('.modal-body #plan-record-id').val(record_id);
-        });
         $('#delete-video').on('show.bs.modal', function (event) {
             let record_id = $(event.relatedTarget).data('record-id');
             $(this).find('.modal-body #video-record-id').val(record_id);
@@ -534,10 +524,6 @@
                 if ($.trim(params.term) === '') {
                     return data;
                 }
-                // if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) === 0) {
-                //     return data;
-                // }
-                // else {
                 keywords = (params.term).split(" ");
                 for (var i = 0; i < keywords.length; i++) {
                     if (((data.text).toUpperCase()).indexOf((keywords[i]).toUpperCase()) === -1)
@@ -564,26 +550,6 @@
         });
 
 
-        // $('#reset-agency').on('click', function (e) {
-        //     e.preventDefault();
-        //     let agency_data = $('#agency');
-        //     agency_data.val(null).trigger("change");
-        //     $('.agency-user-block').hide();
-        //     $('.user-details-block').show();
-        //     $('.contact-person-block').show();
-        //     $('.contact_person_spinner').hide();
-        //     $('#contact_person').removeAttr('required').attr('disable', 'true');
-        //
-        //     $('[name=contact_person]').val('');
-        //     $('[name=phone]').val('');
-        //     $('[name=mobile]').val('');
-        //     $('[name=fax]').val('');
-        //     $('[name=contact_email]').val('');
-        //     $('.agency-block').hide();
-        // });
-
-        // $('#store-images').val(store_image_name);
-
         function checkImagesCountLimit(count) {
             if (store_image_name.length + count + imageCountOnError > 60) {
                 // console.log(store_image_name.length + count + imageCountOnError);
@@ -606,13 +572,7 @@
         if (mobile_num.val() !== '' && $("input[name='mobile']").val() === '') {
             $("input[name='mobile']").val(mobile_num.val());
         }
-        //on error form
-        // if ($("input[name='phone']").val() !== '') {
-        //     phone_num.val('+92' + $("input[name='phone']").val());
-        // }
-        // if ($("input[name='mobile']").val() !== '') {
-        //     mobile_num.val('+92' + $("input[name='mobile']").val());
-        // }
+
         phone_num.on('change', function () {
             if (phone_num.val() === '') {
                 $('input[name=phone_check]').val('');
@@ -623,6 +583,7 @@
         mobile_num.on('change', function () {
             // $("input[name='mobile']").val(mobile_num.val());
             var it_2 = window.intlTelInputGlobals.getInstance(selected_input_field_cell);
+
             $("input[name='mobile']").val(it_2.getNumber());
         });
 
@@ -676,7 +637,7 @@
                 },
             },
             messages: {
-                'mobile': " please enter a valid value.",
+                'mobile': "please enter a valid value.",
                 'phone_check': "",
             },
             errorElement: 'span',
@@ -688,6 +649,7 @@
             invalidHandler: function (event, validator) {
                 // 'this' refers to the form
                 const errors = validator.numberOfInvalids();
+                // console.log(validator);
                 if (errors) {
                     let error_tag = $('div.error.text-red.invalid-feedback.mt-2');
                     error_tag.hide();
@@ -737,6 +699,8 @@
                     getCityLocations(city, selected_location);
             }
 
+            getUsersDataWithAgency($('#contact_person_input').val());
+
         }
         $(document).on('change', $('.feature-tags .badge').length, function () {
             $('input[name="features-error"]').val($('.feature-tags').html());
@@ -757,10 +721,7 @@
         $(document).on('change', $('input[name="property_subtype"]'), function () {
             $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
         });
-        $('#add_location').on('change.select2', function (e) {
-            $('input[name="location-error"]').val($(this).val());
-            $('#other_location').val('');
-        });
+
 
         if ($('input[name="purpose-error"]').val() === '') {
             $('input[name="purpose-error"]').val($('input[name=purpose]:checked').val());
@@ -812,6 +773,7 @@
                 $('.select_contact_person_spinner').show();
                 getUserData(user);
             } else {
+
                 $('[name=phone]').val('');
                 $('[name=mobile]').val('');
                 $('[name=fax]').val('');
@@ -819,7 +781,7 @@
             }
         });
 
-        function getAgencyUsers(agency) {
+        function getAgencyUsers(agency, selected_user = '') {
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -841,10 +803,17 @@
                         add_select.empty();
 
                         // add_select.append($('<option>', {value: -1, text: "Select contact person", style: "color: #999"}));
-
+                        let data_value = -1;
                         $.each(user_data, function (key, value) {
+                            if (selected_user !== '' && selected_user === value) {
+                                data_value = key;
+                            }
+
                             add_select.append($('<option>', {value: key, text: value, 'data-name': value}));
                         });
+                        if (data_value !== -1) {
+                            add_select.val(data_value).trigger('change');
+                        }
 
                         $('#contact_person option:first-child').prop('disabled', false);
                     }
@@ -883,6 +852,7 @@
                     // console.log(xhr);
                 },
                 complete: function (url, options) {
+
                     getUserData($('#contact_person option:selected').val());
                 }
             });
@@ -971,70 +941,102 @@
             });
         }
 
-        $(document).on('change', '[name=advertisement]', function () {
-            // console.log($('input[name="advertisement"]:checked').val());
-            if ($('input[name="advertisement"]:checked').val() === 'Agency') {
-                $('#agency option:first-child').prop('disabled', false);
-                $('#user-agency-block').slideDown();
-                $('.agency-user-block').show();
-                $('.contact-person-block').hide();
-                $('#contact_person_input').removeAttr('required').attr('disable', 'true');
-                $('#contact_person').attr('required', 'required').attr('disable', 'false');
-                getAgencyUsers($("#agency option:selected").val());
-                if ($('select[id=contact_person]').val() === null) {
-                    $('select[id=contact_person]').val($("select[id=contact_person] option:first").val());
-                }
-            } else {
-                let keyupEvent = new Event('keyup');
-                $('#user-agency-block').slideUp();
-                $('.contact-person-block').show();
-                $('[name=agency]').val('');
-                $('#agency option:first-child').prop('disabled', true);
-                $('#contact_person').removeAttr('required').attr('disable', 'true');
-                $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
-                $('[name="contact_person"]').val(user_default_name);
-                // $('[name="phone_#"]').val(user_default_phone);
+        function getAgencyData(selected_user = '') {
+            $('#agency option:first-child').prop('disabled', false);
+            $('#user-agency-block').slideDown();
+            $('.agency-user-block').show();
+            $('.contact-person-block').hide();
+            $('#contact_person_input').removeAttr('required').attr('disable', 'true');
+            $('#contact_person').attr('required', 'required').attr('disable', 'false');
 
-                $('[name="phone_#"]').val('');
-                let selected_input_field_1 = document.querySelector("#phone");
-                window.intlTelInputGlobals.getInstance(selected_input_field_1).destroy();
+            getAgencyUsers($("#agency option:selected").val(), selected_user);
 
-                iti_contact_number(selected_input_field_1,
-                    document.querySelector("#error-msg-phone"),
-                    document.querySelector("#valid-msg-phone"),
-                    $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
-                $('#phone').val(user_default_phone);
-
-                selected_input_field_1.dispatchEvent(keyupEvent);
-                $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
-
-                $('[name="mobile_#"]').val('');
-                let selected_input_field_2 = document.querySelector("#cell");
-                window.intlTelInputGlobals.getInstance(selected_input_field_2).destroy();
-
-                iti_contact_number(selected_input_field_2,
-                    document.querySelector("#error-msg-mobile"),
-                    document.querySelector("#valid-msg-mobile"),
-                    $('[name=mobile]'), '#mobile-error', "MOBILE");
-                $('[name="mobile_#"]').val(user_default_mobile);
-                $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber());
-                $('[name=contact_email]').val(user_default_email);
-                selected_input_field_2.dispatchEvent(keyupEvent);
-                $('.agency-user-block').hide();
+            if ($('select[id=contact_person]').val() === null) {
+                $('select[id=contact_person]').val($("select[id=contact_person] option:first").val());
             }
+
+        }
+
+        function IndividualData() {
+            let keyupEvent = new Event('keyup');
+            $('#user-agency-block').slideUp();
+            $('.contact-person-block').show();
+            $('[name=agency]').val('');
+            $('#agency option:first-child').prop('disabled', true);
+            $('#contact_person').removeAttr('required').attr('disable', 'true');
+            $('#contact_person_input').attr('required', 'required').attr('disable', 'false');
+            $('[name="contact_person"]').val(user_default_name);
+            // $('[name="phone_#"]').val(user_default_phone);
+
+            $('[name="phone_#"]').val('');
+            let selected_input_field_1 = document.querySelector("#phone");
+            window.intlTelInputGlobals.getInstance(selected_input_field_1).destroy();
+
+            iti_contact_number(selected_input_field_1,
+                document.querySelector("#error-msg-phone"),
+                document.querySelector("#valid-msg-phone"),
+                $('[name=phone]'), '#phone-error', "FIXED_LINE", 'name=phone_check');
+            $('#phone').val(user_default_phone);
+
+            selected_input_field_1.dispatchEvent(keyupEvent);
+            $('[name="phone"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_1).getNumber());
+
+            $('[name="mobile_#"]').val('');
+            let selected_input_field_2 = document.querySelector("#cell");
+            window.intlTelInputGlobals.getInstance(selected_input_field_2).destroy();
+
+            iti_contact_number(selected_input_field_2,
+                document.querySelector("#error-msg-mobile"),
+                document.querySelector("#valid-msg-mobile"),
+                $('[name=mobile]'), '#mobile-error', "MOBILE");
+            $('[name="mobile_#"]').val(user_default_mobile);
+            if(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber() !== '')
+            $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber());
+            else
+            $('[name="mobile"]').val(user_default_mobile);
+            $('[name=contact_email]').val(user_default_email);
+            selected_input_field_2.dispatchEvent(keyupEvent);
+            $('.agency-user-block').hide();
+        }
+
+        function getUsersDataWithAgency(selected_user = '') {
+
+            if ($('input[name="advertisement"]:checked').val() === 'Agency') {
+                getAgencyData(selected_user);
+            } else {
+                IndividualData();
+            }
+        }
+
+        $(document).on('change', '[name=advertisement]', function () {
+            getUsersDataWithAgency();
 
         });
         if ($('input[name="advertisement"]:checked').val() === 'Individual') {
             $('#agency option:first-child').prop('disabled', true);
+            // IndividualData();
         }
+        // getUsersDataWithAgency();
+
+
         if ($('input[name=purpose]').val() === 'Wanted')
             $('.property-media-block').hide();
         else
             $('.property-media-block').show();
+
         let new_loc = $('#other_location');
 
+
         new_loc.on('click', function () {
+
             $('#add_location').val('').trigger('change');
+        });
+        $(document).on('change', $('#add_location'), function () {
+            $('input[name="location-error"]').val($("#add_location :selected").val());
+            if ($("#add_location :selected").val() !== undefined && $("#add_location :selected").val() !== '' ) {
+                new_loc.val('');
+            }
+
 
         });
 

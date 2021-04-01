@@ -219,14 +219,19 @@
 
                 <div class="user-details-block" style="display:block">
                     @if(isset($property->phone))
-                        {{ Form::bsIntlTel('phone_#', $property->phone, ['id'=>'phone']) }}
+                        {{ Form::bsIntlTel('phone_#', $property->phone, ['id'=>'phone','value'=> $property->phone]) }}
                     @else
-                        {{ Form::bsIntlTel('phone_#', \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone']) }}
+                        {{ Form::bsIntlTel('phone_#', \Illuminate\Support\Facades\Auth::user()->phone, ['id'=>'phone','value'=> \Illuminate\Support\Facades\Auth::user()->phone]) }}
                     @endif
 
                     {{Form::hidden('phone_check')}}
 
-                    {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell']) }}
+
+                    @if(isset($property->cell))
+                        {{ Form::bsIntlTel('mobile_#', $property->cell,  ['required' => true,'id'=>'cell','value'=> $property->cell]) }}
+                    @else
+                        {{ Form::bsIntlTel('mobile_#', \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell','value'=> \Illuminate\Support\Facades\Auth::user()->cell]) }}
+                    @endif
                     {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
                 </div>
             </div>
@@ -271,6 +276,7 @@
                 </div>
             </div>
         </div>
+
         <div id="agency-user-block">
             <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
             <div class="card-body">
@@ -309,7 +315,12 @@
 
                     {{Form::hidden('phone_check')}}
 
-                    {{ Form::bsIntlTel('mobile_#', isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell','value'=>isset($property->cell) ? $property->cell : \Illuminate\Support\Facades\Auth::user()->cell]) }}
+                    @if(isset($property->cell))
+                        {{ Form::bsIntlTel('mobile_#', $property->cell,  ['required' => true,'id'=>'cell','value'=>$property->cell]) }}
+                    @else
+                        {{ Form::bsIntlTel('mobile_#', \Illuminate\Support\Facades\Auth::user()->cell,  ['required' => true,'id'=>'cell','value'=> \Illuminate\Support\Facades\Auth::user()->cell]) }}
+                    @endif
+
                     {{ Form::bsEmail('contact_email', isset($property->email) ? $property->email : \Illuminate\Support\Facades\Auth::user()->email, ['required' => true]) }}
                 </div>
             </div>
