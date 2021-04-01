@@ -583,6 +583,7 @@
         mobile_num.on('change', function () {
             // $("input[name='mobile']").val(mobile_num.val());
             var it_2 = window.intlTelInputGlobals.getInstance(selected_input_field_cell);
+
             $("input[name='mobile']").val(it_2.getNumber());
         });
 
@@ -636,7 +637,7 @@
                 },
             },
             messages: {
-                'mobile': " please enter a valid value.",
+                'mobile': "please enter a valid value.",
                 'phone_check': "",
             },
             errorElement: 'span',
@@ -648,7 +649,7 @@
             invalidHandler: function (event, validator) {
                 // 'this' refers to the form
                 const errors = validator.numberOfInvalids();
-                console.log(validator);
+                // console.log(validator);
                 if (errors) {
                     let error_tag = $('div.error.text-red.invalid-feedback.mt-2');
                     error_tag.hide();
@@ -721,10 +722,6 @@
             $('input[name="property_subtype-error"]').val($('input[name="property_subtype-' + property_type + '"]:checked').val());
         });
 
-        $(document).on('change', $('#add_location'), function () {
-            $('input[name="location-error"]').val($("#add_location :selected").val());
-            $('#other_location').val('');
-        });
 
         if ($('input[name="purpose-error"]').val() === '') {
             $('input[name="purpose-error"]').val($('input[name=purpose]:checked').val());
@@ -776,6 +773,7 @@
                 $('.select_contact_person_spinner').show();
                 getUserData(user);
             } else {
+
                 $('[name=phone]').val('');
                 $('[name=mobile]').val('');
                 $('[name=fax]').val('');
@@ -992,13 +990,16 @@
                 document.querySelector("#valid-msg-mobile"),
                 $('[name=mobile]'), '#mobile-error', "MOBILE");
             $('[name="mobile_#"]').val(user_default_mobile);
+            if(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber() !== '')
             $('[name="mobile"]').val(window.intlTelInputGlobals.getInstance(selected_input_field_2).getNumber());
+            else
+            $('[name="mobile"]').val(user_default_mobile);
             $('[name=contact_email]').val(user_default_email);
             selected_input_field_2.dispatchEvent(keyupEvent);
             $('.agency-user-block').hide();
         }
 
-        function getUsersDataWithAgency(selected_user='') {
+        function getUsersDataWithAgency(selected_user = '') {
 
             if ($('input[name="advertisement"]:checked').val() === 'Agency') {
                 getAgencyData(selected_user);
@@ -1022,10 +1023,20 @@
             $('.property-media-block').hide();
         else
             $('.property-media-block').show();
+
         let new_loc = $('#other_location');
 
+
         new_loc.on('click', function () {
+
             $('#add_location').val('').trigger('change');
+        });
+        $(document).on('change', $('#add_location'), function () {
+            $('input[name="location-error"]').val($("#add_location :selected").val());
+            if ($("#add_location :selected").val() !== undefined && $("#add_location :selected").val() !== '' ) {
+                new_loc.val('');
+            }
+
 
         });
 

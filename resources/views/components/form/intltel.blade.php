@@ -8,11 +8,17 @@
     </label>
 
     <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+
         {{ Form::tel($name, $value, array_merge(['class' => 'form-control form-control-sm', 'aria-describedby' => $name . '-error', 'aria-invalid' => 'false'], $attributes)) }}
         <span id="{{'valid-msg-'.explode("_",$name)[0]}}" class="hide validated mt-2">✓ Valid</span>
         <span id="{{'error-msg-'.explode("_",$name)[0]}}" class="hide error mt-2"></span>
-        <input class="form-control" name="{{explode("_",$name)[0]}}" type="hidden"
-               value="{{!empty($attributes['value'])?$attributes['value']:''}}">
+        @if(isset($attributes['value']))
+            <input class="form-control" name="{{explode("_",$name)[0]}}" type="hidden"
+                   value="{{$attributes['value']}}">
+        @else
+            <input class="form-control" name="{{explode("_",$name)[0]}}" type="hidden"
+                   value="">
+        @endif
 
         @error($name)
         <small class="text-danger">{{ $message }}</small>
