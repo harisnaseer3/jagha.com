@@ -611,8 +611,8 @@ class PropertyController extends Controller
 
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
-//            if ($property->status == 'pending')
-//                event(new NotifyAdminOfNewProperty($property));
+            if ($property->status == 'pending')
+                event(new NotifyAdminOfNewProperty($property));
             $footer_content = (new FooterController)->footerContent();
 
             if (Auth::guard('admin')->user()) {

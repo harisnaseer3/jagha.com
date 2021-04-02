@@ -51,7 +51,8 @@ class PendingPropertyNotification extends Notification
 
         return (new MailMessage)
             ->view('website.custom-emails.notification-link-template', [
-                'user' => $user,
+//                'user' => $user,
+                'user' => 'Email Administrator',
                 'status' => $this->property->status,
                 'view_property' => route('properties.show', [
                     'slug' => Str::slug($this->property->city->name) . '-' . Str::slug($this->property->location->name) . '-' . Str::slug($title) . '-' . $this->property->reference,
