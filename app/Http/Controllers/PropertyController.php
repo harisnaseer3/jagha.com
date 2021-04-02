@@ -491,7 +491,7 @@ class PropertyController extends Controller
             'floor_plans.*' => 'image|max:256',
             'phone' => 'nullable|string', // +92-511234567
             'mobile' => 'required', // +92-3001234567
-            'contact_person' => 'max:225',
+            'contact_person' => 'required|max:225',
             'contact_email' => 'required|email',
             'video_host' => 'nullable|string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
             'video_link' => 'nullable|url',
