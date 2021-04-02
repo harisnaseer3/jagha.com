@@ -51,8 +51,8 @@ class PropertyAjaxCallController extends Controller
 
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
-            if ($property->status == 'pending')
-                event(new NotifyAdminOfNewProperty($property));
+//            if ($property->status == 'pending')
+//                event(new NotifyAdminOfNewProperty($property));
 
 
             (new CountTableController)->_insert_in_status_purpose_table($property);
