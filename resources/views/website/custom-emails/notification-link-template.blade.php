@@ -313,9 +313,17 @@
                                     <tr>
                                         <td style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%; max-width: 60%;margin: 0 auto;padding: 2em;">
 
-                                            <h3 class="name"
-                                                style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
-                                                Hello {{ucwords($user->name)}}</h3>
+                                            @if($user === 'Email Administrator')
+                                                <h3 class="name"
+                                                    style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
+                                                    Hello {{ucwords($user)}}</h3>
+                                            @else
+                                                <h3 class="name"
+                                                    style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
+                                                    Hello {{ucwords($user->name)}}</h3>
+                                            @endif
+
+
                                             <br>
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
                                              {{$content1}}
