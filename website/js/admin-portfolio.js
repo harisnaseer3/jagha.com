@@ -46,12 +46,14 @@
                     $('input[name=contact_person]').val(select_user.data('name'));
                     let user_id = select_user.val();
                     $('input[name="property_user-error"]').val(user_id);
+
                     getUserData(user_id);
                 }
             });
         }
 
         function getUserData(user) {
+
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -884,6 +886,8 @@
                 getAgencyUsersOnError($('input[name="property_agency-error"]').val());
             } else if ($('#contact_person').val() !== null) {
                 //get user data
+                let select_user = $('#contact_person option:selected');
+                $('input[name=contact_person]').val(select_user.data('name'));
                 getUserData($('#contact_person').val());
             }
 
@@ -1136,6 +1140,7 @@
                 // $('input[name=contact_person]').val(user);
                 $('input[name="property_user-error"]').val(user);
                 $('.select_contact_person_spinner').show();
+
                 getUserData(user);
             } else {
                 $('[name=phone]').val('');
@@ -1144,6 +1149,8 @@
                 $('[name=contact_email]').val('');
             }
         });
+
+
         //
         let location_verified = $('[name=location_verified]');
         if (location_verified.length > 0) {
