@@ -211,7 +211,7 @@ Route::post('/search-city', 'PropertyAjaxCallController@adminPropertyCitySearch'
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 
-    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'PropertyBackendListingController@listings')
+    Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'AdminPropertyListingController@listings')
         ->name('admin.properties.listings')
         ->where([
             'status' => '(active|edited|pending|expired|uploaded|hidden|deleted|rejected|sold|rejected_images|rejected_videos|all)',

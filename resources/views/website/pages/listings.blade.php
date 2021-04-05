@@ -46,7 +46,7 @@
                                     </div>
 
                                     <span class="tab-content" id="listings-tabContent">
-                                        @foreach(['all', 'sale', 'rent','wanted','basic','bronze','silver','golden','platinum'] as $option)
+                                        @foreach(['all', 'sale', 'rent','wanted'] as $option)
                                             <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="{{"listings-".$option}}"
                                                  role="tabpanel"
                                                  aria-labelledby="{{"listings-".$option."-tab"}}">
