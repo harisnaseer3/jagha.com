@@ -27,12 +27,16 @@ class Location extends Model
         'user_id',
         'city_id',
         'name',
+        'latitude',
+        'longitude',
         'is_active'
     ];
 
     public static $rules = [
         'name' => 'required|max:225',
         'city' => 'required|max:255',
+        'latitude' => 'required',
+        'longitude' => 'required',
         'is_active' => 'required|boolean',
     ];
 
@@ -46,20 +50,20 @@ class Location extends Model
         return $this->belongsTo(Property::class);
     }
 
-    public function homes()
-    {
-        return $this->hasMany(Home::class);
-    }
-
-    public function plots()
-    {
-        return $this->hasMany(Plot::class);
-    }
-
-    public function Commercials()
-    {
-        return $this->hasMany(Commercial::class);
-    }
+//    public function homes()
+//    {
+//        return $this->hasMany(Home::class);
+//    }
+//
+//    public function plots()
+//    {
+//        return $this->hasMany(Plot::class);
+//    }
+//
+//    public function Commercials()
+//    {
+//        return $this->hasMany(Commercial::class);
+//    }
 
     public static function locationsList()
     {
