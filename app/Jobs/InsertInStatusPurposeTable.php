@@ -33,22 +33,12 @@ class InsertInStatusPurposeTable implements ShouldQueue
     public function handle()
     {
         $property = $this->property;
-        if (DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-            ->where('property_purpose', '=', $property->purpose)->where('user_id', '=', $property->user_id)
-            ->where('listing_type', '=', 'basic_listing')->exists()) {
-            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                ->where('property_purpose', '=', $property->purpose)
-                ->where('user_id', '=', $property->user_id)
-                ->where('listing_type', '=', 'basic_listing')->increment('property_count');
+        if (DB::table('property_count_for_admin')->where('property_status', '=', $property->status)
+            ->where('property_purpose', '=', $property->purpose)->exists()) {
+            DB::table('property_count_for_admin')->where('property_status', '=', $property->status)
+                ->where('property_purpose', '=', $property->purpose)->increment('property_count');
         } else {
-            DB::table('property_count_by_status_and_purposes')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose,
-                'user_id' => $property->user_id, 'listing_type' => 'basic_listing', 'property_count' => 1]);
-        }
-        if ($property->user_id != 1) {
-            DB::table('property_count_by_status_and_purposes')->where('property_status', '=', $property->status)
-                ->where('property_purpose', '=', $property->purpose)
-                ->where('user_id', '=', 1)
-                ->where('listing_type', '=', 'basic_listing')->increment('property_count');
+            DB::table('property_count_for_admin')->insert(['property_status' => $property->status, 'property_purpose' => $property->purpose, 'property_count' => 1]);
         }
         if (isset($property->agency_id)) {
             if (DB::table('property_count_by_user')->where('property_status', '=', $property->status)

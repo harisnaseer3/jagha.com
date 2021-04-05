@@ -300,10 +300,10 @@
                                 My Properties
                             </a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li">
-                            <a class="nav-link" href="{{route('package.create')}}">
-                                Packages</a>
-                        </li>
+{{--                        <li class="nav-item hide-nav navbar-li">--}}
+{{--                            <a class="nav-link" href="{{route('package.create')}}">--}}
+{{--                                Packages</a>--}}
+{{--                        </li>--}}
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'desc', 'page' => 10]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
