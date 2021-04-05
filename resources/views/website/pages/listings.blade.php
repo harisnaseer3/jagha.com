@@ -247,13 +247,13 @@
                                                                                     <i class="fas fa-eye"></i><span class="sr-only sr-only-focusable" aria-hidden="true">View</span>
                                                                                 </a>
                                                                                 @endif
-                                                                                <a type="button" target="_blank"
-                                                                                   href="{{ route('package.index') }}"
-                                                                                   class="btn btn-sm btn-success mb-1"
-                                                                                   data-toggle-1="tooltip"
-                                                                                   data-placement="bottom" title="Add To Package">
-                                                                                    <i class="fas fa-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true"> Add To Package</span>
-                                                                                </a>
+{{--                                                                                <a type="button" target="_blank"--}}
+{{--                                                                                   href="{{ route('package.index') }}"--}}
+{{--                                                                                   class="btn btn-sm btn-success mb-1"--}}
+{{--                                                                                   data-toggle-1="tooltip"--}}
+{{--                                                                                   data-placement="bottom" title="Add To Package">--}}
+{{--                                                                                    <i class="fas fa-plus"></i><span class="sr-only sr-only-focusable" aria-hidden="true"> Add To Package</span>--}}
+{{--                                                                                </a>--}}
                                                                             @endif
                                                                             @if($params['status'] == 'expired')
                                                                                 <a type="button"
