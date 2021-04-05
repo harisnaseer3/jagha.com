@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
-                        @foreach(\Illuminate\Support\Facades\Auth::user()->agencies() as $agency)
+                        @foreach(\Illuminate\Support\Facades\Auth::user()->agencies()->where('status','verified') as $agency)
                             @foreach($agenct->agencyUsers() as $agency_user)
                                 <div>{{$agency_user->id}}</div>
                             @endforeach
@@ -72,7 +72,7 @@
                                                     </option>
                                                 </select>
                                                 </span>
-                                                @php $agencies = Auth::user()->agencies->pluck('id')->toArray();
+                                                @php $agencies = Auth::user()->agencies->where('status','verified')->pluck('id')->toArray();
                                                 $agency_users = (new \App\Models\AgencyUser())->whereIn('agency_id',$agencies)->get();
                                                 @endphp
                                                 @if(count($agency_users) > 0)
@@ -80,7 +80,7 @@
                                                     <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
                                                         <option value disabled data-index="-1">Select Agency User</option>
                                                         <option value="all" selected>All Agency Users</option>
-                                                        @foreach (Auth::user()->agencies as $agency)
+                                                        @foreach (Auth::user()->agencies->where('status','verified') as $agency)
                                                             <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
                                                             @foreach ($agency->agencyUsers as $agency_user)
                                                                 @if($agency_user->user->id !== Auth::user()->id)

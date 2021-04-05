@@ -23,7 +23,7 @@
               <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
                                                         <option value disabled data-index="-1">Select Contact Person</option>
                                                         <option value="all" selected>All</option>
-                                                        @foreach (Auth::user()->agencies as $agency)
+                                                        @foreach (Auth::user()->agencies->where('status','verified') as $agency)
                       <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
                       @foreach ($agency->agencyUsers as $agency_user)
                           @if($agency_user->user->id !== Auth::user()->id)
@@ -75,12 +75,12 @@
 {{--                                    <td>{{$all_listing->contact_person}}</td>--}}
 {{--                                    <td>{{$all_listing->cell}}</td>--}}
                                     <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
-                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
 
                                     {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
                                     @if($params['status'] == 'active')
                                         <td>
-                                            {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }}
+                                            {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('DD-MM-YYYY  h:mm a') }}
                                             <br>
                                             Expired
                                             in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
