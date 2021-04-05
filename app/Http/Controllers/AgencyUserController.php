@@ -28,7 +28,7 @@ class AgencyUserController extends Controller
     {
         $user = Auth::user();
         $footer_data = (new FooterController)->footerContent();
-        $user_agencies = $user->agencies()->select('id', 'title','user_id','status')->get()->toArray();
+        $user_agencies = $user->agencies()->select('id', 'title','user_id','status')->where('status','=','verified')->get()->toArray();
         $agency_ids = $user->agencies()->pluck('id')->toArray();
 //        dd($user_agencies);
 
@@ -399,6 +399,8 @@ class AgencyUserController extends Controller
                 $listings = $listings->whereNull('properties.deleted_at')
                     ->orderBy('id', $request->sort == 'oldest' ? 'ASC' : 'DESC')
                     ->get();
+
+
 
                 $data['view'] = View('website.components.user_listings',
                     [
