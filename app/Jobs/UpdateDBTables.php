@@ -64,54 +64,54 @@ class UpdateDBTables implements ShouldQueue
                 ['agency_id' => $this->agency->id],
                 ['user_id' => $this->user->id]
             );
-        $sale_active_count = DB::table('property_count_by_user')->select('agency_count')
-            ->where('user_id', '=', $this->user->id)
-            ->where('agency_id', '=', $this->agency->id)
-            ->where('property_purpose', '=', 'sale')
-            ->where('property_status', '=', 'active')->first();
-
-
-        $rent_active_count = DB::table('property_count_by_user')->select('agency_count')
-            ->where('user_id', '=', $this->user->id)
-            ->where('agency_id', '=', $this->agency->id)
-            ->where('property_purpose', '=', 'rent')
-            ->where('property_status', '=', 'active')->first();
-        if ($sale_active_count) {
-
-            $sale_active_count = $sale_active_count->agency_count;
-
-            DB::table('property_count_by_status_and_purposes')->select('property_count')
-                ->where('user_id', '=', 1)
-                ->where('property_purpose', '=', 'sale')
-                ->where('property_status', '=', 'active')
-                ->where('listing_type', '=', 'basic_listing')
-                ->where('property_count', '>=', $sale_active_count)
-                ->decrement('property_count', $sale_active_count);
-
-            DB::table('property_count_by_status_and_purposes')
-                ->where('user_id', '=', $this->user->id)
-                ->where('property_purpose', '=', 'sale')
-                ->where('property_status', '=', 'active')
-                ->where('listing_type', '=', 'basic_listing')
-                ->increment('property_count', $sale_active_count);
-        }
-        if ($rent_active_count) {
-            $rent_active_count = $rent_active_count->agency_count;
-            DB::table('property_count_by_status_and_purposes')
-                ->where('user_id', '=', 1)
-                ->where('property_purpose', '=', 'rent')
-                ->where('property_status', '=', 'active')
-                ->where('listing_type', '=', 'basic_listing')
-                ->where('property_count', '>=', $rent_active_count)
-                ->decrement('property_count', $rent_active_count);
-
-            DB::table('property_count_by_status_and_purposes')
-                ->where('user_id', '=', $this->user->id)
-                ->where('property_purpose', '=', 'rent')
-                ->where('property_status', '=', 'active')
-                ->where('listing_type', '=', 'basic_listing')
-                ->increment('property_count', $rent_active_count);
-        }
+//        $sale_active_count = DB::table('property_count_by_user')->select('agency_count')
+//            ->where('user_id', '=', $this->user->id)
+//            ->where('agency_id', '=', $this->agency->id)
+//            ->where('property_purpose', '=', 'sale')
+//            ->where('property_status', '=', 'active')->first();
+//
+//
+//        $rent_active_count = DB::table('property_count_by_user')->select('agency_count')
+//            ->where('user_id', '=', $this->user->id)
+//            ->where('agency_id', '=', $this->agency->id)
+//            ->where('property_purpose', '=', 'rent')
+//            ->where('property_status', '=', 'active')->first();
+//        if ($sale_active_count) {
+//
+//            $sale_active_count = $sale_active_count->agency_count;
+//
+//            DB::table('property_count_by_status_and_purposes')->select('property_count')
+//                ->where('user_id', '=', 1)
+//                ->where('property_purpose', '=', 'sale')
+//                ->where('property_status', '=', 'active')
+//                ->where('listing_type', '=', 'basic_listing')
+//                ->where('property_count', '>=', $sale_active_count)
+//                ->decrement('property_count', $sale_active_count);
+//
+//            DB::table('property_count_by_status_and_purposes')
+//                ->where('user_id', '=', $this->user->id)
+//                ->where('property_purpose', '=', 'sale')
+//                ->where('property_status', '=', 'active')
+//                ->where('listing_type', '=', 'basic_listing')
+//                ->increment('property_count', $sale_active_count);
+//        }
+//        if ($rent_active_count) {
+//            $rent_active_count = $rent_active_count->agency_count;
+//            DB::table('property_count_by_status_and_purposes')
+//                ->where('user_id', '=', 1)
+//                ->where('property_purpose', '=', 'rent')
+//                ->where('property_status', '=', 'active')
+//                ->where('listing_type', '=', 'basic_listing')
+//                ->where('property_count', '>=', $rent_active_count)
+//                ->decrement('property_count', $rent_active_count);
+//
+//            DB::table('property_count_by_status_and_purposes')
+//                ->where('user_id', '=', $this->user->id)
+//                ->where('property_purpose', '=', 'rent')
+//                ->where('property_status', '=', 'active')
+//                ->where('listing_type', '=', 'basic_listing')
+//                ->increment('property_count', $rent_active_count);
+//        }
 
         (new AgencyLog)->create([
             'admin_id' => $this->admin_id,
