@@ -250,6 +250,7 @@ class AgencyController extends Controller
         $properties = new Collection($properties);
         $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
         $paginatedSearchResults->setPath($request->url());
+//        dd($paginatedSearchResults[6]);
 
         $property_types = (new PropertyType)->all();
         (new MetaTagController())->addMetaTags();
@@ -738,6 +739,7 @@ class AgencyController extends Controller
                 $user = User::where('id', '=', $agency->user_id)->first();
                 $user->notify(new AgencyStatusChange($agency));
                 Notification::send($user, new AgencyStatusChangeMail($agency));
+                //TODO: if agency_has properties then transfer these properties to agency_user + update agency count + update user count
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {

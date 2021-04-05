@@ -23,7 +23,7 @@
               <select class="form-control form-control-sm agency_users" style="width: 100%" data-placeholder="Select Agency Member">
                                                         <option value disabled data-index="-1">Select Contact Person</option>
                                                         <option value="all" selected>All</option>
-                                                        @foreach (Auth::user()->agencies as $agency)
+                                                        @foreach (Auth::user()->agencies->where('status','verified') as $agency)
                       <option class="font-weight-bold agency-name" data-agency="{{$agency->id}}" value="{{$agency->id}}">{{$agency->title}}</option>
                       @foreach ($agency->agencyUsers as $agency_user)
                           @if($agency_user->user->id !== Auth::user()->id)
@@ -45,12 +45,12 @@
                             <td>Price (PKR)</td>
                             <td>Added By</td>
 {{--                            <td>Contact Person</td>--}}
-{{--                            <td>Contact #</td>--}}
+                            {{--                            <td>Contact #</td>--}}
                             <td>Listed For</td>
                             <td>Listed Date</td>
                             @if($params['status'] == 'active')
                                 <td>Activation Date</td>
-                                {{--  <td>Boost</td>--}}
+                                  <td>Package</td>
                             @endif
                             @if($params['status'] != 'deleted' || $params['status'] != 'pending' )
                                 <td>Status Controls</td>
@@ -72,24 +72,32 @@
                                         <td class="pr-3">{{ 'Call option selected for price'}}</td>
                                     @endif
                                     <td>{{\App\Models\Dashboard\User::getUserName($all_listing->user_id)}}</td>
-{{--                                    <td>{{$all_listing->contact_person}}</td>--}}
-{{--                                    <td>{{$all_listing->cell}}</td>--}}
                                     <td>{{$all_listing->agency_id == null ? 'Individual':'Agency ('.\App\Models\Agency::getAgencyTitle($all_listing->agency_id) .')'}}</td>
-                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('MMM Do YYYY, h:mm a') }}</td>
+                                    <td>{{ (new \Illuminate\Support\Carbon($all_listing->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
 
-                                    {{--                                                                        <td>{{ (new \Illuminate\Support\Carbon($all_listing->listed_date))->format('Y-m-d') }}</td>--}}
-                                    @if($params['status'] == 'active')
+                                     @if($params['status'] == 'active')
                                         <td>
-                                            {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->format('Y-m-d') }}
-                                            <br>
-                                            Expired
-                                            in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffInDays(new \Illuminate\Support\Carbon(now()))}}
-                                            days
-                                        </td>
-                                        {{--                                                                            <td class="cursor-not-allowed"><span>Boost Count : 0</span>--}}
-                                        {{--                                                                                <a href="javascript:void(0)" class="btn btn-sm btn-success pull-right disabled">--}}
-                                        {{--                                                                                    Click to Boost</a>--}}
-                                        {{--                                                                            </td>--}}
+                                        <div> {{ (new \Illuminate\Support\Carbon($all_listing->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
+                                        </div>
+                                                                                <div class="badge badge-success p-2">
+                                                                                    @if(str_contains ( (new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1]), 'ago' ))
+                                                                                        <strong
+                                                                                            class="color-white font-12"> Expired {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1])}}</strong>
+                                                                                    @else
+                                                                                        <strong
+                                                                                            class="color-white font-12"> Expires in {{(new \Illuminate\Support\Carbon($all_listing->expired_at))->diffForHumans(['parts' => 1])}}</strong>
+                                                                                    @endif
+                                                                               </div>
+                                                                            </td>
+                                        <td>
+                                                                                @if($all_listing->golden_listing == 1)
+                                                Gold
+                                            @elseif($all_listing->silver_listing == 1)
+                                                Silver
+                                            @else
+                                                Basic
+                                            @endif
+                                                                            </td>
                                     @endif
 
                                     @if($params['status'] != 'deleted')

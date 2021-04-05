@@ -244,6 +244,7 @@
             } else {
                 let user_id = $('option:selected', this).data("user");
                 let agency_id = $('option:selected', this).data("agency");
+
                 let purpose = 'sale';
                 let status = 'active';
                 let sort = 'oldest';
@@ -286,6 +287,7 @@
                 data: {'user_id': user_id, 'agency_id': agency_id, 'sort': sort, 'status': status, 'purpose': purpose},
                 dataType: 'json',
                 success: function (data) {
+
                     listing_block.html('');
                     listing_block.html(data.view);
 
