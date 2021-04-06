@@ -363,7 +363,7 @@ class PropertyController extends Controller
         $property->location = $property->location->name;
         (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
         $footer_content = (new FooterController)->footerContent();
-        DB::table('google_api_log')->where('id', 1)->increment('count', 1);
+//        DB::table('google_api_log')->where('id', 1)->increment('count', 1);
 
         return view('website.pages.property_detail', [
             'property_count' => $property->agency_id !== null ? $this->agencyCountOnDetailPage($property->agency_id) : 0,

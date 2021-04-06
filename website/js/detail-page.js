@@ -57,7 +57,25 @@
     $(document).ready(function () {
         $('.map-canvas').on('click', function () {
             initMap($(this).data('value'));
+            mapCall();
         });
+
+        function mapCall() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'get',
+                url: window.location.origin + '/mapCall',
+                dataType: 'json',
+                success: function (data) {
+                }
+            });
+        }
+
+
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover({trigger: "hover"});
         $.fn.stars = function () {

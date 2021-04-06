@@ -14,6 +14,9 @@ Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 Route::get('/agent-properties', 'AgencyUserController@getAgentProperties');
 Route::get('/get-admin-agencies', 'PropertyAjaxCallController@allAgencies');
 
+Route::get('/mapCall', 'PropertyAjaxCallController@mapCall');
+
+
 
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
 Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');

@@ -14,6 +14,7 @@ use App\Notifications\PropertyStatusChange;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PropertyAjaxCallController extends Controller
 {
@@ -164,5 +165,12 @@ class PropertyAjaxCallController extends Controller
 
     }
 
+    public function mapCall(Request $request)
+    {
+        if ($request->ajax()) {
+            DB::table('google_api_log')->where('id', 1)->increment('count', 1);
+            return response()->json(['status' => 200, 'message' => 'Done']);
+        } else return 'not found';
+    }
 
 }

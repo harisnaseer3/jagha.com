@@ -24,7 +24,7 @@ class FooterController extends Controller
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')
             ->where('featured_listing', '=', '1')
-            ->orderBy('agencies.id', 'DESC')
+            ->orderBy('featured_listing', 'DESC')
             ->limit(7)
             ->get();
         return [$recent_properties, $footer_agencies];
