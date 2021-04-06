@@ -35,8 +35,7 @@ class Location extends Model
     public static $rules = [
         'name' => 'required|max:225',
         'city' => 'required|max:255',
-        'latitude' => 'required',
-        'longitude' => 'required',
+
         'is_active' => 'required|boolean',
     ];
 

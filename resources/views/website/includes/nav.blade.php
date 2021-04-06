@@ -104,7 +104,7 @@
                                         <ul class="sub-menu" style="display:block;">
                                             <li id="menu-item-2508"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                    <a href="{{route('property.city.count.listing',['type'=>'homes'])}}">Houses</a>
+                                                <a href="{{route('property.city.count.listing',['type'=>'homes'])}}">Houses</a>
                                             </li>
                                             <li id="menu-item-2469"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
@@ -369,6 +369,15 @@
             </nav>
             <nav class="navbar navbar-expand-lg navbar-light mobile-nav">
                 <div class="row">
+{{--                    <div class="col-12"><div class="text-right">--}}
+{{--                        {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:345px;' ,'id'=>'search-property-ref']) }}--}}
+{{--                        <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id" autocomplete="false"--}}
+{{--                               value="{{isset($params['search_term']) ? $params['search_term']:'' }}">--}}
+{{--                        <small id="property_id-error" class="help-block text-red"></small>--}}
+{{--                        <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">--}}
+{{--                            <i class="fa fa-search ml-1"></i></button>--}}
+{{--                            {{ Form::close() }}</div>--}}
+{{--                    </div>--}}
                     <div class="user-dropdown col-12">
                         @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                             <div class="dropdown dropdown-min-width">
