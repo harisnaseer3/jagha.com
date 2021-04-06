@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 class AdminPropertyListingController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
     private function listingsCount($status, $user, $purpose)
     {
         if ($purpose == 'all') {

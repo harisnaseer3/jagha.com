@@ -14,6 +14,9 @@ Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 Route::get('/agent-properties', 'AgencyUserController@getAgentProperties');
 Route::get('/get-admin-agencies', 'PropertyAjaxCallController@allAgencies');
 
+Route::get('/mapCall', 'PropertyAjaxCallController@mapCall');
+
+
 
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
 Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
@@ -233,12 +236,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/update-admin', 'Admin\UserManagementController@updateAdmin')->name('admins.update')->middleware(['permission:Manage Users']);
     Route::delete('/{admin}', 'Admin\UserManagementController@adminDestroy')->name('admins.destroy')->middleware(['permission:Manage Users']);
     Route::delete('/destroyUser/{user}', 'Admin\UserManagementController@userDestroy')->name('admins.destroy-user')->middleware(['permission:Manage Users']);
-    Route::get('properties/{property}/edit', 'PropertyController@edit')->name('admin-properties-edit')->middleware(['permission:Manage Property']);
+    Route::get('properties/{property}/edit', 'AdminPropertyController@edit')->name('admin-properties-edit')->middleware(['permission:Manage Property']);
 
     Route::get('properties/create', 'AdminPropertyController@create')->name('admin-properties-create')->middleware(['permission:Manage Property']);
     Route::post('properties', 'AdminPropertyController@store')->name('admin-properties-store')->middleware(['permission:Manage Property']);
 
-    Route::put('properties/{property}', 'PropertyController@update')->name('admin-properties-update')->middleware(['permission:Manage Property']);
+    Route::put('properties/{property}', 'AdminPropertyController@update')->name('admin-properties-update')->middleware(['permission:Manage Property']);
     Route::delete('properties/{property}', 'PropertyController@destroy')->name('admin-properties-destroy')->middleware(['permission:Manage Property']);
 
     Route::delete('images/{image}', 'ImageController@destroy')->name('admin-images-destroy');

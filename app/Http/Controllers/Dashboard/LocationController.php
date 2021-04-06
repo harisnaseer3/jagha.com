@@ -43,12 +43,35 @@ class LocationController extends Controller
     {
         $user_id = Auth::user()->getAuthIdentifier();
         try {
+
+            $address = $prepAddr = str_replace(' ', '+', $loc . ',' . $city->name . ' Pakistan');
+
+            $apiKey = DB::table('google_key')->first()->key;
+
+            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
+            $geo = json_decode($geo, true); // Convert the JSON to an array
+
+            DB::table('google_api_log')->where('id', 2)->increment('count', 1);
+
+            $latitude = '';
+            $longitude = '';
+
+            if (isset($geo['status']) && ($geo['status'] == 'OK')) {
+                $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
+                $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
+            }
+
+
             $location = (new Location)->updateOrInsert(['city_id' => $city->id, 'name' => $loc], [
                 'user_id' => $user_id,
                 'city_id' => $city->id,
                 'name' => $loc,
+                'longitude' => $longitude,
+                'latitude' => $latitude,
                 'is_active' => '0',
             ])->first();
+
+
             return $location;
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
@@ -106,12 +129,6 @@ class LocationController extends Controller
 
     public function activate_location($location)
     {
-//        (new Location)->update(['id' => $location], [
-//            'is_active' => '1'
-//        ]);
-//        DB::table('locations')
-//            ->where('id', $location)
-//            ->update(['is_active' => '1']);
         $location->is_active = '1';
         $location->save();
     }
@@ -150,5 +167,28 @@ class LocationController extends Controller
         } else {
             return "not found";
         }
+    }
+
+    function getLngLat($location, $city)
+    {
+
+        $address = $prepAddr = str_replace(' ', '+', $location->name . ',' . $city->name . ' Pakistan');
+        $apiKey = DB::table('google_key')->first()->key;
+
+        $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
+        $geo = json_decode($geo, true); // Convert the JSON to an array
+        $latitude = '';
+        $longitude = '';
+
+        if (isset($geo['status']) && ($geo['status'] == 'OK')) {
+            $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
+            $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
+        }
+        $location->latitude = $latitude;
+        $location->longitude = $longitude;
+        $location->save();
+
+        DB::table('google_api_log')->where('id', 2)->increment('count', 1);
+
     }
 }
