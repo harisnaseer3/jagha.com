@@ -192,6 +192,11 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        if (!(User::findUserByEmail($request->has('contact_email')))) {
+            if (!$request->input('contact_email'))
+                return redirect()->back()->withInput()->with('error', 'User with the provided Contact Email not exist. Please Recheck your email.');
+        }
+
         $validator = Validator::make($request->all(), Property::$rules);
         if ($validator->fails()) {
 //            dd($validator->errors());
@@ -204,15 +209,20 @@ class PropertyController extends Controller
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
 
             $location = '';
-            if ($request->has('location'))
-                $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
-            else if ($request->has('add_location')) {
 
-                $location = Location::select('id', 'name')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
+            if ($request->has('location')) {
+                $location = Location::select('id', 'name', 'latitude', 'longitude', 'is_active')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+            } else if ($request->has('add_location')) {
+                $location = Location::select('id', 'name', 'latitude', 'longitude', 'is_active')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
                 if (!$location) {
                     $location = (new LocationController)->store($request->input('add_location'), $city);
                 }
             }
+
+            if ($location->is_active && $location->longitude == null && $location->latitude == null) {
+                (new LocationController)->getLngLat($location, $city);
+            }
+
 
             $user_id = Auth::user()->getAuthIdentifier();
 
@@ -235,27 +245,13 @@ class PropertyController extends Controller
                 ];
             }
 
-            $address = $prepAddr = str_replace(' ', '+', $location->name . ',' . $city->name . ' Pakistan');
-            $apiKey = config('app.google_map_api_key');
-            $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&sensor=false&key=' . $apiKey);
-            $geo = json_decode($geo, true); // Convert the JSON to an array
-            $latitude = '';
-            $longitude = '';
-
-            if (isset($geo['status']) && ($geo['status'] == 'OK')) {
-                $latitude = $geo['results'][0]['geometry']['location']['lat']; // Latitude
-                $longitude = $geo['results'][0]['geometry']['location']['lng']; // Longitude
-            }
-
             $subtype = '';
 
             if ($request->input('property_subtype-Homes')) $subtype = $request->input('property_subtype-Homes');
             else if ($request->input('property_subtype-Plots')) $subtype = $request->input('property_subtype-Plots');
             else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
             $max_id = 0;
-            //$max_id = DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT;
-            //dd(DB::select("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'property_management' AND TABLE_NAME = 'properties'")[0]->AUTO_INCREMENT);
-            //  dd($max_id);
+
             $max_id = (new Property)->pluck('id')->last();
             $max_id = $max_id + 1;
 
@@ -293,8 +289,8 @@ class PropertyController extends Controller
                 'area_in_new_kanal' => $area_values['new_kanal'],
                 'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null ? $request->input('bedrooms') : 0,
                 'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') != null ? $request->input('bathrooms') : 0,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
+                'latitude' => $location->latitude,
+                'longitude' => $location->longitude,
                 'features' => $request->has('features') ? json_encode($json_features) : null,
                 'status' => $request->has('status') ? $request->input('status') : 'pending',
                 'reviewed_by' => $request->has('status') && Auth::guard('admin')->user() ? Auth::guard('admin')->user()->name : null,
@@ -309,34 +305,32 @@ class PropertyController extends Controller
             if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
                 (new ImageController)->storeImage($request->input('image'), $property);
             }
-//            if ($request->hasFile('floor_plans')) {
-//                (new FloorPlanController)->store($request, $property);
-//            }
+
             if ($request->filled('video_link')) {
                 (new VideoController)->store($request, $property);
             }
             (new CountTableController)->_insert_in_status_purpose_table($property);
             // insertion in count tables when property status is active
-            if ($request->has('status') && $request->input('status') === 'active') {
-                $property->activated_at = Carbon::now();
-                $dt = Carbon::now();
-
-                $expiry = $dt->addMonths(3)->toDateTimeString();
-                $property->expired_at = $expiry;
-                $property->save();
-
-                (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
+//            if ($request->has('status') && $request->input('status') === 'active') {
+//                $property->activated_at = Carbon::now();
+//                $dt = Carbon::now();
+//
+//                $expiry = $dt->addMonths(3)->toDateTimeString();
+//                $property->expired_at = $expiry;
+//                $property->save();
+//
+//                (new CountTableController)->_insertion_in_count_tables($city, $location, $property);
 
 //                Add water mark on image
 //                AddWaterMark::dispatch($property);
 //                dd($property->images);
 //                $this->dispatch(new AddWaterMark($property));
-            }
+//            }
             event(new NotifyAdminOfNewProperty($property));
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
-//            dd($e->getMessage());
+            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -369,6 +363,8 @@ class PropertyController extends Controller
         $property->location = $property->location->name;
         (new MetaTagController())->addMetaTagsAccordingToPropertyDetail($property);
         $footer_content = (new FooterController)->footerContent();
+        DB::table('google_api_log')->where('id', 1)->increment('count', 1);
+
         return view('website.pages.property_detail', [
             'property_count' => $property->agency_id !== null ? $this->agencyCountOnDetailPage($property->agency_id) : 0,
             'property' => $property,
@@ -418,17 +414,6 @@ class PropertyController extends Controller
 
             }
         }
-        if (Auth::guard('admin')->user()) {
-
-            return view('website.admin-pages.portfolio',
-                [
-                    'users' => $users,
-//                    'agencies' => (new Agency())->where('status', '=', 'verified')->select('id','title','address','cell')->get()->toArray(),
-                    'property' => $property,
-                    'property_types' => $property_types,
-                    'counts' => $counts,
-                ]);
-        }
 
 
         $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
@@ -458,28 +443,10 @@ class PropertyController extends Controller
 
     public function update(Request $request, Property $property)
     {
-//        $footer_content = (new FooterController)->footerContent();
-//        if (Auth::guard('web')->check()) {
-//            if (!(User::getUserUpdateCountById())) {
-//                return redirect()->route('properties.listings',
-//                    ['pending', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
-//                        'recent_properties' => $footer_content[0],
-//                        'footer_agencies' => $footer_content[1]])->with('error', 'Maximum Property Update Limit Reached.');
-//            }
-//
-//        }
 
-        if ($request->has('status') && $request->input('status') == 'rejected') {
-            if ($request->has('rejection_reason') && $request->input('rejection_reason') == '') {
-                return redirect()->back()->withInput()->with('error', 'Please specify the reason of rejection.');
-            } else {
-                $reason = $request->input('rejection_reason');
-                $property_user = User::where('id', '=', $property->user_id)->first();
-                $property_user->notify(new PropertyRejectionMail($property, $reason));
-            }
-        } elseif ($request->has('location_verified') && $request->input('location_verified') == 'No' &&
-            $request->has('status') && $request->input('status') != 'rejected') {
-            return redirect()->back()->withInput()->with('error', 'Please verify the location or set status to Rejected and specify Rejection Reason as unverified location.');
+        if ($request->has('contact_email')) {
+            if (!(new User)->where('email', $request->input('contact_email'))->exists())
+                return redirect()->back()->withInput()->with('error', 'User with the provided Contact Email not exist. Please Recheck your email.');
         }
         $validator = Validator::make($request->all(), [
             'description' => 'required|min:50|max:6144',
@@ -493,7 +460,7 @@ class PropertyController extends Controller
             'mobile' => 'required', // +92-3001234567
             'contact_person' => 'required|max:225',
             'contact_email' => 'required|email',
-            'video_host' => 'nullable|string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
+            'video_host' => 'nullable|string|in:Youtube,Vimeo,Dailymotion',
             'video_link' => 'nullable|url',
             'rejection_reason' => 'nullable|string'
         ]);
@@ -505,10 +472,6 @@ class PropertyController extends Controller
         try {
 
             $json_features = '';
-            if ($request->has('location_verified') && $request->input('location_verified') == 'Yes') {
-                (new LocationController)->activate_location($property->location);
-            }
-
             if ($request->has('features')) {
                 $icon_inputs = preg_grep('/^(.*?(-icon))$/', array_keys($request->all()));
                 $icon_value = $request->only($icon_inputs);
@@ -538,15 +501,6 @@ class PropertyController extends Controller
             $area_values = $this->calculateArea($request->input('unit'), $request->input('land_area'));
             $status_before_update = $property->status;
             (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
-
-            if ($request->has('status') && $request->input('status') == 'deleted') {
-                if (Auth()->guard('admin')->check()) {
-                    if (!Auth::guard('admin')->user()->can('Delete Properties')) {
-                        return redirect()->back()->withErrors($validator)->withInput()->with('error', 'User does not have the right permissions.');
-                    }
-                }
-            }
-
 
             $property = (new Property)->updateOrCreate(['id' => $property->id], [
                 'agency_id' => $agency != '' ? $agency : null,
@@ -588,25 +542,6 @@ class PropertyController extends Controller
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
             $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
 
-            if ($request->has('status') && $request->input('status') === 'active') {
-                $dt = Carbon::now();
-                $property->activated_at = date('Y-m-d H:i:s');
-                $expiry = $dt->addMonths(3)->toDateTimeString();
-                $property->expired_at = $expiry;
-                $property->save();
-
-                (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
-                //if property has images and status is going to live than add water mark on images
-//                if (count($property->images) > 0) {
-//                    foreach ($property->images as $property_image) {
-//                        if ($property_image->watermarked == 0) {
-//                            $this->dispatch(new AddWaterMark($property_image));
-//                        }
-//                    }
-//
-//                }
-
-            }
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
             if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
@@ -615,11 +550,6 @@ class PropertyController extends Controller
                 event(new NotifyAdminOfNewProperty($property));
             $footer_content = (new FooterController)->footerContent();
 
-            if (Auth::guard('admin')->user()) {
-                (new PropertyLogController())->store($property);
-                return redirect()->route('admin.properties.listings', [$property->status, 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'asc', '50'])
-                    ->with('success', 'Property with ID ' . $property->id . ' updated successfully.');
-            }
 
             return redirect()->route('properties.listings',
                 ['pending', 'all', (string)Auth::user()->getAuthIdentifier(), 'id', 'desc', '10',
