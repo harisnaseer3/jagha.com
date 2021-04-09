@@ -6,6 +6,7 @@ use App\Events\AddPropertyInPackageEvent;
 use App\Events\ContactAgentEvent;
 use App\Events\NewPropertyActivatedEvent;
 use App\Events\NewUserRegisteredEvent;
+use App\Events\NotifyAdminOfEditedProperty;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\NotifyAdminOfPackageRequestEvent;
 use App\Events\NotifyAdminOfSupportMessage;
@@ -13,6 +14,7 @@ use App\Events\NotifyUserofSupportTicket;
 use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Listeners\AddPropertyInPackageListener;
 use App\Listeners\AddUserInSubscriberListener;
+use App\Listeners\NotifyAdminEditProperty;
 use App\Listeners\NotifyAdminListener;
 use App\Listeners\NotifyPackageEventListener;
 use App\Listeners\NotifySubscriberListener;
@@ -62,6 +64,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NotifyUserPackageStatusChangeEvent::class => [
             NotifyUserPackageStatusChangeListener::class
+        ],
+        NotifyAdminOfEditedProperty::class => [
+            NotifyAdminEditProperty::class
         ]
     ];
 

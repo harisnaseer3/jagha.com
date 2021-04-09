@@ -326,10 +326,19 @@
 
                                             <br>
                                             <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
-                                             {{$content1}}
-                                                <span style="font-weight: bold;">Title:  {{ucwords($data_title)}}</span> and
-                                                <span style="font-weight: bold;">ID: {{$data_id}}</span>
-                                                <span> has been added on our site.</span>
+
+                                                @if(isset($mail) && $mail == 'edit')
+                                                    Updated details of Property
+                                                    <span style="font-weight: bold;">Title:  {{ucwords($data_title)}}</span> and
+                                                    <span style="font-weight: bold;">ID: {{$data_id}}</span>
+                                                    <span> are pending for verification.</span>
+                                                @else
+                                                    {{$content1}}
+                                                    <span style="font-weight: bold;">Title:  {{ucwords($data_title)}}</span> and
+                                                    <span style="font-weight: bold;">ID: {{$data_id}}</span>
+                                                    <span> has been added on our site.</span>
+                                                @endif
+
                                             </span>
                                             <br>
                                             <br>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewPropertyActivatedEvent;
+use App\Events\NotifyAdminOfEditedProperty;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
@@ -545,10 +546,13 @@ class PropertyController extends Controller
 
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
-            if ($status_before_update === 'active' && in_array($request->input('status'), ['edited', 'pending', 'expired', 'uploaded', 'hidden', 'deleted', 'rejected']))
+            if ($status_before_update === 'active') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
-            if ($property->status == 'pending')
-                event(new NotifyAdminOfNewProperty($property));
+                if ($property->status == 'pending')
+                    event(new NotifyAdminOfEditedProperty($property));
+
+            }
+
             $footer_content = (new FooterController)->footerContent();
 
 
