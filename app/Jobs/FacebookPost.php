@@ -67,7 +67,8 @@ class FacebookPost implements ShouldQueue
         try {
             $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
             $post = $post->getGraphNode()->asArray();
-            print('Facebook Post Successfully Created.' . $post);
+            echo 'Facebook Post Successfully Created.';
+            print_r($post);
 
         } catch (FacebookSDKException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
