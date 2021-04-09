@@ -6,6 +6,7 @@ use App\Events\NewPropertyActivatedEvent;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
+use App\Jobs\FacebookPost;
 use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Account;
 use App\Models\Agency;
@@ -137,6 +138,8 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
+        $property = (new Property())->where('id', 278919)->first();
+        $this->dispatch(new FacebookPost($property));
         if (!(new Visit)->hit()) {
             return view('website.errors.404');
         }

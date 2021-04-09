@@ -41,15 +41,19 @@ class FacebookPost implements ShouldQueue
 //        dd($fb->fileToUpload(base_path('thumbnails\properties\71617895243-750x600.webp')));
 //        dd(base_path('thumbnails\properties\71617895243-750x600.png'));
 //
-
-        $dummy_image = base_path('img\logo\dummy-logo.png');
-//
         $property = $this->property;
-        $absolute_image_path = isset($property->image) ? base_path('thumbnails/properties/' . explode('.', $property->image)[0] . '-450x350.webp') : $dummy_image;
+        $dummy_image = base_path('img\logo\dummy-logo.png');
+        $property_image = base_path('thumbnails/properties/' . explode('.', $property->image)[0] . '-450x350.webp');
+//
+
+        $absolute_image_path = isset($property->image) ? $property_image : $dummy_image;
+        dd(isset($property->image) ? $property_image : $dummy_image);
         $source = $fb->fileToUpload($absolute_image_path);
         $link = route('properties.show', [
             'slug' => Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
             'property' => $property->id]);
+
+        dd($link,$fb->fileToUpload($absolute_image_path) );
 
         $linkData = [
             'link' => $link,
@@ -59,9 +63,9 @@ class FacebookPost implements ShouldQueue
         $page_id = '906497989423481';
 
         try {
-            $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
-            $post = $post->getGraphNode()->asArray();
-            print_r('Facebook Post Successfully Created.' . $post);
+//            $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
+//            $post = $post->getGraphNode()->asArray();
+//            print('Facebook Post Successfully Created.' . $post);
 
         } catch (FacebookSDKException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
