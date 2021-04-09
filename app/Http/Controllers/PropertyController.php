@@ -138,8 +138,6 @@ class PropertyController extends Controller
     //    display data on index page
     public function index()
     {
-        $property = (new Property())->where('id', 278919)->first();
-        $this->dispatch(new FacebookPost($property));
         if (!(new Visit)->hit()) {
             return view('website.errors.404');
         }

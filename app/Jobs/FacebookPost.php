@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class FacebookPost implements ShouldQueue
@@ -42,18 +43,19 @@ class FacebookPost implements ShouldQueue
 //        dd(base_path('thumbnails\properties\71617895243-750x600.png'));
 //
         $property = $this->property;
-        $dummy_image = base_path('img\logo\dummy-logo.png');
-        $property_image = base_path('thumbnails/properties/' . explode('.', $property->image)[0] . '-450x350.webp');
-//
+        $image = DB::table('images')->where('property_id', $property->id)->first();
 
-        $absolute_image_path = isset($property->image) ? $property_image : $dummy_image;
-        dd(isset($property->image) ? $property_image : $dummy_image);
+        if ($image) {
+            $absolute_image_path = base_path('thumbnails/properties/' . $image->name . '-450x350.webp');
+        } else {
+            $absolute_image_path = base_path('img\logo\dummy-logo.png');
+        }
         $source = $fb->fileToUpload($absolute_image_path);
+
+
         $link = route('properties.show', [
             'slug' => Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
             'property' => $property->id]);
-
-        dd($link,$fb->fileToUpload($absolute_image_path) );
 
         $linkData = [
             'link' => $link,
@@ -63,9 +65,9 @@ class FacebookPost implements ShouldQueue
         $page_id = '906497989423481';
 
         try {
-//            $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
-//            $post = $post->getGraphNode()->asArray();
-//            print('Facebook Post Successfully Created.' . $post);
+            $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
+            $post = $post->getGraphNode()->asArray();
+            print('Facebook Post Successfully Created.' . $post);
 
         } catch (FacebookSDKException $e) {
             echo 'Graph returned an error: ' . $e->getMessage();
