@@ -6,6 +6,7 @@ use App\Events\NewPropertyActivatedEvent;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
+use App\Jobs\FacebookPost;
 use App\Jobs\InsertInCountTables;
 use App\Jobs\InsertInStatusPurposeTable;
 use App\Jobs\PropertyLog;
@@ -241,7 +242,7 @@ class AdminPropertyController extends Controller
                 $property->expired_at = $expiry;
                 $property->save();
                 $this->dispatch(new InsertInCountTables($city, $location, $property));
-
+                $this->dispatch(new FacebookPost($property));
             }
             event(new NotifyAdminOfNewProperty($property));
             $this->dispatch(new PropertyLog($property, Auth::guard('admin')->user()->name, Auth::guard('admin')->user()->id));
@@ -426,6 +427,8 @@ class AdminPropertyController extends Controller
                 $property->save();
 
                 (new CountTableController())->_insertion_in_count_tables($city, $location, $property);
+                $this->dispatch(new FacebookPost($property));
+
                 //if property has images and status is going to live than add water mark on images
 //                if (count($property->images) > 0) {
 //                    foreach ($property->images as $property_image) {
