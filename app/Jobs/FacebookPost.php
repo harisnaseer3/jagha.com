@@ -38,12 +38,8 @@ class FacebookPost implements ShouldQueue
             'app_secret' => '17c51b4cd6934b727435d804658248ed',
             'default_graph_version' => 'v5.0',
         ]);
-//        $absolute_image_path =  asset('thumbnails/properties/'.explode('.',$property->image)[0].'-450x350.webp');
-//        dd($fb->fileToUpload(base_path('thumbnails\properties\71617895243-750x600.webp')));
-//        dd(base_path('thumbnails\properties\71617895243-750x600.png'));
-//
-        $property = $this->property;
-        $image = DB::table('images')->where('property_id', $property->id)->first();
+        $property = Property::where('id', $this->property->id)->select('id', 'title', 'reference', 'city_id', 'location_id')->first();
+        $image = DB::table('images')->where('property_id', $this->property->id)->where('order', 1)->first();
 
         if ($image) {
             $absolute_image_path = base_path('thumbnails/properties/' . $image->name . '-450x350.webp');
@@ -52,14 +48,8 @@ class FacebookPost implements ShouldQueue
         }
         $source = $fb->fileToUpload($absolute_image_path);
 
-
-        $link = route('properties.show', [
-            'slug' => Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-            'property' => $property->id]);
-
         $linkData = [
-            'link' => $link,
-            'message' => $property->title,
+            'message' => $property->title . 'in ' . $property->location->name .', '. $property->city->name,
             'source' => $source
         ];
         $page_id = '906497989423481';
