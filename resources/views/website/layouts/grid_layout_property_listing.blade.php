@@ -67,8 +67,8 @@
                                         <span class="color-white">FEATURED PARTNER</span>
                                     </span>
                                 </span>
-                                @endif
-                                @if(isset($property->key_listing)  && $property->key_listing == 1)
+
+                                @else(isset($property->key_listing)  && $property->key_listing == 1)
                                     <span class="featured float-right tag-padding" style="background-color: #555">
                                     <span style="color:#ffcc00 ;"><i class="fas fa-star"></i>
                                         <span class="color-white">KEY PARTNER</span>
