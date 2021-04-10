@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewPropertyActivatedEvent;
 use App\Events\NotifyAdminOfNewProperty;
+use App\Events\UserErrorEvent;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
 use App\Jobs\FacebookPost;
@@ -128,7 +129,7 @@ class AdminPropertyController extends Controller
                 return redirect()->back()->withInput()->with('error', 'User ' . $request->user_email . '.not found.');
             }
 
-            if(!User::findUserByEmail($request->contact_email)){
+            if (!User::findUserByEmail($request->contact_email)) {
                 return redirect()->back()->withInput()->with('error', 'User ' . $request->contact_email . '. not found.');
             }
 
@@ -139,16 +140,16 @@ class AdminPropertyController extends Controller
 
             $location = '';
             if ($request->has('location'))
-                $location = Location::select('id', 'name','latitude','longitude','is_active')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+                $location = Location::select('id', 'name', 'latitude', 'longitude', 'is_active')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
             else if ($request->has('add_location')) {
-                $location = Location::select('id', 'name','latitude','longitude','is_active')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
+                $location = Location::select('id', 'name', 'latitude', 'longitude', 'is_active')->where('name', '=', $request->input('add_location'))->where('city_id', '=', $city->id)->first();
                 if (!$location) {
                     $location = $this->LocationStore($request->input('add_location'), $city);
                 }
             }
 
             if ($location->is_active && $location->longitude == null && $location->latitude == null) {
-                (new LocationController)->getLngLat($location,$city);
+                (new LocationController)->getLngLat($location, $city);
             }
 
             if ($request->has('features')) {
@@ -253,6 +254,7 @@ class AdminPropertyController extends Controller
                 ->with('success', 'Property with ID ' . $property->id . ' updated successfully.');
         } catch (Exception $e) {
 //            dd($e->getMessage());
+            event(new UserErrorEvent($e->getMessage(), Auth::user()));
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
@@ -453,6 +455,7 @@ class AdminPropertyController extends Controller
 
         } catch (Exception $e) {
 //            dd($e->getMessage());
+            event(new UserErrorEvent($e->getMessage(), Auth::user()));
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }

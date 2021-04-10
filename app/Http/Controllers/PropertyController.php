@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\NewPropertyActivatedEvent;
 use App\Events\NotifyAdminOfEditedProperty;
 use App\Events\NotifyAdminOfNewProperty;
+use App\Events\UserErrorEvent;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Jobs\AddWaterMark;
 use App\Jobs\FacebookPost;
@@ -332,6 +333,7 @@ class PropertyController extends Controller
 
             return redirect()->route('properties.listings', ['pending', 'all', (string)$user_id, 'id', 'desc', '10'])->with('success', 'Record added successfully.Your ad will be live in 24 hours after verification of provided information.');
         } catch (Exception $e) {
+            event(new UserErrorEvent($e->getMessage(),Auth::user()));
 //            dd($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
@@ -562,6 +564,7 @@ class PropertyController extends Controller
                     'footer_agencies' => $footer_content[1]])->with('success', 'Property with ID ' . $property->id . ' updated successfully.');
         } catch (Exception $e) {
 //            dd($e->getMessage());
+            event(new UserErrorEvent($e->getMessage(),Auth::user()));
             return redirect()->back()->withInput()->with('error', 'Record not updated, try again.');
         }
     }
@@ -603,6 +606,7 @@ class PropertyController extends Controller
 
                 return redirect()->back()->with('success', 'Record deleted successfully');
             } catch (Throwable $e) {
+                event(new UserErrorEvent($e->getMessage(),Auth::user()));
                 return redirect()->back()->with('error', 'Error deleting record, please try again');
             }
         }

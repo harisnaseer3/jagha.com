@@ -12,6 +12,7 @@ use App\Events\NotifyAdminOfPackageRequestEvent;
 use App\Events\NotifyAdminOfSupportMessage;
 use App\Events\NotifyUserofSupportTicket;
 use App\Events\NotifyUserPackageStatusChangeEvent;
+use App\Events\UserErrorEvent;
 use App\Listeners\AddPropertyInPackageListener;
 use App\Listeners\AddUserInSubscriberListener;
 use App\Listeners\NotifyAdminEditProperty;
@@ -22,6 +23,7 @@ use App\Listeners\NotifySupportListener;
 use App\Listeners\NotifyUserPackageStatusChangeListener;
 use App\Listeners\NotifyUserSupportListener;
 use App\Listeners\SendMailToAgentListener;
+use App\Listeners\UserErrorListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -67,6 +69,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NotifyAdminOfEditedProperty::class => [
             NotifyAdminEditProperty::class
+        ],
+        UserErrorEvent::class => [
+            UserErrorListener::class
         ]
     ];
 
