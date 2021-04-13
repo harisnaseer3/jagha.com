@@ -45,34 +45,36 @@ class Visit extends Model
 //                    return false;
 //                }
 //            } else {
-                $visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))->first();
-                if ($visit) {
-                    $visit->visit_time = date('H:i:s');
-                    $visit->count++;
-                    $visit->save();
+            $visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])
+                ->where('date', '=', date('Y-m-d'))
+                ->where('visit_time', date('H:i:s'))->first();
+            if ($visit) {
+                $visit->visit_time = date('H:i:s');
+                $visit->count++;
+                $visit->save();
+            } else {
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $country = '';
+                if ($ip_location = IpLocation::get($ip)) {
+                    $country = $ip_location->countryName;
+                    if ($country == null)
+                        $country = (new CountryController())->Country_name();
                 } else {
-                    $ip = $_SERVER['REMOTE_ADDR'];
-                    $country = '';
-                    if ($ip_location = IpLocation::get($ip)) {
-                        $country = $ip_location->countryName;
-                        if ($country == null)
-                            $country = (new CountryController())->Country_name();
-                    } else {
 
-                        $country = 'unavailable';
-                    }
-                    (new Visit)->insert(
-                        [
-                            'ip' => $_SERVER['REMOTE_ADDR'],
-                            'ip_location' => $country,
-                            'date' => date('Y-m-d'),
-                            'min_count' => 1,
-                            'visit_time' => date('H:i:s'),
-                            'count' => 1
-                        ]);
+                    $country = 'unavailable';
                 }
-                return true;
+                (new Visit)->insert(
+                    [
+                        'ip' => $_SERVER['REMOTE_ADDR'],
+                        'ip_location' => $country,
+                        'date' => date('Y-m-d'),
+                        'min_count' => 1,
+                        'visit_time' => date('H:i:s'),
+                        'count' => 1
+                    ]);
             }
+            return true;
+        }
 //        } else {
 //            return true;
 //        }
