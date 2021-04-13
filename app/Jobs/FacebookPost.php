@@ -38,18 +38,25 @@ class FacebookPost implements ShouldQueue
             'app_secret' => '17c51b4cd6934b727435d804658248ed',
             'default_graph_version' => 'v5.0',
         ]);
-        $property = Property::where('id', $this->property->id)->select('id', 'title', 'reference', 'city_id', 'location_id')->first();
+        $property = Property::where('id', $this->property->id)->select('id', 'title', 'reference', 'city_id', 'location_id','purpose')->first();
         $image = DB::table('images')->where('property_id', $this->property->id)->where('order', 1)->first();
 
         if ($image) {
-            $absolute_image_path = base_path('thumbnails/properties/' . $image->name . '-450x350.webp');
+            if (strpos($image->name, '.webp') !== false) {
+                $absolute_image_path = base_path('thumbnails/properties/' . explode('.', $property->image)[0] . '-450x350.webp');
+
+            } else {
+                $absolute_image_path = base_path('thumbnails/properties/' . $image->name . '-450x350.webp');
+
+            }
         } else {
             $absolute_image_path = base_path('img\logo\dummy-logo.png');
         }
         $source = $fb->fileToUpload($absolute_image_path);
 
+
         $linkData = [
-            'message' => $property->title . 'in ' . $property->location->name .', '. $property->city->name,
+            'message' => $property->title . 'available for ' . $property->purpose . ' at ' . $property->location->name . ', ' . $property->city->name . '.',
             'source' => $source
         ];
         $page_id = '906497989423481';
