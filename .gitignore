@@ -17,9 +17,11 @@ yarn-error.log
 .vendor
 vendor
 config/session.php
+config/app.php
 app/Exceptions/Handler.php
 
 /config/session.php
+/config/app.php
 /app/Exceptions/
 
 index.html
