@@ -550,10 +550,11 @@ class PropertyController extends Controller
 
             if ($status_before_update === 'active') {
                 (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
-                if ($property->status == 'pending')
-                    event(new NotifyAdminOfEditedProperty($property));
+
 
             }
+            if ($property->status == 'pending')
+                event(new NotifyAdminOfEditedProperty($property));
 
             $footer_content = (new FooterController)->footerContent();
 
