@@ -43,7 +43,8 @@ class FacebookPost implements ShouldQueue
 
         if ($image) {
             if (strpos($image->name, '.webp') !== false) {
-                $absolute_image_path = base_path('thumbnails/properties/' . explode('.', $property->image)[0] . '-450x350.webp');
+				
+                $absolute_image_path = base_path('thumbnails/properties/' . explode('.', $image->name)[0] . '-450x350.webp');
 
             } else {
                 $absolute_image_path = base_path('thumbnails/properties/' . $image->name . '-450x350.webp');
@@ -55,13 +56,19 @@ class FacebookPost implements ShouldQueue
         $source = $fb->fileToUpload($absolute_image_path);
 
 
+       if (strpos($property->title, $property->location->name) !== false) {
+            $user_message = $property->title . ', ' . $property->city->name . '.';
+        } else {
+            $user_message = $property->title . ' at ' . $property->location->name . ', ' . $property->city->name . '.';
+        }
+
+
         $linkData = [
-            'message' => $property->title . 'available for ' . $property->purpose . ' at ' . $property->location->name . ', ' . $property->city->name . '.',
+            'message' => $user_message,
             'source' => $source
         ];
         $page_id = '906497989423481';
-
-        try {
+		 try {
             $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
             $post = $post->getGraphNode()->asArray();
             echo 'Facebook Post Successfully Created.';
@@ -71,5 +78,7 @@ class FacebookPost implements ShouldQueue
             echo 'Graph returned an error: ' . $e->getMessage();
 //            exit;
         }
+
+       
     }
 }
