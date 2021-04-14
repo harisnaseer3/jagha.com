@@ -1,4 +1,4 @@
-<div id="carouselControls" class="carousel slide " data-ride="carousel" data-interval="5000">
+<div id="carouselControls" class="carousel slide " data-ride="carousel" data-interval="3000">
     <div class="carousel-inner property-inner row w-100 mx-auto" role="listbox">
 
         @foreach($featured_properties as $index => $feature_property)
