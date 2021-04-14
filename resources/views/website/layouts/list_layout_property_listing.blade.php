@@ -1,4 +1,3 @@
-<!-- Option bar start -->
 <div class="option-bar">
     <div class="float-left">
         <h4>
@@ -205,11 +204,10 @@
                                 @else
                                     <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                                        'property'=>$property->id])}}"
-                                       title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
+                                        'property'=>$property->id])}}" @endif
+                                    title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
                                         {{\Illuminate\Support\Str::limit(strtolower($property->title), 30, $end='...')}}
                                     </a>
-                                @endif
                             </div>
                             <div class="property-description">
                                 @if($property->id < 104280)
@@ -257,8 +255,6 @@
                         <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
                                         'property'=>$property->id])}}" @endif
-
-
                         title="{{$property->sub_type}} for {{$property->purpose}}" class="custom-font text-transform">
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                         </a>
