@@ -28,56 +28,35 @@ class Visit extends Model
         $CrawlerDetect = new CrawlerDetect;
         // Pass a user agent as a string
         if (!$CrawlerDetect->isCrawler()) {
-//            $user_visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))
-//                ->whereBetween('visit_time', [(new Carbon(date('H:i:s')))->subMinutes(1)->format('H:i:s'), date('H:i:s')])->first();
-//            $user_visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))->first();
-//            if ($user_visit) {
-//                if ($user_visit->min_count <= 100) {
-//                $user_visit->min_count++;
-//                $user_visit->visit_time = date('H:i:s');
-//                $user_visit->save();
-//                return true;
-//                }
-//                else {
-//                    $user_visit->min_count = 0;
-//                    $user_visit->count--;
-//                    $user_visit->save();
-//                    return false;
-//                }
-//            } else {
-                $visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])->where('date', '=', date('Y-m-d'))->first();
-                if ($visit) {
-                    $visit->visit_time = date('H:i:s');
-                    $visit->count++;
-                    $visit->save();
+            $visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])
+                ->where('date', '=', date('Y-m-d'))->first();
+            if ($visit) {
+                $visit->visit_time = date('H:i:s');
+                $visit->count++;
+                $visit->save();
+            } else {
+                $ip = $_SERVER['REMOTE_ADDR'];
+                $country = '';
+                if ($ip_location = IpLocation::get($ip)) {
+                    $country = $ip_location->countryName;
+                    if ($country == null)
+                        $country = (new CountryController())->Country_name();
                 } else {
-                    $ip = $_SERVER['REMOTE_ADDR'];
-                    $country = '';
-                    if ($ip_location = IpLocation::get($ip)) {
-                        $country = $ip_location->countryName;
-                        if ($country == null)
-                            $country = (new CountryController())->Country_name();
-                    } else {
 
-                        $country = 'unavailable';
-                    }
-                    (new Visit)->insert(
-                        [
-                            'ip' => $_SERVER['REMOTE_ADDR'],
-                            'ip_location' => $country,
-                            'date' => date('Y-m-d'),
-                            'min_count' => 1,
-                            'visit_time' => date('H:i:s'),
-                            'count' => 1
-                        ]);
+                    $country = 'unavailable';
                 }
-                return true;
+                (new Visit)->insert(
+                    [
+                        'ip' => $_SERVER['REMOTE_ADDR'],
+                        'ip_location' => $country,
+                        'date' => date('Y-m-d'),
+                        'min_count' => 1,
+                        'visit_time' => date('H:i:s'),
+                        'count' => 1
+                    ]);
             }
-//        } else {
-//            return true;
-//        }
-
-//        handle bots
+            return true;
+        }
 
     }
 
