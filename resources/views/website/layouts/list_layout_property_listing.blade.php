@@ -56,7 +56,7 @@
                             alt="{{$property->sub_type}} for {{$property->purpose}}"
                             title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
 
-{{--                        {{dd($property)}}--}}
+                        {{--                        {{dd($property)}}--}}
                         @if(isset($property->golden_listing) && $property->golden_listing == 1)
                             <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>
                         @elseif(isset($property->silver_listing) && $property->silver_listing  == 1)
@@ -205,10 +205,11 @@
                                 @else
                                     <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($property->city) . '-' .Str::slug($property->location) . '-' . Str::slug($property->title) . '-' . $property->reference,
-                                        'property'=>$property->id])}}" @endif
-                                    title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
+                                        'property'=>$property->id])}}"
+                                       title="{{$property->sub_type}} for {{$property->purpose}}" class="property-title text-transform mb-2">
                                         {{\Illuminate\Support\Str::limit(strtolower($property->title), 30, $end='...')}}
                                     </a>
+                                @endif
                             </div>
                             <div class="property-description">
                                 @if($property->id < 104280)
