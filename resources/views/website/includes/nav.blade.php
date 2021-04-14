@@ -114,10 +114,10 @@
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
                                                 <a href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">Commercial</a>
                                             </li>
-                                            <li id="menu-item-2510"
-                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
-                                                <a href="{{route('blogs.index')}}">Blogs</a>
-                                            </li>
+{{--                                            <li id="menu-item-2510"--}}
+{{--                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">--}}
+{{--                                                <a href="{{route('blogs.index')}}">Blogs</a>--}}
+{{--                                            </li>--}}
                                             <li id="menu-item-2511"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
                                                 <a href="{{route('agents.listing')}}">Partners</a>
@@ -290,10 +290,10 @@
                             <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
                                 Commercial</a>
                         </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('blogs.index')}}">
-                                Blogs</a>
-                        </li>
+{{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">--}}
+{{--                            <a class="nav-link" href="{{route('blogs.index')}}">--}}
+{{--                                Blogs</a>--}}
+{{--                        </li>--}}
                         <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('agents.listing')}}">
                                 Partners</a>
