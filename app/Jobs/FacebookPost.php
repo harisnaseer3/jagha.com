@@ -24,7 +24,7 @@ class FacebookPost implements ShouldQueue
      */
     protected $property;
 
-    public function __construct($property)
+    public function __construct(Property $property)
     {
         $this->property = $property;
     }
@@ -38,9 +38,9 @@ class FacebookPost implements ShouldQueue
             'app_secret' => '17c51b4cd6934b727435d804658248ed',
             'default_graph_version' => 'v5.0',
         ]);
-        $property = DB::table('properties')->where('id', $this->property)
+        $property = DB::table('properties')->where('id', $this->property->id)
             ->select('id', 'title', 'reference', 'city_id', 'location_id', 'purpose', 'reference', 'area_unit', 'type', 'sub_type', 'purpose', 'land_area')->first();
-        $image = DB::table('images')->where('property_id', $this->property)->where('order', 1)->first();
+        $image = DB::table('images')->where('property_id', $this->property->id)->where('order', 1)->first();
         $city = DB::table('cities')->select('name')->where('id', $property->city_id)->first();
         $location = DB::table('locations')->select('name')->where('id', $property->location_id)->first();
         $link = route('properties.show', [
@@ -63,7 +63,7 @@ class FacebookPost implements ShouldQueue
 
 
         $user_message = intval($property->land_area) . ' ' . $property->area_unit . ' Beautiful ' . $property->sub_type . ' for ' . $property->purpose . ' in a peaceful and prime location of ' . $location->name . ', ' . $city->name . '.' .
-            PHP_EOL . 'See price & details here: ' . $link .
+            PHP_EOL . 'See price & contact details here: ' . $link .
             PHP_EOL . PHP_EOL . 'Search with Property ID: ' . $property->id;
 
 
