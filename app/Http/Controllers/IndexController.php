@@ -1,19 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Http\Controllers\Controller;
+use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Jobs\FacebookPost;
 
 class IndexController extends Controller
 {
     //    display data on index page
     public function index()
     {
-        //$property  = Property::where('id',278911)->first();
+        //$property  = Property::where('id',278917)->first();
         //$this->dispatch(new FacebookPost($property));
         (new MetaTagController())->addMetaTags();
 
