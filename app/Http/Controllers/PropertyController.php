@@ -137,35 +137,6 @@ class PropertyController extends Controller
         return view('website.pages.property_listing', $data);
     }
 
-    //    display data on index page
-    public function index()
-    {
-       //$property  = Property::where('id',278911)->first();
-        //$this->dispatch(new FacebookPost($property));
-
-        if (!(new Visit)->hit()) {
-            return view('website.errors.404');
-        }
-        (new MetaTagController())->addMetaTags();
-
-        $property_types = (new PropertyType)->all();
-
-        // property count table
-        $total_count = DB::table('total_property_count')->select('property_count', 'sale_property_count', 'rent_property_count', 'agency_count', 'city_count')->first();
-        $footer_content = (new FooterController)->footerContent();
-
-        $data = [
-            'total_count' => $total_count,
-            'cities_count' => (new CountTableController())->getCitiesCount(),
-            'property_types' => $property_types,
-            'localBusiness' => (new MetaTagController())->addScriptJsonldTag(),
-            'recent_properties' => $footer_content[0],
-            'footer_agencies' => $footer_content[1],
-        ];
-
-        return view('website.index', $data);
-    }
-
     public function create()
     {
         $unit = (new Account)->select('default_area_unit')->where('user_id', '=', Auth::user()->getAuthIdentifier())->first();
