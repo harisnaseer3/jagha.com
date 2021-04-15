@@ -38,14 +38,17 @@ class FacebookPost implements ShouldQueue
             'app_secret' => '17c51b4cd6934b727435d804658248ed',
             'default_graph_version' => 'v5.0',
         ]);
-        $property = DB::table('properties')->where('id', $this->property->id)
-            ->select('id', 'title', 'reference', 'city_id', 'location_id', 'purpose', 'reference', 'area_unit', 'type', 'sub_type', 'purpose', 'land_area')->first();
+//        $property = DB::table('properties')->where('id', $this->property->id)
+//            ->select('id', 'title', 'reference', 'city_id', 'location_id', 'purpose', 'reference', 'area_unit', 'type', 'sub_type', 'purpose', 'land_area')->first();
         $image = DB::table('images')->where('property_id', $this->property->id)->where('order', 1)->first();
-        $city = DB::table('cities')->select('name')->where('id', $property->city_id)->first();
-        $location = DB::table('locations')->select('name')->where('id', $property->location_id)->first();
+        // $city = DB::table('cities')->select('name')->where('id', $property->city_id)->first();
+        // $location = DB::table('locations')->select('name')->where('id', $property->location_id)->first();
+        $city = $this->property->city->name;
+        $location = $this->property->location->name;
+
         $link = route('properties.show', [
-            'slug' => Str::slug($city->name) . '-' . Str::slug($location->name) . '-' . Str::slug($property->title) . '-' . $property->reference,
-            'property' => $property->id]);
+            'slug' => Str::slug($city) . '-' . Str::slug($location) . '-' . Str::slug($this->property->title) . '-' . $this->property->reference,
+            'property' => $this->property->id]);
 
         if ($image) {
             if (strpos($image->name, '.webp') !== false) {
@@ -62,9 +65,9 @@ class FacebookPost implements ShouldQueue
         $source = $fb->fileToUpload($absolute_image_path);
 
 
-        $user_message = intval($property->land_area) . ' ' . $property->area_unit . ' Beautiful ' . $property->sub_type . ' for ' . $property->purpose . ' in a peaceful and prime location of ' . $location->name . ', ' . $city->name . '.' .
-            PHP_EOL . 'See price & contact details here: ' . $link .
-            PHP_EOL . PHP_EOL . 'Search with Property ID: ' . $property->id;
+        $user_message = intval($this->property->land_area) . ' ' . $this->property->area_unit . ' Beautiful ' . $this->property->sub_type . ' for ' . $this->property->purpose . ' in a prime location of ' . $location . ', ' . $city . '.' .
+            PHP_EOL . 'See price & contact details here: ' . $link;
+        // PHP_EOL . PHP_EOL . 'Search with Property ID: ' . $property->id;
 
 
         $linkData = [
