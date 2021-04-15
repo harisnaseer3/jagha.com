@@ -5,6 +5,7 @@
             <div class="carousel-item property-item col-sm-12 col-md-6 col-lg-4 col-xl-3 @if($index == 0) active @endif">
                 <div class="card property-card">
                     <figure>
+
                         @if($feature_property->user_id !== 1 && $feature_property->image != null)
                             <img class="card-img-top" src="{{asset('thumbnails/properties/'.explode('.',$feature_property->image)[0].'-450x350.webp')}}"
                                  alt="{{\Illuminate\Support\Str::limit($feature_property->title, 20, $end='...')}}" title="{{$feature_property->title}}"
@@ -12,26 +13,51 @@
                         @else
                             <img class="card-img-top" src="{{asset('img/logo/dummy-logo.png')}}" alt="properties"/>
                         @endif
+
                         <figcaption class="project-description-overlay p-3 text-center">
                             <h3 class="m-2 mt-3 property-heading-tag">Property For {{ $feature_property->purpose }}</h3>
                             <p class="property-line-height mb-2">
                                 Contact us for more details. While calling please mention <a href="https://www.aboutpakistan.com" class="theme-blue">aboutpakistan.com</a>
                             </p>
-                            <p><a style="color: #FF8E00" href="{{$feature_property->property_detail_path()}}">Read More</a></p>
+                            <p>
+                                @if($feature_property->id < 104280)
+                                    <a style="color: #FF8E00" href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}">Read More</a>
+                                @else
+                                    <a style="color: #FF8E00" href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->city) . '-' .Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}">Read More</a>
+                                @endif
+
+                            </p>
                         </figcaption>
                     </figure>
                     <div class="card-body">
                         <div class="card-text">
-                        <h2 class="property-title">
-                            <!-- method to convert price in number into price in words -->
-                            <a href="{{$feature_property->property_detail_path()}}">
-                                <span class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
-                            </a>
-                        </h2>
-                        <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 50, $end='..')}}</h6>
-                        <li class="text-capitalize page-font text-muted property-list mb-2">
-                            <span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>
-                            <span class="text-muted"> {{ \Illuminate\Support\Str::limit($feature_property->location , 12, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</span></li>
+                            <h2 class="property-title">
+                                <!-- method to convert price in number into price in words -->
+
+                                @if($feature_property->id < 104280)
+
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}">
+                                        <span class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
+                                    </a>
+                                @else
+                                    <a href="{{route('properties.show',[
+                                        'slug'=>Str::slug($feature_property->city) . '-' .Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
+                                        'property'=>$feature_property->id])}}"><span
+                                            class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}</a>
+                                @endif
+                            </h2>
+                            <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 50, $end='..')}}</h6>
+                            <li class="text-capitalize page-font text-muted property-list mb-2">
+                                <span class="mr-1"><i class="fas fa-map-marker-alt"></i></span>
+                                <span
+                                    class="text-muted"> {{ \Illuminate\Support\Str::limit($feature_property->location , 12, $end='...')}}, {{ \Illuminate\Support\Str::limit($feature_property->city, 15, $end='...') }}</span>
+                            </li>
 
                         </div>
                         <ul class="facilities-list property-ul clearfix">
@@ -65,9 +91,11 @@
                             @endif
                         </ul>
                         <div class="footer clearfix">
+                           
                             <div class="days">
                                 <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->activated_at))->diffForHumans(['parts' => 2]) }}</p>
                             </div>
+
                         </div>
                     </div>
                 </div>
