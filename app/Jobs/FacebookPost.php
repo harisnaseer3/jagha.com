@@ -38,17 +38,7 @@ class FacebookPost implements ShouldQueue
             'app_secret' => '17c51b4cd6934b727435d804658248ed',
             'default_graph_version' => 'v5.0',
         ]);
-//        $property = DB::table('properties')->where('id', $this->property->id)
-//            ->select('id', 'title', 'reference', 'city_id', 'location_id', 'purpose', 'reference', 'area_unit', 'type', 'sub_type', 'purpose', 'land_area')->first();
         $image = DB::table('images')->where('property_id', $this->property->id)->where('order', 1)->first();
-        // $city = DB::table('cities')->select('name')->where('id', $property->city_id)->first();
-        // $location = DB::table('locations')->select('name')->where('id', $property->location_id)->first();
-        $city = $this->property->city->name;
-        $location = $this->property->location->name;
-
-        $link = route('properties.show', [
-            'slug' => Str::slug($city) . '-' . Str::slug($location) . '-' . Str::slug($this->property->title) . '-' . $this->property->reference,
-            'property' => $this->property->id]);
 
         if ($image) {
             if (strpos($image->name, '.webp') !== false) {
@@ -63,11 +53,18 @@ class FacebookPost implements ShouldQueue
             $absolute_image_path = base_path('img\logo\dummy-logo.png');
         }
         $source = $fb->fileToUpload($absolute_image_path);
+        $city = $this->property->city->name;
+        $location = $this->property->location->name;
+
+        $link = route('properties.show', [
+            'slug' => Str::slug($city) . '-' . Str::slug($location) . '-' . Str::slug($this->property->title) . '-' . $this->property->reference,
+            'property' => $this->property->id]);
+
 
 
         $user_message = intval($this->property->land_area) . ' ' . $this->property->area_unit . ' Beautiful ' . $this->property->sub_type . ' for ' . $this->property->purpose . ' in a prime location of ' . $location . ', ' . $city . '.' .
-            PHP_EOL . 'See price & contact details here: ' . $link;
-        // PHP_EOL . PHP_EOL . 'Search with Property ID: ' . $property->id;
+            PHP_EOL . 'See price & contact details here: ' . $link .
+            PHP_EOL . PHP_EOL . 'Search with Property ID: ' . $this->property->id;
 
 
         $linkData = [
@@ -76,9 +73,9 @@ class FacebookPost implements ShouldQueue
         ];
         $page_id = '906497989423481';
         try {
-            $post = $fb->post(' / ' . $page_id . ' / photos', $linkData, $token);
+            $post = $fb->post('/' . $page_id . '/photos', $linkData, $token);
             $post = $post->getGraphNode()->asArray();
-            echo 'Facebook Post Successfully Created . ';
+            echo 'Facebook Post Successfully Created.';
             print_r($post);
 
         } catch (FacebookSDKException $e) {
