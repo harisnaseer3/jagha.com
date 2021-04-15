@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use IpLocation;
 
@@ -28,26 +29,25 @@ class Visit extends Model
         $CrawlerDetect = new CrawlerDetect;
         // Pass a user agent as a string
         if (!$CrawlerDetect->isCrawler()) {
-            $visit = (new Visit)->where('ip', '=', $_SERVER['REMOTE_ADDR'])
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $visit = (New Visit())->where('ip', '=', $ip)
                 ->where('date', '=', date('Y-m-d'))->first();
             if ($visit) {
                 $visit->visit_time = date('H:i:s');
                 $visit->count++;
                 $visit->save();
             } else {
-                $ip = $_SERVER['REMOTE_ADDR'];
+
                 $country = '';
                 if ($ip_location = IpLocation::get($ip)) {
                     $country = $ip_location->countryName;
                     if ($country == null)
                         $country = (new CountryController())->Country_name();
                 } else {
-
                     $country = 'unavailable';
                 }
                 (new Visit)->insert(
-                    [
-                        'ip' => $_SERVER['REMOTE_ADDR'],
+                    [   'ip' => $ip,
                         'ip_location' => $country,
                         'date' => date('Y-m-d'),
                         'min_count' => 1,
@@ -55,8 +55,8 @@ class Visit extends Model
                         'count' => 1
                     ]);
             }
-            return true;
         }
+
 
     }
 
