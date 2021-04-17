@@ -17,7 +17,6 @@ Route::get('/get-admin-agencies', 'PropertyAjaxCallController@allAgencies');
 Route::get('/mapCall', 'PropertyAjaxCallController@mapCall');
 
 
-
 Route::get('/user-info', 'AgencyUserController@getAgencyUserData');
 Route::get('/areaUnit', 'PropertyAjaxCallController@getAreaValue');
 Route::get('/features', 'FeatureController@getFeatures');
@@ -291,6 +290,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/packages/{package}', 'Package\AdminPackageController@update')->name('admin.package.update')->middleware(['permission:Manage Packages']);
     Route::get('/packages/{package}/show', 'Package\AdminPackageController@show')->name('admin.package.show')->middleware(['permission:Manage Packages']);
     Route::post('/packages/{package}/search-property', 'Package\AdminPackageController@show')->name('admin.package.search.properties')->middleware(['permission:Manage Packages']);
+
+
+    Route::get('/facebook-post/create', 'Admin\AdminFacebookController@create')->name('admin.facebook.create');
+    Route::post('/facebook-post/store', 'Admin\AdminFacebookController@store')->name('admin.facebook.store');
 
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);

@@ -18,10 +18,11 @@ class IndexController extends Controller
         //$this->dispatch(new FacebookPost($property));
         (new MetaTagController())->addMetaTags();
 
-        if (!(new Visit)->hit()) {
-            return view('website.errors.404');
-        }
+//        if (!(new Visit)->hit()) {
+//            return view('website.errors.404');
+//        }
 
+        (new Visit)->hit();
 
         $property_types = (new PropertyType)->all();
 

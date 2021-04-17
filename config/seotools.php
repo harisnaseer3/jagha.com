@@ -41,7 +41,7 @@ return [
             'url' => null, // Set null for using Url::current(), set false to total remove
             'type' => false,
             'site_name' => 'property.aboutpakistan.com',
-            'images' => [],
+            'images' => [''],
         ],
     ],
     'twitter' => [
