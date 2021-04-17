@@ -64,7 +64,7 @@ class FacebookPost implements ShouldQueue
 
         $user_message = intval($this->property->land_area) . ' ' . $this->property->area_unit . ' Beautiful ' . $this->property->sub_type . ' for ' . $this->property->purpose . ' in a prime location of ' . $location . ', ' . $city . '.' .
             PHP_EOL .PHP_EOL . 'See price & contact details here: ' . $link .
-            PHP_EOL . PHP_EOL . 'OR Search with Property ID: ' . $this->property->id.'on https://property.aboutpakistan.com';
+            PHP_EOL . PHP_EOL . 'OR Search with Property ID: ' . $this->property->id.' on https://property.aboutpakistan.com';
 
 
         $linkData = [
