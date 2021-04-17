@@ -352,6 +352,11 @@
                         </a>
                     </li>
                 @endcan
+                    <li class="nav-item hide-nav navbar-li">
+                        <a class="nav-link" href="{{route('admin.facebook.create')}}">
+                            Facebook Post
+                        </a>
+                    </li>
             </ul>
             <ul class="top-social-media navbar-nav ml-auto">
                 <li class="nav-item user-dropdown">
