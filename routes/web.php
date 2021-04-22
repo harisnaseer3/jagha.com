@@ -49,6 +49,7 @@ Route::get('/get-reg-user', 'Admin\UserManagementController@getRegisteredUser');
 Route::post('/admin-hit-count', 'Admin\StatisticController@getHitStatistic');
 Route::get('/get-top-pages', 'Admin\StatisticController@getTopPages');
 Route::get('/get-top-browsers', 'Admin\StatisticController@getTopBrowser');
+Route::get('/get-top-countries', 'Admin\StatisticController@getTopCountries');
 
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');

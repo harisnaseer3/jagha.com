@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Statistics\CountryController;
 use App\Http\Controllers\Controller;
 use App\Models\Log\LogVisit;
 use App\Models\Log\LogVisitor;
@@ -126,6 +127,18 @@ class StatisticController extends Controller
 
     public function getTopBrowser()
     {
+
+    }
+
+    public function getTopCountries()
+    {
+        $args = array();
+        $args['limit'] = 20;
+
+        $countries = (new CountryController())->get($args);
+        $data['view'] = View('website.admin-pages.components.top-countries',
+            ['top_countries' => $countries])->render();
+        return $data;
 
     }
 }

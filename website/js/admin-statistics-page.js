@@ -112,6 +112,19 @@
                 });
             }
         );
+        $.get('/get-top-countries',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-top-countries').hide();
+                $('#top-countries-block').slideDown();
+                $('#tbody-top-countries').html(data.view);
+
+                $('#top-countries').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
 
 
         $('#submit').on('click', function (e) {
