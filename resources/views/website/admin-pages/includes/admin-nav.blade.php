@@ -352,9 +352,14 @@
                         </a>
                     </li>
                 @endcan
+{{--                    <li class="nav-item hide-nav navbar-li">--}}
+{{--                        <a class="nav-link" href="{{route('admin.facebook.create')}}">--}}
+{{--                            Facebook Post--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li class="nav-item hide-nav navbar-li">
-                        <a class="nav-link" href="{{route('admin.facebook.create')}}">
-                            Facebook Post
+                        <a class="nav-link" href="{{route('admin.statistic.index')}}">
+                            Statistics
                         </a>
                     </li>
             </ul>

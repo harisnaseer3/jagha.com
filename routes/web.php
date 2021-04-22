@@ -46,6 +46,10 @@ Route::get('/get-package-logs', 'Admin\AdminDashboardController@getPackageLogs')
 Route::get('/get-user-logs', 'Admin\UserManagementController@getUserLogs');
 Route::get('/get-reg-user', 'Admin\UserManagementController@getRegisteredUser');
 
+Route::post('/admin-hit-count', 'Admin\StatisticController@getHitStatistic');
+Route::get('/get-top-pages', 'Admin\StatisticController@getTopPages');
+Route::get('/get-top-browsers', 'Admin\StatisticController@getTopBrowser');
+
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
@@ -294,6 +298,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
     Route::get('/facebook-post/create', 'Admin\AdminFacebookController@create')->name('admin.facebook.create');
     Route::post('/facebook-post/store', 'Admin\AdminFacebookController@store')->name('admin.facebook.store');
+
+    Route::get('/statistic/overview', 'Admin\StatisticController@index')->name('admin.statistic.index');
+
 
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);
