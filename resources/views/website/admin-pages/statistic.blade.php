@@ -10,6 +10,14 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
 
     <style>
+        .wps-referring-widget-ip {
+            display: block;
+            padding: 0 15px;
+            font-size: 10px;
+            color: #a2a2a2;
+            margin-left: 6px;
+        }
+
         .wps-btn-group .btn-group, .wps-btn-group .btn-group-vertical {
             position: relative;
             display: inline-block;
@@ -89,40 +97,45 @@
                                                             Summary
                                                         </div>
                                                         <div class="card-body">
-                                                            <table class="table table-responsive w-100" >
-                                                                <tbody>
+                                                            <table class="table w-100">
+                                                                <thead>
                                                                 <tr>
-                                                                    <th style="width: 40%"></th>
-                                                                    <th>Visitors</th>
-                                                                    <th>Visits</th>
+                                                                    <th scope="col" style="width: 40%"></th>
+                                                                    <th scope="col">Visitors</th>
+                                                                    <th scope="col">Visits</th>
                                                                 </tr>
+                                                                </thead>
+                                                                <tbody>
                                                                 @foreach(['today','yesterday','week','year','total'] as $val)
                                                                     <tr>
                                                                         <td>{{ucwords($val)}}</td>
                                                                         <td style="font-size: 16px">{{number_format($visitor[$val])}}</td>
                                                                         <td style="font-size: 16px">{{number_format($visit[$val])}}</td>
-                                                                    </tr>@endforeach
+                                                                    </tr>
+                                                                @endforeach
 
                                                                 </tbody>
                                                             </table>
                                                             <hr>
-                                                            <div class="m-2 p-1 text-center font-16">Search Engine Referrals</div>
-                                                            <table class="table table-responsive">
-                                                                <tbody>
-                                                                <tr>
-                                                                    <th style="width: 40%"></th>
-                                                                    <th>Today</th>
-                                                                    <th>Yesterday</th>
-                                                                </tr>
-                                                                @foreach(['today','yesterday','week','year','total'] as $val)
+                                                            <div style="display:none">
+                                                                <div class="m-2 p-1 text-center font-16">Search Engine Referrals</div>
+                                                                <table class="table table-responsive">
+                                                                    <tbody>
                                                                     <tr>
-                                                                        <td>{{ucwords($val)}}</td>
-                                                                        <td style="font-size: 16px">{{number_format($visitor[$val])}}</td>
-                                                                        <td style="font-size: 16px">{{number_format($visit[$val])}}</td>
-                                                                    </tr>@endforeach
+                                                                        <th style="width: 40%"></th>
+                                                                        <th>Today</th>
+                                                                        <th>Yesterday</th>
+                                                                    </tr>
+                                                                    @foreach(['today','yesterday','week','year','total'] as $val)
+                                                                        <tr>
+                                                                            <td>{{ucwords($val)}}</td>
+                                                                            <td style="font-size: 16px">{{number_format($visitor[$val])}}</td>
+                                                                            <td style="font-size: 16px">{{number_format($visit[$val])}}</td>
+                                                                        </tr>@endforeach
 
-                                                                </tbody>
-                                                            </table>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
                                                         <!-- /.box-body -->
                                                     </div>
@@ -132,7 +145,7 @@
                                                         <div class="card-header theme-blue text-white">
                                                             Top Browsers
                                                         </div>
-                                                        <div class="card-body">
+                                                        <div class="card-body" style="display:none">
 
                                                             <div class="wps-btn-group">
                                                                 <div class="btn-group" role="group">
@@ -143,13 +156,13 @@
                                                                 </div>
                                                             </div>
                                                             <div data-chart-date-picker="hits" id="custom-browser-date" style="display:none;">
-                                                                <input type="date" size="18" name="date-from" data-wps-date-picker="from" value="" autocomplete="off" id="dp1">
+                                                                <input type="date" size="18" name="date-from" data-wps-date-picker="from" value="" autocomplete="off" id="browser-dp1">
                                                                 to
-                                                                <input type="date" size="18" name="date-to" data-wps-date-picker="to" value="" autocomplete="off" id="dp2">
-                                                                <input type="submit" id="submit" value="Go" data-between-chart-show="hits" class="btn btn-sm btn-primary p-2 m-0">
+                                                                <input type="date" size="18" name="date-to" data-wps-date-picker="to" value="" autocomplete="off" id="browser-dp2">
+                                                                <input type="submit" id="browser-submit" value="Go" data-between-chart-show="hits" class="btn btn-sm btn-primary p-2 m-0">
                                                             </div>
 
-                                                            <div id="chart-block">
+                                                            <div id="browser-chart-block">
                                                                 <canvas id="browserChart" class="w-100" height="300px"></canvas>
                                                             </div>
 
@@ -159,9 +172,9 @@
                                                 <div class="col-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header theme-blue text-white">
-                                                            Top 10 PlatForms
+                                                            Top 10 PlatForms <span class="spinner-border" role="status" aria-hidden="true" id="loader-platform"></span>
                                                         </div>
-                                                        <div class="card-body">
+                                                        <div class="card-body" id="platform-block" style="display:none">
 
                                                             <div class="wps-btn-group">
                                                                 <div class="btn-group" role="group">
@@ -172,13 +185,13 @@
                                                                 </div>
                                                             </div>
                                                             <div data-chart-date-picker="hits" id="custom-platform-date" style="display:none;">
-                                                                <input type="date" size="18" name="date-from" data-wps-date-picker="from" value="" autocomplete="off" id="dp1">
+                                                                <input type="date" size="18" name="date-from" data-wps-date-picker="from" value="" autocomplete="off" id="platform-dp1">
                                                                 to
-                                                                <input type="date" size="18" name="date-to" data-wps-date-picker="to" value="" autocomplete="off" id="dp2">
+                                                                <input type="date" size="18" name="date-to" data-wps-date-picker="to" value="" autocomplete="off" id="platform-dp2">
                                                                 <input type="submit" id="platform-submit" value="Go" data-between-chart-show="hits" class="btn btn-sm btn-primary p-2 m-0">
                                                             </div>
 
-                                                            <div id="chart-block">
+                                                            <div id="platform-chart-block">
                                                                 <canvas id="platformChart" class="w-100" height="300px"></canvas>
                                                             </div>
 
@@ -186,6 +199,7 @@
                                                     </div>
                                                 </div>
                                                 @include('website.admin-pages.includes.top-countries')
+                                                @include('website.admin-pages.includes.top-referring-site')
 
                                             </div>
                                             <div class="col-lg-9 col-md-6 col-sm-6 my-2">

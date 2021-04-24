@@ -91,5 +91,13 @@ class CountryController extends Controller
             return 'Unavailable';
     }
 
+    function country_code($ip){
+        $country = $this->ip_info($ip, "Country");
+        if ($country !== '')
+            return $country;
+        else
+            return 'Unavailable';
+    }
+
 
 }

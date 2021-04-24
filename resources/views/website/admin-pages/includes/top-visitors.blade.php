@@ -12,7 +12,7 @@
                     <th>Flag</th>
                     <th>Country</th>
                     <th>City</th>
-                    <th>Ip</th>
+                    <th>IP</th>
                     <th>Agent</th>
                     <th>PlatFrom</th>
                     <th>Version</th>

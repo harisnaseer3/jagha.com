@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Classes\Referring;
 use App\Http\Controllers\Admin\Statistics\CountryController;
+use App\Http\Controllers\Admin\Statistics\PlatformController;
+use App\Http\Controllers\Admin\Statistics\ReferringSiteController;
+use App\Http\Controllers\Admin\Statistics\VisitorController;
 use App\Http\Controllers\Controller;
 use App\Models\Log\LogVisit;
 use App\Models\Log\LogVisitor;
@@ -48,7 +52,7 @@ class StatisticController extends Controller
     public function getHitStatistic(Request $request)
     {
         if ($request->ajax()) {
-            $visits = $date = $visitors = $total_visits = $total_visitors = array();
+            $visits = $date = $visitors = array();
 
 
             $to = $request->has('to') ? $request->to : null;
@@ -88,6 +92,9 @@ class StatisticController extends Controller
         }
         if ($time == 'year') {
             return [Carbon::now()->subYear()->format('Y-m-d'), $current_date];
+        }
+        if ($time == 'month') {
+            return [Carbon::now()->submonth()->format('Y-m-d'), $current_date];
         }
     }
 
@@ -141,4 +148,82 @@ class StatisticController extends Controller
         return $data;
 
     }
+
+    public function getTopVisitors()
+    {
+        $args = array();
+        $args['limit'] = 20;
+
+        $visitors = (new VisitorController())->get($args);
+
+
+        $data['view'] = View('website.admin-pages.components.top-visitors',
+            ['top_visitors' => $visitors])->render();
+        return $data;
+
+    }
+
+    public function getRecentVisitors()
+    {
+        $args = array();
+        $args['limit'] = 20;
+
+        $visitors = (new VisitorController())->getRecentVisitor($args);
+
+
+        $data['view'] = View('website.admin-pages.components.recent-visitors',
+            ['recent_visitors' => $visitors])->render();
+        return $data;
+
+    }
+
+    public function getReferringSite()
+    {
+        $args = array();
+        $args['limit'] = 20;
+
+
+        $sites = (new ReferringSiteController())::get($args);
+
+
+        $data['view'] = View('website.admin-pages.components.top-referring-site',
+            ['sites' => $sites])->render();
+        return $data;
+
+    }
+
+    public function getTopPlatForm(Request $request)
+    {
+        if ($request->ajax()) {
+            $args = array();
+            $args['number'] = 20;
+
+            $to = $request->has('to') ? $request->to : null;
+            $from = $request->has('from') ? $request->from : null;
+
+            $time = $request->has('time') ? $request->time : null;
+            if (null !== $time) {
+                $limit = $this->getToFrom($time);
+                $from = $limit[0];
+                $to = $limit[1];
+            }
+            $args['to'] = $to;
+            $args['from'] = $from;
+
+
+            try {
+
+                $platforms = (new PlatformController)::getTop($args);
+            } catch (\Exception $e) {
+                return response()->json(['data' => ['platforms' => array(), 'status' => 201]]);
+            }
+
+
+            return response()->json(['data' => ['platforms' => $platforms, 'status' => 200]]);
+        } else {
+            return 'Not Found';
+        }
+    }
+
+
 }

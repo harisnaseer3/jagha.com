@@ -16,6 +16,13 @@ class CountryController extends Controller
         $this->middleware('auth:admin');
     }
 
+    /**
+     * Default Unknown flag
+     *
+     * @var string
+     */
+    public static $unknown_location = '000';
+
     public function get($args = array())
     {
 
@@ -27,7 +34,7 @@ class CountryController extends Controller
 
         // Check For No Data Meta Box
         if (count($response) < 1) {
-            $response['no_data'] = 1;
+            $response = array();
         }
 
         // Response
@@ -66,6 +73,23 @@ class CountryController extends Controller
         return $list;
     }
 
+
+    /**
+     * Get Country name by Code
+     *
+     * @param $code
+     * @return mixed
+     */
+    public static function getName($code)
+    {
+        $list_country = (new CountryController)->getList();
+        if (array_key_exists($code, $list_country)) {
+            return $list_country[$code];
+        }
+
+        return $list_country[self::$unknown_location];
+    }
+
     public function getList()
     {
         $ISOCountryCode = (new \App\Classes\countries)->list();
@@ -75,6 +99,4 @@ class CountryController extends Controller
 
         return array();
     }
-
-
 }

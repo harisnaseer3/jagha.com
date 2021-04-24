@@ -50,7 +50,10 @@ Route::post('/admin-hit-count', 'Admin\StatisticController@getHitStatistic');
 Route::get('/get-top-pages', 'Admin\StatisticController@getTopPages');
 Route::get('/get-top-browsers', 'Admin\StatisticController@getTopBrowser');
 Route::get('/get-top-countries', 'Admin\StatisticController@getTopCountries');
-
+Route::get('/get-top-visitors', 'Admin\StatisticController@getTopVisitors');
+Route::get('/get-recent-visitors', 'Admin\StatisticController@getRecentVisitors');
+Route::get('/get-referring-sites', 'Admin\StatisticController@getReferringSite');
+Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
 
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');

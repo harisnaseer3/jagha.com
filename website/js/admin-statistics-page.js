@@ -13,6 +13,35 @@
             defaultDate: new Date()
 
         }).datepicker("setDate", new Date());
+        // platform
+        let paltform_dp1 = $('#platform-dp1');
+        let paltform_dp2 = $('#platform-dp2');
+        paltform_dp1.datepicker({
+            dateFormat: "yy-mm-dd",
+            allowInputToggle: true,
+            defaultDate: -15
+        }).datepicker("setDate", -15);
+        paltform_dp2.datepicker({
+            dateFormat: "yy-mm-dd",
+            allowInputToggle: true,
+            defaultDate: new Date()
+
+        }).datepicker("setDate", new Date());
+
+        //browser
+        let browser_dp1 = $('#browser-dp1');
+        let browser_dp2 = $('#browser-dp2');
+        paltform_dp1.datepicker({
+            dateFormat: "yy-mm-dd",
+            allowInputToggle: true,
+            defaultDate: -15
+        }).datepicker("setDate", -15);
+        paltform_dp2.datepicker({
+            dateFormat: "yy-mm-dd",
+            allowInputToggle: true,
+            defaultDate: new Date()
+
+        }).datepicker("setDate", new Date());
 
 
         $('#custom-hit').on('click', function () {
@@ -24,6 +53,20 @@
         $('#custom-browser-hit').on('click', function () {
             $('#custom-browser-date').slideToggle();
         });
+
+        $.get('/get-referring-sites',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-referring-site').hide();
+                $('#referring-site-block').slideDown();
+                $('#tbody-referring-site').html(data.view);
+
+                $('#referring-site').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
 
         if ($('#myChart').length > 0) {
             jQuery.ajaxSetup({
@@ -76,27 +119,29 @@
         }
         if ($('#platformChart').length > 0) {
             let ctx = document.getElementById("platformChart").getContext('2d');
-            drawPieChart(ctx);
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-platform',
+                dataType: 'json',
+                success: function (data) {
 
-            // jQuery.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
-            // jQuery.ajax({
-            //     type: 'post',
-            //     url: window.location.origin + '/top-browsers',
-            //     dataType: 'json',
-            //     success: function (data) {
-            //         if (data.status === 200) {
-            //             if (data.data.date !== null && data.data.visits !== null) {
-            //                 // drawGraph(data.data.date, data.data.visits, data.data.visitors);
-            // drawPieChart( ctx, labels, data);
-            //
-            //             }
-            //         }
-            //     }
-            // });
+                    if (data.data.status === 200) {
+                        if (data.data.platforms !== null) {
+                            $('#loader-platform').hide();
+                            $('#platform-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawPieChart(ctx, data.data.platforms.platform_name, data.data.platforms.platform_value);
+
+                        }
+                    }
+                }
+            });
         }
 
         $.get('/get-top-pages',  // url
@@ -125,8 +170,34 @@
                 });
             }
         );
+        $.get('/get-top-visitors',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-top-visitors').hide();
+                $('#top-visitors-block').slideDown();
+                $('#tbody-top-visitors').html(data.view);
 
+                $('#top-visitors').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
+        $.get('/get-recent-visitors',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-recent-visitors').hide();
+                $('#recent-visitors-block').slideDown();
+                $('#tbody-recent-visitors').html(data.view);
 
+                $('#recent-visitors').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
+
+        //hit stats
         $('#submit').on('click', function (e) {
             $("canvas#myChart").remove();
             $("div#chart-block").append('<canvas id="myChart" class="w-100" height="300px"></canvas>');
@@ -260,6 +331,155 @@
 
         });
 
+        //platform
+
+        $('#platform-submit').on('click', function (e) {
+            $("canvas#platformChart").remove();
+            $("div#platform-chart-block").append('<canvas id="platformChart" class="w-100" height="300px"></canvas>');
+
+            e.preventDefault();
+            let dp1_date = paltform_dp1.datepicker('getDate');
+            let from = '';
+            let to = '';
+            if (dp1_date !== null) { // if any date selected in datepicker
+                let date = dp1_date.getDate();
+                if (date < 10)
+                    date = 0 + '' + date;
+                let month = (dp1_date.getMonth() + 1);
+                if (month < 10)
+                    month = 0 + '' + month;
+                from = dp1_date.getFullYear() + '-' + month + '-' + date;
+            } else
+                alert('Please select valid date');
+            let dp2_date = paltform_dp2.datepicker('getDate');
+            if (dp2_date !== null) { // if any date selected in datepicker
+                let date = dp2_date.getDate();
+                if (date < 10)
+                    date = 0 + '' + date;
+                let month = (dp2_date.getMonth() + 1);
+                if (month < 10)
+                    month = 0 + '' + month;
+
+                to = dp2_date.getFullYear() + '-' + month + '-' + date;
+            } else
+                alert('Please select valid some date');
+
+            if (Date.parse(from) > Date.parse(to)) {
+                let temp = from;
+                from = to;
+                to = temp;
+            }
+            console.log(to, from);
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-platform',
+                data: {'from': from, 'to': to},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.platforms !== null) {
+                            $('#loader-platform').hide();
+                            $('#platform-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+
+                        }
+                    }
+                }
+            });
+        });
+        $('#year-platform-hit').on('click', function (e) {
+            $("canvas#platformChart").remove();
+            $("div#platform-chart-block").append('<canvas id="platformChart" class="w-100" height="300px"></canvas>');
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-platform',
+                data: {'time': 'year'},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.platforms !== null) {
+                            $('#loader-platform').hide();
+                            $('#platform-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+
+                        }
+                    }
+                }
+            });
+        });
+        $('#week-platform-hit').on('click', function (e) {
+            $("canvas#platformChart").remove();
+            $("div#platform-chart-block").append('<canvas id="platformChart" class="w-100" height="300px"></canvas>');
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-platform',
+                data: {'time': 'week'},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.platforms !== null) {
+                            $('#loader-platform').hide();
+                            $('#platform-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+
+                        }
+                    }
+                }
+            });
+        });
+        $('#month-platform-hit').on('click', function (e) {
+            $("canvas#platformChart").remove();
+            $("div#platform-chart-block").append('<canvas id="platformChart" class="w-100" height="300px"></canvas>');
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-platform',
+                data: {'time': 'month'},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.platforms !== null) {
+                            $('#loader-platform').hide();
+                            $('#platform-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+
+                        }
+                    }
+                }
+            });
+        });
+
 
         function drawGraph(label, data1, data2) {
             //data1 = total count, data2 = unique count
@@ -268,37 +488,26 @@
                 type: 'line',
                 data: {
                     labels: label,
-                    datasets: [{
-                        label: 'Visits',
-                        data: data1,
-                        backgroundColor: [
-                            'rgba(54, 162, 235, 0.2)',
-                        ],
-                        borderColor: [
-                            'rgba(54, 162, 235, 1)',
-                            // 'rgba(255, 99, 132, 1)',
-                            // 'rgba(255, 206, 86, 1)',
-                            // 'rgba(75, 192, 192, 1)',
-                            // 'rgba(153, 102, 255, 1)',
-                            // 'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 2
-                    }, {
-                        label: 'Visitors',
-                        data: data2,
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 1)',
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)',
-                            // 'rgba(54, 162, 235, 1)',
-                            // 'rgba(255, 99, 132, 1)',
-                            // 'rgba(255, 206, 86, 1)',
-                            // 'rgba(153, 102, 255, 1)',
-                            // 'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 2
-                    }
+                    datasets: [
+                        {
+                            label: 'Visits',
+                            data: data1,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2,
+                            pointColor: "rgba(54, 162, 235, 1)",
+                            pointStrokeColor: "#fff",
+                        },
+
+                        {
+                            label: 'Visitors',
+                            data: data2,
+                            backgroundColor: 'rgba(213, 245, 227, 1)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            pointColor: "rgba(75, 192, 192, 1)",
+                            pointStrokeColor: "#fff",
+                        }
                     ]
                 },
                 options: {
@@ -317,27 +526,40 @@
         }
 
         function drawPieChart(ctx, labels, data) {
-            let myChart = new Chart(ctx, {
+
+            let myPieChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ["Green", "Blue", "Gray", "Purple"],
+                    // labels: ["Green", "Blue", "Gray", "Purple"],
+                    labels: labels,
                     datasets: [{
                         backgroundColor: [
-                            "#2ecc71",
-                            "#3498db",
-                            "#95a5a6",
-                            "#9b59b6",
-                            "#f1c40f",
-                            "#e74c3c",
-                            "#34495e"
+                            "#99bbad",
+                            "#28b5b5",
+                            "#ebd8b7",
+                            "#ffaaa7",
+                            "#9a8194",
+                            "#b0efeb",
+                            "#fdbaf8",
+                            "#edffa9",
+                            "#e2703a",
+                            "#9c3d54",
+                            "#f21170",
+                            "#fa9905",
+                            "#1597bb",
+                            "#150e56",
+                            "#7b113a",
+                            "#ffaaa7",
+                            "#9a8194",
+                            "#b0efeb",
+                            "#fdbaf8",
+
                         ],
-                        data: [12, 19, 3, 17]
+                        data: data
                     }]
                 }
             });
         }
-
-
     });
 })
 (jQuery);
