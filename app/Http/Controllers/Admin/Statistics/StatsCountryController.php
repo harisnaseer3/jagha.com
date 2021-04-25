@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Statistics;
 
-use App\Classes\countries;
+use App\Classes\Countries;
 use App\Http\Controllers\Controller;
 use App\Models\Log\LogVisitor;
 use Illuminate\Http\Request;
@@ -92,7 +92,7 @@ class CountryController extends Controller
 
     public function getList()
     {
-        $ISOCountryCode = (new \App\Classes\countries)->list();
+        $ISOCountryCode = (new \App\Classes\Countries)->list();
         if (isset($ISOCountryCode)) {
             return $ISOCountryCode;
         }
