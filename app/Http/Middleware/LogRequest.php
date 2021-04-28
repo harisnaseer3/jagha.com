@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Events\LogErrorEvent;
 use App\Http\Controllers\HitRecord\HitController;
 use Closure;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,7 @@ class LogRequest
 
 
             } catch (\Exception $e) {
-                dd($e->getMessage());
+                event(new LogErrorEvent($e->getMessage(), 'Error in logRequest middleware handle method'));
             }
         }
 
