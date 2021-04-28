@@ -143,9 +143,9 @@
                                                 <div class="col-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header theme-blue text-white">
-                                                            Top Browsers
+                                                            Top Browsers <span class="spinner-border" role="status" aria-hidden="true" id="loader-browser"></span>
                                                         </div>
-                                                        <div class="card-body" style="display:none">
+                                                        <div class="card-body">
 
                                                             <div class="wps-btn-group">
                                                                 <div class="btn-group" role="group">
@@ -172,7 +172,7 @@
                                                 <div class="col-12 mb-4">
                                                     <div class="card">
                                                         <div class="card-header theme-blue text-white">
-                                                            Top 10 PlatForms <span class="spinner-border" role="status" aria-hidden="true" id="loader-platform"></span>
+                                                            Top PlatForms <span class="spinner-border" role="status" aria-hidden="true" id="loader-platform"></span>
                                                         </div>
                                                         <div class="card-body" id="platform-block" style="display:none">
 

@@ -14,7 +14,13 @@ use Illuminate\Support\Facades\DB;
 class LogVisitor extends Model
 {
     protected $connection = 'mysql2';
+
     public $table = 'visitor';
+    const CREATED_AT = null;
+    const UPDATED_AT = null;
+
+
+
 
     private $date_column = 'last_counter';
 //    private $selector = '*';

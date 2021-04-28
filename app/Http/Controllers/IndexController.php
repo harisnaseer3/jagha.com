@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HitRecord\HitController;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Visit;
@@ -14,6 +16,11 @@ class IndexController extends Controller
     //    display data on index page
     public function index()
     {
+//        try {
+//            HitController::record();
+//        } catch (\Exception $e) {
+//            dd($e->getMessage());
+//        }
         //$property  = Property::where('id',278917)->first();
         //$this->dispatch(new FacebookPost($property));
         (new MetaTagController())->addMetaTags();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Statistics;
 
+use App\Events\LogErrorEvent;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,9 +15,7 @@ class PageController extends Controller
     /**
      * Get WordPress Page Type
      */
-//    public static $base_url = 'https://property.aboutpakistan.com/';
-// TODO: change on server
-    public static $base_url = 'http://127.0.0.1/';
+
 
     public static function get_page_type()
     {
@@ -38,16 +37,10 @@ class PageController extends Controller
         }
 
 
-        //Single Post Fro All Post Type
+        //Property Detail Page
         if (self::is_detail_page()) {
             $current_page['type'] = "post";
         }
-
-        //Single Page
-//        if (self::is_detail_page()) {
-//            $current_page['type'] = "page";
-//        }
-
         //Category Page
         if (self::is_category_page_homes()) {
             $current_page['type'] = "category_homes";
@@ -62,12 +55,11 @@ class PageController extends Controller
             $current_page['type'] = "category_partners";
         }
 
-        //Tag Page
+        //Agency Ads Listings
         if (self::is_agency_ads()) {
             $current_page['type'] = "agency";
         }
         //is search page
-
         $search_query = filter_var(request()->getQueryString(), FILTER_SANITIZE_STRING);
         if (trim($search_query) != "") {
             return array("type" => "search", "id" => 0, "search_query" => $search_query);
@@ -94,7 +86,7 @@ class PageController extends Controller
      */
     public static function record()
     {
-        // Get Current WordPress Page
+        // Get Current Page
         $current_page = self::get_page_type();
 
         // If we didn't find a page id, we don't have anything else to do.
@@ -123,7 +115,7 @@ class PageController extends Controller
             ->where('date', $d);
         if (array_key_exists("search_query", $current_page) === true) {
             $sql = $sql->where('uri', $esc_uri);
-        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing' ) {
+        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing') {
             $sql = $sql->where('uri', $esc_uri);
         }
 
@@ -134,8 +126,6 @@ class PageController extends Controller
         if ($exist) {
             DB::connection('mysql2')->table('pages')->where('page_id', $exist->page_id)
                 ->increment('count');
-
-//            $wpdb->query($wpdb->prepare("UPDATE `" . DB::table('pages') . "` SET `count` = `count` + 1 WHERE `date` = '" . TimeZone::getCurrentDate('Y-m-d') . "' " . (array_key_exists("search_query", $current_page) === true ? "AND `uri` = '" . esc_sql($page_uri) . "'" : "") . "AND `type` = '{$current_page['type']}' AND `id` = %d", $current_page['id']));
             $page_id = $exist->page_id;
 
         } else {
@@ -164,20 +154,16 @@ class PageController extends Controller
     public static function save_page($page = array())
     {
         # Add Filter Insert ignore
-//        add_filter('query', array('\WP_STATISTICS\DB', 'insert_ignore'), 10);
-
-        # Save to WordPress Database
         try {
-            $insert = DB::connection('mysql2')->table('pages')->insertGetId($page);
+            return DB::connection('mysql2')->table('pages')->insertGetId($page);
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            dd('Error in page controller engine');
-            //TODO ADD mail
+            event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
+
         }
 
         # Get Page ID
-        $page_id = $insert;
+//        $page_id = $insert;
 
         # Remove ignore filter
 //        remove_filter('query', array('\WP_STATISTICS\DB', 'insert_ignore'), 10);
@@ -185,7 +171,7 @@ class PageController extends Controller
         # Do Action After Save New Visitor
 //        do_action('wp_statistics_save_page', $page_id, $page);
 
-        return $page_id;
+//        return $page_id;
     }
 
 
@@ -208,25 +194,25 @@ class PageController extends Controller
     public static function is_category_page_homes()
     {
         $url = 'all_cities/pakistan/homes';
-        return \request()->url() == self::$base_url . $url;
+        return \request()->url() == \url('/') . '/' . $url;
     }
 
     public static function is_category_page_plots()
     {
         $url = 'all_cities/pakistan/plots';
-        return \request()->url() == self::$base_url . $url;
+        return \request()->url() == \url('/') . '/' . $url;
     }
 
     public static function is_category_page_commercial()
     {
         $url = 'all_cities/pakistan/commercial';
-        return \request()->url() == self::$base_url . $url;
+        return \request()->url() == \url('/') . '/' . $url;
     }
 
     public static function is_category_page_partners()
     {
         $url = 'partners';
-        return \request()->url() == self::$base_url . $url;
+        return \request()->url() == \url('/') . '/' . $url;
     }
 
 
@@ -319,7 +305,13 @@ class PageController extends Controller
 
         // Get String Search Wordpress
         if (array_key_exists("search_query", $current_page) and !empty($current_page["search_query"])) {
-            $page_uri = "?s=" . $current_page['search_query'];
+            $base_url = \url('/') . '/';
+
+            $full_url = str_replace($base_url, '', \request()->url());
+            if ($full_url !== '') {
+                $page_uri = '/' . $full_url . '?' . $current_page['search_query'];
+            } else
+                $page_uri = "?s=" . $current_page['search_query'];
         }
 
         // Sanitize for WordPress Login Page

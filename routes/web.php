@@ -5,10 +5,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexController@index')->name('home');
 
-//Route::get('/user-location', 'TestController@index');
+//Route::get('/check/pakistan/', 'TestController@index');
 
 
 //ajax calls
+
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');
 Route::get('/agency-users', 'AgencyUserController@getAgencyUsers');
 Route::get('/agent-properties', 'AgencyUserController@getAgentProperties');
@@ -54,7 +55,11 @@ Route::get('/get-top-visitors', 'Admin\StatisticController@getTopVisitors');
 Route::get('/get-recent-visitors', 'Admin\StatisticController@getRecentVisitors');
 Route::get('/get-referring-sites', 'Admin\StatisticController@getReferringSite');
 Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
+Route::post('/top-browser', 'Admin\StatisticController@getTopBrowser');
 
+
+
+//front calls
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
 
@@ -94,8 +99,16 @@ Route::get('/search/partners_results', 'AgencySearchController@searchPartner')->
 
 
 //list of blogs
-Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
-Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
+//Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
+//Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
+
+Route::group(['prefix' => 'properties','middleware' => ['log.request']], function () {
+    Route::get('/search', 'PropertyController@search')->name('properties.search');
+    //Property detail view
+    Route::get('/{slug}_{property}', 'PropertyController@show')->name('properties.show');
+});
+
+//dashboard calls
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
 
@@ -167,7 +180,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
     Route::group(['prefix' => 'accounts'], function () {
         Route::resource('/users', 'Dashboard\UserController')->only(['edit', 'update']); // user is not allowed other methods
-        Route::get('/logout', 'Auth\LoginController@logout')->name('accounts.logout');;
+        Route::get('/logout', 'Auth\LoginController@logout')->name('accounts.logout');
 
         Route::get('/roles', 'AccountController@editRoles')->name('user_roles.edit');
         Route::match(['put', 'patch'], '/roles', 'AccountController@updateRoles')->name('user_roles.update');
@@ -190,14 +203,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::post('/read-inbox-message', 'NotificationController@ReadInboxMessage');
 
 });
-
-Route::group(['prefix' => 'properties'], function () {
-    Route::get('/search', 'PropertyController@search')->name('properties.search');
-    //Property detail view
-    Route::get('/{slug}_{property}', 'PropertyController@show')->name('properties.show');
-});
-
-
 Auth::routes(['verify' => true]);
 Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');
 

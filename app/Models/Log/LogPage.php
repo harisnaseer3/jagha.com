@@ -18,8 +18,10 @@ class LogPage extends Model
     public function getTopPages()
     {
 
-        $result = $this->select(DB::raw('SUM(`count`) as count_sum'), 'uri')->groupBy('uri')
-            ->orderBy('count_sum', 'desc')->limit('10')->get();
+        $result = $this->select(DB::raw('SUM(`count`) as count_sum'),'uri','type')->groupBy('uri','type')
+            ->orderBy('count_sum', 'desc')->get();
+
+
 
 
         if (!$result->isEmpty()) {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Classes\Referring;
-use App\Http\Controllers\Admin\Statistics\CountryController;
+use App\Http\Controllers\Admin\Statistics\BrowserController;
 use App\Http\Controllers\Admin\Statistics\PlatformController;
 use App\Http\Controllers\Admin\Statistics\ReferringSiteController;
+use App\Http\Controllers\Admin\Statistics\StatsCountryController;
 use App\Http\Controllers\Admin\Statistics\VisitorController;
 use App\Http\Controllers\Controller;
 use App\Models\Log\LogVisit;
@@ -132,17 +132,13 @@ class StatisticController extends Controller
         return $data;
     }
 
-    public function getTopBrowser()
-    {
-
-    }
 
     public function getTopCountries()
     {
         $args = array();
         $args['limit'] = 20;
 
-        $countries = (new CountryController())->get($args);
+        $countries = (new StatsCountryController())->get($args);
         $data['view'] = View('website.admin-pages.components.top-countries',
             ['top_countries' => $countries])->render();
         return $data;
@@ -212,7 +208,6 @@ class StatisticController extends Controller
 
 
             try {
-
                 $platforms = (new PlatformController)::getTop($args);
             } catch (\Exception $e) {
                 return response()->json(['data' => ['platforms' => array(), 'status' => 201]]);
@@ -225,5 +220,36 @@ class StatisticController extends Controller
         }
     }
 
+    public function getTopBrowser(Request $request)
+    {
+        if ($request->ajax()) {
+            $args = array();
+            $args['browser'] = 'all';
 
+            $to = $request->has('to') ? $request->to : null;
+            $from = $request->has('from') ? $request->from : null;
+
+            $time = $request->has('time') ? $request->time : null;
+            if (null !== $time) {
+                $limit = $this->getToFrom($time);
+                $from = $limit[0];
+                $to = $limit[1];
+            }
+            $args['to'] = $to;
+            $args['from'] = $from;
+
+            try {
+
+                $browsers = BrowserController::get($args);
+            } catch (\Exception $e) {
+                return response()->json(['data' => ['browsers' => array(), 'status' => 201]]);
+            }
+
+
+            return response()->json(['data' => ['browsers' => $browsers, 'status' => 200]]);
+        } else {
+            return 'Not Found';
+        }
+
+    }
 }

@@ -31,12 +31,12 @@
         //browser
         let browser_dp1 = $('#browser-dp1');
         let browser_dp2 = $('#browser-dp2');
-        paltform_dp1.datepicker({
+        browser_dp1.datepicker({
             dateFormat: "yy-mm-dd",
             allowInputToggle: true,
             defaultDate: -15
         }).datepicker("setDate", -15);
-        paltform_dp2.datepicker({
+        browser_dp2.datepicker({
             dateFormat: "yy-mm-dd",
             allowInputToggle: true,
             defaultDate: new Date()
@@ -95,27 +95,28 @@
 
         if ($('#browserChart').length > 0) {
             let ctx = document.getElementById("browserChart").getContext('2d');
-            drawPieChart(ctx);
 
-            // jQuery.ajaxSetup({
-            //     headers: {
-            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //     }
-            // });
-            // jQuery.ajax({
-            //     type: 'post',
-            //     url: window.location.origin + '/top-browsers',
-            //     dataType: 'json',
-            //     success: function (data) {
-            //         if (data.status === 200) {
-            //             if (data.data.date !== null && data.data.visits !== null) {
-            //                 drawGraph(data.data.date, data.data.visits, data.data.visitors);
-            //
-            //                 drawPieChart( ctx, labels, data);
-            //             }
-            //         }
-            //     }
-            // });
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-browser',
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.browsers !== null) {
+                            $('#loader-browser').hide();
+                            $('#browser-block').slideDown();
+
+                            drawBrowserPieChart(ctx, data.data.browsers.browsers_name, data.data.browsers.browsers_value, data.data.browsers.total);
+                        }
+                    }
+                }
+            });
         }
         if ($('#platformChart').length > 0) {
             let ctx = document.getElementById("platformChart").getContext('2d');
@@ -136,7 +137,7 @@
                             $('#platform-block').slideDown();
 
                             // drawGraph(data.data.date, data.data.visits, data.data.visitors);
-                            drawPieChart(ctx, data.data.platforms.platform_name, data.data.platforms.platform_value);
+                            drawPieChart(ctx, data.data.platforms.platform_name, data.data.platforms.platform_value, data.data.platforms.total);
 
                         }
                     }
@@ -388,7 +389,7 @@
                             $('#platform-block').slideDown();
 
                             // drawGraph(data.data.date, data.data.visits, data.data.visitors);
-                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value, data.data.platforms.total);
 
                         }
                     }
@@ -416,7 +417,7 @@
                             $('#platform-block').slideDown();
 
                             // drawGraph(data.data.date, data.data.visits, data.data.visitors);
-                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value, data.data.platforms.total);
 
                         }
                     }
@@ -444,7 +445,7 @@
                             $('#platform-block').slideDown();
 
                             // drawGraph(data.data.date, data.data.visits, data.data.visitors);
-                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value, data.data.platforms.total);
 
                         }
                     }
@@ -472,7 +473,7 @@
                             $('#platform-block').slideDown();
 
                             // drawGraph(data.data.date, data.data.visits, data.data.visitors);
-                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value);
+                            drawPieChart(document.getElementById("platformChart").getContext('2d'), data.data.platforms.platform_name, data.data.platforms.platform_value, data.data.platforms.total);
 
                         }
                     }
@@ -480,6 +481,152 @@
             });
         });
 
+        //browser
+
+        $('#browser-submit').on('click', function (e) {
+            $("canvas#browserChart").remove();
+            $("div#browser-chart-block").append('<canvas id="browserChart" class="w-100" height="300px"></canvas>');
+
+            e.preventDefault();
+            let dp1_date = browser_dp1.datepicker('getDate');
+            let from = '';
+            let to = '';
+            if (dp1_date !== null) { // if any date selected in datepicker
+                let date = dp1_date.getDate();
+                if (date < 10)
+                    date = 0 + '' + date;
+                let month = (dp1_date.getMonth() + 1);
+                if (month < 10)
+                    month = 0 + '' + month;
+                from = dp1_date.getFullYear() + '-' + month + '-' + date;
+            } else
+                alert('Please select valid date');
+            let dp2_date = browser_dp2.datepicker('getDate');
+            if (dp2_date !== null) { // if any date selected in datepicker
+                let date = dp2_date.getDate();
+                if (date < 10)
+                    date = 0 + '' + date;
+                let month = (dp2_date.getMonth() + 1);
+                if (month < 10)
+                    month = 0 + '' + month;
+
+                to = dp2_date.getFullYear() + '-' + month + '-' + date;
+            } else
+                alert('Please select valid some date');
+
+            if (Date.parse(from) > Date.parse(to)) {
+                let temp = from;
+                from = to;
+                to = temp;
+            }
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-browser',
+                data: {'from': from, 'to': to},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.browsers !== null) {
+                            $('#loader-browser').hide();
+                            $('#browser-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawBrowserPieChart(document.getElementById("browserChart").getContext('2d'), data.data.browsers.browsers_name, data.data.browsers.browsers_value, data.data.browsers.total);
+                        }
+                    }
+                }
+            });
+        });
+        $('#year-browser-hit').on('click', function (e) {
+            $("canvas#browserChart").remove();
+            $("div#browser-chart-block").append('<canvas id="browserChart" class="w-100" height="300px"></canvas>');
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-browser',
+                data: {'time': 'year'},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.browsers !== null) {
+                            $('#loader-browser').hide();
+                            $('#browser-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawBrowserPieChart(document.getElementById("browserChart").getContext('2d'), data.data.browsers.browsers_name, data.data.browsers.browsers_value, data.data.browsers.total);
+                        }
+                    }
+                }
+            });
+        });
+        $('#week-browser-hit').on('click', function (e) {
+            $("canvas#browserChart").remove();
+            $("div#browser-chart-block").append('<canvas id="browserChart" class="w-100" height="300px"></canvas>');
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-browser',
+                data: {'time': 'week'},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.browsers !== null) {
+                            $('#loader-browser').hide();
+                            $('#browser-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawBrowserPieChart(document.getElementById("browserChart").getContext('2d'), data.data.browsers.browsers_name, data.data.browsers.browsers_value, data.data.browsers.total);
+                        }
+                    }
+                }
+            });
+        });
+        $('#month-browser-hit').on('click', function (e) {
+            $("canvas#browserChart").remove();
+            $("div#browser-chart-block").append('<canvas id="browserChart" class="w-100" height="300px"></canvas>');
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/top-browser',
+                data: {'time': 'month'},
+                dataType: 'json',
+                success: function (data) {
+
+                    if (data.data.status === 200) {
+                        if (data.data.browsers !== null) {
+                            $('#loader-browser').hide();
+                            $('#browser-block').slideDown();
+
+                            // drawGraph(data.data.date, data.data.visits, data.data.visitors);
+                            drawBrowserPieChart(document.getElementById("browserChart").getContext('2d'), data.data.browsers.browsers_name, data.data.browsers.browsers_value, data.data.browsers.total);
+                        }
+                    }
+                }
+            });
+        });
 
         function drawGraph(label, data1, data2) {
             //data1 = total count, data2 = unique count
@@ -525,7 +672,7 @@
             });
         }
 
-        function drawPieChart(ctx, labels, data) {
+        function drawPieChart(ctx, labels, data, total) {
 
             let myPieChart = new Chart(ctx, {
                 type: 'pie',
@@ -556,8 +703,86 @@
 
                         ],
                         data: data
-                    }]
-                }
+                    }],
+                },
+                // options: {
+                //     plugins: {
+                //         tooltip: {
+                //             callbacks: {
+                //
+                //                 label: function (context) {
+                //                     var label = context.dataset.label || '';
+                //
+                //                     if (label) {
+                //                         label += ': ';
+                //                     }
+                //                     if (context.parsed.y !== null) {
+                //                         label += new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(context.parsed.y);
+                //                     }
+                //                     return label;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
+
+            });
+        }
+
+        function drawBrowserPieChart(ctx, labels, data, total) {
+
+            let myBrowserPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    // labels: ["Green", "Blue", "Gray", "Purple"],
+                    labels: labels,
+                    datasets: [{
+                        backgroundColor: [
+                            "#99bbad",
+                            "#28b5b5",
+                            "#ebd8b7",
+                            "#ffaaa7",
+                            "#9a8194",
+                            "#b0efeb",
+                            "#fdbaf8",
+                            "#edffa9",
+                            "#e2703a",
+                            "#9c3d54",
+                            "#f21170",
+                            "#fa9905",
+                            "#1597bb",
+                            "#150e56",
+                            "#7b113a",
+                            "#ffaaa7",
+                            "#9a8194",
+                            "#b0efeb",
+                            "#fdbaf8",
+
+                        ],
+                        data: data
+                    }],
+                },
+                // options: {
+                //     plugins: {
+                //         tooltip: {
+                //             callbacks: {
+                //
+                //                 label: function (context) {
+                //                     var label = context.dataset.label || '';
+                //
+                //                     if (label) {
+                //                         label += ': ';
+                //                     }
+                //                     if (context.parsed.y !== null) {
+                //                         label += new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(context.parsed.y);
+                //                     }
+                //                     return label;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
+
             });
         }
     });

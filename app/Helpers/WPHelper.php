@@ -6,103 +6,34 @@ namespace App\Helpers;
 
 class WPHelper
 {
-    /**
-     * WP-Statistics WordPress Log
-     *
-     * @param $function
-     * @param $message
-     * @param $version
-     */
-    public static function doing_it_wrong($function, $message, $version = '')
-    {
-        if (empty($version)) {
-            $version = WP_STATISTICS_VERSION;
-        }
-        $message .= ' Backtrace: ' . wp_debug_backtrace_summary();
-        if (is_ajax()) {
-            do_action('doing_it_wrong_run', $function, $message, $version);
-            error_log("{$function} was called incorrectly. {$message}. This message was added in version {$version}.");
-        } else {
-            _doing_it_wrong($function, $message, $version);
-        }
-    }
 
-    /**
-     * Returns an array of site id's
-     *
-     * @return array
-     */
-    public static function get_wp_sites_list()
-    {
-        $site_list = array();
-        $sites     = get_sites();
-        foreach ($sites as $site) {
-            $site_list[] = $site->blog_id;
-        }
-        return $site_list;
-    }
 
-    /**
-     * What type of request is this?
-     *
-     * @param string $type admin, ajax, cron or frontend.
-     * @return bool
-     */
-    public static function is_request($type)
-    {
-        switch ($type) {
-            case 'admin':
-                return is_admin();
-            case 'ajax':
-                return defined('DOING_AJAX');
-            case 'cron':
-                return defined('DOING_CRON');
-            case 'wp-cli':
-                return defined('WP_CLI') && WP_CLI;
-            case 'frontend':
-                return (!is_admin() || defined('DOING_AJAX')) && !defined('DOING_CRON') && !self::is_rest_request();
-        }
-    }
-
-    /**
-     * Returns true if the request is a non-legacy REST API request.
-     *
-     * @return bool
-     */
-    public static function is_rest_request()
-    {
-        if (empty($_SERVER['REQUEST_URI'])) {
-            return false;
-        }
-        $rest_prefix = trailingslashit(rest_get_url_prefix());
-        return (false !== strpos($_SERVER['REQUEST_URI'], $rest_prefix));
-    }
 
     /**
      * Check is Login Page
      *
      * @return bool
      */
-    public static function is_login_page()
-    {
-
-        // Check From global WordPress
-        if (isset($GLOBALS['pagenow']) and in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'))) {
-            return true;
-        }
-
-        // Check Native php
-        $protocol   = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === false ? 'http' : 'https';
-        $host       = $_SERVER['HTTP_HOST'];
-        $script     = $_SERVER['SCRIPT_NAME'];
-        $currentURL = $protocol . '://' . $host . $script;
-        $loginURL   = wp_login_url();
-        if ($currentURL == $loginURL) {
-            return true;
-        }
-
-        return false;
-    }
+//    public static function is_login_page()
+//    {
+//
+//        // Check From global WordPress
+//        if (isset($GLOBALS['pagenow']) and in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'))) {
+//            return true;
+//        }
+//
+//        // Check Native php
+//        $protocol   = strpos(strtolower($_SERVER['SERVER_PROTOCOL']), 'https') === false ? 'http' : 'https';
+//        $host       = $_SERVER['HTTP_HOST'];
+//        $script     = $_SERVER['SCRIPT_NAME'];
+//        $currentURL = $protocol . '://' . $host . $script;
+//        $loginURL   = wp_login_url();
+//        if ($currentURL == $loginURL) {
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
     /**
      * Show Admin Wordpress Ui Notice
@@ -115,89 +46,89 @@ class WPHelper
      * @param string $style_extra
      * @return string
      */
-    public static function wp_admin_notice($text, $model = "info", $close_button = true, $id = false, $echo = true, $style_extra = 'padding:12px;')
-    {
-        $text = '
-        <div class="notice notice-' . $model . '' . ($close_button === true ? " is-dismissible" : "") . '"' . ($id != false ? ' id="' . $id . '"' : '') . '>
-           <div style="' . $style_extra . '">' . $text . '</div>
-        </div>
-        ';
-        if ($echo) {
-            echo $text;
-        } else {
-            return $text;
-        }
-    }
+//    public static function wp_admin_notice($text, $model = "info", $close_button = true, $id = false, $echo = true, $style_extra = 'padding:12px;')
+//    {
+//        $text = '
+//        <div class="notice notice-' . $model . '' . ($close_button === true ? " is-dismissible" : "") . '"' . ($id != false ? ' id="' . $id . '"' : '') . '>
+//           <div style="' . $style_extra . '">' . $text . '</div>
+//        </div>
+//        ';
+//        if ($echo) {
+//            echo $text;
+//        } else {
+//            return $text;
+//        }
+//    }
 
     /**
      * Get Screen ID
      *
      * @return string
      */
-    public static function get_screen_id()
-    {
-        $screen    = get_current_screen();
-        $screen_id = $screen ? $screen->id : '';
-        return $screen_id;
-    }
-
-    /**
-     * Get File Path Of Plugins File
-     *
-     * @param $path
-     * @return string
-     */
-    public static function get_file_path($path)
-    {
-        return wp_normalize_path(path_join(WP_STATISTICS_DIR, $path));
-    }
+//    public static function get_screen_id()
+//    {
+//        $screen    = get_current_screen();
+//        $screen_id = $screen ? $screen->id : '';
+//        return $screen_id;
+//    }
+//
+//    /**
+//     * Get File Path Of Plugins File
+//     *
+//     * @param $path
+//     * @return string
+//     */
+//    public static function get_file_path($path)
+//    {
+//        return wp_normalize_path(path_join(WP_STATISTICS_DIR, $path));
+//    }
 
     /**
      * Check User is Used Cache Plugin
      *
      * @return array
      */
-    public static function is_active_cache_plugin()
-    {
-        $use = array('status' => false, 'plugin' => '');
-
-        /* Wordpress core */
-        if (defined('WP_CACHE') && WP_CACHE) {
-            return array('status' => true, 'plugin' => 'core');
-        }
-
-        /* WP Rocket */
-        if (function_exists('get_rocket_cdn_url')) {
-            return array('status' => true, 'plugin' => 'WP Rocket');
-        }
-
-        /* WP Super Cache */
-        if (function_exists('wpsc_init')) {
-            return array('status' => true, 'plugin' => 'WP Super Cache');
-        }
-
-        /* Comet Cache */
-        if (function_exists('___wp_php_rv_initialize')) {
-            return array('status' => true, 'plugin' => 'Comet Cache');
-        }
-
-        /* WP Fastest Cache */
-        if (class_exists('WpFastestCache')) {
-            return array('status' => true, 'plugin' => 'WP Fastest Cache');
-        }
-
-        /* Cache Enabler */
-        if (defined('CE_MIN_WP')) {
-            return array('status' => true, 'plugin' => 'Cache Enabler');
-        }
-
-        /* W3 Total Cache */
-        if (defined('W3TC')) {
-            return array('status' => true, 'plugin' => 'W3 Total Cache');
-        }
-
-        return $use;
-    }
+//    public static function is_active_cache_plugin()
+//    {
+//        $use = array('status' => false, 'plugin' => '');
+//
+//        /* Wordpress core */
+//        if (defined('WP_CACHE') && WP_CACHE) {
+//            return array('status' => true, 'plugin' => 'core');
+//        }
+//
+//        /* WP Rocket */
+//        if (function_exists('get_rocket_cdn_url')) {
+//            return array('status' => true, 'plugin' => 'WP Rocket');
+//        }
+//
+//        /* WP Super Cache */
+//        if (function_exists('wpsc_init')) {
+//            return array('status' => true, 'plugin' => 'WP Super Cache');
+//        }
+//
+//        /* Comet Cache */
+//        if (function_exists('___wp_php_rv_initialize')) {
+//            return array('status' => true, 'plugin' => 'Comet Cache');
+//        }
+//
+//        /* WP Fastest Cache */
+//        if (class_exists('WpFastestCache')) {
+//            return array('status' => true, 'plugin' => 'WP Fastest Cache');
+//        }
+//
+//        /* Cache Enabler */
+//        if (defined('CE_MIN_WP')) {
+//            return array('status' => true, 'plugin' => 'Cache Enabler');
+//        }
+//
+//        /* W3 Total Cache */
+//        if (defined('W3TC')) {
+//            return array('status' => true, 'plugin' => 'W3 Total Cache');
+//        }
+//
+//        return $use;
+//    }
 
     /**
      * Get WordPress Uploads DIR
@@ -206,11 +137,11 @@ class WPHelper
      * @return mixed
      * @default For WP-Statistics Plugin is 'wp-statistics' dir
      */
-    public static function get_uploads_dir($path = '')
-    {
-        $upload_dir = wp_upload_dir();
-        return path_join($upload_dir['basedir'], $path);
-    }
+//    public static function get_uploads_dir($path = '')
+//    {
+//        $upload_dir = wp_upload_dir();
+//        return path_join($upload_dir['basedir'], $path);
+//    }
 
     /**
      * Get Robots List
@@ -243,57 +174,57 @@ class WPHelper
      * Get Number Days From install this plugin
      * this method used for `ALL` Option in Time Range Pages
      */
-    public static function get_date_install_plugin()
-    {
-        global $wpdb;
-
-        //Create Empty default Option
-        $first_day = '';
-
-        //First Check Visitor Table , if not exist Web check Pages Table
-        $list_tbl = array(
-            'visitor' => array('order_by' => 'ID', 'column' => 'last_counter'),
-            'pages'   => array('order_by' => 'page_id', 'column' => 'date'),
-        );
-        foreach ($list_tbl as $tbl => $val) {
-            $first_day = $wpdb->get_var("SELECT `" . $val['column'] . "` FROM `" . WP_STATISTICS\DB::table($tbl) . "` ORDER BY `" . $val['order_by'] . "` ASC LIMIT 1");
-            if (!empty($first_day)) {
-                break;
-            }
-        }
-
-        //Calculate hit day if range is exist
-        if (empty($first_day)) {
-            return false;
-        } else {
-            return $first_day;
-        }
-    }
+//    public static function get_date_install_plugin()
+//    {
+//        global $wpdb;
+//
+//        //Create Empty default Option
+//        $first_day = '';
+//
+//        //First Check Visitor Table , if not exist Web check Pages Table
+//        $list_tbl = array(
+//            'visitor' => array('order_by' => 'ID', 'column' => 'last_counter'),
+//            'pages'   => array('order_by' => 'page_id', 'column' => 'date'),
+//        );
+//        foreach ($list_tbl as $tbl => $val) {
+//            $first_day = $wpdb->get_var("SELECT `" . $val['column'] . "` FROM `" . WP_STATISTICS\DB::table($tbl) . "` ORDER BY `" . $val['order_by'] . "` ASC LIMIT 1");
+//            if (!empty($first_day)) {
+//                break;
+//            }
+//        }
+//
+//        //Calculate hit day if range is exist
+//        if (empty($first_day)) {
+//            return false;
+//        } else {
+//            return $first_day;
+//        }
+//    }
 
     /**
      * Check User Is Using Gutenberg Editor
      */
-    public static function is_gutenberg()
-    {
-        $current_screen = get_current_screen();
-        return ((method_exists($current_screen, 'is_block_editor') && $current_screen->is_block_editor()) || (function_exists('is_gutenberg_page')) && is_gutenberg_page());
-    }
+//    public static function is_gutenberg()
+//    {
+//        $current_screen = get_current_screen();
+//        return ((method_exists($current_screen, 'is_block_editor') && $current_screen->is_block_editor()) || (function_exists('is_gutenberg_page')) && is_gutenberg_page());
+//    }
 
     /**
      * Get List WordPress Post Type
      *
      * @return array
      */
-    public static function get_list_post_type()
-    {
-        $post_types     = array('post', 'page');
-        $get_post_types = get_post_types(array('public' => true, '_builtin' => false), 'names', 'and');
-        foreach ($get_post_types as $name) {
-            $post_types[] = $name;
-        }
-
-        return $post_types;
-    }
+//    public static function get_list_post_type()
+//    {
+//        $post_types     = array('post', 'page');
+//        $get_post_types = get_post_types(array('public' => true, '_builtin' => false), 'names', 'and');
+//        foreach ($get_post_types as $name) {
+//            $post_types[] = $name;
+//        }
+//
+//        return $post_types;
+//    }
 
     /**
      * Check Url Scheme
@@ -313,10 +244,10 @@ class WPHelper
      *
      * @return mixed|string
      */
-    public static function get_wordpress_version()
-    {
-        return get_bloginfo('version');
-    }
+//    public static function get_wordpress_version()
+//    {
+//        return get_bloginfo('version');
+//    }
 
     /**
      * Convert Json To Array
@@ -324,19 +255,19 @@ class WPHelper
      * @param $json
      * @return bool|mixed
      */
-    public static function json_to_array($json)
-    {
-
-        // Sanitize Slash Data
-        $data = wp_unslash($json);
-
-        // Check Validate Json Data
-        if (!empty($data) && is_string($data) && is_array(json_decode($data, true)) && json_last_error() == 0) {
-            return json_decode($data, true);
-        }
-
-        return false;
-    }
+//    public static function json_to_array($json)
+//    {
+//
+//        // Sanitize Slash Data
+//        $data = wp_unslash($json);
+//
+//        // Check Validate Json Data
+//        if (!empty($data) && is_string($data) && is_array(json_decode($data, true)) && json_last_error() == 0) {
+//            return json_decode($data, true);
+//        }
+//
+//        return false;
+//    }
 
     /**
      * Standard Json Encode
@@ -492,28 +423,28 @@ class WPHelper
      * @area utility
      * @return mixed
      */
-    public static function get_post_list($args = array())
-    {
-
-        //Prepare Arg
-        $defaults = array(
-            'post_type'      => 'page',
-            'post_status'    => 'publish',
-            'posts_per_page' => '-1',
-            'order'          => 'ASC',
-            'fields'         => 'ids'
-        );
-        $args     = wp_parse_args($args, $defaults);
-
-        //Get Post List
-        $query = new \WP_Query($args);
-        $list  = array();
-        foreach ($query->posts as $ID) {
-            $list[$ID] = esc_html(get_the_title($ID));
-        }
-
-        return $list;
-    }
+//    public static function get_post_list($args = array())
+//    {
+//
+//        //Prepare Arg
+//        $defaults = array(
+//            'post_type'      => 'page',
+//            'post_status'    => 'publish',
+//            'posts_per_page' => '-1',
+//            'order'          => 'ASC',
+//            'fields'         => 'ids'
+//        );
+//        $args     = wp_parse_args($args, $defaults);
+//
+//        //Get Post List
+//        $query = new \WP_Query($args);
+//        $list  = array();
+//        foreach ($query->posts as $ID) {
+//            $list[$ID] = esc_html(get_the_title($ID));
+//        }
+//
+//        return $list;
+//    }
 
     /**
      * Check WordPress Post is Published
@@ -521,10 +452,10 @@ class WPHelper
      * @param $ID
      * @return bool
      */
-    public static function IsPostPublished($ID)
-    {
-        return get_post_status($ID) == 'public';
-    }
+//    public static function IsPostPublished($ID)
+//    {
+//        return get_post_status($ID) == 'public';
+//    }
 
     /**
      * Generate RGBA colors
@@ -874,16 +805,16 @@ class WPHelper
      *
      * @return int
      */
-    public static function getCountPages()
-    {
-        $count_pages = wp_count_posts('page');
-
-        $ret = 0;
-        if (is_object($count_pages)) {
-            $ret = $count_pages->publish;
-        }
-        return $ret;
-    }
+//    public static function getCountPages()
+//    {
+//        $count_pages = wp_count_posts('page');
+//
+//        $ret = 0;
+//        if (is_object($count_pages)) {
+//            $ret = $count_pages->publish;
+//        }
+//        return $ret;
+//    }
 
     /**
      * Get All WordPress Count
@@ -913,11 +844,11 @@ class WPHelper
      *
      * @return mixed
      */
-    public static function getCountUsers()
-    {
-        $result = count_users();
-        return $result['total_users'];
-    }
+//    public static function getCountUsers()
+//    {
+//        $result = count_users();
+//        return $result['total_users'];
+//    }
 
     /**
      * Return the last date a post was published on your site.
@@ -1001,8 +932,8 @@ class WPHelper
     /**
      * Returns the average number of days between user registrations on your site.
      *
-     * @param bool $days
-     * @return float
+
+
      */
 //    public static function getAverageRegisterUser($days = false)
 //    {
@@ -1030,4 +961,20 @@ class WPHelper
 //            return round($get_total_user / $days_spend, 2);
 //        }
 //    }
+    function my_parse_args($args, $defaults = array())
+    {
+        if (is_object($args)) {
+            $parsed_args = get_object_vars($args);
+        } elseif (is_array($args)) {
+            $parsed_args =& $args;
+        }
+//        else {
+//            wp_parse_str( $args, $parsed_args );
+//        }
+
+        if (is_array($defaults) && $defaults) {
+            return array_merge($defaults, $parsed_args);
+        }
+        return $parsed_args;
+    }
 }

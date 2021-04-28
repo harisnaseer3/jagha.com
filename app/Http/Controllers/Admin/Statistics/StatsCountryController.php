@@ -9,19 +9,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
-class CountryController extends Controller
+class StatsCountryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth:admin');
+//    }
 
     /**
      * Default Unknown flag
      *
      * @var string
      */
-    public static $unknown_location = '000';
+    public static $unknown_location = 'UNKNOWN';
 
     public function get($args = array())
     {
@@ -56,7 +56,7 @@ class CountryController extends Controller
         }
         $result = $result->orderBy('count', 'DESC')->groupBy('location');
 
-        $result = $result->limit($args['limit'])->get();
+        $result = $result->get();
         if (!$result->isEmpty()) {
             foreach ($result as $item) {
                 $item->location = strtoupper($item->location);
@@ -82,7 +82,7 @@ class CountryController extends Controller
      */
     public static function getName($code)
     {
-        $list_country = (new CountryController)->getList();
+        $list_country = (new StatsCountryController)->getList();
         if (array_key_exists($code, $list_country)) {
             return $list_country[$code];
         }

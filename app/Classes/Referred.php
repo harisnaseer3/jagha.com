@@ -5,10 +5,13 @@ namespace App\Classes;
 
 
 use App\Helpers\WPHelper;
+use App\Http\Controllers\Admin\Statistics\SearchEngineController;
 use App\Http\Controllers\Admin\Statistics\VisitorController;
 use App\Http\Controllers\CountryController;
 use App\Models\Log\LogVisitor;
+
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use IpLocation;
 
 class Referred
@@ -18,7 +21,6 @@ class Referred
      *
      * @var string
      */
-    public static $top_referring_transient = 'wps_top_referring';
     public static $referrer_spam_link = 'https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt';
 
     public static function getRefererURL()
@@ -33,41 +35,41 @@ class Referred
      */
     public static function get()
     {
-
         // Get Default
         $referred = self::getRefererURL();
 
         // Sanitize Referer Url
-        $referred = esc_sql(strip_tags($referred));
+        $referred = DB::connection('mysql2')->getPdo()->quote(strip_tags($referred));
 
         // If Referer is Empty then use same WebSite Url
         if (empty($referred)) {
-            $referred = get_bloginfo('url');
+            $referred = env('APP_URL');
         }
 
         // Check Search Engine
-        if (Option::get('addsearchwords', false)) {
 
-            // Check to see if this is a search engine referrer
-            $SEInfo = SearchEngine::getByUrl($referred);
-            if (is_array($SEInfo)) {
+        // Check to see if this is a search engine referrer
+        $SEInfo = SearchEngineController::getByUrl($referred);
+        if (is_array($SEInfo)) {
 
-                // If we're a known SE, check the query string
-                if ($SEInfo['tag'] != '') {
-                    $result = SearchEngine::getByQueryString($referred);
+            // If we're a known SE, check the query string
+            if ($SEInfo['tag'] != '') {
+                $result = SearchEngineController::getByQueryString($referred);
 
-                    // If there were no search words, let's add the page title
-                    if ($result == '' || $result == SearchEngine::$error_found) {
-                        $result = wp_title('', false);
-                        if ($result != '') {
-                            $referred = esc_url(add_query_arg($SEInfo['querykey'], urlencode('~"' . $result . '"'), $referred));
-                        }
+                // If there were no search words, let's add the page title
+                if ($result == '' || $result == SearchEngineController::$error_found) {
+//                    $result = wp_title('', false);
+                    $result = env('APP_URL');
+                    //TODO: Add page title
+                    if ($result != '') {
+//                        $referred = add_query_arg($SEInfo['querykey'], urlencode('~"' . $result . '"'), $referred);
+                        $referred = $result;
                     }
                 }
             }
-        }
 
-        return apply_filters('wp_statistics_user_referer', $referred);
+        }
+        return $referred;
     }
 
     public static function get_referrer_link($referrer, $title = '', $is_blank = false)
@@ -134,17 +136,10 @@ class Referred
     {
 
         $result = self::GenerateReferSQL();
-
-//        $result = $result->orderBy('number', 'DESC')->limit($number)->get();
-
         foreach ($result as $items) {
             $get_urls[$items->domain] = self::get_referer_from_domain($items->domain);
         }
 
-        // Put the results in a transient. Expire after 12 hours.
-//        set_transient(self::$top_referring_transient, $get_urls, 20 * HOUR_IN_SECONDS);
-//        }
-//        return $result;
         // Return Data
         return self::PrepareReferData($get_urls);
     }
@@ -163,7 +158,7 @@ class Referred
         $list = array();
 
         //Load country Code
-        $ISOCountryCode = (new countries)->list();
+        $ISOCountryCode = (new Countries)->list();
 //
         if (!$get_urls) {
             return array();
@@ -189,14 +184,9 @@ class Referred
                 'ip' => ($referrer_list[$domain]['ip'] != "" ? $referrer_list[$domain]['ip'] : '-'),
                 'country' => ($referrer_list[$domain]['country'] != "" ? $ISOCountryCode[$referrer_list[$domain]['country']] : ''),
 //                'flag' => ($referrer_list[$domain]['country'] != "" ? Country::flag($referrer_list[$domain]['country']) : ''),
-//                'page_link' => Menus::admin_url('referrers', array('referr' => $referrer_html)),
                 'number' => number_format($number[0]->count)
             );
         }
-
-        //Save Referrer List Update
-//        update_option(self::$referral_detail_opt, $referrer_list, 'no');
-
         // Return Data
         return $list;
     }
@@ -254,7 +244,7 @@ class Referred
                 $where = " AND `referred` NOT LIKE '{$protocol}://{$w3}{$domain_name}%' ";
             }
         }
-        $sql_query = DB::connection('mysql2')->select("SELECT SUBSTRING_INDEX(REPLACE( REPLACE( referred, 'http://', '') , 'https://' , '') , '/', 1 ) as `domain`, count(referred) as `number` FROM `visitor`  WHERE `referred` REGEXP \"^(https?://|www\\.)[\.A-Za-z0-9\-]+\\.[a-zA-Z]{2,4}\" AND `referred` <> '' AND LENGTH(referred) >=12 " . $where . " GROUP BY domain ORDER BY `number`  DESC LIMIT 10");
+        $sql_query = DB::connection('mysql2')->select("SELECT SUBSTRING_INDEX(REPLACE( REPLACE( referred, 'http://', '') , 'https://' , '') , '/', 1 ) as `domain`, count(referred) as `number` FROM `visitor`  WHERE `referred` REGEXP \"^(https?://|www\\.)[\.A-Za-z0-9\-]+\\.[a-zA-Z]{2,4}\" AND `referred` <> '' AND LENGTH(referred) >=12 " . $where . " GROUP BY domain ORDER BY `number`  DESC");
 
         // Return SQL
         return $sql_query;

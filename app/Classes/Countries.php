@@ -4,13 +4,13 @@
 namespace App\Classes;
 
 
-class countries
+class Countries
 {
 
 
     public function list()
     {
-        $ISOCountryCode['000'] = "Unknown";
+        $ISOCountryCode['UNKNOWN'] = "Unknown";
         $ISOCountryCode['AF'] = "Afghanistan";
         $ISOCountryCode['AX'] = "Åland Islands";
         $ISOCountryCode['AL'] = "Albania";
