@@ -215,7 +215,7 @@ class VisitorController extends Controller
         foreach ($result as $items) {
             $item = array(
                 'hits' => (int)$items->hits,
-                'referred' => Referred::get_referrer_link($items->referred),
+                'referred' => $items->referred !== '' ? Referred::get_referrer_link($items->referred) : '<a href= "#"> Not available</a>',
                 'refer' => $items->referred,
                 'date' => (new Carbon($items->last_counter))->Format('M d, Y'),
                 'agent' => $items->agent,

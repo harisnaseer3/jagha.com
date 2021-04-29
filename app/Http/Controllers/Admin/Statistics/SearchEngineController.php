@@ -23,7 +23,7 @@ class SearchEngineController extends Controller
 
         // If no URL was passed in, get the current referrer for the session.
         if (!$url) {
-            $url = !empty($_SERVER['HTTP_REFERER']) ? Referred::get() : false;
+            $url = !empty( \request()->server('HTTP_REFERER')) ? Referred::get() : false;
         }
 
         // If there is no URL and no referrer, always return false.
