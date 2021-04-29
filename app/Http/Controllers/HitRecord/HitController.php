@@ -76,7 +76,7 @@ class HitController extends Controller
     {
 
         // Get Http User Agent
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
+       // $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 
         $pattern = '/[a-zA-Z]/';

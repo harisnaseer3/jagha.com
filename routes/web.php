@@ -102,7 +102,7 @@ Route::get('/search/partners_results', 'AgencySearchController@searchPartner')->
 //Route::get('/blogs/', 'BlogController@index')->name('blogs.index');
 //Route::get('/blogs/{slug}_{blogs}', 'BlogController@show')->name('blogs.show');
 
-Route::group(['prefix' => 'properties','middleware' => ['log.request']], function () {
+Route::group(['prefix' => 'properties'], function () {
     Route::get('/search', 'PropertyController@search')->name('properties.search');
     //Property detail view
     Route::get('/{slug}_{property}', 'PropertyController@show')->name('properties.show');
