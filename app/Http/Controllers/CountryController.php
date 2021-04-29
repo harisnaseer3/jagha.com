@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -74,11 +73,11 @@ class CountryController extends Controller
     function Country_name()
     {
         $ip = $_SERVER['REMOTE_ADDR'];
-        $country = $this->ip_info($ip, "Country");
+        $country = $this->ip_info($ip, "country");
         if ($country !== '')
             return $country;
         else
-            return 'Unavailable';
+            return 'Unknown';
     }
 
     function city_name()
@@ -88,7 +87,26 @@ class CountryController extends Controller
         if ($city)
             return $city;
         else
-            return 'Unavailable';
+            return 'Unknown';
+    }
+
+    public static function get_city_name($ip)
+    {
+
+        $city = (new CountryController)->ip_info($ip, "city");
+        if ($city)
+            return $city;
+        else
+            return 'Unknown';
+    }
+
+    function country_code($ip)
+    {
+        $country = $this->ip_info($ip, "countrycode");
+        if ($country !== '')
+            return $country;
+        else
+            return 'Unknown';
     }
 
 

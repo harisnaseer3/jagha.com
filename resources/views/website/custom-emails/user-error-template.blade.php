@@ -318,8 +318,11 @@
                                                 style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-family: 'Poppins', sans-serif;color: #000000;margin-top: 0;font-weight: 400;margin-bottom: 0;">
                                                 Hello {{ ucwords($user) }}</h3>
                                             <br>
-
-                                            <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">User Error Mail</span>
+                                            @if(isset($error_user))
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">User Error Mail</span>
+                                            @else
+                                                <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Log Error Mail</span>
+                                            @endif
                                             <br>
                                             <br>
                                             <b>-------------------------------</b>
@@ -332,26 +335,33 @@
                                             <br>
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Error: </strong>{{$error}}</span>
-                                            <br><br>
+                                            <br>
+                                            <br>
+                                            @if(isset($custom_msg))
+                                            {{$custom_msg}}
+                                            @endif
+
                                             <b>-------------------------------</b>
                                             <br>
 
-                                            <b style="font-size: 16px; color:darkgrey">USER DETAILS</b>
-                                            <br>
-                                            <b>-------------------------------</b>
-                                            <br>
-                                            <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                            @if(isset($error_user))
+
+                                                <b style="font-size: 16px; color:darkgrey">USER DETAILS</b>
+                                                <br>
+                                                <b>-------------------------------</b>
+                                                <br>
+                                                <br>
+                                                <span class="position"
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
                                                 <strong>ID: </strong>{{$error_user->id}}</span>
-                                            <br><span class="position"
-                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                                <br><span class="position"
+                                                          style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
                                                 <strong>Name: </strong>{{$error_user->name}}</span>
-                                            <br><span class="position"
-                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
+                                                <br><span class="position"
+                                                          style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
                                                 <strong>Email: </strong>{{$error_user->email}}</span>
-                                            <br>
-
+                                                <br>
+                                            @endif
 
                                             <br>
                                             <br>

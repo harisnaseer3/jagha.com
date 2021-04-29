@@ -1,0 +1,259 @@
+<?php
+
+namespace App\Http\Controllers\Admin\Statistics;
+
+use App\Classes\Countries;
+use App\Classes\Referred;
+use App\Events\LogErrorEvent;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\HitRecord\HitController;
+use App\Models\Log\LogVisitor;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+class VisitorController extends Controller
+{
+//    public function __construct()
+//    {
+//        $this->middleware('auth:admin');
+//    }
+
+    public function get($args = array())
+    {
+        if (!isset($args['limit'])) {
+            $args['limit'] = 10;
+        }
+        if (!isset($args['day'])) {
+            $args['day'] = 'today';
+        }
+        try {
+            $response = $this->getTop($args);
+        } catch (\Exception $e) {
+            $response = array();
+        }
+        // Check For No Data Meta Box
+        if (count($response) < 1) {
+            $response = array();
+        }
+
+        // Response
+        return $response;
+    }
+
+    public function getRecentVisitor($args = array())
+    {
+        if (!isset($args['limit'])) {
+            $args['limit'] = 10;
+        }
+
+        try {
+            $response = $this->getRecent($args);
+
+        } catch (\Exception $e) {
+
+            $response = array();
+        }
+        // Check For No Data Meta Box
+        if (count($response) < 1) {
+            $response = array();
+        }
+
+        // Response
+        return $response;
+    }
+
+
+    public function getTop($args)
+    {
+        // Get List From DB
+        $t = Carbon::now()->format('Y-m-d');
+        if ($args['day'] != 'today') {
+            $t = date('Y-m-d', strtotime($args['day']));
+        }
+
+        $list = array();
+
+
+        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->orderBy('hits', 'DESC')->get();
+
+        if (!$result->isEmpty()) {
+            $list = self::prepareData($result);
+        }
+        return $list;
+    }
+
+    public function getRecent($args)
+    {
+
+        $list = array();
+        $result = (new LogVisitor())->select('*')->orderBy('ID', 'DESC')->get();
+
+        if (!$result->isEmpty()) {
+            $list = self::prepareData($result);
+        }
+        return $list;
+    }
+
+    /**
+     * Get Page Information By visitor ID
+     *
+     * @param $visitor_ID
+     * @return mixed
+     */
+//    public static function get_page_by_visitor_id($visitor_ID)
+//    {
+//
+//        // Default Params
+//        $params = array('link' => '', 'title' => '');
+//
+//
+//
+//        // Get Row
+//        $item = " SELECT " . DB::table('pages') . ".* FROM `" . DB::table('pages') . "` INNER JOIN `" . DB::table('visitor_relationships') . "` ON `" . DB::table('pages') . "`.`page_id` = `" . DB::table('visitor_relationships') . "`.`page_id` INNER JOIN `" . DB::table('visitor') . "` ON `" . DB::table('visitor_relationships') . "`.`visitor_id` = `" . DB::table('visitor') . "`.`ID` WHERE `" . DB::table('visitor') . "`.`ID` = {$visitor_ID};", ARRAY_A);
+//        if ($item !== null) {
+//            $params = Pages::get_page_info($item['id'], $item['type']);
+//        }
+//
+//        return $params;
+//    }
+
+    /**
+     * Record Uniq Visitor Detail in DB
+     *
+     * @param array $arg
+     * @return bool|INT
+     * @throws \Exception
+     */
+    public static function record($arg = array())
+    {
+        // Define the array of defaults
+        $defaults = array(
+            'exclusion_match' => false,
+            'exclusion_reason' => '',
+        );
+        $args = (new \App\Helpers\WPHelper)->my_parse_args($arg, $defaults);
+
+        // Check User Exclusion
+        if ($args['exclusion_match'] === false) {
+
+            $user_ip = HitController::getIP();
+            $user_agent = HitController::getUserAgent();
+
+            //Check Exist This User in Current Day
+            $same_visitor = self::exist_ip_in_day($user_ip);
+
+
+//             If we have a new Visitor in Day
+            if (!$same_visitor) {
+                $visitor = array(
+                    'last_counter' => Carbon::now()->format('Y-m-d'),
+                    'referred' => Referred::get(),
+                    'agent' => $user_agent['browser'],
+                    'platform' => $user_agent['platform'],
+                    'version' => $user_agent['version'],
+                    'ip' => $user_ip,
+                    'location' => HitController::getCountry($user_ip),
+                    'user_id' => Auth::check() ? Auth::user()->id : 0,
+                    'UAString' => '',
+                    'hits' => 1,
+                    'honeypot' => 0,
+                );
+                //Save Visitor TO DB
+                $visitor_id = self::save_visitor($visitor);
+            } else {
+
+                DB::connection('mysql2')->table('visitor')->where('ID', $same_visitor->ID)
+                    ->increment('hits', 1);
+                //Get Current Visitor ID
+                $visitor_id = $same_visitor->ID;
+
+            }
+        }
+
+        return (isset($visitor_id) ? $visitor_id : false);
+    }
+
+    /**
+     * Save visitor relationShip
+     *
+     * @param $page_id
+     * @param $visitor_id
+     * @return int
+     */
+    public static function save_visitors_relationships($page_id, $visitor_id)
+    {
+        try {
+            $insert = DB::connection('mysql2')->table('visitor_relationships')->insertGetId([
+                'visitor_id' => $visitor_id,
+                'page_id' => $page_id,
+                'date' => Carbon::now()->toDateTimeString()]);
+
+
+        } catch (\Exception $e) {
+            event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitors_relationships method.'));
+        }
+        return $insert;
+    }
+
+    public static function exist_ip_in_day($ip, $date = false)
+    {
+        $d = $date === false ? Carbon::now()->format('Y-m-d') : $date;
+        $visitor = LogVisitor::where('last_counter', $d)->where('ip', $ip)->first();
+        if ($visitor)
+            return $visitor;
+        else
+            return false;
+//        return (!$visitor ? false : $visitor);
+    }
+
+    public function prepareData($result): array
+    {
+        $list = array();
+        foreach ($result as $items) {
+            $item = array(
+                'hits' => (int)$items->hits,
+                'referred' => Referred::get_referrer_link($items->referred),
+                'refer' => $items->referred,
+                'date' => (new Carbon($items->last_counter))->Format('M d, Y'),
+                'agent' => $items->agent,
+                'platform' => $items->platform,
+                'version' => $items->version
+            );
+            $item['browser'] = array(
+                'name' => $items->agent,
+            );
+            // Push IP
+            $item['ip'] = $items->ip;
+
+            // Push Country
+            $item['country'] = array('location' => $items->location, 'name' => (new StatsCountryController())->getName($items->location));
+            $item['city'] = CountryController::get_city_name($items->ip);
+            $list[] = $item;
+        }
+        return $list;
+    }
+
+
+    /**
+     * Save new Visitor To DB
+     *
+     * @param array $visitor
+     * @return INT
+     */
+    public static function save_visitor($visitor = array())
+    {
+        //TODO:here add ,more than 100 visit check
+
+        try {
+            return DB::connection('mysql2')->table('visitor')->insertGetId($visitor);
+        } catch (\Exception $e) {
+            event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitor method.'));
+        }
+        # Get Visitor ID
+
+    }
+
+}

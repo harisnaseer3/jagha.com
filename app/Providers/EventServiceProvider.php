@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\AddPropertyInPackageEvent;
 use App\Events\ContactAgentEvent;
+use App\Events\LogErrorEvent;
 use App\Events\NewPropertyActivatedEvent;
 use App\Events\NewUserRegisteredEvent;
 use App\Events\NotifyAdminOfEditedProperty;
@@ -15,6 +16,7 @@ use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Events\UserErrorEvent;
 use App\Listeners\AddPropertyInPackageListener;
 use App\Listeners\AddUserInSubscriberListener;
+use App\Listeners\LogErrorListener;
 use App\Listeners\NotifyAdminEditProperty;
 use App\Listeners\NotifyAdminListener;
 use App\Listeners\NotifyPackageEventListener;
@@ -72,7 +74,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserErrorEvent::class => [
             UserErrorListener::class
-        ]
+        ],
+        LogErrorEvent::class => [
+            LogErrorListener::class
+        ],
     ];
 
     /**

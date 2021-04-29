@@ -19,14 +19,18 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="all-cities-header">
-                               @if($type === 'homes') Houses @else {{$type}} @endif for {{$purpose}} in All Cities of Pakistan</h1>
+                                @if($type === 'homes') Houses @else {{$type}} @endif for {{$purpose}} in All Cities of Pakistan</h1>
                         </div>
                         <div class="card-body">
                             @if(trim(explode('&',$type)[0]) =='Houses')<h2 class="all-cities-header">{{trim(explode('&',$type)[0])}}</h2>@endif
                             <div class="row">
                                 @if(isset($cities[trim(strtolower(explode('&',$type)[0]))]))
                                     @foreach($cities[trim(strtolower(explode('&',$type)[0]))] as  $city)
+                                        @if(isset($city->property_type) && $city->property_type == '')
+                                            @continue
+                                        @endif
                                         <div class="col-sm-3 my-2">
+
                                             <a href="{{route('sale.property.search', [
                                                     'sub_type' => lcfirst(isset($city->property_sub_type)? $city->property_sub_type : $city->property_type),
                                                     'city' => lcfirst($city->city_name) ,
@@ -66,7 +70,7 @@
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right mt-0">
-                            @include('website.includes.subscribe-content')
+                        @include('website.includes.subscribe-content')
                     </div>
                 </div>
             </div>

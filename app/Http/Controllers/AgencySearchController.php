@@ -85,7 +85,8 @@ class AgencySearchController extends Controller
             $lastPage = ceil((int)$agencies->count() / $limit);
             $request->merge(['page' => (int)$lastPage]);
         }
-        $agencies = $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'property_count_by_agencies.property_count')
+        $agencies =
+            $agencies->groupBy('agencies.title', 'agencies.id', 'agencies.featured_listing', 'agency_cities.city_id', 'c.property_count')
             ->orderBy('agencies.created_at', $sort === 'newest' ? 'DESC' : 'ASC');
 
         $property_types = (new PropertyType)->all();

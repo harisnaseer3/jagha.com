@@ -357,6 +357,11 @@
                             Facebook Post
                         </a>
                     </li>
+                    <li class="nav-item hide-nav navbar-li">
+                        <a class="nav-link" href="{{route('admin.statistic.index')}}">
+                            Statistics
+                        </a>
+                    </li>
             </ul>
             <ul class="top-social-media navbar-nav ml-auto">
                 <li class="nav-item user-dropdown">
