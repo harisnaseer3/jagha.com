@@ -181,7 +181,6 @@ class StatisticController extends Controller
 
         $sites = (new ReferringSiteController())::get($args);
 
-
         $data['view'] = View('website.admin-pages.components.top-referring-site',
             ['sites' => $sites])->render();
         return $data;

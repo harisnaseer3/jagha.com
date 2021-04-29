@@ -26,6 +26,8 @@ class Referred
     public static function getRefererURL()
     {
         return (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
+//        $http_referer = \request()->server('HTTP_REFERER');
+//        return (isset($http_referer) ? $http_referer : '');
     }
 
     /**
@@ -39,7 +41,7 @@ class Referred
         $referred = self::getRefererURL();
 
         // Sanitize Referer Url
-        $referred = DB::connection('mysql2')->getPdo()->quote(strip_tags($referred));
+//        $referred = DB::connection('mysql2')->getPdo()->quote(strip_tags($referred));
 
         // If Referer is Empty then use same WebSite Url
         if (empty($referred)) {
@@ -50,29 +52,29 @@ class Referred
 
         // Check to see if this is a search engine referrer
         $SEInfo = SearchEngineController::getByUrl($referred);
-        if (is_array($SEInfo)) {
-
-            // If we're a known SE, check the query string
-            if ($SEInfo['tag'] != '') {
-                $result = SearchEngineController::getByQueryString($referred);
-
-                // If there were no search words, let's add the page title
-                if ($result == '' || $result == SearchEngineController::$error_found) {
-//                    $result = wp_title('', false);
-                    $result = env('APP_URL');
-                    //TODO: Add page title
-                    if ($result != '') {
+//        if (is_array($SEInfo)) {
+//
+//            // If we're a known SE, check the query string
+//            if ($SEInfo['tag'] != '') {
+//                $result = SearchEngineController::getByQueryString($referred);
+//
+//                // If there were no search words, let's add the page title
+//                if ($result == '' || $result == SearchEngineController::$error_found) {
+////                    $result = wp_title('', false);
+////                    $result = env('APP_URL');
+//                    //TODO: Add page title
+//                    if ($result != '') {
 //                        $referred = add_query_arg($SEInfo['querykey'], urlencode('~"' . $result . '"'), $referred);
-                        $referred = $result;
-                    }
-                }
-            }
-
-        }
+//                        $referred = $result;
+//                    }
+//                }
+//            }
+//
+//        }
         return $referred;
     }
 
-    public static function get_referrer_link($referrer, $title = '', $is_blank = false)
+    public static function get_referrer_link($referrer, $title = '', $is_blank = true)
     {
 
         // Sanitize Link
@@ -141,6 +143,7 @@ class Referred
         }
 
         // Return Data
+
         return self::PrepareReferData($get_urls);
     }
 
@@ -244,8 +247,7 @@ class Referred
                 $where = " AND `referred` NOT LIKE '{$protocol}://{$w3}{$domain_name}%' ";
             }
         }
-        $sql_query = DB::connection('mysql2')->select("SELECT SUBSTRING_INDEX(REPLACE( REPLACE( referred, 'http://', '') , 'https://' , '') , '/', 1 ) as `domain`, count(referred) as `number` FROM `visitor`  WHERE `referred` REGEXP \"^(https?://|www\\.)[\.A-Za-z0-9\-]+\\.[a-zA-Z]{2,4}\" AND `referred` <> '' AND LENGTH(referred) >=12 " . $where . " GROUP BY domain ORDER BY `number`  DESC");
-
+        $sql_query = DB::connection('mysql2')->select("SELECT SUBSTRING_INDEX(REPLACE( REPLACE( referred, 'http://', '') , 'https://' , '') , '/', 1 ) as `domain`, count(referred) as `number` FROM `visitor`  WHERE `referred` REGEXP \"^(https?://|www\\.)[\.A-Za-z0-9\-]+\\.[a-zA-Z]{2,4}\" AND `referred` <> '' AND LENGTH(referred) >=12 " . $where . " GROUP BY domain ORDER BY `number` DESC");
         // Return SQL
         return $sql_query;
     }
@@ -274,6 +276,8 @@ class Referred
         $sql = DB::connection('mysql2')->select("SELECT " . ($type == 'number' ? 'COUNT(*) AS count' : '*') . " FROM `visitor` WHERE `referred` REGEXP \"^(https?://|www\\.)[\.A-Za-z0-9\-]+\\.[a-zA-Z]{2,4}\"
         AND referred <> '' AND LENGTH(referred) >=12 AND (`referred` LIKE  ? OR `referred` LIKE ? OR `referred` LIKE ? OR `referred` LIKE ?) " . $time_sql .
             " ORDER BY `visitor`.`ID` DESC " . ($limit != null ? " LIMIT " . $limit : ""), ['https://www.' . $search_url . '%', 'https://' . $search_url . '%', 'http://www.' . $search_url . '%', 'http://' . $search_url . '%']);
+
+
         //Get Count
         return ($type == 'number' ? $sql : (new \App\Http\Controllers\Admin\Statistics\VisitorController)->PrepareData($sql));
     }
