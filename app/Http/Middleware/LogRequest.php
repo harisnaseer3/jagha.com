@@ -18,7 +18,7 @@ class LogRequest
         if (!$request->ajax()) {
 
             try {
-                DB::beginTransaction();
+               // DB::beginTransaction();
                 $nextRequest = $next($request); //The router will be dispatched here, but it will reach to controller's method sometimes, so that we have to use DB transaction.
                 $pattern = 'dashboard';
                 $pattern2 = 'admin';
@@ -28,14 +28,17 @@ class LogRequest
                 $regex = '/^(' . implode('|', $patterns) . ')/i';
                 if (Route::current() == null) {
                     HitController::record();
-
+					return $nextRequest;
                 }
 
                 if (Route::current() !== null && !(preg_match($regex, Route::current()->uri))) {
                     HitController::record();
-                }
-                return $nextRequest;
-
+					return $nextRequest;					
+                } 
+				else
+				return $nextRequest;
+				
+				
 
             } catch (\Exception $e) {
                 event(new LogErrorEvent($e->getMessage(), 'Error in logRequest middleware handle method'));
