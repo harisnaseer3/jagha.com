@@ -47,6 +47,8 @@ class Referred
         if (empty($referred)) {
             $referred = env('APP_URL');
         }
+        if($referred == '')
+            $referred = env('APP_URL');
 
         // Check Search Engine
 
