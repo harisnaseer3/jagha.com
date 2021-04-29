@@ -106,11 +106,11 @@ class ExclusionController extends Controller
     /**
      * Detect if Self Referral WordPress.
      */
-    public static function exclusion_self_referral()
-    {
-        //TODO:check its value
-        return $_SERVER['HTTP_USER_AGENT'] == env('APP_URL');
-    }
+//    public static function exclusion_self_referral()
+//    {
+//        //TODO:check its value
+//        return $_SERVER['HTTP_USER_AGENT'] == env('APP_URL');
+//    }
 
 
     /**
@@ -122,10 +122,13 @@ class ExclusionController extends Controller
         if (http_response_code() == 404) {
 
             //Check Current Page
-            if (isset($_SERVER["HTTP_HOST"]) and isset($_SERVER["REQUEST_URI"])) {
-
+//            if (isset($_SERVER["HTTP_HOST"]) and isset($_SERVER["REQUEST_URI"])) {
+            $http_host = \request()->server('HTTP_HOST');
+            $request_uri= \request()->server('REQUEST_URI');
+            $server_https = $_SERVER['HTTPS'];
+            if (isset($http_host) and isset($request_uri)) {
                 //Get Full Url Page
-                $page_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://{$_SERVER["HTTP_HOST"]}{$_SERVER["REQUEST_URI"]}";
+                $page_url = (isset($server_https) && $server_https === 'on' ? "https" : "http") . "://{$http_host}{$request_uri}";
 
                 //Check Link file
                 $page_url = parse_url($page_url, PHP_URL_PATH);
@@ -154,7 +157,7 @@ class ExclusionController extends Controller
 
             // If the match case is less than 4 characters long, it might match too much so don't execute it.
             if (strlen($robot) > 3) {
-                if (stripos($_SERVER['HTTP_USER_AGENT'], $robot) !== false) {
+                if (stripos(\request()->server('HTTP_USER_AGENT'), $robot) !== false) {
                     return true;
                 }
             }
@@ -162,7 +165,7 @@ class ExclusionController extends Controller
 
         // Check User IP is empty Or Not User Agent
 //        if (Option::get('corrupt_browser_info')) {
-        if ($_SERVER['HTTP_USER_AGENT'] == '' || (new HitController)->getIP() == '0.0.0.0') {
+        if (\request()->server('HTTP_USER_AGENT') == '' || (new HitController)->getIP() == '0.0.0.0') {
             return true;
         }
 
