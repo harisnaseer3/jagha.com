@@ -45,10 +45,10 @@ class Referred
 
         // If Referer is Empty then use same WebSite Url
         if (empty($referred)) {
-            $referred = env('APP_URL');
+            $referred ='https://property.aboutpakistan.com/';
         }
         if($referred == '')
-            $referred = env('APP_URL');
+            $referred = 'https://property.aboutpakistan.com/';
 
         // Check Search Engine
 
