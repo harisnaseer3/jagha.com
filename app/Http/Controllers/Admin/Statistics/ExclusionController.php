@@ -26,7 +26,7 @@ class ExclusionController extends Controller
             'CrawlerDetect' => 'Crawler Detect',
             'robot' => 'Robot',
             'BrokenFile' => 'Broken Link',
-            'self referral' => 'Self Referral',
+//            'self referral' => 'Self Referral',
             '404' => '404',
         );
     }
