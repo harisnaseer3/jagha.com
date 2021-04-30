@@ -248,8 +248,15 @@ class VisitorController extends Controller
         //TODO:here add ,more than 100 visit check
 
         try {
-            return DB::connection('mysql2')->table('visitor')->insertGetId($visitor);
+            DB::connection('mysql2')->transaction(function () use ($visitor) {
+                return (new \App\Models\Log\LogVisitor)->updateOrCreate(
+                    ['last_counter' => $visitor['last_counter'], 'ip' => $visitor['ip']],
+                    $visitor)->id;
+            });
+
         } catch (\Exception $e) {
+            event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitor method.'));
+        } catch (\Throwable $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitor method.'));
         }
         # Get Visitor ID
