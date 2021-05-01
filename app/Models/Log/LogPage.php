@@ -14,6 +14,9 @@ class LogPage extends Model
 {
     protected $connection = 'mysql2';
     public $table = 'pages';
+    protected $fillable = [
+        'page_id', 'uri', 'type','date','count','id'
+    ];
 
     public function getTopPages()
     {

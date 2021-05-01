@@ -248,8 +248,28 @@ class VisitorController extends Controller
         //TODO:here add ,more than 100 visit check
 
         try {
-            return DB::connection('mysql2')->table('visitor')->insertGetId($visitor);
+            DB::connection('mysql2')->transaction(function () use ($visitor) {
+//                return (new \App\Models\Log\LogVisitor)->updateOrCreate(
+//                    ['last_counter' => $visitor['last_counter'], 'ip' => $visitor['ip']],
+//                    $visitor)->id;
+
+//                DB::connection('mysql2')->insert('insert into visitor
+//    (last_counter,referred,agent,platform,version,ip,location,user_id,UAString,hits,honeypot)
+//                                                                                values (?, ?)', ['john@example.com', '0']);
+                DB::connection('mysql2')->statement('INSERT INTO visitor (last_counter,referred,agent,platform,version,ip,location,user_id,UAString,hits,honeypot)
+                    VALUES ( ?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE hits = hits + 1',
+                    [$visitor['last_counter'], $visitor['referred'], $visitor['agent'], $visitor['platform'], $visitor['version'], $visitor['ip'],
+                        $visitor['location'], $visitor['user_id'], $visitor['UAString'], $visitor['hits'], $visitor['honeypot']]);
+
+                return DB::connection('mysql2')->getpdo()->lastInsertId();
+
+
+
+            });
+
         } catch (\Exception $e) {
+            event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitor method.'));
+        } catch (\Throwable $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitor method.'));
         }
         # Get Visitor ID

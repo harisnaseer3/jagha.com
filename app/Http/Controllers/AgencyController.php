@@ -42,7 +42,7 @@ class AgencyController extends Controller
                 $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
                     ->where('agencies.status', '=', 'verified')
                     ->where('agencies.featured_listing', '=', '1')
-                    ->where('agencies.key_listing', '=', '0')
+//                    ->where('agencies.key_listing', '=', '0')
                     ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
                     ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
                     ->orderBy('cities.name')->get();
@@ -98,7 +98,7 @@ class AgencyController extends Controller
         $featured_agencies = (new Agency)->select(DB::raw('COUNT(agency_cities.city_id) AS agency_count'), 'cities.name AS city')
             ->where('agencies.status', '=', 'verified')
             ->where('agencies.featured_listing', '=', '1')
-            ->where('agencies.key_listing', '=', '0')
+//            ->where('agencies.key_listing', '=', '0')
             ->join('agency_cities', 'agencies.id', '=', 'agency_cities.agency_id')
             ->join('cities', 'agency_cities.city_id', '=', 'cities.id')->groupBy('cities.name')
             ->orderBy('agency_count', 'DESC')->get();
