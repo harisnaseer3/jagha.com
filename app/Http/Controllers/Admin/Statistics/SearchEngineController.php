@@ -23,7 +23,7 @@ class SearchEngineController extends Controller
 
         // If no URL was passed in, get the current referrer for the session.
         if (!$url) {
-            $url = !empty( \request()->server('HTTP_REFERER')) ? Referred::get() : false;
+            $url = !empty(\request()->server('HTTP_REFERER')) ? Referred::get() : false;
         }
 
         // If there is no URL and no referrer, always return false.
@@ -40,9 +40,9 @@ class SearchEngineController extends Controller
         // Loop through the SE list until we find which search engine matches.
         foreach ($search_engines as $key => $value) {
             $search_regex = self::regex($key);
-            if(isset($parts['host'])){
-                preg_match('/' . $search_regex . '/', $parts['host'], $matches);
-            }
+            $host = isset($parts['host']) ? $parts['host'] : '';
+
+            preg_match('/' . $search_regex . '/', $host, $matches);
             if (isset($matches[1])) {
                 // Return the first matched SE.
                 return $value;
@@ -281,7 +281,8 @@ class SearchEngineController extends Controller
         // Loop through the SE list until we find which search engine matches.
         foreach ($search_engines as $key => $value) {
             $search_regex = self::regex($key);
-            preg_match('/' . $search_regex . '/', $parts['host'], $matches);
+            $host = isset($parts['host']) ? $parts['host'] : '';
+            preg_match('/' . $search_regex . '/', $host, $matches);
             if (isset($matches[1])) {
                 if (array_key_exists($search_engines[$key]['querykey'], $query)) {
                     $words = strip_tags($query[$search_engines[$key]['querykey']]);
@@ -323,18 +324,18 @@ class SearchEngineController extends Controller
 
                 // Loop through the SE list until we find which search engine matches.
                 foreach ($search_engines as $key => $value) {
+                    $host = isset($parts['host']) ? $parts['host'] : '';
 
                     // Check find Regex
                     $search_regex = self::regex($key);
-                    preg_match('/' . $search_regex . '/', $parts['host'], $matches);
+                    preg_match('/' . $search_regex . '/', $host, $matches);
                     if (isset($matches[1])) {
-
                         // Prepare Search Word Data
                         $search_word = array(
                             'last_counter' => Carbon::now()->format('Y-m-d'),
                             'engine' => $key,
                             'words' => (SearchEngineController::getByQueryString($referred) == self::$error_found ? '' : SearchEngineController::getByQueryString($referred)),
-                            'host' => $parts['host'],
+                            'host' => $host,
                             'visitor' => $args['visitor_id'],
                         );
 
@@ -356,7 +357,7 @@ class SearchEngineController extends Controller
         # Save to Database
         try {
             DB::connection('mysql2')->table('search')->insert($data);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in search engine controller save_word method.'));
 
         }
