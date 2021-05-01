@@ -19,7 +19,9 @@ class LogVisitor extends Model
     const CREATED_AT = null;
     const UPDATED_AT = null;
 
-
+    protected $fillable = [
+        'ID', 'last_counter', 'referred','agent','platform','version','ip','location','user_id','UAString','hits','honeypot'
+    ];
 
 
     private $date_column = 'last_counter';
