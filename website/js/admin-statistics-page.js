@@ -67,6 +67,45 @@
                 });
             }
         );
+        $.get('/get-top-pages',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-top-pages').hide();
+                $('#top-pages-block').slideDown();
+                $('#tbody-top-pages').html(data.view);
+
+                $('#top-pages').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
+        $.get('/get-top-visitors',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-top-visitors').hide();
+                $('#top-visitors-block').slideDown();
+                $('#tbody-top-visitors').html(data.view);
+
+                $('#top-visitors').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
+        $.get('/get-recent-visitors',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-recent-visitors').hide();
+                $('#recent-visitors-block').slideDown();
+                $('#tbody-recent-visitors').html(data.view);
+
+                $('#recent-visitors').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
 
         if ($('#myChart').length > 0) {
             jQuery.ajaxSetup({
@@ -145,19 +184,7 @@
             });
         }
 
-        $.get('/get-top-pages',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-top-pages').hide();
-                $('#top-pages-block').slideDown();
-                $('#tbody-top-pages').html(data.view);
 
-                $('#top-pages').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
         $.get('/get-top-countries',  // url
             function (data, textStatus, jqXHR) {  // success callback
                 $('#loader-top-countries').hide();
@@ -171,32 +198,7 @@
                 });
             }
         );
-        $.get('/get-top-visitors',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-top-visitors').hide();
-                $('#top-visitors-block').slideDown();
-                $('#tbody-top-visitors').html(data.view);
 
-                $('#top-visitors').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
-        $.get('/get-recent-visitors',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-recent-visitors').hide();
-                $('#recent-visitors-block').slideDown();
-                $('#tbody-recent-visitors').html(data.view);
-
-                $('#recent-visitors').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
 
         //hit stats
         $('#submit').on('click', function (e) {
