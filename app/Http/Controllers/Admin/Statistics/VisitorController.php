@@ -87,9 +87,9 @@ class VisitorController extends Controller
 
     public function getRecent($args)
     {
-
+        $t = Carbon::now()->format('Y-m-d');
         $list = array();
-        $result = (new LogVisitor())->select('*')->orderBy('ID', 'DESC')->get();
+        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->orderBy('ID', 'DESC')->get();
 
         if (!$result->isEmpty()) {
             $list = self::prepareData($result);
