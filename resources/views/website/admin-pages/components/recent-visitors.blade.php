@@ -7,7 +7,7 @@
         <td>
             <img src="{{asset('img/flags/'.$page['country']['location'].'.png')}}" title="{{$page['country']['name']}}" alt="{{$page['country']['name']}}">
         </td>
-        <td>{{$page['city']}}</td>
+{{--        <td>{{$page['city']}}</td>--}}
         <td>{{$page['date']}}</td>
         <td>{{$page['ip']}}</td>
         <td>
