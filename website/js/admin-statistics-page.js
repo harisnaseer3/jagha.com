@@ -798,10 +798,11 @@
             let $columns = $row.find('td');
 
             // let agency_id = $columns[0].innerHTML;
-            let ip = $columns[4].innerHTML;
-            let date = $columns[3].innerHTML;
+            let ip = $columns[3].innerHTML;
+            let date = $columns[2].innerHTML;
             $('input[name=ip]').val(ip);
             $('input[name=date]').val(date);
+
 
             form.submit();
 
