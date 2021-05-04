@@ -13,12 +13,18 @@
                     <th>Date</th>
                     <th>IP</th>
                     <th>Referer</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody id="tbody-recent-visitors">
 
                 </tbody>
             </table>
+            <form method="post" id="history-form" action="{{route('admin.statistic.history')}}">
+                @csrf
+                <input type="hidden" name="ip" value="">
+                <input type="hidden" name="date" value="">
+            </form>
 
         </div>
     </div>

@@ -251,4 +251,26 @@ class StatisticController extends Controller
         }
 
     }
+
+    public function showHistory(Request $request)
+    {
+        $last_counter = Carbon::create($request->input('date'))->format('Y-m-d');
+//        $last_counter = '2021-05-03';
+
+        $ip = $request->input('ip');
+//        dd($last_counter, $ip);
+//        $ip = '27.255.12.234';
+        $result = DB::connection('mysql2')->table('visitor')->select('visitor.ip', 'visitor.last_counter', 'visitor.agent', 'pages.uri')
+            ->join('visitor_relationships', 'visitor_relationships.visitor_id', '=', 'visitor.ID')
+            ->join('pages', 'pages.page_id', '=', 'visitor_relationships.page_id')
+            ->where('visitor.last_counter', $last_counter)
+            ->where('visitor.ip', $ip)->get()->toArray();
+
+//        dd($result);
+
+        $data = [
+            'result' => $result
+        ];
+        return view('website.admin-pages.statistic-history', $data);
+    }
 }
