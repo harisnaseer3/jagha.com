@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\HitRecord\HitController;
 use App\Models\Log\LogVisitor;
+use Barryvdh\Debugbar\Controllers\AssetController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,7 +92,8 @@ class VisitorController extends Controller
     {
         $t = Carbon::now()->format('Y-m-d');
         $list = array();
-        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->orderBy('ID', 'DESC')->get();
+        $result = DB::connection('mysql2')->table('visitor')->select('id', 'agent','last_counter','referred','ip','location')
+            ->where('last_counter', $t)->orderBy('ID', 'DESC')->get();
 
         if (!$result->isEmpty()) {
             $list = self::recentVisitorPrepareData($result);
@@ -114,7 +116,7 @@ class VisitorController extends Controller
 
             // Push Country
             $item['country'] = array('location' => $items->location, 'name' => (new StatsCountryController())->getName($items->location));
-            $item['city'] = CountryController::get_city_name($items->ip);
+//            $item['city'] = CountryController::get_city_name($items->ip);
             $list[] = $item;
         }
         return $list;

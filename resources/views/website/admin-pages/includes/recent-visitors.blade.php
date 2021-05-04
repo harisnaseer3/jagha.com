@@ -9,7 +9,7 @@
                 <tr>
                     <th>Browser</th>
                     <th>Country</th>
-                    <th>City</th>
+{{--                    <th>City</th>--}}
                     <th>Date</th>
                     <th>IP</th>
                     <th>Referer</th>
