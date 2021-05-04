@@ -124,10 +124,10 @@ class PageController extends Controller
 
         // Update Exist Page
         if ($exist) {
-            DB::connection('mysql2')->transaction(function () use ($exist) {
+//            DB::connection('mysql2')->transaction(function () use ($exist) {
                 DB::connection('mysql2')->table('pages')->where('page_id', $exist->page_id)
                     ->increment('count');
-            });
+//            });
 
             $page_id = $exist->page_id;
 
@@ -145,6 +145,7 @@ class PageController extends Controller
             $page_id = self::save_page($pages);
         }
 
+
         return (isset($page_id) ? $page_id : false);
     }
 
@@ -158,9 +159,9 @@ class PageController extends Controller
     {
         # Add Filter Insert ignore
         try {
-            DB::connection('mysql2')->transaction(function () use ($page) {
+//            DB::connection('mysql2')->transaction(function () use ($page) {
                 return DB::connection('mysql2')->table('pages')->insertGetId($page);
-            });
+//            });
 
         } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));

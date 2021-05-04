@@ -279,7 +279,7 @@ class VisitorController extends Controller
         //TODO:here add ,more than 100 visit check
 
         try {
-            DB::connection('mysql2')->transaction(function () use ($visitor) {
+//            DB::connection('mysql2')->transaction(function () use ($visitor) {
 //                return (new \App\Models\Log\LogVisitor)->updateOrCreate(
 //                    ['last_counter' => $visitor['last_counter'], 'ip' => $visitor['ip']],
 //                    $visitor)->id;
@@ -295,7 +295,7 @@ class VisitorController extends Controller
 //                return DB::connection('mysql2')->getpdo()->lastInsertId();
 
 
-            });
+//            });
             $result = (new \App\Models\Log\LogVisitor)->select('ID')->where('ip', $visitor['ip'])->where('last_counter', $visitor['last_counter'])->first();
             return $result->ID;
 
