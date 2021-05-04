@@ -58,7 +58,6 @@ Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
 Route::post('/top-browser', 'Admin\StatisticController@getTopBrowser');
 
 
-
 //front calls
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
@@ -309,6 +308,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/facebook-post/store', 'Admin\AdminFacebookController@store')->name('admin.facebook.store');
 
     Route::get('/statistic/overview', 'Admin\StatisticController@index')->name('admin.statistic.index');
+    Route::post('/statistic/history', 'Admin\StatisticController@showHistory')->name('admin.statistic.history');
 
 
 //    ajax-call
