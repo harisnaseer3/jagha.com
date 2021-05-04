@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use IpLocation;
+
 
 class VisitorController extends Controller
 {
@@ -92,7 +94,28 @@ class VisitorController extends Controller
         $result = (new LogVisitor())->select('*')->where('last_counter', $t)->orderBy('ID', 'DESC')->get();
 
         if (!$result->isEmpty()) {
-            $list = self::prepareData($result);
+            $list = self::recentVisitorPrepareData($result);
+        }
+        return $list;
+    }
+
+    public function recentVisitorPrepareData($result){
+        $list = array();
+        foreach ($result as $items) {
+            $item = array(
+                'referred' => $items->referred !== '' ? Referred::get_referrer_link($items->referred) : '<a href= "#"> Not available</a>',
+                'date' => (new Carbon($items->last_counter))->Format('M d, Y'),
+           );
+            $item['browser'] = array(
+                'name' => $items->agent,
+            );
+            // Push IP
+            $item['ip'] = $items->ip;
+
+            // Push Country
+            $item['country'] = array('location' => $items->location, 'name' => (new StatsCountryController())->getName($items->location));
+            $item['city'] = CountryController::get_city_name($items->ip);
+            $list[] = $item;
         }
         return $list;
     }
