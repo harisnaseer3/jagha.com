@@ -77,7 +77,7 @@ class VisitorController extends Controller
         $list = array();
 
 
-        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->orderBy('hits', 'DESC')->get();
+        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->where('hits','>',1)->orderBy('hits', 'DESC')->get();
 
         if (!$result->isEmpty()) {
             $list = self::prepareData($result);
@@ -135,6 +135,7 @@ class VisitorController extends Controller
             'exclusion_reason' => '',
         );
         $args = (new \App\Helpers\WPHelper)->my_parse_args($arg, $defaults);
+        $visitor_id = 0;
 
         // Check User Exclusion
         if ($args['exclusion_match'] === false) {
@@ -170,10 +171,15 @@ class VisitorController extends Controller
                 //Get Current Visitor ID
                 $visitor_id = $same_visitor->ID;
 
+
+
             }
         }
-
-        return (isset($visitor_id) ? $visitor_id : false);
+        if (isset($visitor_id) && $visitor_id > 0)
+            return $visitor_id;
+        else
+            return false;
+//        return (isset($visitor_id) ? $visitor_id : false);
     }
 
     /**
@@ -216,7 +222,7 @@ class VisitorController extends Controller
             $item = array(
                 'hits' => (int)$items->hits,
                 'referred' => $items->referred !== '' ? Referred::get_referrer_link($items->referred) : '<a href= "#"> Not available</a>',
-                'refer' => $items->referred,
+//                'refer' => $items->referred,
                 'date' => (new Carbon($items->last_counter))->Format('M d, Y'),
                 'agent' => $items->agent,
                 'platform' => $items->platform,
@@ -261,11 +267,12 @@ class VisitorController extends Controller
                     [$visitor['last_counter'], $visitor['referred'], $visitor['agent'], $visitor['platform'], $visitor['version'], $visitor['ip'],
                         $visitor['location'], $visitor['user_id'], $visitor['UAString'], $visitor['hits'], $visitor['honeypot']]);
 
-                return DB::connection('mysql2')->getpdo()->lastInsertId();
-
+//                return DB::connection('mysql2')->getpdo()->lastInsertId();
 
 
             });
+            $result = (new \App\Models\Log\LogVisitor)->select('ID')->where('ip', $visitor['ip'])->where('last_counter', $visitor['last_counter'])->first();
+            return $result->ID;
 
         } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitor method.'));

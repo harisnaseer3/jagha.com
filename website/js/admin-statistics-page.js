@@ -54,6 +54,19 @@
             $('#custom-browser-date').slideToggle();
         });
 
+        $.get('/get-recent-visitors',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-recent-visitors').hide();
+                $('#recent-visitors-block').slideDown();
+                $('#tbody-recent-visitors').html(data.view);
+
+                $('#recent-visitors').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
         $.get('/get-referring-sites',  // url
             function (data, textStatus, jqXHR) {  // success callback
                 $('#loader-referring-site').hide();
@@ -67,6 +80,33 @@
                 });
             }
         );
+        $.get('/get-top-pages',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-top-pages').hide();
+                $('#top-pages-block').slideDown();
+                $('#tbody-top-pages').html(data.view);
+
+                $('#top-pages').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
+        $.get('/get-top-visitors',  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('#loader-top-visitors').hide();
+                $('#top-visitors-block').slideDown();
+                $('#tbody-top-visitors').html(data.view);
+
+                $('#top-visitors').DataTable({
+                    "scrollX": true,
+                    "ordering": false,
+                    responsive: true
+                });
+            }
+        );
+
 
         if ($('#myChart').length > 0) {
             jQuery.ajaxSetup({
@@ -145,19 +185,7 @@
             });
         }
 
-        $.get('/get-top-pages',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-top-pages').hide();
-                $('#top-pages-block').slideDown();
-                $('#tbody-top-pages').html(data.view);
 
-                $('#top-pages').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
         $.get('/get-top-countries',  // url
             function (data, textStatus, jqXHR) {  // success callback
                 $('#loader-top-countries').hide();
@@ -171,32 +199,7 @@
                 });
             }
         );
-        $.get('/get-top-visitors',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-top-visitors').hide();
-                $('#top-visitors-block').slideDown();
-                $('#tbody-top-visitors').html(data.view);
 
-                $('#top-visitors').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
-        $.get('/get-recent-visitors',  // url
-            function (data, textStatus, jqXHR) {  // success callback
-                $('#loader-recent-visitors').hide();
-                $('#recent-visitors-block').slideDown();
-                $('#tbody-recent-visitors').html(data.view);
-
-                $('#recent-visitors').DataTable({
-                    "scrollX": true,
-                    "ordering": false,
-                    responsive: true
-                });
-            }
-        );
 
         //hit stats
         $('#submit').on('click', function (e) {
@@ -785,6 +788,31 @@
 
             });
         }
+
+        // $('.history-btn').on('click',function(e){
+        $(document).on('click', '.history-btn', function (e) {
+            e.preventDefault();
+            let form = $('#history-form');
+
+            let $row = jQuery(this).closest('tr');
+            let $columns = $row.find('td');
+
+            // let agency_id = $columns[0].innerHTML;
+            let ip = $columns[4].innerHTML;
+            let date = $columns[3].innerHTML;
+            $('input[name=ip]').val(ip);
+            $('input[name=date]').val(date);
+
+            form.submit();
+
+            // console.log(ip, date);
+
+            // let agency_city = $columns[2].innerHTML;
+            // let agency_address = $columns[3].innerHTML;
+            // let agency_cell = $columns[4].innerHTML;
+            // let agency_phone = $columns[5].innerHTML;
+
+        })
     });
 })
 (jQuery);

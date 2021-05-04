@@ -13,6 +13,18 @@
         <td>
             {!! $page['referred'] !!}
         </td>
+        <td>
+            <button class="btn btn-sm btn-primary mb-1 history-btn">Show History</button>
+            {{--            <a class="btn btn-sm btn-primary mb-1" type="button" href="{{route('admin.statistic.history',--}}
+            {{--                                                                    ['ip'=>$page['ip'],--}}
+            {{--                                                                     'date'=>$page['date']--}}
+            {{--                                                                     ])}}"--}}
+            {{--               data-toggle-1="tooltip"--}}
+            {{--               data-placement="bottom" title="Show visitor History">--}}
+            {{--                Show History--}}
+            {{--            </a>--}}
+        </td>
 
     </tr>
+
 @endforeach

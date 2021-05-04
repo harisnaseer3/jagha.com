@@ -48,7 +48,6 @@ class HitController extends Controller
         if ($exclusion['exclusion_match'] === false) {
             $page_id = PageController::record();
         }
-
         # Record Visitor Relation Ship
         if (isset($visitor_id) and $visitor_id > 0 and isset($page_id) and $page_id > 0) {
             VisitorController::save_visitors_relationships($page_id, $visitor_id);
@@ -76,7 +75,7 @@ class HitController extends Controller
     {
 
         // Get Http User Agent
-       // $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        // $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 
         $pattern = '/[a-zA-Z]/';
