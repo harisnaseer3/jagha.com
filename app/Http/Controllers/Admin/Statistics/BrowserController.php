@@ -269,7 +269,8 @@ class BrowserController extends Controller
             "chrome" => "Chrome",
             "firefox" => "Firefox",
             "msie" => "Internet Explorer",
-            "edge" => "Microsoft Edge",
+            "edge" => "Edge",
+            "microsoft edge" => "Microsoft Edge",
             "opera" => "Opera",
             "safari" => "Safari",
         );
