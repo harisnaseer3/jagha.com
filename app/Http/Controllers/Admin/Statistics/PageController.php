@@ -33,9 +33,10 @@ class PageController extends Controller
 
         //Home Page or Front Page
         if (self::is_home()) {
-            return (new \App\Helpers\WPHelper)->my_parse_args(array("type" => "home"), $current_page);
-        }
 
+            $current_page['type'] = "home";
+//            return (new \App\Helpers\WPHelper)->my_parse_args(array("type" => "home"), $current_page);
+        }
 
         //Property Detail Page
         if (self::is_detail_page()) {
@@ -77,7 +78,7 @@ class PageController extends Controller
         if (self::is_cities_listing()) {
             $current_page['type'] = "city_listing";
         }
-
+//        dd($current_page);
         return $current_page;
     }
 
@@ -90,8 +91,8 @@ class PageController extends Controller
         $current_page = self::get_page_type();
 
         // If we didn't find a page id, we don't have anything else to do.
-        if ($current_page['type'] == "unknown" || $current_page['id'] == 0) {
-            event(new LogErrorEvent('unknown page found'.\request()->url(), 'Error in page controller record method.'));
+        if ($current_page['type'] == "unknown" && $current_page['id'] == 0) {
+            event(new LogErrorEvent('unknown page found'.', route url = '.\request()->url().', route name = '. Route::current()->getName(), 'Error in page controller record method.'));
             return false;
         }
 
@@ -171,7 +172,7 @@ class PageController extends Controller
 
     public static function is_home()
     {
-        return Route::current()->getName() == 'home';
+        return Route::current()->getName() == "home";
 //        return $data_args['route-name'] == 'home';
     }
 
