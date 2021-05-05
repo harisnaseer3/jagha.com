@@ -217,7 +217,7 @@ class VisitorController extends Controller
     public static function save_visitors_relationships($page_id, $visitor_id)
     {
         try {
-            $insert = DB::connection('mysql2')->table('visitor_relationships')->insertGetId([
+            $insert = DB::connection('mysql2')->table('visitor_relationships')->insert([
                 'visitor_id' => $visitor_id,
                 'page_id' => $page_id,
                 'date' => Carbon::now()->toDateTimeString()]);
@@ -226,7 +226,7 @@ class VisitorController extends Controller
         } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in visitor controller save_visitors_relationships method.'));
         }
-        return $insert;
+//        return $insert;
     }
 
     public static function exist_ip_in_day($ip, $date = false)

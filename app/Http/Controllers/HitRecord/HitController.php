@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HitRecord;
 
+use App\Events\LogErrorEvent;
 use App\Http\Controllers\Admin\Statistics\ExclusionController;
 use App\Http\Controllers\Admin\Statistics\PageController;
 use App\Http\Controllers\Admin\Statistics\SearchEngineController;
@@ -37,21 +38,47 @@ class HitController extends Controller
         if ($exclusion['exclusion_match'] === false) {
             VisitController::record();
         }
-        $visitor_id = VisitorController::record($exclusion);
+        if ($exclusion['exclusion_match'] === false) {
+            $visitor_id = VisitorController::record($exclusion);
+        }
 
         # Record Search Engine
-        if (isset($visitor_id) and $visitor_id > 0 and $exclusion['exclusion_match'] === false) {
-            SearchEngineController::record(array('visitor_id' => $visitor_id));
-        }
+//        if (isset($visitor_id) and $visitor_id > 0 and $exclusion['exclusion_match'] === false) {
+//            SearchEngineController::record(array('visitor_id' => $visitor_id));
+//        }
 
         # Record Pages
         if ($exclusion['exclusion_match'] === false) {
             $page_id = PageController::record();
+
         }
         # Record Visitor Relation Ship
-        if (isset($visitor_id) and $visitor_id > 0 and isset($page_id) and $page_id > 0) {
-            VisitorController::save_visitors_relationships($page_id, $visitor_id);
+        if ($exclusion['exclusion_match'] === false) {
+            if (isset($visitor_id) and $visitor_id > 0) {
+                if (isset($page_id) and $page_id > 0) {
+                    VisitorController::save_visitors_relationships($page_id, $visitor_id);
+                }
+                else{
+                    event(new LogErrorEvent('Page id not found', 'Error in visitor controller save_visitors_relationships method.'));
+                }
+            }
+            else {
+                event(new LogErrorEvent('Visitor id not found', 'Error in visitor controller save_visitors_relationships method.'));
+            }
         }
+//        if (isset($visitor_id) and $visitor_id > 0 and isset($page_id) and $page_id > 0) {
+//            VisitorController::save_visitors_relationships($page_id, $visitor_id);
+//        }
+//        if (isset($visitor_id) and $visitor_id > 0) {
+//            if (isset($page_id) and $page_id > 0) {
+//                VisitorController::save_visitors_relationships($page_id, $visitor_id);
+//            }
+//            else{
+//                event(new LogErrorEvent('Page id not found', 'Error in visitor controller save_visitors_relationships method.'));
+//            }
+//        } else {
+//            event(new LogErrorEvent('Visitor id not found', 'Error in visitor controller save_visitors_relationships method.'));
+//        }
 
     }
 

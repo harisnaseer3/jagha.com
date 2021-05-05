@@ -24,7 +24,10 @@ class LogRequest
                 $pattern2 = 'admin';
                 $pattern3 = '_debugbar';
                 $pattern4 = 'register';
-                $patterns = array($pattern, $pattern2, $pattern3,$pattern4);
+                $pattern5 = 'password';
+                $pattern6 = 'email';
+                $pattern7 = '#_=_';
+                $patterns = array($pattern, $pattern2, $pattern3,$pattern4,$pattern5,$pattern6);
                 $regex = '/^(' . implode('|', $patterns) . ')/i';
                 if (Route::current() == null) {
                     HitController::record();
@@ -33,12 +36,12 @@ class LogRequest
 
                 if (Route::current() !== null && !(preg_match($regex, Route::current()->uri))) {
                     HitController::record();
-					return $nextRequest;					
-                } 
+					return $nextRequest;
+                }
 				else
 				return $nextRequest;
-				
-				
+
+
 
             } catch (\Exception $e) {
                 event(new LogErrorEvent($e->getMessage(), 'Error in logRequest middleware handle method'));

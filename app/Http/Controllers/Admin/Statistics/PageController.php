@@ -159,16 +159,15 @@ class PageController extends Controller
     {
         # Add Filter Insert ignore
         try {
-//            DB::connection('mysql2')->transaction(function () use ($page) {
-                return DB::connection('mysql2')->table('pages')->insertGetId($page);
-//            });
+                return DB::connection('mysql2')->table('pages')->insertGetId($page,'page_id');
 
         } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
 
-        } catch (\Throwable $e) {
-            event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
         }
+//        catch (\Throwable $e) {
+//            event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
+//        }
 
 
         # Get Page ID
