@@ -90,7 +90,8 @@ class PageController extends Controller
         $current_page = self::get_page_type();
 
         // If we didn't find a page id, we don't have anything else to do.
-        if ($current_page['type'] == "unknown" || !isset($current_page['id'])) {
+        if ($current_page['type'] == "unknown" || $current_page['id'] == 0) {
+            event(new LogErrorEvent('unknown page found', 'Error in page controller record method.'));
             return false;
         }
 
@@ -165,21 +166,6 @@ class PageController extends Controller
             event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
 
         }
-//        catch (\Throwable $e) {
-//            event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
-//        }
-
-
-        # Get Page ID
-//        $page_id = $insert;
-
-        # Remove ignore filter
-//        remove_filter('query', array('\WP_STATISTICS\DB', 'insert_ignore'), 10);
-
-        # Do Action After Save New Visitor
-//        do_action('wp_statistics_save_page', $page_id, $page);
-
-//        return $page_id;
     }
 
 
