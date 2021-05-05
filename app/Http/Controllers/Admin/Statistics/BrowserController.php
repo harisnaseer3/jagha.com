@@ -264,14 +264,14 @@ class BrowserController extends Controller
     public static function BrowserList($all = true)
     {
 
-        //List Of Detect Browser in WP Statistics
+        //List Of Detect Browser
         $list = array(
             "chrome" => "Chrome",
             "firefox" => "Firefox",
             "msie" => "Internet Explorer",
-            "edge" => "Edge",
+            "edge" => "Microsoft Edge",
             "opera" => "Opera",
-            "safari" => "Safari", 'wp-statistics'
+            "safari" => "Safari",
         );
         $browser_key = array_keys($list);
 
@@ -286,7 +286,7 @@ class BrowserController extends Controller
             if (array_search(strtolower($all), $browser_key) !== false) {
                 return $list[strtolower($all)];
             } else {
-                return __("Unknown", 'wp-statistics');
+                return "Unknown";
             }
         }
     }
