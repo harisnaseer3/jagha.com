@@ -59,7 +59,7 @@ class HitController extends Controller
                     VisitorController::save_visitors_relationships($page_id, $visitor_id);
                 }
                 else{
-                    event(new LogErrorEvent('Page id not found', 'Error in visitor controller save_visitors_relationships method.'));
+                    event(new LogErrorEvent('Page id not found'.$page_id, 'Error in visitor controller save_visitors_relationships method.'));
                 }
             }
             else {
