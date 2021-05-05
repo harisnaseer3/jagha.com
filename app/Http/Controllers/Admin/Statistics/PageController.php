@@ -78,6 +78,9 @@ class PageController extends Controller
         if (self::is_cities_listing()) {
             $current_page['type'] = "city_listing";
         }
+        if (self::is_search_property()) {
+            $current_page['type'] = "property_search";
+        }
 //        dd($current_page);
         return $current_page;
     }
@@ -117,7 +120,7 @@ class PageController extends Controller
             ->where('date', $d);
         if (array_key_exists("search_query", $current_page) === true) {
             $sql = $sql->where('uri', $esc_uri);
-        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing') {
+        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing' || $current_page['type'] == 'property_search') {
             $sql = $sql->where('uri', $esc_uri);
         }
 
@@ -230,6 +233,10 @@ class PageController extends Controller
     public static function is_cities_listing()
     {
         return Route::current()->getName() == 'cities.listings';
+    }
+    public static function is_search_property()
+    {
+        return Route::current()->getName() == 'sale.property.search';
     }
 
     /**
