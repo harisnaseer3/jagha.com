@@ -91,7 +91,7 @@ class PageController extends Controller
 
         // If we didn't find a page id, we don't have anything else to do.
         if ($current_page['type'] == "unknown" || $current_page['id'] == 0) {
-            event(new LogErrorEvent('unknown page found', 'Error in page controller record method.'));
+            event(new LogErrorEvent('unknown page found'.\request()->url(), 'Error in page controller record method.'));
             return false;
         }
 
