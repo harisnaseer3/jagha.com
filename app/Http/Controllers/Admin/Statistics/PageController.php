@@ -236,7 +236,8 @@ class PageController extends Controller
     }
     public static function is_search_property()
     {
-        return Route::current()->getName() == 'sale.property.search';
+        return Route::current()->getName() == 'sale.property.search' || Route::current()->getName() == 'search.houses.plots' || Route::current()->getName() == 'search.property.at.location';
+
     }
 
     /**
