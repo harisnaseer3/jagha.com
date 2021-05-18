@@ -28,7 +28,9 @@ class LogRequest
                 $pattern6 = 'email';
                 $pattern7 = '#_=_';
                 $pattern8 = 'get-about-pakistan-properties';
-                $patterns = array($pattern, $pattern2, $pattern3,$pattern4,$pattern5,$pattern6,$pattern8);
+                $pattern9 = '_ignition';
+                $patterns = array($pattern, $pattern2, $pattern3,$pattern4,$pattern5,$pattern6,$pattern8,$pattern9);
+
                 $regex = '/^(' . implode('|', $patterns) . ')/i';
                 if (Route::current() == null) {
                     HitController::record();
