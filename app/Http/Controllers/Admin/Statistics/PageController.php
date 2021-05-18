@@ -78,9 +78,13 @@ class PageController extends Controller
         if (self::is_cities_listing()) {
             $current_page['type'] = "city_listing";
         }
+        if (self::is_locations_listing()) {
+            $current_page['type'] = "location_listing";
+        }
         if (self::is_search_property()) {
             $current_page['type'] = "property_search";
         }
+
 //        dd($current_page);
         return $current_page;
     }
@@ -120,7 +124,7 @@ class PageController extends Controller
             ->where('date', $d);
         if (array_key_exists("search_query", $current_page) === true) {
             $sql = $sql->where('uri', $esc_uri);
-        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing' || $current_page['type'] == 'property_search') {
+        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing' || $current_page['type'] == 'location_listing' || $current_page['type'] == 'property_search') {
             $sql = $sql->where('uri', $esc_uri);
         }
 
@@ -234,9 +238,17 @@ class PageController extends Controller
     {
         return Route::current()->getName() == 'cities.listings';
     }
+    public static function is_locations_listing()
+    {
+        return Route::current()->getName() == 'all.locations';
+    }
+
+
     public static function is_search_property()
     {
-        return Route::current()->getName() == 'sale.property.search' || Route::current()->getName() == 'search.houses.plots' || Route::current()->getName() == 'search.property.at.location';
+        $route_name  =  Route::current()->getName();
+        return $route_name== 'sale.property.search' || $route_name== 'search.houses.plots' ||
+               $route_name== 'search.property.at.location' || $route_name== 'property.search.id';
 
     }
 
