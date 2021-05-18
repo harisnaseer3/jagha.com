@@ -52,6 +52,7 @@ class VisitorController extends Controller
             $args['limit'] = 10;
         }
 
+
         try {
             $response = $this->getRecent($args);
 
@@ -80,7 +81,7 @@ class VisitorController extends Controller
         $list = array();
 
 
-        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->where('hits','>',1)->orderBy('hits', 'DESC')->get();
+        $result = (new LogVisitor())->select('*')->where('last_counter', $t)->where('hits', '>', 1)->orderBy('hits', 'DESC')->get();
 
         if (!$result->isEmpty()) {
             $list = self::prepareData($result);
@@ -90,9 +91,13 @@ class VisitorController extends Controller
 
     public function getRecent($args)
     {
-        $t = Carbon::now()->format('Y-m-d');
+
+        if ($args['date'] !== null) {
+            $t = $args['date'];
+        } else
+            $t = Carbon::now()->format('Y-m-d');
         $list = array();
-        $result = DB::connection('mysql2')->table('visitor')->select('id', 'agent','last_counter','referred','ip','location')
+        $result = DB::connection('mysql2')->table('visitor')->select('id', 'agent', 'last_counter', 'referred', 'ip', 'location')
             ->where('last_counter', $t)->orderBy('ID', 'DESC')->get();
 
         if (!$result->isEmpty()) {
@@ -101,13 +106,14 @@ class VisitorController extends Controller
         return $list;
     }
 
-    public function recentVisitorPrepareData($result){
+    public function recentVisitorPrepareData($result)
+    {
         $list = array();
         foreach ($result as $items) {
             $item = array(
                 'referred' => $items->referred !== '' ? Referred::get_referrer_link($items->referred) : '<a href= "#"> Not available</a>',
                 'date' => (new Carbon($items->last_counter))->Format('M d, Y'),
-           );
+            );
             $item['browser'] = array(
                 'name' => $items->agent,
             );
@@ -195,7 +201,6 @@ class VisitorController extends Controller
                     ->increment('hits', 1);
                 //Get Current Visitor ID
                 $visitor_id = $same_visitor->ID;
-
 
 
             }
@@ -287,10 +292,10 @@ class VisitorController extends Controller
 //                DB::connection('mysql2')->insert('insert into visitor
 //    (last_counter,referred,agent,platform,version,ip,location,user_id,UAString,hits,honeypot)
 //                                                                                values (?, ?)', ['john@example.com', '0']);
-                DB::connection('mysql2')->statement('INSERT INTO visitor (last_counter,referred,agent,platform,version,ip,location,user_id,UAString,hits,honeypot)
+            DB::connection('mysql2')->statement('INSERT INTO visitor (last_counter,referred,agent,platform,version,ip,location,user_id,UAString,hits,honeypot)
                     VALUES ( ?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE hits = hits + 1',
-                    [$visitor['last_counter'], $visitor['referred'], $visitor['agent'], $visitor['platform'], $visitor['version'], $visitor['ip'],
-                        $visitor['location'], $visitor['user_id'], $visitor['UAString'], $visitor['hits'], $visitor['honeypot']]);
+                [$visitor['last_counter'], $visitor['referred'], $visitor['agent'], $visitor['platform'], $visitor['version'], $visitor['ip'],
+                    $visitor['location'], $visitor['user_id'], $visitor['UAString'], $visitor['hits'], $visitor['honeypot']]);
 
 //                return DB::connection('mysql2')->getpdo()->lastInsertId();
 
