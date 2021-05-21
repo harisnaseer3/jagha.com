@@ -320,13 +320,13 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
-                    <div class="sidebar-right mt-0">
+                    <div class="sidebar-right my-0">
                         <!-- Advanced search start -->
-                        @include('website.includes.contact_agent')
+                        @include('website.includes.contact_agent')</div><div class="sidebar-right mt-0">
                         <hr>
                         {{--                        @if(!empty($agency))--}}
                         @if($property->agency)
-                            <div class="sidebar widget mb-2 none-992">
+                            <div class="sidebar widget mb-2">
                                 <h3 class="sidebar-title" data-toggle="popover" data-trigger="hover" title="{{$property->agency->title}}"
                                     data-placement="bottom"
                                     data-html='true'

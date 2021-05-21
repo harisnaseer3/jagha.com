@@ -45,7 +45,6 @@
 
 @section('script')
     <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>
-    <script src="{{asset('website/js/wordpress.minify.js')}}" defer async></script>
     <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>
     <script src="{{asset('website/js/rangeslider.js')}}" defer></script>
     <script src="{{asset('website/js/popper.min.js')}}" defer></script>
