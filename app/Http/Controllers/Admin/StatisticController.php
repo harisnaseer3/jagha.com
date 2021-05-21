@@ -159,10 +159,14 @@ class StatisticController extends Controller
 
     }
 
-    public function getRecentVisitors()
+    public function getRecentVisitors(Request $request)
     {
         $args = array();
         $args['limit'] = 20;
+        if (isset($request->date))
+            $args['date'] = $request->date;
+        else
+            $args['date'] = null;
 
         $visitors = (new VisitorController())->getRecentVisitor($args);
 

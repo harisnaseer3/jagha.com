@@ -1,4 +1,4 @@
-<div class="sidebar widget mb-2">
+<div class="sidebar widget">
     <h3 class="sidebar-title">Contact Seller</h3>
     <div class="s-border"></div>
     <div class="m-border"></div>

@@ -13,6 +13,7 @@
             defaultDate: new Date()
 
         }).datepicker("setDate", new Date());
+
         // platform
         let paltform_dp1 = $('#platform-dp1');
         let paltform_dp2 = $('#platform-dp2');
@@ -43,6 +44,14 @@
 
         }).datepicker("setDate", new Date());
 
+        let recent_visitor_dp = $('#recent-visitor-dp');
+        recent_visitor_dp.datepicker({
+            dateFormat: "yy-mm-dd",
+            allowInputToggle: true,
+            defaultDate: new Date()
+
+        }).datepicker("setDate", new Date());
+
 
         $('#custom-hit').on('click', function () {
             $('#custom-date').slideToggle();
@@ -53,14 +62,14 @@
         $('#custom-browser-hit').on('click', function () {
             $('#custom-browser-date').slideToggle();
         });
-
+        let recent_visitor = null;
         $.get('/get-recent-visitors',  // url
             function (data, textStatus, jqXHR) {  // success callback
                 $('#loader-recent-visitors').hide();
                 $('#recent-visitors-block').slideDown();
                 $('#tbody-recent-visitors').html(data.view);
 
-                $('#recent-visitors').DataTable({
+                recent_visitor = $('#recent-visitors').DataTable({
                     "scrollX": true,
                     "ordering": false,
                     responsive: true
@@ -546,6 +555,45 @@
                 }
             });
         });
+
+        $('#recent-visitor-submit').on('click', function (e) {
+            e.preventDefault();
+            $('#loader-recent-visitors').show();
+            $('#recent-visitors-block').slideUp();
+            $('#tbody-recent-visitors').html('');
+            $('#recent-visitors' + " tbody").empty();
+            $('#recent-visitors' + " thead").empty();
+            let visitor_dp = recent_visitor_dp.datepicker('getDate');
+            let on = '';
+            if (visitor_dp !== null) { // if any date selected in datepicker
+                let date = visitor_dp.getDate();
+                if (date < 10)
+                    date = 0 + '' + date;
+                let month = (visitor_dp.getMonth() + 1);
+                if (month < 10)
+                    month = 0 + '' + month;
+                on = visitor_dp.getFullYear() + '-' + month + '-' + date;
+            }
+            if (recent_visitor != null) {
+                recent_visitor.clear();
+                recent_visitor.destroy();
+            }
+
+            $.get('/get-recent-visitors', {date: on}, // url
+                function (data, textStatus, jqXHR) {  // success callback
+                    $('#loader-recent-visitors').hide();
+                    $('#recent-visitors-block').slideDown();
+                    $('#tbody-recent-visitors').html(data.view);
+                    // $('#equictntbl').DataTable().destroy();
+                    recent_visitor = $('#recent-visitors').DataTable({
+                        "scrollX": true,
+                        "ordering": false,
+                        responsive: true
+                    });
+                }
+            );
+
+        })
         $('#year-browser-hit').on('click', function (e) {
             $("canvas#browserChart").remove();
             $("div#browser-chart-block").append('<canvas id="browserChart" class="w-100" height="300px"></canvas>');
