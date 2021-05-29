@@ -1,65 +1,103 @@
 (function ($) {
 
     $(document).ready(function () {
-        // Initialize Select2 Elements
-        $('.select2').select2({
-            language: '{{app()->getLocale()}}',
-            direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
-        });
-        $('.select2bs4').select2({
-            language: '{{app()->getLocale()}}',
-            direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
-            theme: 'bootstrap4',
-        });
-        $('[name=package]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
-        $('[name=agency]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+        function check_package_for() {
+            $(document).on('change', "input[name='package_for']", function () {
+                callPropertyCount();
+                let selected_value = $(this).val();
+                if (selected_value !== 'Agency') {
+                    $('#agency_block').slideUp();
+                    $('#agency').val('').removeAttr('required').attr('disable', 'true');
+                } else {
+                    $('#agency_block').slideDown();
+                    $('#agency').attr('required', 'required').attr('disable', 'false');
 
-        $("input[name='package_for']").on('change', function () {
-            callPropertyCount();
-            let selected_value = $(this).val();
-            if (selected_value !== 'Agency') {
+                }
+
+            });
+
+            if ($("input[name='package_for']:checked").val() !== 'Agency') {
                 $('#agency_block').slideUp();
                 $('#agency').val('').removeAttr('required').attr('disable', 'true');
-            } else {
-                $('#agency_block').slideDown();
-                $('#agency').attr('required', 'required').attr('disable', 'false');
-
             }
-
-        });
-        if ($("input[name='package_for']:checked").val() !== 'Agency') {
-            $('#agency_block').slideUp();
-            $('#agency').val('').removeAttr('required').attr('disable', 'true');
         }
-        if ($('.req-table').length > 0) {
-            $('.req-table').DataTable(
-                {
-                    "scrollX": true,
-                    "ordering": false,
-                    // responsive: true
+
+
+        let form1 = $('.package-user-form');
+        form1.validate({
+            rules: {
+                'user_email': {
+                    required: true,
+                    email: true,
+                },
+
+            },
+            errorElement: 'span',
+            errorClass: 'error help-block text-red',
+            ignore: [],
+            submitHandler: function (form) {
+                // form.submit();
+                event.preventDefault();
+                sendRequest();
+            },
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                const errors = validator.numberOfInvalids();
+                if (errors) {
+                    let error_tag = $('div.error.text-red.invalid-feedback.mt-2');
+                    error_tag.hide();
+                    const message = errors === 1
+                        ? 'You missed 1 field. It has been highlighted'
+                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                    $('div.error.text-red.invalid-feedback strong').html(message);
+                    error_tag.show();
                 }
-            );
-        }
-        if ($('.sub-table').length > 0) {
-            $('.sub-table').DataTable(
-                {
-                    "scrollX": true,
-                    "ordering": false,
-                    // responsive: true
+            }
+        });
+
+        function sendRequest() {
+            let user_mail = $('input[name="user_email"]').val();
+            $('.package-spinner').toggle();
+
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            );
+            });
+            jQuery.ajax({
+                type: 'post',
+                url: window.location.origin + '/packages/get-complementary-package-user',
+                data: {'email': user_mail},
+                dataType: 'json',
+                success: function (data) {
+                    $('.package-spinner').toggle();
+                    $('#details_tab').slideUp();
+
+                    if (data.status === '200') {
+                        $('#details_tab').slideDown();
+
+                        $('#details_tab').html(data.view).show();
+                        $('.select2').select2({
+                            language: '{{app()->getLocale()}}',
+                            direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
+                        });
+                        $('.select2bs4').select2({
+                            language: '{{app()->getLocale()}}',
+                            direction: '{{app()->getLocale() === "en" ? "ltr" : "rtl"}}',
+                            theme: 'bootstrap4',
+                        });
+                        $('[name=package]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+                        $('[name=agency]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+                        $('[name=status]').parent().children().css({'border': '1px solid #ced4da', 'border-radius': '.25rem'});
+                        check_package_for();
+                    } else {
+                        alert('User not found');
+                    }
+                },
+            });
         }
 
-        $('#package-modal').on('show.bs.modal', function (event) {
-            let record_id = $(event.relatedTarget).data('record-id');
-            $(this).find('.modal-body #record-id').val(record_id);
-        });
-
-
-        let form = $('.package-form');
-        $(document).on('click', '#buy-btn', function () {
-            form.submit();
-        });
+        let form = $('#com-package-form');
 
         $.validator.addMethod('empty', function (value, element, param) {
             return (value === '');
@@ -71,7 +109,10 @@
                 },
                 agency: {
                     required: function (element) {
-                        return $('input[name=package_for]:checked').val() === 'Agency';
+                        if ($('input[name="package_for"]').length > 0)
+                            return $('input[name=package_for]:checked').val() === 'Agency';
+                        else
+                            return false;
                     },
                 },
                 'property-count': {
@@ -82,13 +123,17 @@
                     required: true,
                     min: 1
                 },
-
+                status: {
+                    required: true,
+                },
+                'is_complementary': {required: true,}
             },
             errorElement: 'span',
             errorClass: 'error help-block text-red',
             ignore: [],
             submitHandler: function (form) {
                 form.submit();
+                // console.log();
             },
             invalidHandler: function (event, validator) {
                 // 'this' refers to the form
@@ -115,33 +160,33 @@
         let duration_val = duration.val();
         let count_val = property_count.val();
 
-        $('#package').on('change', function () {
+        $(document).on('change', '#package', function () {
             callPropertyCount();
         });
 
         function callPropertyCount() {
-            count_val = property_count.val();
-            if (count_val > 0 && duration.val() > 0) {
+            if ($('input[name="property_count"]').val() > 0 && $('input[name="duration"]').val() > 0) {
                 getAmount();
             }
         }
 
-        property_count.on('keyup', function () {
+        $(document).on('keyup', property_count, function () {
             callPropertyCount();
         });
-        duration.on('keyup', function () {
-            duration_val = duration.val();
-            if (duration_val > 0) {
 
+        $(document).on('keyup', duration, function () {
+            if ($('input[name="duration"]').val() > 0) {
                 getAmount()
             }
 
         });
 
-
         function getAmount() {
             let pack_for = $('input[name=package_for]:checked').val();
             let pack_type = $('select[name=package] option:selected').val();
+            duration_val = $('input[name="duration"]').val();
+            count_val = $('input[name="property_count"]').val();
+
             if (pack_type !== '-1') {
                 $('input[name=amount]').parent().next('div').html('<div>....</div>');
                 jQuery.ajaxSetup({
@@ -158,18 +203,13 @@
                         // console.log(data);
                         if (data.status === 200) {
                             $('input[name=amount]').parent().next('div').html('Package Amount in Rs.');
-                            // $('input[name=amount]').val(data.result);
                             $('input[name=amount]').val(data.result.price);
                             $('input[name=unit_amount]').val(data.result.unit_price);
-                            $('#submit-block').html('<input class="btn btn-primary btn-md search-submit-btn" id="buy-btn" type="submit" value="Buy">')
+                            // $('#submit-block').html('<input class="btn btn-primary btn-md search-submit-btn" id="buy-btn" type="submit" value="Buy">')
 
                         }
                     },
-                    // error: function (xhr, status, error) {
-                    //     console.log(xhr);
-                    //     console.log(status);
-                    //     console.log(error);
-                    // },
+
                     complete: function (url, options) {
 
                     }

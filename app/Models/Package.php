@@ -16,7 +16,7 @@ class Package extends Model
     use SoftDeletes;
 
     //
-    protected $fillable = ['user_id', 'type', 'activated_at', 'expired_at', 'package_for', 'admin_id', 'property_count', 'duration'];
+    protected $fillable = ['user_id', 'type', 'activated_at', 'expired_at', 'package_for', 'admin_id', 'property_count', 'duration', 'package_cost', 'unit_cost', 'is_complementary'];
     protected $table = 'packages';
 
 
@@ -27,9 +27,10 @@ class Package extends Model
         'package' => 'required'
     ];
 
-    function getPackageFromId($id)
+    public function getPackageFromId($id)
     {
         return Package::where('id', $id)->first();
+
     }
 
     function getAgencyFromPackageID($package)

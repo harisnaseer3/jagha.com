@@ -58,6 +58,12 @@ Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
 Route::post('/top-browser', 'Admin\StatisticController@getTopBrowser');
 
 
+Route::post('/get-package-amount', 'Package\PackageController@packageAmount');
+
+Route::post('/packages/get-complementary-package-user', 'Package\AdminComplementaryPackageController@getUserDetails')->name('admin.package.user.detail');
+
+
+
 //front calls
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
@@ -201,7 +207,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::post('/property-notification', 'NotificationController@ReadPropertyStatus');
     Route::post('/read-inbox-message', 'NotificationController@ReadInboxMessage');
 
+    //checkout functions calls
+    Route::post('/checkout', 'Package\PackageController@doCheckout')->name('do.checkout');
+    Route::post('/paymentStatus','Package\PackageController@paymentStatus');
+
 });
+//remove the following after testing
+Route::post('/paymentStatus','Package\PackageController@paymentStatus');
 Auth::routes(['verify' => true]);
 Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');
 
@@ -302,6 +314,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/packages/{package}', 'Package\AdminPackageController@update')->name('admin.package.update')->middleware(['permission:Manage Packages']);
     Route::get('/packages/{package}/show', 'Package\AdminPackageController@show')->name('admin.package.show')->middleware(['permission:Manage Packages']);
     Route::post('/packages/{package}/search-property', 'Package\AdminPackageController@show')->name('admin.package.search.properties')->middleware(['permission:Manage Packages']);
+
+    Route::get('/packages/pricing', 'Package\AdminPackagePriceController@index')->name('admin.package.price.index')->middleware(['permission:Manage Packages']);
+    Route::get('/packages/pricing/{price}/edit', 'Package\AdminPackagePriceController@edit')->name('admin.package.price.edit')->middleware(['permission:Manage Packages']);
+    Route::post('/packages/pricing/{price}', 'Package\AdminPackagePriceController@update')->name('admin.package.price.update')->middleware(['permission:Manage Packages']);
+
+    //complementary
+    Route::get('/packages/complementary-package', 'Package\AdminComplementaryPackageController@index')->name('admin.package.complementary')->middleware(['permission:Manage Packages']);
+    Route::post('/packages/complementary/store', 'Package\AdminComplementaryPackageController@store')->name('admin.package.complementary.store')->middleware(['permission:Manage Packages']);
+
 
 
     Route::get('/facebook-post/create', 'Admin\AdminFacebookController@create')->name('admin.facebook.create');
