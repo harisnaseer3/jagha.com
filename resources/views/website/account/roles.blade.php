@@ -195,9 +195,9 @@
                         }
                     },
                     error: function (xhr, status, error) {
-                        console.log(xhr);
-                        console.log(status);
-                        console.log(error);
+                        // console.log(xhr);
+                        // console.log(status);
+                        // console.log(error);
                     },
                     complete: function (url, options) {
 

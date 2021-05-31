@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Package;
 
 use App\Events\AddPropertyInPackageEvent;
-use App\Events\NotifyAdminOfPackageRequestEvent;
-use App\Events\NotifyAdminOfSupportMessage;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\Admin;
@@ -13,7 +11,6 @@ use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\PackagePrice;
 use App\Models\Property;
-use App\Notifications\PendingPackageNotification;
 use App\Notifications\PropertyAddedInPackage;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -24,14 +21,22 @@ use Exception;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Throwable;
 use Illuminate\Support\Facades\Session;
 
 class PackageController extends Controller
 {
+//    /**
+//     * Create a new controller instance.
+//     *
+//     * @return void
+//     */
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
+
     public function index()
     {
         $sub_packages = DB::table('packages')
@@ -99,7 +104,7 @@ class PackageController extends Controller
                 'duration' => $request->input('duration'),
                 'package_cost' => $amount['price'],
                 'status' => 'pending',
-                'unit_cost'=>$amount['unit_price'],
+                'unit_cost' => $amount['unit_price'],
             ]);
             if ($request->has('agency')) {
                 $agency = (new Agency)->select('id')->where('id', $request->agency)->first();
@@ -310,7 +315,6 @@ class PackageController extends Controller
         } else {
             return response()->json(['status' => 201, 'message' => 'Not found']);
         }
-
 
     }
 

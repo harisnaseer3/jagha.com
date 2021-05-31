@@ -9,6 +9,7 @@ use App\Models\Agency;
 use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\PackagePrice;
+use App\Models\UserWallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -113,22 +114,34 @@ class AdminComplementaryPackageController extends Controller
 
             ]);
 
-            $credit = DB::Table('User_wallet')->insertGetId([
-                'user_id' => $request->user_id,
-                'current_credit' => $amount['price'],
-            ]);
+            $user_wallet = (new \App\Models\UserWallet)->getUserWallet($request->user_id);
+            if ($user_wallet) {
+//                $new_credit = intval($user_wallet->current_credit) + $amount['price'];
+                $user_wallet->current_credit = intval($user_wallet->current_credit) + $amount['price'];
+                $user_wallet->save();
 
-            DB::Table('wallet_history')->insertGetId([
-                'user_wallet_id' => $credit,
-                'debit' => $amount['price']
-            ]);
+                DB::Table('wallet_history')->where('user_wallet_id', '=', $user_wallet->id)->update([
+                    'debit' => $amount['price']
+                ]);
+            } else {
+                $credit = DB::Table('User_wallet')->insertGetId([
+                    'user_id' => $request->user_id,
+                    'current_credit' => $amount['price'],
+                ]);
+                DB::Table('wallet_history')->insertGetId([
+                    'user_wallet_id' => $credit,
+                    'debit' => $amount['price']
+                ]);
+            }
+
+
             //notify user on package complementary allotment
 
-            $this->dispatch(new ComplementaryPackageActivation($request->user_id,$package));
+            $this->dispatch(new ComplementaryPackageActivation($request->user_id, $package));
             return redirect()->back()->with('success', 'Package Assigned Successfully.');
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again 2.');
         }
     }

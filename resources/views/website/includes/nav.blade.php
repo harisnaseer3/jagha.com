@@ -359,6 +359,11 @@
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">
                                             <i class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"
+                                           href="{{route('account.wallet')}}">
+                                            <i class="far fa-wallet mr-2"></i>
+                                            My Wallet</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
                                     </div>

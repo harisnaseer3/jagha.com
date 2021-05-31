@@ -63,7 +63,6 @@ Route::post('/get-package-amount', 'Package\PackageController@packageAmount');
 Route::post('/packages/get-complementary-package-user', 'Package\AdminComplementaryPackageController@getUserDetails')->name('admin.package.user.detail');
 
 
-
 //front calls
 Route::post('/search-ref', 'PropertyAjaxCallController@userPropertySearch')->name('property.search.ref');
 Route::post('/search-property-id', 'PropertyAjaxCallController@userPropertySearchById')->name('property.user.search.id');
@@ -197,6 +196,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
         Route::match(['put', 'patch'], '/password', 'Dashboard\UserController@updatePassword')->name('user.password.update');
 
         Route::resource('agencies', 'AgencyController'); // user is not allowed other methods
+
+        Route::get('/wallet', 'Wallet\WalletController@index')->name('account.wallet');
     });
 
 //    ajax call to change status by the user
@@ -209,11 +210,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
     //checkout functions calls
     Route::post('/checkout', 'Package\PackageController@doCheckout')->name('do.checkout');
-    Route::post('/paymentStatus','Package\PackageController@paymentStatus');
+    Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
 
 });
 //remove the following after testing
-Route::post('/paymentStatus','Package\PackageController@paymentStatus');
+Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
 Auth::routes(['verify' => true]);
 Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');
 
@@ -322,7 +323,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     //complementary
     Route::get('/packages/complementary-package', 'Package\AdminComplementaryPackageController@index')->name('admin.package.complementary')->middleware(['permission:Manage Packages']);
     Route::post('/packages/complementary/store', 'Package\AdminComplementaryPackageController@store')->name('admin.package.complementary.store')->middleware(['permission:Manage Packages']);
-
 
 
     Route::get('/facebook-post/create', 'Admin\AdminFacebookController@create')->name('admin.facebook.create');
