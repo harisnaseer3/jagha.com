@@ -24,7 +24,7 @@ class PropertySearchController extends Controller
             ->select('properties.id', 'properties.user_id', 'properties.reference', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type',
                 'properties.type', 'properties.title', 'properties.description',
                 'properties.price', 'properties.land_area', 'properties.area_unit', 'properties.bedrooms', 'properties.bathrooms', 'properties.features',
-                'properties.silver_listing', 'properties.golden_listing',
+                'properties.silver_listing', 'properties.golden_listing', 'properties.platinum_listing',
                 'properties.contact_person', 'properties.phone', 'properties.cell',
                 'properties.fax', 'properties.email', 'properties.favorites', 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.activated_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
@@ -57,8 +57,8 @@ class PropertySearchController extends Controller
 
     function sortPropertyListing($sort, $sort_area, $properties)
     {
+        $properties = $properties->orderBy('properties.platinum_listing', 'DESC');
         $properties = $properties->orderBy('properties.golden_listing', 'DESC');
-        $properties = $properties->orderBy('properties.silver_listing', 'DESC');
 
         if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
         else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');

@@ -113,26 +113,24 @@ class AdminComplementaryPackageController extends Controller
                 'status' => $request->has('status') ? $request->input('status') : 'pending'
 
             ]);
+            $credit_id = 0;
 
             $user_wallet = (new \App\Models\UserWallet)->getUserWallet($request->user_id);
             if ($user_wallet) {
-//                $new_credit = intval($user_wallet->current_credit) + $amount['price'];
                 $user_wallet->current_credit = intval($user_wallet->current_credit) + $amount['price'];
                 $user_wallet->save();
-
-                DB::Table('wallet_history')->where('user_wallet_id', '=', $user_wallet->id)->update([
-                    'debit' => $amount['price']
-                ]);
+                $credit_id = $user_wallet->id;
             } else {
-                $credit = DB::Table('User_wallet')->insertGetId([
+                $credit_id = DB::Table('User_wallet')->insertGetId([
                     'user_id' => $request->user_id,
                     'current_credit' => $amount['price'],
                 ]);
-                DB::Table('wallet_history')->insertGetId([
-                    'user_wallet_id' => $credit,
-                    'debit' => $amount['price']
-                ]);
             }
+
+            DB::Table('wallet_history')->insert([
+                'user_wallet_id' => $credit_id,
+                'debit' => $amount['price']
+            ]);
 
 
             //notify user on package complementary allotment

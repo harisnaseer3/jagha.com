@@ -81,7 +81,7 @@
                                                                 <strong> Package Duration :</strong>
                                                             </div>
                                                             <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{ucwords($package->duration)}} months
+                                                                {{ucwords($package->duration)}} month(s)
                                                             </div>
                                                         </div>
                                                         @if(isset($package_agency))

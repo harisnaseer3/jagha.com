@@ -55,11 +55,13 @@
                             alt="{{$property->sub_type}} for {{$property->purpose}}"
                             title="{{$property->sub_type}} for {{$property->purpose}}" class="img-fluid" aria-label="Listing photo" onerror="this.src='{{asset("/img/logo/dummy-logo.png")}}'">
 
-                        {{--                        {{dd($property)}}--}}
+{{--                                                {{dd($property)}}--}}
                         @if(isset($property->golden_listing) && $property->golden_listing == 1)
+
+
                             <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>
-                        @elseif(isset($property->silver_listing) && $property->silver_listing  == 1)
-                            <div class="listing-badges"><span aria-label="hot label" class="featured">Silver</span></div>
+                        @elseif(isset($property->platinum_listing) && $property->platinum_listing  == 1)
+                            <div class="listing-badges"><span aria-label="hot label" class="featured">Platinum</span></div>
                         @endif
                         <div class="listing-time opening" aria-label="purpose label">
                             @if( $property->purpose === 'Wanted')

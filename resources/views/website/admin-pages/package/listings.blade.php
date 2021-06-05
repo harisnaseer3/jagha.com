@@ -69,8 +69,8 @@
                                                                                         {{ucwords($sub_package->package_for)}}
                                                                                     @endif
                                                                                 </td>
-                                                                                <td class="text-right pr-3">{{$sub_package->property_count}}</td>
-                                                                                <td class="text-right pr-3">{{$sub_package->added_properties}}</td>
+                                                                                <td class="text-center">{{$sub_package->property_count}}</td>
+                                                                                <td class="text-center">{{$sub_package->added_properties}}</td>
                                                                                 <td>{{ (new \Illuminate\Support\Carbon($sub_package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a')}} </td>
                                                                                 <td>
                                                                                     <div class="badge badge-success p-2 "><strong class="font-12 color-white">{{ucwords($sub_package->status)}}</strong>

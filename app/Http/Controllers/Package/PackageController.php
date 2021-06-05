@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Package;
 
 use App\Events\AddPropertyInPackageEvent;
+use App\Events\NotifyAdminOfPackageRequestEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
-use App\Models\Admin;
 use App\Models\Agency;
 use App\Models\Dashboard\User;
 use App\Models\Package;
@@ -68,12 +68,11 @@ class PackageController extends Controller
 
     public function create()
     {
-        $types = PackagePrice::select('type')->distinct()->get()->pluck('type')->toArray();
+
         return view('website.package.buy-package', [
-            'types' => $types,
-//            'types' => [],
+            'price' => DB::table('package_costings')->select('type', 'price_per_unit', 'package_for')->where('package_for', '=', 'properties')->get(),
+            'types' => PackagePrice::select('type')->distinct()->get()->pluck('type')->toArray(),
             'user_agencies' => Auth::guard('web')->user()->agencies->where('status', 'verified'),
-//            'user_agencies' => [],
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1],
         ]);
@@ -126,7 +125,6 @@ class PackageController extends Controller
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
         }
     }
-
 
     public function destroy(Request $request)
     {
@@ -267,6 +265,23 @@ class PackageController extends Controller
                 $property_id = $request->input('property');
                 $package = (new \App\Models\Package)->getPackageFromId($package_id);
                 if ($package) {
+                    $required_credit = ceil((($package->unit_cost / 30) * intval($duration)));
+                    if ((new \App\Models\UserWallet)->getCurrentCredit() < $required_credit) {
+                        return response()->json(['status' => 201, 'message' => 'Insufficient Credit.']);
+                    }
+
+                    //calculate price unit_cost + days
+
+                    $wallet = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->getAuthIdentifier());
+                    $wallet->current_credit = intval($wallet->current_credit) - $required_credit;
+                    $wallet->save();
+
+
+                    DB::Table('wallet_history')->insert([
+                        'user_wallet_id' => $wallet->id,
+                        'credit' => $wallet->current_credit
+                    ]);
+
                     $remaining_days = Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
                     $added_property = DB::table('package_properties')
                         ->select(DB::raw('Count(property_id) AS count'))
@@ -274,16 +289,27 @@ class PackageController extends Controller
                         ->where('activated_at', '!=', null)->get()->pluck('count');
 
                     if ($added_property[0] < $package->property_count) {
-                        if ($duration > 0 && $duration < $remaining_days) {
+                        if ($duration > 0 && $duration <= $remaining_days) {
                             DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property_id], [
                                 'duration' => $duration,
                                 'activated_at' => Carbon::now()->toDateTimeString(),
                                 'expired_at' => Carbon::now()->addDays($duration)->toDateTimeString(),
                             ]);
+                            $selected_property = (new Property())->where('id', $property_id)->where('user_id', Auth::user()->getAuthIdentifier())->first();
+                            if ($selected_property) {
+                                if ($package->type == 'Gold')
+                                    $selected_property->golden_listing = 1;
+                                else if ($package->type == 'Platinum')
+                                    $selected_property->platinum_listing = 1;
+                                $selected_property->save();
+                            }
+
+
                             $user = User::where('id', '=', $package->user_id)->first();
                             $user->notify(new PropertyAddedInPackage($property_id, $package));
                             event(new AddPropertyInPackageEvent($property_id, $package));
-//                        TODO:send an email to user as a record
+
+
                             return response()->json(['status' => 200, 'message' => 'Added']);
                         } else {
                             return response()->json(['status' => 201, 'message' => 'Duration is not allowed.']);
@@ -330,6 +356,8 @@ class PackageController extends Controller
     public function doCheckout(Request $request)
     {
 
+        //here by pass the transaction action just store all info and activate package for now
+
         $data = $request->input();
         $id = $data['pack-id'];
         $product = DB::table('packages')->select('package_cost')->where('id', $id)->where('user_id', Auth::user()->id)->first();
@@ -338,21 +366,31 @@ class PackageController extends Controller
         //get formatted price. remove period(.) from the price
 //        $temp_amount = $product[0]->price * 100;
 //        $amount_array = explode('.', $temp_amount);
+
+
         $pp_Amount = $product->package_cost;
+
+
         //2.
         //get the current date and time
         //be careful set TimeZone in config/app.php
+
+
         $DateTime = new \DateTime();
         $pp_TxnDateTime = $DateTime->format('YmdHis');
 
         //3.
         //to make expiry date and time add one hour to current date and time
+
+
         $ExpiryDateTime = $DateTime;
         $ExpiryDateTime->modify('+' . 1 . ' hours');
         $pp_TxnExpiryDateTime = $ExpiryDateTime->format('YmdHis');
 
         //4.
         //make unique transaction id using current date
+
+
         $pp_TxnRefNo = 'T' . $pp_TxnDateTime;
 
         $post_data = array(
@@ -380,24 +418,45 @@ class PackageController extends Controller
             "ppmpf_5" => "5",
         );
 
-        $pp_SecureHash = $this->get_SecureHash($post_data);
+//        $pp_SecureHash = $this->get_SecureHash($post_data);
+//
+//        $post_data['pp_SecureHash'] = $pp_SecureHash;
+//
+//        $values = array(
+//            'package_id' => $id,
+//            'TxnRefNo' => $post_data['pp_TxnRefNo'],
+//            'amount' => $pp_Amount,
+//            'status' => 'pending'
+//        );
+//        DB::table('package_transactions')->insert($values);
 
-        $post_data['pp_SecureHash'] = $pp_SecureHash;
+//        Session::put('post_data', $post_data);
+//        return view('website.package.checkout.do-checkout');
 
-        $values = array(
-            'package_id' => $id,
-            'TxnRefNo' => $post_data['pp_TxnRefNo'],
-            'amount' => $pp_Amount,
-            'status' => 'pending'
-        );
-        DB::table('package_transactions')->insert($values);
 
-        Session::put('post_data', $post_data);
-//        echo '<pre>';
-//        print_r($post_data);
-//        echo '</pre>';
+        //Remove following code after implementation of gateways
 
-        return view('website.package.checkout.do-checkout');
+
+//        if ($product) {
+//            DB::table('packages')
+//                ->where('id', $package->package_id)
+//                ->update(['status' => 'active']);
+
+//            $product->status = 'active';
+//            $product->save();
+//
+//
+//        }
+
+        event(new NotifyAdminOfPackageRequestEvent($product));
+
+        return view('website.package.buy-package', [
+            'price' => DB::table('package_costings')->select('type', 'price_per_unit', 'package_for')->where('package_for', '=', 'properties')->get(),
+            'types' => PackagePrice::select('type')->distinct()->get()->pluck('type')->toArray(),
+            'user_agencies' => Auth::guard('web')->user()->agencies->where('status', 'verified'),
+            'recent_properties' => (new FooterController)->footerContent()[0],
+            'footer_agencies' => (new FooterController)->footerContent()[1],
+        ])->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
 
     }
@@ -416,7 +475,6 @@ class PackageController extends Controller
         $str = Config::get('constants.jazzcash.INTEGERITY_SALT') . $str;
 
         $pp_SecureHash = hash_hmac('sha256', $str, Config::get('constants.jazzcash.INTEGERITY_SALT'));
-
         //echo '<pre>';
         //print_r($data_array);
         //echo '</pre>';
@@ -424,10 +482,11 @@ class PackageController extends Controller
         return $pp_SecureHash;
     }
 
+//function to accept api call from bank
     public function paymentStatus(Request $request)
     {
         $response = $request->input();
-//        dd($response);
+        dd($response);
 //        echo '<pre>';
 //        print_r($response);
 //        echo '</pre>';
@@ -448,7 +507,9 @@ class PackageController extends Controller
                     ->where('id', $package->package_id)
                     ->update(['status' => 'active']);
 
+
             }
+
         }
 
         return view('website.package.checkout.payment-status', ['response' => $response]);

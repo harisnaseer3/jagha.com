@@ -82,8 +82,12 @@
 
 
                 {{ Form::bsNumber('property_count', isset($package->property_count)?$package->property_count:0, ['required' => true, 'data-default' => 'Enter the number of Properties for selected package', 'min' => 1, 'step' => 1]) }}
-                {{ Form::bsNumber('duration', isset($package->duration)?$package->duration:0, ['required' => true, 'data-default' => 'Enter Package Duration in Months', 'min' => 1, 'step' => 1]) }}
+                {{ Form::bsNumber('duration', 1, ['required' => true, 'data-default' => 'Enter Package Duration in Months', 'min' => 1, 'step' => 1]) }}
 
+
+                {{ Form::bsRadio('is_complementary','Yes', ['list' => ['Yes','No'],'display' => 'block','class'=>'mt-3','required'=>true]) }}
+                {{ Form::bsNumber('amount', 0, ['required' => true, 'disabled'=>true,'data-default' => 'Package Amount in Rs.']) }}
+                {{ Form::hidden('unit_amount',null) }}
                 <div class="form-group row">
                     <label for="status" class="col-sm-4 col-md-3 col-lg-2  col-xl-2 col-form-label col-form-label-sm">
                         Status
@@ -103,10 +107,6 @@
                         </select>
                     </div>
                 </div>
-                {{ Form::bsRadio('is_complementary','Yes', ['list' => ['Yes','No'],'display' => 'block','class'=>'mt-3','required'=>true]) }}
-                {{ Form::bsNumber('amount', 0, ['required' => true, 'disabled'=>true,'data-default' => 'Package Amount in Rs.']) }}
-                {{ Form::hidden('unit_amount',null) }}
-
 
                 {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
                 {{ Form::close() }}

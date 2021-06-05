@@ -25,9 +25,12 @@
         <div class="container-fluid container-padding">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="tab-content" id="portfolioTabContent">
-
-                        <div class="tab-pane fade show active" id="account_profile" role="tabpanel" aria-labelledby="account_profile-tab">
+                    <div class="tab-content">
+{{--                        <div class="float-right">--}}
+{{--                                               <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i--}}
+{{--                                                           class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>--}}
+{{--                        </div>--}}
+                        <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="account_profile-tab">
                             <div class="row my-4">
                                 <div class="col-md-3">
                                     @include('website.account.sidebar')

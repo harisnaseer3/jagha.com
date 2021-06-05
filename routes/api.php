@@ -20,3 +20,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexPageController@getPropertyTypes');
 
+
+
+//Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+
+//and set this one for callback:
+//
+//    http://yourdomain.com/api/callback

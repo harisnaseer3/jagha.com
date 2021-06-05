@@ -52,8 +52,8 @@
 
                            class="property-img" title="{{$property->sub_type}} for {{$property->purpose}}">
                             <div class="listing-badges">
-                                @if($property->silver_listing == 1)
-                                    <span class="featured bg-red" aria-label="premium label">Silver</span>
+                                @if($property->platinum_listing == 1)
+                                    <span class="featured bg-red" aria-label="premium label">Platinum</span>
                                 @elseif($property->golden_listing == 1)
                                     <span class="featured bg-red" aria-label="super hot label">Golden</span>
                                     {{--                                @elseif($property->bronze_listing  == 1)--}}

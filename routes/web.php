@@ -210,11 +210,14 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
     //checkout functions calls
     Route::post('/checkout', 'Package\PackageController@doCheckout')->name('do.checkout');
-    Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+//    Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+
 
 });
+//payment gateway callback
 //remove the following after testing
 Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+
 Auth::routes(['verify' => true]);
 Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');
 

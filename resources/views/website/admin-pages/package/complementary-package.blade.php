@@ -49,7 +49,7 @@
                                                             </div>
                                                             <div class="card-body">
                                                                 {{ Form::open(['method' => 'post', 'class'=> 'package-user-form']) }}
-                                                                {{ Form::bsEmail('user_email', 'rida@cordstones.com', ['required' => true,'data-default' => 'Enter User Email','placeholder'=>'example@example.com']) }}
+                                                                {{ Form::bsEmail('user_email', null, ['required' => true,'data-default' => 'Enter User Email','placeholder'=>'example@example.com']) }}
                                                                 {{ Form::submit('Get Details', ['class' => 'btn btn-sm btn-primary btn-md search-submit-btn']) }}
                                                                 <span class="ml-2"><i class="fa fa-spinner fa-spin package-spinner" style="font-size:20px; display:none"></i></span>
                                                                 {{ Form::close() }}
