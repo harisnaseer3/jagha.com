@@ -79,7 +79,7 @@
 
                                                                         <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                                             <input class="form-control form-control-sm" aria-describedby="name-error" aria-invalid="false" required=""
-                                                                                   placeholder="Your Name" data-default="Your name" name="name" type="text" value="" spellcheck="false"
+                                                                                   placeholder="Your Name" data-default="Your name" name="name" type="text" value="{{\Illuminate\Support\Facades\Auth::user()->name}}" spellcheck="false"
                                                                                    data-ms-editor="true">
 
 
@@ -100,7 +100,7 @@
 
                                                                         <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
                                                                             <input class="form-control form-control-sm" aria-describedby="email-error" aria-invalid="false" required=""
-                                                                                   placeholder="Your Email" data-default="Your Email" name="email" type="email" value="">
+                                                                                   placeholder="Your Email" data-default="Your Email" name="email" type="email" value="{{\Illuminate\Support\Facades\Auth::user()->email}}">
 
                                                                         </div>
 

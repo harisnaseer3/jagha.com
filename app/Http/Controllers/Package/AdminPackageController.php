@@ -125,13 +125,13 @@ class AdminPackageController extends Controller
             $user->notify(new PackageStatusChange($package));
             event(new NotifyUserPackageStatusChangeEvent($package));
 
-            DB::table('package_logs')->insert([
-                'admin_id' => $admin->id,
-                'admin_name' => $admin->name,
-                'package_id' => $package->id,
-                'status' => $package->status,
-                'rejection_reason' => $package->rejection_reason,
-            ]);
+//            DB::table('package_logs')->insert([
+//                'admin_id' => $admin->id,
+//                'admin_name' => $admin->name,
+//                'package_id' => $package->id,
+//                'status' => $package->status,
+//                'rejection_reason' => $package->rejection_reason,
+//            ]);
 
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');

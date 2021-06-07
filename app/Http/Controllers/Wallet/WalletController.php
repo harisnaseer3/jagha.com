@@ -52,4 +52,27 @@ class WalletController extends Controller
             'debit' => $amount
         ]);
     }
+
+    public function withdrawCredit($user_id, $amount)
+    {
+        $credit_id = 0;
+
+        $user_wallet = (new \App\Models\UserWallet)->getUserWallet($user_id);
+        if ($user_wallet) {
+            $user_wallet->current_credit = intval($user_wallet->current_credit) - $amount;
+            $user_wallet->save();
+            $credit_id = $user_wallet->id;
+        }
+//        else {
+//            $credit_id = DB::Table('User_wallet')->insertGetId([
+//                'user_id' => $user_id,
+//                'current_credit' => $amount,
+//            ]);
+//        }
+
+        DB::Table('wallet_history')->insert([
+            'user_wallet_id' => $credit_id,
+            'credit' => $amount
+        ]);
+    }
 }

@@ -18,9 +18,13 @@ class UserWallet extends Model
     protected $fillable = ['user_id', 'current_credit'];
     protected $table = 'user_wallet';
 
-    public function getCurrentCredit()
+    public function getCurrentCredit($user_id = null)
     {
-        $data = $this->select('current_credit')->where('user_id', Auth::user()->getAuthIdentifier())->first();
+        if (Auth::user() == null) {
+            $data = $this->select('current_credit')->where('user_id', $user_id)->first();
+        } else
+            $data = $this->select('current_credit')->where('user_id', Auth::user()->getAuthIdentifier())->first();
+
         if ($data)
             return $data->current_credit;
         else

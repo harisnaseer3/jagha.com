@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Wallet\WalletController;
 use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
@@ -11,7 +12,9 @@ use App\Models\Dashboard\User;
 use App\Models\Package;
 use App\Models\Property;
 use App\Models\TempImage;
+use App\Models\UserWallet;
 use App\Notifications\AddPropertiesInPackageNotification;
+use App\Notifications\PackageExpiryMail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,8 +29,9 @@ class CronJobController extends Controller
 
             if (
 //                $this->updatePropertyStatus() &&
-                $this->HourlyUpdate()
-//                && $this->packageExpiry()
+//                $this->HourlyUpdate()
+//                &&
+            $this->packageExpiry()
             ) {
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else {
@@ -40,108 +44,119 @@ class CronJobController extends Controller
 
     }
 
-    private function packagePropertyExpired($package, $property_update)
-    {
-        $properties = (new Package)->getPropertiesFromPackageID($package->id);
-        foreach ($properties as $property) {
-            DB::table('properties')->where('id', $property)->update([$property_update => 0]);
-            $data = (new \App\Models\Property)->select('purpose')->where('id', $property)->first();
-            $listing_type = '';
-            if ($package->packege_for == 'Gold')
-                $listing_type = 'golden_listing';
-            elseif (($package->packege_for == 'Silver'))
-                $listing_type = 'silver_listing';
-
-            if (DB::table('property_count_by_listings')
-                ->where('property_purpose', $data->purpose)
-                ->where('listing_type', $listing_type)
-                ->where('property_count', '>', 0)->exists()) {
-                DB::table('property_count_by_listings')
-                    ->where('property_purpose', $data->purpose)
-                    ->where('listing_type', $listing_type)
-                    ->where('property_count', '>', 0)
-                    ->decrement('property_count', 1);
-
-            }
-
-
-        }
-
-    }
-
     private function packageExpiry()
     {
         $packages = Package::all();
+
         foreach ($packages as $package) {
             $agency_update = '';
             $property_update = '';
-            if ($package->type == 'Gold') {
+
+            if ($package->type == 'Platinum') {
                 $agency_update = 'featured_listing';
-                $property_update = 'golden_listing';
-            } elseif ($package->type == 'Silver') {
+                $property_update = 'platinum_listing';
+            } elseif ($package->type == 'Gold') {
                 $agency_update = 'key_listing';
-                $property_update = 'silver_listing';
+                $property_update = 'golden_listing';
             }
-            if ($package->status == 'active' && $package->expired_at != null && $package->expired_at < Carbon::now()) {
-                $package->expired_at = Carbon::now()->toDateTimeString();
-                $package->status = 'expired';
-                $package->save();
-                event(new NotifyUserPackageStatusChangeEvent($package));
+            $user = User::where('id', '=', $package->user_id)->first();
+            $credit = (new UserWallet())->getCurrentCredit($user->id);
+            if ($package->status == 'active' && $package->expired_at != null && $package->expired_at <= Carbon::now()->toDateTimeString()) {
 
-                if ($package->package_for == 'agency') {
-                    $agency = (new Package)->getAgencyFromPackageID($package->id);
 
-                    DB::table('agencies')->where('id', $agency->agency_id)->update([$agency_update => 0]);
-                    $this->packagePropertyExpired($package, $property_update);
+                if (count((new Package)->getPropertiesFromPackageID($package->id)) == 0 && $credit > 0) {
 
-                }
-            } elseif ($package->status == 'active' && $package->expired_at != null && $package->expired_at >= Carbon::now()) {
-                if (count((new Package)->getPropertiesFromPackageID($package->id)) == 0) {
-                    $total_duration =Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
-                    $margin_time = ceil($total_duration / 2);
-                    $difference = Carbon::parse($package->activated_at)->diffInDays(Carbon::now()->toDateTimeString());
-                    $user = User::where('id', '=', $package->user_id)->first();
+                    //if no property is added in package and credit is greater than 0
+                    $deduction_amount = ceil(intval($package->package_cost / 2));
+                    if ($credit >= $deduction_amount) {
+                        //from package get total_cost/2
 
-                    if ($difference <= $margin_time) {
-                        $package->expired_at = Carbon::parse($package->expired_at)->addDays($difference);
+                        //TODO: deduct half credit form wallet if no property is added in package + mail that new duration add and now add properties in package
+                        $total_duration = Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
+                        $margin_time = ceil($total_duration / 2);
+//                        $margin_time = ceil((intval($package->duration) * 30)  / 2);
+
+//                        dd($margin_time);
+
+                        $package->expired_at = Carbon::parse($package->expired_at)->addDays($margin_time)->toDateTimeString();
                         $package->save();
-                        //TODO :: send user notification
-                        Notification::send($user, new AddPropertiesInPackageNotification($user, $package));
-                    } else {
-                        Notification::send($user, new AddPropertiesInPackageNotification($user, $package));
+
+
+                        $this->withdrawCredit($package->user_id, $deduction_amount);
+
+
+                        //tell user your package expiry is extended and half balance is deducted
+                        Notification::send($user, new PackageExpiryMail($user, $package, 2));
+                        return true;
                     }
+
+
+                }
+                else {
+                    //from package get total_cost/2  deduct all amount from wallet
+                    $package->expired_at = Carbon::now()->toDateTimeString();
+                    $package->status = 'expired';
+                    $package->save();
+
+//                    event(new NotifyUserPackageStatusChangeEvent($package));
+
+                    if ($package->package_for == 'agency') {
+                        $agency = (new Package)->getAgencyFromPackageID($package->id);
+                        DB::table('agencies')->where('id', $agency->agency_id)->update([$agency_update => 0]);
+                    }
+
+                    $this->packagePropertyExpired($package, $property_update);
+                    Notification::send($user, new PackageExpiryMail($user, $package, 1));
+                    return true;
                 }
 
 
-                $properties = DB::table('package_properties')
-                    ->select('property_id')
-                    ->where('package_id', $package->id)
-                    ->whereDate('expired_at', '<', Carbon::now()->toDateTimeString())->get()->toArray();
-                foreach ($properties as $property_obj) {
-                    $property = $property_obj->property_id;
-                    DB::table('properties')->where('id', $property)->update([$property_update => 0]);
-                    $data = Property::select('purpose')->where('id', $property)->first();
-                    $listing_type = '';
-                    if ($package->packege_for == 'Gold')
-                        $listing_type = 'golden_listing';
-                    elseif (($package->packege_for == 'Silver'))
-                        $listing_type = 'silver_listing';
+            }
 
-                    if (DB::table('property_count_by_listings')
-                        ->where('property_purpose', $data->purpose)
-                        ->where('listing_type', $listing_type)
-                        ->where('property_count', '>', 0)->exists()) {
-                        DB::table('property_count_by_listings')
-                            ->where('property_purpose', $data->purpose)
-                            ->where('listing_type', $listing_type)
-                            ->where('property_count', '>', 0)
-                            ->decrement('property_count', 1);
-                    }
-                }
+            else if ($package->status == 'active' && $package->expired_at != null && Carbon::parse($package->expired_at)->format('d-m-Y') == Carbon::now()->addDays(7)->format('d-m-Y')) {
+                Notification::send($user, new PackageExpiryMail($user, $package, 3));
+
+                return true;
+            }else{
+
+                return true;
             }
         }
-        return true;
+
     }
+
+    private function packagePropertyExpired($package, $property_update)
+    {
+        $properties = (new Package)->getPropertiesFromPackageID($package->id);
+        if(count($properties) > 0 ){
+            foreach ($properties as $property) {
+                DB::table('properties')->where('id', $property)->update([$property_update => 0]);
+//            $data = (new \App\Models\Property)->select('purpose')->where('id', $property)->first();
+//            $listing_type = '';
+//            if ($package->package_for == 'Platinum')
+//                $listing_type = 'platinum_listing';
+//            elseif (($package->package_for == 'Gold'))
+//                $listing_type = 'gold_listing';
+
+//            if (DB::table('property_count_by_listings')
+//                ->where('property_purpose', $data->purpose)
+//                ->where('listing_type', $listing_type)
+//                ->where('property_count', '>', 0)->exists()) {
+//                DB::table('property_count_by_listings')
+//                    ->where('property_purpose', $data->purpose)
+//                    ->where('listing_type', $listing_type)
+//                    ->where('property_count', '>', 0)
+//                    ->decrement('property_count', 1);
+//
+//            }
+
+
+            }
+        }
+
+
+    }
+
 
     private function packageLog($package)
     {
@@ -195,5 +210,36 @@ class CronJobController extends Controller
         return true;
     }
 
+    public function withdrawCredit($user_id, $amount)
+    {
+        $credit_id = 0;
+
+        $user_wallet = (new \App\Models\UserWallet)->getUserWallet($user_id);
+        if ($user_wallet) {
+            $user_wallet->current_credit = intval($user_wallet->current_credit) - $amount;
+            $user_wallet->save();
+            $credit_id = $user_wallet->id;
+        }
+//        else {
+//            $credit_id = DB::Table('User_wallet')->insertGetId([
+//                'user_id' => $user_id,
+//                'current_credit' => $amount,
+//            ]);
+//        }
+
+        DB::Table('wallet_history')->insert([
+            'user_wallet_id' => $credit_id,
+            'credit' => $amount
+        ]);
+    }
+
+//    public function getCurrentCredit($user_id)
+//    {
+//        $data = (new UserWallet())->select('current_credit')->where('user_id',$user_id)->first();
+//        if ($data)
+//            return $data->current_credit;
+//        else
+//            return 0;
+//    }
 
 }

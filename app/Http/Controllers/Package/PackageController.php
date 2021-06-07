@@ -116,7 +116,12 @@ class PackageController extends Controller
 //            event(new NotifyAdminOfPackageRequestEvent($package));
             $args['pack-id'] = $package;
 
-            return view('website.package.checkout.index', ['result' => $args]);
+
+            event(new NotifyAdminOfPackageRequestEvent($package));
+
+            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+
+//            return view('website.package.checkout.index', ['result' => $args]);
 //                ->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
 
@@ -148,6 +153,8 @@ class PackageController extends Controller
 
     public function AddProperties(Package $package, Request $request)
     {
+        if ($package->user_id !== Auth::user()->getAuthIdentifier())
+            return redirect()->back();
         $order = '';
         if ($request->has('sort')) {
             if ($request->input('sort') == 'oldest') {
@@ -308,7 +315,7 @@ class PackageController extends Controller
 
                             $user = User::where('id', '=', $package->user_id)->first();
                             $user->notify(new PropertyAddedInPackage($property_id, $package));
-                            event(new AddPropertyInPackageEvent($property_id, $package));
+//                            event(new AddPropertyInPackageEvent($property_id, $package));
 
 
                             return response()->json(['status' => 200, 'message' => 'Added']);
