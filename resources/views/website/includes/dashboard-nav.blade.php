@@ -331,6 +331,10 @@
                             <a class="nav-link theme-dark-blue" href="{{route('aboutpakistan.support')}}">
                                 Support</a>
                         </li>
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" style="color: orangered !important;" href="{{route('account.wallet')}}">
+                                Wallet</a>
+                        </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item user-dropdown">

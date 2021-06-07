@@ -6,6 +6,7 @@ use App\Events\NotifyAdminOfPackageRequestEvent;
 use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\Wallet\WalletController;
 use App\Models\Agency;
 use App\Models\AgencyLog;
 use App\Models\Dashboard\User;
@@ -115,6 +116,8 @@ class AdminPackageController extends Controller
                             ->update(['featured_listing' => 1]);
                     }
                 }
+                (new WalletController())->addCredit($package->user_id, $package->package_cost);
+
 
             }
 

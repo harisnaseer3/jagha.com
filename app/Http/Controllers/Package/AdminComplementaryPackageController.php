@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Package;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Wallet\WalletController;
 use App\Jobs\ComplementaryPackageActivation;
 use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Agency;
@@ -113,24 +114,25 @@ class AdminComplementaryPackageController extends Controller
                 'status' => $request->has('status') ? $request->input('status') : 'pending'
 
             ]);
-            $credit_id = 0;
+//            $credit_id = 0;
 
-            $user_wallet = (new \App\Models\UserWallet)->getUserWallet($request->user_id);
-            if ($user_wallet) {
-                $user_wallet->current_credit = intval($user_wallet->current_credit) + $amount['price'];
-                $user_wallet->save();
-                $credit_id = $user_wallet->id;
-            } else {
-                $credit_id = DB::Table('User_wallet')->insertGetId([
-                    'user_id' => $request->user_id,
-                    'current_credit' => $amount['price'],
-                ]);
-            }
-
-            DB::Table('wallet_history')->insert([
-                'user_wallet_id' => $credit_id,
-                'debit' => $amount['price']
-            ]);
+            (new WalletController())->addCredit($request->user_id, $amount['price']);
+//            $user_wallet = (new \App\Models\UserWallet)->getUserWallet($request->user_id);
+//            if ($user_wallet) {
+//                $user_wallet->current_credit = intval($user_wallet->current_credit) + $amount['price'];
+//                $user_wallet->save();
+//                $credit_id = $user_wallet->id;
+//            } else {
+//                $credit_id = DB::Table('User_wallet')->insertGetId([
+//                    'user_id' => $request->user_id,
+//                    'current_credit' => $amount['price'],
+//                ]);
+//            }
+//
+//            DB::Table('wallet_history')->insert([
+//                'user_wallet_id' => $credit_id,
+//                'debit' => $amount['price']
+//            ]);
 
 
             //notify user on package complementary allotment

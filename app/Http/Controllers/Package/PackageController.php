@@ -80,7 +80,6 @@ class PackageController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), Package::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
@@ -265,23 +264,6 @@ class PackageController extends Controller
                 $property_id = $request->input('property');
                 $package = (new \App\Models\Package)->getPackageFromId($package_id);
                 if ($package) {
-                    $required_credit = ceil((($package->unit_cost / 30) * intval($duration)));
-                    if ((new \App\Models\UserWallet)->getCurrentCredit() < $required_credit) {
-                        return response()->json(['status' => 201, 'message' => 'Insufficient Credit.']);
-                    }
-
-                    //calculate price unit_cost + days
-
-                    $wallet = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->getAuthIdentifier());
-                    $wallet->current_credit = intval($wallet->current_credit) - $required_credit;
-                    $wallet->save();
-
-
-                    DB::Table('wallet_history')->insert([
-                        'user_wallet_id' => $wallet->id,
-                        'credit' => $wallet->current_credit
-                    ]);
-
                     $remaining_days = Carbon::parse($package->activated_at)->diffInDays($package->expired_at);
                     $added_property = DB::table('package_properties')
                         ->select(DB::raw('Count(property_id) AS count'))
@@ -290,6 +272,25 @@ class PackageController extends Controller
 
                     if ($added_property[0] < $package->property_count) {
                         if ($duration > 0 && $duration <= $remaining_days) {
+
+                            $required_credit = ceil(intval(($package->unit_cost / 30) * intval($duration)));
+                            if ((new \App\Models\UserWallet)->getCurrentCredit() < $required_credit) {
+                                return response()->json(['status' => 201, 'message' => 'Insufficient Credit.']);
+                            }
+
+                            //calculate price unit_cost + days
+
+                            $wallet = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->getAuthIdentifier());
+
+                            $wallet->current_credit = intval($wallet->current_credit) - $required_credit;
+                            $wallet->save();
+
+
+                            DB::Table('wallet_history')->insert([
+                                'user_wallet_id' => $wallet->id,
+                                'credit' => $wallet->current_credit
+                            ]);
+
                             DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property_id], [
                                 'duration' => $duration,
                                 'activated_at' => Carbon::now()->toDateTimeString(),
@@ -368,7 +369,7 @@ class PackageController extends Controller
 //        $amount_array = explode('.', $temp_amount);
 
 
-        $pp_Amount = $product->package_cost;
+//        $pp_Amount = $product->package_cost;
 
 
         //2.
@@ -393,30 +394,30 @@ class PackageController extends Controller
 
         $pp_TxnRefNo = 'T' . $pp_TxnDateTime;
 
-        $post_data = array(
-            "pp_Version" => Config::get('constants.jazzcash.VERSION'),
-            "pp_TxnType" => "MWALLET",
-            "pp_Language" => Config::get('constants.jazzcash.LANGUAGE'),
-            "pp_MerchantID" => Config::get('constants.jazzcash.MERCHANT_ID'),
-            "pp_SubMerchantID" => "",
-            "pp_Password" => Config::get('constants.jazzcash.PASSWORD'),
-            "pp_BankID" => "TBANK",
-            "pp_ProductID" => "RETL",
-            "pp_TxnRefNo" => $pp_TxnRefNo,
-            "pp_Amount" => $pp_Amount,
-            "pp_TxnCurrency" => Config::get('constants.jazzcash.CURRENCY_CODE'),
-            "pp_TxnDateTime" => $pp_TxnDateTime,
-            "pp_BillReference" => "billRef",
-            "pp_Description" => "Description of transaction",
-            "pp_TxnExpiryDateTime" => $pp_TxnExpiryDateTime,
-            "pp_ReturnURL" => Config::get('constants.jazzcash.RETURN_URL'),
-            "pp_SecureHash" => "",
-            "ppmpf_1" => "1",
-            "ppmpf_2" => "2",
-            "ppmpf_3" => "3",
-            "ppmpf_4" => "4",
-            "ppmpf_5" => "5",
-        );
+//        $post_data = array(
+//            "pp_Version" => Config::get('constants.jazzcash.VERSION'),
+//            "pp_TxnType" => "MWALLET",
+//            "pp_Language" => Config::get('constants.jazzcash.LANGUAGE'),
+//            "pp_MerchantID" => Config::get('constants.jazzcash.MERCHANT_ID'),
+//            "pp_SubMerchantID" => "",
+//            "pp_Password" => Config::get('constants.jazzcash.PASSWORD'),
+//            "pp_BankID" => "TBANK",
+//            "pp_ProductID" => "RETL",
+//            "pp_TxnRefNo" => $pp_TxnRefNo,
+//            "pp_Amount" => $pp_Amount,
+//            "pp_TxnCurrency" => Config::get('constants.jazzcash.CURRENCY_CODE'),
+//            "pp_TxnDateTime" => $pp_TxnDateTime,
+//            "pp_BillReference" => "billRef",
+//            "pp_Description" => "Description of transaction",
+//            "pp_TxnExpiryDateTime" => $pp_TxnExpiryDateTime,
+//            "pp_ReturnURL" => Config::get('constants.jazzcash.RETURN_URL'),
+//            "pp_SecureHash" => "",
+//            "ppmpf_1" => "1",
+//            "ppmpf_2" => "2",
+//            "ppmpf_3" => "3",
+//            "ppmpf_4" => "4",
+//            "ppmpf_5" => "5",
+//        );
 
 //        $pp_SecureHash = $this->get_SecureHash($post_data);
 //
@@ -450,13 +451,15 @@ class PackageController extends Controller
 
         event(new NotifyAdminOfPackageRequestEvent($product));
 
-        return view('website.package.buy-package', [
-            'price' => DB::table('package_costings')->select('type', 'price_per_unit', 'package_for')->where('package_for', '=', 'properties')->get(),
-            'types' => PackagePrice::select('type')->distinct()->get()->pluck('type')->toArray(),
-            'user_agencies' => Auth::guard('web')->user()->agencies->where('status', 'verified'),
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
-        ])->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+//        return view('website.package.buy-package', [
+//            'price' => DB::table('package_costings')->select('type', 'price_per_unit', 'package_for')->where('package_for', '=', 'properties')->get(),
+//            'types' => PackagePrice::select('type')->distinct()->get()->pluck('type')->toArray(),
+//            'user_agencies' => Auth::guard('web')->user()->agencies->where('status', 'verified'),
+//            'recent_properties' => (new FooterController)->footerContent()[0],
+//            'footer_agencies' => (new FooterController)->footerContent()[1],
+//        ])->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+
+        return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
 
     }

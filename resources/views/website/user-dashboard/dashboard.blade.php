@@ -199,7 +199,8 @@
 
                                                 </div>
 
-                                            </div>@endif
+                                            </div>
+                                        @endif
                                         @if($rent->count() > 0)
                                             <div class="card my-2">
                                                 <div class="card-header theme-blue text-white">

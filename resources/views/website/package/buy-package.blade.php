@@ -93,8 +93,6 @@
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="tab-pane fade active show" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">
-
-
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="float-right">

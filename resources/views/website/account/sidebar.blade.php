@@ -10,8 +10,8 @@
     <ul class="list-group">
         <li class="list-group-item {{ $current_route_name === 'users.edit' ? 'active' : '' }}"><a
                 href="{{ route('users.edit', ['user' => $user_id]) }}" class="{{ $current_route_name === 'users.edit' ? 'text-white' : '' }}">Current User Profile</a></li>
-        <li class="list-group-item {{ $current_route_name === 'account.wallet' ? 'active' : '' }}"><a
-                href="{{ route('account.wallet') }}" class="{{ $current_route_name === 'account.wallet' ? 'text-white' : '' }}">My Wallet</a></li>
+{{--        <li class="list-group-item {{ $current_route_name === 'account.wallet' ? 'active' : '' }}"><a--}}
+{{--                href="{{ route('account.wallet') }}" class="{{ $current_route_name === 'account.wallet' ? 'text-white' : '' }}">My Wallet</a></li>--}}
         <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
                 href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">Current User Role</a></li>
         <li class="list-group-item {{ $current_route_name === 'settings.edit' ? 'active' : '' }}"><a
