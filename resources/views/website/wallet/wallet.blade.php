@@ -5,6 +5,8 @@
 @endsection
 @section('css_library')
     {{--    <link rel="stylesheet" type="text/css" href="{{asset('website/css/bootstrap.min.css')}}">--}}
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
 @endsection
@@ -51,26 +53,27 @@
                                         <div class="card-body">
                                             <div class="form-group row">
                                                 <div class="col-12">
-                                                    {{--                                                    <div class="text-center">--}}
-                                                    {{--                                                        <span class="mr-5" style=" font-weight: bold;">Available Balance: </span>--}}
-                                                    {{--                                                        <span>Rs. {{number_format($wallet)}}</span>--}}
-                                                    {{--                                                    </div>--}}
-                                                    <table class="display" style="width: 100%" id="balance">
+                                                    <table class="display balance" style="width: 100%">
                                                         <thead>
                                                         <tr>
                                                             <th>Sr.</th>
                                                             <th>Credit</th>
                                                             <th>Debt</th>
                                                             <th>Dated</th>
-
                                                         </tr>
                                                         </thead>
                                                         <tbody>
+                                                        @foreach($history as $index=>$value)
+                                                            <tr>
+                                                                <td>{{$index + 1 }}</td>
+                                                                <td>{{$value->credit}}</td>
+                                                                <td>{{$value->debit}}</td>
+                                                                <td>{{ (new \Illuminate\Support\Carbon($value->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
 
-
+                                                            </tr>
+                                                        @endforeach
                                                         </tbody>
                                                     </table>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -90,11 +93,22 @@
 @endsection
 
 @section('script')
-    <script>$('#balance').DataTable(
-            {
-                "scrollX": true,
-                "ordering": false,
-                responsive: true
-            }
-        );</script>
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+    <script>
+        (function ($) {
+            $(document).ready(function () {
+                $('.balance').DataTable(
+                    {
+                        "scrollX": true,
+                        "ordering": false,
+                        // responsive: true
+                    }
+                );
+            });
+        })
+        (jQuery);
+
+
+    </script>
 @endsection

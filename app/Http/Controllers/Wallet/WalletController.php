@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
 use App\Models\UserWallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class WalletController extends Controller
@@ -23,7 +24,12 @@ class WalletController extends Controller
     public function index()
     {
 //        dd( (new \App\Models\UserWallet)->getCurrentCredit());
+        $wallet_id = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->id);
+        $history = array();
+        if ($wallet_id)
+            $history = DB::table('wallet_history')->where('user_wallet_id', $wallet_id->id)->get()->toArray();
         $data = [
+            'history' => $history,
             'wallet' => (new \App\Models\UserWallet)->getCurrentCredit(),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
