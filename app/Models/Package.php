@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -50,6 +51,11 @@ class Package extends Model
     {
 
         return DB::table('package_properties')->select('duration')->where('property_id', $property)->first();
+    }
+
+    function getPackageFromUserId()
+    {
+        return Package::select('id')->where('user_id', Auth::user()->getAuthIdentifier())->where('status', 'active')->get()->toArray();
     }
 
 

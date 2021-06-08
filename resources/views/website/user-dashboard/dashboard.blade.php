@@ -22,7 +22,7 @@
                             <div class="m-4">
 
                                 <div class="row">
-                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
                                         <a href="{{route('properties.listings',['active','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-success"><i class="fas fa-city  color-white"></i></span>
@@ -33,7 +33,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
                                         <a href="{{route('properties.listings',['pending','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-warning"><i class="fas fa-city color-white"></i></span>
@@ -44,7 +44,7 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
                                         <a href="{{route('properties.listings',['deleted','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-danger"><i class="fas fa-city color-white"></i></span>
@@ -55,13 +55,35 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-sm-6 col-md-6 col-lg-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
                                         <a href="{{route('agencies.listings',['verified_agencies','all',\Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(),'id','desc','1'])}}">
                                             <div class="info-box">
                                                 <span class="info-box-icon bg-info"><i class="fas fa-users"></i></span>
-                                                <div class="info-box-content">
+                                                <div class="info-box-content" style="word-wrap: break-word;">
                                                     <span class="info-box-text">Verified Agencies & Memberships</span>
                                                     <span class="info-box-number">{{$agencies}}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
+                                        <a href="{{route('package.index')}}">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-danger"><i class="fad fa-gem color-white"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Active Packages</span>
+                                                    <span class="info-box-number">{{count($packages)}}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-4">
+                                        <a href="{{route('account.wallet')}}">
+                                            <div class="info-box">
+                                                <span class="info-box-icon bg-success"><i class="far fa-wallet color-white"></i></span>
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text">Wallet</span>
+                                                    <span class="info-box-number"> Rs. {{$wallet}}</span>
                                                 </div>
                                             </div>
                                         </a>
@@ -69,10 +91,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 mb-2">
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Post Advertisement</a></span>
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i
+                                        <span class="pull-right py-2"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Post Advertisement</a></span>
+                                        <span class="pull-right py-2"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i
                                                     class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
-                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                        <span class="pull-right py-2"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
                                                     class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
 
                                     </div>
@@ -128,6 +150,7 @@
                                                             <th>Location</th>
                                                             <th>Price (PKR)</th>
                                                             <th>Status</th>
+                                                            <th>Package</th>
                                                             <th>Views</th>
                                                             <th>Listed Date</th>
                                                             <th>Controls</th>
@@ -147,6 +170,16 @@
                                                                     @endif
                                                                 </td>
                                                                 <td>{{ucfirst($property->status)}}</td>
+                                                                <td>
+                                                                    @if($property->gold_lisitng == '1')
+                                                                        Gold
+                                                                    @elseif($property->platinum_listing == '1')
+                                                                        Platinum
+                                                                    @else
+                                                                        Basic
+                                                                    @endif
+
+                                                                </td>
                                                                 <td>{{$property->views}}</td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                 <td>
