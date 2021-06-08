@@ -17,11 +17,9 @@ class CreatePackageLogsTable extends Migration
         Schema::create('package_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('package_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('admin_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('admin_name', 255);
+            $table->bigInteger('admin_id')->nullable();
+            $table->bigInteger('user_id')->nullable();
             $table->string('status', 255);
-            $table->string('rejection_reason', 255)->nullable();
-
             $table->softDeletes();
             $table->timestamps();
         });

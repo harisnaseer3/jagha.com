@@ -122,6 +122,15 @@ class AdminPackageController extends Controller
             }
 
             $package->save();
+
+            $log_pack = array(
+                'package_id' => $package->id,
+                'status' => $request->status,
+                'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier()
+            );
+
+            (new PackageLogController)->add($log_pack);
+
             $user->notify(new PackageStatusChange($package));
             event(new NotifyUserPackageStatusChangeEvent($package));
 

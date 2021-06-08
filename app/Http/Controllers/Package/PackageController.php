@@ -116,6 +116,13 @@ class PackageController extends Controller
 //            event(new NotifyAdminOfPackageRequestEvent($package));
             $args['pack-id'] = $package;
 
+            $log_pack = array(
+                'package_id' => $package,
+                'status' => 'pending',
+                'user_id' => Auth::user()->getAuthIdentifier()
+            );
+
+            (new PackageLogController)->add($log_pack);
 
             event(new NotifyAdminOfPackageRequestEvent($package));
 
@@ -142,6 +149,13 @@ class PackageController extends Controller
                 $package->activated_at = null;
                 $package->save();
 
+                $log_pack = array(
+                    'package_id' => $package->id,
+                    'status' => 'deleted',
+                    'user_id' => Auth::user()->getAuthIdentifier()
+                );
+
+                (new PackageLogController)->add($log_pack);
 
                 return redirect()->back()->with('success', 'Package deleted successfully');
             } catch (Throwable $e) {

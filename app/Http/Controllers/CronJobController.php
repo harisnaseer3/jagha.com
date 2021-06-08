@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Package\PackageLogController;
 use App\Http\Controllers\Wallet\WalletController;
 use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Dashboard\City;
@@ -29,9 +30,9 @@ class CronJobController extends Controller
 
             if (
 //                $this->updatePropertyStatus() &&
-//                $this->HourlyUpdate()
-//                &&
-            $this->packageExpiry()
+                $this->HourlyUpdate()
+                &&
+                $this->packageExpiry()
             ) {
                 return response()->json(['data' => 'success', 'status' => 200]);
             } else {
@@ -87,16 +88,24 @@ class CronJobController extends Controller
 
                         //tell user your package expiry is extended and half balance is deducted
                         Notification::send($user, new PackageExpiryMail($user, $package, 2));
-                        return true;
+                        continue;
                     }
 
 
-                }
-                else {
+                } else {
+
                     //from package get total_cost/2  deduct all amount from wallet
                     $package->expired_at = Carbon::now()->toDateTimeString();
                     $package->status = 'expired';
                     $package->save();
+
+                    $log_pack = array(
+                        'package_id' => $package->id,
+                        'status' => 'expired',
+                        'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier()
+                    );
+
+                    (new PackageLogController)->add($log_pack);
 
 //                    event(new NotifyUserPackageStatusChangeEvent($package));
 
@@ -107,28 +116,28 @@ class CronJobController extends Controller
 
                     $this->packagePropertyExpired($package, $property_update);
                     Notification::send($user, new PackageExpiryMail($user, $package, 1));
-                    return true;
+                    continue;
                 }
 
 
-            }
-
-            else if ($package->status == 'active' && $package->expired_at != null && Carbon::parse($package->expired_at)->format('d-m-Y') == Carbon::now()->addDays(7)->format('d-m-Y')) {
+            } else if ($package->status == 'active' && $package->expired_at != null && Carbon::parse($package->expired_at)->format('d-m-Y') == Carbon::now()->addDays(7)->format('d-m-Y')) {
                 Notification::send($user, new PackageExpiryMail($user, $package, 3));
 
-                return true;
-            }else{
+                continue;
+            } else {
 
-                return true;
+                continue;
             }
         }
+
+        return true;
 
     }
 
     private function packagePropertyExpired($package, $property_update)
     {
         $properties = (new Package)->getPropertiesFromPackageID($package->id);
-        if(count($properties) > 0 ){
+        if (count($properties) > 0) {
             foreach ($properties as $property) {
                 DB::table('properties')->where('id', $property)->update([$property_update => 0]);
 //            $data = (new \App\Models\Property)->select('purpose')->where('id', $property)->first();
@@ -220,26 +229,10 @@ class CronJobController extends Controller
             $user_wallet->save();
             $credit_id = $user_wallet->id;
         }
-//        else {
-//            $credit_id = DB::Table('User_wallet')->insertGetId([
-//                'user_id' => $user_id,
-//                'current_credit' => $amount,
-//            ]);
-//        }
 
         DB::Table('wallet_history')->insert([
             'user_wallet_id' => $credit_id,
             'credit' => $amount
         ]);
     }
-
-//    public function getCurrentCredit($user_id)
-//    {
-//        $data = (new UserWallet())->select('current_credit')->where('user_id',$user_id)->first();
-//        if ($data)
-//            return $data->current_credit;
-//        else
-//            return 0;
-//    }
-
 }
