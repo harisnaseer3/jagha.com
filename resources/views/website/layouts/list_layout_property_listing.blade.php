@@ -57,8 +57,6 @@
 
 {{--                                                {{dd($property)}}--}}
                         @if(isset($property->golden_listing) && $property->golden_listing == 1)
-
-
                             <div class="listing-badges"><span aria-label="super hot label" class="featured">Golden</span></div>
                         @elseif(isset($property->platinum_listing) && $property->platinum_listing  == 1)
                             <div class="listing-badges"><span aria-label="hot label" class="featured">Platinum</span></div>
