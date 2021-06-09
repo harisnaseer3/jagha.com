@@ -330,14 +330,16 @@
             {
                 "scrollX": true,
                 "ordering": false,
-                responsive: true
+                responsive: true,
+                pageLength: 50
             }
         );
         $('#rent-properties').DataTable(
             {
                 "scrollX": true,
                 "ordering": false,
-                responsive: true
+                responsive: true,
+                pageLength: 50
             }
         );
         $('#delete').on('show.bs.modal', function (event) {
