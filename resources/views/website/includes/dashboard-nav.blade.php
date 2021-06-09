@@ -130,11 +130,24 @@
                                                     <a href="{{route('agencies.staff')}}">Agency Staff</a>
                                                 </li>
                                             @endif
-
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('users.edit', ['user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier()])}}">My Account Settings</a>
+                                            </li>
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('message-center.inbox')}}"> Message Center</a>
+                                            </li>
                                             <li id="menu-item-2511"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
                                                 <a href="{{route('aboutpakistan.support')}}">Support</a>
                                             </li>
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('account.wallet')}}">
+                                                    Wallet</a>
+                                            </li>
+
                                         </ul>
                                     </li>
                                     <li id="menu-item-13"
