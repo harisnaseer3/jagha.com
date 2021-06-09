@@ -8,15 +8,12 @@
                 <thead>
                 <tr>
                     <th>Package ID</th>
-                    <th>Admin ID</th>
                     <th>Package Type</th>
-                    <th>Package For</th>
-                    <th>Duration</th>
-                    <th>Property Count</th>
+                    <th>Cost (Rs.)</th>
                     <th>Status</th>
-                    <th>Activated At</th>
-                    <th>Rejection Reason</th>
-                    <th>Requested At</th>
+                    <th>Complementary</th>
+                    <th>Activation</th>
+
                 </tr>
                 </thead>
                 <tbody id="tbody-package-logs">
