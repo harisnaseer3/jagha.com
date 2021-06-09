@@ -114,15 +114,27 @@
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
                                                 <a href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">Commercial</a>
                                             </li>
-{{--                                            <li id="menu-item-2510"--}}
-{{--                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">--}}
-{{--                                                <a href="{{route('blogs.index')}}">Blogs</a>--}}
-{{--                                            </li>--}}
+                                            {{--                                            <li id="menu-item-2510"--}}
+                                            {{--                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">--}}
+                                            {{--                                                <a href="{{route('blogs.index')}}">Blogs</a>--}}
+                                            {{--                                            </li>--}}
                                             <li id="menu-item-2511"
                                                 class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
                                                 <a href="{{route('agents.listing')}}">Partners</a>
                                             </li>
+                                            <li id="menu-item-2512" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
+                                                {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-0 py-2 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref-2']) }}
+                                                <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id-2" autocomplete="false"
+                                                       value="{{isset($params['search_term']) ? $params['search_term']:'' }}" style="border-radius: 0;border: none;">
+                                                <small id="property_id-error-2" class="help-block text-red"></small>
+                                                <button class="btn btn-sm btn-reference-style" id="property-reference-2" type="submit">
+                                                    <i class="fa fa-search ml-1"></i></button>
+                                                {{ Form::close() }}
+                                            </li>
+
+
                                         </ul>
+
                                     </li>
                                     <li id="menu-item-13"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
@@ -290,10 +302,10 @@
                             <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
                                 Commercial</a>
                         </li>
-{{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">--}}
-{{--                            <a class="nav-link" href="{{route('blogs.index')}}">--}}
-{{--                                Blogs</a>--}}
-{{--                        </li>--}}
+                        {{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">--}}
+                        {{--                            <a class="nav-link" href="{{route('blogs.index')}}">--}}
+                        {{--                                Blogs</a>--}}
+                        {{--                        </li>--}}
                         <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{route('agents.listing')}}">
                                 Partners</a>
@@ -347,6 +359,11 @@
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">
                                             <i class="fa fa-building-o mr-2"></i>Property Management</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"
+                                           href="{{route('account.wallet')}}">
+                                            <i class="far fa-wallet mr-2"></i>
+                                            My Wallet</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
                                     </div>
@@ -369,15 +386,15 @@
             </nav>
             <nav class="navbar navbar-expand-lg navbar-light mobile-nav">
                 <div class="row">
-{{--                    <div class="col-12"><div class="text-right">--}}
-{{--                        {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:345px;' ,'id'=>'search-property-ref']) }}--}}
-{{--                        <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id" autocomplete="false"--}}
-{{--                               value="{{isset($params['search_term']) ? $params['search_term']:'' }}">--}}
-{{--                        <small id="property_id-error" class="help-block text-red"></small>--}}
-{{--                        <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">--}}
-{{--                            <i class="fa fa-search ml-1"></i></button>--}}
-{{--                            {{ Form::close() }}</div>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="col-12"><div class="text-right">--}}
+                    {{--                        {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:345px;' ,'id'=>'search-property-ref']) }}--}}
+                    {{--                        <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id" autocomplete="false"--}}
+                    {{--                               value="{{isset($params['search_term']) ? $params['search_term']:'' }}">--}}
+                    {{--                        <small id="property_id-error" class="help-block text-red"></small>--}}
+                    {{--                        <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">--}}
+                    {{--                            <i class="fa fa-search ml-1"></i></button>--}}
+                    {{--                            {{ Form::close() }}</div>--}}
+                    {{--                    </div>--}}
                     <div class="user-dropdown col-12">
                         @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                             <div class="dropdown dropdown-min-width">

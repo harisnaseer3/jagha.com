@@ -359,14 +359,14 @@
                                             <br>
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
-                                                <strong>Expired At: </strong>{{$package->expired_at}} month(s)</span>
+                                                <strong>Expired At: </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY  h:mm a')}} month(s)</span>
                                             <br>
                                             @if($package->status == 'active')
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Activated_at: </strong>{{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</span>
                                                 <br>
                                                 <span class="position"
-                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Expire in : </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans()}}</span>
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Expire : </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans()}}</span>
                                                 <br>
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
