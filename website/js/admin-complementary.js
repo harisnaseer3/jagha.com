@@ -165,21 +165,23 @@
         });
 
         function callPropertyCount() {
-            if ($('input[name="property_count"]').val() > 0 && $('input[name="duration"]').val() > 0) {
+            if ($('input[name="property_count"]').val() > 0 && $('input[name="duration"]').val() > 0 && $('input[name="property_count"]').is(':visible')) {
                 getAmount();
             }
         }
 
-        $(document).on('keyup', property_count, function () {
+        $(document).on('keyup', $('input[name="property_count"]'), function () {
             callPropertyCount();
         });
 
-        $(document).on('keyup', duration, function () {
-            if ($('input[name="duration"]').val() > 0) {
+
+        $(document).on('keyup', $('input[name="duration"]'), function () {
+            if ($('input[name="duration"]').val() > 0 && $('input[name="duration"]').is(':visible')) {
                 getAmount()
             }
 
         });
+
 
         function getAmount() {
             let pack_for = $('input[name=package_for]:checked').val();
