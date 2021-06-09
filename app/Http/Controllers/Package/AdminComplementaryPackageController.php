@@ -73,7 +73,7 @@ class AdminComplementaryPackageController extends Controller
 
         $validator = Validator::make($request->all(), Package::$rules);
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again 1.');
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again');
         }
         try {
             $args = array();
@@ -107,13 +107,13 @@ class AdminComplementaryPackageController extends Controller
                     ]);
                 }
             }
-            DB::table('package_logs')->insert([
-                'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier(),
+            $log_pack = array(
                 'package_id' => $package,
-                'admin_name' => Auth::guard('admin')->user()->name,
-                'status' => $request->has('status') ? $request->input('status') : 'pending'
+                'status' => $request->has('status') ? $request->input('status') : 'pending',
+                'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier()
+            );
 
-            ]);
+            (new PackageLogController)->add($log_pack);
 //            $credit_id = 0;
 
             (new WalletController())->addCredit($request->user_id, $amount['price']);
@@ -141,7 +141,7 @@ class AdminComplementaryPackageController extends Controller
             return redirect()->back()->with('success', 'Package Assigned Successfully.');
 
         } catch (\Exception $e) {
-//            dd($e->getMessage());
+            dd($e->getMessage());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again 2.');
         }
     }
