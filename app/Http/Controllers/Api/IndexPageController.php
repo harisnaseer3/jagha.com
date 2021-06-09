@@ -61,8 +61,8 @@ class IndexPageController extends Controller
     function getAboutPakistanProperties()
     {
         $featured_properties = (new PropertySearchController)->listingfrontend()
-            ->where('properties.golden_listing', '=', 1)
-            ->orderBy('properties.golden_listing', 'DESC')
+            ->where('properties.platinum_listing', '=', 1)
+            ->orderBy('properties.platinum_listing', 'DESC')
             ->orderBy('properties.activated_at', 'DESC')
             ->get();
 
