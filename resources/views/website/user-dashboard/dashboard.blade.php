@@ -7,6 +7,16 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+    <style>
+        .badge-gold{
+            color: grey;
+            background-color: #FFD700;
+        }
+        .badge-platinum{
+            color: black;
+            background-color: #C0C0C0;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -172,11 +182,12 @@
                                                                 <td>{{ucfirst($property->status)}}</td>
                                                                 <td>
                                                                     @if($property->gold_lisitng == '1')
-                                                                        Gold
+                                                                        <div class="badge badge-gold p-2">Gold</div>
                                                                     @elseif($property->platinum_listing == '1')
-                                                                        Platinum
+                                                                        <div class="badge badge-platinum p-2">Platinum</div>
                                                                     @else
-                                                                        Basic
+                                                                        <div class="badge badge-primary p-2">Basic</div>
+
                                                                     @endif
 
                                                                 </td>
