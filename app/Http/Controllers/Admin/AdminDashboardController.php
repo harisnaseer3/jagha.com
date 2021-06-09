@@ -91,8 +91,22 @@ class AdminDashboardController extends Controller
 
     function getPackageLogs()
     {
+        $result = DB::table('package_logs')->join('packages', 'package_logs.package_id', '=', 'packages.id')
+            ->orderBy('package_logs.id', 'Desc')->get()->toArray();
+        $response = array();
+        foreach ($result as $val) {
+            $args = array(
+                'id' => $val->id,
+                'type' => $val->type,
+                'cost' => $val->package_cost,
+                'status' => $val->status,
+                'is_complementary' => $val->is_complementary,
+                'activation' => $val->activated_at
+            );
+            $response[] = $args;
+        }
         $data['view'] = View('website.admin-pages.components.package-logs',
-            ['package_log' => DB::table('packages')->orderBy('id', 'desc')->get()->all()
+            ['package_log' => $response
             ])->render();
         return $data;
     }
