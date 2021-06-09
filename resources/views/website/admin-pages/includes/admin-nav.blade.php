@@ -145,6 +145,17 @@
                                             <a href="#">Packages Management</a>
                                         </li>
                                     @endcan
+                                    <li id="menu-item-2511"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                        <a href="{{route('admin.facebook.create')}}"> Facebook Post</a>
+                                    </li>
+                                    <li id="menu-item-2511"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                        <a href="{{route('admin.statistic.index')}}">
+                                            Statistics
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </li>
                             <li id="menu-item-13"
@@ -352,16 +363,16 @@
                         </a>
                     </li>
                 @endcan
-                    <li class="nav-item hide-nav navbar-li">
-                        <a class="nav-link" href="{{route('admin.facebook.create')}}">
-                            Facebook Post
-                        </a>
-                    </li>
-                    <li class="nav-item hide-nav navbar-li">
-                        <a class="nav-link" href="{{route('admin.statistic.index')}}">
-                            Statistics
-                        </a>
-                    </li>
+                <li class="nav-item hide-nav navbar-li">
+                    <a class="nav-link" href="{{route('admin.facebook.create')}}">
+                        Facebook Post
+                    </a>
+                </li>
+                <li class="nav-item hide-nav navbar-li">
+                    <a class="nav-link" href="{{route('admin.statistic.index')}}">
+                        Statistics
+                    </a>
+                </li>
             </ul>
             <ul class="top-social-media navbar-nav ml-auto">
                 <li class="nav-item user-dropdown">
@@ -391,32 +402,32 @@
         </div>
     </nav>
     <nav class="navbar navbar-expand-lg navbar-light mobile-nav">
-         <div class="row">
-             <div class="col-12 user-dropdown">
-                 @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
-                     <div class="dropdown dropdown-min-width">
-                         <a class="nav-link dropdown-toggle text-right" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
-                            aria-expanded="false">
-                             <i class="fas fa-user mr-2"></i>
-                             @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
-                                 <span class="mr-1">{{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})
+        <div class="row">
+            <div class="col-12 user-dropdown">
+                @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                    <div class="dropdown dropdown-min-width">
+                        <a class="nav-link dropdown-toggle text-right" data-toggle="dropdown" role="button" href="javascript:void(0);" id="dropdownMenuButton" aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="fas fa-user mr-2"></i>
+                            @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
+                                <span class="mr-1">{{\Illuminate\Support\Facades\Auth::guard('admin')->user()->name}} (ID: {{\Illuminate\Support\Facades\Auth::guard('admin')->user()->id}})
                                             </span>
-                             @endif
-                         </a>
-                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                             <a class="dropdown-item" href="{{route('accounts.admin-logout')}}"><i
-                                     class="far fa-sign-out mr-2"></i>Logout</a>
-                         </div>
-                     </div>
-                 @else
-                     <a class="nav-link text-right" data-toggle="modal" data-target="#exampleModalCenter"
-                        href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
-                         <i class="fas fa-user mr-3"></i>
-                     </a>
-                 @endif
-             </div>
+                            @endif
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{route('accounts.admin-logout')}}"><i
+                                    class="far fa-sign-out mr-2"></i>Logout</a>
+                        </div>
+                    </div>
+                @else
+                    <a class="nav-link text-right" data-toggle="modal" data-target="#exampleModalCenter"
+                       href="javascript:void(0);" id="navbarDropdownMenuLink5" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user mr-3"></i>
+                    </a>
+                @endif
+            </div>
 
-         </div>
+        </div>
     </nav>
 </div>
 
