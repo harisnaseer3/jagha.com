@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -16,7 +17,7 @@ class Package extends Model
     use SoftDeletes;
 
     //
-    protected $fillable = ['user_id', 'type', 'activated_at', 'expired_at', 'package_for', 'admin_id', 'property_count', 'duration'];
+    protected $fillable = ['user_id', 'type', 'activated_at', 'expired_at', 'package_for', 'admin_id', 'property_count', 'duration', 'package_cost', 'unit_cost', 'is_complementary'];
     protected $table = 'packages';
 
 
@@ -27,9 +28,10 @@ class Package extends Model
         'package' => 'required'
     ];
 
-    function getPackageFromId($id)
+    public function getPackageFromId($id)
     {
         return Package::where('id', $id)->first();
+
     }
 
     function getAgencyFromPackageID($package)
@@ -49,6 +51,11 @@ class Package extends Model
     {
 
         return DB::table('package_properties')->select('duration')->where('property_id', $property)->first();
+    }
+
+    function getPackageFromUserId()
+    {
+        return Package::select('id')->where('user_id', Auth::user()->getAuthIdentifier())->where('status', 'active')->get()->toArray();
     }
 
 

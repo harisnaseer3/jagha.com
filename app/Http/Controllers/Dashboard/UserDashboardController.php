@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\PropertyBackendListingController;
 use App\Models\Agency;
 use App\Models\Dashboard\User;
+use App\Models\Package;
 use App\Models\Property;
+use App\Models\UserWallet;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FooterController;
 use Illuminate\Support\Facades\DB;
@@ -36,9 +38,10 @@ class UserDashboardController extends Controller
         $active_properties = (new PropertyBackendListingController)->userListingsCount('active', $user, 'all');
         $deleted_properties = (new PropertyBackendListingController)->userListingsCount('deleted', $user, 'all');
         $pending_properties = (new PropertyBackendListingController)->userListingsCount('pending', $user, 'all');
-
         return view('website.user-dashboard.dashboard',
             [
+                'wallet' => (new \App\Models\UserWallet)->getCurrentCredit(),
+                'packages' => (new \App\Models\Package)->getPackageFromUserId(),
                 'user' => (new User)->where('id', '=', Auth::user()->getAuthIdentifier())->first(),
                 'agencies' => $agencies,
                 'sale' => (new Property)->where('user_id', '=', Auth::user()->getAuthIdentifier())->where('purpose', '=', 'Sale')->orderBy('id', 'desc')->get(),

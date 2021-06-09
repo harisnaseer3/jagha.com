@@ -49,7 +49,7 @@
     <script src="{{asset('website/js/rangeslider.js')}}" defer></script>
     <script src="{{asset('website/js/popper.min.js')}}" defer></script>
     <script src="{{asset('website/js/index-page.js')}}" defer></script>
-    <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
+    <script src="{{asset('website/js/script-custom.js')}}" defer></script>
     {{--    script to show images on internet explorer--}}
     {{--    <script defer>--}}
     {{--        let isIE = /*@cc_on!@*/false || !!document.documentMode;--}}

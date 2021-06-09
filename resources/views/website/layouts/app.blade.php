@@ -31,8 +31,8 @@
 
             position: relative;
             z-index: 2;
-            margin-right:8px;
-            font-size:1.2rem;
+            margin-right: 8px;
+            font-size: 1.2rem;
 
         }
     </style>
@@ -41,13 +41,10 @@
 <div class="page_loader"></div>
 <div id="snack-div">
     @if(\Illuminate\Support\Facades\Auth::guard('web')->check() && \Illuminate\Support\Facades\Auth::guard('web')->user()->email_verified_at == null)
-        <div id="snackbar">Limited Functionality! <a href="{{route('user.dashboard')}}"><u class="color-white">Verify Email Address</u></a> </div>
+        <div id="snackbar">Limited Functionality! <a href="{{route('user.dashboard')}}"><u class="color-white">Verify Email Address</u></a></div>
     @endif
 </div>
-    @yield('content')
-
-
-
+@yield('content')
 
 
 <div class="fixed-bottom p-2">
@@ -67,7 +64,7 @@
 @include('website.includes.scripts')
 <script>
     (function ($) {
-        $(".toggle-password").click(function() {
+        $(".toggle-password").click(function () {
 
             $(this).toggleClass("fa-eye fa-eye-slash");
             var input = $($(this).attr("toggle"));

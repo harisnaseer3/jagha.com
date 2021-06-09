@@ -74,6 +74,8 @@
 
 
 
+
+
                                                                     @elseif(isset($notification->data['type']) && $notification->data['type'] === 'agency')
                                                                         <div class="{{$notification->read_at === null ? 'alert alert-danger':'alert alert-primary' }}">
                                                                             <span>Status of Agency ID = <strong> {{$notification->data['id']}} </strong> named <strong> {{$notification->data['title']}} </strong> has been changed to <strong>{{ucwords($notification->data['status'])}}</strong>.</span>
@@ -89,6 +91,10 @@
                                                                                 </span>
                                                                         </div>
 
+                                                                    @elseif(isset($notification->data['type']) && $notification->data['type'] === 'complementary_pack')
+                                                                        <div class="{{$notification->read_at === null ? 'alert alert-danger':'alert alert-primary' }}">
+                                                                            <span>A Complementary <strong>{{$notification->data['pack_type']}} </strong> Package Subscribed to your account by <strong>AboutPakistan.com</strong>. Add your properties in package and Enjoy.</span>
+                                                                        </div>
                                                                     @endif
                                                                 </td>
                                                                 <td>

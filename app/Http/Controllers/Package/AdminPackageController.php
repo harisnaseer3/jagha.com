@@ -6,6 +6,7 @@ use App\Events\NotifyAdminOfPackageRequestEvent;
 use App\Events\NotifyUserPackageStatusChangeEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\Wallet\WalletController;
 use App\Models\Agency;
 use App\Models\AgencyLog;
 use App\Models\Dashboard\User;
@@ -27,6 +28,7 @@ class AdminPackageController extends Controller
     {
         $this->middleware('auth:admin');
     }
+
     public function index()
     {
         $sub_packages = DB::table('packages')
@@ -37,7 +39,7 @@ class AdminPackageController extends Controller
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
                 'packages.status', 'package_agency.agency_id')
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->get()->toArray();
 
 
@@ -45,7 +47,7 @@ class AdminPackageController extends Controller
             ->select('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.status', 'packages.created_at', 'packages.duration', 'package_agency.agency_id')
             ->where('status', '!=', 'active')
             ->leftJoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->get()->toArray();
         return view('website.admin-pages.package.listings', [
             'sub_packages' => $sub_packages,
@@ -102,32 +104,43 @@ class AdminPackageController extends Controller
 
                 $agency = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
                 if ($agency) {
-                    if ($package->type == 'Silver') {
+                    if ($package->type == 'Gold') {
                         DB::table('agencies')
                             ->where('id', '=', $agency->agency_id)
                             ->update([
                                 'key_listing' => 1
                             ]);
-                    } else if ($package->type == 'Gold') {
+                    } else if ($package->type == 'Platinum') {
                         DB::table('agencies')
                             ->where('id', '=', $agency->agency_id)
                             ->update(['featured_listing' => 1]);
                     }
                 }
+                (new WalletController())->addCredit($package->user_id, $package->package_cost);
+
 
             }
 
             $package->save();
+
+            $log_pack = array(
+                'package_id' => $package->id,
+                'status' => $request->status,
+                'admin_id' => Auth::guard('admin')->user()->getAuthIdentifier()
+            );
+
+            (new PackageLogController)->add($log_pack);
+
             $user->notify(new PackageStatusChange($package));
             event(new NotifyUserPackageStatusChangeEvent($package));
 
-            DB::table('package_logs')->insert([
-                'admin_id' => $admin->id,
-                'admin_name' => $admin->name,
-                'package_id' => $package->id,
-                'status' => $package->status,
-                'rejection_reason' => $package->rejection_reason,
-            ]);
+//            DB::table('package_logs')->insert([
+//                'admin_id' => $admin->id,
+//                'admin_name' => $admin->name,
+//                'package_id' => $package->id,
+//                'status' => $package->status,
+//                'rejection_reason' => $package->rejection_reason,
+//            ]);
 
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Record not added, try again.');

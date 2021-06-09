@@ -300,10 +300,10 @@
                                 My Properties
                             </a>
                         </li>
-{{--                        <li class="nav-item hide-nav navbar-li">--}}
-{{--                            <a class="nav-link" href="{{route('package.create')}}">--}}
-{{--                                Packages</a>--}}
-{{--                        </li>--}}
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" href="{{route('package.create')}}">
+                                Packages</a>
+                        </li>
                         <li class="nav-item hide-nav navbar-li {{ in_array($current_route_name, ['users.edit', 'agencies.edit','user_roles.edit','settings.edit','password.edit','agencies.create']) ? 'active' : '' }}">
                             <?php $route_params = ['status' => 'verified_agencies', 'user' => \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier(), 'sort' => 'id', 'order' => 'desc', 'page' => 10]; ?>
                             <a class="nav-link {{ in_array($current_route_name, ['agencies.listings']) ? 'active' : '' }}"
@@ -331,6 +331,10 @@
                             <a class="nav-link theme-dark-blue" href="{{route('aboutpakistan.support')}}">
                                 Support</a>
                         </li>
+                        <li class="nav-item hide-nav navbar-li">
+                            <a class="nav-link" style="color: orangered !important;" href="{{route('account.wallet')}}">
+                                Wallet</a>
+                        </li>
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item user-dropdown">
@@ -353,6 +357,11 @@
                                            href="{{route('properties.listings',
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">
                                             <i class="fa fa-building-o mr-2"></i>Property Management</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item"
+                                           href="{{route('account.wallet')}}">
+                                            <i class="far fa-wallet mr-2"></i>
+                                            My Wallet</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                                 class="far fa-sign-out mr-2"></i>Logout</a>
@@ -390,6 +399,11 @@
                                        href="{{route('properties.listings',
                                            ['status'=>'active','purpose'=>'all','user'=>\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier(),'sort'=>'id','order'=>'desc','page'=>10])}}">
                                         <i class="fa fa-building-o mr-2"></i>Property Management</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item"
+                                       href="{{route('account.wallet')}}">
+                                        <i class="far fa-wallet mr-2"></i>
+                                        My Wallet</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{route('accounts.logout')}}"><i
                                             class="far fa-sign-out mr-2"></i>Logout</a>

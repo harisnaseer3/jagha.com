@@ -573,6 +573,8 @@
                                 '                     <div class="dropdown-divider"></div>' +
                                 '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/listings/status/active/purpose/all/user/' + user_id + '/sort/id/order/asc/page/10"><i class="fa fa-building-o mr-2"></i>Property Management </a>' +
                                 '                     <div class="dropdown-divider"></div>' +
+                                '<a class="dropdown-item" href=" ' + window.location.origin + '/dashboard/accounts/wallet' + '"><i class="far fa-wallet mr-2"></i>My Wallet </a>' +
+                                '                     <div class="dropdown-divider"></div>' +
                                 '                          <a class="dropdown-item" href="' + window.location.origin + '/dashboard/accounts/logout' + '"><i class="far fa-sign-out mr-2"></i>Logout</a>';
                             html += '</div>' + '</div>';
                             let html_profile_link = '<a class="nav-link theme-dark-blue" href="' + window.location.origin + '/dashboard/accounts/users/' + user_id + '/edit" >My Account Settings</a>';
