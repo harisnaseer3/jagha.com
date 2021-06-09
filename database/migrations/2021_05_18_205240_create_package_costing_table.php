@@ -16,7 +16,7 @@ class CreatePackageCostingTable extends Migration
     {
         Schema::create('package_costings', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['Gold','Titanium','Diamond']);
+            $table->enum('type', ['Gold','Platinum']);
             $table->enum('package_for', ['properties', 'agency']);
             $table->integer('price_per_unit');
 
