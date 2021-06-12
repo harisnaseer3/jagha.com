@@ -10,6 +10,7 @@
 {{--        <td>{{$page['city']}}</td>--}}
         <td>{{$page['date']}}</td>
         <td>{{$page['ip']}}</td>
+        <td>{{$page['hits']}}</td>
         <td>
             {!! $page['referred'] !!}
         </td>

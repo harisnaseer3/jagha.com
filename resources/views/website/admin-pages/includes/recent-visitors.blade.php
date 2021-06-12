@@ -12,6 +12,7 @@
                     {{--                    <th>City</th>--}}
                     <th>Date</th>
                     <th>IP</th>
+                    <th>Hits</th>
                     <th>Referer</th>
                     <th>Action</th>
                 </tr>

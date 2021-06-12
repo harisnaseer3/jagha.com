@@ -314,15 +314,24 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
+
+                        @if(isset($property->agency_id) && $property->agency_id !== null)
+                            <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
+                                @include('website.includes.agency_other_properties')
+                            </div>
+                        @endif
+
+                        <div class="tab-pane" id="five" role="tabpanel" aria-labelledby="5-tab">
                             @include('website.includes.similar_properties')
                         </div>
+
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="sidebar-right my-0">
                         <!-- Advanced search start -->
-                        @include('website.includes.contact_agent')</div><div class="sidebar-right mt-0">
+                        @include('website.includes.contact_agent')</div>
+                    <div class="sidebar-right mt-0">
                         <hr>
                         {{--                        @if(!empty($agency))--}}
                         @if($property->agency)
