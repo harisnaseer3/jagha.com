@@ -75,6 +75,12 @@ class PageController extends Controller
         if (self::is_login_page()) {
             $current_page['type'] = "loginpage";
         }
+        if (self::is_fb_login_page()) {
+            $current_page['type'] = "facebook_login_redirect";
+        }
+        if (self::is_google_login_page()) {
+            $current_page['type'] = "google_login_redirect";
+        }
         if (self::is_cities_listing()) {
             $current_page['type'] = "city_listing";
         }
@@ -99,7 +105,7 @@ class PageController extends Controller
 
         // If we didn't find a page id, we don't have anything else to do.
         if ($current_page['type'] == "unknown" && $current_page['id'] == 0) {
-            event(new LogErrorEvent('unknown page found'.', route url = '.\request()->url().', route name = '. Route::current()->getName(), 'Error in page controller record method.'));
+            event(new LogErrorEvent('unknown page found' . ', route url = ' . \request()->url() . ', route name = ' . Route::current()->getName(), 'Error in page controller record method.'));
             return false;
         }
 
@@ -134,8 +140,8 @@ class PageController extends Controller
         // Update Exist Page
         if ($exist) {
 //            DB::connection('mysql2')->transaction(function () use ($exist) {
-                DB::connection('mysql2')->table('pages')->where('page_id', $exist->page_id)
-                    ->increment('count');
+            DB::connection('mysql2')->table('pages')->where('page_id', $exist->page_id)
+                ->increment('count');
 //            });
 
             $page_id = $exist->page_id;
@@ -168,7 +174,7 @@ class PageController extends Controller
     {
         # Add Filter Insert ignore
         try {
-                return DB::connection('mysql2')->table('pages')->insertGetId($page,'page_id');
+            return DB::connection('mysql2')->table('pages')->insertGetId($page, 'page_id');
 
         } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
@@ -179,7 +185,8 @@ class PageController extends Controller
 
     public static function is_home()
     {
-        return Route::current()->getName() == "home";
+
+        return Route::current()->getName() == "home" || \request()->url() == 'http://182.191.86.53';
 //        return $data_args['route-name'] == 'home';
     }
 
@@ -234,10 +241,21 @@ class PageController extends Controller
         return Route::current()->getName() == 'login';
     }
 
+    public static function is_fb_login_page()
+    {
+        return \request()->url() == 'https://property.aboutpakistan.com/redirect';
+    }
+
+    public static function is_google_login_page()
+    {
+        return \request()->url() == 'https://property.aboutpakistan.com/google/redirect';
+    }
+
     public static function is_cities_listing()
     {
         return Route::current()->getName() == 'cities.listings';
     }
+
     public static function is_locations_listing()
     {
         return Route::current()->getName() == 'all.locations';
@@ -246,9 +264,9 @@ class PageController extends Controller
 
     public static function is_search_property()
     {
-        $route_name  =  Route::current()->getName();
-        return $route_name== 'sale.property.search' || $route_name== 'search.houses.plots' ||
-               $route_name== 'search.property.at.location' || $route_name== 'property.search.id';
+        $route_name = Route::current()->getName();
+        return $route_name == 'sale.property.search' || $route_name == 'search.houses.plots' ||
+            $route_name == 'search.property.at.location' || $route_name == 'property.search.id';
 
     }
 
