@@ -62,8 +62,11 @@ class PageController extends Controller
         }
         //is search page
         $search_query = filter_var(request()->getQueryString(), FILTER_SANITIZE_STRING);
+
         if (trim($search_query) != "") {
-            return array("type" => "search", "id" => 0, "search_query" => $search_query);
+//            return array("type" => "search", "id" => 0, "search_query" => $search_query);
+            $current_page['type'] = "search";
+            $current_page['search_query'] = $search_query;
         }
 
         //is 404 Page
@@ -71,7 +74,7 @@ class PageController extends Controller
             $current_page['type'] = "404";
         }
 
-        // Add WordPress Login Page
+        // Add Login Page
         if (self::is_login_page()) {
             $current_page['type'] = "loginpage";
         }
@@ -89,6 +92,7 @@ class PageController extends Controller
         }
         if (self::is_search_property()) {
             $current_page['type'] = "property_search";
+            $current_page['search_query'] = $search_query;
         }
 
 //        dd($current_page);
@@ -128,9 +132,16 @@ class PageController extends Controller
 
         $sql = DB::connection('mysql2')->table('pages')->select('page_id', 'uri')
             ->where('date', $d);
-        if (array_key_exists("search_query", $current_page) === true) {
-            $sql = $sql->where('uri', $esc_uri);
-        } elseif ($current_page['type'] == 'agency' || $current_page['type'] == 'city_listing' || $current_page['type'] == 'location_listing' || $current_page['type'] == 'property_search') {
+
+//        if (array_key_exists("search_query", $current_page) === true) {
+//            $sql = $sql->where('uri', $esc_uri);
+//        } else
+        if ($current_page['type'] == 'agency' ||
+            $current_page['type'] == 'city_listing' ||
+            $current_page['type'] == 'location_listing' ||
+            $current_page['type'] == 'property_search' ||
+            $current_page['type'] == 'search'
+        ) {
             $sql = $sql->where('uri', $esc_uri);
         }
 
