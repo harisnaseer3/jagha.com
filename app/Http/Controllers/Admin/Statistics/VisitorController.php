@@ -97,7 +97,7 @@ class VisitorController extends Controller
         } else
             $t = Carbon::now()->format('Y-m-d');
         $list = array();
-        $result = DB::connection('mysql2')->table('visitor')->select('id', 'agent', 'last_counter', 'referred', 'ip', 'location')
+        $result = DB::connection('mysql2')->table('visitor')->select('id', 'agent', 'last_counter', 'referred', 'ip', 'location','hits')
             ->where('last_counter', $t)->orderBy('ID', 'DESC')->get();
 
         if (!$result->isEmpty()) {
@@ -123,6 +123,7 @@ class VisitorController extends Controller
             // Push Country
             $item['country'] = array('location' => $items->location, 'name' => (new StatsCountryController())->getName($items->location));
 //            $item['city'] = CountryController::get_city_name($items->ip);
+            $item['hits'] = $items->hits;
             $list[] = $item;
         }
         return $list;
