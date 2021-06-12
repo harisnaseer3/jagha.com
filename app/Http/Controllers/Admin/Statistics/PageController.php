@@ -118,34 +118,22 @@ class PageController extends Controller
 
         $d = Carbon::now()->format('Y-m-d');
 
-        // escape uri
-//        $esc_uri = DB::connection('mysql2')->getPdo()->quote(strip_tags($page_uri));
-
-        $esc_uri = $page_uri;
-
-        // Check if we have already been to this page today.
-//        $exist = $wpdb->get_row(
-//            "SELECT `page_id` FROM `" . DB::table('pages') . "` WHERE `date` = '" . TimeZone::getCurrentDate('Y-m-d') . "' " .
-//            (array_key_exists("search_query", $current_page) === true ? "AND `uri` = '" . esc_sql($page_uri) . "'" : "") .
-//            "AND `type` = '{$current_page['type']}' AND `id` = {$current_page['id']}", ARRAY_A);
-//        dd($page_uri, $page_uri);
-
         $sql = DB::connection('mysql2')->table('pages')->select('page_id', 'uri')
             ->where('date', $d);
 
 //        if (array_key_exists("search_query", $current_page) === true) {
 //            $sql = $sql->where('uri', $esc_uri);
 //        } else
-        if ($current_page['type'] == 'agency' ||
-            $current_page['type'] == 'city_listing' ||
-            $current_page['type'] == 'location_listing' ||
-            $current_page['type'] == 'property_search' ||
-            $current_page['type'] == 'search'
-        ) {
-            $sql = $sql->where('uri', $esc_uri);
-        }
+//        if ($current_page['type'] == 'agency' ||
+//            $current_page['type'] == 'city_listing' ||
+//            $current_page['type'] == 'location_listing' ||
+//            $current_page['type'] == 'property_search' ||
+//            $current_page['type'] == 'search'
+//        ) {
+//            $sql = $sql->where('uri', $page_uri);
+//        }
 
-        $exist = $sql->where('type', $current_page['type'])->where('id', $current_page['id'])->first();
+        $exist = $sql->where('type', $current_page['type'])->where('uri', $page_uri)->where('id', $current_page['id'])->first();
 
 
         // Update Exist Page
@@ -185,7 +173,12 @@ class PageController extends Controller
     {
         # Add Filter Insert ignore
         try {
-            return DB::connection('mysql2')->table('pages')->insertGetId($page, 'page_id');
+//            return DB::connection('mysql2')->table('pages')->insertGetId($page, 'page_id');
+            DB::connection('mysql2')->statement('INSERT INTO pages (uri,date,count,id,type)
+                    VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE count = count + 1',
+                [$page['uri'], $page['date'], $page['count'], $page['id'], $page['type']]);
+
+            return (new \App\Models\Log\LogPage)->select('page_id')->orderBy('page_id', 'desc')->first()->page_id;
 
         } catch (\Exception $e) {
             event(new LogErrorEvent($e->getMessage(), 'Error in page controller save_page method.'));
