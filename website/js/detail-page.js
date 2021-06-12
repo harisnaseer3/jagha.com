@@ -319,6 +319,7 @@
         }
     });
 
+
     function addFavorite(id, selector, task) {
         jQuery.ajaxSetup({
             headers: {
@@ -339,7 +340,50 @@
         });
     }
 
-    $.get('/get-similar-properties', {'property': $('#email-contact-form').find('input[name=property]').val()},  // url
+    let property = $('#email-contact-form').find('input[name=property]').val();
+    let req_div = $('.detail-page-agency-properties');
+    if (req_div.length > 0) {
+        $.get('/get-agency-properties', {'agency': req_div.attr('data-val'), 'property': property},  // url
+            function (data, textStatus, jqXHR) {  // success callback
+                $('.ajax-loader-2').hide();
+                if (data !== 'not available') {
+                    $('.display-data-2').show();
+                    let slider = $('.slick-carousel');
+                    let agency_properties = $('#agency-properties-section');
+                    slider.slick('unslick');
+
+                    agency_properties.html('');
+                    agency_properties.html(data.view);
+
+                    slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
+                    )
+                    // $('.detail-tab-style').append('<li class="nav-item li-detail-page text-transform mr-1">' +
+                    //     '<a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">More Properties</a></li>');
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('.favorite').on('click', function (e) {
+                        // console.log('data');
+                        $(this).hide();
+                        addFavorite($(this).data('id'), $(this), 'add');
+                        $(this).next().show();
+                    });
+
+                    $('.remove-favorite').on('click', function (e) {
+                        // console.log('remove data');
+                        $(this).hide();
+                        addFavorite($(this).data('id'), $(this), 'delete');
+                        $(this).prev().show();
+                    });
+                }
+
+                $('.search-options-btn').on('click', function () {
+                    $('#details-page').toggleClass('properties-page2').toggleClass('properties-page1');
+
+                });
+
+            });
+    }
+
+    $.get('/get-similar-properties', {'property': property},  // url
         function (data, textStatus, jqXHR) {  // success callback
             $('.ajax-loader').hide();
             if (data !== 'not available') {
@@ -377,5 +421,7 @@
             });
 
         });
+
+
 })
 (jQuery);

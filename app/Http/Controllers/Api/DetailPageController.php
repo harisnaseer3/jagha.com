@@ -33,12 +33,35 @@ class DetailPageController extends Controller
         }
     }
 
+    function getAgencyProperties(Request $request)
+    {
+        if ($request->ajax()) {
+            $agency_properties = (new PropertySearchController)->listingFrontend()
+                ->where([
+                    ['properties.id', '<>', $request->property],
+                    ['properties.agency_id', '=', $request->agency],
+//                    ['properties.type', '=', $property->type],
+//                    ['properties.sub_type', '=', $property->sub_type],
+//                    ['properties.purpose', '=', $property->purpose],
+                ])
+//                ->limit(10)
+                ->get();
+            if ($agency_properties->isEmpty()) {
+                return $data = 'not available';
+            } else {
+                $data['view'] = View('website.components.agency_properties',
+                    ['agency_properties' => $agency_properties])->render();
+                return $data;
+            }
+        }
+    }
+
     function getPropertyFavoriteUser(Request $request)
     {
         if ($request->ajax()) {
             $property_id = $request->input('property');
             $result = DB::table('favorites')->select('user_id')->where('property_id', '=', $property_id)->get()->pluck('user_id');
-            if(!$result->isEmpty())
+            if (!$result->isEmpty())
                 return response()->json(['data' => $result[0], 'status' => 200]);
             else
                 return response()->json(['data' => 'not available', 'status' => 200]);

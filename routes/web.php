@@ -33,6 +33,9 @@ Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencie
 Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');
 Route::post('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
+Route::get('/get-agency-properties', 'Api\DetailPageController@getAgencyProperties');
+
+
 Route::get('/get-key-partners', 'Api\IndexPageController@getKeyAgencies');
 Route::post('/propertyFavorite', 'Api\DetailPageController@getPropertyFavoriteUser');
 Route::post('/property-image-upload', 'TempImageController@ajaxImageUpload');
