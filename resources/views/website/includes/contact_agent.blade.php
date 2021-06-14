@@ -44,11 +44,11 @@
                 </div>
             </div>
         </div>
-        @if(!empty($agency))
-            {{ Form::hidden('agency',$agency->id)}}
-        @else
-            {{ Form::hidden('property',$property->id)}}
-        @endif
+{{--        @if(!empty($agency))--}}
+{{--            {{ Form::hidden('agency',$agency->id)}}--}}
+{{--        @else--}}
+{{--            {{ Form::hidden('property',$property->id)}}--}}
+{{--        @endif--}}
         <div class="text-center">
             @if($property->email == null)
                 <div data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a

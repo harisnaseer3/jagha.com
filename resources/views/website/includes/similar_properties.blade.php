@@ -1,8 +1,9 @@
 
-<div class="similar-properties detail-page-similar-properties" style="margin-top: 100px ">
+<div class="similar-properties detail-page-similar-properties " style="margin-top: 50px ">
     <!-- Main title -->
-    <h3 class="heading-2 display-data" style="display: none">Similar Properties</h3>
-    <div class="row similar-properties">
+
+    <div class="row similar-properties" style="margin-right: -5px;margin-left: -5px;">
+        <h3 class="heading-2 display-data" style="display: none">Similar Properties</h3>
         <div class="container-fluid">
             <div class="slick-slider-area">
                 <div class="row slick-carousel" id="similar-properties-section"

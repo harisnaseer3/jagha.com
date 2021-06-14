@@ -1,8 +1,9 @@
 
 <div class="agency-properties detail-page-agency-properties" style="margin-top: 100px " data-val="{{$property->agency->id}}">
     <!-- Main title -->
-    <h3 class="heading-2 display-data-2" style="display: none"> More Properties by {{$property->agency->title}}</h3>
-    <div class="row agency-properties">
+
+    <div class="row agency-properties" style="margin-right: -5px;margin-left: -5px;">
+        <h3 class="heading-2 display-data-2" style="display: none"> More Properties by {{$property->agency->title}}</h3>
         <div class="container-fluid">
             <div class="slick-slider-area">
                 <div class="row slick-carousel" id="agency-properties-section"
