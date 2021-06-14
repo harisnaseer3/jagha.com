@@ -397,8 +397,8 @@
 
                 slider.slick({arrows: false, slidesToShow: 3, responsive: [{breakpoint: 1024, settings: {slidesToShow: 2}}, {breakpoint: 768, settings: {slidesToShow: 1}}]}
                 )
-                $('.detail-tab-style').append('<li class="nav-item li-detail-page text-transform mr-1">' +
-                    '<a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a></li>');
+                // $('.detail-tab-style').append('<li class="nav-item li-detail-page text-transform mr-1">' +
+                //     '<a class="nav-link detail-nav-style" id="4-tab" href="#four" role="tab" aria-controls="4" aria-selected="true">Similar Properties</a></li>');
                 $('[data-toggle="tooltip"]').tooltip();
                 $('.favorite').on('click', function (e) {
                     // console.log('data');

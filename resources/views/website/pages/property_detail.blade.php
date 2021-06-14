@@ -315,15 +315,18 @@
                             </div>
                         @endif
 
+
+{{--                        <div class="tab-pane" id="five" role="tabpanel" aria-labelledby="5-tab">--}}
+                            @include('website.includes.similar_properties')
+{{--                        </div>--}}
+
                         @if(isset($property->agency_id) && $property->agency_id !== null)
-                            <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">
-                                @include('website.includes.agency_other_properties')
-                            </div>
+                            {{--                            <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">--}}
+                            @include('website.includes.agency_other_properties')
+                            {{--                            </div>--}}
                         @endif
 
-                        <div class="tab-pane" id="five" role="tabpanel" aria-labelledby="5-tab">
-                            @include('website.includes.similar_properties')
-                        </div>
+
 
                     </div>
                 </div>
