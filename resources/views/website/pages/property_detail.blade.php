@@ -6,6 +6,17 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}" async defer>
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/image-carousel-style.css')}}" async defer>
     <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+    <style>
+        .status {
+            font-size: 1.6rem;
+            padding: 2rem 2.8rem;
+            border-radius: .5rem;
+            text-align: center;
+            border: .1rem solid #f1b505;
+            background-color: #ffe188;
+
+        }
+    </style>
 
 @endsection
 
@@ -231,6 +242,12 @@
                                             </div>
                                         @endif
 
+                                        @if(!empty($agency))
+                                            {{ Form::hidden('agency',$agency->id)}}
+                                        @else
+                                            {{ Form::hidden('property',$property->id)}}
+                                        @endif
+
                                     </div>
                                 </div>
 
@@ -316,9 +333,10 @@
                         @endif
 
 
-{{--                        <div class="tab-pane" id="five" role="tabpanel" aria-labelledby="5-tab">--}}
-                            @include('website.includes.similar_properties')
-{{--                        </div>--}}
+                        {{--                        <div class="tab-pane" id="five" role="tabpanel" aria-labelledby="5-tab">--}}
+
+                        @include('website.includes.similar_properties')
+                        {{--                        </div>--}}
 
                         @if(isset($property->agency_id) && $property->agency_id !== null)
                             {{--                            <div class="tab-pane" id="four" role="tabpanel" aria-labelledby="4-tab">--}}
@@ -327,13 +345,28 @@
                         @endif
 
 
-
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="sidebar-right my-0">
                         <!-- Advanced search start -->
-                        @include('website.includes.contact_agent')</div>
+                        @if($property->status == 'active')
+                            @include('website.includes.contact_agent')
+                        @else
+                            <div class="sidebar widget" style="text-align: center!important;">
+                                <div class="status p-3">
+{{--                                    <div class="sidebar-title" >--}}
+                                        <span style="font-size: 18px;">This Property isn't Available</span>
+{{--                                    </div>--}}
+                                </div>
+                                {{--                                <div class="s-border"></div>--}}
+                                {{--                                <div class="m-border"></div>--}}
+
+                            </div>
+
+                        @endif
+
+                    </div>
                     <div class="sidebar-right mt-0">
                         <hr>
                         {{--                        @if(!empty($agency))--}}
