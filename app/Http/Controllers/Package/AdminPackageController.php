@@ -15,6 +15,8 @@ use App\Models\Property;
 use App\Notifications\PackageStatusChange;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -259,5 +261,69 @@ class AdminPackageController extends Controller
             return $listings;
         }
     }
+
+    function showPackageHistory(Request $request)
+    {
+        $package = DB::table('packages')->where('id', $request->packId)->first();
+        if ($package) {
+            $package_agency = (new \App\Models\Package)->getAgencyFromPackageID($package->id);
+            return view('website.admin-pages.package.show-package', [
+                'data' => $this->_get_package_property_listing($package),
+                'package' => $package,
+                'package_agency' => $package_agency,
+                'pack_properties' => (new \App\Models\Package)->getPropertiesFromPackageID($package->id),
+
+            ]);
+
+        } else {
+
+            return redirect()->route('admin.dashboard')->with('error', 'Package Not Found.');
+        }
+
+    }
+
+    public function _get_package_property_listing($package)
+    {
+        $properties = DB::table('package_properties')
+            ->select('property_id', 'duration', 'activated_at', 'expired_at')->where('package_id', '=', $package->id)->get();
+        if (!$properties->isEmpty()) {
+            $response = array();
+            foreach ($properties as $property) {
+                $args = array(
+                    'id' => $property->property_id,
+                    'duration' => $property->duration,
+                    'expire' => $property->expired_at,
+                    'activation' => $property->activated_at,
+                    'link' => Property::getPropertyLink(Property::getPropertyById($property->property_id))
+                );
+                $response[] = $args;
+            }
+
+
+            return $response;
+
+        } else return [];
+
+
+    }
+
+    public function getPackageProperty(Request $request)
+    {
+        if ($request->ajax()) {
+            $package = DB::table('packages')->where('id', $request->id)->first();
+            if ($package) {
+                $data['view'] = View('website.admin-pages.components.property-list',
+                    ['data' => $this->_get_package_property_listing($package)
+                    ])->render();
+
+                return $data;
+            }
+
+        } else {
+            return 'not found';
+        }
+
+    }
+
 
 }

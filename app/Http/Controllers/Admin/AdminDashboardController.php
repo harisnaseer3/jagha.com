@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\PropertyLogController;
 use App\Models\AgencyLog;
+use App\Models\Package;
 use App\Models\PropertyLog;
 use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
@@ -110,6 +111,8 @@ class AdminDashboardController extends Controller
             ])->render();
         return $data;
     }
+
+
 
 
 }

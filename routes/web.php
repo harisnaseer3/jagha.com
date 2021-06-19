@@ -61,6 +61,8 @@ Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
 Route::post('/top-browser', 'Admin\StatisticController@getTopBrowser');
 
 
+
+
 Route::post('/get-package-amount', 'Package\PackageController@packageAmount');
 
 Route::post('/packages/get-complementary-package-user', 'Package\AdminComplementaryPackageController@getUserDetails')->name('admin.package.user.detail');
@@ -243,7 +245,6 @@ Route::post('/search-city', 'PropertyAjaxCallController@adminPropertyCitySearch'
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
-
     Route::get('listings/status/{status}/purpose/{purpose}/admin/{user}/sort/{sort}/order/{order}/page/{page}', 'AdminPropertyListingController@listings')
         ->name('admin.properties.listings')
         ->where([
@@ -337,6 +338,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/statistic/overview', 'Admin\StatisticController@index')->name('admin.statistic.index');
     Route::post('/statistic/history', 'Admin\StatisticController@showHistory')->name('admin.statistic.history');
 
+
+    Route::post('/package/history', 'Package\AdminPackageController@showPackageHistory')->name('admin.package.history');
+
+    Route::get('/get-package-property', 'Package\AdminPackageController@getPackageProperty');
 
 //    ajax-call
     Route::post('/agency-change-status', 'AgencyController@changeAgencyStatus')->name('admin.change.agency.status')->middleware(['permission:Manage Agency']);
