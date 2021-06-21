@@ -325,7 +325,7 @@
                                             @if($user_type == 'user')
                                                 <span class="position" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
                                                 {{$content1}}
-                                                <span style="font-weight: bold;">{{ucwords($type)}}</span>Package Subscribed to your Account.
+                                                <span style="font-weight: bold;">{{ucwords($type)}}</span> Package Subscribed to your Account.
                                                     Add Properties in Package and Enjoy Free Subscription
                                                 <span>{{$content2}}</span>
                                             </span>
