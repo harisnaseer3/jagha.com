@@ -332,9 +332,9 @@
                                             <b>-------------------------------</b>
                                             <br>
                                             <br>
-                                            <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>ID: </strong>{{$package->id}}</span>
-                                            <br>
+{{--                                            <span class="position"--}}
+{{--                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>ID: </strong>{{$package->id}}</span>--}}
+{{--                                            <br>--}}
                                             <span class="position"
                                                   style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Status: </strong>{{ucwords($package->status)}}</span>
                                             <br>
@@ -362,16 +362,16 @@
                                                 <strong>Expired At: </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY  h:mm a')}} month(s)</span>
                                             <br>
                                             @if($package->status == 'active')
+{{--                                                <span class="position"--}}
+{{--                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Activated_at: </strong>{{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</span>--}}
+{{--                                                <br>--}}
                                                 <span class="position"
-                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Activated_at: </strong>{{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</span>
-                                                <br>
-                                                <span class="position"
-                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Expire : </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans()}}</span>
+                                                      style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;"><strong>Expire : </strong>{{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans()}} ( {{ (new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY') }} )</span>
                                                 <br>
                                                 <span class="position"
                                                       style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">
-                                                <strong>Add Properties in Package: </strong><a
-                                                        href="{{route('package.add.properties',$package->id)}}">Click</a></span>
+                                                <strong>To Add More Properties in Package: </strong><a
+                                                        href="{{route('package.add.properties',$package->id)}}">Click Here</a></span>
                                                 <br>
                                                 <br>
                                             @endif

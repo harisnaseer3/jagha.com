@@ -356,7 +356,7 @@
                                                                         <tbody>
                                                                         <tr>
                                                                             <td style="color:#ffffff ">
-                                                                                Add Properties in Package
+                                                                                To Add More Properties in Package Click Here
                                                                             </td>
                                                                         </tr>
                                                                         </tbody>

@@ -33,29 +33,58 @@
                 </div><!--fly-side-wrap-->
                 <div class="fly-wrap-in">
                     <div id="fly-menu-wrap">
-                        <nav class="fly-nav-menu left relative">
+                        <nav class="fly-nav-menu left relative" style="height: 90%;">
                             <div class="menu-main-menu-container">
                                 <ul id="menu-main-menu" class="menu">
                                     <li id="menu-item-2457"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
                                         <a href="https://www.aboutpakistan.com">Home</a></li>
-                                    <li id="menu-item-2519"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                        <a href="https://www.aboutpakistan.com/blog" aria-current="page">Blog</a>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
+                                        <a href="https://www.aboutpakistan.com/quran-audios">Islam</a>
                                         <ul class="sub-menu">
-                                            <li id="menu-item-2518"
-                                                class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                <a href="https://www.aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
+                                            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
+                                                <a href="https://www.aboutpakistan.com/quran-audios">Quran Audios</a>
                                             </li>
-                                            <li id="menu-item-2517"
-                                                class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                <a href="https://www.aboutpakistan.com/blog/category/medical/">Medical</a>
-                                            </li>
-                                            <li id="menu-item-2516"
-                                                class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                <a href="https://www.aboutpakistan.com/blog/category/travel/">Travel</a>
-                                            </li>
+
                                         </ul>
+                                    </li>
+                                    <li id="menu-item-12"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12 toggled tog-minus">
+                                        <a href="/">Property</a>
+                                        <ul class="sub-menu" style="display:block;">
+                                            <li id="menu-item-2508"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
+                                                <a href="{{route('property.city.count.listing',['type'=>'homes'])}}">Houses</a>
+                                            </li>
+                                            <li id="menu-item-2469"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
+                                                <a href="{{route('property.city.count.listing', ['type'=>'plots'])}}">Plots</a>
+                                            </li>
+                                            <li id="menu-item-2509"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
+                                                <a href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">Commercial</a>
+                                            </li>
+                                            {{--                                            <li id="menu-item-2510"--}}
+                                            {{--                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">--}}
+                                            {{--                                                <a href="{{route('blogs.index')}}">Blogs</a>--}}
+                                            {{--                                            </li>--}}
+                                            <li id="menu-item-2511"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
+                                                <a href="{{route('agents.listing')}}">Partners</a>
+                                            </li>
+                                            <li id="menu-item-2512" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
+                                                {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-0 py-2 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref-2']) }}
+                                                <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id-2" autocomplete="false"
+                                                       value="{{isset($params['search_term']) ? $params['search_term']:'' }}" style="border-radius: 0;border: none;">
+                                                <small id="property_id-error-2" class="help-block text-red"></small>
+                                                <button class="btn btn-sm btn-reference-style" id="property-reference-2" type="submit">
+                                                    <i class="fa fa-search ml-1"></i></button>
+                                                {{ Form::close() }}
+                                            </li>
+
+
+                                        </ul>
+
                                     </li>
                                     <li id="menu-item-10"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
@@ -95,51 +124,39 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li id="menu-item-11"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
-                                        <a href="https://www.aboutpakistan.com/medical">Medical</a></li>
-                                    <li id="menu-item-12"
-                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-12 toggled tog-minus">
-                                        <a href="/">Property</a>
-                                        <ul class="sub-menu" style="display:block;">
-                                            <li id="menu-item-2508"
-                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                <a href="{{route('property.city.count.listing',['type'=>'homes'])}}">Houses</a>
-                                            </li>
-                                            <li id="menu-item-2469"
-                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
-                                                <a href="{{route('property.city.count.listing', ['type'=>'plots'])}}">Plots</a>
-                                            </li>
-                                            <li id="menu-item-2509"
-                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
-                                                <a href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">Commercial</a>
-                                            </li>
-                                            {{--                                            <li id="menu-item-2510"--}}
-                                            {{--                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">--}}
-                                            {{--                                                <a href="{{route('blogs.index')}}">Blogs</a>--}}
-                                            {{--                                            </li>--}}
-                                            <li id="menu-item-2511"
-                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
-                                                <a href="{{route('agents.listing')}}">Partners</a>
-                                            </li>
-                                            <li id="menu-item-2512" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
-                                                {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-0 py-2 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref-2']) }}
-                                                <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id-2" autocomplete="false"
-                                                       value="{{isset($params['search_term']) ? $params['search_term']:'' }}" style="border-radius: 0;border: none;">
-                                                <small id="property_id-error-2" class="help-block text-red"></small>
-                                                <button class="btn btn-sm btn-reference-style" id="property-reference-2" type="submit">
-                                                    <i class="fa fa-search ml-1"></i></button>
-                                                {{ Form::close() }}
-                                            </li>
-
-
-                                        </ul>
-
-                                    </li>
                                     <li id="menu-item-13"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                         <a href="https://www.aboutpakistan.com/mobile-packages">Mobile Packages</a>
                                     </li>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
+                                        <a href="https://aboutpakistan.com/pakpedia">Pakpedia
+                                        </a></li>
+                                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
+                                        <a href="https://aboutpakistan.com/sports">Sports
+                                        </a></li>
+                                    <li id="menu-item-2519"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
+                                        <a href="https://www.aboutpakistan.com/blog" aria-current="page">Blog</a>
+                                        <ul class="sub-menu">
+                                            <li id="menu-item-2518"
+                                                class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
+                                                <a href="https://www.aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
+                                            </li>
+                                            <li id="menu-item-2517"
+                                                class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
+                                                <a href="https://www.aboutpakistan.com/blog/category/medical/">Medical</a>
+                                            </li>
+                                            <li id="menu-item-2516"
+                                                class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
+                                                <a href="https://www.aboutpakistan.com/blog/category/travel/">Travel</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li id="menu-item-11"
+                                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
+                                        <a href="https://www.aboutpakistan.com/medical">Medical</a></li>
+
                                     <li id="menu-item-14"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                         <a href="https://www.aboutpakistan.com/about-us.php">About Us</a>
@@ -188,21 +205,17 @@
                                                     <ul id="menu-main-menu-1" class="menu">
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
                                                             <a href="https://www.aboutpakistan.com">Home</a></li>
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                                            <a href="https://www.aboutpakistan.com/blog"
-                                                               aria-current="page">Blog</a>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
+                                                            <a href="https://www.aboutpakistan.com/quran-audios">Islam</a>
                                                             <ul class="sub-menu">
-                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                                    <a href="https://www.aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
+                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
+                                                                    <a href="https://www.aboutpakistan.com/quran-audios">Quran Audios</a>
                                                                 </li>
-                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                                    <a href="https://www.aboutpakistan.com/blog/category/medical/">Medical</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                                    <a href="https://www.aboutpakistan.com/blog/category/travel/">Travel</a>
-                                                                </li>
+
                                                             </ul>
                                                         </li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
+                                                            <a href="/">Property</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
                                                             <a href="https://www.aboutpakistan.com/news">News</a>
                                                             <ul class="sub-menu">
@@ -232,14 +245,36 @@
                                                                 </li>
                                                             </ul>
                                                         </li>
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
-                                                            <a href="https://www.aboutpakistan.com/medical">Medical</a>
-                                                        </li>
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
-                                                            <a href="/">Property</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
                                                             <a href="https://www.aboutpakistan.com/mobile-packages">Mobile
                                                                 Packages</a></li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
+                                                            <a href="https://aboutpakistan.com/pakpedia">Pakpedia
+                                                            </a></li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2516">
+                                                            <a href="https://aboutpakistan.com/sports">Sports
+                                                            </a></li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
+                                                            <a href="https://www.aboutpakistan.com/blog"
+                                                               aria-current="page">Blog</a>
+                                                            <ul class="sub-menu">
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
+                                                                    <a href="https://www.aboutpakistan.com/blog/category/pakistan/">Pakistan</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
+                                                                    <a href="https://www.aboutpakistan.com/blog/category/medical/">Medical</a>
+                                                                </li>
+                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
+                                                                    <a href="https://www.aboutpakistan.com/blog/category/travel/">Travel</a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2515">
+                                                            <a href="https://www.aboutpakistan.com/medical">Medical</a>
+                                                        </li>
+
+
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                                             <a href="https://www.aboutpakistan.com/about-us.php">About Us</a></li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">

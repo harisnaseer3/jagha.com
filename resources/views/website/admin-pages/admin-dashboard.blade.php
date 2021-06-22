@@ -57,6 +57,8 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-10 col-md-8 col-sm-6">
+                                        @include('website.layouts.flash-message')
+
                                         <div class="row">
                                             <div class="col-2 mb-4">
                                                 <button class="btn theme-blue color-white task-btn" id="execute-tasks">Execute Tasks</button>
