@@ -1,0 +1,111 @@
+.pricing {
+    font-size: inherit;
+    margin: 40px 0;
+}
+
+.pricing .table {
+    border-top: 1px solid #ddd;
+    background: #fff;
+}
+
+.pricing .table th,
+.pricing .table {
+    text-align: center;
+}
+
+.pricing .table th,
+.pricing .table td {
+    padding: 10px 10px;
+    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pricing .table th {
+    width: 25%;
+    font-size: 20px;
+    font-weight: 400;
+    border-bottom: 0;
+    background: #2F313A;
+    color: #EBEDF3;
+    /*text-transform: uppercase;*/
+}
+
+.pricing .table th.highlight {
+    border-top: 4px solid #4caf50 !important;
+}
+
+.pricing .table tr:nth-child(odd) {
+    background: #f0f8ff;
+}
+
+.pricing .table td:first-child {
+
+    background: #5F97FB;
+    padding-left: 20px;
+    text-align: center;
+
+    line-height: .75rem;
+}
+
+.pricing tr td .ptable-title {
+    font-size: 0.90rem;
+    font-weight: 400;
+    color: #fff;
+    width: 30%;
+}
+
+.pricing tr td .ptable-title i {
+    width: 15px;
+    line-height: 10px;
+    text-align: right;
+    margin-right: 5px;
+}
+
+
+.pricing .ptable-star i {
+    width: 8px;
+    font-size: 13px;
+}
+
+.pricing .ptable-price {
+    font-weight: 300;
+    color: #b7b5b5;
+    margin-top: 2px;
+    display: block;
+}
+
+.pricing tr td {
+    font-size: 0.75rem;
+    line-height: 32px;
+    /*text-transform: uppercase;*/
+}
+
+
+.pricing tr td.bg-red a,
+.pricing tr td.bg-green a,
+.pricing tr td.bg-lblue a {
+    color: #fff;
+}
+
+.pricing tr td i {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 30px;
+}
+
+
+.pricing tr td:first-child i {
+    display: inline;
+    margin-bottom: 0;
+    font-size: 22px;
+}
+
+.picon-success {
+    background-color: rgba(54, 179, 126, 0.3);
+    color: #36b37e;
+}
+
+.picon-danger {
+    background-color: rgba(255, 86, 48, 0.3);
+    color: #ff5630;
+}

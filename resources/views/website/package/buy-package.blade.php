@@ -6,66 +6,9 @@
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
-    {{--    <style>--}}
-    {{--        .stepwizard-step p {--}}
-    {{--            margin-top: 0px;--}}
-    {{--            color: #666;--}}
-    {{--        }--}}
-
-    {{--        .stepwizard-row {--}}
-    {{--            display: table-row;--}}
-    {{--        }--}}
-
-    {{--        .stepwizard {--}}
-    {{--            display: table;--}}
-    {{--            width: 100%;--}}
-    {{--            position: relative;--}}
-    {{--        }--}}
-
-    {{--        .stepwizard-step button[disabled] {--}}
-    {{--            /*opacity: 1 !important;--}}
-    {{--            filter: alpha(opacity=100) !important;*/--}}
-    {{--        }--}}
-
-    {{--        .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {--}}
-    {{--            opacity: 1 !important;--}}
-    {{--            color: #bbb;--}}
-    {{--        }--}}
-
-    {{--        .stepwizard-row:before {--}}
-    {{--            top: 14px;--}}
-    {{--            bottom: 0;--}}
-    {{--            position: absolute;--}}
-    {{--            content: " ";--}}
-    {{--            width: 100%;--}}
-    {{--            height: 1px;--}}
-    {{--            background-color: #ccc;--}}
-    {{--            z-index: 0;--}}
-    {{--        }--}}
-
-    {{--        .stepwizard-step {--}}
-    {{--            display: table-cell;--}}
-    {{--            text-align: center;--}}
-    {{--            position: relative;--}}
-    {{--        }--}}
-
-    {{--        .btn-circle {--}}
-    {{--            border: 1px solid lightgrey !important;--}}
-    {{--            /*border-color: #ccc;*/--}}
-    {{--            width: 30px;--}}
-    {{--            height: 30px;--}}
-    {{--            text-align: center;--}}
-    {{--            padding: 6px 0;--}}
-    {{--            font-size: 12px;--}}
-    {{--            line-height: 1.428571429;--}}
-    {{--            border-radius: 15px;--}}
-    {{--        }--}}
-    {{--        .btn-disabled{--}}
-    {{--            background-color: white;--}}
-    {{--        }--}}
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/package-style.css')}}">
 
 
-    {{--    </style>--}}
 @endsection
 
 @section('content')
@@ -106,96 +49,144 @@
                                                 <div class="col-12">
 
                                                     <div class="my-4" style="background: white">
-                                                        <div class="row">
-                                                            <div class="col-xl-4 col-lg-4 col-md-12">
-                                                                <div class="pricing-3">
-                                                                    <div class="title">Basic Plan</div>
-                                                                    <div class="content">
-                                                                        <ul>
-                                                                            <li>Free Account</li>
-                                                                            <li>Add Multiple Properties</li>
-                                                                            <li>Manage Multiple Agencies</li>
-                                                                            <li></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div class="price-for-user">
-                                                                        <div class="price" style="font-size: 30px;">
-                                                                            {{--                                                                            <sup> Free</sup>--}}
-                                                                            {{--                                                                            <span class="dolar">--}}
-                                                                            Free
-                                                                            {{--                                                                            </span>--}}
-                                                                            {{--                                                                            <small class="month">per month</small>--}}
-                                                                        </div>
-                                                                    </div>
-                                                                    {{--                                                                    <div class="button"><a href="#" class="btn btn-outline pricing-btn">Get started</a></div>--}}
-                                                                </div>
+                                                        <div class="card my-4">
+                                                            <div class="card-header theme-blue text-white">
+                                                                <div class="font-14 font-weight-bold text-white">Choose a Plan</div>
                                                             </div>
-                                                            <div class="col-xl-4 col-lg-4 col-md-12">
-                                                                <div class="pricing-3">
-                                                                    <div class="title">Gold Plan</div>
-                                                                    <div class="content">
-                                                                        <ul>
-                                                                            <li>Free Account</li>
-                                                                            <li>Add Multiple Properties</li>
-                                                                            <li>Manage Multiple Agencies</li>
-                                                                            <li>Display Properties in top Search Results</li>
-                                                                            <li></li>
-                                                                            <li></li>
-                                                                            <li></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div class="price-for-user">
-                                                                        <div class="price text-color"><sup>Rs.</sup>
-                                                                            @if(!$price->isEmpty())
-                                                                                @foreach($price as $val)
-                                                                                    @if($val->type == 'Gold')
-                                                                                        <span class="dolar">{{$val->price_per_unit}}</span>
-                                                                                    @endif
-                                                                                @endforeach
+                                                            <div class="card-body">
+                                                                <div class="pricing m-0">
+                                                                    <div class="pricing-table table-responsive">
+                                                                        <table class="table">
+                                                                            <!-- Heading -->
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th>&nbsp;</th>
+                                                                                <th>
+                                                                                    Basic
+                                                                                    <span class="ptable-price">Free</span>
+                                                                                </th>
+                                                                                <th>
+                                                                                    Gold
+                                                                                    <span class="ptable-price">Rs.
+                                                                                    @if(!$price->isEmpty())
+                                                                                            @foreach($price as $val)
+                                                                                                @if($val->type == 'Gold')
+                                                                                                    {{$val->price_per_unit}}
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        @else
+                                                                                            0
+                                                                                        @endif</span>
+                                                                                </th>
+                                                                                <th>
+                                                                                    Platinum
+                                                                                    <span class="ptable-price">Rs.
+                                                                                @if(!$price->isEmpty())
+                                                                                            @foreach($price as $val)
+                                                                                                @if($val->type == 'Platinum')
+                                                                                                    {{$val->price_per_unit}}
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        @else
+                                                                                            0
+                                                                                        @endif</span>
+                                                                                </th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                            <tr>
+                                                                                <td><span class="ptable-title"> Free Account </span></td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
 
-                                                                            @else
-                                                                                <span class="dolar">0</span>
-                                                                            @endif
+                                                                            <tr>
+                                                                                <td><span class="ptable-title">Add Multiple Properties</span></td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><span class="ptable-title">Manage Multiple Agencies</span></td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><span class="ptable-title">Show Properties in Top Search Results</span></td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><span class="ptable-title">Featured on Main Page</span></td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
 
-                                                                            <small class="month">per month</small></div>
+                                                                            <tr>
+                                                                                <td><span class="ptable-title">Agency Featured on Main Page</span></td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><span class="ptable-title">Details of User Visits</span></td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td class="border-0 text-center">
+                                                                                    <span class="picon-danger"><i class="fad fa-times-circle"></i></span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span class="picon-success"><i class="fad fa-check-circle"></i></span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
                                                                     </div>
-                                                                    {{--                                                    <div class="button"><a href="#" class="btn btn-outline pricing-btn button-theme">Get started</a></div>--}}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-4 col-lg-4 col-md-12">
-                                                                <div class="pricing-3">
-                                                                    <div class="title">Platinum Plan</div>
-                                                                    <div class="content">
-                                                                        <ul>
-                                                                            <li>Free Account</li>
-                                                                            <li>Details of User Visits</li>
-                                                                            <li>Add Multiple Properties</li>
-                                                                            <li>Manage Multiple Agencies</li>
-                                                                            <li>Agency Featured on Main Page</li>
-                                                                            <li>Properties Displayed on Main Page</li>
-                                                                            <li>Display Properties in Top Search Results</li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div class="price-for-user">
-                                                                        <div class="price"><sup>Rs.</sup>
-                                                                            @if(!$price->isEmpty())
-                                                                                @foreach($price as $val)
-                                                                                    @if($val->type == 'Platinum')
-                                                                                        <span class="dolar">{{$val->price_per_unit}}</span>
-                                                                                    @endif
-                                                                                @endforeach
-
-                                                                            @else
-                                                                                <span class="dolar">0</span>
-                                                                            @endif
-
-                                                                            <small class="month">per month</small>
-                                                                        </div>
-                                                                    </div>
-                                                                    {{--                                                    <div class="button"><a href="#" class="btn btn-outline pricing-btn">Get started</a></div>--}}
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                     <div class="my-4">
                                                         <div class="card my-4">

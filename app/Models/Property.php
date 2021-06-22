@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -186,10 +187,10 @@ class Property extends Model
     public function property_detail_path_with_city($location = null)
     {
         if ($location != null) {
-            return url("/properties/" . Str::slug($this->city->name) . '-'. Str::slug($location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
+            return url("/properties/" . Str::slug($this->city->name) . '-' . Str::slug($location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
 
         } else
-            return url("/properties/" . Str::slug($this->city->name) . '-' .Str::slug($this->location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
+            return url("/properties/" . Str::slug($this->city->name) . '-' . Str::slug($this->location) . '-' . Str::slug($this->title) . '-' . $this->reference . '_' . $this->id);
 
     }
 
@@ -210,6 +211,20 @@ class Property extends Model
             $property->update();
             return true;
 
+        }
+
+    }
+
+    public static function getPropertyLink($property)
+    {
+        if ($property->id < 104280) {
+            return url("/properties/" . Str::slug($property->location)
+                . '-' . Str::slug($property->title) . '-' . $property->reference . '_' . $property->id);
+
+        } else {
+
+            return url("/properties/" . Str::slug($property->city->name) . '-' . Str::slug($property->location->name)
+                . '-' . Str::slug($property->title) . '-' . $property->reference . '_' . $property->id);
         }
 
     }

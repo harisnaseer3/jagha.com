@@ -178,6 +178,11 @@
                 }
             });
         });
+        $(document).on('click', '.form-history-btn', function () {
+            $('input[name=packId]').val($(this).data('attr'));
+            $('#history-form').submit();
+        });
+
     });
 })
 (jQuery);
