@@ -55,7 +55,7 @@ class WalletController extends Controller
 
         DB::Table('wallet_history')->insert([
             'user_wallet_id' => $credit_id,
-            'debit' => $amount
+            'debit' => $amount  //added money in account
         ]);
     }
 
@@ -78,7 +78,7 @@ class WalletController extends Controller
 
         DB::Table('wallet_history')->insert([
             'user_wallet_id' => $credit_id,
-            'credit' => $amount
+            'credit' => $amount   //widhraw money in account
         ]);
     }
 }

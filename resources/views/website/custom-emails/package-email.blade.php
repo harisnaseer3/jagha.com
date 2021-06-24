@@ -320,7 +320,7 @@
                                             <br>
 
                                             <span class="position"
-                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Status of your requested Package has been changed. </span>
+                                                  style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: dimgrey;">Here is details of your requested Package. </span>
                                             <br>
                                             <br>
                                             <b>-------------------------------</b>

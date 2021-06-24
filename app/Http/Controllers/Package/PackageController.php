@@ -6,6 +6,7 @@ use App\Events\AddPropertyInPackageEvent;
 use App\Events\NotifyAdminOfPackageRequestEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FooterController;
+use App\Http\Controllers\Wallet\WalletController;
 use App\Models\Agency;
 use App\Models\Dashboard\User;
 use App\Models\Package;
@@ -78,64 +79,6 @@ class PackageController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), Package::$rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
-        }
-        try {
-            $args = array();
-            $args['duration'] = $request->duration;
-            $args['type'] = $request->package;
-            $args['count'] = $request->property_count;
-            $args['for'] = $request->package_for;
-            $amount = self::calculatePackagePrice($args);
-            $args['amount'] = $amount['price'];
-
-
-            $package = DB::table('packages')->insertGetId([
-                'user_id' => Auth::guard('web')->user()->id,
-                'type' => $request->input('package'),
-                'package_for' => $request->has('package_for') ? $request->input('package_for') : 'properties',
-                'property_count' => $request->input('property_count'),
-                'duration' => $request->input('duration'),
-                'package_cost' => $amount['price'],
-                'status' => 'pending',
-                'unit_cost' => $amount['unit_price'],
-            ]);
-            if ($request->has('agency')) {
-                $agency = (new Agency)->select('id')->where('id', $request->agency)->first();
-                if ($agency) {
-                    DB::table('package_agency')->insert([
-                        'package_id' => $package,
-                        'agency_id' => $agency->id,
-                    ]);
-                }
-            }
-//            event(new NotifyAdminOfPackageRequestEvent($package));
-            $args['pack-id'] = $package;
-
-            $log_pack = array(
-                'package_id' => $package,
-                'status' => 'pending',
-                'user_id' => Auth::user()->getAuthIdentifier()
-            );
-
-            (new PackageLogController)->add($log_pack);
-
-            event(new NotifyAdminOfPackageRequestEvent($package));
-
-            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
-
-//            return view('website.package.checkout.index', ['result' => $args]);
-//                ->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
-
-
-        } catch (Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
-        }
-    }
 
     public function destroy(Request $request)
     {
@@ -301,16 +244,18 @@ class PackageController extends Controller
 
                             //calculate price unit_cost + days
 
-                            $wallet = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->getAuthIdentifier());
+//                            $wallet = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->getAuthIdentifier());
+//
+//                            $wallet->current_credit = intval($wallet->current_credit) - $required_credit;
+//                            $wallet->save();
 
-                            $wallet->current_credit = intval($wallet->current_credit) - $required_credit;
-                            $wallet->save();
 
+//                            DB::Table('wallet_history')->insert([
+//                                'user_wallet_id' => $wallet->id,
+//                                'credit' => $wallet->current_credit
+//                            ]);
 
-                            DB::Table('wallet_history')->insert([
-                                'user_wallet_id' => $wallet->id,
-                                'credit' => $wallet->current_credit
-                            ]);
+                            (new WalletController())->withdrawCredit($package->user_id, $required_credit);
 
                             DB::table('package_properties')->updateOrInsert(['package_id' => $package_id, 'property_id' => $property_id], [
                                 'duration' => $duration,
@@ -375,88 +320,192 @@ class PackageController extends Controller
 
     }
 
-    public function doCheckout(Request $request)
+    public function store(Request $request)
     {
 
-        //here by pass the transaction action just store all info and activate package for now
+        $validator = Validator::make($request->all(), Package::$rules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
+        }
+        try {
+            $args = array();
+            $args['duration'] = $request->duration;
+            $args['type'] = $request->package;
+            $args['count'] = $request->property_count;
+            $args['for'] = $request->package_for;
+            $amount = self::calculatePackagePrice($args);
+            $args['amount'] = $amount['price'];
+            if ($request->has('agency')) {
 
-        $data = $request->input();
-        $id = $data['pack-id'];
-        $product = DB::table('packages')->select('package_cost')->where('id', $id)->where('user_id', Auth::user()->id)->first();
+                $agency = (new Agency)->select('id')->where('id', $request->agency)->first();
+                if ($agency) {
+                    $args['agency_id'] = $agency->id;
+                }
+            }
+            Session::put('package', $args);
+            //store package info in a session
 
-        //1.
-        //get formatted price. remove period(.) from the price
+            //return to check out view
+
+
+//            $package = DB::table('packages')->insertGetId([
+//                'user_id' => Auth::guard('web')->user()->id,
+//                'type' => $request->input('package'),
+//                'package_for' => $request->has('package_for') ? $request->input('package_for') : 'properties',
+//                'property_count' => $request->input('property_count'),
+//                'duration' => $request->input('duration'),
+//                'package_cost' => $amount['price'],
+//                'status' => 'pending',
+//                'unit_cost' => $amount['unit_price'],
+//            ]);
+//            if ($request->has('agency')) {
+//                $agency = (new Agency)->select('id')->where('id', $request->agency)->first();
+//                if ($agency) {
+//                    DB::table('package_agency')->insert([
+//                        'package_id' => $package,
+//                        'agency_id' => $agency->id,
+//                    ]);
+//                }
+//            }
+////            event(new NotifyAdminOfPackageRequestEvent($package));
+//            $args['pack-id'] = $package;
+//
+//            $log_pack = array(
+//                'package_id' => $package,
+//                'status' => 'pending',
+//                'user_id' => Auth::user()->getAuthIdentifier()
+//            );
+//
+//            (new PackageLogController)->add($log_pack);
+//
+//            event(new NotifyAdminOfPackageRequestEvent($package));
+
+
+//            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+
+            return view('website.package.checkout.index', ['result' => $args]);
+//                ->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+
+
+        } catch (Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Record not added, try again.');
+        }
+    }
+
+    public function doCheckout(Request $request)
+    {
+//        $data = $request->input();
+//        $method = $data['method'];
+
+        if ($request->has('method') && $request->input('method') == 'JazzCash') {
+
+//    1.  get formatted price. remove period(.) from the price
 //        $temp_amount = $product[0]->price * 100;
 //        $amount_array = explode('.', $temp_amount);
 
+            $package = Session::get('package');
+            $amount = self::calculatePackagePrice($package);
 
-//        $pp_Amount = $product->package_cost;
+            $package_id = DB::table('packages')->insertGetId([
+                'user_id' => Auth::guard('web')->user()->id,
+                'type' => $package['type'],
+                'package_for' => $package['for'],
+                'property_count' => $package['count'],
+                'duration' => $package['duration'],
+                'package_cost' => $amount['price'],
+                'status' => 'pending',
+                'unit_cost' => $amount['unit_price'],
+            ]);
+
+            if (array_key_exists('agency_id', $package)) {
+                $agency = (new Agency)->select('id')->where('id', $package['agency_id'])->first();
+                if ($agency) {
+                    DB::table('package_agency')->insert([
+                        'package_id' => $package_id,
+                        'agency_id' => $agency->id,
+                    ]);
+                }
+            }
+
+            $args['pack-id'] = $package_id;
+
+            $log_pack = array(
+                'package_id' => $package_id,
+                'status' => 'pending',
+                'user_id' => Auth::user()->getAuthIdentifier()
+            );
+
+            (new PackageLogController)->add($log_pack);
+
+            $pp_Amount = $package['amount'] * 100;
 
 
-        //2.
-        //get the current date and time
-        //be careful set TimeZone in config/app.php
+            //2.
+            //get the current date and time
+            //be careful set TimeZone in config/app.php
 
 
-        $DateTime = new \DateTime();
-        $pp_TxnDateTime = $DateTime->format('YmdHis');
+            $DateTime = new \DateTime();
+            $pp_TxnDateTime = $DateTime->format('YmdHis');
 
-        //3.
-        //to make expiry date and time add one hour to current date and time
-
-
-        $ExpiryDateTime = $DateTime;
-        $ExpiryDateTime->modify('+' . 1 . ' hours');
-        $pp_TxnExpiryDateTime = $ExpiryDateTime->format('YmdHis');
-
-        //4.
-        //make unique transaction id using current date
+            //3.
+            //to make expiry date and time add one hour to current date and time
 
 
-        $pp_TxnRefNo = 'T' . $pp_TxnDateTime;
+            $ExpiryDateTime = $DateTime;
+            $ExpiryDateTime->modify('+' . 1 . ' hours');
+            $pp_TxnExpiryDateTime = $ExpiryDateTime->format('YmdHis');
 
-//        $post_data = array(
-//            "pp_Version" => Config::get('constants.jazzcash.VERSION'),
-//            "pp_TxnType" => "MWALLET",
-//            "pp_Language" => Config::get('constants.jazzcash.LANGUAGE'),
-//            "pp_MerchantID" => Config::get('constants.jazzcash.MERCHANT_ID'),
-//            "pp_SubMerchantID" => "",
-//            "pp_Password" => Config::get('constants.jazzcash.PASSWORD'),
-//            "pp_BankID" => "TBANK",
-//            "pp_ProductID" => "RETL",
-//            "pp_TxnRefNo" => $pp_TxnRefNo,
-//            "pp_Amount" => $pp_Amount,
-//            "pp_TxnCurrency" => Config::get('constants.jazzcash.CURRENCY_CODE'),
-//            "pp_TxnDateTime" => $pp_TxnDateTime,
-//            "pp_BillReference" => "billRef",
-//            "pp_Description" => "Description of transaction",
-//            "pp_TxnExpiryDateTime" => $pp_TxnExpiryDateTime,
-//            "pp_ReturnURL" => Config::get('constants.jazzcash.RETURN_URL'),
-//            "pp_SecureHash" => "",
-//            "ppmpf_1" => "1",
-//            "ppmpf_2" => "2",
-//            "ppmpf_3" => "3",
-//            "ppmpf_4" => "4",
-//            "ppmpf_5" => "5",
-//        );
+            //4.
+            //make unique transaction id using current date
 
-//        $pp_SecureHash = $this->get_SecureHash($post_data);
+
+            $pp_TxnRefNo = 'T' . $pp_TxnDateTime;
+
+            $post_data = array(
+                "pp_Version" => Config::get('constants.jazzcash.VERSION'),
+                "pp_TxnType" => "MWALLET",
+                "pp_Language" => Config::get('constants.jazzcash.LANGUAGE'),
+                "pp_MerchantID" => Config::get('constants.jazzcash.MERCHANT_ID'),
+                "pp_SubMerchantID" => "",
+                "pp_Password" => Config::get('constants.jazzcash.PASSWORD'),
+                "pp_BankID" => "TBANK",
+                "pp_ProductID" => "RETL",
+                "pp_TxnRefNo" => $pp_TxnRefNo,
+                "pp_Amount" => $pp_Amount,
+                "pp_TxnCurrency" => Config::get('constants.jazzcash.CURRENCY_CODE'),
+                "pp_TxnDateTime" => $pp_TxnDateTime,
+                "pp_BillReference" => "billRef",
+                "pp_Description" => "Description of transaction",
+                "pp_TxnExpiryDateTime" => $pp_TxnExpiryDateTime,
+                "pp_ReturnURL" => Config::get('constants.jazzcash.RETURN_URL'),
+                "pp_SecureHash" => "",
+                "ppmpf_1" => "1",
+                "ppmpf_2" => "2",
+                "ppmpf_3" => "3",
+                "ppmpf_4" => "4",
+                "ppmpf_5" => "5",
+            );
+
+            $pp_SecureHash = $this->get_SecureHash($post_data);
+
+            $post_data['pp_SecureHash'] = $pp_SecureHash;
 //
-//        $post_data['pp_SecureHash'] = $pp_SecureHash;
-//
-//        $values = array(
-//            'package_id' => $id,
-//            'TxnRefNo' => $post_data['pp_TxnRefNo'],
-//            'amount' => $pp_Amount,
-//            'status' => 'pending'
-//        );
-//        DB::table('package_transactions')->insert($values);
+            $values = array(
+                'package_id' => $package_id,
+                'TxnRefNo' => $post_data['pp_TxnRefNo'],
+                'amount' => $package['amount'],
+                'status' => 'pending',
+                'credit_type'=> 'purchased'
+            );
+            DB::table('package_transactions')->insert($values);
 
-//        Session::put('post_data', $post_data);
-//        return view('website.package.checkout.do-checkout');
+            Session::put('post_data', $post_data);
+
+            return view('website.package.checkout.do-checkout');
 
 
-        //Remove following code after implementation of gateways
+            //Remove following code after implementation of gateways
 
 
 //        if ($product) {
@@ -470,7 +519,7 @@ class PackageController extends Controller
 //
 //        }
 
-        event(new NotifyAdminOfPackageRequestEvent($product));
+//            event(new NotifyAdminOfPackageRequestEvent($product));
 
 //        return view('website.package.buy-package', [
 //            'price' => DB::table('package_costings')->select('type', 'price_per_unit', 'package_for')->where('package_for', '=', 'properties')->get(),
@@ -480,9 +529,9 @@ class PackageController extends Controller
 //            'footer_agencies' => (new FooterController)->footerContent()[1],
 //        ])->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
-        return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+//            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
-
+        }
     }
 
     private function get_SecureHash($data_array)
@@ -507,37 +556,37 @@ class PackageController extends Controller
     }
 
 //function to accept api call from bank
-    public function paymentStatus(Request $request)
-    {
-        $response = $request->input();
-        dd($response);
-//        echo '<pre>';
-//        print_r($response);
-//        echo '</pre>';
-
-        if ($response['pp_ResponseCode'] == '000') {
-            $response['pp_ResponseMessage'] = 'Your Payment has been Successful';
-            $values = array('status' => 'completed');
-
-            DB::table('package_transactions')
-                ->where('TxnRefNo', $response['pp_TxnRefNo'])
-                ->update(['status' => 'completed']);
-
-            $package = DB::table('package_transactions')
-                ->where('TxnRefNo', $response['pp_TxnRefNo'])
-                ->select('package_id')->first();
-            if ($package) {
-                DB::table('packages')
-                    ->where('id', $package->package_id)
-                    ->update(['status' => 'active']);
-
-
-            }
-
-        }
-
-        return view('website.package.checkout.payment-status', ['response' => $response]);
-    }
+//    public function paymentStatus(Request $request)
+//    {
+//        $response = $request->input();
+////        dd($response);
+////        echo '<pre>';
+////        print_r($response);
+////        echo '</pre>';
+//
+////        if ($response['pp_ResponseCode'] == '000') {
+////            $response['pp_ResponseMessage'] = 'Your Payment has been Successful';
+////            $values = array('status' => 'completed');
+////
+////            DB::table('package_transactions')
+////                ->where('TxnRefNo', $response['pp_TxnRefNo'])
+////                ->update(['status' => 'completed']);
+////
+////            $package = DB::table('package_transactions')
+////                ->where('TxnRefNo', $response['pp_TxnRefNo'])
+////                ->select('package_id')->first();
+////            if ($package) {
+////                DB::table('packages')
+////                    ->where('id', $package->package_id)
+////                    ->update(['status' => 'active']);
+////
+////
+////            }
+////
+////        }
+//
+//        return view('website.package.checkout.payment-status', ['response' => $response]);
+//    }
 
 
 }

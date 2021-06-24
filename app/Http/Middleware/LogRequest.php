@@ -29,7 +29,8 @@ class LogRequest
                 $pattern7 = '#_=_';
                 $pattern8 = 'get-about-pakistan-properties';
                 $pattern9 = '_ignition';
-                $patterns = array($pattern, $pattern2, $pattern3,$pattern4,$pattern5,$pattern6,$pattern8,$pattern9);
+                $pattern10 = 'api';
+                $patterns = array($pattern, $pattern2, $pattern3,$pattern4,$pattern5,$pattern6,$pattern8,$pattern9,$pattern10);
 
                 $regex = '/^(' . implode('|', $patterns) . ')/i';
                 if (Route::current() == null) {

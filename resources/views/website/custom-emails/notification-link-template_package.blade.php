@@ -330,42 +330,45 @@
                                             <br>
                                             <br>
                                             @if(isset($status) && $status =='active')
-                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                                                    <tr>
-                                                        <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
-                                                            <a href="{{$view_property}}" target="_blank"
-                                                               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
-                                                                <table>
-                                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="color:#ffffff ">
-                                                                            {{$buttonText2}}
-                                                                        </td>
-                                                                    </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                @if(isset($view_property))
+                                                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                        <tr>
+                                                            <td bgcolor="#01411c" style="padding:10px 5px 5px 5px; border-radius:3px" align="center">
+                                                                <a href="{{$view_property}}" target="_blank"
+                                                                   style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; text-decoration: none; display: inline-block;">
+                                                                    <table>
+                                                                        <tbody>
+                                                                        <tr>
+                                                                            <td style="color:#ffffff ">
+                                                                                {{$buttonText2}}
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
 
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                                <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
-                                                <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-                                                    <a href="{{$view_property}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
-                                                        <table>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td style="color: #17bebb;">
-                                                                    {{$view_property}}
-                                                                </td>
-                                                            </tr>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <p style="text-align: center;color: dimgrey;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">or paste this link into your browser</p>
+                                                    <p style="text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                        <a href="{{$view_property}}" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;text-decoration: none;">
+                                                            <table>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td style="color: #17bebb;">
+                                                                        {{$view_property}}
+                                                                    </td>
+                                                                </tr>
 
-                                                            </tbody>
+                                                                </tbody>
 
-                                                        </table>
+                                                            </table>
 
-                                                    </a>
-                                                </p>
+                                                        </a>
+                                                    </p>
+                                                @endif
+
                                             @else
                                                 <table border="0" cellspacing="0" cellpadding="0" width="100%">
                                                     <tr>

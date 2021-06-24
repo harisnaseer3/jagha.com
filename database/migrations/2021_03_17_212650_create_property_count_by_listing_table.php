@@ -18,7 +18,7 @@ class CreatePropertyCountByListingTable extends Migration
             $table->id();
             $table->string('property_purpose', 225)->index();
             $table->integer('property_count')->unsigned()->index();
-            $table->string('listing_type', 255)->index();;
+            $table->string('listing_type', 255)->index();
             $table->softDeletes();
             $table->timestamps();
         });
