@@ -60,11 +60,12 @@ class PackageController extends Controller
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->orderBy('packages.id','DESC')
             ->get()->toArray();
+        $footer = (new FooterController)->footerContent();
         return view('website.package.listings', [
             'sub_packages' => $sub_packages,
             'req_packages' => $req_packages,
-            'recent_properties' => (new FooterController)->footerContent()[0],
-            'footer_agencies' => (new FooterController)->footerContent()[1],
+            'recent_properties' => $footer[0],
+            'footer_agencies' => $footer[1],
         ]);
 
     }
@@ -384,8 +385,14 @@ class PackageController extends Controller
 
 
 //            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
+            $footer = (new FooterController)->footerContent();
 
-            return view('website.package.checkout.index', ['result' => $args]);
+            return view('website.package.checkout.index', [
+                'result' => $args,
+                'recent_properties' => $footer[0],
+                'footer_agencies' => $footer[1]
+
+            ]);
 //                ->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
 

@@ -28,7 +28,7 @@ class WalletController extends Controller
         $history = array();
         $transaction = array();
         if ($wallet_id) {
-            $history = DB::table('wallet_history')->where('user_wallet_id', $wallet_id->id)->orderBy('id','DESC')->get()->toArray();
+            $history = DB::table('wallet_history')->where('user_wallet_id', $wallet_id->id)->get()->toArray();
 
             $packages = DB::table('packages')->select('id')->where('user_id', Auth::user()->id)->get()->pluck('id')->toArray();
 

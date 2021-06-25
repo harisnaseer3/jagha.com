@@ -72,7 +72,7 @@
                                                                     <td>{{$value1->amount}}</td>
                                                                     <td>
                                                                         @if($value1->credit_type == 'purchased')
-                                                                                <div class="badge badge-success p-2">  {{ucwords($value1->credit_type)}}</div>
+                                                                            <div class="badge badge-success p-2">  {{ucwords($value1->credit_type)}}</div>
 
                                                                         @else
                                                                             <div class="badge badge-danger p-2">  {{ucwords($value1->credit_type)}}</div>
@@ -100,19 +100,21 @@
                                                         <tr>
                                                             <th>Sr.</th>
                                                             <th>Amount</th>
-{{--                                                            <th>Debt</th>--}}
+                                                            {{--                                                            <th>Debt</th>--}}
                                                             <th>Dated</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
                                                         @foreach($history as $index=>$value)
-                                                            <tr>
-                                                                <td>{{$index + 1 }}</td>
-                                                                <td>{{$value->credit}}</td>
-{{--                                                                <td>{{$value->debit}}</td>--}}
-                                                                <td>{{ (new \Illuminate\Support\Carbon($value->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
+                                                            @if($value->credit !== 0)
+                                                                <tr>
+                                                                    <td>{{$index + 1 }}</td>
+                                                                    <td>{{$value->credit}}</td>
+                                                                    {{--                                                                <td>{{$value->debit}}</td>--}}
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($value->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
 
-                                                            </tr>
+                                                                </tr>
+                                                            @endif
                                                         @endforeach
                                                         </tbody>
                                                     </table>

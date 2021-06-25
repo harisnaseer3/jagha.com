@@ -4,8 +4,8 @@
     <title>About Pakistan Properties by https://www.aboutpakistan.com</title>
 @endsection
 @section('css_library')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <style>
         .pay-method-item {
             float: left;
@@ -84,6 +84,11 @@
             border-color: #4cd264;
             outline: none !important;
         }
+        .jazzCashTxt{
+            margin-top: 23%;
+        } .easyPasaTxt{
+            margin-top: 5%;
+        }
     </style>
 
 @endsection
@@ -109,7 +114,7 @@
                                 <div class="col-md-3">
                                     @include('website.package.sidebar')
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-9 my-3">
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
@@ -224,14 +229,18 @@
                                                                         </tr>
                                                                         </tbody>
                                                                     </table>
+                                                                </div>
+
+                                                                <div>
+                                                                    <h6>Select an Option to Pay</h6>
                                                                     <div class="flex-self-center">
                                                                         <form method="POST" action="{{route('do.checkout')}}" accept-charset="UTF-8" id="checkout-form">
                                                                             @csrf
                                                                             <a class="form-submit-btn" title="Pay with Jazz Cash" data-title="JazzCash">
                                                                                 <div class="pay-method-item">
-                                                                                    <img class="mt-2" src="{{asset('img/jazz cash.png')}}" alt="Jazz Cash"
+                                                                                    <img class="mt-4" src="{{asset('img/jazz cash.png')}}" alt="Jazz Cash"
                                                                                          width="100" height="100">
-                                                                                    <div class="font-weight-bold">
+                                                                                    <div class="font-weight-bold jazzCashTxt">
                                                                                         Jazz Cash
                                                                                     </div>
                                                                                 </div>
@@ -241,14 +250,16 @@
                                                                                 <div class="form-submit-btn" style="opacity: 0.5;" title="Pay with EasyPasa" data-title="EasyPasa">
                                                                                     <img class="mt-2" src="{{asset('img/easy-pasa.png')}}" alt="EasyPasa"
                                                                                          width="90" height="50" disabled title="Pay with EasyPasa"></div>
-                                                                                <div class="font-weight-bold">
+                                                                                <div class="font-weight-bold easyPasaTxt">
                                                                                     EasyPasa
                                                                                 </div>
                                                                             </div>
                                                                             <input type="hidden" name="method">
                                                                         </form>
-
                                                                     </div>
+                                                                </div>
+
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -269,22 +280,18 @@
 
 
     <!-- Footer start -->
-    {{--    @include('website.includes.footer')--}}
+        @include('website.includes.footer')
 @endsection
 
 @section('script')
-    {{--    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>--}}
-    {{--    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>--}}
     <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
-    {{--    <script src="{{asset('website/js/package-form.js')}}"></script>--}}
     <script>
         (function ($) {
             $(document).ready(function () {
                 $('.form-submit-btn').on('click', function (event) {
                     event.preventDefault();
                     $('input[name=method]').val($(this).attr('data-title'));
-                    // console.log($(this).attr('data-title'));
                     $('#checkout-form').submit();
                 });
             });

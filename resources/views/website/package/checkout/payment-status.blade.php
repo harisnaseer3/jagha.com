@@ -74,7 +74,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td>Paid Amount:</td>
-                                                                                        <td>{{$response['pp_Amount']}}</td>
+                                                                                        <td>{{(int)$response['pp_Amount']/100}}</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td>Payment Status:</td>
@@ -163,7 +163,7 @@
 
 
     <!-- Footer start -->
-    {{--    @include('website.includes.footer')--}}
+{{--        @include('website.includes.footer')--}}
 @endsection
 
 @section('script')
