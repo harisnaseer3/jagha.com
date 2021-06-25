@@ -41,7 +41,7 @@ class PackageController extends Controller
     public function index()
     {
         $sub_packages = DB::table('packages')
-            ->select(DB::raw('Count(package_properties.property_id) AS added_properties'), 'packages.id', 'packages.type', 'packages.package_for',
+            ->select(DB::raw('Count(package_properties.property_id) AS added_properties'), 'packages.id', 'packages.type', 'packages.is_complementary', 'packages.package_for',
                 'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration', 'package_agency.agency_id')
             ->where('packages.user_id', '=', Auth::user()->id)
             ->where('packages.status', '=', 'active')
@@ -49,6 +49,7 @@ class PackageController extends Controller
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
                 'packages.status', 'package_agency.agency_id')
+            ->orderBy('packages.id','DESC')
             ->get()->toArray();
 
         $req_packages = DB::table('packages')
@@ -57,6 +58,7 @@ class PackageController extends Controller
             ->where('user_id', '=', Auth::user()->id)
             ->where('status', '!=', 'active')
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
+            ->orderBy('packages.id','DESC')
             ->get()->toArray();
         return view('website.package.listings', [
             'sub_packages' => $sub_packages,

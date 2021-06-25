@@ -41,15 +41,57 @@
                                             <div class="form-group row">
                                                 <div class="col-12">
                                                     <div class="text-center">
-                                                        <span class="mr-5" style=" font-weight: bold;">Available Balance: </span>
+                                                        <span class="mr-5" style=" font-weight: bold;">Available Total Balance: </span>
                                                         <span>Rs. {{number_format($wallet)}}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    @if(!empty($transaction))
+                                        <div class="card my-4">
+                                            <div class="card-header theme-blue text-white text-capitalize">Credit History</div>
+                                            <div class="card-body">
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        <table class="display balance" style="width: 100%">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>Sr.</th>
+                                                                <th>Transaction ID</th>
+                                                                <th>Credit Amount</th>
+                                                                <th>Credit Type</th>
+                                                                <th>Dated</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach($transaction as $index1=>$value1)
+                                                                <tr>
+                                                                    <td>{{$index1 + 1 }}</td>
+                                                                    <td>{{$value1->TxnRefNo}}</td>
+                                                                    <td>{{$value1->amount}}</td>
+                                                                    <td>
+                                                                        @if($value1->credit_type == 'purchased')
+                                                                                <div class="badge badge-success p-2">  {{ucwords($value1->credit_type)}}</div>
+
+                                                                        @else
+                                                                            <div class="badge badge-danger p-2">  {{ucwords($value1->credit_type)}}</div>
+                                                                        @endif
+
+                                                                    </td>
+                                                                    <td>{{ (new \Illuminate\Support\Carbon($value1->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
+
+                                                                </tr>
+                                                            @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="card my-4">
-                                        <div class="card-header theme-blue text-white text-capitalize">Credit History</div>
+                                        <div class="card-header theme-blue text-white text-capitalize">Utilization History</div>
                                         <div class="card-body">
                                             <div class="form-group row">
                                                 <div class="col-12">
@@ -57,8 +99,8 @@
                                                         <thead>
                                                         <tr>
                                                             <th>Sr.</th>
-                                                            <th>Credit</th>
-                                                            <th>Debt</th>
+                                                            <th>Amount</th>
+{{--                                                            <th>Debt</th>--}}
                                                             <th>Dated</th>
                                                         </tr>
                                                         </thead>
@@ -67,7 +109,7 @@
                                                             <tr>
                                                                 <td>{{$index + 1 }}</td>
                                                                 <td>{{$value->credit}}</td>
-                                                                <td>{{$value->debit}}</td>
+{{--                                                                <td>{{$value->debit}}</td>--}}
                                                                 <td>{{ (new \Illuminate\Support\Carbon($value->created_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
 
                                                             </tr>
