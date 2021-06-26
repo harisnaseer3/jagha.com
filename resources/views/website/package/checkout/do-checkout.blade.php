@@ -188,7 +188,7 @@
 
 
     <!-- Footer start -->
-    @include('website.includes.footer')
+{{--    @include('website.includes.footer')--}}
 @endsection
 
 @section('script')

@@ -33,27 +33,57 @@ class AdminPackageController extends Controller
 
     public function index()
     {
-        $sub_packages = DB::table('packages')
-            ->select(DB::raw('Count(package_properties.property_id) AS added_properties'), 'packages.id', 'packages.type', 'packages.package_for',
-                'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration', 'package_agency.agency_id')
-            ->where('packages.status', '=', 'active')
-            ->Leftjoin('package_properties', 'packages.id', '=', 'package_properties.package_id')
-            ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
-            ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
-                'packages.status', 'package_agency.agency_id')
-            ->orderBy('id', 'DESC')
-            ->get()->toArray();
+//        $sub_packages = DB::table('packages')
+//            ->select(DB::raw('Count(package_properties.property_id) AS added_properties'), 'packages.id', 'packages.type', 'packages.package_for',
+//                'packages.property_count', 'packages.activated_at', 'packages.status', 'packages.duration', 'package_agency.agency_id')
+//            ->where('packages.status', '=', 'active')
+//            ->Leftjoin('package_properties', 'packages.id', '=', 'package_properties.package_id')
+//            ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
+//            ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
+//                'packages.status', 'package_agency.agency_id')
+//            ->orderBy('id', 'DESC')
+//            ->get()->toArray();
+//
+//
+//        $req_packages = DB::table('packages')
+//            ->select('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.status', 'packages.created_at', 'packages.duration', 'package_agency.agency_id')
+//            ->where('status', '!=', 'active')
+//            ->leftJoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
+//            ->orderBy('id', 'DESC')
+//            ->get()->toArray();
+
+//        dd(DB::table('packages')->groupBy('is_complementary')->count());
+//        dd(DB::table('packages')->where('is_complementary', '=', 1)->groupBy('is_complementary')->count());
 
 
-        $req_packages = DB::table('packages')
-            ->select('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.status', 'packages.created_at', 'packages.duration', 'package_agency.agency_id')
-            ->where('status', '!=', 'active')
-            ->leftJoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
-            ->orderBy('id', 'DESC')
-            ->get()->toArray();
+        $total_packages = DB::table('packages')->count();
+        $Tactive_pack = 0;
+        $Tcom_pack = 0;
+        $Tpurchased_pack = 0;
+        $Tgold_pack = 0;
+        $Tpalt_pack = 0;
+
+
+        if ($total_packages > 0) {
+            $Tactive_pack = DB::table('packages')->where('status', '=', 'active')->groupBy('status')->count();
+            $Tcom_pack = DB::table('packages')->where('status', '=', 'active')->where('is_complementary', '=', 1)->groupBy('is_complementary')->count();
+            $Tpurchased_pack = $Tactive_pack - $Tcom_pack;
+            $Tpalt_pack = DB::table('packages')->where('type', '=', 'platinum')->where('status', '=', 'active')->groupBy('type')->count();
+            $Tgold_pack = DB::table('packages')->where('type', '=', 'gold')->where('status', '=', 'active')->groupBy('type')->count();
+        }
+
+
         return view('website.admin-pages.package.listings', [
-            'sub_packages' => $sub_packages,
-            'req_packages' => $req_packages,
+//            'sub_packages' => $sub_packages,
+//            'req_packages' => $req_packages,
+            'total' => $total_packages,
+            'active' => $Tactive_pack,
+            'complementary' => $Tcom_pack,
+            'purchased' => $Tpurchased_pack,
+            'platinum' => $Tpalt_pack,
+            'gold' => $Tgold_pack
+
+
         ]);
 
     }

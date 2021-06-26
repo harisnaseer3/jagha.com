@@ -33,7 +33,7 @@ class WalletController extends Controller
             $packages = DB::table('packages')->select('id')->where('user_id', Auth::user()->id)->get()->pluck('id')->toArray();
 
             if (!empty($packages)) {
-                $transaction = DB::table('package_transactions')->whereIn('package_id', $packages)->orderBy('id','DESC')->get();
+                $transaction = DB::table('package_transactions')->whereIn('package_id', $packages)->where('status','completed')->orderBy('id','DESC')->get();
             }
 
         }

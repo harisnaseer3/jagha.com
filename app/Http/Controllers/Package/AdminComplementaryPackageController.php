@@ -116,7 +116,7 @@ class AdminComplementaryPackageController extends Controller
                 'package_id' => $package,
                 'TxnRefNo' => $pp_TxnRefNo,
                 'amount' => $amount['price'],
-                'status' => 'active',
+                'status' => 'completed',
                 'credit_type' => 'complementary'
             );
             DB::table('package_transactions')->insert($values);
