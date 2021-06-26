@@ -37,7 +37,7 @@ class PlatformController extends Controller
 
         // Set Default Value
         $total = $count = 0;
-        $lists_value = $lists_name = $lists_values= array();
+        $lists_value = $lists_name = $lists_values = array();
 
 
         $d = Carbon::now()->format('Y-m-d');
@@ -62,20 +62,29 @@ class PlatformController extends Controller
         foreach ($platforms as $l) {
 
             if (trim($l['platform']) != "") {
+                $platform = trim(preg_replace('![\d+] ?(.*)!', '', $l['platform']));
 
-                // Sanitize Version name
-                $lists_name[] = $l['platform'];
+                if (!in_array($platform, $lists_name)) {
 
-                // Get List Count
-                $lists_value[] = (int)$l['count'];
+                    // Sanitize Version name
+                    $lists_name[] = $platform;
+
+                    // Get List Count
+                    $lists_value[] = (int)$l['count'];
+                } else {
+                    foreach ($lists_name as $key1 => $value1) {
+                        if ($value1 == $platform) // not satisfying this condition
+                        {
+                            $lists_value[$key1] = $lists_value[$key1] + (int)$l['count'];
+                        }
+                    }
+                }
+
 
                 // Add to Total
                 $total += $l['count'];
             }
         }
-
-
-
 
         // Prepare Response
         $response = array(
