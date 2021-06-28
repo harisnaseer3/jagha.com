@@ -85,7 +85,7 @@
                                                                                 <div class="float-right">
                                                                                     <span class="pull-right">
                                                                                         <a class="btn btn-sm theme-blue text-white mr-2"  href="{{ route('package.index') }}">
-                                                                                            Go To Property Listing
+                                                                                            Go To Package Listing
                                                                                         </a>
                                                                                     </span>
                                                                                 </div>
@@ -127,10 +127,10 @@
                                                                             <h4>Payment Information</h4>
                                                                             <div class="container">
                                                                                 <table class="table table-bordered" style="width:100%">
-                                                                                    <tr>
-                                                                                        <td>Reference Number:</td>
-                                                                                        <td>{{$response['pp_RetreivalReferenceNo'] }}</td>
-                                                                                    </tr>
+{{--                                                                                    <tr>--}}
+{{--                                                                                        <td>Reference Number:</td>--}}
+{{--                                                                                        <td>{{$response['pp_RetreivalReferenceNo'] }}</td>--}}
+{{--                                                                                    </tr>--}}
                                                                                     <tr>
                                                                                         <td>Message:</td>
                                                                                         <td>{{$response['pp_ResponseMessage']}}</td>

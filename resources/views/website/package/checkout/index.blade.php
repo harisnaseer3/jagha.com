@@ -255,6 +255,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <input type="hidden" name="method">
+                                                                            <input type="hidden" name="dateTime" value="{{$result['dateTime']}}">
                                                                         </form>
                                                                     </div>
                                                                 </div>

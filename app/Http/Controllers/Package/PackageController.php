@@ -49,7 +49,7 @@ class PackageController extends Controller
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
             ->groupBy('packages.id', 'packages.type', 'packages.package_for', 'packages.property_count', 'packages.activated_at',
                 'packages.status', 'package_agency.agency_id')
-            ->orderBy('packages.id','DESC')
+            ->orderBy('packages.id', 'DESC')
             ->get()->toArray();
 
         $req_packages = DB::table('packages')
@@ -58,7 +58,7 @@ class PackageController extends Controller
             ->where('user_id', '=', Auth::user()->id)
             ->where('status', '!=', 'active')
             ->Leftjoin('package_agency', 'packages.id', '=', 'package_agency.package_id')
-            ->orderBy('packages.id','DESC')
+            ->orderBy('packages.id', 'DESC')
             ->get()->toArray();
         $footer = (new FooterController)->footerContent();
         return view('website.package.listings', [
@@ -330,6 +330,9 @@ class PackageController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
         }
+
+        $DateTime = new \DateTime();
+        $DateTimeValue = $DateTime->format('YmdHisu');
         try {
             $args = array();
             $args['duration'] = $request->duration;
@@ -338,6 +341,7 @@ class PackageController extends Controller
             $args['for'] = $request->package_for;
             $amount = self::calculatePackagePrice($args);
             $args['amount'] = $amount['price'];
+            $args['dateTime'] = $DateTimeValue;
             if ($request->has('agency')) {
 
                 $agency = (new Agency)->select('id')->where('id', $request->agency)->first();
@@ -345,7 +349,7 @@ class PackageController extends Controller
                     $args['agency_id'] = $agency->id;
                 }
             }
-            Session::put('package', $args);
+            Session::put('package' . $DateTimeValue, $args);
             //store package info in a session
 
             //return to check out view
@@ -406,13 +410,16 @@ class PackageController extends Controller
 //        $data = $request->input();
 //        $method = $data['method'];
 
-        if ($request->has('method') && $request->input('method') == 'JazzCash') {
+        if ($request->has('method') && $request->input('method') == 'JazzCash'
+            && isset($request->dateTime)
+            && Session::has('package' . $request->dateTime)) {
+
 
 //    1.  get formatted price. remove period(.) from the price
 //        $temp_amount = $product[0]->price * 100;
 //        $amount_array = explode('.', $temp_amount);
 
-            $package = Session::get('package');
+            $package = Session::get('package' . $request->dateTime);
             $amount = self::calculatePackagePrice($package);
 
             $package_id = DB::table('packages')->insertGetId([
@@ -505,7 +512,7 @@ class PackageController extends Controller
                 'TxnRefNo' => $post_data['pp_TxnRefNo'],
                 'amount' => $package['amount'],
                 'status' => 'pending',
-                'credit_type'=> 'purchased'
+                'credit_type' => 'purchased'
             );
             DB::table('package_transactions')->insert($values);
 
@@ -540,7 +547,8 @@ class PackageController extends Controller
 
 //            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
 
-        }
+        } else
+            return back()->withInput()->with('error', 'Error Occur, Please Try Again.');
     }
 
     private function get_SecureHash($data_array)
