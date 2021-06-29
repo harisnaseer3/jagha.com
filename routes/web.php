@@ -121,6 +121,10 @@ Route::group(['prefix' => 'properties'], function () {
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
 
+    //payment gateway callback
+    //remove the following after testing
+//    Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+
     Route::resource('properties', 'PropertyController')->except(['index', 'show']);
     Route::resource('images', 'ImageController')->only(['destroy']);
     Route::delete('image-delete', 'ImageController@form_destroy')->name('delete-image');
@@ -219,9 +223,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
 
 
 });
-//payment gateway callback
-//remove the following after testing
-Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+
 
 Auth::routes(['verify' => true]);
 Route::get('/dashboard/accounts/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('accounts.logout');

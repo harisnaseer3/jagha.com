@@ -26,10 +26,22 @@ class WalletController extends Controller
 //        dd( (new \App\Models\UserWallet)->getCurrentCredit());
         $wallet_id = (new \App\Models\UserWallet)->getUserWallet(Auth::user()->id);
         $history = array();
-        if ($wallet_id)
+        $transaction = array();
+        if ($wallet_id) {
             $history = DB::table('wallet_history')->where('user_wallet_id', $wallet_id->id)->get()->toArray();
+
+            $packages = DB::table('packages')->select('id')->where('user_id', Auth::user()->id)->get()->pluck('id')->toArray();
+
+            if (!empty($packages)) {
+                $transaction = DB::table('package_transactions')->whereIn('package_id', $packages)->where('status','completed')->orderBy('id','DESC')->get();
+            }
+
+        }
+
+
         $data = [
             'history' => $history,
+            'transaction' => $transaction,
             'wallet' => (new \App\Models\UserWallet)->getCurrentCredit(),
             'recent_properties' => (new FooterController)->footerContent()[0],
             'footer_agencies' => (new FooterController)->footerContent()[1]
@@ -55,7 +67,7 @@ class WalletController extends Controller
 
         DB::Table('wallet_history')->insert([
             'user_wallet_id' => $credit_id,
-            'debit' => $amount
+            'debit' => $amount  //added money in account
         ]);
     }
 
@@ -78,7 +90,7 @@ class WalletController extends Controller
 
         DB::Table('wallet_history')->insert([
             'user_wallet_id' => $credit_id,
-            'credit' => $amount
+            'credit' => $amount   //widhraw money in account
         ]);
     }
 }

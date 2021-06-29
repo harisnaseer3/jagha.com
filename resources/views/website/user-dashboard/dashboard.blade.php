@@ -8,11 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
     <style>
-        .badge-gold{
+        .badge-gold {
             color: grey;
             background-color: #FFD700;
         }
-        .badge-platinum{
+
+        .badge-platinum {
             color: black;
             background-color: #C0C0C0;
         }
@@ -162,6 +163,7 @@
                                                             <th>Status</th>
                                                             <th>Package</th>
                                                             <th>Views</th>
+                                                            <th>Viewer Location</th>
                                                             <th>Listed Date</th>
                                                             <th>Controls</th>
                                                         </tr>
@@ -191,7 +193,26 @@
                                                                     @endif
 
                                                                 </td>
-                                                                <td>{{$property->views}}</td>
+                                                                <td>
+                                                                    @if($property->platinum_listing == '1')
+                                                                        <div class="text-center text-bold">{{$property->views}}</div>
+                                                                    @else
+                                                                        <a href="{{route('package.create')}}">
+                                                                        <div class="color-red text-center" data-toggle="tooltip" data-placement="top" title="Upgrade to Unlock"><i
+                                                                                class="fas fa-lock fa-2x"></i></div>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($property->platinum_listing == '1')
+                                                                        <div class="text-center text-bold">{{$property->views}}</div>
+                                                                    @else
+                                                                        <a href="{{route('package.create')}}">
+                                                                        <div class="color-red text-center" data-toggle="tooltip" data-placement="top" title="Upgrade to Unlock"><i
+                                                                                class="fas fa-lock fa-2x"></i></div>
+                                                                        </a>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ (new \Illuminate\Support\Carbon($property->created_at))->isoFormat('DD-MM-YYYY  h:mm a') }}</td>
                                                                 <td>
                                                                     @if($property->id < 104280)
@@ -324,131 +345,140 @@
 @endsection
 
 @section('script')
+    <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
+
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
     <script>
-        $('#sale-properties').DataTable(
-            {
-                "scrollX": true,
-                "ordering": false,
-                responsive: true,
-                pageLength: 50
-            }
-        );
-        $('#rent-properties').DataTable(
-            {
-                "scrollX": true,
-                "ordering": false,
-                responsive: true,
-                pageLength: 50
-            }
-        );
-        $('#delete').on('show.bs.modal', function (event) {
-            let record_id = $(event.relatedTarget).data('record-id');
-            $(this).find('.modal-body #record-id').val(record_id);
-        });
-        setInterval(function () {
-            var docHeight = $(window).height();
-            var footerHeight = $('#foot-wrap').height();
-            var footerTop = $('#foot-wrap').position().top + footerHeight;
-            var marginTop = (docHeight - footerTop);
-            if (footerTop < docHeight)
-                $('#foot-wrap').css('margin-top', marginTop + 'px'); // padding of 30 on footer
-            else
-                $('#foot-wrap').css('margin-top', '0px');
-        }, 250);
-        $('.btn-accept').on('click', function () {
-            let alert = $(this);
-            let agency_id = alert.attr('data-agency');
-            let user_id = alert.attr('data-user');
-            let notification_id = alert.attr('data-id');
-
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin + '/dashboard/agencies/accept-invitation',
-                data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
+        (function ($) {
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#sale-properties').DataTable(
+                    {
+                        "scrollX": true,
+                        "ordering": false,
+                        responsive: true,
+                        pageLength: 50
                     }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
-                },
-                complete: function (url, options) {
-
-                }
-            });
-        });
-        $('.btn-reject').on('click', function () {
-            let alert = $(this);
-            let notification_id = alert.attr('data-id');
-
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin + '/dashboard/agencies/reject-invitation',
-                data: {'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        alert.closest('.alert').remove();
+                );
+                $('#rent-properties').DataTable(
+                    {
+                        "scrollX": true,
+                        "ordering": false,
+                        responsive: true,
+                        pageLength: 50
                     }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
-                },
-                complete: function (url, options) {
+                );
+                $('#delete').on('show.bs.modal', function (event) {
+                    let record_id = $(event.relatedTarget).data('record-id');
+                    $(this).find('.modal-body #record-id').val(record_id);
+                });
+                setInterval(function () {
+                    var docHeight = $(window).height();
+                    var footerHeight = $('#foot-wrap').height();
+                    var footerTop = $('#foot-wrap').position().top + footerHeight;
+                    var marginTop = (docHeight - footerTop);
+                    if (footerTop < docHeight)
+                        $('#foot-wrap').css('margin-top', marginTop + 'px'); // padding of 30 on footer
+                    else
+                        $('#foot-wrap').css('margin-top', '0px');
+                }, 250);
+                $('.btn-accept').on('click', function () {
+                    let alert = $(this);
+                    let agency_id = alert.attr('data-agency');
+                    let user_id = alert.attr('data-user');
+                    let notification_id = alert.attr('data-id');
 
-                }
-            });
-        });
-        $('.mark-as-read').on('click', function () {
-            let alert = $(this);
-            let notification_id = alert.attr('data-id');
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        type: 'post',
+                        url: window.location.origin + '/dashboard/agencies/accept-invitation',
+                        data: {'agency_id': agency_id, 'user_id': user_id, 'notification_id': notification_id},
+                        dataType: 'json',
+                        success: function (data) {
+                            // console.log(data);
+                            if (data.status === 200) {
+                                alert.closest('.alert').remove();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // console.log(xhr);
+                            // console.log(status);
+                            // console.log(error);
+                        },
+                        complete: function (url, options) {
 
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                type: 'post',
-                url: window.location.origin + '/dashboard/property-notification',
-                data: {'notification_id': notification_id},
-                dataType: 'json',
-                success: function (data) {
-                    // console.log(data);
-                    if (data.status === 200) {
-                        // console.log(alert);
-                        alert.closest('.alert').remove();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // console.log(xhr);
-                    // console.log(status);
-                    // console.log(error);
-                },
-                complete: function (url, options) {
+                        }
+                    });
+                });
+                $('.btn-reject').on('click', function () {
+                    let alert = $(this);
+                    let notification_id = alert.attr('data-id');
 
-                }
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        type: 'post',
+                        url: window.location.origin + '/dashboard/agencies/reject-invitation',
+                        data: {'notification_id': notification_id},
+                        dataType: 'json',
+                        success: function (data) {
+                            // console.log(data);
+                            if (data.status === 200) {
+                                alert.closest('.alert').remove();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // console.log(xhr);
+                            // console.log(status);
+                            // console.log(error);
+                        },
+                        complete: function (url, options) {
+
+                        }
+                    });
+                });
+                $('.mark-as-read').on('click', function () {
+                    let alert = $(this);
+                    let notification_id = alert.attr('data-id');
+
+                    jQuery.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    jQuery.ajax({
+                        type: 'post',
+                        url: window.location.origin + '/dashboard/property-notification',
+                        data: {'notification_id': notification_id},
+                        dataType: 'json',
+                        success: function (data) {
+                            // console.log(data);
+                            if (data.status === 200) {
+                                // console.log(alert);
+                                alert.closest('.alert').remove();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // console.log(xhr);
+                            // console.log(status);
+                            // console.log(error);
+                        },
+                        complete: function (url, options) {
+
+                        }
+                    });
+                });
             });
-        });
+        })
+        (jQuery);
+
     </script>
 
 @endsection

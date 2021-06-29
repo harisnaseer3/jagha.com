@@ -67,7 +67,7 @@
                                                                                 </th>
                                                                                 <th>
                                                                                     Gold
-                                                                                    <span class="ptable-price">Rs.
+                                                                                    <span class="ptable-price"> Starting from Rs.
                                                                                     @if(!$price->isEmpty())
                                                                                             @foreach($price as $val)
                                                                                                 @if($val->type == 'Gold')
@@ -80,7 +80,7 @@
                                                                                 </th>
                                                                                 <th>
                                                                                     Platinum
-                                                                                    <span class="ptable-price">Rs.
+                                                                                    <span class="ptable-price">Starting from Rs.
                                                                                 @if(!$price->isEmpty())
                                                                                             @foreach($price as $val)
                                                                                                 @if($val->type == 'Platinum')
@@ -189,7 +189,9 @@
 
                                                     </div>
                                                     <div class="my-4">
-                                                        <div class="card my-4">
+
+
+                                                      {{--  <div class="card my-4">
                                                             <div class="card-header theme-blue text-white">
                                                                 <div class="font-14 font-weight-bold text-white"> Buy Packages</div>
                                                             </div>
@@ -228,7 +230,6 @@
                                                                             @foreach($types as $type)
                                                                                 <option value= {{$type}} {{ (old('package') == $type) ? ' selected' : '' }} >{{$type}}</option>
                                                                             @endforeach
-                                                                            {{--                                                                    <option value='Gold' {{ (old('package') == 'Gold') ? ' selected' : '' }} >Gold</option>--}}
                                                                         </select>
                                                                     </div>
                                                                     <div
@@ -243,12 +244,11 @@
                                                                 <div><span class="text-danger">* </span>The Package will not renew automatically.</div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div id="submit-block">
-                                                                    {{--                                                            {{ Form::submit('Buy', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}--}}
-                                                                </div>
+                                                                <div id="submit-block"></div>
                                                                 {{ Form::close() }}
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
+
 
                                                     </div>
                                                 </div>

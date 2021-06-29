@@ -107,6 +107,21 @@ class AdminComplementaryPackageController extends Controller
                     ]);
                 }
             }
+
+            $DateTime = new \DateTime();
+            $pp_TxnDateTime = $DateTime->format('YmdHis');
+            $pp_TxnRefNo = 'T' . $pp_TxnDateTime;
+
+            $values = array(
+                'package_id' => $package,
+                'TxnRefNo' => $pp_TxnRefNo,
+                'amount' => $amount['price'],
+                'status' => 'completed',
+                'credit_type' => 'complementary'
+            );
+            DB::table('package_transactions')->insert($values);
+
+
             $log_pack = array(
                 'package_id' => $package,
                 'status' => $request->has('status') ? $request->input('status') : 'pending',
@@ -117,6 +132,7 @@ class AdminComplementaryPackageController extends Controller
 //            $credit_id = 0;
 
             (new WalletController())->addCredit($request->user_id, $amount['price']);
+
 //            $user_wallet = (new \App\Models\UserWallet)->getUserWallet($request->user_id);
 //            if ($user_wallet) {
 //                $user_wallet->current_credit = intval($user_wallet->current_credit) + $amount['price'];
@@ -141,7 +157,7 @@ class AdminComplementaryPackageController extends Controller
             return redirect()->back()->with('success', 'Package Assigned Successfully.');
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again 2.');
         }
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HitRecord\HitController;
+use App\Http\Controllers\Test\TrackUrlController;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
@@ -357,6 +359,15 @@ class PropertySearchController extends Controller
             if (preg_match('/^[0-9]*$/', $request->input('term'))) {
                 $property = (new Property)->where('id', '=', $request->input('term'))->where('status', '=', 'active')->first();
                 if ($property) {
+                    //   TODO: remove this after test
+                    $args = array(
+                        'property_id' => $property->id,
+                        'url' => \request()->url(),
+                        'ip' => HitController::getIP(),
+                    );
+                    TrackUrlController::store($args);
+                    ///////////
+
                     $views = $property->views;
                     $property->views = $views + 1;
                     $property->save();
