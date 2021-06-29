@@ -51,101 +51,70 @@
                                                         <div class="font-14 font-weight-bold text-white">Package Details</div>
                                                     </div>
                                                     <div class="card-body">
+                                                        <h6>{{$package->type}} Package</h6>
+                                                            <table class="table table-bordered" style="width:100%">
+                                                                <tr>
+                                                                    <td>Package Type</td>
+                                                                    <td> {{$package->type}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Package For</td>
+                                                                    <td>{{ucwords($package->package_for)}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Package Duration</td>
+                                                                    <td>{{ucwords($package->duration)}} month(s)</td>
+                                                                </tr>
 
-                                                        {{--                                                        <div class="form-group row">--}}
-                                                        {{--                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">--}}
-                                                        {{--                                                                <strong>Package ID :</strong>--}}
-                                                        {{--                                                            </div>--}}
-                                                        {{--                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">--}}
-                                                        {{--                                                                {{$package->id}}--}}
-                                                        {{--                                                            </div>--}}
-                                                        {{--                                                        </div>--}}
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Package Type :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{$package->type}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Package For :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{ucwords($package->package_for)}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Package Duration :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{ucwords($package->duration)}} month(s)
-                                                            </div>
-                                                        </div>
-                                                        @if(isset($package_agency))
-                                                            <div class="form-group row">
-                                                                <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                    <strong> Agency :</strong>
-                                                                </div>
-                                                                <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                    @php $agency_name = \App\Models\Agency::getAgencyTitle($package_agency->agency_id);  @endphp
-                                                                    {{ $agency_name}} - {{ $package_agency->agency_id}}
-                                                                </div>
-                                                            </div>
-                                                        @endif
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Total Properties :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{$package->property_count}}
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Added Properties :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                @if(isset($pack_properties))
-                                                                    {{count($pack_properties)}}
-                                                                @else
-                                                                    0
+                                                                @if(isset($package_agency))
+                                                                    <tr>
+                                                                        <td>Agency</td>
+                                                                        <td>
+                                                                            @php $agency_name = \App\Models\Agency::getAgencyTitle($package_agency->agency_id);  @endphp
+                                                                            {{ $agency_name}} - {{ $package_agency->agency_id}}
+                                                                        </td>
+                                                                    </tr>
                                                                 @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Remaining Properties :</strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                @if(isset($pack_properties))
-                                                                    @php $remaining_count = $package->property_count - count($pack_properties)  @endphp
-                                                                    {{$remaining_count}}
-                                                                @else
-                                                                    {{$package->property_count}}
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Package Activation Date: </strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <div class="col-sm-4 col-md-3 col-lg-2 col-xl-2">
-                                                                <strong> Package Expiry Date: </strong>
-                                                            </div>
-                                                            <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
-                                                                {{ (new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY  h:mm a') }}
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="pt-1"><span class="text-danger">* </span>The package will not renew automatically.</div>
+                                                                <tr>
+                                                                    <td> Total Properties</td>
+                                                                    <td>{{$package->property_count}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Added Properties</td>
+                                                                    <td>
+                                                                        @if(isset($pack_properties))
+                                                                            {{count($pack_properties)}}
+                                                                        @else
+                                                                            0
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Remaining Properties</td>
+                                                                    <td>
+                                                                        @if(isset($pack_properties))
+                                                                            @php $remaining_count = $package->property_count - count($pack_properties)  @endphp
+                                                                            {{$remaining_count}}
+                                                                        @else
+                                                                            {{$package->property_count}}
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Package Activation Date</td>
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($package->activated_at))->isoFormat('DD-MM-YYYY') }}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Package Expiry</td>
+                                                                    <td>
+                                                                        {{ (new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans() }}
+                                                                        ({{ (new \Illuminate\Support\Carbon($package->expired_at))->isoFormat('DD-MM-YYYY') }})
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        <div class="pt-1 text-danger"><span class="text-danger">* </span>The package will not renew automatically.</div>
 
 
                                                     </div>

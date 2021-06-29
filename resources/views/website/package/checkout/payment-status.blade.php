@@ -7,20 +7,15 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}">
     <style>
-        .pay-method-item {
-            float: left;
-            margin: 0 4px 5px 0;
-            width: 128px;
-            height: 128px;
-            text-align: center;
-            background-color: #f5f6f9;
+        .success {
+            color: green;
         }
     </style>
 
 @endsection
 
 @section('content')
-{{--    @include('website.includes.dashboard-nav')--}}
+    {{--    @include('website.includes.dashboard-nav')--}}
     <!-- Top header start -->
     <div class="sub-banner">
         <div class="container">
@@ -52,42 +47,105 @@
                                             <h6>Packages</h6>
                                             <div class="my-4">
                                                 <div class="row">
-                                                    <div class="container">
-                                                        <div class="status">
-                                                        <?php $post_data = Session::get('post_data');?>
+                                                    <div class="col-sm-12">
+                                                        <div class="card my-4">
+                                                            <div class="card-header theme-blue text-white">
+                                                                <div class="font-14 font-weight-bold text-white"> Payment Info</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="text-center">
+                                                                    <div class="status">
+                                                                    <?php $response = Session::get('response');?>
 
-                                                        @if($response['pp_ResponseCode'] == '000')
-                                                            <!-- --------------------------------------------------------------------------- -->
-                                                                <!-- Payment successful -->
-                                                                <h1 class="success">Your Payment has been Successful</h1>
-                                                                <h4>Payment Information</h4>
-                                                                <p><b>Reference Number:</b> {{ $response['pp_RetreivalReferenceNo'] }}</p>
-                                                                <p><b>Transaction ID:</b> {{ $response['pp_TxnRefNo'] }}</p>
-                                                                <p><b>Paid Amount:</b> {{ $response['pp_Amount'] }}</p>
-                                                                <p><b>Payment Status:</b> Success</p>
-                                                                <!-- --------------------------------------------------------------------------- -->
+                                                                    @if($response['pp_ResponseCode'] == '000')
+                                                                        <!-- --------------------------------------------------------------------------- -->
+                                                                            <!-- Payment successful -->
+                                                                            <h1 class="success">Your Payment has been Successful</h1>
+                                                                            <h4>Payment Information</h4>
+                                                                            <div class="container">
+                                                                                <table class="table table-bordered" style="width:100%">
+                                                                                    <tr>
+                                                                                        <td>Reference Number:</td>
+                                                                                        <td>{{$response['pp_RetreivalReferenceNo'] }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Transaction ID:</td>
+                                                                                        <td>{{$response['pp_TxnRefNo']}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Paid Amount:</td>
+                                                                                        <td>{{(int)$response['pp_Amount']/100}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Payment Status:</td>
+                                                                                        <td>Success</td>
+                                                                                    </tr>
+                                                                                </table>
+
+                                                                                <div class="float-right">
+                                                                                    <span class="pull-right">
+                                                                                        <a class="btn btn-sm theme-blue text-white mr-2"  href="{{ route('package.index') }}">
+                                                                                            Go To Package Listing
+                                                                                        </a>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <!-- --------------------------------------------------------------------------- -->
 
 
-                                                                <!-- --------------------------------------------------------------------------- -->
-                                                                <!-- Payment not successful -->
-                                                            @elseif($ResponseCode == '124')
-                                                                <h1 class="error">Your Payment has been on Waiting satate</h1>
-                                                                <p><b>Message: </b>{{ $response['pp_ResponseMessage'] }}</p>
-                                                                <p><b>Voucher Number: </b>{{ $response['pp_RetreivalReferenceNo'] }}</p>
-                                                                <!-- --------------------------------------------------------------------------- -->
+                                                                            <!-- --------------------------------------------------------------------------- -->
+                                                                            <!-- Payment not successful -->
+                                                                        @elseif($response['pp_ResponseCode']  == '124')
+                                                                            <h1 class="error">Your Payment has been on Waiting satate</h1>
+                                                                            <h4>Payment Information</h4>
+                                                                            <div class="container">
+                                                                                <table class="table table-bordered" style="width:100%">
+                                                                                    <tr>
+                                                                                        <td>Reference Number:</td>
+                                                                                        <td>{{$response['pp_RetreivalReferenceNo'] }}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Message:</td>
+                                                                                        <td>{{$response['pp_ResponseMessage']}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Voucher Number:</td>
+                                                                                        <td>{{$response['pp_RetreivalReferenceNo']}}</td>
+                                                                                    </tr>
+
+                                                                                </table>
+                                                                            </div>
+                                                                            <!-- --------------------------------------------------------------------------- -->
 
 
-                                                                <!-- --------------------------------------------------------------------------- -->
-                                                                <!-- Payment not successful -->
-                                                            @else
-                                                                <h1 class="error">Your Payment has Failed</h1>
-                                                                <p><b>Message: </b>{{ $response['pp_ResponseMessage'] }}</p>
-                                                        @endif
-                                                        <!-- --------------------------------------------------------------------------- -->
+                                                                            <!-- --------------------------------------------------------------------------- -->
+                                                                            <!-- Payment not successful -->
+                                                                        @else
+                                                                            <h1 class="error">Your Payment has Failed</h1>
+                                                                            <p><b>Message: </b>{{ $response['pp_ResponseMessage'] }}</p>
+                                                                            <h4>Payment Information</h4>
+                                                                            <div class="container">
+                                                                                <table class="table table-bordered" style="width:100%">
+{{--                                                                                    <tr>--}}
+{{--                                                                                        <td>Reference Number:</td>--}}
+{{--                                                                                        <td>{{$response['pp_RetreivalReferenceNo'] }}</td>--}}
+{{--                                                                                    </tr>--}}
+                                                                                    <tr>
+                                                                                        <td>Message:</td>
+                                                                                        <td>{{$response['pp_ResponseMessage']}}</td>
+                                                                                    </tr>
+
+                                                                                </table>
+                                                                            </div>
+                                                                    @endif
+                                                                    <!-- --------------------------------------------------------------------------- -->
 
 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <a href="index.php" class="btn-link">Back to Products</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,7 +163,7 @@
 
 
     <!-- Footer start -->
-    {{--    @include('website.includes.footer')--}}
+{{--        @include('website.includes.footer')--}}
 @endsection
 
 @section('script')

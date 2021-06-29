@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::get('/', 'IndexPageController@getPropertyTypes');
+//Route::get('/', 'IndexPageController@getPropertyTypes');
 
 
 
-//Route::post('/paymentStatus', 'Package\PackageController@paymentStatus');
+Route::post('/dashboard/paymentStatus', 'Package\PackageController@paymentStatus')->name('PaymentStatus');
 
 //and set this one for callback:
 //

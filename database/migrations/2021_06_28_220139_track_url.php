@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePropertyCountByListingTable extends Migration
+class TrackUrl extends Migration
 {
     /**
      * Run the migrations.
@@ -14,19 +14,20 @@ class CreatePropertyCountByListingTable extends Migration
      */
     public function up()
     {
-        Schema::create('property_count_by_listings', function (Blueprint $table) {
+        Schema::create('track_urls', function (Blueprint $table) {
             $table->id();
-            $table->string('property_purpose', 225)->index();
-            $table->integer('property_count')->unsigned()->index();
-            $table->string('listing_type', 255)->index();
+            $table->foreignId('property_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('url')->index();
+            $table->string('ip');
+
             $table->softDeletes();
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE `property_count_by_listings`
+        DB::statement('ALTER TABLE `track_urls`
             CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
             CHANGE `updated_at` `updated_at` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL DEFAULT NULL');
-}
+    }
 
     /**
      * Reverse the migrations.
@@ -35,6 +36,7 @@ class CreatePropertyCountByListingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('property_count_by_listing');
+        Schema::dropIfExists('track_urls');
+
     }
 }

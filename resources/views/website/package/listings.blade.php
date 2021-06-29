@@ -61,6 +61,7 @@
                                                                     <th>Added Properties Count</th>
                                                                     <th>Package Activation</th>
                                                                     <th>Status</th>
+                                                                    <th>Subscription</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                                 </thead>
@@ -69,7 +70,7 @@
                                                                     <tr>
                                                                         <td>{{$index +1 }}</td>
                                                                         <td>{{$sub_package->type}}</td>
-                                                                        <td>{{$sub_package->duration}}</td>
+                                                                        <td class="text-center">{{$sub_package->duration}}</td>
                                                                         <td>
                                                                             @if(isset($sub_package->agency_id))
                                                                                 {{\App\Models\Agency::getAgencyTitle($sub_package->agency_id)}} - {{$sub_package->agency_id}}
@@ -77,12 +78,25 @@
                                                                                 {{ucwords($sub_package->package_for)}}
                                                                             @endif
                                                                         </td>
-                                                                        <td class="text-right pr-3">{{$sub_package->property_count}}</td>
-                                                                        <td class="text-right pr-3">{{$sub_package->added_properties}}</td>
+                                                                        <td class="text-center">{{$sub_package->property_count}}</td>
+                                                                        <td class="text-center">Property Title {{$sub_package->added_properties}}</td>
                                                                         <td>{{ (new \Illuminate\Support\Carbon($sub_package->activated_at))->isoFormat('DD-MM-YYYY  h:mm a')}}</td>
                                                                         <td>
-                                                                            <div class="badge badge-success p-2 "><strong class="font-12 color-white">{{ucwords($sub_package->status)}}</strong>
+                                                                            <div class="badge badge-success p-2 ">
+                                                                                <strong class="font-12 color-white">{{ucwords($sub_package->status)}}</strong>
                                                                             </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            @if($sub_package->is_complementary == 1)
+                                                                                <div class="badge badge-danger p-2 ">
+                                                                                    <strong class="font-12 color-white">{{ucwords('complementary')}}</strong>
+                                                                                </div>
+                                                                            @else
+
+                                                                                <div class="badge badge-primary p-2 ">
+                                                                                    <strong class="font-12 color-white">{{ucwords('purchased')}}</strong>
+                                                                                </div>
+                                                                            @endif
                                                                         </td>
                                                                         <td>
                                                                             {{--                                                                            <div class='btn-group'>--}}
