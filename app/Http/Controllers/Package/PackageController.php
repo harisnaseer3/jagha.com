@@ -302,6 +302,10 @@ class PackageController extends Controller
     {
 //        dd($request->all());
         if ($request->ajax()) {
+            if ($request->count < 0 || $request->duration < 0
+                || round($request->duration) != $request->duration || round($request->count) != $request->count) {
+                return response()->json(['status' => 201, 'message' => 'Not found']);
+            }
             $args = array();
             $args['duration'] = $request->duration;
             $args['type'] = $request->type;
@@ -325,10 +329,16 @@ class PackageController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), Package::$rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Error storing record, try again.');
+        }
+
+        if ($request->count < 0 || $request->duration < 0
+            || round($request->duration) != $request->duration ||
+            round($request->input('property-count')) != $request->input('property-count'))
+        {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Add valid value in Property Count & Duration');
         }
 
         $DateTime = new \DateTime();
@@ -337,7 +347,7 @@ class PackageController extends Controller
             $args = array();
             $args['duration'] = $request->duration;
             $args['type'] = $request->package;
-            $args['count'] = $request->property_count;
+            $args['count'] = $request->input('property-count');
             $args['for'] = $request->package_for;
             $amount = self::calculatePackagePrice($args);
             $args['amount'] = $amount['price'];
@@ -391,6 +401,7 @@ class PackageController extends Controller
 //            return redirect()->route('package.index')->with('success', 'Request submitted successfully. You will be notified about the progress soon.');
             $footer = (new FooterController)->footerContent();
 
+
             return view('website.package.checkout.index', [
                 'result' => $args,
                 'recent_properties' => $footer[0],
@@ -407,8 +418,6 @@ class PackageController extends Controller
 
     public function doCheckout(Request $request)
     {
-//        $data = $request->input();
-//        $method = $data['method'];
 
         if ($request->has('method') && $request->input('method') == 'JazzCash'
             && isset($request->dateTime)

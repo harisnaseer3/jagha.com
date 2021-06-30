@@ -23,7 +23,7 @@ class Package extends Model
 
     public static $rules = [
 //        'package_for' => 'required|string|in:Properties,Agency',
-        'property_count' => 'required|min:1',
+        'property-count' => 'required|min:1',
         'duration' => 'required|min:1',
         'package' => 'required'
     ];
