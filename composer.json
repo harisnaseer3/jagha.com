@@ -30,7 +30,8 @@
         "spatie/laravel-permission": "^3.17",
         "spatie/schema-org": "^2.14",
         "stevebauman/location": "^6.0",
-        "webpatser/laravel-uuid": "^3.0"
+        "webpatser/laravel-uuid": "^3.0",
+		"lcobucci/jwt": "^3.3.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
