@@ -136,8 +136,8 @@
                                                                         Expired {{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans(['parts' => 1])}}</strong>
                                                                 @else
                                                                     <strong
-                                                                        class="font-12" style="color: green"> Expire
-                                                                        in {{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans(['parts' => 1])}}</strong>
+                                                                        class="font-12" style="color: green"> Will Expire in
+                                                                         {{(new \Illuminate\Support\Carbon($package->expired_at))->diffForHumans(['parts' => 1])}}</strong>
                                                                 @endif
                                                                 {{--                                                                </div>--}}
                                                             </div>

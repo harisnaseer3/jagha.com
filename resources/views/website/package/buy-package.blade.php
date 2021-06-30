@@ -191,7 +191,7 @@
                                                     <div class="my-4">
 
 
-                                                      {{--  <div class="card my-4">
+                                                        <div class="card my-4">
                                                             <div class="card-header theme-blue text-white">
                                                                 <div class="font-14 font-weight-bold text-white"> Buy Packages</div>
                                                             </div>
@@ -237,8 +237,36 @@
                                                                         Select a Package
                                                                     </div>
                                                                 </div>
-                                                                {{ Form::bsNumber('property_count', 0, ['required' => true, 'data-default' => 'Enter the number of Properties for selected package', 'min' => 1, 'step' => 1]) }}
-                                                                {{ Form::bsNumber('duration', 1, ['required' => true, 'data-default' => 'Enter Package Duration in Months', 'min' => 1, 'step' => 1]) }}
+{{--                                                                {{ Form::bsNumber('property_count', 0, ['required' => true, 'data-default' => 'Enter the number of Properties for selected package', 'min' => 1, 'step' => 1]) }}--}}
+                                                                <div class="form-group row">
+                                                                    <label for="property_count" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                                                                        Property Count <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                        <select class="custom-select custom-select-property-count select2bs4 select2-hidden-accessible property-count-select2"
+                                                                                style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
+                                                                                name="property-count" id="property-count">
+                                                                            @foreach(range(1,10) as $val)
+                                                                                <option value={{$val}} {{ (old('property_count') == $val) ? ' selected' : '' }}>{{$val}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+{{--                                                                {{ Form::bsNumber('duration', 1, ['required' => true, 'data-default' => 'Enter Package Duration in Months', 'min' => 1, 'step' => 1]) }}--}}
+                                                                <div class="form-group row">
+                                                                    <label for="duration" class="col-sm-4 col-md-3 col-lg-2 col-xl-2 col-form-label col-form-label-sm">
+                                                                        Duration <span class="text-danger">*</span>
+                                                                    </label>
+                                                                    <div class="col-sm-8 col-md-5 col-lg-6 col-xl-5">
+                                                                        <select class="custom-select custom-select-duration select2bs4 select2-hidden-accessible duration-select2"
+                                                                                style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
+                                                                                name="duration" id="duration">
+                                                                            @foreach(range(1,12) as $val)
+                                                                                <option value={{$val}} {{ (old('duration') == $val) ? ' selected' : '' }}>{{$val}}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
                                                                 {{ Form::bsNumber('amount', 0, ['required' => true, 'disabled'=>true,'data-default' => 'Package Amount in Rs.']) }}
                                                                 {{ Form::hidden('unit_amount',null) }}
                                                                 <div><span class="text-danger">* </span>The Package will not renew automatically.</div>
@@ -247,7 +275,7 @@
                                                                 <div id="submit-block"></div>
                                                                 {{ Form::close() }}
                                                             </div>
-                                                        </div> --}}
+                                                        </div>
 
 
                                                     </div>
