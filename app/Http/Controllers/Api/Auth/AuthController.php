@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Dashboard\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Auth;
-use App\Http\JsonResponse;
 use App\Http\Resources\User as UserResource;
 
 class AuthController extends Controller
@@ -75,7 +74,7 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        if (auth()->attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
 
 //            if(!auth()->user()->hasRole("customer")) {
 //                return (new \App\Http\JsonResponse)->forbidden();
@@ -87,7 +86,6 @@ class AuthController extends Controller
                 'user' => new UserResource(auth()->user()),
                 'token' => $token
             ];
-
             return (new \App\Http\JsonResponse)->success('Login Successful', $data);
 
         }
@@ -118,6 +116,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+
         auth('api')->user()->token()->revoke();
 
         return (new \App\Http\JsonResponse)->success('Logout Successful');
