@@ -35,14 +35,14 @@ class JsonResponse extends LaravelJsonResponse
         }
 
         if ($data === null) {
-            $data = (object) $data;
+            $data = (object)$data;
         }
 
         return response()->json([
-            'success' => true,
-            'status' => $status_code,
-            'message' => $message,
+            'status' => 'success',
+            'status_code' => $status_code,
             'data' => $data,
+            'message' => $message,
         ]);
     }
 
@@ -61,9 +61,10 @@ class JsonResponse extends LaravelJsonResponse
         }
 
         return response()->json([
-            'success' => false,
-            'status' => $status_code,
-            'errors' => $errors,
+            'status' => 'error',
+            'status_code' => $status_code,
+            "data" => null,
+            "message" => $errors
         ]);
     }
 
