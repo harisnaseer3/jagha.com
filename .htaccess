@@ -10,7 +10,7 @@
 
 	# Prevent directory listings
 	Options All -Indexes
-	
+
 	# Prevent viewing of .htaccess file
 	<Files .htaccess>
 	Require all denied
@@ -23,15 +23,17 @@
 	<Files composer.json>
 	   Require all denied
 	</Files>
-	
+
 	<Files web.config>
 	   Require all denied
 	</Files>
-	
+
 	ErrorDocument 403 /errors/404.blade.php
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
