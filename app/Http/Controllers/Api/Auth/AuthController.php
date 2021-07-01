@@ -120,4 +120,66 @@ class AuthController extends Controller
         return (new \App\Http\JsonResponse)->success('Logout Successful');
     }
 
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'min:8|required',
+            'new_password' => ['required', 'string', 'min:8', 'same:confirm_new_password', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],
+        ]);
+
+
+        if ($validator->fails()) {
+            return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
+        }
+
+        if (!(Hash::check($request->get('current_password'), auth('api')->user()->password))) {
+            return (new \App\Http\JsonResponse)->failed('Password Provided is incorrect');
+        }
+
+        auth('api')->user()->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return (new \App\Http\JsonResponse)->success('Password Successfully Updated');
+    }
+
+    public function socialLogin(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'social_media_id' => 'required',
+            'social_media_type' => 'required',
+            'source' => 'required',
+            'fcm_token' => 'required',
+            'app_version' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
+        }
+
+        $user = User::updateOrCreate([
+            'email' => $request->email
+        ],
+            [
+                'name' => $request->name,
+                'social_media_id' => $request->social_media_id,
+                'social_media_type' => $request->social_media_type,
+                'source' => $request->source,
+                'fcm_token' => $request->fcm_token,
+                'app_version' => $request->app_version,
+                'password' => $request->has('password') ? $request->password : md5(rand(1, 10000)),
+            ]);
+
+        $token = $user->createToken('SocialMedia')->accessToken;
+
+        $data = (object)[
+            'user' => new UserResource($user),
+            'token' => $token
+        ];
+
+        return (new \App\Http\JsonResponse)->success('success_social_login', $data);
+    }
 }
