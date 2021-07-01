@@ -6,12 +6,20 @@ use Illuminate\Support\Facades\Route;
 Route::post('/dashboard/paymentStatus', 'Package\PackageController@paymentStatus')->name('PaymentStatus');
 
 //auth
-Route::post('register', 'Auth\AuthController@register');
-Route::post('login', 'Auth\AuthController@login');
-Route::post('forgot-password', 'Auth\AuthController@forgotPassword');
 
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['namespace' => 'Auth'], function () {
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::post('forgot-password', 'AuthController@forgotPassword');
+    Route::post('social-login', 'AuthController@socialLogin');
+});
 
-    Route::post('logout', 'Auth\AuthController@logout');
+
+Route::group(['middleware' => 'auth:api', 'namespace' => 'Auth'], function () {
+    //profile
+    Route::post('change-password', 'AuthController@changePassword');
+    Route::post('update-profile', 'AuthController@updateProfile');
+    Route::post('logout', 'AuthController@logout');
+
 });
