@@ -80,7 +80,7 @@ class AuthController extends Controller
 //                return (new \App\Http\JsonResponse)->forbidden();
 //            }
 
-            $token = auth()->user()->createToken('AboutPakistanProperties')->accessToken;
+            $token = Auth::user()->createToken('AboutPakistanProperties')->accessToken;
 
             $data = (object)[
                 'user' => new UserResource(auth()->user()),
@@ -116,9 +116,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-
         auth('api')->user()->token()->revoke();
-
         return (new \App\Http\JsonResponse)->success('Logout Successful');
     }
 
