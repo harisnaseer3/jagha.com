@@ -11,8 +11,7 @@ Route::post('login', 'Auth\AuthController@login');
 Route::post('forgot-password', 'Auth\AuthController@forgotPassword');
 
 
-//Route::group(['middleware' => 'auth:api'], function () {
-
+Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('logout', 'Auth\AuthController@logout');
-//});
+});
