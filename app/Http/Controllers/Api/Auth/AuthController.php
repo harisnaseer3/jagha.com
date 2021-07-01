@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Dashboard\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Password;
 use App\Http\Resources\User as UserResource;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -181,5 +183,38 @@ class AuthController extends Controller
         ];
 
         return (new \App\Http\JsonResponse)->success('success_social_login', $data);
+    }
+
+    public function updateProfile(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'area_unit' => ['required',Rule::in(['Square Feet','Square Yards','Square Meters','Marla','Kanal'])],
+            'language' => 'required',
+            'number' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
+        }
+
+        (new Account)->updateOrCreate(['user_id' => Auth::guard('api')->user()->getAuthIdentifier()], [
+            'default_area_unit' => $request->area_unit,
+            'default_language' => $request->language,
+        ]);
+
+        auth('api')->user()->update([
+            'name' => $request->name,
+            'cell' => $request->number
+        ]);
+
+
+        if ($validator->fails()) {
+            return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
+        }
+
+        auth('api')->user()->update($request->all());
+
+        return (new \App\Http\JsonResponse)->success('Profile Updated', new UserResource(auth('api')->user()));
     }
 }
