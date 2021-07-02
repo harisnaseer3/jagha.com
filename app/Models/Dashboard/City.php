@@ -36,22 +36,6 @@ class City extends Model
     {
         return $this->hasMany(Location::class);
     }
-
-    public function homes()
-    {
-        return $this->hasMany(Home::class);
-    }
-
-    public function plots()
-    {
-        return $this->hasMany(Plot::class);
-    }
-
-    public function commercials()
-    {
-        return $this->hasMany(Commercial::class);
-    }
-
     public function properties()
     {
         return $this->hasMany(Property::class);
