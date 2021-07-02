@@ -3,19 +3,14 @@
 namespace App\Http\Controllers\Api\WebServices;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\FooterController;
-use App\Http\Controllers\MetaTagController;
-use App\Http\Resources\User as UserResource;
+use App\Http\Controllers\PropertySearchController;
 use App\Models\Dashboard\City;
 use App\Models\Property;
-use App\Models\PropertyType;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use App\Http\Resources\Property as PropertyResource;
 
 class PropertyController extends Controller
 {
@@ -163,12 +158,49 @@ class PropertyController extends Controller
         }
 
         $sort_area = 'higher_area';
-        $sort ='newest';
+        $sort = 'newest';
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
 
         $properties = $properties->paginate(10)->appends(request()->query());
         return (new \App\Http\JsonResponse)->success("Search Result", $properties);
+    }
+
+    // Display detailed page of property
+    public function show(Property $property)
+    {
+        $views = $property->views;
+        $property->views = $views + 1;
+        $property->save();
+        $is_favorite = false;
+
+        if (Auth::check()) {
+            $is_favorite = DB::table('favorites')->select('id')
+                ->where([
+                    ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
+                    ['property_id', '=', $property->id],
+                ])->exists();
+        }
+        $property->city = $property->city->name;
+        $property->location = $property->location->name;
+
+        $similar_properties = $this->listingFrontend()
+            ->where([
+                ['properties.id', '<>', $property->id],
+                ['properties.city_id', $property->city_id],
+                ['properties.type', $property->type],
+                ['properties.sub_type', $property->sub_type],
+                ['properties.purpose', $property->purpose],
+            ])->limit(20)->get()->toArray();
+
+
+        $data = (object)[
+            'property' => new PropertyResource($property),
+            'similar_properties'=>$similar_properties
+        ];
+
+        return (new \App\Http\JsonResponse)->success("Property Detail Results", $data);
+
     }
 
 
