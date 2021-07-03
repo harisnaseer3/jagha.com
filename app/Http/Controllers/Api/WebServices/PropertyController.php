@@ -166,22 +166,16 @@ class PropertyController extends Controller
 
         $sort_area = 'higher_area';
         $sort = 'newest';
+        $limit = 10;
 
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-
-        $properties = $properties->paginate(10)->appends(request()->query());
-
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
         $properties = (new PropertyListingResource)->myToArray($properties);
         $properties = new Collection($properties);
-//
-//        $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
-//        $paginatedSearchResults->setPath($request->url());
-//        $paginatedSearchResults->appends(request()->query());
+        $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
+        $paginatedSearchResults->setPath($request->url());
+        $paginatedSearchResults->appends(request()->query());
 
-
-
-        return (new \App\Http\JsonResponse)->success("Search Result", $properties);
+        return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
     }
 
     // Display detailed page of property
