@@ -3,21 +3,28 @@
 namespace App\Http\Controllers\Api\WebServices;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FooterController;
+use App\Http\Controllers\MetaTagController;
 use App\Http\Controllers\PropertySearchController;
+use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Property;
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\Property as PropertyResource;
+use App\Http\Resources\PropertyListing as PropertyListingResource;
 
 class PropertyController extends Controller
 {
     function listingFrontend()
     {
         return (new Property)
-            ->select('properties.id', 'properties.purpose', 'properties.sub_type',
+            ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_type',
                 'properties.type', 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit',
                 'properties.bedrooms', 'properties.bathrooms', 'properties.golden_listing', 'properties.platinum_listing',
                 'properties.contact_person', 'properties.phone', 'properties.cell', 'properties.fax', 'properties.email', 'properties.favorites',
@@ -162,7 +169,18 @@ class PropertyController extends Controller
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
 
+
         $properties = $properties->paginate(10)->appends(request()->query());
+
+        $properties = (new PropertyListingResource)->myToArray($properties);
+        $properties = new Collection($properties);
+//
+//        $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+//        $paginatedSearchResults->setPath($request->url());
+//        $paginatedSearchResults->appends(request()->query());
+
+
+
         return (new \App\Http\JsonResponse)->success("Search Result", $properties);
     }
 
@@ -191,17 +209,168 @@ class PropertyController extends Controller
                 ['properties.type', $property->type],
                 ['properties.sub_type', $property->sub_type],
                 ['properties.purpose', $property->purpose],
-            ])->limit(20)->get()->toArray();
+            ]);
+
+        $sort_area = 'higher_area';
+        $sort = 'newest';
+
+        $similar_properties = $this->sortPropertyListing($sort, $sort_area, $similar_properties);
+
+        $similar_properties = $similar_properties->limit(50)->get();
+
+        if ($similar_properties->count() > 0) {
+            $similar_properties = (new PropertyListingResource)->myToArray($similar_properties);
+        } else
+            $similar_properties = [];
 
 
         $data = (object)[
             'property' => new PropertyResource($property),
-            'similar_properties'=>$similar_properties
+            'similar_properties' => $similar_properties
         ];
 
-        return (new \App\Http\JsonResponse)->success("Property Detail Results", $data);
+        return (new \App\Http\JsonResponse)->success("Property Details", $data);
 
     }
 
+    public function genericSearch(Request $request)
+    {
+        /*validate request params */
+        if ($request->input('term') != null) {
+            if (preg_match('/^[0-9]*$/', $request->input('term'))) {
+                $property = (new Property)->where('id', '=', $request->input('term'))->where('status', 'active')->first();
+                if ($property) {
+
+                    $views = $property->views;
+                    $property->views = $views + 1;
+                    $property->save();
+
+                    $is_favorite = false;
+
+                    if (Auth::check()) {
+                        $is_favorite = DB::table('favorites')->select('id')
+                            ->where([
+                                ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
+                                ['property_id', '=', $property->id],
+                            ])->exists();
+                    }
+                    $property->city = $property->city->name;
+                    $property->location = $property->location->name;
+
+
+                    $similar_properties = $this->listingFrontend()
+                        ->where([
+                            ['properties.id', '<>', $property->id],
+                            ['properties.city_id', $property->city_id],
+                            ['properties.type', $property->type],
+                            ['properties.sub_type', $property->sub_type],
+                            ['properties.purpose', $property->purpose],
+                        ]);
+
+                    $sort_area = 'higher_area';
+                    $sort = 'newest';
+
+                    $similar_properties = $this->sortPropertyListing($sort, $sort_area, $similar_properties);
+
+                    $similar_properties = $similar_properties->limit(50)->get();
+
+                    if ($similar_properties->count()) {
+                        $similar_properties = (new PropertyListingResource)->myToArray($similar_properties);
+                    } else
+                        $similar_properties = [];
+
+
+                    $data = (object)[
+                        'property' => new PropertyResource($property),
+                        'similar_properties' => $similar_properties
+                    ];
+
+                    return (new \App\Http\JsonResponse)->success("Property Details", $data);
+
+                } else {
+                    return (new \App\Http\JsonResponse)->success('No Results');
+                }
+
+            } else {
+                $sort = '';
+                $limit = '';
+                $sort_area = '';
+                $sort_area_value = '';
+                $activated_at_value = '';
+                $price_value = '';
+                if (request()->input('sort') !== null) {
+                    $sort = $request->input('sort');
+                    if ($sort === 'newest') $activated_at_value = 'DESC';
+                    else if ($sort === 'oldest') $activated_at_value = 'ASC';
+                    else if ($sort === 'high_price') $price_value = 'DESC';
+                    else if ($sort === 'low_price') $price_value = 'ASC';
+
+                } else
+                    $sort = 'newest';
+
+                if (request()->input('limit') !== null)
+                    $limit = request()->input('limit');
+                else
+                    $limit = '10';
+
+                if (request()->input('area_sort') !== null) {
+                    $sort_area = request()->input('area_sort');
+                    if ($sort_area === 'higher_area') $sort_area_value = 'DESC';
+                    else if ($sort_area === 'lower_area') $sort_area_value = 'ASC';
+                }
+
+                $result2 = DB::table('cities')->select('id')->whereRaw(DB::raw('INSTR("' . $request->input('term') . '",`name`)'))->get();
+
+                if ($result2->count()) {
+                    $result2 = $result2[0];
+                    $total_count = DB::table('property_count_by_cities')
+                        ->select('property_count AS count')->where('city_id', '=', $result2->id)->first()->count;
+
+
+                    $page = (isset($request->page)) ? $request->page : 1;
+                    $last_id = ($page - 1) * $limit;
+                    $properties = DB::select('call getPropertiesByGenericCitySearch("' . $last_id . '","' . $result2->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '","' . $request->input('term') . '")');
+                    $properties = (new PropertyListingResource)->myToArray($properties);
+                    $properties = new Collection($properties);
+                    $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+                    $paginatedSearchResults->setPath($request->url());
+                    $paginatedSearchResults->appends(request()->query());
+
+                    return (new \App\Http\JsonResponse)->success("Property Details", $paginatedSearchResults);
+
+
+                } else {
+                    $result = Agency::select('id')->where('title', 'LIKE', $request->input('term') . '%')->get()->toArray();
+
+                    if (count($result) > 0) {
+                        $total_count = 0;
+                        $total_counts = DB::table('property_count_by_agencies')
+                            ->select('property_count AS count')->where('property_status', '=', 'active')->whereIn('agency_id', $result)->get()->toArray();
+                        foreach ($total_counts as $count) {
+                            $total_count += $count->count;
+                        }
+
+                        $properties = $this->listingFrontend()->whereIn('properties.agency_id', $result);
+                        $page = (isset($request->page)) ? $request->page : 1;
+                        $last_id = ($page - 1) * $limit;
+                        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+                        $properties = $properties->take($limit)->skip($last_id)->get();
+                        $properties = (new PropertyListingResource)->myToArray($properties);
+                        $properties = new Collection($properties);
+
+                        $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+                        $paginatedSearchResults->setPath($request->url());
+                        $paginatedSearchResults->appends(request()->query());
+
+
+                        return (new \App\Http\JsonResponse)->success("Property Details", $paginatedSearchResults);
+                    } else
+                        return (new \App\Http\JsonResponse)->success('No Results');
+                }
+            }
+        } else {
+            return (new \App\Http\JsonResponse)->success('No Results');
+        }
+    }
 
 }

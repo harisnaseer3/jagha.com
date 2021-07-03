@@ -21,12 +21,12 @@ class Property extends JsonResource
 
             $agency = [
                 'title' => $agency_data->title,
-                'description' => $agency_data->description,
+                'description' => $this->user_id !== 1 ? $agency_data->description : '',
                 'phone' => $agency_data->phone,
                 'cell' => $agency_data->cell,
                 'address' => $agency_data->address,
                 'email' => $agency_data->email,
-                'logo' => $agency_data->logo,
+                'logo' => $this->user_id !== 1 ? $agency_data->logo : '',
                 'ceo' => $agency_data->ceo_name,
                 'featured_listing' => $agency_data->featured_listing,
                 'key_listing' => $agency_data->key_listing,
@@ -34,12 +34,20 @@ class Property extends JsonResource
 
             ];
         }
+        $images = [];
+        if (!$this->images->isEmpty() && $this->user_id !== 1) {
+            foreach ($this->images as $img) {
+                $images[] = strpos($img->name, '.webp') !== false ? $img->name : $img->name . '.webp';
+
+            }
+        }
 
         return [
             'city' => $this->city,
             'location' => $this->location,
             'title' => $this->title,
-            'description' => $this->description,
+            'description' => $this->user_id !== 1 ? $this->description : '',
+            'images' => $images,
             'type' => $this->type,
             'sub_type' => $this->sub_type,
             'purpose' => $this->purpose,
@@ -63,5 +71,6 @@ class Property extends JsonResource
             'activated_at' => $this->activated_at,
             'agency' => $agency
         ];
+
     }
 }

@@ -27,4 +27,7 @@ Route::group(['namespace' => 'WebServices'], function () {
     //search
     Route::get('/search', 'PropertyController@search');
     Route::get('properties/{property}', 'PropertyController@show');
+
+    Route::get('/generic-search', 'PropertyController@genericSearch');
+
 });
