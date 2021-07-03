@@ -326,12 +326,12 @@ class PropertyController extends Controller
                 return redirect($property->property_detail_path($property->location->name));
         }
         //   TODO: remove this after test
-        $args = array(
-            'property_id' => $property->id,
-            'url' => \request()->url(),
-            'ip' => HitController::getIP(),
-        );
-        TrackUrlController::store($args);
+//        $args = array(
+//            'property_id' => $property->id,
+//            'url' => \request()->url(),
+//            'ip' => HitController::getIP(),
+//        );
+//        TrackUrlController::store($args);
         ///////////
 
         $views = $property->views;

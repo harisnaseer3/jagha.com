@@ -360,12 +360,12 @@ class PropertySearchController extends Controller
                 $property = (new Property)->where('id', '=', $request->input('term'))->where('status', '=', 'active')->first();
                 if ($property) {
                     //   TODO: remove this after test
-                    $args = array(
-                        'property_id' => $property->id,
-                        'url' => \request()->url(),
-                        'ip' => HitController::getIP(),
-                    );
-                    TrackUrlController::store($args);
+//                    $args = array(
+//                        'property_id' => $property->id,
+//                        'url' => \request()->url(),
+//                        'ip' => HitController::getIP(),
+//                    );
+//                    TrackUrlController::store($args);
                     ///////////
 
                     $views = $property->views;
