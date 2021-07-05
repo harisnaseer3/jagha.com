@@ -31,7 +31,7 @@ Route::group(['namespace' => 'WebServices'], function () {
 
 
     Route::group(['namespace' => 'Property'], function () {
-        Route::get('properties/{property_id}', 'PropertyController@show');
+        Route::get('properties/{property}', 'PropertyController@show');
 
         //search
         Route::get('search', 'PropertySearchController@search');
