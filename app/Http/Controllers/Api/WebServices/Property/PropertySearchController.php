@@ -175,7 +175,6 @@ class PropertySearchController extends Controller
 
     public function genericSearch(Request $request)
     {
-        /*validate request params */
         if ($request->has('term')) {
             if ($request->input('term') != null) {
                 if (preg_match('/^[0-9]*$/', $request->input('term'))) {
@@ -232,7 +231,8 @@ class PropertySearchController extends Controller
                         return (new \App\Http\JsonResponse)->successNoContent();
                     }
 
-                } else {
+                }
+                else {
                     $sort = '';
                     $limit = '';
                     $sort_area = '';
@@ -260,17 +260,15 @@ class PropertySearchController extends Controller
                         else if ($sort_area === 'lower_area') $sort_area_value = 'ASC';
                     }
 
-                    $result2 = DB::table('cities')->select('id')->whereRaw(DB::raw('INSTR("' . $request->input('term') . '",`name`)'))->get();
-
-                    if ($result2->count()) {
-                        $result2 = $result2[0];
+                    $result3 = DB::table('cities')->select('id')->where('name', 'LIKE', $request->input('term') . '%')->first();
+                    if ($result3) {
                         $total_count = DB::table('property_count_by_cities')
-                            ->select('property_count AS count')->where('city_id', '=', $result2->id)->first()->count;
+                            ->select('property_count AS count')->where('city_id', '=', $result3->id)->first()->count;
 
 
                         $page = (isset($request->page)) ? $request->page : 1;
                         $last_id = ($page - 1) * $limit;
-                        $properties = DB::select('call getPropertiesByGenericCitySearch("' . $last_id . '","' . $result2->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '","' . $request->input('term') . '")');
+                        $properties = DB::select('call getPropertiesByCityId("' . $last_id . '","' . $result3->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '")');
                         $properties = (new PropertyListingResource)->myToArray($properties);
                         $properties = new Collection($properties);
                         $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
@@ -278,11 +276,8 @@ class PropertySearchController extends Controller
                         $paginatedSearchResults->appends(request()->query());
 
                         return (new \App\Http\JsonResponse)->success("Property Search Results", $paginatedSearchResults);
-
-
                     } else {
                         $result = Agency::select('id')->where('title', 'LIKE', $request->input('term') . '%')->get()->toArray();
-
                         if (count($result) > 0) {
                             $total_count = 0;
                             $total_counts = DB::table('property_count_by_agencies')
@@ -305,20 +300,37 @@ class PropertySearchController extends Controller
 
 
                             return (new \App\Http\JsonResponse)->success("Property Details", $paginatedSearchResults);
-                        } else
-                            return (new \App\Http\JsonResponse)->successNoContent();
+                        }
+                        else {
+                            $result2 = DB::table('cities')->select('id')->whereRaw(DB::raw('INSTR("' . $request->input('term') . '",`name`)'))->get();
+                            if ($result2->count()) {
+                                $result2 = $result2[0];
+                                $total_count = DB::table('property_count_by_cities')
+                                    ->select('property_count AS count')->where('city_id', '=', $result2->id)->first()->count;
 
+
+                                $page = (isset($request->page)) ? $request->page : 1;
+                                $last_id = ($page - 1) * $limit;
+                                $properties = DB::select('call getPropertiesByGenericCitySearch("' . $last_id . '","' . $result2->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '","' . $request->input('term') . '")');
+                                $properties = (new PropertyListingResource)->myToArray($properties);
+                                $properties = new Collection($properties);
+                                $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+                                $paginatedSearchResults->setPath($request->url());
+                                $paginatedSearchResults->appends(request()->query());
+
+                                return (new \App\Http\JsonResponse)->success("Property Search Results", $paginatedSearchResults);
+
+
+                            } else
+                                return (new \App\Http\JsonResponse)->successNoContent();
+
+                        }
                     }
                 }
-            } else {
-                return (new \App\Http\JsonResponse)->successNoContent();
-
-            }
+            } else
+                return (new \App\Http\JsonResponse)->unprocessable();
         } else
             return (new \App\Http\JsonResponse)->unprocessable();
 
-
     }
-
-
 }
