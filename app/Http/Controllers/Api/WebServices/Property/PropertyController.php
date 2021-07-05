@@ -19,12 +19,14 @@ class PropertyController extends Controller
         $property = Property::where('id', $property_id)->first();
 
         if ($property) {
-            $views = $property->views;
-            $property->views = $views + 1;
-            $property->save();
+
+//            $views = $property->views;
+//            $property->views = $views + 1;
+//            $property->save();
+
             $is_favorite = false;
 
-            if (Auth::check()) {
+            if (Auth::guard('api')->check()) {
                 $is_favorite = DB::table('favorites')->select('id')
                     ->where([
                         ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
