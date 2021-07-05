@@ -48,7 +48,7 @@ class PropertyController extends Controller
 
             $similar_properties = (new PropertySearchController())->sortPropertyListing($sort, $sort_area, $similar_properties);
 
-            $similar_properties = $similar_properties->limit(50)->get();
+            $similar_properties = $similar_properties->limit(10)->get();
 
             if ($similar_properties->count() > 0) {
                 $similar_properties = (new PropertyListingResource)->myToArray($similar_properties);
