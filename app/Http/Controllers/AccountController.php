@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Throwable;
 
 class AccountController extends Controller
@@ -173,7 +174,16 @@ class AccountController extends Controller
 
     public function updateSettings(Request $request, Account $account)
     {
-        $validator = Validator::make($request->all(), Account::$rules);
+        $validator = Validator::make($request->all(), [
+        'message_signature' => 'nullable|string',
+        'email_notification' => 'required',
+        'newsletter' => 'required',
+        'automated_reports' => 'required',
+        'default_currency' => 'required',
+        'default_area_unit'=> ['required',Rule::in(['Square Feet','Square Yards','Square Meters','Marla','Kanal'])],
+        'default_language' => 'required',
+        'sms_notification' => 'required',
+        ]);
 
         if ($validator->fails()) {
             return redirect()->route('settings.update', $account)->withInput()->withErrors($validator->errors())->with('error', 'Error updating record, Resolve following error(s).');

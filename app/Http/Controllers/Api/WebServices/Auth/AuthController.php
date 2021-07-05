@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\WebServices\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Dashboard\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Password;
 use App\Http\Resources\User as UserResource;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -182,4 +184,6 @@ class AuthController extends Controller
 
         return (new \App\Http\JsonResponse)->success('success_social_login', $data);
     }
+
+
 }
