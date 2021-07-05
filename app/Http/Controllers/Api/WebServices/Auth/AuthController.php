@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\WebServices\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Account;
@@ -185,36 +185,5 @@ class AuthController extends Controller
         return (new \App\Http\JsonResponse)->success('success_social_login', $data);
     }
 
-    public function updateProfile(Request $request)
-    {
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'area_unit' => ['required',Rule::in(['Square Feet','Square Yards','Square Meters','Marla','Kanal'])],
-            'language' => 'required',
-            'number' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
-        }
-
-        (new Account)->updateOrCreate(['user_id' => Auth::guard('api')->user()->getAuthIdentifier()], [
-            'default_area_unit' => $request->area_unit,
-            'default_language' => $request->language,
-        ]);
-
-        auth('api')->user()->update([
-            'name' => $request->name,
-            'cell' => $request->number
-        ]);
-
-
-        if ($validator->fails()) {
-            return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
-        }
-
-        auth('api')->user()->update($request->all());
-
-        return (new \App\Http\JsonResponse)->success('Profile Updated', new UserResource(auth('api')->user()));
-    }
 }
