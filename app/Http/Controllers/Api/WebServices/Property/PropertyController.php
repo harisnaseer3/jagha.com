@@ -13,11 +13,10 @@ use App\Http\Resources\PropertyListing as PropertyListingResource;
 class PropertyController extends Controller
 {
     // Display detailed page of property
-    public function show($property_id)
+    public function show(Request $request)
     {
 
-        $property = Property::where('id', $property_id)->first();
-
+        $property = Property::where('id', $request->property)->first();
         if ($property) {
 
 //            $views = $property->views;
