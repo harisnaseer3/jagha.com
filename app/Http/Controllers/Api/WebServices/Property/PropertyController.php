@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\WebServices\Property;
 
 use App\Http\Controllers\Controller;
 use App\Models\Property;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\Property as PropertyResource;
@@ -12,8 +13,11 @@ use App\Http\Resources\PropertyListing as PropertyListingResource;
 class PropertyController extends Controller
 {
     // Display detailed page of property
-    public function show(Property $property)
+    public function show($property_id)
     {
+
+        $property = Property::where('id', $property_id)->first();
+
         if ($property) {
             $views = $property->views;
             $property->views = $views + 1;
