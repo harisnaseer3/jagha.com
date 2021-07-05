@@ -2,12 +2,8 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
 class PropertyListing
 {
-
-
     public function myToArray($results)
     {
         $clean_results = array();
