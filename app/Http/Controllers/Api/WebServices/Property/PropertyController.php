@@ -16,7 +16,7 @@ class PropertyController extends Controller
     public function show(Request $request)
     {
 
-        $property = Property::where('id', $request->property)->first();
+        $property = Property::where('id', $request->property)->where('status', 'active')->first();
         if ($property) {
 
 //            $views = $property->views;
