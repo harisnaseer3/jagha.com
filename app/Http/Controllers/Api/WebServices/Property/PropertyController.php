@@ -14,49 +14,53 @@ class PropertyController extends Controller
     // Display detailed page of property
     public function show(Property $property)
     {
-        $views = $property->views;
-        $property->views = $views + 1;
-        $property->save();
-        $is_favorite = false;
+        if ($property) {
+            $views = $property->views;
+            $property->views = $views + 1;
+            $property->save();
+            $is_favorite = false;
 
-        if (Auth::check()) {
-            $is_favorite = DB::table('favorites')->select('id')
+            if (Auth::check()) {
+                $is_favorite = DB::table('favorites')->select('id')
+                    ->where([
+                        ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
+                        ['property_id', '=', $property->id],
+                    ])->exists();
+            }
+            $property->city = $property->city->name;
+            $property->location = $property->location->name;
+
+            $similar_properties = (new PropertySearchController())->listingFrontend()
                 ->where([
-                    ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
-                    ['property_id', '=', $property->id],
-                ])->exists();
-        }
-        $property->city = $property->city->name;
-        $property->location = $property->location->name;
+                    ['properties.id', '<>', $property->id],
+                    ['properties.city_id', $property->city_id],
+                    ['properties.type', $property->type],
+                    ['properties.sub_type', $property->sub_type],
+                    ['properties.purpose', $property->purpose],
+                ]);
 
-        $similar_properties = (new PropertySearchController())->listingFrontend()
-            ->where([
-                ['properties.id', '<>', $property->id],
-                ['properties.city_id', $property->city_id],
-                ['properties.type', $property->type],
-                ['properties.sub_type', $property->sub_type],
-                ['properties.purpose', $property->purpose],
-            ]);
+            $sort_area = 'higher_area';
+            $sort = 'newest';
 
-        $sort_area = 'higher_area';
-        $sort = 'newest';
+            $similar_properties = (new PropertySearchController())->sortPropertyListing($sort, $sort_area, $similar_properties);
 
-        $similar_properties = (new PropertySearchController())->sortPropertyListing($sort, $sort_area, $similar_properties);
+            $similar_properties = $similar_properties->limit(50)->get();
 
-        $similar_properties = $similar_properties->limit(50)->get();
+            if ($similar_properties->count() > 0) {
+                $similar_properties = (new PropertyListingResource)->myToArray($similar_properties);
+            } else
+                $similar_properties = [];
 
-        if ($similar_properties->count() > 0) {
-            $similar_properties = (new PropertyListingResource)->myToArray($similar_properties);
+
+            $data = (object)[
+                'property' => new PropertyResource($property),
+                'similar_properties' => $similar_properties
+            ];
+
+            return (new \App\Http\JsonResponse)->success("Property Details", $data);
         } else
-            $similar_properties = [];
+            return (new \App\Http\JsonResponse)->resourceNotFound();
 
-
-        $data = (object)[
-            'property' => new PropertyResource($property),
-            'similar_properties' => $similar_properties
-        ];
-
-        return (new \App\Http\JsonResponse)->success("Property Details", $data);
 
     }
 
