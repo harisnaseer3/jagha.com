@@ -4,9 +4,10 @@ namespace App\Http\Resources;
 
 class PropertyListing
 {
-    public function myToArray($results)
+    public function myToArray($results, $area_unit = null)
     {
         $clean_results = array();
+
 
         foreach ($results as $item) {
             $image = '';
@@ -28,7 +29,7 @@ class PropertyListing
                 'sub_purpose' => $item->sub_purpose,
                 'price' => $item->price,
                 'land_area' => $item->land_area,
-                'area_unit' => $item->area_unit,
+                'area_unit' => $area_unit != null ? $area_unit : $item->area_unit,
                 'bedrooms' => $item->bedrooms,
                 'bathrooms' => $item->bathrooms,
 
