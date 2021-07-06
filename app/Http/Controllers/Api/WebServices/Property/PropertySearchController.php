@@ -110,8 +110,8 @@ class PropertySearchController extends Controller
         if ($baths = $request->bathrooms)
             $properties->where('properties.bathrooms', $baths);
 
-//        if ($area_unit = $request->area_unit)
-//            $properties->where('properties.area_unit', ucwords(str_replace('-', ' ', $area_unit)));
+        if ($area_unit = $request->area_unit)
+            $properties->where('properties.area_unit', ucwords(str_replace('-', ' ', $area_unit)));
 
         $min_price = 0;
         $min_area = 0.0;
@@ -126,14 +126,14 @@ class PropertySearchController extends Controller
 
         if ($min_price !== 0 and $max_price !== 0) {
             if ($min_price < $max_price) {
-                $properties->where('price', '>=', $min_price)->where('price', '<=', $max_price);
+                $properties->where('properties.price', '>=', $min_price)->where('price', '<=', $max_price);
             } elseif ($min_price > $max_price) {
-                $properties->where('price', '>=', $max_price)->where('price', '<=', $min_price);
+                $properties->where('properties.price', '>=', $max_price)->where('price', '<=', $min_price);
             }
         } else if ($min_price !== 0 and $max_price === 0) {
-            $properties->where('price', '>=', $min_price);
+            $properties->where('properties.price', '>=', $min_price);
         } else if ($min_price === 0 and $max_price !== 0) {
-            $properties->where('price', '<=', $max_price);
+            $properties->where('properties.price', '<=', $max_price);
         }
 
 
@@ -144,11 +144,13 @@ class PropertySearchController extends Controller
 
         $area_column_wrt_unit = '';
 
-        if ($area_unit === 'Marla') $area_column_wrt_unit = 'area_in_marla';
-        if ($area_unit === 'Kanal') $area_column_wrt_unit = 'area_in_kanal';
-        if ($area_unit === 'Square Feet') $area_column_wrt_unit = 'area_in_sqft';
-        if ($area_unit === 'Square Yards') $area_column_wrt_unit = 'area_in_sqyd';
-        if ($area_unit === 'Square Meters') $area_column_wrt_unit = 'area_in_sqm';
+        if (ucwords($area_unit) === 'Marla') $area_column_wrt_unit = 'properties.area_in_marla';
+        if (ucwords($area_unit) === 'Kanal') $area_column_wrt_unit = 'properties.area_in_kanal';
+        if (ucwords($area_unit) === 'Square Feet') $area_column_wrt_unit = 'properties.area_in_sqft';
+        if (ucwords($area_unit) === 'Square Yards') $area_column_wrt_unit = 'properties.area_in_sqyd';
+        if (ucwords($area_unit) === 'Square Meters') $area_column_wrt_unit = 'properties.area_in_sqm';
+        else
+            $area_column_wrt_unit = 'properties.area_in_marla';
 
 
         if ($min_area !== 0.0 and $max_area !== 0.0) {
@@ -164,13 +166,18 @@ class PropertySearchController extends Controller
         $limit = 10;
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
-        $properties = (new PropertyListingResource)->myToArray($properties);
-        $properties = new Collection($properties);
-        $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
-        $paginatedSearchResults->setPath($request->url());
-        $paginatedSearchResults->appends(request()->query());
+        if (!$properties->isEmpty()) {
+            $properties = (new PropertyListingResource)->myToArray($properties);
+            $properties = new Collection($properties);
+            $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
+            $paginatedSearchResults->setPath($request->url());
+            $paginatedSearchResults->appends(request()->query());
 
-        return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
+            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
+        } else {
+            return (new \App\Http\JsonResponse)->successNoContent();
+        }
+
     }
 
     public function genericSearch(Request $request)
@@ -231,8 +238,7 @@ class PropertySearchController extends Controller
                         return (new \App\Http\JsonResponse)->successNoContent();
                     }
 
-                }
-                else {
+                } else {
                     $sort = '';
                     $limit = '';
                     $sort_area = '';
@@ -300,13 +306,13 @@ class PropertySearchController extends Controller
 
 
                             return (new \App\Http\JsonResponse)->success("Property Details", $paginatedSearchResults);
-                        }
-                        else {
+                        } else {
                             $result2 = DB::table('cities')->select('id')->whereRaw(DB::raw('INSTR("' . $request->input('term') . '",`name`)'))->get();
-                            if ($result2->count()) {
+
+                            if (!$result2->isEmpty()) {
                                 $result2 = $result2[0];
-                                $total_count = DB::table('property_count_by_cities')
-                                    ->select('property_count AS count')->where('city_id', '=', $result2->id)->first()->count;
+//                                $total_count = DB::table('property_count_by_cities')
+//                                    ->select('property_count AS count')->where('city_id', '=', $result2->id)->first()->count;
 
 
                                 $page = (isset($request->page)) ? $request->page : 1;
@@ -314,7 +320,7 @@ class PropertySearchController extends Controller
                                 $properties = DB::select('call getPropertiesByGenericCitySearch("' . $last_id . '","' . $result2->id . '","' . $limit . '","' . $activated_at_value . '","' . $price_value . '","' . $sort_area_value . '","' . $request->input('term') . '")');
                                 $properties = (new PropertyListingResource)->myToArray($properties);
                                 $properties = new Collection($properties);
-                                $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+                                $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
                                 $paginatedSearchResults->setPath($request->url());
                                 $paginatedSearchResults->appends(request()->query());
 
@@ -323,7 +329,6 @@ class PropertySearchController extends Controller
 
                             } else
                                 return (new \App\Http\JsonResponse)->successNoContent();
-
                         }
                     }
                 }
