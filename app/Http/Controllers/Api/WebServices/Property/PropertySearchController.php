@@ -110,8 +110,9 @@ class PropertySearchController extends Controller
         if ($baths = $request->bathrooms)
             $properties->where('properties.bathrooms', $baths);
 
-        if ($area_unit = $request->area_unit)
-            $properties->where('properties.area_unit', ucwords(str_replace('-', ' ', $area_unit)));
+        $area_unit = $request->area_unit;
+//        if ($area_unit = $request->area_unit)
+//            $properties->where('properties.area_unit', ucwords(str_replace('-', ' ', $area_unit)));
 
         $min_price = 0;
         $min_area = 0.0;
@@ -145,10 +146,10 @@ class PropertySearchController extends Controller
         $area_column_wrt_unit = '';
 
         if (ucwords($area_unit) === 'Marla') $area_column_wrt_unit = 'properties.area_in_marla';
-        if (ucwords($area_unit) === 'Kanal') $area_column_wrt_unit = 'properties.area_in_kanal';
-        if (ucwords($area_unit) === 'Square Feet') $area_column_wrt_unit = 'properties.area_in_sqft';
-        if (ucwords($area_unit) === 'Square Yards') $area_column_wrt_unit = 'properties.area_in_sqyd';
-        if (ucwords($area_unit) === 'Square Meters') $area_column_wrt_unit = 'properties.area_in_sqm';
+        else if (ucwords($area_unit) === 'Kanal') $area_column_wrt_unit = 'properties.area_in_new_kanal';
+        else if (ucwords($area_unit) === 'Square Feet') $area_column_wrt_unit = 'properties.area_in_sqft';
+        else if (ucwords($area_unit) === 'Square Yards') $area_column_wrt_unit = 'properties.area_in_sqyd';
+        else if (ucwords($area_unit) === 'Square Meters') $area_column_wrt_unit = 'properties.area_in_sqm';
         else
             $area_column_wrt_unit = 'properties.area_in_marla';
 
@@ -167,7 +168,7 @@ class PropertySearchController extends Controller
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
         if (!$properties->isEmpty()) {
-            $properties = (new PropertyListingResource)->myToArray($properties);
+            $properties = (new PropertyListingResource)->myToArray($properties, ucwords($area_unit));
             $properties = new Collection($properties);
             $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
             $paginatedSearchResults->setPath($request->url());
