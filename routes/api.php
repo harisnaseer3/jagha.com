@@ -24,9 +24,9 @@ Route::group(['namespace' => 'WebServices'], function () {
 
 
     });
-    Route::group(['middleware' => 'auth:api'], function () {
-        Route::post('update-profile', 'UserProfile\UserProfileController@updateProfile');
-        Route::post('favourites', 'UserProfile\UserProfileController@favourites');
+    Route::group(['middleware' => 'auth:api', 'namespace' => 'UserProfile'], function () {
+        Route::post('update-profile', 'UserProfileController@updateProfile');
+        Route::post('favourites', 'UserProfileController@favourites');
     });
 
 

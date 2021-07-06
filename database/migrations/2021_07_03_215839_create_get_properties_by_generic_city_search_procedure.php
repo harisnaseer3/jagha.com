@@ -15,15 +15,14 @@ class CreateGetPropertiesByGenericCitySearchProcedure extends Migration
     public function up()
     {
         DB::unprepared('
-        DROP PROCEDURE IF EXISTS getPropertiesByCityId;
-        CREATE PROCEDURE getPropertiesByCityId(
+        CREATE PROCEDURE getPropertiesByGenericCitySearch(
         IN last_id BIGINT,
         IN city_id BIGINT,
         IN data_limit int(10),
         IN activated_at_value VARCHAR(20),
         IN price_value VARCHAR(20),
-        IN sort_area_value VARCHAR(20))
-        IN term TEXT)
+        IN sort_area_value VARCHAR(20),
+        IN term (TEXT)
          BEGIN
     SELECT
         `properties`.`id`,
@@ -139,6 +138,6 @@ END;
      */
     public function down()
     {
-        Schema::dropIfExists('get_properties_by_generic_city_search_procedure');
+        Schema::dropIfExists('getPropertiesByGenericCitySearch');
     }
 }
