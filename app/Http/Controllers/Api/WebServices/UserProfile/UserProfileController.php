@@ -75,4 +75,37 @@ class UserProfileController extends Controller
 
         }
     }
+
+//    public function AddFavourite(Request $request)
+//    {
+//        if ($p = $request->property_id) {
+//            $property = Property::find($p);
+//            if ($property) {
+//                $property->increment('favorites');
+//                DB::table('favorites')
+//                    ->Insert(['user_id' => Auth::user()->getAuthIdentifier(), 'property_id' => $property->id]);
+//
+//            } else {
+//                return (new \App\Http\JsonResponse)->resourceNotFound();
+//            }
+//
+//        } else
+//            return (new \App\Http\JsonResponse)->unprocessable();
+//
+//    }
+
+    public function RemoveFavourite(Request $request)
+    {
+        if ($p = $request->property_id) {
+            $property = Property::find($p);
+            if ($property) {
+
+            } else {
+                return (new \App\Http\JsonResponse)->resourceNotFound();
+            }
+
+        } else
+            return (new \App\Http\JsonResponse)->unprocessable();
+
+    }
 }
