@@ -705,7 +705,7 @@
         // $('#store-images').val(store_image_name);
 
         function checkImagesCountLimit(count) {
-            if (store_image_name.length + count + imageCountOnError > 60) {
+            if (store_image_name.length + count + imageCountOnError >= 60) {
                 console.log(store_image_name.length + count + imageCountOnError);
                 alert('You can select 60 images only');
                 return false;

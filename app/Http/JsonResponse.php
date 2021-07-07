@@ -81,7 +81,8 @@ class JsonResponse extends LaravelJsonResponse
      */
     public function successNoContent()
     {
-        return $this->success(null, self::NO_CONTENT);
+        return $this->success(null, null);
+//        return $this->success(null, self::NO_CONTENT);
     }
 
     /**
