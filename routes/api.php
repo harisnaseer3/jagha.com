@@ -14,6 +14,7 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('forgot-password', 'AuthController@forgotPassword');
         Route::post('social-login', 'AuthController@socialLogin');
+
     });
 
     Route::group(['middleware' => 'auth:api', 'namespace' => 'Auth'], function () {
@@ -30,6 +31,9 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('remove-favourites', 'UserProfileController@RemoveFavourite');
 
 
+        Route::get('my-properties', 'UserProfileController@myProperties');
+
+
     });
 
     Route::group(['namespace' => 'Property'], function () {
@@ -38,6 +42,7 @@ Route::group(['namespace' => 'WebServices'], function () {
         //search
         Route::get('search', 'PropertySearchController@search');
         Route::get('generic-search', 'PropertySearchController@genericSearch');
+
     });
 
     Route::get('cities', 'DataController@cities');
