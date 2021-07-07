@@ -26,8 +26,8 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('update-profile', 'UserProfileController@updateProfile');
         Route::post('favourites', 'UserProfileController@favourites');
 
-//        Route::post('add-favourites', 'UserProfileController@AddFavourites');
-//        Route::post('remove-favourites', 'UserProfileController@RemoveFavourites');
+        Route::post('add-favourites', 'UserProfileController@AddFavourite');
+        Route::post('remove-favourites', 'UserProfileController@RemoveFavourite');
 
 
     });
