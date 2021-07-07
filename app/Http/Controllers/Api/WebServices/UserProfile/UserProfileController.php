@@ -76,30 +76,41 @@ class UserProfileController extends Controller
         }
     }
 
-//    public function AddFavourite(Request $request)
-//    {
-//        if ($p = $request->property_id) {
-//            $property = Property::find($p);
-//            if ($property) {
-//                $property->increment('favorites');
-//                DB::table('favorites')
-//                    ->Insert(['user_id' => Auth::user()->getAuthIdentifier(), 'property_id' => $property->id]);
-//
-//            } else {
-//                return (new \App\Http\JsonResponse)->resourceNotFound();
-//            }
-//
-//        } else
-//            return (new \App\Http\JsonResponse)->unprocessable();
-//
-//    }
+    public function AddFavourite(Request $request)
+    {
+        if ($p = $request->property_id) {
+            $property = Property::find($p);
+            if ($property) {
+
+                $property->favorites = $property->favorites + 1;
+                $property->save();
+
+                DB::table('favorites')
+                    ->Insert(['user_id' => Auth::guard('api')->user()->getAuthIdentifier(), 'property_id' => $property->id]);
+                return (new \App\Http\JsonResponse)->success("Property added to favourites successfully");
+            } else {
+                return (new \App\Http\JsonResponse)->resourceNotFound();
+            }
+
+        } else
+            return (new \App\Http\JsonResponse)->unprocessable();
+
+    }
 
     public function RemoveFavourite(Request $request)
     {
         if ($p = $request->property_id) {
             $property = Property::find($p);
             if ($property) {
+                $property->favorites = $property->favorites - 1;
+                $property->save();
 
+
+                DB::table('favorites')->where([
+                    'user_id' => Auth::guard('api')->user()->getAuthIdentifier(),
+                    'property_id' => $property->id
+                ])->delete();
+                return (new \App\Http\JsonResponse)->success("Property removed from favourites successfully");
             } else {
                 return (new \App\Http\JsonResponse)->resourceNotFound();
             }

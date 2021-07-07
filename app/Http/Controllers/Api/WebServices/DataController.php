@@ -32,13 +32,10 @@ class DataController extends Controller
                 } else
                     return (new \App\Http\JsonResponse)->successNoContent();
 
-
             } else
                 return (new \App\Http\JsonResponse)->resourceNotFound();
 
         }
         return (new \App\Http\JsonResponse)->unprocessable();
-
-
     }
 }
