@@ -447,8 +447,6 @@
     <div class="fly-fade">
     </div><!--fly-fade-->
 @endsection
-
-
 @section('script')
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.min.js')}}" defer></script>
 
@@ -457,7 +455,7 @@
     <script src="{{asset('website/js/jssor.slider-28.0.0.min.js')}}"></script>
     <script type="text/javascript" defer>jssor_1_slider_init();  </script>
     <script src="{{asset('website/js/markerclusterer.js')}}" async defer></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY')}}&libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{Config::get('app.google_map_api_key')}}&libraries=places" async defer></script>
     <script src="{{asset('website/js/script-custom.min.js')}}" defer></script>
     <script src="{{asset('website/js/cookie.min.js')}}" defer></script>
     <script src="{{asset('website/js/detail-page.js')}}" defer></script>
