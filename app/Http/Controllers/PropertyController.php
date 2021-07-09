@@ -231,7 +231,7 @@ class PropertyController extends Controller
             else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
             $max_id = 0;
 
-            $max_id = (new Property)->pluck('id')->last();
+            $max_id = DB::table('properties')->select('id')->pluck('id')->last();
             $max_id = $max_id + 1;
 
             $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
@@ -243,7 +243,7 @@ class PropertyController extends Controller
             }
 
 
-            $property = (new Property)->Create([
+            $property_id = DB::table('properties')->insertGetId([
                 'reference' => $reference,
                 'user_id' => $user_id,
                 'city_id' => $city->id,
@@ -280,6 +280,8 @@ class PropertyController extends Controller
                 'fax' => $request->input('fax'),
                 'email' => $request->input('contact_email'),
             ]);
+
+            $property = DB::table('properties')->where('id', $property_id)->first();
 
             if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
                 (new ImageController)->storeImage($request->input('image'), $property);
