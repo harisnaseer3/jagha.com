@@ -110,7 +110,7 @@ class PropertyController extends Controller
         if ($request->has('is_draft') && $request->is('is_draft') == 1)
             return $this->defaultStore($request, 'draft');
         else
-            return $this->defaultStore($request, 'draft');
+            return $this->defaultStore($request, 'pending');
     }
 
 //    public function saveDraft(Request $request)
