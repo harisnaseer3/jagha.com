@@ -107,16 +107,19 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
-        return $this->defaultStore($request, 'pending');
+        if ($request->has('is_draft') && $request->is('is_draft') == 1)
+            return $this->defaultStore($request, 'draft');
+        else
+            return $this->defaultStore($request, 'draft');
     }
 
-    public function saveDraft(Request $request)
-    {
-
-        return $this->defaultStore($request, 'draft');
-
-
-    }
+//    public function saveDraft(Request $request)
+//    {
+//
+//        return $this->defaultStore($request, 'draft');
+//
+//
+//    }
 
 
     public function defaultStore(Request $request, $status)
@@ -248,6 +251,9 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        if (!$property->exists()) {
+            return (new \App\Http\JsonResponse)->resourceNotFound();
+        }
         try {
             $city = $property->location->city->name;
             $property->city = $city;
@@ -296,7 +302,9 @@ class PropertyController extends Controller
 //
     public function update(Request $request, Property $property)
     {
-
+        $status = 'pending';
+        if ($request->has('is_draft') && $request->is('is_draft') == 1)
+            $status = 'draft';
 
         if (count($request->all()) > 0) {
 
@@ -336,10 +344,7 @@ class PropertyController extends Controller
                     }
 
                 }
-
                 $this->storeImages($request, $property->id, $user->id, $order);
-
-
             }
 
 
@@ -378,7 +383,7 @@ class PropertyController extends Controller
                     'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') != null ? $request->input('bathrooms') : 0,
 
 
-                    'status' => 'pending',
+                    'status' => $status,
                     'basic_listing' => 1,
                     'contact_person' => $request->input('contact_person') ? $request->input('contact_person') : $user->name,
                     'phone' => $request->input('phone') ? $request->input('phone') : $user->phone,
@@ -394,15 +399,14 @@ class PropertyController extends Controller
                 $city = DB::table('cities')->select('id', 'name')->where('id', $property->city_id)->first();
                 $location = DB::table('locations')->select('id', 'name')->where('id', $property->location->id)->first();
 
-
-                $this->dispatch(new SendNotificationOnPropertyUpdate($property));
-
                 if ($status_before_update === 'active') {
                     (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
                 }
 
-                if ($property->status == 'pending')
+                if ($property->status == 'pending') {
+                    $this->dispatch(new SendNotificationOnPropertyUpdate($property));
                     event(new NotifyAdminOfEditedProperty($property));
+                }
 
                 return (new \App\Http\JsonResponse)->success('Property with ID ' . $property->id . ' updated successfully.');
 
@@ -419,9 +423,7 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
-//        $property = (new Property)->where('id', $request->input('id'))->first();
-
-        if($property->status == 'deleted' ){
+        if ($property->status == 'deleted') {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
 
