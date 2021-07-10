@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api\WebServices\Property;
 
+use App\Events\NotifyAdminOfEditedProperty;
 use App\Events\NotifyAdminOfNewProperty;
+use App\Events\UserErrorEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountTableController;
 use App\Http\Controllers\Dashboard\LocationController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\PropertyBackendListingController;
+use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
@@ -104,62 +107,64 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        return $this->defaultStore($request, 'pending');
+    }
+
+    public function saveDraft(Request $request)
+    {
+
+        return $this->defaultStore($request, 'draft');
+
+
+    }
+
+
+    public function defaultStore(Request $request, $status)
+    {
 
         if (count($request->all()) > 0) {
             if ($request->hasFile('images')) {
-                $this->checksonImageData($request);
+                $result = $this->checksonImageData($request);
+                if ($result != null && $result !== '')
+                    return (new \App\Http\JsonResponse)->failed($result, 422);
             }
 
-            $user = Auth::guard('api')->user();
+
             $validator = Validator::make($request->all(), [
                 'city' => 'required',
-                'location' => 'required_if:add_location,==,""|string',
-                'purpose' => 'required|in:Sale,Rent,Wanted',
-                'type' => 'required|in:Homes,Plots,Commercial',
-                'subtype' => 'required',
+                'location' => 'required',
+                'purpose' => 'required|in:sale,Sale,rent,Rent,wanted,Wanted',
+                'type' => 'required|in:homes,Homes,plots,Plots,commercial,Commercial',
+                'sub_type' => 'required',
                 'title' => 'required|min:10|max:225',
                 'description' => 'required|min:50|max:6144',
                 'price' => 'nullable|numeric|max:99999999999|min:1000',
                 'land_area' => 'required|numeric',
-                'unit' => 'required',
-                'image.*' => 'image|max:10000',
+                'area_unit' => 'required|in:marla,Marla,square feet,Square Feet,Square Yards,square yards,kanal,Kanal,square meters,Square Meters',
+                'unit' => 'string:',
+                'image.*' => 'image|max:10000|mimes:jpeg,png,jpg',
                 'phone' => 'nullable|string',
-                'mobile' => 'required',
-                'video_host' => 'string|in:Youtube,Vimeo,Dailymotion,Dailymotion',
-                'video_link' => 'nullable|url',
+                'mobile' => 'string',
+
             ]);
 
-            $status = 'pending';
-            $errors = [];
+
             if ($validator->fails()) {
-                $errors[] = ['Missing Fields' => $validator->getMessageBag()];
-                $status = 'draft';
+
+                return (new \App\Http\JsonResponse)->failed($validator->getMessageBag(), 422);
             }
+            $user = Auth::guard('api')->user();
+
+
             try {
-                $area_values = array();
 
+                $area_values = $this->calculateArea($request->input('area_unit'), $request->input('land_area'));
 
-                $area_unit = $this->getUserAreaUnit($user->id);
-
-                if ($area = $request->input('land_area') && $area_unit != NULL) {
-                    $area_values = (new SitePropertyController)->calculateArea($area_unit, $area);
-                }
-                $city_id = 000;
-                if ($request->has('city')) {
-//                    $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-//                    $city = (new City)->select('id', 'name')->where('id', $request->input('city'))->first();
-                    $city_id = $request->input('city');
-                }
-                $location_id = 000;
 
                 if ($request->has('location')) {
-////                    $location = Location::select('id', 'name', 'latitude', 'longitude', 'is_active')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
                     $location = Location::select('id', 'name', 'latitude', 'longitude', 'is_active')->where('id', $request->input('location'))->first();
-                    $location_id = $request->input('location');
-//
                 }
 
-                $max_id = 0;
 
                 $max_id = DB::table('properties')->select('id')->pluck('id')->last();
 
@@ -175,8 +180,8 @@ class PropertyController extends Controller
                 $values = [
                     'reference' => $reference,
                     'user_id' => $user->id,
-                    'city_id' => $city_id,
-                    'location_id' => $location_id,
+                    'city_id' => $city_id = $request->input('city'),
+                    'location_id' => $location->id,
                     'agency_id' => $agency != '' ? $agency : null,
                     'purpose' => $request->input('purpose') ? $request->input('purpose') : 'Sale',
                     'sub_purpose' => $request->has('wanted_for') ? $request->input('wanted_for') : null,
@@ -184,23 +189,23 @@ class PropertyController extends Controller
                     'sub_type' => $request->input('sub_type') ? $request->input('sub_type') : 'house',
                     'title' => $request->input('title') ? $request->input('title') : 'none',
                     'description' => $request->input('description') ? $request->input('description') : 'none',
-                    'price' => $request->input('price') ? $request->input('price') : 000,
+                    'price' => $request->input('price'),
                     'call_for_inquiry' => 0,
-                    'land_area' => $request->input('land_area') ? $request->input('land_area') : 000,
-                    'area_unit' => $area_unit,
+                    'land_area' => $request->input('land_area'),
+                    'area_unit' => $request->input('area_unit'),
 
-                    'area_in_sqft' => count($area_values) > 0 ? $area_values['sqft'] : 000,
-                    'area_in_sqyd' => count($area_values) > 0 ? $area_values['sqyd'] : 000,
-                    'area_in_sqm' => count($area_values) > 0 ? $area_values['sqm'] : 000,
-                    'area_in_marla' => count($area_values) > 0 ? $area_values['marla'] : 000,
-                    'area_in_new_marla' => count($area_values) > 0 ? $area_values['new_marla'] : 000,
-                    'area_in_kanal' => count($area_values) > 0 ? $area_values['kanal'] : 000,
-                    'area_in_new_kanal' => count($area_values) > 0 ? $area_values['new_kanal'] : 000,
+                    'area_in_sqft' => $area_values['sqft'],
+                    'area_in_sqyd' => $area_values['sqyd'],
+                    'area_in_sqm' => $area_values['sqm'],
+                    'area_in_marla' => $area_values['marla'],
+                    'area_in_new_marla' => $area_values['new_marla'],
+                    'area_in_kanal' => $area_values['kanal'],
+                    'area_in_new_kanal' => 0,
 
                     'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null ? $request->input('bedrooms') : 0,
                     'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') != null ? $request->input('bathrooms') : 0,
-                    'latitude' => $location_id !== 000 ? $location->latitude : null,
-                    'longitude' => $location_id !== 000 ? $location->longitude : null,
+                    'latitude' => $location->latitude,
+                    'longitude' => $location->longitude,
 
                     'status' => $status,
                     'basic_listing' => 1,
@@ -222,22 +227,21 @@ class PropertyController extends Controller
                     $this->storeImages($request, $property_id, $user->id);
                 }
 
-
                 if ($status == 'draft') {
-                    return (new \App\Http\JsonResponse)->success("Property saved in Drafts successfully", $errors);
+                    return (new \App\Http\JsonResponse)->success("Property saved in Drafts successfully");
                 } else if ($status == 'pending') {
                     event(new NotifyAdminOfNewProperty($property));
                     return (new \App\Http\JsonResponse)->success('Property added successfully.Your ad will be live in 24 hours after verification of provided information.');
+
                 }
 
 
             } catch (Exception $e) {
 //                return (new \App\Http\JsonResponse)->failed($e->getMessage());
-                return (new \App\Http\JsonResponse)->unprocessable();
+                return (new \App\Http\JsonResponse)->failed(null);
             }
         }
         return (new \App\Http\JsonResponse)->unprocessable();
-
 
     }
 
@@ -288,34 +292,184 @@ class PropertyController extends Controller
         }
 
     }
-//
-//    public function update(Request $request, Property $property){
-//        //check property has new images
-//        // check property already has images
-//        //check the total count <= 60
-//
-//       // store new images and maintain the order
-//
-//        print('hello');
-//        exit();
-//    }
 
+//
+    public function update(Request $request, Property $property)
+    {
+
+
+        if (count($request->all()) > 0) {
+
+
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|min:10|max:225',
+                'description' => 'required|min:50|max:6144',
+                'price' => 'nullable|numeric|max:99999999999|min:1000',
+                'land_area' => 'required|numeric',
+                'area_unit' => 'required|in:marla,Marla,square feet,Square Feet,Square Yards,square yards,kanal,Kanal,square meters,Square Meters',
+                'unit' => 'string:',
+                'image.*' => 'image|max:10000|mimes:jpeg,png,jpg',
+                'phone' => 'nullable|string',
+                'mobile' => 'string',
+            ]);
+
+
+            if ($validator->fails()) {
+
+                return (new \App\Http\JsonResponse)->failed($validator->getMessageBag(), 422);
+            }
+            $user = Auth::guard('api')->user();
+
+
+            if ($request->hasFile('images')) {
+                $order = 0;
+                $saved_images = DB::table('images')->select('order')->where('property_id', $property->id)->orderBy('order', 'DESC')->get()->toArray();
+                if (count($saved_images) > 0) {
+                    if (count($saved_images) + count($request->file('images')) > 60)
+                        return (new \App\Http\JsonResponse)->success('You can add 60 images only');
+                    $order = $saved_images[0]->order;
+
+                    if ($request->hasFile('images')) {
+                        $result = $this->checksonImageData($request);
+                        if ($result != null && $result !== '')
+                            return (new \App\Http\JsonResponse)->failed($result, 422);
+                    }
+
+                }
+
+                $this->storeImages($request, $property->id, $user->id, $order);
+
+
+            }
+
+
+            try {
+
+                $area_values = $this->calculateArea($request->input('area_unit'), $request->input('land_area'));
+                $status_before_update = $property->status;
+                (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
+
+                $agency = '';
+                if ($request->has('agency')) {
+                    if (DB::table('agencies')->where('id', '=', $request->input('agency'))->exists()) {
+                        $agency = $request->input('agency');
+                    }
+                }
+                $values = [
+
+                    'agency_id' => $agency != '' ? $agency : null,
+
+                    'title' => $request->input('title'),
+                    'description' => $request->input('description'),
+                    'price' => $request->input('price'),
+                    'call_for_inquiry' => 0,
+                    'land_area' => $request->input('land_area'),
+                    'area_unit' => $request->input('area_unit'),
+
+                    'area_in_sqft' => $area_values['sqft'],
+                    'area_in_sqyd' => $area_values['sqyd'],
+                    'area_in_sqm' => $area_values['sqm'],
+                    'area_in_marla' => $area_values['marla'],
+                    'area_in_new_marla' => $area_values['new_marla'],
+                    'area_in_kanal' => $area_values['kanal'],
+                    'area_in_new_kanal' => 0,
+
+                    'bedrooms' => $request->has('bedrooms') && $request->input('bedrooms') !== null ? $request->input('bedrooms') : 0,
+                    'bathrooms' => $request->has('bathrooms') && $request->input('bathrooms') != null ? $request->input('bathrooms') : 0,
+
+
+                    'status' => 'pending',
+                    'basic_listing' => 1,
+                    'contact_person' => $request->input('contact_person') ? $request->input('contact_person') : $user->name,
+                    'phone' => $request->input('phone') ? $request->input('phone') : $user->phone,
+                    'cell' => $request->input('mobile') ? $request->input('mobile') : $user->cell,
+                    'email' => $request->input('contact_email') ? $request->input('contact_email') : $user->email,
+                ];
+
+
+                DB::table('properties')->where('id', $property->id)->update($values);
+
+                (new CountTableController)->_insert_in_status_purpose_table($property);
+
+                $city = DB::table('cities')->select('id', 'name')->where('id', $property->city_id)->first();
+                $location = DB::table('locations')->select('id', 'name')->where('id', $property->location->id)->first();
+
+
+                $this->dispatch(new SendNotificationOnPropertyUpdate($property));
+
+                if ($status_before_update === 'active') {
+                    (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+                }
+
+                if ($property->status == 'pending')
+                    event(new NotifyAdminOfEditedProperty($property));
+
+                return (new \App\Http\JsonResponse)->success('Property with ID ' . $property->id . ' updated successfully.');
+
+
+            } catch (Exception $e) {
+//                return (new \App\Http\JsonResponse)->failed($e->getMessage());
+                return (new \App\Http\JsonResponse)->failed(null);
+            }
+        }
+        return (new \App\Http\JsonResponse)->unprocessable();
+
+
+    }
+
+    public function destroy(Property $property)
+    {
+//        $property = (new Property)->where('id', $request->input('id'))->first();
+
+        if($property->status == 'deleted' ){
+            return (new \App\Http\JsonResponse)->resourceNotFound();
+        }
+
+        $status_before_update = $property->status;
+
+        if ($property->exists) {
+            try {
+                $property->status = 'deleted';
+                $property->activated_at = null;
+                $property->save();
+
+                $this->dispatch(new SendNotificationOnPropertyUpdate($property));
+
+                $city = DB::table('cities')->select('id', 'name')->where('id', '=', $property->city_id)->first();
+                $location = DB::table('locations')->select('id', 'name')->where('id', '=', $property->location_id)->where('city_id', '=', $city->id)->first();
+
+                if ($status_before_update === 'active') {
+                    (new CountTableController())->_on_deletion_insertion_in_count_tables($city, $location, $property);
+                }
+
+                (new CountTableController)->_delete_in_status_purpose_table($property, $status_before_update);
+                (new CountTableController)->_insert_in_status_purpose_table($property);
+
+
+                return (new \App\Http\JsonResponse)->success('Property of ID ' . $property->id . ' deleted successfully.');
+            } catch (Exception $e) {
+                return (new \App\Http\JsonResponse)->failed(null);
+            }
+        }
+        return (new \App\Http\JsonResponse)->resourceNotFound();
+    }
 
     public function checksonImageData(Request $request)
     {
+
         if (count($request->file('images')) > 60)
-            return (new \App\Http\JsonResponse)->failed('You can add 60 images only', 422);
+            return 'You can add 60 images only';
 
         foreach ($request->file('images') as $file_name) {
             if ($file_name->getSize() > 10 * 1000000)  //> 10mb
             {
-                return (new \App\Http\JsonResponse)->failed('File ' . $file_name->getClientOriginalName() . ' not accepted. Size is grater than 10 MB.', 422);
+                return 'File ' . $file_name->getClientOriginalName() . ' is not accepted. Size is grater than 10 MB.';
             }
 
         }
     }
 
-    public function storeImages(Request $request, $property, $user)
+    public function storeImages(Request $request, $property, $user, $order = 0)
     {
         foreach ($request->file('images') as $index => $file_name) {
             $filename = rand(0, 99);
@@ -338,15 +492,80 @@ class PropertyController extends Controller
 
                 $img->save($thumbnailpath);
             }
-//            $user_id = Auth::guard('api')->user()->getAuthIdentifier();
-
             DB::table('images')->insert([
                 'user_id' => $user,
                 'property_id' => $property,
                 'name' => $filenametostore,
-                'order' => $index + 1
+                'order' => $index + 1 + $order
             ]);
         }
+    }
+
+    //    calculate area value for different units
+    public function calculateArea($area_unit, $land_area)
+    {
+        $area = number_format($land_area, 2, '.', '');
+
+        $area_in_sqft = 0;
+        $area_in_sqyd = 0;
+        $area_in_sqm = 0;
+        $area_in_marla = 0;
+        $area_in_new_marla = 0;
+        $area_in_kanal = 0;
+        $area_in_new_kanal = 0;
+
+        if (ucwords($area_unit) === 'Marla') {
+
+            $area_in_sqft = $area * 272;
+            $area_in_marla = $area;
+            $area_in_new_marla = $area;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area / 20;
+
+        } else if (ucwords($area_unit) === 'Square Feet') {
+            $area_in_sqft = $area;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 272;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5445;
+
+        } else if (ucwords($area_unit) === 'Square Meters') {
+            $area_in_sqft = $area * 10.7639;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 272;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area;
+            $area_in_kanal = $area_in_sqft / 5445;
+
+        } else if (ucwords($area_unit) === 'Square Yards') {
+            $area_in_sqft = $area * 9;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 272;
+            $area_in_sqyd = $area;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area_in_sqft / 5445;
+
+        } else if (ucwords($area_unit) === 'Kanal') {
+            $area_in_sqft = $area * 5445;
+            $area_in_marla = $area_in_sqft / 272;
+            $area_in_new_marla = $area_in_sqft / 272;
+            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_sqm = $area_in_sqft / 10.7639;
+            $area_in_kanal = $area;
+
+        }
+        return [
+            'new_marla' => $area_in_new_marla,  //working with this
+            'sqft' => $area_in_sqft,
+            'sqyd' => $area_in_sqyd,
+            'sqm' => $area_in_sqm,
+            'marla' => $area_in_marla,
+            'kanal' => $area_in_kanal,
+            'new_kanal' => $area_in_new_kanal
+        ];
+
     }
 
 }

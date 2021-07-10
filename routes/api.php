@@ -40,7 +40,11 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::get('search', 'PropertySearchController@search');
         Route::get('generic-search', 'PropertySearchController@genericSearch');
 
-        Route::resource('properties', 'PropertyController')->only(['store', 'edit', 'update', 'destroy'])->middleware('auth:api');
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::resource('property', 'PropertyController')->only(['store', 'edit', 'update', 'destroy']);
+            Route::post('draft-property', 'PropertyController@saveDraft');
+
+        });
 
 
     });
