@@ -2,11 +2,16 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Agency;
+
 class PropertyListing
 {
-    public function myToArray($results, $area_unit = null)
+    public function myToArray($results, $area_unit = null, $area = null)
     {
         $clean_results = array();
+
+        if ($area !== null)
+            $area = explode('properties.', $area)[1];
 
 
         foreach ($results as $item) {
@@ -28,7 +33,7 @@ class PropertyListing
                 'purpose' => $item->purpose,
                 'sub_purpose' => $item->sub_purpose,
                 'price' => $item->price,
-                'land_area' => $item->land_area,
+                'land_area' => $area == null ? $item->land_area : $item->$area,
                 'area_unit' => $area_unit != null ? $area_unit : $item->area_unit,
                 'bedrooms' => $item->bedrooms,
                 'bathrooms' => $item->bathrooms,
@@ -52,5 +57,38 @@ class PropertyListing
         }
 
         return $clean_results;
+    }
+
+    public function CleanEditPropertyData($property)
+    {
+        $images = [];
+        if (!$property->images->isEmpty()) {
+            foreach ($property->images as $img) {
+                $images[] = strpos($img->name, '.webp') !== false ? $img->name : $img->name . '.webp';
+            }
+        }
+
+        return [
+            'city' => $property->city,
+            'location' => $property->location->name,
+            'title' => $property->title,
+            'description' => $property->description,
+            'type' => $property->type,
+            'sub_type' => $property->sub_type,
+            'purpose' => $property->purpose,
+
+            'price' => $property->price,
+            'land_area' => $property->land_area,
+            'area_unit' => $property->area_unit,
+            'bedrooms' => $property->bedrooms,
+            'bathrooms' => $property->bathrooms,
+
+
+            'contact_person' => $property->contact_person,
+            'phone' => $property->phone,
+            'cell' => $property->cell,
+            'email' => $property->email,
+            'agency' => $property->agency_id
+        ];
     }
 }

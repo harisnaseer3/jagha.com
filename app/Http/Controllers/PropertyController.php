@@ -2,36 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\NewPropertyActivatedEvent;
 use App\Events\NotifyAdminOfEditedProperty;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\UserErrorEvent;
 use App\Http\Controllers\Dashboard\LocationController;
-use App\Http\Controllers\HitRecord\HitController;
-use App\Http\Controllers\Test\TrackUrlController;
-use App\Jobs\AddWaterMark;
-use App\Jobs\FacebookPost;
+
 use App\Jobs\SendNotificationOnPropertyUpdate;
 use App\Models\Account;
 use App\Models\Agency;
 use App\Models\Dashboard\City;
 use App\Models\Dashboard\Location;
 use App\Models\Dashboard\User;
-use App\Models\Image;
 use App\Models\Property;
 use App\Models\PropertyType;
-use App\Models\Visit;
-use App\Notifications\PropertyRejectionMail;
-use App\Notifications\PropertyStatusChange;
-use App\Notifications\PropertyStatusChangeMail;
-use App\Notifications\SendMailToJoinNotification;
-use Carbon\Carbon;
+
 use Exception;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Throwable;
@@ -231,7 +220,7 @@ class PropertyController extends Controller
             else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
             $max_id = 0;
 
-            $max_id = (new Property)->pluck('id')->last();
+            $max_id = DB::table('properties')->select('id')->pluck('id')->last();
             $max_id = $max_id + 1;
 
             $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
@@ -243,7 +232,7 @@ class PropertyController extends Controller
             }
 
 
-            $property = (new Property)->Create([
+            $property_id = DB::table('properties')->insertGetId([
                 'reference' => $reference,
                 'user_id' => $user_id,
                 'city_id' => $city->id,
@@ -280,6 +269,8 @@ class PropertyController extends Controller
                 'fax' => $request->input('fax'),
                 'email' => $request->input('contact_email'),
             ]);
+
+            $property = DB::table('properties')->where('id', $property_id)->first();
 
             if ($request->has('image') && $request->input('image') !== '' && $request->input('image') !== '[]' && $request->input('image') !== null) {
                 (new ImageController)->storeImage($request->input('image'), $property);
@@ -527,8 +518,8 @@ class PropertyController extends Controller
             }
             (new CountTableController)->_insert_in_status_purpose_table($property);
 
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
-            $location = Location::select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
+            $city = DB::table('cities')->select('id', 'name')->where('name', '=', str_replace('_', ' ', $request->input('city')))->first();
+            $location = DB::table('locations')->select('id', 'name')->where('name', '=', $request->input('location'))->where('city_id', '=', $city->id)->first();
 
             $this->dispatch(new SendNotificationOnPropertyUpdate($property));
 
@@ -602,6 +593,7 @@ class PropertyController extends Controller
     public function calculateArea($area_unit, $land_area)
     {
         $area = number_format($land_area, 2, '.', '');
+
         $area_in_sqft = 0;
         $area_in_sqyd = 0;
         $area_in_sqm = 0;
@@ -610,69 +602,57 @@ class PropertyController extends Controller
         $area_in_kanal = 0;
         $area_in_new_kanal = 0;
 
-        if ($area_unit === 'Marla') {
-            $area_in_sqft = $area * 225;
-            $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
+        if (ucwords($area_unit) === 'Marla') {
+
+            $area_in_sqft = $area * 272;
+            $area_in_marla = $area;
+            $area_in_new_marla = $area;
             $area_in_sqyd = $area_in_sqft / 9;
             $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-//        if ($area_unit === 'Old Marla (272 sqft)') {
-//            $area_in_sqft = $area * 272;
-//            $area_in_marla = $area_in_sqft / 272;
-//            $area_in_new_marla = $area_in_sqft / 225;
-//            $area_in_sqyd = $area_in_sqft / 9;
-//            $area_in_sqm = $area_in_sqft / 10.7639;
-//            $area_in_kanal = $area_in_sqft / 5440;
-//            $area_in_new_kanal = $area_in_sqft / 5440;
-//            $area_in_new_kanal = $area_in_sqft / 4500;
-//        }
-        if ($area_unit === 'Square Feet') {
+            $area_in_kanal = $area / 20;
+
+        } else if (ucwords($area_unit) === 'Square Feet') {
             $area_in_sqft = $area;
             $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_new_marla = $area_in_sqft / 272;
             $area_in_sqyd = $area_in_sqft / 9;
             $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        if ($area_unit === 'Square Meters') {
+            $area_in_kanal = $area_in_sqft / 5445;
+
+        } else if (ucwords($area_unit) === 'Square Meters') {
             $area_in_sqft = $area * 10.7639;
             $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_new_marla = $area_in_sqft / 272;
             $area_in_sqyd = $area_in_sqft / 9;
-            $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        if ($area_unit === 'Square Yards') {
+            $area_in_sqm = $area;
+            $area_in_kanal = $area_in_sqft / 5445;
+
+        } else if (ucwords($area_unit) === 'Square Yards') {
             $area_in_sqft = $area * 9;
             $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
-            $area_in_sqyd = $area_in_sqft / 9;
+            $area_in_new_marla = $area_in_sqft / 272;
+            $area_in_sqyd = $area;
             $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
-        }
-        if ($area_unit === 'Kanal') {
-            $area_in_sqft = $area * 5440;
+            $area_in_kanal = $area_in_sqft / 5445;
+
+        } else if (ucwords($area_unit) === 'Kanal') {
+            $area_in_sqft = $area * 5445;
             $area_in_marla = $area_in_sqft / 272;
-            $area_in_new_marla = $area_in_sqft / 225;
+            $area_in_new_marla = $area_in_sqft / 272;
             $area_in_sqyd = $area_in_sqft / 9;
             $area_in_sqm = $area_in_sqft / 10.7639;
-            $area_in_kanal = $area_in_sqft / 5440;
-            $area_in_new_kanal = $area_in_sqft / 4500;
+            $area_in_kanal = $area;
+
         }
         return [
-            'new_marla' => $area_in_new_marla,
+            'new_marla' => $area_in_new_marla,  //working with this
             'sqft' => $area_in_sqft,
             'sqyd' => $area_in_sqyd,
             'sqm' => $area_in_sqm,
             'marla' => $area_in_marla,
             'kanal' => $area_in_kanal,
-            'new_kanal' => $area_in_new_kanal];
+            'new_kanal' => $area_in_new_kanal
+        ];
 
     }
 }

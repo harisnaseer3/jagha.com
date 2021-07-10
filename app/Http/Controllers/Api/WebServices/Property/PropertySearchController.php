@@ -18,14 +18,15 @@ class PropertySearchController extends Controller
 {
     function listingFrontend()
     {
-        return (new Property)
-            ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_type',
+        return DB::table('properties')
+            ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type',
                 'properties.type', 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit',
                 'properties.bedrooms', 'properties.bathrooms', 'properties.golden_listing', 'properties.platinum_listing',
                 'properties.contact_person', 'properties.phone', 'properties.cell', 'properties.fax', 'properties.email', 'properties.favorites',
                 'properties.views', 'properties.status', 'f.user_id AS user_favorite', 'properties.created_at', 'properties.activated_at',
                 'properties.updated_at', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
-                'properties.area_in_sqft', 'area_in_sqyd', 'area_in_marla', 'area_in_kanal', 'area_in_sqm',
+                'properties.area_in_sqft', 'properties.area_in_sqyd', 'properties.area_in_marla', 'properties.area_in_new_marla', 'properties.area_in_kanal',
+                'properties.area_in_new_kanal', 'properties.area_in_sqm',
                 'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
                 'agencies.phone AS agency_phone', 'agencies.cell AS agency_cell', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at',
                 'agencies.description AS agency_description', 'c.property_count AS agency_property_count')
@@ -109,8 +110,8 @@ class PropertySearchController extends Controller
             $properties->where('properties.bedrooms', $beds);
         if ($baths = $request->bathrooms)
             $properties->where('properties.bathrooms', $baths);
-
-        $area_unit = $request->area_unit;
+        if ($request->has('area_unit'))
+            $area_unit = str_replace('_', ' ', $request->area_unit);
 //        if ($area_unit = $request->area_unit)
 //            $properties->where('properties.area_unit', ucwords(str_replace('-', ' ', $area_unit)));
 
@@ -145,7 +146,7 @@ class PropertySearchController extends Controller
 
         $area_column_wrt_unit = '';
 
-        if (ucwords($area_unit) === 'Marla') $area_column_wrt_unit = 'properties.area_in_marla';
+        if (ucwords($area_unit) === 'Marla') $area_column_wrt_unit = 'properties.area_in_new_marla';
         else if (ucwords($area_unit) === 'Kanal') $area_column_wrt_unit = 'properties.area_in_new_kanal';
         else if (ucwords($area_unit) === 'Square Feet') $area_column_wrt_unit = 'properties.area_in_sqft';
         else if (ucwords($area_unit) === 'Square Yards') $area_column_wrt_unit = 'properties.area_in_sqyd';
@@ -168,7 +169,7 @@ class PropertySearchController extends Controller
 
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
         if (!$properties->isEmpty()) {
-            $properties = (new PropertyListingResource)->myToArray($properties, ucwords($area_unit));
+            $properties = (new PropertyListingResource)->myToArray($properties, ucwords($area_unit), $area_column_wrt_unit);
             $properties = new Collection($properties);
             $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
             $paginatedSearchResults->setPath($request->url());
@@ -189,9 +190,9 @@ class PropertySearchController extends Controller
                     $property = (new Property)->where('id', '=', $request->input('term'))->where('status', 'active')->first();
                     if ($property) {
 
-                        $views = $property->views;
-                        $property->views = $views + 1;
-                        $property->save();
+//                        $views = $property->views;
+//                        $property->views = $views + 1;
+//                        $property->save();
 
                         $is_favorite = false;
 

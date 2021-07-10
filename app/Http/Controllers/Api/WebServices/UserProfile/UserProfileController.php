@@ -123,8 +123,8 @@ class UserProfileController extends Controller
 
     function listingFrontend()
     {
-        return (new Property)
-            ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_type',
+        return DB::table('properties')
+            ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type',
                 'properties.type', 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit',
                 'properties.bedrooms', 'properties.bathrooms', 'properties.golden_listing', 'properties.platinum_listing',
                 'properties.contact_person', 'properties.phone', 'properties.cell', 'properties.fax', 'properties.email', 'properties.favorites',
@@ -159,15 +159,13 @@ class UserProfileController extends Controller
     {
         $user_id = Auth::guard('api')->user()->id;
 
-        $properties = $this->listingFrontend()->where('properties.user_id', $user_id);
-
-
         $properties_pending =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'pending')->get();
         $properties_active =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'active')->get();
         $properties_rejected =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'rejected')->get();
         $properties_deleted =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'deleted')->get();
         $properties_expired =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'expired')->get();
         $properties_sold =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'sold')->get();
+        $properties_draft =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'draft')->get();
 
         $my_properties = [
             'active' => (new PropertyListingResource)->myToArray($properties_active),
@@ -175,7 +173,8 @@ class UserProfileController extends Controller
             'rejected' => (new PropertyListingResource)->myToArray($properties_rejected),
             'expired' => (new PropertyListingResource)->myToArray($properties_expired),
             'deleted' => (new PropertyListingResource)->myToArray($properties_deleted),
-            'sold' => (new PropertyListingResource)->myToArray($properties_sold)
+            'sold' => (new PropertyListingResource)->myToArray($properties_sold),
+            'draft' => (new PropertyListingResource)->myToArray($properties_draft)
         ];
         return (new \App\Http\JsonResponse)->success("User Properties", $my_properties);
 
