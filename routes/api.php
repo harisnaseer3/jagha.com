@@ -42,7 +42,7 @@ Route::group(['namespace' => 'WebServices'], function () {
 
         Route::group(['middleware' => 'auth:api'], function () {
             Route::resource('property', 'PropertyController')->only(['store', 'edit', 'update', 'destroy']);
-            Route::post('draft-property', 'PropertyController@saveDraft');
+//            Route::post('draft-property', 'PropertyController@saveDraft');
 
         });
 
