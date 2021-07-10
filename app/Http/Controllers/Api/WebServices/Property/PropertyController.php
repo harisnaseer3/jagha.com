@@ -292,7 +292,7 @@ class PropertyController extends Controller
                 'property' => (new PropertyListingResource)->CleanEditPropertyData($property),
 
             ];
-            return (new \App\Http\JsonResponse)->success("Property saved in Drafts successfully", $data);
+            return (new \App\Http\JsonResponse)->success("Property fetched successfully", $data);
         } catch (Exception $e) {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
@@ -303,7 +303,7 @@ class PropertyController extends Controller
     public function update(Request $request, Property $property)
     {
         $status = 'pending';
-        if ($request->has('is_draft') && $request->is('is_draft') == 1)
+        if ($request->has('is_draft') && $request->is_draft == 1)
             $status = 'draft';
 
         if (count($request->all()) > 0) {
