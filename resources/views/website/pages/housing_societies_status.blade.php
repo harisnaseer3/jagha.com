@@ -38,41 +38,45 @@
                                 <div class="page-list-layout">
                                     <div class="option-bar">
                                         <div class="cod-pad">
-                                            <div class="sorting-options text-center" role="button" aria-label="status filter">
-                                                <select class="record-limit" id="status-list">
+                                            <div class="sorting-options text-center" role="button" aria-label="filter">
+                                                {{ Form::open(['route' => ['property.user.search.id'], 'method' => 'post', 'role' => 'form', 'id'=>'societies-search-form']) }}
+
+                                                <select class="record-limit" id="status-filter" name="status">
                                                     <option disabled>Housing Scheme Status</option>
-                                                    <option selected disabled>All</option>
+                                                    <option selected value="-1">All</option>
                                                     @foreach($status as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
                                                     @endforeach
 
                                                 </select>
 
-                                                <select class="sorting area-filter" id="list-area-filter">
+                                                <select class="sorting area-filter" id="authorities-filter" name="authority">
                                                     <option disabled>Approving Authority</option>
-                                                    <option selected disabled>All</option>
+                                                    <option selected value="-1">All</option>
                                                     @foreach($authority as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
                                                     @endforeach
 
                                                 </select>
-                                                <select class="sorting" id="list-sorting">
+                                                <select class="sorting" id="division-filter" name="division">
                                                     <option disabled>Division</option>
-                                                    <option selected disabled>All</option>
+                                                    <option selected value="-1">All</option>
                                                     @foreach($division as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
                                                     @endforeach
                                                 </select>
-                                                <select class="sorting" id="list-sorting">
+                                                <select class="sorting" id="district-filter" name="district">
                                                     <option disabled>District</option>
-                                                    <option selected disabled>All</option>
+                                                    <option selected value="-1">All</option>
                                                     @foreach($district as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
                                                     @endforeach
                                                 </select>
-                                                <button class="btn btn-sm btn-primary btn-search-style p-2" id="property-reference" type="submit">
+                                                <button class="btn btn-sm btn-primary btn-search-style p-2" id="societies-search" type="submit">
                                                     <i class="fa fa-search mx-1"></i>Search
                                                 </button>
+                                                {{ Form::close() }}
+
 
                                             </div>
                                         </div>
@@ -91,21 +95,21 @@
                                             </div>
                                         </div>
 
-                                        <div style="display: none" id="property-logs-block">
-                                            <table class="table-responsive-sm display" id="property-log" style="width: 100%">
-                                                <thead>
-                                                <tr>
-                                                    <th class="color-white">#</th>
-                                                    <th class="color-white">Society Name</th>
-                                                    <th class="color-white">Status</th>
-                                                    <th class="color-white">City</th>
-                                                    <th class="color-white">Approving Authority</th>
-                                                    <th class="color-white">Total Land Area</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody id="tbody-property-logs"></tbody>
-                                            </table>
-                                        </div>
+                                        {{--                                        <div style="display: none" id="property-logs-block">--}}
+                                        <table class="table-responsive-sm display" id="societies-table" style="width: 100%">
+                                            <thead>
+                                            <tr>
+                                                <th class="color-white">#</th>
+                                                <th class="color-white">Society Name</th>
+                                                <th class="color-white">Status</th>
+                                                <th class="color-white">City</th>
+                                                <th class="color-white">Approving Authority</th>
+                                                <th class="color-white">Total Land Area</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="tbody-property-logs"></tbody>
+                                        </table>
+                                        {{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>
@@ -132,236 +136,69 @@
 @endsection
 
 @section('script')
-
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
-
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/housing-societies.js')}}"></script>
     <script>
         (function ($) {
             $(document).ready(function () {
-                (function (window, document, undefined) {
+                let authority =   {!! $authority !!};
+                let division = {!! $division !!};
+                let district = {!! $district !!};
+                console.log(authority);
+                console.log(district);
+                console.log(division);
 
-                    var factory = function ($, DataTable) {
-                        "use strict";
-
-                        $('.search-toggle').click(function () {
-                            if ($('.hiddensearch').css('display') == 'none')
-                                $('.hiddensearch').slideDown();
-                            else
-                                $('.hiddensearch').slideUp();
-                        });
-
-                        /* Set the defaults for DataTables initialisation */
-                        $.extend(true, DataTable.defaults, {
-                            dom: "<'hiddensearch'f'>" +
-                                "tr" +
-                                "<'table-footer'lip'>",
-                            renderer: 'material'
-                        });
-
-                        /* Default class modification */
-                        $.extend(DataTable.ext.classes, {
-                            sWrapper: "dataTables_wrapper",
-                            sFilterInput: "form-control input-sm",
-                            sLengthSelect: "form-control input-sm"
-                        });
-
-                        /* Bootstrap paging button renderer */
-                        DataTable.ext.renderer.pageButton.material = function (settings, host, idx, buttons, page, pages) {
-                            var api = new DataTable.Api(settings);
-                            var classes = settings.oClasses;
-                            var lang = settings.oLanguage.oPaginate;
-                            var btnDisplay, btnClass, counter = 0;
-
-                            var attach = function (container, buttons) {
-                                var i, ien, node, button;
-                                var clickHandler = function (e) {
-                                    e.preventDefault();
-                                    if (!$(e.currentTarget).hasClass('disabled')) {
-                                        api.page(e.data.action).draw(false);
-                                    }
-                                };
-
-                                for (i = 0, ien = buttons.length; i < ien; i++) {
-                                    button = buttons[i];
-
-                                    if ($.isArray(button)) {
-                                        attach(container, button);
-                                    } else {
-                                        btnDisplay = '';
-                                        btnClass = '';
-
-                                        switch (button) {
-
-                                            case 'first':
-                                                btnDisplay = lang.sFirst;
-                                                btnClass = button + (page > 0 ?
-                                                    '' : ' disabled');
-                                                break;
-
-                                            case 'previous':
-                                                btnDisplay = '<i class="far fa-arrow-left"></i>';
-                                                btnClass = button + (page > 0 ?
-                                                    '' : ' disabled');
-                                                break;
-
-                                            case 'next':
-                                                btnDisplay = '<i class="far fa-arrow-right"></i>';
-                                                btnClass = button + (page < pages - 1 ?
-                                                    '' : ' disabled');
-                                                break;
-
-                                            case 'last':
-                                                btnDisplay = lang.sLast;
-                                                btnClass = button + (page < pages - 1 ?
-                                                    '' : ' disabled');
-                                                break;
-
-                                        }
-
-                                        if (btnDisplay) {
-                                            node = $('<li>', {
-                                                'class': classes.sPageButton + ' ' + btnClass,
-                                                'id': idx === 0 && typeof button === 'string' ?
-                                                    settings.sTableId + '_' + button : null
-                                            })
-                                                .append($('<a>', {
-                                                        'href': '#',
-                                                        'aria-controls': settings.sTableId,
-                                                        'data-dt-idx': counter,
-                                                        'tabindex': settings.iTabIndex
-                                                    })
-                                                        .html(btnDisplay)
-                                                )
-                                                .appendTo(container);
-
-                                            settings.oApi._fnBindAction(
-                                                node, {
-                                                    action: button
-                                                }, clickHandler
-                                            );
-
-                                            counter++;
-                                        }
-                                    }
-                                }
-                            };
-
-                            // IE9 throws an 'unknown error' if document.activeElement is used
-                            // inside an iframe or frame.
-                            var activeEl;
-
-                            try {
-                                // Because this approach is destroying and recreating the paging
-                                // elements, focus is lost on the select button which is bad for
-                                // accessibility. So we want to restore focus once the draw has
-                                // completed
-                                activeEl = $(document.activeElement).data('dt-idx');
-                            } catch (e) {
-                            }
-
-                            attach(
-                                $(host).empty().html('<ul class="material-pagination"/>').children('ul'),
-                                buttons
-                            );
-
-                            if (activeEl) {
-                                $(host).find('[data-dt-idx=' + activeEl + ']').focus();
-                            }
-                        };
-
-
-                        if (DataTable.TableTools) {
-                            // Set the classes that TableTools uses to something suitable for Bootstrap
-                            $.extend(true, DataTable.TableTools.classes, {
-                                "container": "DTTT btn-group",
-                                "buttons": {
-                                    "normal": "btn btn-default",
-                                    "disabled": "disabled"
-                                },
-                                "collection": {
-                                    "container": "DTTT_dropdown dropdown-menu",
-                                    "buttons": {
-                                        "normal": "",
-                                        "disabled": "disabled"
-                                    }
-                                },
-                                "print": {
-                                    "info": "DTTT_print_info"
-                                },
-                                "select": {
-                                    "row": "active"
-                                }
-                            });
-
-                            // Have the collection use a material compatible drop down
-                            $.extend(true, DataTable.TableTools.DEFAULTS.oTags, {
-                                "collection": {
-                                    "container": "ul",
-                                    "button": "li",
-                                    "liner": "a"
-                                }
-                            });
+                $('#authorities-filter').on('change', function () {
+                    let a_id = $('#authorities-filter option:selected').val();
+                    console.log(a_id);
+                    let new_division = '<option disabled>Division</option><option selected value="-1">All</option>';
+                    let new_dis = '<option disabled>Districts</option><option selected value="-1">All</option>';
+                    let selected_division_id = 0;
+                    let new_division_2 = '';
+                    let new_dis_2 = '';
+                    $.each(division, function (index, value) {
+                        if (value['authority_id'] == a_id) {
+                            selected_division_id = value['id'];
+                            new_division += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
                         }
+                        new_division_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+                    });
 
-                    }; // /factory
-
-                    // Define as an AMD module if possible
-                    if (typeof define === 'function' && define.amd) {
-                        define(['jquery', 'datatables'], factory);
-                    } else if (typeof exports === 'object') {
-                        // Node/CommonJS
-                        factory(require('jquery'), require('datatables'));
-                    } else if (jQuery) {
-                        // Otherwise simply initialise as normal, stopping multiple evaluation
-                        factory(jQuery, jQuery.fn.dataTable);
+                    $.each(district, function (index, value) {
+                        if (value['division_id'] == selected_division_id) {
+                            // division_check = 1;
+                            new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
+                        }
+                        new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+                    });
+                    if (selected_division_id != 0) {
+                        $("#division-filter").empty().append(new_division);
+                        $("#district-filter").empty().append(new_dis);
+                    } else if (selected_division_id == 0) {
+                        $("#division-filter").empty().append(new_division).append(new_division_2);
+                        $("#district-filter").empty().append(new_dis).append(new_dis_2);
                     }
 
-                })(window, document);
+                });
+                $('#division-filter').on('change', function () {
+                    let div_id = $('#division-filter option:selected').val();
+                    let new_dis = '<option disabled>Districts</option><option selected value="-1">All</option>';
+                    let new_dis_2 = '';
+                    $.each(district, function (index, value) {
+                        if (value['division_id'] == div_id) {
+                            // division_check = 1;
+                            new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
+                        }
+                        new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+                    });
 
-                $(document).ready(function () {
+                    $("#district-filter").empty().append(new_dis);
 
-                    $.get('/get_housing_societies',  // url
-                        function (data, textStatus, jqXHR) {  // success callback
-                            // $('#loader-property-logs').hide();
-                            $('#property-logs-block').slideDown();
-                            $('#tbody-property-logs').html(data.view);
-
-                            $('#property-log').DataTable({
-                                "scrollX": true,
-                                "ordering": false,
-                                responsive: true,
-                                "oLanguage": {
-                                    "sStripClasses": "",
-                                    "sSearch": "",
-                                    "sSearchPlaceholder": "Enter any keyword here to filter...",
-                                    "sInfo": "_START_ -_END_ of _TOTAL_",
-                                    "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
-                                        '<option value="10">10</option>' +
-                                        '<option value="20">20</option>' +
-                                        '<option value="30">30</option>' +
-                                        '<option value="40">40</option>' +
-                                        '<option value="50">50</option>' +
-                                        '<option value="-1">All</option>' +
-                                        '</select></div>'
-                                },
-                                "aoColumnDefs": [
-                                    {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5]},
-                                ],
-                                bAutoWidth: false,
-                                "columnDefs": [
-                                    {"width": "5%", "targets": 0},
-                                    // {"width": "35%", "targets": 0},
-                                    {"width": "8%", "targets": 2},
-                                    {"width": "10%", "targets": 3},
-                                    {"width": "10%", "targets": 5}
-                                ]
-
-                            });
-                        });
                 });
             })
         })
         (jQuery);
     </script>
+
 
 @endsection
