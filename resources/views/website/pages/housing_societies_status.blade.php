@@ -21,14 +21,13 @@
     <div class="properties-section content-area pt-3">
         <div class="container">
             <div class="row cities-margin">
-                <div class="col-lg-9 col-md-12 pb-3">
+                <div class="col-lg-12 col-md-12 pb-3">
                     <!-- Listing -->
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12">
                                     <h1 class="all-cities-header">Housing Societies Status</h1>
-
                                 </div>
                             </div>
 
@@ -91,16 +90,17 @@
                                                 <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="fa fa-search"></i></a>
                                             </div>
                                         </div>
+
                                         <div style="display: none" id="property-logs-block">
-                                            <table id="property-log" class="display" style="width: 100%">
+                                            <table class="table-responsive-sm display" id="property-log" style="width: 100%">
                                                 <thead>
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>Society Name</th>
-                                                    <th>Status</th>
-                                                    <th>City</th>
-                                                    <th>Approving Authority</th>
-                                                    <th>Total Land Area</th>
+                                                    <th class="color-white">#</th>
+                                                    <th class="color-white">Society Name</th>
+                                                    <th class="color-white">Status</th>
+                                                    <th class="color-white">City</th>
+                                                    <th class="color-white">Approving Authority</th>
+                                                    <th class="color-white">Total Land Area</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="tbody-property-logs"></tbody>
@@ -113,11 +113,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-12">
-                    <div class="sidebar-right mt-0">
-                        @include('website.includes.subscribe-content')
-                    </div>
-                </div>
+                {{--                <div class="col-lg-3 col-md-12">--}}
+                {{--                    <div class="sidebar-right mt-0">--}}
+                {{--                        @include('website.includes.subscribe-content')--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
             </div>
         </div>
     </div>
@@ -132,11 +132,9 @@
 @endsection
 
 @section('script')
-    {{--    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}" defer></script>--}}
-    {{--    <script src="{{asset('website/js/jquery.validate.min.js')}}" defer></script>--}}
-    {{--    <script src="{{asset('website/js/all-cities-page.js')}}" defer></script>--}}
-    {{--    <script src="{{asset('website/js/cookie.min.js')}}" defer></script>--}}
+
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+
     <script>
         (function ($) {
             $(document).ready(function () {
@@ -201,13 +199,13 @@
                                                 break;
 
                                             case 'previous':
-                                                btnDisplay = '<i class="far fa-arrow-left fa-2x"></i>';
+                                                btnDisplay = '<i class="far fa-arrow-left"></i>';
                                                 btnClass = button + (page > 0 ?
                                                     '' : ' disabled');
                                                 break;
 
                                             case 'next':
-                                                btnDisplay = '<i class="far fa-arrow-right fa-2x"></i>';
+                                                btnDisplay = '<i class="far fa-arrow-right"></i>';
                                                 btnClass = button + (page < pages - 1 ?
                                                     '' : ' disabled');
                                                 break;
@@ -271,10 +269,7 @@
                             }
                         };
 
-                        /*
-                         * TableTools Bootstrap compatibility
-                         * Required TableTools 2.1+
-                         */
+
                         if (DataTable.TableTools) {
                             // Set the classes that TableTools uses to something suitable for Bootstrap
                             $.extend(true, DataTable.TableTools.classes, {
@@ -324,28 +319,6 @@
                 })(window, document);
 
                 $(document).ready(function () {
-                    // $('#datatable').dataTable({
-                    //     "ajax": window.location.origin + '/get_housing_societies',
-                    //     "oLanguage": {
-                    //         "sStripClasses": "",
-                    //         "sSearch": "",
-                    //         "sSearchPlaceholder": "Enter any keyword here to filter...",
-                    //         "sInfo": "_START_ -_END_ of _TOTAL_",
-                    //         "sLengthMenu": '<span>Rows per page:</span><select class="browser-default">' +
-                    //             '<option value="10">10</option>' +
-                    //             '<option value="20">20</option>' +
-                    //             '<option value="30">30</option>' +
-                    //             '<option value="40">40</option>' +
-                    //             '<option value="50">50</option>' +
-                    //             '<option value="-1">All</option>' +
-                    //             '</select></div>'
-                    //     }, "aoColumnDefs": [
-                    //         {"bSortable": false, "aTargets": [0, 1, 2, 3, 4, 5]},
-                    //     ],
-                    //     bAutoWidth: false,
-                    //
-                    //
-                    // });
 
                     $.get('/get_housing_societies',  // url
                         function (data, textStatus, jqXHR) {  // success callback
@@ -376,21 +349,19 @@
                                 ],
                                 bAutoWidth: false,
                                 "columnDefs": [
-                                    // {"width": "5%", "targets": 0},
+                                    {"width": "5%", "targets": 0},
                                     // {"width": "35%", "targets": 0},
-                                    // {"width": "30%", "targets": 3},
-                                    // {"width": "8%", "targets": 2},
-                                    // {"width": "8%", "targets": 3},
-                                    // {"width": "7%", "targets": 5}
+                                    {"width": "8%", "targets": 2},
+                                    {"width": "10%", "targets": 3},
+                                    {"width": "10%", "targets": 5}
                                 ]
 
                             });
-                        }
-                    );
+                        });
                 });
-            });
+            })
         })
         (jQuery);
-
     </script>
+
 @endsection
