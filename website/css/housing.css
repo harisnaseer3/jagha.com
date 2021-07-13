@@ -159,7 +159,7 @@ div.material-table table tr td {
     font-size: 13px;
     color: rgba(0, 0, 0, 0.87);
     border-bottom: solid 1px #DDDDDD;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;

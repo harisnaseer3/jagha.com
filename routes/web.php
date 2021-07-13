@@ -59,11 +59,11 @@ Route::get('/get-recent-visitors', 'Admin\StatisticController@getRecentVisitors'
 Route::get('/get-referring-sites', 'Admin\StatisticController@getReferringSite');
 Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
 Route::post('/top-browser', 'Admin\StatisticController@getTopBrowser');
+Route::get('/get_housing_societies', 'HousingSociety\HousingSocietyController@getSocietiesAjaxData');
 
 //Housing Society Routes
 
 Route::get('/housing_societies_status', 'HousingSociety\HousingSocietyController@getSocietiesData');
-
 
 
 Route::post('/get-package-amount', 'Package\PackageController@packageAmount');
