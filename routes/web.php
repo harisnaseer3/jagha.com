@@ -60,6 +60,9 @@ Route::get('/get-referring-sites', 'Admin\StatisticController@getReferringSite')
 Route::post('/top-platform', 'Admin\StatisticController@getTopPlatForm');
 Route::post('/top-browser', 'Admin\StatisticController@getTopBrowser');
 
+//Housing Society Routes
+
+Route::get('/housing_societies_status', 'HousingSociety\HousingSocietyController@getSocietiesData');
 
 
 
