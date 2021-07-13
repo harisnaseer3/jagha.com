@@ -24,7 +24,7 @@ div.material-table table {
 }
 
 div.material-table .table-header {
-    height: 64px;
+    height: 50px;
     padding-left: 24px;
     padding-right: 14px;
     -webkit-align-items: center;
@@ -107,7 +107,7 @@ div.material-table .table-footer .select-wrapper {
 div.material-table .table-footer .dataTables_info,
 div.material-table .table-footer .dataTables_length {
     margin-right: 32px;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 div.material-table .table-footer .material-pagination {
@@ -145,9 +145,14 @@ div.material-table .table-footer select {
 }
 
 div.material-table .table-title {
-    font-size: 20px;
+    font-size: 16px;
     color: #000;
 }
+div.material-table table  thead {
+    background-color: #274abb;
+}
+
+
 
 div.material-table table tr td {
     height: 40px;
@@ -209,4 +214,23 @@ table.dataTable.no-footer {
     float:left !important;
     text-align: left !important;
 
+}
+.dataTables_wrapper .dataTables_info {
+    padding-top: 0;
+}
+
+element.style {
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+
+     background-color: white !important;
+
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    background-color: white !important;
+
+}
+.color-white{
+    color:white !important;
+    font-weight: 600 !important;
 }

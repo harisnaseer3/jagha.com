@@ -74,15 +74,15 @@
                                                 <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="fa fa-search"></i></a>
                                             </div>
                                         </div>
-                                        <table id="datatable">
+                                        <table id="datatable" class="table-responsive-sm">
                                             <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Society Name</th>
-                                                <th>Status</th>
-                                                <th>City</th>
-                                                <th>Approving Authority</th>
-                                                <th>Total Land Area</th>
+                                                <th class="color-white">#</th>
+                                                <th class="color-white">Society Name</th>
+                                                <th class="color-white">Status</th>
+                                                <th class="color-white">City</th>
+                                                <th class="color-white">Approving Authority</th>
+                                                <th class="color-white">Total Land Area</th>
                                             </tr>
                                             </thead>
                                         </table>
@@ -180,13 +180,13 @@
                                         break;
 
                                     case 'previous':
-                                        btnDisplay = '<i class="far fa-arrow-left fa-2x"></i>';
+                                        btnDisplay = '<i class="far fa-arrow-left"></i>';
                                         btnClass = button + (page > 0 ?
                                             '' : ' disabled');
                                         break;
 
                                     case 'next':
-                                        btnDisplay = '<i class="far fa-arrow-right fa-2x"></i>';
+                                        btnDisplay = '<i class="far fa-arrow-right"></i>';
                                         btnClass = button + (page < pages - 1 ?
                                             '' : ' disabled');
                                         break;
