@@ -44,7 +44,7 @@
                                                     <div class="col-md-4 col-sm-12 mb-sm-2">
                                                         <select class=" sorting form-control form-control-sm" id="status-filter" name="status">
 
-                                                            <option selected value="-1">All</option>
+                                                            <option selected value="-1">All Status</option>
                                                             @foreach($status as $val)
                                                                 <option value="{{$val->id}}">{{$val->title}}</option>
                                                             @endforeach
@@ -55,7 +55,7 @@
                                                     <div class="col-md-4 col-sm-12 mb-sm-2">
                                                         <select class="sorting area-filter form-control form-control-sm" id="authorities-filter" name="authority">
 
-                                                            <option selected value="-1">All</option>
+                                                            <option selected value="-1">All Housing Authorities</option>
                                                             @foreach($authority as $val)
                                                                 <option value="{{$val->id}}">{{$val->title}}</option>
                                                             @endforeach
@@ -67,7 +67,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <select class="sorting form-control form-control-sm" id="division-filter" name="division">
 
-                                                            <option selected value="-1">All</option>
+                                                            <option selected value="-1">All Divisions</option>
                                                             @foreach($division as $val)
                                                                 <option value="{{$val->id}}">{{$val->title}}</option>
                                                             @endforeach
@@ -81,7 +81,7 @@
                                                     <div class="col-md-4 col-sm-12">
                                                         <select class="sorting form-control form-control-sm" id="district-filter" name="district">
 
-                                                            <option selected value="-1">All</option>
+                                                            <option selected value="-1">All Districts</option>
                                                             @foreach($district as $val)
                                                                 <option value="{{$val->id}}">{{$val->title}}</option>
                                                             @endforeach
