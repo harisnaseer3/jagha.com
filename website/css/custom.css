@@ -2174,6 +2174,11 @@ input:checked + .slider:before {
     background-color: #F7F7F7;
     color: black;
 }
+.btn-search-style {
+    line-height: 1;
+    background-color: #274abb;
+    border-color: #274abb;
+}
 
 .btn-reference-style:focus {
     box-shadow: none;
