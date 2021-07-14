@@ -42,7 +42,7 @@
                                                 {{ Form::open(['route' => ['property.user.search.id'], 'method' => 'post', 'role' => 'form', 'id'=>'societies-search-form']) }}
 
                                                 <select class="record-limit" id="status-filter" name="status">
-                                                    <option disabled>Housing Scheme Status</option>
+
                                                     <option selected value="-1">All</option>
                                                     @foreach($status as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
@@ -51,7 +51,7 @@
                                                 </select>
 
                                                 <select class="sorting area-filter" id="authorities-filter" name="authority">
-                                                    <option disabled>Approving Authority</option>
+
                                                     <option selected value="-1">All</option>
                                                     @foreach($authority as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
@@ -59,14 +59,14 @@
 
                                                 </select>
                                                 <select class="sorting" id="division-filter" name="division">
-                                                    <option disabled>Division</option>
+
                                                     <option selected value="-1">All</option>
                                                     @foreach($division as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
                                                     @endforeach
                                                 </select>
                                                 <select class="sorting" id="district-filter" name="district">
-                                                    <option disabled>District</option>
+
                                                     <option selected value="-1">All</option>
                                                     @foreach($district as $val)
                                                         <option value="{{$val->id}}">{{$val->title}}</option>
@@ -144,15 +144,12 @@
                 let authority =   {!! $authority !!};
                 let division = {!! $division !!};
                 let district = {!! $district !!};
-                console.log(authority);
-                console.log(district);
-                console.log(division);
+
 
                 $('#authorities-filter').on('change', function () {
                     let a_id = $('#authorities-filter option:selected').val();
-                    console.log(a_id);
-                    let new_division = '<option disabled>Division</option><option selected value="-1">All</option>';
-                    let new_dis = '<option disabled>Districts</option><option selected value="-1">All</option>';
+                    let new_division = '<option selected value="-1">All</option>';
+                    let new_dis = '<option selected value="-1">All</option>';
                     let selected_division_id = 0;
                     let new_division_2 = '';
                     let new_dis_2 = '';
@@ -165,7 +162,7 @@
                     });
 
                     $.each(district, function (index, value) {
-                        if (value['division_id'] == selected_division_id) {
+                        if (value['division_id'] == selected_division_id && value['isDevelopmentAuthority'] == 1) {
                             // division_check = 1;
                             new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
                         }
@@ -182,14 +179,29 @@
                 });
                 $('#division-filter').on('change', function () {
                     let div_id = $('#division-filter option:selected').val();
-                    let new_dis = '<option disabled>Districts</option><option selected value="-1">All</option>';
+                    let new_dis = '<option selected value="-1">All</option>';
                     let new_dis_2 = '';
                     $.each(district, function (index, value) {
-                        if (value['division_id'] == div_id) {
-                            // division_check = 1;
-                            new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
+                        let check_authority = $('#authorities-filter option:selected').val();
+                        if (check_authority == 4) {
+                            if (value['division_id'] == div_id && value['isDevelopmentAuthority'] == 0) {
+                                new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
+                            }
+                            new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
                         }
-                        new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+                        else if(check_authority == -1 || check_authority == 6){
+                            if (value['division_id'] == div_id) {
+                                new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
+                            }
+                            new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+                        }
+                        else {
+                            if (value['division_id'] == div_id && value['isDevelopmentAuthority'] == 1) {
+                                new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
+                            }
+                            new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
+                        }
+
                     });
 
                     $("#district-filter").empty().append(new_dis);

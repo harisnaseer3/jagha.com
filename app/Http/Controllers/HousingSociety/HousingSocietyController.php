@@ -20,7 +20,7 @@ class HousingSocietyController extends Controller
 
         $divisions = $db_con->table('divisions')->select('id', 'title','authority_id')->get();
 
-        $district = $db_con->table('districts')->select('id', 'title','division_id')->get();
+        $district = $db_con->table('districts')->select('id', 'title','division_id','isDevelopmentAuthority')->get();
 
         $footer_content = (new FooterController)->footerContent();
 
