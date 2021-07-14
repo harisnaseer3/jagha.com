@@ -33,48 +33,74 @@
 
 
                         </div>
-                        <div class="card-body">
+                        <div class="card-body housing-card">
                             <div id="listings-div">
                                 <div class="page-list-layout">
-                                    <div class="option-bar">
+                                    <div class="option-bar housing-bar">
                                         <div class="cod-pad">
                                             <div class="sorting-options text-center" role="button" aria-label="filter">
                                                 {{ Form::open(['route' => ['property.user.search.id'], 'method' => 'post', 'role' => 'form', 'id'=>'societies-search-form']) }}
+                                                <div class="row mb-md-2">
+                                                    <div class="col-md-4 col-sm-12 mb-sm-2">
+                                                        <select class=" sorting form-control form-control-sm" id="status-filter" name="status">
 
-                                                <select class="record-limit" id="status-filter" name="status">
+                                                            <option selected value="-1">All</option>
+                                                            @foreach($status as $val)
+                                                                <option value="{{$val->id}}">{{$val->title}}</option>
+                                                            @endforeach
 
-                                                    <option selected value="-1">All</option>
-                                                    @foreach($status as $val)
-                                                        <option value="{{$val->id}}">{{$val->title}}</option>
-                                                    @endforeach
+                                                        </select>
 
-                                                </select>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12 mb-sm-2">
+                                                        <select class="sorting area-filter form-control form-control-sm" id="authorities-filter" name="authority">
 
-                                                <select class="sorting area-filter" id="authorities-filter" name="authority">
+                                                            <option selected value="-1">All</option>
+                                                            @foreach($authority as $val)
+                                                                <option value="{{$val->id}}">{{$val->title}}</option>
+                                                            @endforeach
 
-                                                    <option selected value="-1">All</option>
-                                                    @foreach($authority as $val)
-                                                        <option value="{{$val->id}}">{{$val->title}}</option>
-                                                    @endforeach
+                                                        </select>
 
-                                                </select>
-                                                <select class="sorting" id="division-filter" name="division">
 
-                                                    <option selected value="-1">All</option>
-                                                    @foreach($division as $val)
-                                                        <option value="{{$val->id}}">{{$val->title}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <select class="sorting" id="district-filter" name="district">
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <select class="sorting form-control form-control-sm" id="division-filter" name="division">
 
-                                                    <option selected value="-1">All</option>
-                                                    @foreach($district as $val)
-                                                        <option value="{{$val->id}}">{{$val->title}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <button class="btn btn-sm btn-primary btn-search-style p-2" id="societies-search" type="submit">
-                                                    <i class="fa fa-search mx-1"></i>Search
-                                                </button>
+                                                            <option selected value="-1">All</option>
+                                                            @foreach($division as $val)
+                                                                <option value="{{$val->id}}">{{$val->title}}</option>
+                                                            @endforeach
+                                                        </select>
+
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <select class="sorting form-control form-control-sm" id="district-filter" name="district">
+
+                                                            <option selected value="-1">All</option>
+                                                            @foreach($district as $val)
+                                                                <option value="{{$val->id}}">{{$val->title}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
+
+                                                        <div class="col-md-4 col-sm-12">
+                                                            <button class="btn btn-sm btn-primary float-left btn-search-style p-2" id="societies-search" type="submit">
+                                                                <i class="fa fa-search mx-1"></i>Search
+                                                            </button>
+                                                        </div>
+
+
+                                                </div>
+
+
+
+
                                                 {{ Form::close() }}
 
 
@@ -188,14 +214,12 @@
                                 new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
                             }
                             new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
-                        }
-                        else if(check_authority == -1 || check_authority == 6){
+                        } else if (check_authority == -1 || check_authority == 6) {
                             if (value['division_id'] == div_id) {
                                 new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
                             }
                             new_dis_2 += '<option value="' + value['id'] + '">' + value['title'] + '</option>';
-                        }
-                        else {
+                        } else {
                             if (value['division_id'] == div_id && value['isDevelopmentAuthority'] == 1) {
                                 new_dis += '<option value="' + value['id'] + '">' + value['title'] + '</option>'
                             }
