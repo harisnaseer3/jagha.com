@@ -234,3 +234,13 @@ element.style {
     color:white !important;
     font-weight: 600 !important;
 }
+.housing-card .housing-bar{
+    height: 100%;
+
+}
+@media (min-width: 320px) and (max-width: 600px) {
+    .sorting{
+        margin-bottom: 10px;
+    }
+}
+
