@@ -79,7 +79,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
-                                                        <button class="btn btn-sm btn-primary float-left btn-search-style p-2" id="societies-search" type="submit">
+                                                        <button class="btn btn-sm btn-primary btn-search-style p-2" id="societies-search" type="submit">
                                                             <i class="fa fa-search mx-1"></i>Search
                                                         </button>
                                                     </div>
