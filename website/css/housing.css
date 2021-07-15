@@ -241,6 +241,12 @@ element.style {
 @media (min-width: 320px) and (max-width: 600px) {
     .sorting{
         margin-bottom: 10px;
+
     }
+    div.material-table table th{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
 }
 
