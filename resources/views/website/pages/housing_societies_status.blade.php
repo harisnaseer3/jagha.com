@@ -9,7 +9,90 @@
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/housing.css')}}" async defer>
     <style>
-
+        .lds-roller{
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .lds-roller div {
+            animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            transform-origin: 40px 40px;
+        }
+        .lds-roller div:after {
+            content: " ";
+            display: block;
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #fff;
+            margin: -4px 0 0 -4px;
+        }
+        .lds-roller div:nth-child(1) {
+            animation-delay: -0.036s;
+        }
+        .lds-roller div:nth-child(1):after {
+            top: 63px;
+            left: 63px;
+        }
+        .lds-roller div:nth-child(2) {
+            animation-delay: -0.072s;
+        }
+        .lds-roller div:nth-child(2):after {
+            top: 68px;
+            left: 56px;
+        }
+        .lds-roller div:nth-child(3) {
+            animation-delay: -0.108s;
+        }
+        .lds-roller div:nth-child(3):after {
+            top: 71px;
+            left: 48px;
+        }
+        .lds-roller div:nth-child(4) {
+            animation-delay: -0.144s;
+        }
+        .lds-roller div:nth-child(4):after {
+            top: 72px;
+            left: 40px;
+        }
+        .lds-roller div:nth-child(5) {
+            animation-delay: -0.18s;
+        }
+        .lds-roller div:nth-child(5):after {
+            top: 71px;
+            left: 32px;
+        }
+        .lds-roller div:nth-child(6) {
+            animation-delay: -0.216s;
+        }
+        .lds-roller div:nth-child(6):after {
+            top: 68px;
+            left: 24px;
+        }
+        .lds-roller div:nth-child(7) {
+            animation-delay: -0.252s;
+        }
+        .lds-roller div:nth-child(7):after {
+            top: 63px;
+            left: 17px;
+        }
+        .lds-roller div:nth-child(8) {
+            animation-delay: -0.288s;
+        }
+        .lds-roller div:nth-child(8):after {
+            top: 56px;
+            left: 12px;
+        }
+        @keyframes lds-roller {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 @endsection
 
@@ -30,8 +113,6 @@
                                     <h1 class="all-cities-header">Housing Societies Status</h1>
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="card-body housing-card">
                             <div id="listings-div">
@@ -59,10 +140,7 @@
                                                             @foreach($authority as $val)
                                                                 <option value="{{$val->id}}">{{$val->title}}</option>
                                                             @endforeach
-
                                                         </select>
-
-
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <select class="sorting form-control form-control-sm" id="division-filter" name="division">
@@ -72,8 +150,6 @@
                                                                 <option value="{{$val->id}}">{{$val->title}}</option>
                                                             @endforeach
                                                         </select>
-
-
                                                     </div>
 
                                                 </div>
@@ -87,23 +163,13 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-
-
-                                                        <div class="col-md-4 col-sm-12">
-                                                            <button class="btn btn-sm btn-primary float-left btn-search-style p-2" id="societies-search" type="submit">
-                                                                <i class="fa fa-search mx-1"></i>Search
-                                                            </button>
-                                                        </div>
-
-
+                                                    <div class="col-md-4 col-sm-12">
+                                                        <button class="btn btn-sm btn-primary float-left btn-search-style p-2" id="societies-search" type="submit">
+                                                            <i class="fa fa-search mx-1"></i>Search
+                                                        </button>
+                                                    </div>
                                                 </div>
-
-
-
-
                                                 {{ Form::close() }}
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -115,13 +181,14 @@
                                 <div id="admin" class="col s12">
                                     <div class="card material-table">
                                         <div class="table-header">
-                                            <span class="table-title">All Results</span>
+                                            <span class="table-title">All Results</span><i class="ml-3 fa fa-spinner fa-spin" id="spinner" style="font-size:24px"></i>
+
                                             <div class="actions">
                                                 <a href="#" class="search-toggle waves-effect btn-flat nopadding"><i class="fa fa-search"></i></a>
                                             </div>
                                         </div>
 
-                                        {{--                                        <div style="display: none" id="property-logs-block">--}}
+                                        {{--                                                                                <div style="display: none" id="property-logs-block">--}}
                                         <table class="table-responsive-sm display" id="societies-table" style="width: 100%">
                                             <thead>
                                             <tr>
@@ -133,7 +200,10 @@
                                                 <th class="color-white">Total Land Area</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="tbody-property-logs"></tbody>
+                                            <tbody id="tbody-property-logs">
+                                            {{--                                            <div id="ajax-loader-properties" class="ajax-loader"></div>--}}
+
+                                            </tbody>
                                         </table>
                                         {{--                                        </div>--}}
                                     </div>

@@ -187,7 +187,7 @@
 
             $.get('/get_housing_societies',  // url
                 function (data, textStatus, jqXHR) {  // success callback
-                    // $('#loader-property-logs').hide();
+                    $('#spinner').hide();
                     $('#societies-table').DataTable().clear().destroy();
 
                     $('#tbody-property-logs').html(data.view);
@@ -229,6 +229,7 @@
                     });
                 });
             $('#societies-search').on('click', function (e) {
+                $('#spinner').show();
                 e.preventDefault();
 
 
@@ -244,7 +245,7 @@
                     data: data,
                     dataType: 'json',
                     success: function (data) {
-                        // mydt.clear().destroy();
+                        $('#spinner').hide();
                         $('#societies-table').DataTable().clear().destroy();
                         $('#tbody-property-logs').html(data.view);
                         $('#societies-table').DataTable({
