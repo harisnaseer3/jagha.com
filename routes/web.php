@@ -64,7 +64,7 @@ Route::post('/get_housing_societies', 'HousingSociety\HousingSocietyController@S
 
 //Housing Society Routes
 
-Route::get('/housing_societies_status', 'HousingSociety\HousingSocietyController@getSocietiesData');
+Route::get('/housing_societies_status', 'HousingSociety\HousingSocietyController@getSocietiesData')->name('housing_societies');;
 
 
 Route::post('/get-package-amount', 'Package\PackageController@packageAmount');

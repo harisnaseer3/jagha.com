@@ -94,6 +94,9 @@ class PageController extends Controller
             $current_page['type'] = "property_search";
             $current_page['search_query'] = $search_query;
         }
+        if (self::housing_society_page()) {
+            $current_page['type'] = "housing_society_page";
+        }
 
 //        dd($current_page);
         return $current_page;
@@ -272,6 +275,11 @@ class PageController extends Controller
         return $route_name == 'sale.property.search' || $route_name == 'search.houses.plots' ||
             $route_name == 'search.property.at.location' || $route_name == 'property.search.id';
 
+    }
+
+    public static function housing_society_page()
+    {
+        return Route::current()->getName() == 'housing_societies';
     }
 
     /**
