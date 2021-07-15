@@ -33,8 +33,8 @@ class LogRequest
                 $pattern9 = '_ignition';
                 $pattern10 = 'api';
                 $pattern11 = 'search-id';
-                $pattern12 = 'housing_societies_status';
-                $patterns = array($pattern, $pattern2, $pattern3, $pattern4, $pattern5, $pattern6, $pattern8, $pattern9, $pattern10, $pattern11,$pattern12);
+//                $pattern12 = 'housing_societies_status';
+                $patterns = array($pattern, $pattern2, $pattern3, $pattern4, $pattern5, $pattern6, $pattern8, $pattern9, $pattern10, $pattern11);
 
                 $regex = '/^(' . implode('|', $patterns) . ')/i';
 
