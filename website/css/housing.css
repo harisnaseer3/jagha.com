@@ -78,6 +78,7 @@ div.material-table .table-footer .dataTables_length {
 
 div.material-table .table-footer label {
     font-size: 12px;
+     margin-bottom: 0;
     color: rgba(0, 0, 0, 0.54);
     display: -webkit-flex;
     display: flex;
@@ -237,6 +238,9 @@ element.style {
     div.material-table table th{
         padding-left: 10px;
         padding-right: 10px;
+    }
+    #societies-table_info{
+        display:none !important;
     }
 
 }
