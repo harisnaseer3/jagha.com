@@ -121,7 +121,7 @@ class AuthController extends Controller
         auth('api')->user()->token()->revoke();
 //        return (new \App\Http\JsonResponse)->success('Logout Successful');
         return response()->json([
-            'message' => 'Logout Successful',
+            'message' => 'Unauthenticated',
         ]);
     }
 
