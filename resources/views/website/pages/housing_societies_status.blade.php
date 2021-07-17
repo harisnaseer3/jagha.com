@@ -6,7 +6,10 @@
 
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
+
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/rowReorder.dataTables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/responsive.dataTables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/housing.css')}}" async defer>
 
 @endsection
@@ -148,6 +151,8 @@
 
 @section('script')
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/dataTables.rowReorder.min.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="{{asset('website/js/dataTables.responsive.min.js')}}"></script>
     <script type="text/javascript" charset="utf8" src="{{asset('website/js/housing-societies.js')}}"></script>
     <script>
         (function ($) {
