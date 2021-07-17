@@ -56,13 +56,13 @@ class PropertySearchController extends Controller
         $properties = $properties->orderBy('properties.platinum_listing', 'DESC');
         $properties = $properties->orderBy('properties.golden_listing', 'DESC');
 
-        if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
-        else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
+//        if ($sort_area === 'higher_area') $properties = $properties->orderBy('properties.area_in_sqft', 'DESC');
+//        else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
 
         if ($sort === 'newest') $properties = $properties->orderBy('properties.activated_at', 'DESC');
-        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
-        else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
-        else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
+//        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
+//        else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
+//        else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
 
 
         return $properties;
@@ -73,6 +73,29 @@ class PropertySearchController extends Controller
         $properties = $this->listingFrontend();
         $city = null;
         $area_unit = 'Marla';
+
+        $sort_area = 'higher_area';
+        $sort = 'newest';
+        $limit = 10;
+
+
+        if (count($request->all()) == 0 || count($request->all()) == 1 && $request->has('page')) {
+            $total_count = DB::table('total_property_count')->select('property_count')->first()->property_count;
+
+
+            $page = (isset($request->page)) ? $request->page : 1;
+            $last_id = ($page - 1) * $limit;
+            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+            $properties = $properties->take($limit)->skip($last_id)->get();
+            $properties = (new PropertyListingResource)->myToArray($properties);
+            $properties = new Collection($properties);
+
+            $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+            $paginatedSearchResults->setPath($request->url());
+            $paginatedSearchResults->appends(request()->query());
+            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
+
+        }
 
         if ($c = $request->city) {
             $city = (new City)->select('id', 'name')->where('name', '=', str_replace('-', ' ', $c))->first();
@@ -163,22 +186,31 @@ class PropertySearchController extends Controller
             $properties->where($area_column_wrt_unit, '<=', $max_area);
         }
 
-        $sort_area = 'higher_area';
-        $sort = 'newest';
-        $limit = 10;
+//        $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
+//        if (!$properties->isEmpty()) {
+//            $properties = (new PropertyListingResource)->myToArray($properties, ucwords($area_unit), $area_column_wrt_unit);
+//            $properties = new Collection($properties);
+//            $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
+//            $paginatedSearchResults->setPath($request->url());
+//            $paginatedSearchResults->appends(request()->query());
 
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
-        if (!$properties->isEmpty()) {
-            $properties = (new PropertyListingResource)->myToArray($properties, ucwords($area_unit), $area_column_wrt_unit);
-            $properties = new Collection($properties);
-            $paginatedSearchResults = new LengthAwarePaginator($properties, $properties->count(), $limit);
-            $paginatedSearchResults->setPath($request->url());
-            $paginatedSearchResults->appends(request()->query());
 
-            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
-        } else {
-            return (new \App\Http\JsonResponse)->successNoContent();
-        }
+        $page = (isset($request->page)) ? $request->page : 1;
+        $last_id = ($page - 1) * $limit;
+        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $newproperties = $properties->take($limit)->skip($last_id)->get();
+        $newproperties = (new PropertyListingResource)->myToArray($newproperties);
+        $newproperties = new Collection($newproperties);
+
+        $paginatedSearchResults = new LengthAwarePaginator($newproperties, $properties->count(), $limit);
+        $paginatedSearchResults->setPath($request->url());
+        $paginatedSearchResults->appends(request()->query());
+//            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
+
+        return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
+//        } else {
+//            return (new \App\Http\JsonResponse)->successNoContent();
+//        }
 
     }
 
