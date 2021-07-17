@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 
 class PropertySearchController extends Controller
 {
+
+
     function listingFrontend()
     {
         return DB::table('properties')
@@ -41,7 +43,7 @@ class PropertySearchController extends Controller
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
             ->leftJoin('favorites as f', function ($f) {
                 $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::guard('api')->user() != null ? Auth::guard('api')->user()->getAuthIdentifier() : null);
+                    ->where('f.user_id', '=', auth()->guard('api')->check() ? auth()->guard('api')->user()->getAuthIdentifier() : null);
             })
             ->join('users', 'properties.user_id', '=', 'users.id')
             ->leftJoin('property_count_by_agencies as c', function ($c) {
@@ -70,6 +72,7 @@ class PropertySearchController extends Controller
 
     public function search(Request $request)
     {
+
         $properties = $this->listingFrontend();
         $city = null;
         $area_unit = 'Marla';
