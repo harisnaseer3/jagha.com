@@ -41,7 +41,7 @@ class PropertySearchController extends Controller
             ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
             ->leftJoin('favorites as f', function ($f) {
                 $f->on('properties.id', '=', 'f.property_id')
-                    ->where('f.user_id', '=', Auth::guard('api')->user() ? Auth::user()->getAuthIdentifier() : 0);
+                    ->where('f.user_id', '=', Auth::guard('api')->user() != null ? Auth::guard('api')->user()->getAuthIdentifier() : null);
             })
             ->join('users', 'properties.user_id', '=', 'users.id')
             ->leftJoin('property_count_by_agencies as c', function ($c) {
@@ -138,53 +138,57 @@ class PropertySearchController extends Controller
 //        if ($area_unit = $request->area_unit)
 //            $properties->where('properties.area_unit', ucwords(str_replace('-', ' ', $area_unit)));
 
+
         $min_price = 0;
         $min_area = 0.0;
         $max_area = 0.0;
         $max_price = 0;
 
-        if ($request->has('min_price')) $min_price = intval(str_replace(',', '', $request->min_price));
-        if ($request->has('max_price')) $max_price = intval(str_replace(',', '', $request->max_price));
-        if ($request->has('min_area')) $min_area = floatval(str_replace(',', '', $request->min_area));
-        if ($request->has('max_area')) $max_area = floatval(str_replace(',', '', $request->max_area));
+        if ($request->has('min_price') || $request->has('max_price')) {
+            if ($request->has('min_price')) $min_price = intval(str_replace(',', '', $request->min_price));
+            if ($request->has('max_price')) $max_price = intval(str_replace(',', '', $request->max_price));
 
-
-        if ($min_price !== 0 and $max_price !== 0) {
-            if ($min_price < $max_price) {
-                $properties->where('properties.price', '>=', $min_price)->where('price', '<=', $max_price);
-            } elseif ($min_price > $max_price) {
-                $properties->where('properties.price', '>=', $max_price)->where('price', '<=', $min_price);
+            if ($min_price !== 0 and $max_price !== 0) {
+                if ($min_price < $max_price) {
+                    $properties->where('properties.price', '>=', $min_price)->where('price', '<=', $max_price);
+                } elseif ($min_price > $max_price) {
+                    $properties->where('properties.price', '>=', $max_price)->where('price', '<=', $min_price);
+                }
+            } else if ($min_price !== 0 and $max_price === 0) {
+                $properties->where('properties.price', '>=', $min_price);
+            } else if ($min_price === 0 and $max_price !== 0) {
+                $properties->where('properties.price', '<=', $max_price);
             }
-        } else if ($min_price !== 0 and $max_price === 0) {
-            $properties->where('properties.price', '>=', $min_price);
-        } else if ($min_price === 0 and $max_price !== 0) {
-            $properties->where('properties.price', '<=', $max_price);
         }
 
+        if ($request->has('min_area') || $request->has('max_area')) {
+            if ($min_area < 0 or $max_area < 0) {
+                $min_area = $max_area = 0.0;
+            }
 
-        if ($min_area < 0 or $max_area < 0) {
-            $min_area = $max_area = 0.0;
+            if ($request->has('min_area')) $min_area = floatval(str_replace(',', '', $request->min_area));
+            if ($request->has('max_area')) $max_area = floatval(str_replace(',', '', $request->max_area));
+            $area_column_wrt_unit = '';
+
+
+            if (ucwords($area_unit) === 'Marla') $area_column_wrt_unit = 'properties.area_in_new_marla';
+            else if (ucwords($area_unit) === 'Kanal') $area_column_wrt_unit = 'properties.area_in_new_kanal';
+            else if (ucwords($area_unit) === 'Square Feet') $area_column_wrt_unit = 'properties.area_in_sqft';
+            else if (ucwords($area_unit) === 'Square Yards') $area_column_wrt_unit = 'properties.area_in_sqyd';
+            else if (ucwords($area_unit) === 'Square Meters') $area_column_wrt_unit = 'properties.area_in_sqm';
+            else
+                $area_column_wrt_unit = 'properties.area_in_marla';
+
+
+            if ($min_area !== 0.0 and $max_area !== 0.0) {
+                if ($min_area < $max_area) $properties->whereBetween($area_column_wrt_unit, [$min_area, $max_area]);
+            } else if ($min_area !== 0.0 and $max_area === 0.0) {
+                $properties->where($area_column_wrt_unit, '>=', $min_area);
+            } else if ($min_area === 0.0 and $max_area !== 0.0) {
+                $properties->where($area_column_wrt_unit, '<=', $max_area);
+            }
         }
 
-
-        $area_column_wrt_unit = '';
-
-        if (ucwords($area_unit) === 'Marla') $area_column_wrt_unit = 'properties.area_in_new_marla';
-        else if (ucwords($area_unit) === 'Kanal') $area_column_wrt_unit = 'properties.area_in_new_kanal';
-        else if (ucwords($area_unit) === 'Square Feet') $area_column_wrt_unit = 'properties.area_in_sqft';
-        else if (ucwords($area_unit) === 'Square Yards') $area_column_wrt_unit = 'properties.area_in_sqyd';
-        else if (ucwords($area_unit) === 'Square Meters') $area_column_wrt_unit = 'properties.area_in_sqm';
-        else
-            $area_column_wrt_unit = 'properties.area_in_marla';
-
-
-        if ($min_area !== 0.0 and $max_area !== 0.0) {
-            if ($min_area < $max_area) $properties->whereBetween($area_column_wrt_unit, [$min_area, $max_area]);
-        } else if ($min_area !== 0.0 and $max_area === 0.0) {
-            $properties->where($area_column_wrt_unit, '>=', $min_area);
-        } else if ($min_area === 0.0 and $max_area !== 0.0) {
-            $properties->where($area_column_wrt_unit, '<=', $max_area);
-        }
 
 //        $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
 //        if (!$properties->isEmpty()) {
@@ -205,13 +209,7 @@ class PropertySearchController extends Controller
         $paginatedSearchResults = new LengthAwarePaginator($newproperties, $properties->count(), $limit);
         $paginatedSearchResults->setPath($request->url());
         $paginatedSearchResults->appends(request()->query());
-//            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
-
         return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
-//        } else {
-//            return (new \App\Http\JsonResponse)->successNoContent();
-//        }
-
     }
 
     public function genericSearch(Request $request)
