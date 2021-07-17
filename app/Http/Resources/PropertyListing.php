@@ -46,6 +46,7 @@ class PropertyListing
                 'email' => $item->email,
                 'views' => $item->views,
                 'favorites' => $item->favorites,
+                'user_favourite' => $item->user_favorite == null ? 0 : 1,
                 'activated_at' => $item->activated_at,
                 'agency' => $item->agency,
                 'logo' => $item->user_id !== 1 ? $item->logo : '',
