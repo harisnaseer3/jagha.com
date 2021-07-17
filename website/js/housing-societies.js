@@ -195,7 +195,11 @@
                         deferRender: true,
                         "scrollX": true,
                         "ordering": false,
+                        rowReorder: {
+                            selector: 'td:nth-child(2)'
+                        },
                         responsive: true,
+
                         pageLength: 50,
                         "oLanguage": {
                             "sStripClasses": "",
@@ -253,6 +257,9 @@
                             "scrollX": true,
                             "ordering": false,
                             responsive: true,
+                            rowReorder: {
+                                selector: 'td:nth-child(2)'
+                            },
                             pageLength: 50,
                             "oLanguage": {
                                 "sStripClasses": "",
