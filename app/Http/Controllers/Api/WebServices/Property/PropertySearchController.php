@@ -72,8 +72,41 @@ class PropertySearchController extends Controller
 
     public function search(Request $request)
     {
+        $properties = DB::table('properties')
+            ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type',
+                'properties.type', 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit',
+                'properties.bedrooms', 'properties.bathrooms', 'properties.golden_listing', 'properties.platinum_listing',
+                'properties.contact_person', 'properties.phone', 'properties.cell', 'properties.fax', 'properties.email', 'properties.favorites',
+                'properties.views', 'properties.status',
+                'properties.created_at', 'properties.activated_at',
+                'properties.updated_at', 'f.user_id AS user_favorite', 'locations.name AS location', 'cities.name AS city', 'p.name AS image',
+                'properties.area_in_sqft', 'properties.area_in_sqyd', 'properties.area_in_marla', 'properties.area_in_new_marla', 'properties.area_in_kanal',
+                'properties.area_in_new_kanal', 'properties.area_in_sqm',
+                'agencies.title AS agency', 'agencies.featured_listing', 'agencies.logo AS logo', 'agencies.key_listing', 'agencies.status AS agency_status',
+                'agencies.phone AS agency_phone', 'agencies.cell AS agency_cell', 'agencies.ceo_name AS agent', 'agencies.created_at AS agency_created_at',
+                'agencies.description AS agency_description')
+//                , 'c.property_count AS agency_property_count')
+            ->where('properties.status', '=', 'active')
+            ->whereNull('properties.deleted_at')
+            ->leftJoin('images as p', function ($q) {
+                $q->on('p.property_id', '=', 'properties.id')
+                    ->on('p.name', '=', DB::raw('(select name from images where images.property_id = properties.id and images.deleted_at IS null ORDER BY images.order  limit 1 )'));
+            })
+            ->join('locations', 'properties.location_id', '=', 'locations.id')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->leftjoin('agencies', 'properties.agency_id', '=', 'agencies.id')
+            ->leftJoin('favorites as f', function ($f) {
+                $f->on('properties.id', '=', 'f.property_id')
+                    ->where('f.user_id', '=', auth()->guard('api')->check() ? auth()->guard('api')->user()->getAuthIdentifier() : null);
+            })
+            ->join('users', 'properties.user_id', '=', 'users.id');
 
-        $properties = $this->listingFrontend();
+
+//            ->leftJoin('property_count_by_agencies as c', function ($c) {
+//                $c->on('properties.agency_id', '=', 'c.agency_id')
+//                    ->where('c.property_status', '=', 'active');
+//            });
+
         $city = null;
         $area_unit = 'Marla';
 
@@ -101,9 +134,10 @@ class PropertySearchController extends Controller
         }
 
         if ($c = $request->city) {
-            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('-', ' ', $c))->first();
-            if ($city)
-                $properties->where('properties.city_id', '=', $city->id);
+//            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('-', ' ', $c))->first();
+//            $city =
+//            if ($city)
+                $properties->where('properties.city_id', $c);
         }
 
         if ($loc = $request->location) {
@@ -124,14 +158,10 @@ class PropertySearchController extends Controller
                 $properties->where('properties.purpose', $p);
         }
 
-        // type = homes, plots, commercial
-        if ($t = $request->type) {
-            $properties->where('properties.type', $t);
-        }
 
-        if ($sub_t = $request->sub_type) {
-            $properties->where('properties.sub_type', str_replace('-', ' ', $sub_t));
-        }
+//        if ($sub_t = $request->sub_type) {
+//            $properties->where('properties.sub_type', str_replace('-', ' ', $sub_t));
+//        }
         if ($beds = $request->bedrooms)
             $properties->where('properties.bedrooms', $beds);
         if ($baths = $request->bathrooms)
@@ -192,6 +222,20 @@ class PropertySearchController extends Controller
             }
         }
 
+        // type = homes, plots, commercial
+        if ($t = $request->types) {
+            if (!in_array('all', $t)) {
+                $properties = $properties->whereIn('type', $t);
+            }
+
+        }
+        if ($st = $request->sub_types) {
+            if (!in_array('all', $st)) {
+                $properties = $properties->whereIn('sub_type', $st);
+            }
+
+        }
+
 
 //        $properties = $this->sortPropertyListing($sort, $sort_area, $properties)->get();
 //        if (!$properties->isEmpty()) {
@@ -205,11 +249,15 @@ class PropertySearchController extends Controller
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+        $count = count($properties->get());
         $newproperties = $properties->take($limit)->skip($last_id)->get();
+
+//        $newproperties = array_slice($properties, $last_id, $limit);
+
         $newproperties = (new PropertyListingResource)->myToArray($newproperties);
         $newproperties = new Collection($newproperties);
 
-        $paginatedSearchResults = new LengthAwarePaginator($newproperties, $properties->count(), $limit);
+        $paginatedSearchResults = new LengthAwarePaginator($newproperties, $count, $limit);
         $paginatedSearchResults->setPath($request->url());
         $paginatedSearchResults->appends(request()->query());
         return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
