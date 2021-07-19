@@ -8,6 +8,7 @@ use App\Http\Resources\PropertyListing as PropertyListingResource;
 use App\Http\Resources\User as UserResource;
 use App\Models\Account;
 use App\Models\Property;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +52,7 @@ class UserProfileController extends Controller
 
     public function favourites()
     {
-        if (Auth::guard('api')->check()) {
+        if (auth::guard('api')->check()) {
             $property_list = DB::table('favorites')->select('property_id')
                 ->where('user_id', Auth::guard('api')->user()->id)->get()->pluck('property_id')->toArray();
 
@@ -79,44 +80,64 @@ class UserProfileController extends Controller
     public function AddFavourite(Request $request)
     {
         if ($p = $request->property_id) {
-            $property = Property::find($p);
-            if ($property) {
+            try {
+                $property = Property::find($p);
+                if ($property) {
 
-                $property->favorites = $property->favorites + 1;
-                $property->save();
+                    $property->favorites = $property->favorites + 1;
+                    $property->save();
 
-                DB::table('favorites')
-                    ->Insert(['user_id' => Auth::guard('api')->user()->getAuthIdentifier(), 'property_id' => $property->id]);
-                return (new \App\Http\JsonResponse)->success("Property added to favourites successfully");
-            } else {
-                return (new \App\Http\JsonResponse)->resourceNotFound();
+                    DB::table('favorites')
+                        ->Insert(['user_id' => auth::guard('api')->user()->getAuthIdentifier(), 'property_id' => $property->id]);
+                    return (new \App\Http\JsonResponse)->success("Property added to favourites successfully");
+                } else {
+                    return (new \App\Http\JsonResponse)->resourceNotFound();
+                }
+            } catch (Exception $e) {
+                return (new \App\Http\JsonResponse)->failed("Error storing search. Please try again");
             }
+
 
         } else
             return (new \App\Http\JsonResponse)->unprocessable();
 
     }
 
-    public function RemoveFavourite(Request $request)
+    public function RemoveFavourite($property_id)
     {
-        if ($p = $request->property_id) {
-            $property = Property::find($p);
+
+//        if ($property) {
+
+        try {
+            $property = Property::find($property_id);
             if ($property) {
-                $property->favorites = $property->favorites - 1;
-                $property->save();
-
-
-                DB::table('favorites')->where([
-                    'user_id' => Auth::guard('api')->user()->getAuthIdentifier(),
+                if (DB::table('favorites')->where([
+                    'user_id' => auth::guard('api')->user()->getAuthIdentifier(),
                     'property_id' => $property->id
-                ])->delete();
-                return (new \App\Http\JsonResponse)->success("Property removed from favourites successfully");
+                ])->exists()) {
+                    $property->favorites = $property->favorites - 1;
+                    $property->save();
+
+
+                    DB::table('favorites')->where([
+                        'user_id' => auth::guard('api')->user()->getAuthIdentifier(),
+                        'property_id' => $property->id
+                    ])->delete();
+                    return (new \App\Http\JsonResponse)->success("Property removed from favourites successfully");
+                } else {
+                    return (new \App\Http\JsonResponse)->resourceNotFound();
+                }
+
             } else {
                 return (new \App\Http\JsonResponse)->resourceNotFound();
             }
+        } catch (Exception $e) {
+            return (new \App\Http\JsonResponse)->failed("Error storing search. Please try again");
+        }
 
-        } else
-            return (new \App\Http\JsonResponse)->unprocessable();
+
+//        } else
+//            return (new \App\Http\JsonResponse)->unprocessable();
 
     }
 
@@ -159,13 +180,13 @@ class UserProfileController extends Controller
     {
         $user_id = Auth::guard('api')->user()->id;
 
-        $properties_pending =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'pending')->get();
-        $properties_active =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'active')->get();
-        $properties_rejected =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'rejected')->get();
-        $properties_deleted =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'deleted')->get();
-        $properties_expired =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'expired')->get();
-        $properties_sold =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'sold')->get();
-        $properties_draft =  $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'draft')->get();
+        $properties_pending = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'pending')->get();
+        $properties_active = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'active')->get();
+        $properties_rejected = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'rejected')->get();
+        $properties_deleted = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'deleted')->get();
+        $properties_expired = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'expired')->get();
+        $properties_sold = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'sold')->get();
+        $properties_draft = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'draft')->get();
 
         $my_properties = [
             'active' => (new PropertyListingResource)->myToArray($properties_active),
@@ -180,4 +201,60 @@ class UserProfileController extends Controller
 
 
     }
+
+    public function addUserSearch(Request $request)
+    {
+        if ($request->has('url') && $n = $request->has('name')) {
+
+            try {
+                DB::table('user_searches')
+                    ->Insert([
+                        'user_id' => auth::guard('api')->user()->getAuthIdentifier(),
+                        'name' => $request->name,
+                        'url' => $request->url
+                    ]);
+                return (new \App\Http\JsonResponse)->success("Search saved successfully");
+            } catch (Exception $e) {
+                print($e->getMessage());
+                return (new \App\Http\JsonResponse)->failed("Error storing search. Please try again");
+            }
+
+        } else
+            return (new \App\Http\JsonResponse)->unprocessable();
+
+
+    }
+
+    public function removeUserSearch($id)
+    {
+//        if ($id = $request->search_id) {
+        try {
+            if (DB::table('user_searches')->where([
+                'user_id' => auth::guard('api')->user()->getAuthIdentifier(),
+                'id' => $id
+            ])->exists()) {
+                DB::table('user_searches')->where('id',$id)->delete();
+                return (new \App\Http\JsonResponse)->success("Search removed successfully");
+            } else
+                return (new \App\Http\JsonResponse)->unprocessable();
+        } catch (Exception $e) {
+            return (new \App\Http\JsonResponse)->failed("Error deleting search. Please try again");
+        }
+//        } else
+//            return (new \App\Http\JsonResponse)->unprocessable();
+    }
+
+    public function getUserSaveSearches()
+    {
+        $results = DB::table('user_searches')
+            ->select('id', 'url', 'name')->where('user_id', auth::guard('api')->user()->getAuthIdentifier())
+            ->get()->toArray();
+
+
+        return (new \App\Http\JsonResponse)->success("Saved Search Result", $results);
+
+
+    }
+
+
 }
