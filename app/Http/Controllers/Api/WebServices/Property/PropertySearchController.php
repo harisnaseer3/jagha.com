@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\DB;
 class PropertySearchController extends Controller
 {
 
-
     function listingFrontend()
     {
         return DB::table('properties')
@@ -62,9 +61,9 @@ class PropertySearchController extends Controller
 //        else if ($sort_area === 'lower_area') $properties = $properties->orderBy('properties.area_in_sqft', 'ASC');
 
         if ($sort === 'newest') $properties = $properties->orderBy('properties.activated_at', 'DESC');
-//        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
-//        else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
-//        else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
+        else if ($sort === 'oldest') $properties = $properties->orderBy('properties.activated_at', 'ASC');
+        else if ($sort === 'high_price') $properties = $properties->orderBy('properties.price', 'DESC');
+        else if ($sort === 'low_price') $properties = $properties->orderBy('properties.price', 'ASC');
 
 
         return $properties;
@@ -72,6 +71,7 @@ class PropertySearchController extends Controller
 
     public function search(Request $request)
     {
+
         $properties = DB::table('properties')
             ->select('properties.id', 'properties.user_id', 'properties.purpose', 'properties.sub_purpose', 'properties.sub_type',
                 'properties.type', 'properties.title', 'properties.description', 'properties.price', 'properties.land_area', 'properties.area_unit',
@@ -111,7 +111,10 @@ class PropertySearchController extends Controller
         $area_unit = 'Marla';
 
         $sort_area = 'higher_area';
-        $sort = 'newest';
+        if (request()->input('sort') !== null)
+            $sort = request()->input('sort');
+        else
+            $sort = 'newest';
         $limit = 10;
 
 
@@ -137,7 +140,7 @@ class PropertySearchController extends Controller
 //            $city = (new City)->select('id', 'name')->where('name', '=', str_replace('-', ' ', $c))->first();
 //            $city =
 //            if ($city)
-                $properties->where('properties.city_id', $c);
+            $properties->where('properties.city_id', $c);
         }
 
         if ($loc = $request->location) {
@@ -163,9 +166,9 @@ class PropertySearchController extends Controller
 //            $properties->where('properties.sub_type', str_replace('-', ' ', $sub_t));
 //        }
         if ($beds = $request->bedrooms)
-            $properties->where('properties.bedrooms', $beds);
+            $properties->whereIn('properties.bedrooms', $beds);
         if ($baths = $request->bathrooms)
-            $properties->where('properties.bathrooms', $baths);
+            $properties->whereIn('properties.bathrooms', $baths);
         if ($request->has('area_unit'))
             $area_unit = str_replace('_', ' ', $request->area_unit);
 //        if ($area_unit = $request->area_unit)

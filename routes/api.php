@@ -21,6 +21,9 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('change-password', 'AuthController@changePassword');
         Route::post('logout', 'AuthController@logout');
     });
+//    Route::group(['middleware' => 'auth:api', 'namespace' => 'Support'], function () {
+//        Route::post('support', 'SupportController@sendSupportMail');
+//    });
 
     Route::group(['middleware' => 'auth:api', 'namespace' => 'UserProfile'], function () {
         Route::post('update-profile', 'UserProfileController@updateProfile');
