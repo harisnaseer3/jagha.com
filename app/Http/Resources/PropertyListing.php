@@ -21,6 +21,7 @@ class PropertyListing
             }
 
 
+
             array_push($clean_results, [
                 'id' => $item->id,
                 'city' => $item->city,

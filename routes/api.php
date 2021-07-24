@@ -21,14 +21,22 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('change-password', 'AuthController@changePassword');
         Route::post('logout', 'AuthController@logout');
     });
+//    Route::group(['middleware' => 'auth:api', 'namespace' => 'Support'], function () {
+//        Route::post('support', 'SupportController@sendSupportMail');
+//    });
 
     Route::group(['middleware' => 'auth:api', 'namespace' => 'UserProfile'], function () {
         Route::post('update-profile', 'UserProfileController@updateProfile');
-        Route::post('favourites', 'UserProfileController@favourites');
 
-        Route::post('add-favourites', 'UserProfileController@AddFavourite');
-        Route::post('remove-favourites', 'UserProfileController@RemoveFavourite');
+        Route::get('favourite', 'UserProfileController@favourites');
+        Route::post('favourite', 'UserProfileController@AddFavourite');
+        Route::delete('favourite/{property_id}', 'UserProfileController@RemoveFavourite');
+
         Route::get('my-properties', 'UserProfileController@myProperties');
+
+        Route::post('save-search', 'UserProfileController@addUserSearch');
+        Route::get('save-search', 'UserProfileController@getUserSaveSearches');
+        Route::delete('save-search/{save_search}', 'UserProfileController@removeUserSearch');
 
 
     });
