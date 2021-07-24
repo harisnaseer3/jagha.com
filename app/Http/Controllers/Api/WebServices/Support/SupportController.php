@@ -11,9 +11,7 @@ use App\Http\Controllers\CountTableController;
 use App\Models\Agency;
 use App\Models\Property;
 use App\Models\Support;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\FooterController;
-use Illuminate\Support\Facades\DB;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -34,19 +32,17 @@ class SupportController extends Controller
 
     public function sendSupportMail(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'message' => 'string|required|max:1024|min:25',
             'inquire_type' => 'required|in:property,agency,other',
-            'property_id' => 'required_if:inquire_about,=,property',
-            'agency_id' => 'required_if:inquire_about,=,agency',
-            'topic' => 'required_if:inquire_about,=,other',
+            'property_id' => 'required_if:inquire_type,=,property',
+            'agency_id' => 'required_if:inquire_type,=,agency',
+            'topic' => 'required_if:inquire_type,=,other',
             'url' => 'nullable|url',
         ]);
         if ($validator->fails()) {
-//            dd($validator);
             return (new \App\Http\JsonResponse)->failed($validator->getMessageBag());
-
-//            return redirect()->back()->withInput()->withErrors($validator)->with('error', 'Error in submitting request, Please resolve the following error(s).');
         }
         try {
 
