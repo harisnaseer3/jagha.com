@@ -96,7 +96,7 @@ class PropertySearchController extends Controller
             $last_id = ($page - 1) * $limit;
             $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
             $properties = $properties->take($limit)->skip($last_id)->get();
-            $properties = (new PropertyListingResource)->myToArray($properties);
+            $properties = (new PropertyListingResource)->myToArray($properties,$area_unit);
             $properties = new Collection($properties);
 
             $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
