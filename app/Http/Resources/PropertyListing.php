@@ -21,7 +21,6 @@ class PropertyListing
             }
 
 
-
             array_push($clean_results, [
                 'id' => $item->id,
                 'city' => $item->city,
@@ -93,4 +92,59 @@ class PropertyListing
             'agency' => $property->agency_id
         ];
     }
+
+    public function dataCleaning($properties, $area_unit = null, $area = null)
+    {
+        $clean_results = array();
+
+
+        foreach ($properties as $index => $item) {
+
+            $image = '';
+            if (empty($item->images)) {
+                $image = strpos($item->images[0]->name, '.webp') !== false ? $item->image : $item->image . '.webp';
+            }
+
+            array_push($clean_results, [
+                'id' => $item->id,
+                'city' => $item->city->name,
+                'location' => $item->location->name,
+                'title' => $item->title,
+                'description' => $item->user_id !== 1 ? $item->description : '',
+                'image' => $item->user_id !== 1 ? $image : '',
+
+                'type' => $item->type,
+                'sub_type' => $item->sub_type,
+                'purpose' => $item->purpose,
+                'sub_purpose' => $item->sub_purpose,
+                'price' => $item->price,
+                'land_area' => $area == null ? $item->land_area : $item->$area,
+                'area_unit' => $area_unit != null ? $area_unit : $item->area_unit,
+                'bedrooms' => $item->bedrooms,
+                'bathrooms' => $item->bathrooms,
+
+                'golden_listing' => $item->golden_listing,
+                'platinum_listing' => $item->platinum_listing,
+                'contact_person' => $item->contact_person,
+                'phone' => $item->phone,
+                'cell' => $item->cell,
+                'email' => $item->email,
+                'views' => $item->views,
+
+                'favorites' => $item->favorite_count,
+                'user_favourite' => isset($item->favorites[0]->user_id) ? 1 : 0,
+                'activated_at' => $item->activated_at,
+                'agency' => isset($item->agency) ? $item->agency->agency_title : '',
+                'logo' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->logo : '',
+                'agency_phone' => isset($item->agency)?  $item->agency->phone : '',
+                'agency_cell' => isset($item->agency) ?  $item->agency->cell : '',
+                'ceo' => isset($item->agency) ? $item->ceo_name : '',
+                'agency_description' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->description : '',
+            ]);
+        }
+        return $clean_results;
+
+
+    }
 }
+

@@ -34,11 +34,12 @@ class City extends Model
 
     public function locations()
     {
-        return $this->hasMany(Location::class);
+        return $this->hasMany(Location::class, 'city_id');
     }
+
     public function properties()
     {
-        return $this->hasMany(Property::class);
+        return $this->hasMany(Property::class, 'city_id');
     }
 
     public static function citiesList()
