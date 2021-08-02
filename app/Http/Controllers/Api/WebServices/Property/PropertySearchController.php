@@ -118,7 +118,9 @@ class PropertySearchController extends Controller
         $limit = 10;
 
 
-        if (count($request->all()) == 0 || count($request->all()) == 1 && $request->has('page')) {
+        if (count($request->all()) == 0 || count($request->all()) <= 2 && $request->has('page') || $request->has('area_unit')) {
+
+            $area_unit = str_replace('_', ' ', $request->area_unit);
             $total_count = DB::table('total_property_count')->select('property_count')->first()->property_count;
 
 
@@ -126,7 +128,7 @@ class PropertySearchController extends Controller
             $last_id = ($page - 1) * $limit;
             $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
             $properties = $properties->take($limit)->skip($last_id)->get();
-            $properties = (new PropertyListingResource)->myToArray($properties);
+            $properties = (new PropertyListingResource)->myToArray($properties,$area_unit);
             $properties = new Collection($properties);
 
             $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
