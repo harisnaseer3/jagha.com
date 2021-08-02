@@ -116,7 +116,7 @@ class PropertyListing
                 'type' => $item->type,
                 'sub_type' => $item->sub_type,
                 'purpose' => $item->purpose,
-                'sub_purpose' => $item->sub_purpose,
+//                'sub_purpose' => $item->sub_purpose,
                 'price' => $item->price,
                 'land_area' => $area == null ? $item->land_area : $item->$area,
                 'area_unit' => $area_unit != null ? $area_unit : $item->area_unit,
