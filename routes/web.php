@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexController@index')->name('home');
 
-//Route::get('/check/pakistan/', 'TestController@index');
+//Route::get('testapisearch', 'Test\TrackUrlController@search');
 
 
 //ajax calls

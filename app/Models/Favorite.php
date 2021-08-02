@@ -11,8 +11,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @mixin Builder
  */
-class Favorite extends Pivot
+class Favorite extends Model
 {
-    use SoftDeletes;
-    //
+
+    protected $table = 'favorites';
+    public $fillable = [
+        'user_id',
+        'property_id',
+
+    ];
+
+    public function property()
+    {
+        return $this->hasOne(Property::class);
+    }
 }

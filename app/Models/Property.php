@@ -122,12 +122,12 @@ class Property extends Model
 
     public function city()
     {
-        return $this->belongsTo(City::class, 'city_id');
+        return $this->belongsTo(City::class);
     }
 
     public function images()
     {
-        return $this->hasMany(Image::class)->orderBy('order', 'ASC');
+        return $this->hasMany(Image::class, 'property_id')->orderBy('order', 'ASC');
     }
 
     public function videos()
@@ -164,6 +164,17 @@ class Property extends Model
     {
         return $this->belongsToMany(User::class)->using(Favorite::class)->withTimestamps();
 
+    }
+
+//    public function favourites()
+//    {
+//        return $this->belongsToMany(Favorite::class);
+//
+//    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'property_id');
     }
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
