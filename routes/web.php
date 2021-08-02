@@ -7,7 +7,6 @@ Route::get('/', 'IndexController@index')->name('home');
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
 
-
 //ajax calls
 
 Route::get('/locations', 'Dashboard\LocationController@cityLocations');

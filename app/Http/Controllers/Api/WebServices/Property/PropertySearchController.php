@@ -127,28 +127,10 @@ class PropertySearchController extends Controller
         $user_id = auth()->guard('api')->check() ? auth()->guard('api')->user()->getAuthIdentifier() : null;
         $properties = (new \App\Models\Property)->select('id', 'type', 'user_id', 'sub_type', 'purpose', 'price',
             'land_area', 'title', 'description', 'area_unit', 'bedrooms', 'bathrooms', 'golden_listing', 'platinum_listing', 'contact_person', 'phone', 'cell',
-            'email', 'views', 'activated_at', 'city_id', 'location_id', 'agency_id')
+            'email', 'views', 'activated_at', 'favorites As favorite_count', 'city_id', 'location_id', 'agency_id')
             ->where('purpose', $purpose)
-            ->where('status', 'active')
-            ->with(['city' => function ($query) {
-                $query->select('name', 'id');
-            }])
-            ->with(['location' => function ($query) {
-                $query->select('name', 'id');
-                if ($loc = \request('location')) {
-                    $query = $query->where('id', $loc);
-                }
-            }])
-            ->with(['images' => function ($query) {
-                $query->select('name', 'property_id')->limit(1);
-            }])
-            ->with(['favorites' => function ($query) use ($user_id) {
-                $query->select('user_id', 'property_id')
-                    ->where('user_id', $user_id);
-            }])
-            ->with(['agency' => function ($query) {
-                $query->select('title AS agency_title', 'logo', 'ceo_name', 'phone', 'cell', 'description', 'id');
-            }]);
+            ->where('status', 'active');
+
         if ($c = $request->city) {
             $properties->where('city_id', $c);
         }
@@ -226,13 +208,49 @@ class PropertySearchController extends Controller
         }
 
 
-        $count = $properties->count();
+//        Model::select(DB: raw('count(1)'))->first();
+//
+//
+//        $contact_list->contacts()->where('is_active', 1)->count();
+
+
+
+
+
+
+        $count = $properties->select()->count();
 
 
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
         $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-        $newproperties = $properties->take($limit)->skip($last_id)->get();
+
+
+        $newproperties = $properties->limit($limit)->skip($last_id);
+        $newproperties = $this->sortPropertyListing($sort, $sort_area, $newproperties)
+            ->with(['city' => function ($query) {
+                $query->select('name', 'id');
+            }])
+            ->with(['city' => function ($query) {
+                $query->select('name', 'id');
+            }])
+            ->with(['location' => function ($query) {
+                $query->select('name', 'id');
+                if ($loc = \request('location')) {
+                    $query = $query->where('id', $loc);
+                }
+            }])
+            ->with(['images' => function ($query) {
+                $query->select('name', 'property_id')->limit(1);
+            }])
+            ->with(['favorites' => function ($query) use ($user_id) {
+                $query->select('user_id', 'property_id')
+                    ->where('user_id', $user_id);
+            }])
+            ->with(['agency' => function ($query) {
+                $query->select('title AS agency_title', 'logo', 'ceo_name', 'phone', 'cell', 'description', 'id');
+            }])
+            ->get();
 
 
         $newproperties = (new PropertyListingResource)->dataCleaning($newproperties, $area_unit);
@@ -401,5 +419,15 @@ class PropertySearchController extends Controller
         } else
             return (new \App\Http\JsonResponse)->unprocessable();
 
+    }
+
+    public function count()
+    {
+        return $this->prepareCountQuery()->count();
+    }
+    protected function prepareCountQuery()
+    {
+        $builder = clone $this->query;
+        return $builder;
     }
 }
