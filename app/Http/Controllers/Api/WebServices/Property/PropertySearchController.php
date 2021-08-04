@@ -96,7 +96,7 @@ class PropertySearchController extends Controller
             $last_id = ($page - 1) * $limit;
             $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
             $properties = $properties->take($limit)->skip($last_id)->get();
-            $properties = (new PropertyListingResource)->myToArray($properties,$area_unit);
+            $properties = (new PropertyListingResource)->myToArray($properties, $area_unit);
             $properties = new Collection($properties);
 
             $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
@@ -206,26 +206,12 @@ class PropertySearchController extends Controller
                 $properties->where($area_column_wrt_unit, '<=', $max_area);
             }
         }
-
-
-//        Model::select(DB: raw('count(1)'))->first();
-//
-//
-//        $contact_list->contacts()->where('is_active', 1)->count();
-
-
-
-
-
-
         $count = $properties->select()->count();
 
 
+//
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-
         $newproperties = $properties->limit($limit)->skip($last_id);
         $newproperties = $this->sortPropertyListing($sort, $sort_area, $newproperties)
             ->with(['city' => function ($query) {
@@ -425,6 +411,7 @@ class PropertySearchController extends Controller
     {
         return $this->prepareCountQuery()->count();
     }
+
     protected function prepareCountQuery()
     {
         $builder = clone $this->query;
