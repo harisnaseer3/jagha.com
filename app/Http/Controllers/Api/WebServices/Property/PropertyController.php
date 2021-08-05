@@ -31,12 +31,6 @@ use Exception;
 
 class PropertyController extends Controller
 {
-    const CITY = 000;
-    const LOCATION = 000;
-    const PRICE = 00;
-    const LANDAREA = 00;
-    const DEFAULT = NULL;
-
 
     // Display detailed page of property
     public function show(Request $request)
@@ -51,7 +45,7 @@ class PropertyController extends Controller
 
             $is_favorite = false;
 
-            if (Auth::guard('api')->check()) {
+            if (auth::guard('api')->check()) {
                 $is_favorite = DB::table('favorites')->select('id')
                     ->where([
                         ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
@@ -107,6 +101,10 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
+
         if ($request->has('is_draft') && $request->is('is_draft') == 1)
             return $this->defaultStore($request, 'draft');
         else
@@ -121,9 +119,9 @@ class PropertyController extends Controller
 //
 //    }
 
-
     public function defaultStore(Request $request, $status)
     {
+
 
         if (count($request->all()) > 0) {
             if ($request->hasFile('images')) {
@@ -169,7 +167,7 @@ class PropertyController extends Controller
                 }
 
 
-                $max_id = DB::table('properties')->select('id')->pluck('id')->last();
+                $max_id = DB::table('properties')->select('id')->orderBy('id', 'desc')->first()->id;
 
                 $max_id = $max_id + 1;
 
@@ -240,7 +238,7 @@ class PropertyController extends Controller
 
 
             } catch (Exception $e) {
-//                return (new \App\Http\JsonResponse)->failed($e->getMessage());
+                return (new \App\Http\JsonResponse)->failed($e->getMessage());
                 return (new \App\Http\JsonResponse)->failed('Failed to insert data, Please try again.');
             }
         }
@@ -251,6 +249,9 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         if (!$property->exists()) {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
@@ -302,6 +303,9 @@ class PropertyController extends Controller
 //
     public function update(Request $request, Property $property)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         $status = 'pending';
         if ($request->has('is_draft') && $request->is_draft == 1)
             $status = 'draft';
@@ -423,6 +427,9 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         if ($property->status == 'deleted') {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }

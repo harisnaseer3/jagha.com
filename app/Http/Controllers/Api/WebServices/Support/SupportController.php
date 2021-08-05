@@ -32,6 +32,9 @@ class SupportController extends Controller
 
     public function sendSupportMail(Request $request)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
 
         $validator = Validator::make($request->all(), [
             'message' => 'string|required|max:1024|min:25',
