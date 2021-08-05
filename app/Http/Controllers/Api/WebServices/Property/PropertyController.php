@@ -51,7 +51,7 @@ class PropertyController extends Controller
 
             $is_favorite = false;
 
-            if (Auth::guard('api')->check()) {
+            if (auth::guard('api')->check()) {
                 $is_favorite = DB::table('favorites')->select('id')
                     ->where([
                         ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
@@ -107,6 +107,7 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+
         if ($request->has('is_draft') && $request->is('is_draft') == 1)
             return $this->defaultStore($request, 'draft');
         else
@@ -169,7 +170,7 @@ class PropertyController extends Controller
                 }
 
 
-                $max_id = DB::table('properties')->select('id')->pluck('id')->last();
+                $max_id = DB::table('properties')->select('id')->orderBy('id', 'desc')->first()->id;
 
                 $max_id = $max_id + 1;
 
@@ -240,7 +241,7 @@ class PropertyController extends Controller
 
 
             } catch (Exception $e) {
-//                return (new \App\Http\JsonResponse)->failed($e->getMessage());
+                return (new \App\Http\JsonResponse)->failed($e->getMessage());
                 return (new \App\Http\JsonResponse)->failed('Failed to insert data, Please try again.');
             }
         }

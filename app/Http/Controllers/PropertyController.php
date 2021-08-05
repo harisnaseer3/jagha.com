@@ -220,7 +220,8 @@ class PropertyController extends Controller
             else if ($request->input('property_subtype-Commercial')) $subtype = $request->input('property_subtype-Commercial');
             $max_id = 0;
 
-            $max_id = DB::table('properties')->select('id')->pluck('id')->last();
+//            $max_id = DB::table('properties')->select('id')->pluck('id')->last();
+            $max_id = DB::table('properties')->select('id')->orderBy('id', 'desc')->first()->id;
             $max_id = $max_id + 1;
 
             $reference = date("Y") . '-' . str_pad($max_id, 8, 0, STR_PAD_LEFT);
