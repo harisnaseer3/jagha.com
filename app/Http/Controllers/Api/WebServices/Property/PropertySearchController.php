@@ -83,28 +83,29 @@ class PropertySearchController extends Controller
         $limit = 10;
 
 
-        if ((count($request->all()) == 0 || count($request->all()) <= 2) && ($request->has('page') || $request->has('area_unit'))) {
-
-
-            $area_unit = str_replace('_', ' ', $request->area_unit);
-
-            $properties = $this->listingFrontend();
-            $total_count = DB::table('total_property_count')->select('property_count')->first()->property_count;
-
-
-            $page = (isset($request->page)) ? $request->page : 1;
-            $last_id = ($page - 1) * $limit;
-            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-            $properties = $properties->take($limit)->skip($last_id)->get();
-            $properties = (new PropertyListingResource)->myToArray($properties,$area_unit);
-            $properties = new Collection($properties);
-
-            $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
-            $paginatedSearchResults->setPath($request->url());
-            $paginatedSearchResults->appends(request()->query());
-            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
-
-        }
+//        if ((count($request->all()) == 0 || count($request->all()) <= 2) && ($request->has('page') || $request->has('area_unit'))) {
+//            print('ll');
+//            exit();
+//
+//            $area_unit = str_replace('_', ' ', $request->area_unit);
+//
+//            $properties = $this->listingFrontend();
+//            $total_count = DB::table('total_property_count')->select('property_count')->first()->property_count;
+//
+//
+//            $page = (isset($request->page)) ? $request->page : 1;
+//            $last_id = ($page - 1) * $limit;
+//            $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
+//            $properties = $properties->take($limit)->skip($last_id)->get();
+//            $properties = (new PropertyListingResource)->myToArray($properties, $area_unit);
+//            $properties = new Collection($properties);
+//
+//            $paginatedSearchResults = new LengthAwarePaginator($properties, $total_count, $limit);
+//            $paginatedSearchResults->setPath($request->url());
+//            $paginatedSearchResults->appends(request()->query());
+//            return (new \App\Http\JsonResponse)->success("Search Result", $paginatedSearchResults);
+//
+//        }
 
 
         $city = null;
@@ -133,6 +134,12 @@ class PropertySearchController extends Controller
 
         if ($c = $request->city) {
             $properties->where('city_id', $c);
+        } else {
+            $properties->where('city_id', 1);
+        }
+
+        if ($loc = $request->location) {
+            $properties->where('location_id', $loc);
         }
 
         if ($beds = $request->bedrooms) {
@@ -208,24 +215,12 @@ class PropertySearchController extends Controller
         }
 
 
-//        Model::select(DB: raw('count(1)'))->first();
-//
-//
-//        $contact_list->contacts()->where('is_active', 1)->count();
-
-
-
-
-
-
         $count = $properties->select()->count();
 
 
+//
         $page = (isset($request->page)) ? $request->page : 1;
         $last_id = ($page - 1) * $limit;
-        $properties = $this->sortPropertyListing($sort, $sort_area, $properties);
-
-
         $newproperties = $properties->limit($limit)->skip($last_id);
         $newproperties = $this->sortPropertyListing($sort, $sort_area, $newproperties)
             ->with(['city' => function ($query) {
@@ -236,9 +231,6 @@ class PropertySearchController extends Controller
             }])
             ->with(['location' => function ($query) {
                 $query->select('name', 'id');
-                if ($loc = \request('location')) {
-                    $query = $query->where('id', $loc);
-                }
             }])
             ->with(['images' => function ($query) {
                 $query->select('name', 'property_id')->limit(1);
@@ -425,6 +417,7 @@ class PropertySearchController extends Controller
     {
         return $this->prepareCountQuery()->count();
     }
+
     protected function prepareCountQuery()
     {
         $builder = clone $this->query;
