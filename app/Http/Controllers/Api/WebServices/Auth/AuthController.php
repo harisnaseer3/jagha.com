@@ -97,6 +97,9 @@ class AuthController extends Controller
 
     public function forgotPassword(Request $request)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
@@ -127,6 +130,9 @@ class AuthController extends Controller
 
     public function changePassword(Request $request)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         $validator = Validator::make($request->all(), [
             'current_password' => 'min:8|required',
             'new_password' => ['required', 'string', 'min:8', 'same:confirm_new_password', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/'],

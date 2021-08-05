@@ -30,7 +30,7 @@ class UserProfileController extends Controller
             return (new \App\Http\JsonResponse)->unprocessable($validator->errors()->all());
         }
 
-        (new Account)->updateOrCreate(['user_id' => Auth::guard('api')->user()->getAuthIdentifier()], [
+        (new Account)->updateOrCreate(['user_id' => auth::guard('api')->user()->getAuthIdentifier()], [
             'default_area_unit' => $request->area_unit,
             'default_language' => $request->language,
         ]);

@@ -31,12 +31,6 @@ use Exception;
 
 class PropertyController extends Controller
 {
-    const CITY = 000;
-    const LOCATION = 000;
-    const PRICE = 00;
-    const LANDAREA = 00;
-    const DEFAULT = NULL;
-
 
     // Display detailed page of property
     public function show(Request $request)
@@ -107,6 +101,9 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
 
         if ($request->has('is_draft') && $request->is('is_draft') == 1)
             return $this->defaultStore($request, 'draft');
@@ -122,9 +119,9 @@ class PropertyController extends Controller
 //
 //    }
 
-
     public function defaultStore(Request $request, $status)
     {
+
 
         if (count($request->all()) > 0) {
             if ($request->hasFile('images')) {
@@ -252,6 +249,9 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         if (!$property->exists()) {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
@@ -303,6 +303,9 @@ class PropertyController extends Controller
 //
     public function update(Request $request, Property $property)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         $status = 'pending';
         if ($request->has('is_draft') && $request->is_draft == 1)
             $status = 'draft';
@@ -424,6 +427,9 @@ class PropertyController extends Controller
 
     public function destroy(Property $property)
     {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
         if ($property->status == 'deleted') {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
