@@ -178,7 +178,12 @@ class UserProfileController extends Controller
 
     public function myProperties()
     {
-        $user_id = Auth::guard('api')->user()->id;
+        $user = auth()->guard('api')->user();
+        if (!$user->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
+        $user_id = $user->id;
+
 
         $properties_pending = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'pending')->get();
         $properties_active = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'active')->get();
@@ -233,7 +238,7 @@ class UserProfileController extends Controller
                 'user_id' => auth::guard('api')->user()->getAuthIdentifier(),
                 'id' => $id
             ])->exists()) {
-                DB::table('user_searches')->where('id',$id)->delete();
+                DB::table('user_searches')->where('id', $id)->delete();
                 return (new \App\Http\JsonResponse)->success("Search removed successfully");
             } else
                 return (new \App\Http\JsonResponse)->unprocessable();

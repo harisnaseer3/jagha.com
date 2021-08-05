@@ -12,8 +12,8 @@ Route::group(['namespace' => 'WebServices'], function () {
     Route::group(['namespace' => 'Auth'], function () {
         Route::post('register', 'AuthController@register');
         Route::post('login', 'AuthController@login');
-        Route::post('forgot-password', 'AuthController@forgotPassword');
         Route::post('social-login', 'AuthController@socialLogin');
+        Route::post('forgot-password', 'AuthController@forgotPassword');
 
     });
 
@@ -22,8 +22,10 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('logout', 'AuthController@logout');
     });
 
-    Route::group(['middleware' => 'auth:api', 'namespace' => 'Support'], function () {
-        Route::post('support', 'SupportController@sendSupportMail');
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::get('my-properties', 'UserProfile\UserProfileController@myProperties');
+        Route::post('support', 'Support\SupportController@sendSupportMail');
+
     });
 
     Route::group(['middleware' => 'auth:api', 'namespace' => 'UserProfile'], function () {
@@ -33,7 +35,6 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('favourite', 'UserProfileController@AddFavourite');
         Route::delete('favourite/{property_id}', 'UserProfileController@RemoveFavourite');
 
-        Route::get('my-properties', 'UserProfileController@myProperties');
 
         Route::post('save-search', 'UserProfileController@addUserSearch');
         Route::get('save-search', 'UserProfileController@getUserSaveSearches');
@@ -49,7 +50,7 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::get('search', 'PropertySearchController@search');
         Route::get('generic-search', 'PropertySearchController@genericSearch');
 
-        Route::group(['middleware' => 'auth:api'], function () {
+        Route::group(['middleware' => ['auth:api']], function () {
             Route::resource('property', 'PropertyController')->only(['store', 'edit', 'update', 'destroy']);
 //            Route::post('draft-property', 'PropertyController@saveDraft');
 
