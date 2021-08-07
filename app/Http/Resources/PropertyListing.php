@@ -38,8 +38,8 @@ class PropertyListing
                 'bedrooms' => $item->bedrooms,
                 'bathrooms' => $item->bathrooms,
 
-                'golden_listing' => $item->golden_listing,
-                'platinum_listing' => $item->platinum_listing,
+                'golden_listing' => $item->golden_listing == 1,
+                'platinum_listing' => $item->platinum_listing == 1,
                 'contact_person' => $item->contact_person,
                 'phone' => $item->phone,
                 'cell' => $item->cell,

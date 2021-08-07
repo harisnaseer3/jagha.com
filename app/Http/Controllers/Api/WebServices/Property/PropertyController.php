@@ -238,7 +238,7 @@ class PropertyController extends Controller
 
 
             } catch (Exception $e) {
-                return (new \App\Http\JsonResponse)->failed($e->getMessage());
+//                return (new \App\Http\JsonResponse)->failed($e->getMessage());
                 return (new \App\Http\JsonResponse)->failed('Failed to insert data, Please try again.');
             }
         }
