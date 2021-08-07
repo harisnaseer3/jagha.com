@@ -101,8 +101,8 @@ class PropertyListing
         foreach ($properties as $index => $item) {
 
             $image = '';
-            if (empty($item->images)) {
-                $image = strpos($item->images[0]->name, '.webp') !== false ? $item->image : $item->image . '.webp';
+            if (!empty($item->images)) {
+                $image = strpos($item->images[0]->name, '.webp') !== false ? $item->images[0]->name : $item->images[0]->name . '.webp';
             }
 
             array_push($clean_results, [
@@ -131,13 +131,13 @@ class PropertyListing
                 'email' => $item->email,
                 'views' => $item->views,
 
-                'favorites' => $item->favorite_count,
-                'user_favourite' => isset($item->favorites[0]->user_id) ? 1 : 0,
+                'favorites_count' => $item->favorites,
+                'user_favourite' => isset($item->userFavorites[0]->user_id) ? 1 : 0,
                 'activated_at' => $item->activated_at,
                 'agency' => isset($item->agency) ? $item->agency->agency_title : '',
                 'logo' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->logo : '',
-                'agency_phone' => isset($item->agency)?  $item->agency->phone : '',
-                'agency_cell' => isset($item->agency) ?  $item->agency->cell : '',
+                'agency_phone' => isset($item->agency) ? $item->agency->phone : '',
+                'agency_cell' => isset($item->agency) ? $item->agency->cell : '',
                 'ceo' => isset($item->agency) ? $item->ceo_name : '',
                 'agency_description' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->description : '',
             ]);

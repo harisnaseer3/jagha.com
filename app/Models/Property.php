@@ -129,7 +129,6 @@ class Property extends Model
     {
         return $this->hasMany(Image::class, 'property_id')->orderBy('order', 'ASC');
     }
-
     public function videos()
     {
         return $this->hasMany(Video::class);
@@ -172,7 +171,7 @@ class Property extends Model
 //
 //    }
 
-    public function favorites()
+    public function userFavorites()
     {
         return $this->hasMany(Favorite::class, 'property_id');
     }
