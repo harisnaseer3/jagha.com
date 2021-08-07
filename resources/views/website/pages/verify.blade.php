@@ -2,7 +2,7 @@
 
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}" async defer>
-    <link rel="stylesheet" type="text/css" href="{{asset('website/cssverification.css')}}" async defer>
+    <link rel="stylesheet" type="text/css" href="{{asset('website/css/verification.css')}}" async defer>
 
 @endsection
 
@@ -26,18 +26,31 @@
                             </div>
                         @endif
                         <div class="mb-3 line-height font-16">{{ __('Before proceeding, please check your email for a verification link.') }}</div>
-                        <div class="mb-3 line-height color-red font-14"> {{ __('If you did not receive the email.') }} </div>
+                        @if(!is_null(\Illuminate\Support\Facades\Auth::user()->email))
+                            <div class="mb-3 line-height color-red font-14"> {{ __('If you did not receive the email.') }} </div>
+                        @endif
 
                         <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
-
                             @csrf
-
                             <div class="form-group clearfix mb-0">
-                                <button type="submit" class="btn-md btn-theme btn-block" id="reg-form-submit">
-                                    {{ __('click here to request another') }}
-                                </button>
-{{--                                <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.--}}
+                                @if(is_null(\Illuminate\Support\Facades\Auth::user()->email))
+                                    <input type="email" class="form-control input-text mb-1 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required
+                                           autocomplete="email" autofocus placeholder="Email Address" style="padding: 13px 50px 13px 50px; height:40px">
 
+                                    @error('email')
+                                    <span class="invalid-feedback font-12 my-2" role="alert">
+                                        <strong style="color: #e3342f">{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+
+                                    <button type="submit" class="btn-md btn-theme btn-block mt-2" id="reg-form-submit">
+                                        {{ __('click here to request link') }}
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn-md btn-theme btn-block mt-2" id="reg-form-submit">
+                                        {{ __('click here to request another') }}
+                                    </button>
+                                @endif
                             </div>
                         </form>
                     </div>
