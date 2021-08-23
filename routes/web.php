@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexController@index')->name('home');
+Route::get('/privacy-policy', 'PolicyController@privacyPolicy');
+Route::get('/terms-and-conditions', 'PolicyController@termAndCondition');
+
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
 
