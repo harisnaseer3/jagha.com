@@ -25,7 +25,7 @@ class SocialFacebookAccountService
             ]);
             $email = $providerUser->getEmail();
             $user = '';
-            if (isset($email)) {
+            if (isset($email) && $email !== '') {
                 $user = User::whereEmail($providerUser->getEmail())->first();
                 if (!$user) {
                     $user = User::create([
