@@ -122,7 +122,6 @@
         .contact-us-tag:hover {
             background-color: #ffffff;
             color: grey;
-
         }
 
     </style>
@@ -320,7 +319,7 @@
                                 <div class="medium-heading">Contact Us</div>
                                 <div class="mb-5 mt-3 paragraph-text">For any questions or concerns regarding your privacy, you may contact us using the following details:
                                     <br><br>
-                                    <a class="contact-us-tag" href="https://www.aboutpakistan.com/contact-us.php" style="color: #01411c;">https://www.aboutpakistan.com/contact-us.php</a>
+                                    <a class="contact-us-tag" href="https://www.aboutpakistan.com/contact-us.php" style="color: #01411c;">Contact Us</a>
                                 </div>
                             </div>
                             {{--                            <div>--}}

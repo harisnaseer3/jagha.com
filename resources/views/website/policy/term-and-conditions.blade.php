@@ -28,9 +28,9 @@
 
         .mid-heading {
             color: black;
-            text-align: center;
             font-stretch: expanded;
             font-size: 18px;
+            line-height: 1.5rem;
 
         }
 
@@ -101,6 +101,29 @@
             margin-top: 40px;
         }
 
+        .medium-heading {
+            font-weight: bold;
+            font-size: large;
+            color: black;
+        }
+
+        .paragraph-text {
+            color: black;
+            font-stretch: expanded;
+            font-size: 18px;
+            line-height: 1.5rem;
+            /*padding-left: 6%;*/
+        }
+
+        ul.style {
+            list-style-type: square;
+        }
+
+        .contact-us-tag:hover {
+            background-color: #ffffff;
+            color: grey;
+        }
+
     </style>
 @endsection
 
@@ -113,46 +136,94 @@
             <div class="card">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 mb-5">
-                        <h2 class="heading-support">SUPPORT CENTER</h2>
+                        <h2 class="heading-support">Terms and Conditions </h2>
                         <hr class="new2">
-
-                        <p class="mid-heading">We'd <i class="fa fa-heart-o color-white"></i> to help!</p>
-
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-sm-12 padding-left mb-3">
+                    <div class="col-sm-12 mb-3">
+                        <div>
+                            <div class="medium-heading">
+                                Terms
+                            </div>
+                            <div class="mb-5 mt-3 paragraph-text">
+                                By accessing this Website, accessible from https://www.aboutpakistan.com/, you are agreeing to be bound by these Website Terms and Conditions of Use and agree that you
+                                are responsible for the agreement with any applicable local laws. If you disagree with any of these terms, you are prohibited from accessing this site. The materials
+                                contained in this Website are protected by copyright and trade mark law.
+                            </div>
 
-                    </div>
-                    <div class="col-md-6  padding-left padding-right padding-top">
-                        <p class="contact-info mb-4 pr-15"><i class="fa fa-phone mr-2 color-white"></i>+92 51 4862317</p>
-                        <p class="contact-info mb-4 pr-15"><i class="fa fa-mobile mr-2" style="font-size:24px;"></i>+92 315 5141959</p>
-                        <p class="contact-info mb-4 pr-15"><i class="fa fa-envelope mr-2"></i>info@aboutpakistan.com</p>
-                        <div class="divider"></div>
-                        <div class="div-center color-white mt-2"> Join us on Social</div>
-                        <div class="div-center color-white mt-2">
-                            <a class="media-hover mr-2" href="https://www.facebook.com/aboutpkofficial" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>
-                            <a class="media-hover mr-2" href="https://twitter.com/aboutpkofficial" target="_blank"><i class="fab fa-twitter fa-2x"></i> </a>
-                            <a class="media-hover mr-2" href="https://www.linkedin.com/company/aboutpkofficial" target="_blank"><i class="fab fa-linkedin in fa-2x"></i> </a>
-                            <a class="media-hover mr-2" href="https://www.instagram.com/aboutpakofficial/" target="_blank"><i class="fab fa-instagram fa-2x"></i> </a>
-                            <a class="media-hover mr-2" href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank"><i class="fab fa-youtube fa-2x"></i> </a>
+                            <div class="medium-heading">Use License</div>
+                            <div class="mb-5 mt-3 paragraph-text">
+                                Permission is granted to temporarily download one copy of the materials on About Pakistan's Website for personal, non-commercial transitory viewing only. This is the
+                                grant of a license, not a transfer of title, and under this license you may not:
+                                <ul class="mb-5 mt-3 mid-heading style">
+                                    <li class="mb-3 ml-4">Modify or copy the materials</li>
+                                    <li class="mb-3 ml-4">Use the materials for any commercial purpose or for any public display</li>
+                                    <li class="mb-3 ml-4">Attempt to reverse engineer any software contained on About Pakistan's Website</li>
+                                    <li class="mb-3 ml-4">Remove any copyright or other proprietary notations from the materials; or
+                                        transferring the materials to another person or "mirror" the materials on any other server
+                                    </li>
+                                    <li class="mb-3 ml-4"> This will let About Pakistan to terminate upon violations of any of these restrictions. Upon termination, your viewing right will also be
+                                        terminated and you
+                                        should
+                                    </li>
+                                    <li class="mb-3 ml-4">Destroy any downloaded materials in your possession whether it is printed or electronic format.
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="medium-heading">Disclaimer</div>
+                            <div class="mb-5 mt-3 paragraph-text">All the materials on About Pakistan’s Website are provided "as is". About Pakistan makes no warranties, may it be expressed or
+                                implied, therefore negates all other warranties. Furthermore, About Pakistan does not make any representations concerning the accuracy or reliability of the use of
+                                the materials on its Website or otherwise relating to such materials or any sites linked to this Website.
+                            </div>
+
+                            <div class="medium-heading">Limitations</div>
+                            <div class="mb-5 mt-3 paragraph-text">
+                                About Pakistan or its suppliers will not be hold accountable for any damages that will arise with the use or inability to use the materials on About Pakistan’s Website,
+                                even if About Pakistan or an authorize representative of this Website has been notified, orally or written, of the possibility of such damage. Some jurisdiction does
+                                not allow limitations on implied warranties or limitations of liability for incidental damages, these limitations may not apply to you.
+                            </div>
+                            <div class="medium-heading">Revisions and Errata</div>
+                            <div class="mb-5 mt-3 paragraph-text">
+                                The materials appearing on About Pakistan’s Website may include technical, typographical, or photographic errors. About Pakistan will not promise that any of the
+                                materials in this Website are accurate, complete, or current. About Pakistan may change the materials contained on its website at any time without notice. About
+                                Pakistan does not make any commitment to update the materials.
+                            </div>
+                            <div class="medium-heading">Site Terms of Use Modifications</div>
+                            <div class="mb-5 mt-3 paragraph-text">
+                                About Pakistan may revise these Terms of Use for its Website at any time without prior notice. By using this Website, you are agreeing to be bound by the current
+                                version of these Terms and Conditions of Use.
+                            </div>
+                            <div class="medium-heading">
+                                Links
+                            </div>
+                            <div class="mb-5 mt-3 paragraph-text">About Pakistan has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked
+                                site. The
+                                presence of any link does not imply endorsement by About Pakistan of the site. The use of any linked website is at the user’s own risk.
+                            </div>
+                            <div class="medium-heading">Site Terms of Use Modifications</div>
+                            <div class="mb-5 mt-3 paragraph-text">About Pakistan may revise these Terms of Use for its Website at any time without prior notice. By using this Website, you are agreeing
+                                to be
+                                bound by the current version of these Terms and Conditions of Use.
+                            </div>
+
+                            <div class="medium-heading">Your Privacy
+                            </div>
+                            <div class="mb-5 mt-3 paragraph-text">Please read our Privacy Policy. <a href="{{route('privacy-policy')}}">(Click to Read)</a></div>
+                            <div class="medium-heading">Governing Law</div>
+                            <div class="mb-5 mt-3 paragraph-text">Any claim related to About Pakistan's Website shall be governed by the laws of Pakistan without regards to its conflict of law
+                                provisions.
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
 
     <!-- Footer start -->
     @include('website.includes.footer')
-@endsection
-
-@section('script')
-    <script src="{{asset('website/js/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('plugins/select2/js/select2.full.min.js')}}"></script>
-    <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}"></script>
-    <script src="{{asset('website/js/support-page.js')}}"></script>
-
 @endsection
