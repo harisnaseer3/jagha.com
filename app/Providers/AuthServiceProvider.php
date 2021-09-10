@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Notifications\VerifyApiEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -46,9 +47,18 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         VerifyEmail::toMailUsing(function (User $user, string $verificationUrl) {
-            if (auth()->guard('api')->check()) {
-                $verificationUrl = str_replace('http://property.aboutpakistan.com/', 'https://property.aboutpakistan.com/api/', $verificationUrl);
-            }
+            return (new MailMessage)
+                ->view('website.custom-emails.verification-email-template', [
+                    'user' => $user,
+                    'title' => 'Verify your email address',
+                    'content' => 'Thank you for registering an account on AboutPakistan, before you get started with exploring wonderful places, finding the right property for your stay, or buying yourself a luxury home we just need you to confirm that this is you. Click below to verify your email address:',
+                    'verificationUrl' => $verificationUrl,
+                    'buttonText' => 'Verify your email',
+                    'infoText' => 'If you did not create any account, no further action is required.'
+                ]);
+        });
+        VerifyApiEmail::toMailUsing(function (User $user, string $verificationUrl) {
+
             return (new MailMessage)
                 ->view('website.custom-emails.verification-email-template', [
                     'user' => $user,
