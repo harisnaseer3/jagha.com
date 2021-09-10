@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
-
+use App\Notifications\VerifyApiEmail;
 /**
  * @mixin Builder
  */
@@ -168,5 +168,9 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->save();
         return $user;
 
+    }
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail); // my notification
     }
 }

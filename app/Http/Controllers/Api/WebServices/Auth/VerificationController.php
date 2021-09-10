@@ -60,7 +60,7 @@ class VerificationController extends Controller
 
     public function verify(Request $request)
     {
-        auth()->loginUsingId($request->route('id'));
+//        auth()->loginUsingId($request->route('id'));
 
         if ($request->route('id') != $request->user()->getKey()) {
             throw new AuthorizationException;
@@ -95,7 +95,7 @@ class VerificationController extends Controller
             return (new \App\Http\JsonResponse)->success("Already verified");
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $request->user()->sendApiEmailVerificationNotification();
 
         if ($request->wantsJson()) {
 //            return response(['message' => 'Email Sent']);
