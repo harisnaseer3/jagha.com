@@ -15,11 +15,14 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('social-login', 'AuthController@socialLogin');
         Route::post('forgot-password', 'AuthController@forgotPassword');
 
+
     });
 
     Route::group(['middleware' => 'auth:api', 'namespace' => 'Auth'], function () {
         Route::post('change-password', 'AuthController@changePassword');
         Route::post('logout', 'AuthController@logout');
+        Route::get('/email/resend', 'VerificationController@resend');
+        Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify');
     });
 
     Route::group(['middleware' => ['auth:api']], function () {

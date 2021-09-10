@@ -102,7 +102,8 @@ class PropertyController extends Controller
     public function store(Request $request)
     {
         if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
-            return (new \App\Http\JsonResponse)->forbidden();
+
+            return (new \App\Http\JsonResponse)->unauthorized();
         }
 
         if ($request->has('is_draft') && $request->is('is_draft') == 1)
