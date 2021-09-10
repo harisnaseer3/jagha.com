@@ -47,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
 
         VerifyEmail::toMailUsing(function (User $user, string $verificationUrl) {
             if (auth()->guard('api')->check()) {
-                $verificationUrl = str_replace('https://property.aboutpakistan.com/', 'https://property.aboutpakistan.com/api/', $verificationUrl);
+                $verificationUrl = str_replace('http://property.aboutpakistan.com/', 'https://property.aboutpakistan.com/api/', $verificationUrl);
             }
             return (new MailMessage)
                 ->view('website.custom-emails.verification-email-template', [
