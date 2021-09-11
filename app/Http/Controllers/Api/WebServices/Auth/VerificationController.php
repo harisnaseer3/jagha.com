@@ -60,26 +60,31 @@ class VerificationController extends Controller
 
     public function verify(Request $request)
     {
-//        auth()->loginUsingId($request->route('id'));
+//
+//        if ($request->route('id') != $request->user()->getKey()) {
+//            throw new AuthorizationException;
+//        }
 
-        if ($request->route('id') != $request->user()->getKey()) {
-            throw new AuthorizationException;
+        if ($request->user()) {
+            if ($request->user()->hasVerifiedEmail())
+                return (new \App\Http\JsonResponse)->success("Already verified");
         }
 
-        if ($request->user()->hasVerifiedEmail()) {
+//        if ($request->user()->markEmailAsVerified()) {
+//            event(new Verified($request->user()));
+//        }
 
-//            return response(['message' => 'Already verified']);
-            return (new \App\Http\JsonResponse)->success("Already verified");
+        $user_id = $request->id;
+        $user = User::findOrFail($user_id);
 
+        $date = date("Y-m-d g:i:s");
 
-            // return redirect($this->redirectPath());
-        }
-
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
-        }
-
-        return (new \App\Http\JsonResponse)->success("Successfully verified");
+        $user->email_verified_at = $date;
+        $user->save();
+        if ($request->wantsJson())
+            return (new \App\Http\JsonResponse)->success("Successfully verified");
+        else
+            return redirect()->route('home');
 
     }
 
