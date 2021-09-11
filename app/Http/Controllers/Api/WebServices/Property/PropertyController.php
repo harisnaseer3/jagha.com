@@ -52,6 +52,8 @@ class PropertyController extends Controller
                         ['property_id', '=', $property->id],
                     ])->exists();
             }
+
+            $property->is_favorite = $is_favorite;
             $property->city = $property->city->name;
             $property->location = $property->location->name;
 
@@ -85,7 +87,6 @@ class PropertyController extends Controller
             return (new \App\Http\JsonResponse)->success("Property Details", $data);
         } else
             return (new \App\Http\JsonResponse)->resourceNotFound();
-
 
     }
 

@@ -68,6 +68,7 @@ class Property extends JsonResource
             'email' => $this->email,
             'views' => $this->views,
             'favorites' => $this->favorites,
+            'is_favorite' => isset($property->is_favorite) ? $property->is_favorite : 'false',
             'activated_at' => $this->activated_at,
             'agency' => $agency
         ];
