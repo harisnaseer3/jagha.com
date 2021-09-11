@@ -22,8 +22,9 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('change-password', 'AuthController@changePassword');
         Route::post('logout', 'AuthController@logout');
         Route::get('/email/resend', 'VerificationController@resend')->name('api.verification.resend');
-        Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('api.verification.verify');
+
     });
+    Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('api.verification.verify');
 
     Route::group(['middleware' => ['auth:api']], function () {
         Route::get('my-properties', 'UserProfile\UserProfileController@myProperties');
