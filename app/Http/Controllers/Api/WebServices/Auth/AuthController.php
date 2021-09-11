@@ -51,6 +51,8 @@ class AuthController extends Controller
             'token' => $token
         ];
 
+        $user->sendApiEmailVerificationNotification();
+
         return (new \App\Http\JsonResponse)->success("User Registered Successfully", $data);
     }
 
