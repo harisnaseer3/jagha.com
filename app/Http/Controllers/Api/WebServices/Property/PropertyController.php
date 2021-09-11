@@ -52,6 +52,7 @@ class PropertyController extends Controller
                         ['property_id', '=', $property->id],
                     ])->exists();
             }
+			
 
             $property->is_favorite = $is_favorite;
             $property->city = $property->city->name;
