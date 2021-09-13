@@ -99,9 +99,9 @@ class AuthController extends Controller
 
     public function forgotPassword(Request $request)
     {
-        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
-            return (new \App\Http\JsonResponse)->forbidden();
-        }
+//        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+//            return (new \App\Http\JsonResponse)->forbidden();
+//        }
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
