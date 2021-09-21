@@ -27,16 +27,31 @@ class RecentlyViewedController extends Controller
     public function show()
     {
         if (auth::guard('api')->check()) {
-            //recently_viewed_properties
-            $user_id = auth::guard('api')->user()->id;
-            $properties = RecentlyViewedProperty::select('property_id')->where('user_id', $user_id)->get()->pluck('property_id')->toArray();
 
-            if (count($properties) > 0) {
-                return (new \App\Http\JsonResponse)->success("User Recently Viewed Properties", $properties);
-            } else
-                return (new \App\Http\JsonResponse)->successNoContent();
+            $user_id = auth::guard('api')->user()->id;
+            $property_list = RecentlyViewedProperty::select('property_id')->where('user_id', $user_id)->get()->pluck('property_id')->toArray();
+
+
+            if (count($property_list) > 0) {
+                $properties = (new PropertySearchController)->listingFrontend()
+                    ->whereIn('properties.id', $property_list);
+
+                $sort_area = 'higher_area';
+                $sort = 'newest';
+
+                $properties = (new PropertySearchController())->sortPropertyListing($sort, $sort_area, $properties)->get();
+
+
+                if ($properties->count() > 0) {
+                    $properties = (new PropertyListingResource)->myToArray($properties);
+                    return (new \App\Http\JsonResponse)->success("User Favourites Listing", $properties);
+                } else
+                    return (new \App\Http\JsonResponse)->successNoContent();
+            }
+            return (new \App\Http\JsonResponse)->successNoContent();
+
         }
-        return (new \App\Http\JsonResponse)->successNoContent();
+
 
     }
 }
