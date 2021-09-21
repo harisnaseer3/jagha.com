@@ -255,7 +255,6 @@ class UserProfileController extends Controller
             ->select('id', 'url', 'name')->where('user_id', auth::guard('api')->user()->getAuthIdentifier())
             ->get()->toArray();
 
-
         return (new \App\Http\JsonResponse)->success("Saved Search Result", $results);
 
 

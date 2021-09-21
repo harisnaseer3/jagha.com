@@ -45,6 +45,7 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::delete('save-search/{save_search}', 'UserProfileController@removeUserSearch');
 
 
+
     });
 
     Route::group(['namespace' => 'Property'], function () {
@@ -56,6 +57,7 @@ Route::group(['namespace' => 'WebServices'], function () {
 
         Route::group(['middleware' => ['auth:api']], function () {
             Route::resource('property', 'PropertyController')->only(['store', 'edit', 'update', 'destroy']);
+            Route::get('recently-viewed', 'RecentlyViewedController@show');
 //            Route::post('draft-property', 'PropertyController@saveDraft');
 
         });

@@ -46,9 +46,12 @@ class PropertyController extends Controller
             $is_favorite = false;
 
             if (auth::guard('api')->check()) {
+                $user_id = Auth::guard('api')->user()->getAuthIdentifier();
+                //add in user recently viewed property
+                (new RecentlyViewedController)->store($user_id, $property->id);
                 $is_favorite = DB::table('favorites')->select('id')
                     ->where([
-                        ['user_id', '=', Auth::guard('api')->user()->getAuthIdentifier()],
+                        ['user_id', '=', $user_id],
                         ['property_id', '=', $property->id],
                     ])->exists();
             }
