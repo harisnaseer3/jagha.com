@@ -13,10 +13,15 @@ class RecentlyViewedController extends Controller
 {
     public function store($user_id, $property_id)
     {
-        $recently = new RecentlyViewedProperty;
-        $recently->user_id = $user_id;
-        $recently->property_id = $property_id;
-        $recently->save();
+//        $recently = new RecentlyViewedProperty;
+//        $recently->user_id = $user_id;
+//        $recently->property_id = $property_id;
+//        $recently->save();
+        $recently = RecentlyViewedProperty::updateOrCreate(
+            ['user_id' => $user_id, 'property_id' => $property_id],
+            ['user_id' => $user_id, 'property_id' => $property_id]
+        );
+
     }
 
     public function show()
