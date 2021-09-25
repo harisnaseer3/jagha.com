@@ -48,12 +48,13 @@ class PropertyListing
                 'favorites' => $item->favorites,
                 'user_favourite' => $item->user_favorite == null ? 0 : 1,
                 'activated_at' => $item->activated_at,
-                'agency' => $item->agency,
-                'logo' => $item->user_id !== 1 ? $item->logo : '',
-                'agency_phone' => $item->agency_phone,
-                'agency_cell' => $item->agency_cell,
-                'ceo' => $item->agent,
-                'agency_description' => $item->user_id !== 1 ? $item->agency_description : '',
+                'agency' => null,
+//                'agency' => $item->agency,
+//                'logo' => $item->user_id !== 1 ? $item->logo : '',
+//                'agency_phone' => $item->agency_phone,
+//                'agency_cell' => $item->agency_cell,
+//                'ceo' => $item->agent,
+//                'agency_description' => $item->user_id !== 1 ? $item->agency_description : '',
             ]);
         }
 
@@ -89,7 +90,8 @@ class PropertyListing
             'phone' => $property->phone,
             'cell' => $property->cell,
             'email' => $property->email,
-            'agency' => $property->agency_id
+            'agency' => null
+//            'agency' => $property->agency_id
         ];
     }
 
@@ -134,12 +136,13 @@ class PropertyListing
                 'favorites_count' => $item->favorites,
                 'user_favourite' => isset($item->userFavorites[0]->user_id) ? 1 : 0,
                 'activated_at' => $item->activated_at,
-                'agency' => isset($item->agency) ? $item->agency->agency_title : '',
-                'logo' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->logo : '',
-                'agency_phone' => isset($item->agency) ? $item->agency->phone : '',
-                'agency_cell' => isset($item->agency) ? $item->agency->cell : '',
-                'ceo' => isset($item->agency) ? $item->ceo_name : '',
-                'agency_description' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->description : '',
+                'agency' => null,
+//                'agency' => isset($item->agency) ? $item->agency->agency_title : '',
+//                'logo' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->logo : '',
+//                'agency_phone' => isset($item->agency) ? $item->agency->phone : '',
+//                'agency_cell' => isset($item->agency) ? $item->agency->cell : '',
+//                'ceo' => isset($item->agency) ? $item->ceo_name : '',
+//                'agency_description' => isset($item->agency) && $item->user_id !== 1 ? $item->agency->description : '',
             ]);
         }
         return $clean_results;
