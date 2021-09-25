@@ -101,7 +101,7 @@ class PropertyListing
         foreach ($properties as $index => $item) {
 
             $image = '';
-            if (!empty($item->images)) {
+            if (!$item->images->isEmpty()) {
                 $image = strpos($item->images[0]->name, '.webp') !== false ? $item->images[0]->name : $item->images[0]->name . '.webp';
             }
 
