@@ -15,25 +15,26 @@ class Property extends JsonResource
      */
     public function toArray($request)
     {
-        $agency = [];
-        if ($this->agency_id != null) {
-            $agency_data = Agency::getAgencyById($this->agency_id);
-
-            $agency = [
-                'title' => $agency_data->title,
-                'description' => $this->user_id !== 1 ? $agency_data->description : '',
-                'phone' => $agency_data->phone,
-                'cell' => $agency_data->cell,
-                'address' => $agency_data->address,
-                'email' => $agency_data->email,
-                'logo' => $this->user_id !== 1 ? $agency_data->logo : '',
-                'ceo' => $agency_data->ceo_name,
-                'featured_listing' => $agency_data->featured_listing,
-                'key_listing' => $agency_data->key_listing,
-                'contact_person' => \App\Models\Dashboard\User::getUserName($agency_data->user_id)
-
-            ];
-        }
+        $agency = null;
+//        $agency = [];
+//        if ($this->agency_id != null) {
+//            $agency_data = Agency::getAgencyById($this->agency_id);
+//
+//            $agency = [
+//                'title' => $agency_data->title,
+//                'description' => $this->user_id !== 1 ? $agency_data->description : '',
+//                'phone' => $agency_data->phone,
+//                'cell' => $agency_data->cell,
+//                'address' => $agency_data->address,
+//                'email' => $agency_data->email,
+//                'logo' => $this->user_id !== 1 ? $agency_data->logo : '',
+//                'ceo' => $agency_data->ceo_name,
+//                'featured_listing' => $agency_data->featured_listing,
+//                'key_listing' => $agency_data->key_listing,
+//                'contact_person' => \App\Models\Dashboard\User::getUserName($agency_data->user_id)
+//
+//            ];
+//        }
         $images = [];
         if (!$this->images->isEmpty() && $this->user_id !== 1) {
             foreach ($this->images as $img) {
