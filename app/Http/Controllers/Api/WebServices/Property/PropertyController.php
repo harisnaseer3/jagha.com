@@ -55,7 +55,7 @@ class PropertyController extends Controller
                         ['property_id', '=', $property->id],
                     ])->exists();
             }
-			
+
 
             $property->is_favorite = $is_favorite;
             $property->city = $property->city->name;
@@ -265,37 +265,37 @@ class PropertyController extends Controller
             $city = $property->location->city->name;
             $property->city = $city;
             $users = [];
-            $agencies_users = [];
-            if ($property->agency_id !== null) {
-                $agencies_users_ids = DB::table('agency_users')->select('user_id')
-                    ->where('agency_id', $property->agency_id)
-                    ->get()->pluck('user_id')->toArray();
+//            $agencies_users = [];
+//            if ($property->agency_id !== null) {
+//                $agencies_users_ids = DB::table('agency_users')->select('user_id')
+//                    ->where('agency_id', $property->agency_id)
+//                    ->get()->pluck('user_id')->toArray();
+//
+//
+//                if (!empty($agencies_users_ids)) {
+//                    $agencies_users = (new User)->select('name', 'id')
+//                        ->whereIn('id', $agencies_users_ids)
+//                        ->get();
+//                    foreach ($agencies_users as $user) {
+//                        $users += array($user->id => $user->name);
+//                    }
+//
+//                }
+//            }
+//            $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::guard('api')->user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
+//
+//            $agencies_data = DB::table('agencies')->select('title', 'id')
+//                ->whereIn('id', $agencies_ids)
+//                ->where('status', '=', 'verified')->get();
 
-
-                if (!empty($agencies_users_ids)) {
-                    $agencies_users = (new User)->select('name', 'id')
-                        ->whereIn('id', $agencies_users_ids)
-                        ->get();
-                    foreach ($agencies_users as $user) {
-                        $users += array($user->id => $user->name);
-                    }
-
-                }
-            }
-            $agencies_ids = DB::table('agency_users')->select('agency_id')->where('user_id', '=', Auth::guard('api')->user()->getAuthIdentifier())->get()->pluck('agency_id')->toArray();
-
-            $agencies_data = DB::table('agencies')->select('title', 'id')
-                ->whereIn('id', $agencies_ids)
-                ->where('status', '=', 'verified')->get();
-
-
-            $agencies = [];
-            foreach ($agencies_data as $agency) {
-                $agencies += array($agency->id => $agency->title);
-            }
+//
+//            $agencies = [];
+//            foreach ($agencies_data as $agency) {
+//                $agencies += array($agency->id => $agency->title);
+//            }
             $data = [
-                'agencies' => $agencies,
-                'agency_staff' => $agencies_users,
+//                'agencies' => $agencies,
+//                'agency_staff' => $agencies_users,
                 'property' => (new PropertyListingResource)->CleanEditPropertyData($property),
 
             ];
@@ -312,6 +312,7 @@ class PropertyController extends Controller
         if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
             return (new \App\Http\JsonResponse)->forbidden();
         }
+
         $status = 'pending';
         if ($request->has('is_draft') && $request->is_draft == 1)
             $status = 'draft';
@@ -337,6 +338,11 @@ class PropertyController extends Controller
                 return (new \App\Http\JsonResponse)->failed($validator->getMessageBag(), 422);
             }
             $user = Auth::guard('api')->user();
+//            $property = DB::table('properties')->where('id', $property->id)->first();
+
+            if ($property->user_id != $user->getAuthIdentifier()) {
+                return (new \App\Http\JsonResponse)->forbidden();
+            }
 
 
             if ($request->hasFile('images')) {
@@ -467,6 +473,26 @@ class PropertyController extends Controller
             }
         }
         return (new \App\Http\JsonResponse)->resourceNotFound();
+    }
+
+    public function deleteImage(Property $property, $image)
+    {
+        if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
+            return (new \App\Http\JsonResponse)->forbidden();
+        }
+        if ($property->status == 'deleted') {
+            return (new \App\Http\JsonResponse)->resourceNotFound();
+        }
+
+        $img = (new Image)->where('property_id', $property->id)->where('name', $image)->first();
+        if ($img) {
+            $img->forceDelete();
+            return (new \App\Http\JsonResponse)->success('Image deleted successfully.');
+        } else {
+            return (new \App\Http\JsonResponse)->resourceNotFound();
+
+        }
+
     }
 
     public function checksonImageData(Request $request)

@@ -52,7 +52,7 @@ class RecentlyViewedController extends Controller
 
         }
 
-         return (new \App\Http\JsonResponse)->unauthorized();
+//         return (new \App\Http\JsonResponse)->unauthorized();
 
     }
 }
