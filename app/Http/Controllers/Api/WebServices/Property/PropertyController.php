@@ -475,16 +475,18 @@ class PropertyController extends Controller
         return (new \App\Http\JsonResponse)->resourceNotFound();
     }
 
-    public function deleteImage(Property $property, $image)
+    public function deleteImage(Request $request)
     {
+
         if (!auth()->guard('api')->user()->hasVerifiedEmail()) {
             return (new \App\Http\JsonResponse)->forbidden();
         }
+        $property = (new Property)->where('id', $request->property)->first();
         if ($property->status == 'deleted') {
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
 
-        $img = (new Image)->where('property_id', $property->id)->where('name', $image)->first();
+        $img = (new Image)->where('property_id', $property->id)->where('name', $request->image)->first();
         if ($img) {
             $img->forceDelete();
             return (new \App\Http\JsonResponse)->success('Image deleted successfully.');
