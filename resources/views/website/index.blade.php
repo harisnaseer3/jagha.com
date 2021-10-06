@@ -9,6 +9,9 @@
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
+	<meta name="facebook-domain-verification" content="s0pvft8wezz41p9826lxvw9nfwb8t3" />
+	
+	
 @endsection
 @section('content')
 

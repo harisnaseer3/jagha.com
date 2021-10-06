@@ -251,7 +251,7 @@
         });
     $.ajax({
         type: "GET",
-        url: "https://www.aboutpakistan.com/process/select/property-blogs.php",
+        url: "https://www.aboutpakistan.com/api/property-blogs",
         dataType: "json",
         processData: true,
         crossDomain: true,
