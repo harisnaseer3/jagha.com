@@ -90,7 +90,8 @@ class PropertyListing
             'phone' => $property->phone,
             'cell' => $property->cell,
             'email' => $property->email,
-            'agency' => null
+            'agency' => null,
+            'images' => $images
 //            'agency' => $property->agency_id
         ];
     }

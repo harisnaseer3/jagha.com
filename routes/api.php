@@ -58,6 +58,7 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::group(['middleware' => ['auth:api']], function () {
             Route::resource('property', 'PropertyController')->only(['store', 'edit', 'update', 'destroy']);
             Route::get('recently-viewed', 'RecentlyViewedController@show');
+            Route::post('property-image/{property}/{image}', 'PropertyController@deleteImage');
 //            Route::post('draft-property', 'PropertyController@saveDraft');
 
         });
