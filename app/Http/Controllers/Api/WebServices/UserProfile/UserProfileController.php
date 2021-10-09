@@ -176,33 +176,42 @@ class UserProfileController extends Controller
 
     }
 
-    public function myProperties()
+    public function myProperties(Request $request)
     {
         $user = auth()->guard('api')->user();
         if (!$user->hasVerifiedEmail()) {
             return (new \App\Http\JsonResponse)->forbidden();
         }
+        $status = null;
         $user_id = $user->id;
+        if ($request->has('status'))
+            $status = $request->status;
+        if (isset($status)) {
+            $properties = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', $status)->get();
+            $my_properties = [
+                $status => (new PropertyListingResource)->myToArray($properties)
+            ];
+            return (new \App\Http\JsonResponse)->success("User Properties", $my_properties);
+        } else {
+            $properties_pending = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'pending')->get();
+            $properties_active = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'active')->get();
+            $properties_rejected = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'rejected')->get();
+            $properties_deleted = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'deleted')->get();
+            $properties_expired = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'expired')->get();
+            $properties_sold = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'sold')->get();
+            $properties_draft = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'draft')->get();
 
-
-        $properties_pending = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'pending')->get();
-        $properties_active = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'active')->get();
-        $properties_rejected = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'rejected')->get();
-        $properties_deleted = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'deleted')->get();
-        $properties_expired = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'expired')->get();
-        $properties_sold = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'sold')->get();
-        $properties_draft = $this->listingFrontend()->where('properties.user_id', $user_id)->where('properties.status', 'draft')->get();
-
-        $my_properties = [
-            'active' => (new PropertyListingResource)->myToArray($properties_active),
-            'pending' => (new PropertyListingResource)->myToArray($properties_pending),
-            'rejected' => (new PropertyListingResource)->myToArray($properties_rejected),
-            'expired' => (new PropertyListingResource)->myToArray($properties_expired),
-            'deleted' => (new PropertyListingResource)->myToArray($properties_deleted),
-            'sold' => (new PropertyListingResource)->myToArray($properties_sold),
-            'draft' => (new PropertyListingResource)->myToArray($properties_draft)
-        ];
-        return (new \App\Http\JsonResponse)->success("User Properties", $my_properties);
+            $my_properties = [
+                'active' => (new PropertyListingResource)->myToArray($properties_active),
+                'pending' => (new PropertyListingResource)->myToArray($properties_pending),
+                'rejected' => (new PropertyListingResource)->myToArray($properties_rejected),
+                'expired' => (new PropertyListingResource)->myToArray($properties_expired),
+                'deleted' => (new PropertyListingResource)->myToArray($properties_deleted),
+                'sold' => (new PropertyListingResource)->myToArray($properties_sold),
+                'draft' => (new PropertyListingResource)->myToArray($properties_draft)
+            ];
+            return (new \App\Http\JsonResponse)->success("User Properties", $my_properties);
+        }
 
 
     }
