@@ -486,15 +486,16 @@ class PropertyController extends Controller
             return (new \App\Http\JsonResponse)->resourceNotFound();
         }
 
-        $img = (new Image)->where('property_id', $property->id)->where('name', $request->image)->first();
-        if ($img) {
-            $img->forceDelete();
-            return (new \App\Http\JsonResponse)->success('Image deleted successfully.');
-        } else {
-            return (new \App\Http\JsonResponse)->resourceNotFound();
+        foreach (explode(',', $request->image) as $imag) {
+            $img = (new Image)->where('property_id', $property->id)->where('name', $imag)->first();
+            if ($img) {
+                $img->forceDelete();
+                return (new \App\Http\JsonResponse)->success('Image deleted successfully.');
+            } else {
+                return (new \App\Http\JsonResponse)->resourceNotFound();
 
+            }
         }
-
     }
 
     public function checksonImageData(Request $request)
