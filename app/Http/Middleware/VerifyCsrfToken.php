@@ -13,5 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
 //        '/dashboard/paymentStatus'
+        'upload-json',
+        'admin-login',
     ];
 }
