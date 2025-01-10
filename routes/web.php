@@ -2,11 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JsonUploadController;
 
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/privacy-policy', 'PolicyController@privacyPolicy')->name('privacy-policy');
 Route::get('/terms-and-conditions', 'PolicyController@termAndCondition');
 
+Route::get('/upload-json', [JsonUploadController::class, 'showForm'])->name('json.upload.form');
+Route::post('/upload-json', [JsonUploadController::class, 'processUpload'])->name('json.upload.process');
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
 
