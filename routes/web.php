@@ -10,6 +10,7 @@ Route::get('/terms-and-conditions', 'PolicyController@termAndCondition');
 
 Route::get('/upload-json', [JsonUploadController::class, 'showForm'])->name('json.upload.form');
 Route::post('/upload-json', [JsonUploadController::class, 'processUpload'])->name('json.upload.process');
+Route::get('/check-role', [JsonUploadController::class, 'checkRole']);
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
 

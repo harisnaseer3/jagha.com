@@ -7,6 +7,7 @@ use App\Models\Dashboard\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -17,10 +18,17 @@ class JsonUploadController extends Controller
         return view('upload-json');
     }
 
-    // Validate the request
-//        $request->validate([
-//            'json_file' => 'required|file|mimes:json',
-//        ]);
+    public function checkRole()
+    {
+//        dd(auth()->user()->roles()->first()->name);
+        if (auth()->check()) {
+            $roles = auth()->user()->hasRole('Investor');
+            dd($roles);
+        } else {
+            dd('No user is logged in.');
+        }
+
+    }
     public function processUpload(Request $request)
     {
         // Retrieve and decode the JSON file
@@ -87,7 +95,8 @@ class JsonUploadController extends Controller
                     'sub_type' => isset($data['category'][1]['name']) ?
                         (strtolower($data['category'][1]['name']) === 'houses' ? 'House' : $data['category'][1]['name'])
                         : null,
-                    'title' => $data['title'] ?? null,
+//                    'title' => $data['title'] ?? null,
+                    'title' => isset($data['title']) ? Str::limit($data['title'], 50, '...') : null,
                     'description' => $data['shortDescription'] ?? null,
                     'price' => isset($data['price']) ? intval($data['price']) : null,
                     'land_area' => $areaInSqm ? $areaInSqm / 418 : null,
