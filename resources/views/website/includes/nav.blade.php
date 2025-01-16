@@ -172,7 +172,7 @@
                                         <a itemprop="url" href="https://www.jagha.com"><img
                                                 itemprop="logo"
                                                 src="{{asset('img/logo/logo-with-text.png')}}"
-                                                alt="Jagha" data-rjs="2" /></a>
+                                                alt="Jagha" data-rjs="2"/></a>
                                         <!-- <h1 class="mvp-logo-title">All About Smart Pakistan</h1> -->
                                     </div><!--nav-logo-->
 
@@ -184,11 +184,29 @@
                                                 <div class="menu-main-menu-container">
                                                     <ul id="menu-main-menu-1" class="menu" style="background-color: goldenrod;">
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
-                                                            <a href="https://www.jagha.com">Home</a>
+                                                            <a href="https://www.jagha.com/">Home</a>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
                                                             <a href="/">Property</a>
                                                         </li>
+{{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458">--}}
+{{--                                                            <a href="#" data-toggle="modal" data-target="#investorModalCenter">Investor</a>--}}
+{{--                                                        </li>--}}
+{{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458">--}}
+{{--                                                            <a href="{{ route('investor') }}" style="display: flex; align-items: center; gap: 8px;">--}}
+{{--                                                                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDBneWp1dDVkaXRydjZ1aTZzb3ZrMTZieTNhYXA5OHl2dDVnMGo3diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JBiVgxbbMdrcyL3gLm/giphy.gif" alt="New Feature" style="width: 20px; height: 20px; z-index: 999999;" />--}}
+{{--                                                                Investor--}}
+{{--                                                            </a>--}}
+{{--                                                        </li>--}}
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458" style="position: relative;">
+                                                            <a href="{{ route('investor') }}" style="display: inline-block; position: relative;">
+                                                                Investor
+                                                                <img src="/img/gifs/Animation1.gif"
+                                                                     style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
+                                                            </a>
+                                                        </li>
+
+
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
                                                             <a href="https://www.jagha.com/">News</a>
                                                             <ul class="sub-menu">
@@ -433,7 +451,11 @@
                 </div>
 
             </nav>
+
+@include('website.layouts.investor-sign-in-modal')
 @include('website.layouts.sign-in-modal')
 @if(\Illuminate\Support\Facades\Auth::guard('admin')->check())
     @include('website.layouts.admin-logout-modal')
 @endif
+
+

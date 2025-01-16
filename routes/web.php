@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\InvestorLoginController;
+use App\Http\Controllers\JsonUploadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JsonUploadController;
 
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/privacy-policy', 'PolicyController@privacyPolicy')->name('privacy-policy');
@@ -11,6 +12,12 @@ Route::get('/terms-and-conditions', 'PolicyController@termAndCondition');
 Route::get('/upload-json', [JsonUploadController::class, 'showForm'])->name('json.upload.form');
 Route::post('/upload-json', [JsonUploadController::class, 'processUpload'])->name('json.upload.process');
 Route::get('/check-role', [JsonUploadController::class, 'checkRole']);
+
+// Investor routes
+Route::get('/investor-login-form', [InvestorLoginController::class, 'loginPage'])->name('investor.login-form');
+Route::post('/investor-login', [InvestorLoginController::class, 'investorLogin'])->name('investor-login');
+Route::get('/investor', [InvestorLoginController::class, 'index'])->name('investor');
+
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
 
