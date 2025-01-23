@@ -1,3 +1,4 @@
+@php use App\Models\Dashboard\City; @endphp
 <div id="site" class="left relative">
     <div id="site-wrap" class="left relative">
         <div id="fly-wrap">
@@ -189,23 +190,35 @@
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
                                                             <a href="/">Property</a>
                                                         </li>
-{{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458">--}}
-{{--                                                            <a href="#" data-toggle="modal" data-target="#investorModalCenter">Investor</a>--}}
-{{--                                                        </li>--}}
-{{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458">--}}
-{{--                                                            <a href="{{ route('investor') }}" style="display: flex; align-items: center; gap: 8px;">--}}
-{{--                                                                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDBneWp1dDVkaXRydjZ1aTZzb3ZrMTZieTNhYXA5OHl2dDVnMGo3diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JBiVgxbbMdrcyL3gLm/giphy.gif" alt="New Feature" style="width: 20px; height: 20px; z-index: 999999;" />--}}
-{{--                                                                Investor--}}
-{{--                                                            </a>--}}
-{{--                                                        </li>--}}
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458" style="position: relative;">
+
+                                                        @php
+                                                            $cities = City::all();
+                                                        @endphp
+
+                                                        @include('website.layouts.investor-sign-in-modal', ['cities' => $cities])
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2458">
+                                                        @auth('web') <!-- Check if the user is logged in -->
+                                                            @if (auth()->user()->hasRole('Investor')) <!-- Check if the logged-in user has the "Investor" role -->
                                                             <a href="{{ route('investor') }}" style="display: inline-block; position: relative;">
                                                                 Investor
                                                                 <img src="/img/gifs/Animation1.gif"
                                                                      style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
                                                             </a>
+                                                            @else <!-- User is logged in but doesn't have the Investor role -->
+                                                            <a href="#" data-toggle="modal" data-target="#investorModalCenter">
+                                                                Investor
+                                                                <img src="/img/gifs/Animation1.gif"
+                                                                     style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
+                                                            </a>
+                                                            @endif
+                                                            @else <!-- If the user is not logged in -->
+                                                            <a href="#" data-toggle="modal" data-target="#investorModalCenter">
+                                                                Investor
+                                                                <img src="/img/gifs/Animation1.gif"
+                                                                     style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
+                                                            </a>
+                                                            @endauth
                                                         </li>
-
 
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
                                                             <a href="https://www.jagha.com/">News</a>

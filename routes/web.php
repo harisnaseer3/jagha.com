@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\InvestorLoginController;
+use App\Http\Controllers\Auth\InvestorAuthController;
 use App\Http\Controllers\JsonUploadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -14,9 +14,12 @@ Route::post('/upload-json', [JsonUploadController::class, 'processUpload'])->nam
 Route::get('/check-role', [JsonUploadController::class, 'checkRole']);
 
 // Investor routes
-Route::get('/investor-login-form', [InvestorLoginController::class, 'loginPage'])->name('investor.login-form');
-Route::post('/investor-login', [InvestorLoginController::class, 'investorLogin'])->name('investor-login');
-Route::get('/investor', [InvestorLoginController::class, 'index'])->name('investor');
+Route::post('/investor-register', [InvestorAuthController::class, 'register'])->name('investor.register');  //->middleware(['permission:Manage Users'])
+Route::post('/investor/set-password', [InvestorAuthController::class, 'setPassword'])->name('investor.setPassword');
+Route::get('/investor-login-form', [InvestorAuthController::class, 'loginPage'])->name('investor.login-form');
+Route::post('/investor-login', [InvestorAuthController::class, 'investorLogin'])->name('investor-login');
+Route::get('/investor', [InvestorAuthController::class, 'index'])->name('investor');
+Route::get('/get-cities', [InvestorAuthController::class, 'getCities'])->name('get-cities');
 
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
