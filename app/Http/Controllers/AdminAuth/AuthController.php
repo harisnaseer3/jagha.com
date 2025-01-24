@@ -79,62 +79,47 @@ class AuthController extends Controller
 
     public function adminLoginPost(Request $request)
     {
-        try {
-            // Validate the request data
-            $this->validate($request, [
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+	
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
 
-            // Logout if a user is already logged in
-            if (Auth::guard('web')->check()) {
-                Auth::guard('web')->logout();
-            }
+        }
+        $admin = Admin::getAdminByEmail($request->input('email'));
 
-            // Retrieve admin by email
-            $admin = Admin::getAdminByEmail($request->input('email'));
+        if (!empty($admin) && $admin->is_active === '0') {
+		
+            return back()->with('error', 'Your account has been deactivated');
+        }
+	$credentials = $request->except(['_token']);
+	
+	if(Auth::guard('admin')->attempt($credentials)){
 
-            // Check if the admin account is deactivated
-            if (!empty($admin) && $admin->is_active === '0') {
-                return back()->with('error', 'Your account has been deactivated');
-            }
-
-            // Attempt to authenticate the admin
-            if (auth()->guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-                $user = auth()->guard('admin')->user();
-                $ip = $_SERVER['REMOTE_ADDR'];
-                $country = '';
-
-                // Get the IP location
-                if ($ip_location = '206.84.164.188') {
-                    $country = $ip_location->countryName ?? (new CountryController())->Country_name();
-                } else {
-                    $country = 'unavailable';
-                }
-                // Log the admin session
-                $id = DB::table('admin_session_logs')->insertGetId([
-                    'admin_id' => $user->id,
-                    'email' => $user->email,
-                    'ip' => $ip,
-                    'ip_location' => $country,
-                    'browser' => Browser::browserName(),
-                    'os' => Browser::platformName(),
-                ]);
-
-                Session::put('logged_admin_session_id', $id);
-                return redirect()->route('admin.dashboard');
+			// if (\Auth::guard('admin')->attempt( ['email' => $request->input('email'), 'password' => $request->input('password') ]) ) {
+            $user = auth()->guard('admin')->user();
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $country = '';
+            if ($ip_location = IpLocation::get($ip)) {
+                $country = $ip_location->countryName;
+                if($country == null)
+                    $country = (new CountryController())->Country_name();
             } else {
-                return back()->with('error', 'Your username and password are incorrect.');
-            }
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Handle validation errors
-            return back()->withErrors($e->validator)->withInput();
-        } catch (\Exception $e) {
-            // Log the exception for debugging
-            \Log::error('Admin login error: ' . $e->getMessage());
 
-            // Return a generic error message to the user
-            return back()->with('error', 'An unexpected error occurred. Please try again later.');
+                $country = 'unavailable';
+            }
+
+            $id = DB::table('admin_session_logs')->insertGetId(
+                ['admin_id' => $user->id, 'email' => $user->email, 'ip' => $_SERVER['REMOTE_ADDR'], 'ip_location' => $country,
+                    'browser' => Browser::browserName(), 'os' => Browser::platformName()]);
+            Session::put('logged_admin_session_id', $id);
+
+
+            return redirect()->route('admin.dashboard');
+        } else {
+            return back()->with('error', 'Your username and password are wrong.');
         }
     }
 

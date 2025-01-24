@@ -77,10 +77,11 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-1 col-4 search-col index-search">
-                                        <button class="btn button-theme btn-search btn-block" id="index-submit" type="submit" style="background-color: goldenrod;">
-                                            <i class="fa fa-search"></i><strong>Find</strong>
+                                        <button class="btn btn-search btn-block transition-background" id="index-submit" type="submit"> {{-- class removed button-theme --}}
+                                            <i class="fa fa-search" style="color: #187c3c"></i><strong>Find</strong>
                                         </button>
                                     </div>
+
                                 </div>
                                 <div class="row advance-search-options" style="margin-top: 10px; display: none">
                                     <div class="col-lg-3 col-sm-4 col-6 search-col property-subtype-div border-right" style="display: block">
@@ -202,7 +203,7 @@
                             </div>
                             <div class="inline-search-area none-992 show-advance-search-options">
                                 <div class="search-options-btn-area">
-                                    <a class="search-options-btn" style="background-color: goldenrod !important;">
+                                    <a class="search-options-btn yellow-color">
                                         <span class="text-transform font-12">Search Options</span>
                                         <i class="fa fa-chevron-down animated fadeInUp"></i>
                                     </a>
@@ -220,43 +221,43 @@
 
                         </div>
 
-                        <div class="card" id="popular-cities">
+{{--                        <div class="card" id="popular-cities">--}}
 
-                            <div class="card-header">
-                                <h6 class="popular-cities-heading">Popular Cities</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="main-title">
-                                    <!-- <div class="slider"></div> -->
-                                    <div class="slick-slider-area" id="popular-city-slider">
-                                        <div class="row slick-carousel" id="popular-cities-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next"
-                                             data-cycle-prev="slick-prev"
-                                             data-cycle-carousel-horizontal="true"
-                                             data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1680,"settings":{"slidesToShow": 3}}, {"breakpoint": 1024,"settings":{"slidesToShow": 2}}]}'>
-                                            @foreach($cities_count as $city)
-                                                <div class="slick-slide-item" aria-label="key agency">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <a href="{{route('cities.sale.property',['city'=> strtolower(str_replace(' ','_',$city->city)), 'sort'=>'newest','limit'=>15])}}"
-                                                               class="popular-city-font mb-2 mt-5">{{$city->city}}</a>
-                                                            <p class="popular-count-font">({{$city->count}})</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <div class="controls">
-                                            <div class="slick-prev slick-arrow-buton top-style-prev" id="popular-city-left">
-                                                <i class="fas fa-angle-left"></i>
-                                            </div>
-                                            <div class="slick-next slick-arrow-buton top-style-next" id="popular-city-right">
-                                                <i class="fas fa-angle-right"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{{--                            <div class="card-header">--}}
+{{--                                <h6 class="popular-cities-heading">Popular Cities</h6>--}}
+{{--                            </div>--}}
+{{--                            <div class="card-body">--}}
+{{--                                <div class="main-title">--}}
+{{--                                    <!-- <div class="slider"></div> -->--}}
+{{--                                    <div class="slick-slider-area" id="popular-city-slider">--}}
+{{--                                        <div class="row slick-carousel" id="popular-cities-row-1" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next"--}}
+{{--                                             data-cycle-prev="slick-prev"--}}
+{{--                                             data-cycle-carousel-horizontal="true"--}}
+{{--                                             data-slick='{"slidesToShow": 4, "rows":1,"responsive":[{"breakpoint": 1680,"settings":{"slidesToShow": 3}}, {"breakpoint": 1024,"settings":{"slidesToShow": 2}}]}'>--}}
+{{--                                            @foreach($cities_count as $city)--}}
+{{--                                                <div class="slick-slide-item" aria-label="key agency">--}}
+{{--                                                    <div class="row">--}}
+{{--                                                        <div class="col-12">--}}
+{{--                                                            <a href="{{route('cities.sale.property',['city'=> strtolower(str_replace(' ','_',$city->city)), 'sort'=>'newest','limit'=>15])}}"--}}
+{{--                                                               class="popular-city-font mb-2 mt-5">{{$city->city}}</a>--}}
+{{--                                                            <p class="popular-count-font">({{$city->count}})</p>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                </div>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                        <div class="controls">--}}
+{{--                                            <div class="slick-prev slick-arrow-buton top-style-prev" id="popular-city-left">--}}
+{{--                                                <i class="fas fa-angle-left"></i>--}}
+{{--                                            </div>--}}
+{{--                                            <div class="slick-next slick-arrow-buton top-style-next" id="popular-city-right">--}}
+{{--                                                <i class="fas fa-angle-right"></i>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>

@@ -141,11 +141,25 @@
                                 <div class="form-group">
                                     <label for="cnic" class="d-block">CNIC Number</label>
                                     <div class="d-flex align-items-center justify-content-between">
-                                        <input type="text" class="form-control text-center" name="cnic_first" required pattern="\d{5}" placeholder="00000" title="Enter exactly 5 digits" style="flex: 1;">
+                                        <!-- First Part: 5 digits -->
+                                        <input type="text" class="form-control text-center" name="cnic_first"
+                                               required pattern="\d{5}" placeholder="00000" title="Enter exactly 5 digits"
+                                               inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                               style="flex: 1;">
                                         <span class="mx-2">-</span>
-                                        <input type="text" class="form-control text-center" name="cnic_middle" required pattern="\d{7}" placeholder="1234567" title="Enter exactly 7 digits" style="flex: 2;">
+
+                                        <!-- Middle Part: 7 digits -->
+                                        <input type="text" class="form-control text-center" name="cnic_middle"
+                                               required pattern="\d{7}" placeholder="1234567" title="Enter exactly 7 digits"
+                                               inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                               style="flex: 2;">
                                         <span class="mx-2">-</span>
-                                        <input type="text" class="form-control text-center" name="cnic_last" required pattern="\d{1}" placeholder="0" title="Enter exactly 1 digit" style="flex: 0.5;">
+
+                                        <!-- Last Part: 1 digit -->
+                                        <input type="text" class="form-control text-center" name="cnic_last"
+                                               required pattern="\d{1}" placeholder="0" title="Enter exactly 1 digit"
+                                               inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                               style="flex: 0.5;">
                                     </div>
                                     @error('cnic')
                                     <span class="invalid-feedback" role="alert">
@@ -153,6 +167,7 @@
                                     </span>
                                     @enderror
                                 </div>
+
                                 <div class="form-group">
                                     <label for="city_id" class="d-block">City of Residence</label>
                                     <select class="form-control" name="city_id" id="city_id" required>
@@ -168,23 +183,32 @@
                                     </span>
                                     @enderror
                                 </div>
+
                                 <!-- Password Fields -->
-                                <div class="form-group">
-                                    <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
+                                <div class="form-group form-box clearfix">
+                                    <input id="password" type="password"
+                                           class="form-control input-text font-size-14 @error('password') is-invalid @enderror"
+                                           name="password" required autocomplete="current-password"
+                                           placeholder="Password">
+                                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" style="margin-top: -27px;"></span>
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong class="text-red">{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required placeholder="Confirm Password">
+
+                                <div class="form-group form-box clearfix">
+                                    <input id="password_confirmation" type="password" class="form-control input-text font-size-14"
+                                           name="password_confirmation" required placeholder="Confirm Password">
+                                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password" style="margin-top: -27px;"></span>
                                     @error('password_confirmation')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
+
                                 <div class="form-group text-center">
                                     <button type="submit" class="btn btn-block" style="background-color: goldenrod; color: #187c3c;">Sign Up</button>
                                 </div>

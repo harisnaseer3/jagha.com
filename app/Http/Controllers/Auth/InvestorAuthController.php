@@ -19,6 +19,7 @@ use App\Notifications\RegisterNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Session;
@@ -61,7 +62,6 @@ class InvestorAuthController extends Controller
 
     public function register(InvestorRegisterRequest $request)
     {
-        $role = 'Investor';
         try {
             DB::beginTransaction();
 
@@ -72,22 +72,26 @@ class InvestorAuthController extends Controller
             }
 
             // Create the user
-            $user = DB::table('users')->insertGetId([
+            $userId = DB::table('users')->insertGetId([
                 'name' => $request->name,
                 'email' => $request->email,
+                'password' => Hash::make($request->password),
                 'phone' => $request->phone,
                 'cnic' => $request->cnic,
                 'city_name' => $city->name,
-                'city_id' => $city->id,
-                'created_at' => now(),
-                'updated_at' => now(),
+                'city_id' => $city->id
             ]);
 
-            // Fetch the newly created user
-            $createdUser = User::find($user);
-
             // Assign the role to the user
-            $createdUser->assignRole($role);
+            $role = DB::table('property_roles')->where('name', 'Investor')->first();
+            if ($role) {
+                DB::table('property_role_user')->insert([
+                    'user_id' => $userId,
+                    'property_role_id' => $role->id
+                ]);
+            } else {
+                throw new \Exception('Role not found.');
+            }
 
             // Handle invitations
             DB::table('user_invites')->updateOrInsert(
@@ -96,10 +100,13 @@ class InvestorAuthController extends Controller
             );
 
             // Send notification
-            $new_user = UserInvite::where('email', $request->email)->first();
-            Notification::send($new_user, new RegisterNotification($role));
+            $newUser = DB::table('user_invites')->where('email', $request->email)->first();
+//            if ($newUser) {
+//                Notification::send($newUser, new RegisterNotification('Investor'));       need to uncommit and run this code
+//            }
 
             // Log the user in
+            $createdUser = User::find($userId);
             Auth::login($createdUser);
 
             DB::commit();

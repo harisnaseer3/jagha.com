@@ -59,7 +59,7 @@
                                                        <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_kanal,2) }} Kanal </div>
                                                        </div>'>
                                             @if($feature_property->price !== 0 || $feature_property->price !== null)
-                                                <span class="font-size-14 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
+                                                <span class="font-size-14 color-yellow">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                                             @else
                                                 <span class="font-size-14 color-blue">Call Us to Get More Details</span>
                                             @endif

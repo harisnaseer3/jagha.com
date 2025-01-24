@@ -1,6 +1,6 @@
 <section class="wow fadeIn animated counters" style="visibility: visible; animation-name: fadeIn;">
-    <div class="container">
-        <div class="row">
+    <div class="containers">
+        <div class="row justify-content-center align-items-center">
             <!-- Existing Counter 1: Properties For Sale -->
             <div class="col-md-2 col-sm-6 bottom-margin text-center counter-section wow fadeInUp sm-margin-bottom-ten animated" data-wow-duration="300ms" style="visibility: visible; animation-duration: 300ms; animation-name: fadeInUp;">
                 <i class="medium-icon"><img src="{{asset('img\sale-count.png')}}" alt="properties sale count" aria-label="properties to sale"></i>

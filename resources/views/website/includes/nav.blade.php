@@ -170,13 +170,12 @@
                                         <span></span>
                                     </div><!--fly-but-wrap-->
                                     <div class="nav-logo left" style="background-color: goldenrod;">
-                                        <a itemprop="url" href="https://www.jagha.com"><img
-                                                itemprop="logo"
-                                                src="{{asset('img/logo/logo-with-text.png')}}"
-                                                alt="Jagha" data-rjs="2"/></a>
-                                        <!-- <h1 class="mvp-logo-title">All About Smart Pakistan</h1> -->
-                                    </div><!--nav-logo-->
-
+                                        <a itemprop="url" href="https://www.jagha.com">
+                                            <div style="background-color: white; display: inline-block; padding: 5px;">
+                                                <img itemprop="logo" src="{{asset('img/logo/logo-with-text.png')}}" alt="Jagha" data-rjs="2"/>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div><!--nav-left-wrap-->
                                 <div class="nav-logo-in">
                                     <div class="nav-menu-out">
@@ -185,7 +184,8 @@
                                                 <div class="menu-main-menu-container">
                                                     <ul id="menu-main-menu-1" class="menu" style="background-color: goldenrod;">
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
-                                                            <a href="https://www.jagha.com/">Home</a>
+{{--                                                            <a href="https://www.jagha.com/">Home</a>--}}
+                                                            <a href="{{ route('home') }}">Home</a>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
                                                             <a href="/">Property</a>
@@ -201,20 +201,20 @@
                                                             @if (auth()->user()->hasRole('Investor')) <!-- Check if the logged-in user has the "Investor" role -->
                                                             <a href="{{ route('investor') }}" style="display: inline-block; position: relative;">
                                                                 Investor
-                                                                <img src="/img/gifs/Animation1.gif"
+                                                                <img src="/img/logo/newanimation.gif"
                                                                      style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
                                                             </a>
                                                             @else <!-- User is logged in but doesn't have the Investor role -->
                                                             <a href="#" data-toggle="modal" data-target="#investorModalCenter">
                                                                 Investor
-                                                                <img src="/img/gifs/Animation1.gif"
+                                                                <img src="/img/logo/newanimation.gif"
                                                                      style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
                                                             </a>
                                                             @endif
                                                             @else <!-- If the user is not logged in -->
                                                             <a href="#" data-toggle="modal" data-target="#investorModalCenter">
                                                                 Investor
-                                                                <img src="/img/gifs/Animation1.gif"
+                                                                <img src="/img/logo/newanimation.gif"
                                                                      style="width: 45px; height: 35px; position: absolute; top: -8px; right: -11px; z-index: 999999; transform: rotate(15deg);" />
                                                             </a>
                                                             @endauth
