@@ -1,5 +1,5 @@
 <div class="featured-agencies">
-    <div class="container content-area-12">
+    <div class="container">  <!-- content-area-12 -->
         <div class="main-title">
             <h2><a class="hover-color" href="{{route('key-partners',['sort'=>'newest'])}}" title="Key Partners">Key Partners</a></h2></div>
         <div id="ajax-loader-key-partner" class="ajax-loader"></div>

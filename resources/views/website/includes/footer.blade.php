@@ -9,7 +9,7 @@
                     <div class="foot-widget left relative">
                         <div class="foot-logo left relative">
                             <a href="https://www.jagha.com">
-                                <img src="{{asset('img/logo/logo-with-text.png')}}" alt="Jagha" data-rjs="2" />
+                                <img src="{{asset('img/logo/new-white-logo.png')}}" alt="Jagha" data-rjs="2" style="max-width: 40%" />
                             </a>
                         </div><!--foot-logo-->
                         <div class="foot-info-text left relative">

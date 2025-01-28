@@ -46,10 +46,26 @@
                 $('#visit-logs-block').slideDown();
                 $('#tbody-visit-logs').html(data.view);
 
+                // $('#user-log').DataTable({
+                //     "scrollX": true,
+                //     "ordering": false,
+                //     responsive: true
+                // });
+
                 $('#user-log').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "ajax": "/get-visit-logs",
+                    "columns": [
+                        { "data": "id" },
+                        { "data": "ip" },
+                        { "data": "ip_location" },
+                        { "data": "date" },
+                        { "data": "count" },
+                    ],
                     "scrollX": true,
                     "ordering": false,
-                    responsive: true
+                    "responsive": true
                 });
             }
         );

@@ -1399,6 +1399,7 @@ ul.feat-wide-sub-list li:hover .feat-wide-sub-text h2 {
 }
 
 .feat-top2-right:first-child .feat-top2-right-text h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     font-size: 1.3rem
 }
 
@@ -1534,6 +1535,7 @@ span.feat-cat {
 }
 
 #home-feat-text h2.stand-title, .feat-top2-left-text h2.stand-title, .feat-wide1-text h2.stand-title {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     font-size: 2rem;
     line-height: 120%;
     text-transform: none
@@ -9514,6 +9516,7 @@ nav.main-menu-wrap ul li a, ul.col-tabs li a, nav.fly-nav-menu ul li a, .foot-me
 }
 
 .feat-top2-right-text h2, .side-list-text p, .side-full-text p, .row-widget-text p, .feat-widget-text h2, .blog-widget-text h2, .prev-next-text a, .prev-next-text a:visited, .prev-next-text a:hover, span.post-header, .archive-list-text h2, .video-main-text h2, .mvp-related-text a {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
     font-family: 'Montserrat', sans-serif
 }
 

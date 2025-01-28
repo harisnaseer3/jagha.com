@@ -1788,8 +1788,8 @@ input[type="checkbox"]:checked {
 .main-title {
     text-align: left;
     max-width: 700px;
-    margin: 0 auto 40px
-    /*margin-top: 40px;*/
+    /*margin: 0 auto 40px*/
+    margin-top: 40px;
 }
 
 .mt2 {
@@ -1857,11 +1857,11 @@ input[type="checkbox"]:checked {
 }
 
 .slick-prev {
-    left: -18px
+    left: -60px
 }
 
 .slick-next {
-    right: -18px
+    right: -60px
 }
 
 .partners .slick-prev {

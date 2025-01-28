@@ -9,7 +9,7 @@
             </div>
 
             <div class="modal-body">
-                <div class="container">
+                <div class="containers">
                     <div class="row">
                         <div class="col-sm-12 justify-content-center">
 
@@ -105,7 +105,7 @@
             </div>
 
             <div class="modal-body">
-                <div class="container">
+                <div class="containers">
                     <div class="row">
                         <div class="col-sm-12 text-center">
                             <p class="color-black font-weight-bold" style="font-size: 1.5rem;">Investor Sign Up</p>

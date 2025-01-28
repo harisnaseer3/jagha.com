@@ -173,6 +173,7 @@
                                         <a itemprop="url" href="https://www.jagha.com">
                                             <div style="background-color: white; display: inline-block; padding: 5px;">
                                                 <img itemprop="logo" src="{{asset('img/logo/logo-with-text.png')}}" alt="Jagha" data-rjs="2"/>
+{{--                                                <img itemprop="logo" src="{{asset('img/logo/jagha-cot-transparent-logo.png')}}" alt="Jagha" data-rjs="2"/>--}}
                                             </div>
                                         </a>
                                     </div>

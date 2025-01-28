@@ -82,12 +82,31 @@ class AdminDashboardController extends Controller
         return $data;
     }
 
-    function getVisitLogs()
+//    function getVisitLogs()
+//    {
+//        $data['view'] = View('website.admin-pages.components.visit-logs',
+//            ['user_visit_log' => DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc')->get()->all()
+//            ])->render();
+//        return $data;
+//    }
+
+        public function getVisitLogs(Request $request)
     {
-        $data['view'] = View('website.admin-pages.components.visit-logs',
-            ['user_visit_log' => DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc')->get()->all()
-            ])->render();
-        return $data;
+        $query = DB::table('visits')->orderBy('id', 'desc')->orderBy('visit_time', 'desc');
+
+        // Apply filtering or pagination if provided by DataTables
+        if ($request->has('start') && $request->has('length')) {
+            $query->skip($request->start)->take($request->length);
+        }
+
+        $logs = $query->get();
+
+        return response()->json([
+            'data' => $logs,
+            'recordsTotal' => DB::table('visits')->count(),
+            'recordsFiltered' => $query->count(),
+        ]);
+
     }
 
     function getPackageLogs()

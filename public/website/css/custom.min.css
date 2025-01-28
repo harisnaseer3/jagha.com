@@ -547,7 +547,7 @@ body {
 
 .main-page-banner-heading {
     color: #fff;
-    font-size: 30px
+    font-size: 60px
 }
 
 .detail-page-search-options {
@@ -844,12 +844,12 @@ footer {
 }
 
 .top-style-prev {
-    left: -52px;
+    left: -60px;
     top: 46%
 }
 
 .top-style-next {
-    right: -52px;
+    right: -60px;
     top: 46%
 }
 
@@ -1080,7 +1080,7 @@ footer#foot-wrap {
     align-self: initial !important;
     margin: 0 auto;
     color: #fff;
-    margin-top: 40px
+    margin-top: 110px
 }
 
 .tag::after {

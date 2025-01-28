@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
 
-                <div class="container">
+                <div class="containers">
                     <div class="row">
                         <div class="col-sm-12 justify-content-center">
                             <a href="{{url('/redirect')}}" class="btn btn-block btn-outline sign-in sign-card color-black" style="text-align: left;">
