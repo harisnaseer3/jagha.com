@@ -1792,6 +1792,11 @@ input[type="checkbox"]:checked {
     margin-top: 40px;
 }
 
+.main-title-feature-partner {
+    text-align: center;
+    margin-top: 40px;
+}
+
 .mt2 {
     margin: 0 auto 40px
 }

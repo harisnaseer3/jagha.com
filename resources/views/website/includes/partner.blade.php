@@ -1,6 +1,6 @@
 <div class="partners">
     <div class="container">
-        <div class="main-title">
+        <div class="main-title-feature-partner">
             <h2><a class="hover-color" href="{{route('featured-partners',['sort'=>'newest'])}}" title="Featured Partners">Our Featured Partners</a></h2></div>
         <div id="ajax-loader-partner" class="ajax-loader"></div>
         <div class="slick-slider-area" id="agency-slider">
@@ -11,10 +11,10 @@
                 <!-- TODO: add loader -->
             </div>
             <div class="controls">
-                <div class="slick-prev slick-arrow-buton" id="agency-prev">
+                <div class="slick-prev slick-arrow-buton" id="agency-prev" style="left: -60px;">
                     <i class="fas fa-angle-left"></i>
                 </div>
-                <div class="slick-next slick-arrow-buton" id="agency-next">
+                <div class="slick-next slick-arrow-buton" id="agency-next" style="right: -60px;">
                     <i class="fas fa-angle-right"></i>
                 </div>
             </div>
