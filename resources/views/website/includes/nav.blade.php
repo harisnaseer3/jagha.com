@@ -221,35 +221,35 @@
                                                             @endauth
                                                         </li>
 
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
-                                                            <a href="https://www.jagha.com/">News</a>
-                                                            <ul class="sub-menu">
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">
-                                                                    <a href="https://www.jagha.com/">News-1</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">
-                                                                    <a href="https://www.jagha.com/">News-2</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">
-                                                                    <a href="https://www.jagha.com/">News-3</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">
-                                                                    <a href="https://www.jagha.com/">News-4</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">
-                                                                    <a href="https://www.jagha.com/">News-5</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">
-                                                                    <a href="https://www.jagha.com/">News-6</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2513">
-                                                                    <a href="https://www.jagha.com/">News-7</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2514">
-                                                                    <a href="https://www.jagha.com/">News-8</a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
+{{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">--}}
+{{--                                                            <a href="https://www.jagha.com/">News</a>--}}
+{{--                                                            <ul class="sub-menu">--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2508">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-1</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2469">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-2</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2509">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-3</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2510">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-4</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2511">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-5</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2512">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-6</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2513">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-7</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2514">--}}
+{{--                                                                    <a href="https://www.jagha.com/">News-8</a>--}}
+{{--                                                                </li>--}}
+{{--                                                            </ul>--}}
+{{--                                                        </li>--}}
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
                                                             <a href="https://www.jagha.com/"
                                                                aria-current="page">Blog</a>
@@ -269,10 +269,27 @@
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                                             <a href="https://www.jagha.com/">About Us</a>
                                                         </li>
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">
-                                                            <a href="https://www.jagha.com/">Contact Us</a>
+{{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">--}}
+{{--                                                            <a href="https://www.jagha.com/">Contact Us</a>--}}
+{{--                                                        </li>--}}
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518 {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
+                                                            <a href="{{route('property.city.count.listing',['type'=>'homes'])}}">
+                                                                Houses
+                                                            </a>
                                                         </li>
-
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518 {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
+                                                            <a href="{{route('property.city.count.listing', ['type'=>'plots'])}}">
+                                                                Plots
+                                                            </a>
+                                                        </li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518 {{ request()->is('properties/type/commercial/*') ? 'active' : '' }}">
+                                                            <a href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
+                                                                Commercial</a>
+                                                        </li>
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518 {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
+                                                            <a href="{{route('agents.listing')}}">
+                                                                Partners</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </nav>
@@ -316,28 +333,29 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav header-ml">
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">
-                                Houses
-                            </a>
-                        </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing', ['type'=>'plots'])}}">
-                                Plots
-                            </a>
-                        </li>
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/commercial/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">
-                                Commercial</a>
-                        </li>
+{{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/homes/*') ? 'active' : '' }}">--}}
+{{--                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=>'homes'])}}">--}}
+{{--                                Houses--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/plots/*') ? 'active' : '' }}">--}}
+{{--                            <a class="nav-link" href="{{route('property.city.count.listing', ['type'=>'plots'])}}">--}}
+{{--                                Plots--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('properties/type/commercial/*') ? 'active' : '' }}">--}}
+{{--                            <a class="nav-link" href="{{route('property.city.count.listing',['type'=> 'commercial'])}}">--}}
+{{--                                Commercial</a>--}}
+{{--                        </li>--}}
                         {{-- <li class="nav-item hide-nav navbar-li {{ request()->is('blogs') || request()->is('blogs/*') ? 'active' : '' }}">--}}
                         {{-- <a class="nav-link" href="{{route('blogs.index')}}">--}}
                         {{-- Blogs</a>--}}
                         {{-- </li>--}}
-                        <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{route('agents.listing')}}">
-                                Partners</a>
-                        </li>
+{{--                        <li class="nav-item hide-nav navbar-li {{ request()->is('agents') || request()->is('agents/*') ? 'active' : '' }}">--}}
+{{--                            <a class="nav-link" href="{{route('agents.listing')}}">--}}
+{{--                                Partners</a>--}}
+{{--                        </li>--}}
+
                         <li class="nav-item hide-nav navbar-li nav-profile-link">
                             @if(\Illuminate\Support\Facades\Auth::guard('web')->check())
                                 <a class="nav-link theme-dark-blue" href="{{route('users.edit',\Illuminate\Support\Facades\Auth::guard('web')->user()->getAuthIdentifier())}}">
