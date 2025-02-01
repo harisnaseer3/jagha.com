@@ -30,7 +30,7 @@ if(request()->segment(2) !== 'partners_results' ){
 @endphp
 <div class="banner" id="banner">
     <div class="text-center detail-page-banner none-992 sticky">
-        <div class="container inline-search-area none-992">
+        <div class="containers inline-search-area none-992">
             {{ Form::open(['route' => 'properties.search', 'method' => 'get', 'role' => 'form', 'class' => 'index-form']) }}
 
             <div class="row">
@@ -112,8 +112,8 @@ if(request()->segment(2) !== 'partners_results' ){
                     </div>
                 </div>
                 <div class="col-lg-2 col-sm-1 col-4 search-col">
-                    <button class="btn button-theme btn-search btn-block" type="submit">
-                        <i class="fa fa-search"></i><strong>Find</strong>
+                    <button class="btn btn-search btn-block transition-background" type="submit">
+                        <i class="fa fa-search green-color"></i><strong>Find</strong>
                     </button>
                 </div>
             </div>
@@ -242,14 +242,14 @@ if(request()->segment(2) !== 'partners_results' ){
             {{ Form::hidden('sort','newest')}}
             {{ Form::close() }}
         </div>
-        <div class="container inline-search-area none-992" style="padding-left: 0px; padding-right: 0px;">
+        <div class="containers inline-search-area none-992" style="padding-left: 0px; padding-right: 0px;">
             <div class="text-left" style="margin-top:8px !important;">
                 <a type="button" class="btn btn-outline-primary reset-search-btn text-transform" id="reset-search-banner2lg"
-                   style="margin:0; background-color: #274abb;">
+                   style="margin:0; background: #b79c35">
                     <span class="reset-search">Reset Search</span>
                 </a>
                 <a type="button" class="btn search-options-btn text-transform"
-                   style="margin:0; background-color: #274abb; padding:7px 12px !important;">
+                   style="margin:0; background-color: #b79c35; padding:7px 12px !important;">
                     <span class="reset-search">Search Options</span>
                     <i class="fa fa-chevron-down animated fadeInUp"></i>
                 </a>

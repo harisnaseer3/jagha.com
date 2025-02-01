@@ -43,13 +43,13 @@
                                     <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
                                         'property'=>$feature_property->id])}}">
-                                        <span class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
+                                        <span class="font-size-14 color-yellow mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                                     </a>
                                 @else
                                     <a href="{{route('properties.show',[
                                         'slug'=>Str::slug($feature_property->city) . '-' .Str::slug($feature_property->location) . '-' . Str::slug($feature_property->title) . '-' . $feature_property->reference,
                                         'property'=>$feature_property->id])}}"><span
-                                            class="font-size-14 color-blue mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}</a>
+                                            class="font-size-14 color-yellow mr-1">PKR</span>{{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}</a>
                                 @endif
                             </h2>
                             <h6 class="card-subtitle mb-2 text-muted page-font">{{\Illuminate\Support\Str::limit(strtolower($feature_property->title), 50, $end='..')}}</h6>
@@ -91,7 +91,7 @@
                             @endif
                         </ul>
                         <div class="footer clearfix">
-                           
+
                             <div class="days">
                                 <p><i class="flaticon-time"></i> {{ (new \Illuminate\Support\Carbon($feature_property->activated_at))->diffForHumans(['parts' => 2]) }}</p>
                             </div>

@@ -27,7 +27,8 @@ strong {
 }
 
 span {
-    color: #555
+    /*color: #555*/
+    font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -1655,6 +1656,20 @@ input[type="checkbox"]:checked {
     padding: 4px 20px
 }
 
+.green-color {
+    color: #187c3c
+}
+
+.color-yellow {
+    color: #b79c35;
+}
+
+.footer-btn {
+    width: 50%;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 .overview-box:hover h2, .overview-box:hover p, .overview-box:hover a.btn {
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -1795,6 +1810,7 @@ input[type="checkbox"]:checked {
 .main-title-feature-partner {
     text-align: center;
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .mt2 {
@@ -5252,7 +5268,7 @@ footer {
 
 .page-item.active .page-link {
     z-index: 1;
-    background: #274abb !important;
+    background: #b79c35 !important;
     color: #fff;
     font-size: 18px
 }
@@ -5285,8 +5301,8 @@ footer {
 }
 
 .partners .slick-arrow-buton {
-    width: 31px;
-    height: 31px;
+    width: 36px;
+    height: 36px;
     color: #333;
     position: absolute;
     z-index: 999;
@@ -5294,7 +5310,7 @@ footer {
     text-align: center;
     line-height: 30px;
     cursor: pointer;
-    opacity: .5
+    /*opacity: .5*/
 }
 
 .partners h4 {
@@ -8788,5 +8804,5 @@ blockquote {
 }
 
 .breadcrumb-link:hover {
-    color: #2238d8
+    color: #187c3c
 }

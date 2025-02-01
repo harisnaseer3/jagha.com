@@ -126,19 +126,22 @@ h6 {
 .reset-search-btn {
     margin: 0 0 0 10px;
     padding: 4px 12px;
-    border-color: rgb(39, 74, 187) !important;
+    /*border-color: rgb(39, 74, 187) !important;*/
+    border-color: #b79c35 !important;
 }
 
 .reset-search-btn:hover {
-    background-color: rgb(39, 74, 187) !important;
-    border-color: rgb(39, 74, 187) !important;
+    /*background-color: rgb(39, 74, 187) !important;*/
+    /*border-color: rgb(39, 74, 187) !important;*/
+    background-color: #b79c35 !important;
+    border-color: #b79c35 !important;
 }
 
 .search2-reset-btn {
     margin-top: 10px;
     cursor: pointer;
     padding: 11px 26px;
-    background: #274abb;
+    background: #b79c35;
     letter-spacing: 1px;
     font-size: 13px;
     font-weight: 600;
@@ -1013,6 +1016,10 @@ nav.fly-nav-menu ul li a,
     color: #274abb
 }
 
+.color-yellow {
+    color: #b79c35;
+}
+
 .partners .slick-slide-item img {
     padding-top: 15%;
     padding-bottom: 15%;
@@ -1118,7 +1125,7 @@ footer {
 }
 
 .btn-email {
-    background-color: #2238D8;
+    background-color: #b79c35;
     color: white !important;
     border-color: #2238D8;
 }
@@ -1880,7 +1887,7 @@ hr.solid {
 }
 
 .theme-dark-blue {
-    color: #2238D8 !important;
+    color: #187c3c !important;
 }
 
 .hide {

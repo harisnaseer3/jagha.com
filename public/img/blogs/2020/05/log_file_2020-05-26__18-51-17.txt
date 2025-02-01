@@ -11,7 +11,7 @@ Redux files:
 not defined!
 
 ---Importing widgets---
-Homepage Widget Area : 
+Homepage Widget Area :
 
 Flex Mag: Tag Row Widget - No Title - Widget already exists
 Flex Mag: Category List Widget - Entertainment - Imported
@@ -19,33 +19,33 @@ Flex Mag: Tag Featured Widget - No Title - Imported
 Flex Mag: Tag List Widget - What&#039;s Hot - Widget already exists
 Flex Mag: Gallery Widget - Featured Gallery - Imported
 
-Sidebar Widget Area : 
+Sidebar Widget Area :
 
 Flex Mag: Ad Widget - No Title - Imported
 Flex Mag: Facebook Widget - Facebook - Imported
 Flex Mag: Category List Widget - Latest News - Imported
 
-Home Left Sidebar Widget Area : 
+Home Left Sidebar Widget Area :
 
 Flex Mag: Category List Widget - Title - Imported
 
-Home Right Sidebar Widget Area : 
+Home Right Sidebar Widget Area :
 
 Flex Mag: Ad Widget - No Title - Imported
 Flex Mag: Facebook Widget - Facebook - Imported
 Flex Mag: Category List Widget - Latest News - Imported
 
-Post/Page Sidebar Widget Area : 
+Post/Page Sidebar Widget Area :
 
 Flex Mag: Ad Widget - No Title - Imported
 Flex Mag: Category List Widget - Latest News - Imported
 
-Footer Widget Area : 
+Footer Widget Area :
 
 Flex Mag: Category List Widget - Latest News - Imported
 Flex Mag: Tag Cloud Widget - Popular Tags - Imported
 
-WooCommerce Sidebar Widget Area : 
+WooCommerce Sidebar Widget Area :
 
 woocommerce_widget_cart - Cart - Site does not support widget
 woocommerce_product_categories - Categories - Site does not support widget

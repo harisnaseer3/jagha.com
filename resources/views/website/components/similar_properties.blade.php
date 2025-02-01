@@ -56,7 +56,7 @@
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_marla,2) }} Marla</div>
                            <div class="col-md-12 mb-1"> {{ number_format($feature_property->area_in_new_kanal,2) }} Kanal </div>
                            </div>'>
-                            <span class="font-size-14 color-blue">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
+                            <span class="font-size-14 color-yellow">PKR</span> {{str_replace('Thousand','K',Helper::getPriceInWords($feature_property->price))}}
                         </a>
                     </h2>
                     <div class="location">

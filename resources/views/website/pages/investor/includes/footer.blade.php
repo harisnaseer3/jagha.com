@@ -7,19 +7,15 @@
                     <div class="foot-widget left relative">
                         <div class="foot-logo left relative">
                             <a href="https://www.jagha.com">
-                                <img src="{{asset('img/logo/logo-with-text.png')}}" alt="Jagha" data-rjs="2" />
+                                <img src="{{asset('img/logo/new-white-logo.png')}}" alt="Jagha" data-rjs="2" />
                             </a>
                         </div>
                         <div class="investor-foot-info-text left relative text-white">
-                            <p class="text-white">Lorem ipsum dolor sit amet consectetur. Dui bibendum elit fusce
-                                enim scelerisque. Massa aliquam enim amet arcu. Ut ultricies ut
-                                vehicula lorem in. Urna eget accumsan mauris lorem. Volutpat ut
-                                at justo justo nulla habitasse nulla pellentesque elementum.
-                                Pellentesque ullamcorper donec erat laoreet a rutrum mi viverra
-                                faucibus. Arcu hac pellentesque elementum et leo.</p>
+                            <p class="text-white">Pakistan history, culture, civilization, architecture, politics,
+                                constitution, election, music, drama, film, theatre, food, natural resources and more.</p>
                         </div>
                         <div>
-                            <button class="learn-more-button">Learn More <span>&rarr;</span></button>
+                            <button class="btn btn-search footer-btn transition-background green-color">Learn More <span>&rarr;</span></button>
                         </div>
                     </div>
 
@@ -55,12 +51,12 @@
                             <p><i class="fa fa-phone"></i> +92 51 4862317</p>
                             <p><i class="fa fa-mobile"></i> +92 315 5141959</p>
                             <p><i class="fa fa-envelope"></i> info@jagha.com</p>
-                            <div class="investor-foot-head foot-head">Join us on Social</div>
+                            <h3 class="foot-head mt-20 mb-2">Join us on Social</h3>
                             <div>
-                                <a href="https://www.facebook.com/profile.php?id=61570901009233" target="_blank"><i class="fab fa-facebook-f investor-foot-icons"></i></a>
-                                <a href="https://twitter.com/jaghapk" target="_blank"><i class="fab fa-twitter investor-foot-icons"></i></a>
-                                <a href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin investor-foot-icons"></i></a>
-                                <a href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram investor-foot-icons"></i></a>
+                                <a href="https://www.facebook.com/profile.php?id=61570901009233" target="_blank"><i class="fab fa-facebook-f investor-foot-icons font-24"></i></a>
+{{--                                <a href="https://twitter.com/jaghapk" target="_blank"><i class="fab fa-twitter investor-foot-icons"></i></a>--}}
+{{--                                <a href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin investor-foot-icons"></i></a>--}}
+{{--                                <a href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram investor-foot-icons"></i></a>--}}
                                 <a href="https://www.youtube.com/channel/jaghapk" target="_blank"><i class="fab fa-youtube investor-foot-icons"></i></a>
                             </div>
                         </ul>
@@ -101,8 +97,8 @@
     }
 
     .foot-widget h3 {
-        margin-bottom: 10px;
-        font-size: 18px;
+        margin-bottom: 40px;
+        font-size: 24px;
         color: white;
     }
 

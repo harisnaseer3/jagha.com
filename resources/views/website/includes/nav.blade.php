@@ -10,26 +10,26 @@
                                 <i class="fab fa-facebook-square icon-padding"></i>
                             </a>
                         </li>
-                        <li class="twit-soc">
-                            <a href="https://twitter.com/jaghapk" target="_blank" title="Visit Jagha Twitter">
-                                <i class="fab fa-twitter icon-padding"></i>
-                            </a>
-                        </li>
-                        <li class="link-soc">
-                            <a href="https://www.linkedin.com/company/jaghapk" target="_blank" title="Visit Jagha Linkedin">
-                                <i class="fab fa-linkedin in icon-padding"></i>
-                            </a>
-                        </li>
+{{--                        <li class="twit-soc">--}}
+{{--                            <a href="https://twitter.com/jaghapk" target="_blank" title="Visit Jagha Twitter">--}}
+{{--                                <i class="fab fa-twitter icon-padding"></i>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="link-soc">--}}
+{{--                            <a href="https://www.linkedin.com/company/jaghapk" target="_blank" title="Visit Jagha Linkedin">--}}
+{{--                                <i class="fab fa-linkedin in icon-padding"></i>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                         <li class="insta-soc">
                             <a href="https://www.instagram.com/jaghapk/" target="_blank" title="Visit Jagha Instagram">
                                 <i class="fab fa-instagram  icon-padding"></i>
                             </a>
                         </li>
-                        <li class="youtube-soc">
-                            <a href="https://www.youtube.com/channel/jaghapk" target="_blank" title="Visit Jagha Youtube">
-                                <i class="fab fa-youtube icon-padding"></i>
-                            </a>
-                        </li>
+{{--                        <li class="youtube-soc">--}}
+{{--                            <a href="https://www.youtube.com/channel/jaghapk" target="_blank" title="Visit Jagha Youtube">--}}
+{{--                                <i class="fab fa-youtube icon-padding"></i>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
                     </ul>
                 </div><!--fly-side-wrap-->
                 <div class="fly-wrap-in">
@@ -161,18 +161,18 @@
                 <div class="nav-out">
                     <div class="nav-in">
                         <div id="main-nav-cont" class="left" itemscope itemtype="http://schema.org/Organization">
-                            <div class="nav-logo-out" style="background-color: goldenrod;">
-                                <div class="nav-left-wrap left relative" style="background-color: goldenrod;">
-                                    <div id="toggle-sidebar" class="fly-but-wrap left relative" style="background-color: goldenrod !important;">
+                            <div class="nav-logo-out">
+                                <div class="left relative">
+                                    <div id="toggle-sidebar" class="fly-but-wrap left relative"> {{-- logo new style --}}
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                         <span></span>
                                     </div><!--fly-but-wrap-->
-                                    <div class="nav-logo left" style="background-color: goldenrod;">
+                                    <div class="left">
                                         <a itemprop="url" href="https://www.jagha.com">
-                                            <div style="background-color: white; display: inline-block; padding: 5px;">
-                                                <img itemprop="logo" src="{{asset('img/logo/logo-with-text.png')}}" alt="Jagha" data-rjs="2"/>
+                                            <div style="display: inline-block; padding: 5px; width: 79px; margin-left: 10px;">
+                                                <img itemprop="logo" src="{{asset('img/logo/jagha-black-logo.png')}}" alt="Jagha" data-rjs="2"/>
 {{--                                                <img itemprop="logo" src="{{asset('img/logo/jagha-cot-transparent-logo.png')}}" alt="Jagha" data-rjs="2"/>--}}
                                             </div>
                                         </a>
@@ -180,10 +180,10 @@
                                 </div><!--nav-left-wrap-->
                                 <div class="nav-logo-in">
                                     <div class="nav-menu-out">
-                                        <div class="nav-menu-in">
+                                        <div class="nav-menu-in" style="margin-left: -128px;">
                                             <nav class="main-menu-wrap left">
                                                 <div class="menu-main-menu-container">
-                                                    <ul id="menu-main-menu-1" class="menu" style="background-color: goldenrod;">
+                                                    <ul id="menu-main-menu-1" class="menu transition-background">
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2457">
 {{--                                                            <a href="https://www.jagha.com/">Home</a>--}}
                                                             <a href="{{ route('home') }}">Home</a>
@@ -295,25 +295,25 @@
                                             </nav>
                                         </div><!--nav-menu-in-->
 
-                                        <div class="nav-right-wrap relative" style="background-color: goldenrod;">
-                                            <a href="mailto:info@jagha.com" target="_blank" rel="noopener noreferrer" title="Email us at info@jagha.com">
-                                                <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>
-                                            </a>
+                                        <div class="nav-right-wrap relative" style="background: none; right: -160px;">
+{{--                                            <a href="mailto:info@jagha.com" target="_blank" rel="noopener noreferrer" title="Email us at info@jagha.com">--}}
+{{--                                                <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>--}}
+{{--                                            </a>--}}
                                             <a href="https://www.facebook.com/profile.php?id=61570901009233" target="_blank" title="Visit Jagha Facebook">
                                                 <span class="nav-soc-but"><i class="fab fa-facebook-f"></i></span>
                                             </a>
-                                            <a href="https://twitter.com/jaghapk" target="_blank" title="Visit Jagha Twitter">
-                                                <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>
-                                            </a>
-                                            <a href="https://www.linkedin.com/company/jaghapk" target="_blank" title="Visit Jagha Linkedin">
-                                                <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
-                                            </a>
+{{--                                            <a href="https://twitter.com/jaghapk" target="_blank" title="Visit Jagha Twitter">--}}
+{{--                                                <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>--}}
+{{--                                            </a>--}}
+{{--                                            <a href="https://www.linkedin.com/company/jaghapk" target="_blank" title="Visit Jagha Linkedin">--}}
+{{--                                                <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>--}}
+{{--                                            </a>--}}
                                             <a href="https://www.instagram.com/jaghapk/" target="_blank" title="Visit Jagha Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>
-                                            <a href="https://www.youtube.com/channel/jaghapk" target="_blank" title="Visit Jagha Youtube">
-                                                <span class="nav-soc-but"><i class="fab fa-youtube"></i></span>
-                                            </a>
+{{--                                            <a href="https://www.youtube.com/channel/jaghapk" target="_blank" title="Visit Jagha Youtube">--}}
+{{--                                                <span class="nav-soc-but"><i class="fab fa-youtube"></i></span>--}}
+{{--                                            </a>--}}
 
                                         </div><!--nav-right-wrap-->
                                     </div><!--nav-menu-out-->

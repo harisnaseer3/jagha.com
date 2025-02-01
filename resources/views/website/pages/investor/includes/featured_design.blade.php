@@ -66,7 +66,7 @@
         align-items: center;
         text-transform: uppercase;
         font-weight: bold;
-        width: fit-content;
+        /*width: fit-content;*/
     }
 
     .learn-more-button:hover {

@@ -19,11 +19,11 @@
                 </div>
             </div>
         </div>
-        <div>
-            <h2 id="middle-agency-name"></h2>
-            <h5 class="pt-1" id="agency-phone"></h5>
-            <h5 class="pt-1" id="sale-count"></h5>
-        </div>
+{{--        <div>--}}
+{{--            <h2 id="middle-agency-name"></h2>--}}
+{{--            <h5 class="pt-1" id="agency-phone"></h5>--}}
+{{--            <h5 class="pt-1" id="sale-count"></h5>--}}
+{{--        </div>--}}
 
     </div>
 </div>

@@ -15,7 +15,7 @@
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
             </div>
             <div class="mb-3">
-                <input type="submit" name="submitNewsletter" class="btn btn-block button-theme" value="Subscribe">
+                <input type="submit" name="submitNewsletter" class="btn btn-block transition-background" value="Subscribe">
             </div>
         </form>
     </div>

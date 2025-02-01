@@ -5,6 +5,10 @@ use App\Http\Controllers\JsonUploadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::get('cv', function () {
+    return view('cv');
+});
+
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/privacy-policy', 'PolicyController@privacyPolicy')->name('privacy-policy');
 Route::get('/terms-and-conditions', 'PolicyController@termAndCondition');

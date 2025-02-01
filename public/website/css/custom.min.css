@@ -82,7 +82,8 @@ body {
     text-align: left;
     position: relative;
     font-weight: 800;
-    font-size: 14px
+    font-size: 14px;
+    color: #555;
 }
 
 .index-page-text-area {
@@ -110,19 +111,19 @@ body {
 .reset-search-btn {
     margin: 0 0 0 10px;
     padding: 4px 12px;
-    border-color: #274abb !important
+    border-color: #b79c35 !important
 }
 
 .reset-search-btn:hover {
-    background-color: #274abb !important;
-    border-color: #274abb !important
+    background-color: #b79c35 !important;
+    border-color: #b79c35 !important
 }
 
 .search2-reset-btn {
     margin-top: 10px;
     cursor: pointer;
     padding: 11px 26px;
-    background: #274abb;
+    background: #b79c35;
     letter-spacing: 1px;
     font-size: 13px;
     font-weight: 600;
@@ -694,7 +695,7 @@ body {
 }
 
 .button-theme {
-    background: #274abb
+    background: #b79c35
 }
 
 @media (max-width: 770px) {
@@ -944,7 +945,7 @@ footer {
 }
 
 .partners .slick-slide-item img {
-    padding-top: 15%;
+    /*padding-top: 15%;*/
     padding-bottom: 15%
 }
 
@@ -1043,17 +1044,17 @@ footer {
 }
 
 .btn-call {
-    border-color: #2238d8
+    border-color: #b79c35
 }
 
 .btn-email {
-    background-color: #2238d8;
+    background-color: #b79c35;
     color: #fff !important;
-    border-color: #2238d8
+    border-color: #b79c35
 }
 
 .btn-call:hover, .btn-email:hover {
-    background-color: #2238d8;
+    background-color: #b79c35;
     color: #fff !important
 }
 
@@ -1193,7 +1194,7 @@ footer#foot-wrap {
 }
 
 .property-title {
-    color: #2238d8;
+    color: #187c3c;
     font-size: 14px;
     font-weight: 600
 }
@@ -1359,7 +1360,7 @@ footer#foot-wrap {
 }
 
 #close-icon {
-    border-color: #274abb
+    border-color: #b79c35
 }
 
 .detail-tab-style {
@@ -1794,7 +1795,7 @@ hr.solid {
 }
 
 .theme-dark-blue {
-    color: #2238d8 !important
+    color: #187c3c !important
 }
 
 .hide {
@@ -2120,7 +2121,7 @@ input:checked + .slider:before {
 }
 
 .subscribe-header-color {
-    background-color: #274abb;
+    background-color: #b79c35;
     border-radius: .25rem
 }
 

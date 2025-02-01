@@ -126,7 +126,7 @@ h6 {
 .reset-search-btn {
     margin: 0 0 0 10px;
     padding: 4px 12px;
-    border-color: rgb(39, 74, 187) !important;
+    border-color: #b79c35;
 }
 
 .reset-search-btn:hover {
@@ -1117,18 +1117,18 @@ footer {
 }
 
 .btn-call {
-    border-color: #2238D8;
+    border-color: #b79c35;
 }
 
 .btn-email {
-    background-color: #2238D8;
+    background-color: #b79c35;
     color: white !important;
-    border-color: #2238D8;
+    border-color: #b79c35;
 }
 
 .btn-call:hover,
 .btn-email:hover {
-    background-color: #2238D8;
+    background-color: #b79c35;
     color: white !important;
 }
 
@@ -1627,7 +1627,7 @@ hr.solid {
 
 .nav-pills .nav-link.active, .nav-pills .show > .side-link-style {
     color: white !important;
-    background-color: #007BFF;
+    background-color: #b79c35;
 }
 
 .anchor-disable {
@@ -1883,7 +1883,7 @@ hr.solid {
 }
 
 .theme-dark-blue {
-    color: #2238D8 !important;
+    color: #187c3c !important;
 }
 
 .hide {

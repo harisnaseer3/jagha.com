@@ -9194,7 +9194,7 @@ table {
 }
 
 .fly-but-wrap {
-    background: #000000 !important;
+    background: #fcd454 !important;
     cursor: pointer;
     width: 60px;
     height: 50px
@@ -9470,12 +9470,8 @@ body, .blog-widget-text p, .feat-widget-text p, .post-info-right, span.post-exce
     background: #eb0254
 }
 
-.fly-but-wrap {
-    background: #000
-}
-
 .fly-but-wrap span {
-    background: #fff
+    background: black;
 }
 
 span.post-header {
@@ -9484,15 +9480,18 @@ span.post-header {
 
 #main-nav-wrap, nav.main-menu-wrap, .nav-logo, .nav-right-wrap, .nav-menu-out, .nav-logo-out, #head-main-top {
     -webkit-backface-visibility: hidden;
-    background: #000
+    /*background: #000*/
+    background-color: #fcd454;
 }
 
 nav.main-menu-wrap ul li a, .nav-menu-out:hover ul li:hover a, .nav-menu-out:hover span.nav-search-but:hover i, .nav-menu-out:hover span.nav-soc-but:hover i, span.nav-search-but i, span.nav-soc-but i {
-    color: #fff
+    /*color: #fff*/
+    color: black;
+    font-weight: bold;
 }
 
 .nav-menu-out:hover li.menu-item-has-children:hover a:after, nav.main-menu-wrap ul li.menu-item-has-children a:after {
-    border-color: #fff transparent transparent transparent
+    border-color: black transparent transparent transparent
 }
 
 .nav-menu-out:hover ul li a, .nav-menu-out:hover span.nav-search-but i, .nav-menu-out:hover span.nav-soc-but i {
@@ -9539,6 +9538,13 @@ h3.home-feat-title, h3.side-list-title, #infscr-loading, .score-nav-menu select,
 .small, small {
     font-size: 73% !important;
     font-weight: 400 !important
+}
+
+.investor-foot-icons {
+    color: #FFFFFF;
+    width: 35px;
+    padding-top: 10px;
+    font-size: 24px;
 }
 
 .icon-padding {
@@ -9633,6 +9639,6 @@ body.custom-background {
 }
 
 .more-popular-cities {
-    color: #274abb
+    color: #187c3c
 }
 

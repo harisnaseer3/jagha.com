@@ -260,9 +260,9 @@
                                         <p class="description" aria-label="property description">
                                             {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',str_replace('zameen','AboutPakistan',$property->description)))))}}</p>
                                     @endif
-                                    <p>Contact us for more details. While calling please mention <a class="color-blue" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
+                                    <p>Contact us for more details. While calling please mention <a class="color-green" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
                                     @if($property->user_id != 1)
-                                        <button role="button" class="btn-outline-primary button" style="border: none">Read More</button>@endif
+                                        <button role="button" class="btn-outline-primary color-green button" style="border: none">Read More</button>@endif
                                 </div>
                                 <!-- Properties condition start -->
                                 <!-- Properties amenities start -->
@@ -280,19 +280,19 @@
                                                         <div class="col-sm-4 my-2 py-2 icon-list">
                                                             @if(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-vehicle')
                                                                 <i class="fal fa-garage-car"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                                   style="color: #b79c35; font-size: 16px;"></i>
                                                             @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-furniture')
                                                                 <i class="fal fa-bed-alt"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                                   style="color: #b79c35; font-size: 16px;"></i>
                                                             @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
                                                                 <i class="fal fa-air-conditioner"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                                   style="color: #b79c35; font-size: 16px;"></i>
                                                             @elseif(json_decode($property->features,true)['icons'][$key.'-icon'] == 'flaticon-technology')
                                                                 <i class="fal fa-air-conditioner"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                                   style="color: #b79c35; font-size: 16px;"></i>
                                                             @else
                                                                 <i class="{{json_decode($property->features,true)['icons'][$key.'-icon']}}"
-                                                                   style="color: #274abb; font-size: 16px;"></i>
+                                                                   style="color: #b79c35; font-size: 16px;"></i>
                                                             @endif
                                                             {{ $value ==='yes' ? '' : $value}} {{str_replace('_',' ',$key)}}
                                                         </div>

@@ -22,7 +22,7 @@
                         </div>
                     @endforeach
                     <div class="col-sm-12 text-center color-blue">
-                        <a class="color-blue" href="{{route('all.locations',['type'=>strtolower($locations_data['sub_type']),'purpose'=>$locations_data['purpose'],'city'=>$locations_data['city']])}}">
+                        <a class="green-color" href="{{route('all.locations',['type'=>strtolower($locations_data['sub_type']),'purpose'=>$locations_data['purpose'],'city'=>$locations_data['city']])}}">
                             View All locations of {{ucwords($locations_data['sub_type'])}} for {{ucfirst($locations_data['purpose'])}} in {{$locations_data['city']}}
                         </a>
                     </div>

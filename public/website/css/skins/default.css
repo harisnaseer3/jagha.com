@@ -16,8 +16,8 @@
 }
 
 .active-view-btn {
-    background: #274abb!important;
-    border: solid 1px #274abb;
+    background: #b79c35!important;
+    border: solid 1px #b79c35;
 }
 
 .change-view-btn {
@@ -328,19 +328,19 @@ footer .footer-item .contact-info li label a:hover {
 }
 
 .btn-outline {
-    border: solid 1px #274abb;
-    color: #274abb;
+    border: solid 1px #b79c35;
+    color: #b79c35;
 }
 
 .btn-outline:hover {
-    border: solid 1px #2238d8;
-    background: #2238d8;
+    border: solid 1px #b79c35;
+    background: #b79c35;
     color: #fff;
 }
 
 .btn-outline-2 {
-    border: solid 2px #274abb;
-    color: #274abb;
+    border: solid 2px #b79c35;
+    color: #b79c35;
     font-weight: 600;
 }
 
@@ -353,7 +353,11 @@ footer .footer-item .contact-info li label a:hover {
 }
 
 .heading-properties-2 h3 span {
-    color: #274abb;
+    color: #187c3c;
+}
+
+.color-green {
+    color: #187c3c;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
@@ -407,18 +411,18 @@ li.active.btn.filtr-button.filtr {
 }
 
 .option-bar .change-view-btn {
-    color: #274abb;
-    border: solid 1px #274abb;
+    color: #b79c35;
+    border: solid 1px #b79c35;
 }
 
 .option-bar .change-view-btn:hover{
-    border: solid 1px #274abb;
-    background: #274abb;
+    border: solid 1px #b79c35;
+    background: #b79c35;
 }
 
 .option-bar .active-view-btn {
-    background: #274abb;
-    border: solid 1px #274abb;
+    background: #b79c35;
+    border: solid 1px #b79c35;
 }
 
 .option-bar .heading-icon {
@@ -562,7 +566,7 @@ li.active.btn.filtr-button.filtr {
 }
 
 .property-box-2 .detail .title a {
-    color: #274abb;
+    color: #187c3c;
 }
 
 .property-box-2 .facilities-list li i {
