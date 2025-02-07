@@ -170,16 +170,16 @@
                     <div class="foot-widget left relative">
                         <h3 class="foot-head">Contact Us</h3>
                         <ul class="blog-widget-list left relative text-white">
-                            <p><i class="fa fa-phone"></i> +92 51 4862317</p>
-                            <p><i class="fa fa-mobile"></i> +92 315 5141959</p>
+                            <p><i class="fa fa-phone"></i> +92 51 111 777 677</p>
+{{--                            <p><i class="fa fa-mobile"></i> +92 315 5141959</p>--}}
                             <p><i class="fa fa-envelope"></i> info@jagha.com</p>
                             <h3 class="foot-head mt-20 mb-2">Join us on Social</h3>
                             <div style="color: white">
                                 <a href="https://www.facebook.com/profile.php?id=61570901009233" target="_blank"><i class="fab fa-facebook-f investor-foot-icons"></i></a>
 {{--                                <a href="https://twitter.com/jaghapk" target="_blank"><i class="fab fa-twitter investor-foot-icons"></i></a>--}}
-{{--                                <a href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin investor-foot-icons"></i></a>--}}
-{{--                                <a href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram investor-foot-icons"></i></a>--}}
-                                <a href="https://www.youtube.com/channel/jaghapk" target="_blank"><i class="fab fa-youtube investor-foot-icons"></i></a>
+                                <a href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin investor-foot-icons"></i></a>
+                                <a href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram investor-foot-icons"></i></a>
+{{--                                <a href="https://www.youtube.com/channel/jaghapk" target="_blank"><i class="fab fa-youtube investor-foot-icons"></i></a>--}}
                             </div>
                         </ul>
                     </div>

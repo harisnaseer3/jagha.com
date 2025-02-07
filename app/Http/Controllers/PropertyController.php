@@ -355,11 +355,33 @@ class PropertyController extends Controller
         ]);
     }
 
+//    public function agencyCountOnDetailPage($id)
+//    {
+//        return DB::table('agencies')->select('property_count_by_agencies.property_count AS count')->where('agencies.id', '=', $id)
+//            ->leftJoin('property_count_by_agencies', 'property_count_by_agencies.agency_id', '=', 'agencies.id')
+//            ->where('property_count_by_agencies.property_status', '=', 'active')->pluck('count')->toArray()[0];
+//    }
+
     public function agencyCountOnDetailPage($id)
     {
-        return DB::table('agencies')->select('property_count_by_agencies.property_count AS count')->where('agencies.id', '=', $id)
+        $count = DB::table('agencies')
+            ->select('property_count_by_agencies.property_count AS count')
+            ->where('agencies.id', '=', $id)
             ->leftJoin('property_count_by_agencies', 'property_count_by_agencies.agency_id', '=', 'agencies.id')
-            ->where('property_count_by_agencies.property_status', '=', 'active')->pluck('count')->toArray()[0];
+            ->where('property_count_by_agencies.property_status', '=', 'active')
+            ->pluck('count')
+            ->toArray();
+
+// Check if the array is not empty
+        if (empty($count)) {
+            // Handle the case where no result is found (e.g., set $count to 0 or handle it in another way)
+            $count = 0;
+        } else {
+            // Access the first element
+            $count = $count[0];
+        }
+
+        return $count;
     }
 
     public function edit(Property $property)

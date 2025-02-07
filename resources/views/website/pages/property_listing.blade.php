@@ -107,7 +107,7 @@
                             <meta itemprop="position" content="3">
                             </span>
                             @else
-                                @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial']))
+                                @if(in_array(explode('_', request()->segment(1))[0],['plots','homes','commercial', 'hotels']))
                                     <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
                                     <a href="{{route('property.city.count.listing',['type'=>lcfirst(explode('_', request()->segment(1))[0]), 'sort' =>'newest'])}}"
                                        title="{{ucfirst(explode('_', request()->segment(1))[0])}}" itemprop="item">
@@ -120,6 +120,8 @@
                                                 $type = 'Homes';
                                         else if(in_array(ucwords(explode('_', request()->segment(1))[0]),['Office', 'Shop', 'Warehouse', 'Factory', 'Building', 'Other']))
                                             $type = 'Commercial';
+                                        else if(in_array(ucwords(explode('_', request()->segment(1))[0]),['Hotels']))
+                                            $type = 'Hotels';
                                         else $type = 'Plots';
                                     @endphp
                                     <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
@@ -142,7 +144,8 @@
 {{--                    {{dd( number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2))}}--}}
 {{--                    {{dd( $properties)}}--}}
                 <!-- Search Result Count -->
-                    @if(count($properties) == 0)
+{{--                    @if(count($properties) == 0)--}}
+                        @if($properties->isEmpty())
                         <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
                             <span aria-label="Summary text" class="ml-2 color-white">0 results found</span>
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>

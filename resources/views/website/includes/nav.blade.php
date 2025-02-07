@@ -188,9 +188,6 @@
 {{--                                                            <a href="https://www.jagha.com/">Home</a>--}}
                                                             <a href="{{ route('home') }}">Home</a>
                                                         </li>
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2519">
-                                                            <a href="/">Property</a>
-                                                        </li>
 
                                                         @php
                                                             $cities = City::all();
@@ -250,25 +247,7 @@
 {{--                                                                </li>--}}
 {{--                                                            </ul>--}}
 {{--                                                        </li>--}}
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-2519">
-                                                            <a href="https://www.jagha.com/"
-                                                               aria-current="page">Blog</a>
-                                                            <ul class="sub-menu">
-                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">
-                                                                    <a href="https://www.jagha.com/">Blog-1</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">
-                                                                    <a href="https://www.jagha.com/">Blog-2</a>
-                                                                </li>
-                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">
-                                                                    <a href="https://www.jagha.com/">Blog-3</a>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
 
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
-                                                            <a href="https://www.jagha.com/">About Us</a>
-                                                        </li>
 {{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2518">--}}
 {{--                                                            <a href="https://www.jagha.com/">Contact Us</a>--}}
 {{--                                                        </li>--}}
@@ -290,12 +269,32 @@
                                                             <a href="{{route('agents.listing')}}">
                                                                 Partners</a>
                                                         </li>
+
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2519">
+                                                            <a href="https://www.aboutpakistan.com/blog/"
+                                                               aria-current="page">Blog</a>
+{{--                                                            <ul class="sub-menu">--}}
+{{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">--}}
+{{--                                                                    <a href="https://www.jagha.com/">Blog-1</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">--}}
+{{--                                                                    <a href="https://www.jagha.com/">Blog-2</a>--}}
+{{--                                                                </li>--}}
+{{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">--}}
+{{--                                                                    <a href="https://www.jagha.com/">Blog-3</a>--}}
+{{--                                                                </li>--}}
+{{--                                                            </ul>--}}
+                                                        </li>
+
+                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
+                                                            <a href="https://www.jagha.com/">About Us</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </nav>
                                         </div><!--nav-menu-in-->
 
-                                        <div class="nav-right-wrap relative" style="background: none; right: -160px;">
+                                        <div class="nav-right-wrap relative" style="background: none; right: -125px;">
 {{--                                            <a href="mailto:info@jagha.com" target="_blank" rel="noopener noreferrer" title="Email us at info@jagha.com">--}}
 {{--                                                <span class="nav-soc-but"><i class="fa fa-envelope"></i></span>--}}
 {{--                                            </a>--}}
@@ -305,9 +304,9 @@
 {{--                                            <a href="https://twitter.com/jaghapk" target="_blank" title="Visit Jagha Twitter">--}}
 {{--                                                <span class="nav-soc-but"><i class="fab fa-twitter"></i></span>--}}
 {{--                                            </a>--}}
-{{--                                            <a href="https://www.linkedin.com/company/jaghapk" target="_blank" title="Visit Jagha Linkedin">--}}
-{{--                                                <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>--}}
-{{--                                            </a>--}}
+                                            <a href="https://www.linkedin.com/company/jaghapk" target="_blank" title="Visit Jagha Linkedin">
+                                                <span class="nav-soc-but"><i class="fab fa-linkedin in"></i></span>
+                                            </a>
                                             <a href="https://www.instagram.com/jaghapk/" target="_blank" title="Visit Jagha Instagram">
                                                 <span class="nav-soc-but"><i class="fab fa-instagram"></i></span>
                                             </a>

@@ -318,7 +318,7 @@
                     </div>
                     <div class="pull-right">
                         <a aria-label="Listing creation date"><i class="flaticon-time"></i>
-                            {{ (new \Illuminate\Support\Carbon($property->activated_at))->diffForHumans(['parts' => 2]) }}
+                            {{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans()}}   <!-- ['parts' => 2] -->
                         </a>
                     </div>
                 </div>

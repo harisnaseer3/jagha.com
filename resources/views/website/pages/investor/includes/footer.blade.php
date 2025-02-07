@@ -55,9 +55,9 @@
                             <div>
                                 <a href="https://www.facebook.com/profile.php?id=61570901009233" target="_blank"><i class="fab fa-facebook-f investor-foot-icons font-24"></i></a>
 {{--                                <a href="https://twitter.com/jaghapk" target="_blank"><i class="fab fa-twitter investor-foot-icons"></i></a>--}}
-{{--                                <a href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin investor-foot-icons"></i></a>--}}
-{{--                                <a href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram investor-foot-icons"></i></a>--}}
-                                <a href="https://www.youtube.com/channel/jaghapk" target="_blank"><i class="fab fa-youtube investor-foot-icons"></i></a>
+                                <a href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin investor-foot-icons"></i></a>
+                                <a href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram investor-foot-icons"></i></a>
+{{--                                <a href="https://www.youtube.com/channel/jaghapk" target="_blank"><i class="fab fa-youtube investor-foot-icons"></i></a>--}}
                             </div>
                         </ul>
                     </div>

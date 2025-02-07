@@ -24,8 +24,8 @@
                                     <!-- Search Button -->
                                     <button
                                         type="submit"
-                                        class="search-bar-button">
-                                        <i class="fa fa-search"></i> Find Project
+                                        class="search-bar-button transition-background color-green">
+                                        <i class="fa fa-search color-green"></i> Find Project
                                     </button>
                                 </div>
                                 {{ Form::close() }}
@@ -69,8 +69,6 @@
         font-size: 1rem;
         font-weight: bold;
         border: none;
-        background-color: goldenrod;
-        color: #ffffff;
         cursor: pointer;
         display: flex;
         align-items: center;

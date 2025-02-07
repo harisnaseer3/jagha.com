@@ -55,8 +55,7 @@
     }
 
     .learn-more-button {
-        background-color: #fdd835;
-        color: #000;
+        width: 11%;
         padding: 0.8rem 1.5rem;
         border: none;
         border-radius: 5px;
@@ -150,7 +149,7 @@
             Augue proin nibh risus sapien. Dolor ipsum pharetra sollicitudin urna gravida est venenatis. Vitae facilisi nunc nisl nec.
             Porttitor pellentesque neque amet molestie lacus est bibendum.</p>
         <p>Augue proin nibh risus sapien. Dolor ipsum pharetra sollicitudin urna gravida est venenatis.</p>
-        <button class="learn-more-button">Learn More <span>&rarr;</span></button>
+        <button class="learn-more-button transition-background color-green">Learn More <span>&rarr;</span></button>
     </div>
 </div>
 

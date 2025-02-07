@@ -33,7 +33,7 @@
                                                     style="width: 100%;border:0" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
                                                     name="property_type" id="property-type">
                                                 {{-- <option disabled>Property Type</option>--}}
-                                                @foreach(['Homes','Plots','Commercial'] as $key=>$option)
+                                                @foreach(['Homes','Plots','Commercial','Hotels'] as $key=>$option)
                                                     <option {{$option === 'Homes'? 'selected' : '' }} value={{$option}} data-index={{$key}}>{{$option}}</option>
                                                 @endforeach
                                             </select>
@@ -77,10 +77,28 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-1 col-4 search-col index-search">
-                                        <button class="btn btn-search btn-block transition-background" id="index-submit" type="submit"> {{-- class removed button-theme --}}
+                                        <button class="btn btn-search btn-block transition-background" id="index-submit" type="submit">
                                             <i class="fa fa-search" style="color: #187c3c"></i><strong>Find</strong>
                                         </button>
                                     </div>
+
+                                    <div id="loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.7); z-index: 9999; text-align: center;">
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                            <i class="fa fa-spinner fa-spin fa-3x" style="color: #187c3c;"></i>
+                                            <p>Loading...</p>
+                                        </div>
+                                    </div>
+
+{{--                                    <script>--}}
+{{--                                        document.getElementById('index-submit').addEventListener('click', function() {--}}
+{{--                                            document.getElementById('loader').style.display = 'block'; // Show loader--}}
+{{--                                        });--}}
+
+{{--                                        window.addEventListener('load', function() {--}}
+{{--                                            document.getElementById('loader').style.display = 'none'; // Hide loader when page loads--}}
+{{--                                        });--}}
+
+{{--                                    </script>--}}
 
                                 </div>
                                 <div class="row advance-search-options" style="margin-top: 10px; display: none">
