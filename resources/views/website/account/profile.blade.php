@@ -36,7 +36,7 @@
 
                                     {{ Form::open(['route' => ['users.update',\Illuminate\Support\Facades\Auth::guard('web')->user()->id], 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form', 'enctype' => 'multipart/form-data']) }}
                                     <div class="card">
-                                        <div class="card-header theme-blue text-white text-capitalize">User Profile</div>
+                                        <div class="card-header transition-background color-green text-capitalize">User Profile</div>
                                         <div class="card-body">
                                             <div class="form-group row">
                                                 <div class="col-12">
@@ -105,7 +105,7 @@
                                             <div class="mt-2"><span style="color:red">* </span>Above details will be updated in all property listings</div>
                                         </div>
                                         <div class="card-footer">
-                                            {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
+                                            {{ Form::submit('Submit', ['class' => 'btn transition-background color-green btn-md search-submit-btn']) }}
                                         </div>
                                     </div>
                                     {{ Form::close() }}

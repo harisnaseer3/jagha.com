@@ -36,7 +36,7 @@
                                 <div class="col-md-9">
                                     @include('website.layouts.flash-message')
                                     <div class="card">
-                                        <div class="card-header theme-blue text-white text-capitalize">My Wallet</div>
+                                        <div class="card-header transition-background color-green text-capitalize">My Wallet</div>
                                         <div class="card-body">
                                             <div class="form-group row">
                                                 <div class="col-12">
@@ -91,7 +91,7 @@
                                         </div>
                                     @endif
                                     <div class="card my-4">
-                                        <div class="card-header theme-blue text-white text-capitalize">Utilization History</div>
+                                        <div class="card-header transition-background color-green text-capitalize">Utilization History</div>
                                         <div class="card-body">
                                             <div class="form-group row">
                                                 <div class="col-12">

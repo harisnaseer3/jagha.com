@@ -41,7 +41,7 @@
                             <div class="row my-4">
                                 <div class="col-12 mb-2">
                                     <div class="float-right">
-                                               <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                               <span class="pull-right"><a class="btn btn-sm  transition-background color-green mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
                                     </div>
 
@@ -57,7 +57,7 @@
 
 
                                             <div class="card">
-                                                <div class="card-header theme-blue text-white">
+                                                <div class="card-header transition-background color-green">
                                                     Customer Inquiries
                                                 </div>
                                                 <div class="card-body">

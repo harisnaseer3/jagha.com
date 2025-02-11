@@ -145,10 +145,10 @@
     <div class="left-content">
         <div class="right-content"></div>
         <h1>Why invest with Jagha.com?</h1>
-        <p>Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum. Id quis morbi sagittis mi amet id non.
-            Augue proin nibh risus sapien. Dolor ipsum pharetra sollicitudin urna gravida est venenatis. Vitae facilisi nunc nisl nec.
-            Porttitor pellentesque neque amet molestie lacus est bibendum.</p>
-        <p>Augue proin nibh risus sapien. Dolor ipsum pharetra sollicitudin urna gravida est venenatis.</p>
+        <p>Unlock lucrative real estate opportunities with high appreciation potential and strong rental yields.
+            Our carefully selected properties ensure maximum returns on your investment.</p>
+        <p>We prioritize security and transparency, providing you with clear investment insights,
+            legal guidance, and trusted property management services.</p>
         <button class="learn-more-button transition-background color-green">Learn More <span>&rarr;</span></button>
     </div>
 </div>

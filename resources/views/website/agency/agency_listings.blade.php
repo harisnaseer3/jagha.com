@@ -38,13 +38,13 @@
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
-                                               <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                               <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
                                             @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
                                             @if(count($agencies) > 0)
-                                                <a class="btn btn-sm theme-blue text-white mr-2" href="{{ route('agencies.add-staff') }}"><i class="fa fa-plus-circle mr-1"></i>Add Agency Staff</a>
+                                                <a class="btn btn-sm transition-background color-green mr-2" href="{{ route('agencies.add-staff') }}"><i class="fa fa-plus-circle mr-1"></i>Add Agency Staff</a>
                                             @endif
-                                            <a class="btn btn-sm theme-blue text-white mr-2" href="{{route('agencies.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Agency</a>
+                                            <a class="btn btn-sm transition-background color-green mr-2" href="{{route('agencies.create')}}"><i class="fa fa-plus-circle mr-1"></i>Add New Agency</a>
                                         </div>
 
                                         <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
@@ -52,7 +52,7 @@
                                             <h6>My Agencies</h6>
                                             <div class="my-4">
                                                 <table class="table table-sm table-bordered">
-                                                    <thead class="theme-blue text-white">
+                                                    <thead class="transition-background color-green">
                                                     <tr>
                                                         <td>ID</td>
                                                         <td>Title</td>

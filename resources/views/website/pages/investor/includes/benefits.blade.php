@@ -17,8 +17,8 @@
                     <div class="benefit-number yellow-color">1</div>
                     <h3 class="benefit-title">Benefit</h3>
                     <p class="benefit-description">
-                        Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum.
-                        Id quis morbi sagittis mi amet id non. Augue proin nibh risus sapien.
+                        We offer premium real estate opportunities with strong appreciation potential
+                        and stable rental yields, ensuring consistent returns for investors.
                     </p>
                 </div>
             </div>
@@ -28,8 +28,8 @@
                     <div class="benefit-number">2</div>
                     <h3 class="benefit-title">Benefit</h3>
                     <p class="benefit-description">
-                        Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum.
-                        Id quis morbi sagittis mi amet id non. Augue proin nibh risus sapien.
+                        Our process is built on trust, providing investors with complete transparency,
+                        verified documentation, and legal support for a hassle-free experience.
                     </p>
                 </div>
             </div>
@@ -39,8 +39,8 @@
                     <div class="benefit-number">3</div>
                     <h3 class="benefit-title">Benefit</h3>
                     <p class="benefit-description">
-                        Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum.
-                        Id quis morbi sagittis mi amet id non. Augue proin nibh risus sapien.
+                        Choose from a wide range of investment properties, including luxury apartments, commercial spaces,
+                        and high-demand rental units, tailored to suit different investment goals.
                     </p>
                 </div>
             </div>

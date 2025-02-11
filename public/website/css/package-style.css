@@ -40,7 +40,7 @@
 
 .pricing .table td:first-child {
 
-    background: #5F97FB;
+    background: linear-gradient(to right, #fcd454, #b79c35);
     padding-left: 20px;
     text-align: center;
 
@@ -50,7 +50,7 @@
 .pricing tr td .ptable-title {
     font-size: 0.90rem;
     font-weight: 400;
-    color: #fff;
+    color: #187c3c;
     width: 30%;
 }
 

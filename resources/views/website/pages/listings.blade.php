@@ -39,9 +39,9 @@
                                     <div id="limit-message"></div>
                                     <div class="row m-0">
                                         <div class="col-12 my-2">
-                                            <span class="pull-right"><a class="btn btn-sm theme-blue text-white ml-2" href="/"><i
+                                            <span class="pull-right"><a class="btn btn-sm transition-background color-green ml-2" href="/"><i
                                                         class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
-                                            <span class="pull-right"><a class="btn btn-sm theme-blue text-white" href="{{route('properties.create')}}">Post Advertisement</a></span>
+                                            <span class="pull-right"><a class="btn btn-sm transition-background color-green" href="{{route('properties.create')}}">Post Advertisement</a></span>
                                         </div>
                                     </div>
 
@@ -58,7 +58,7 @@
                                                     <input class="form-control form-control-sm text-transform" type="number" placeholder="Property ID" name="property_id"
                                                            autocomplete="false" required>
                                                          <div class="col-2 px-0 mx-0">
-                                                                <button class="btn btn-primary search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
+                                                                <button class="btn color-green transition-background search-submit-btn btn-sm" type="Submit"><i class="fa fa-search ml-1"></i></button>
                                                          </div>
                                                      </div>
                                                     {{ Form::close() }}
@@ -97,7 +97,7 @@
                                                 <div class="my-4 component-block">
                                                     <div class="table-responsive">
                                                         <table class="table table-sm table-bordered">
-                                                            <thead class="theme-blue text-white">
+                                                            <thead class="transition-background color-green">
                                                             <tr>
                                                                 <td>ID</td>
                                                                 @if($option === 'all')

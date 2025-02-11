@@ -2,38 +2,37 @@
     <h2 class="faq-title">Frequently Asked Questions</h2>
     <div class="faq-item">
         <div class="faq-question">
-            Lorem ipsum dolor sit amet is dummy text for type testing.
+            Why should I invest in real estate.
             <span class="faq-icon">+</span>
         </div>
         <div class="faq-answer">
-            Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum. Id quis morbi sagittis mi amet id non. Augue proin nibh risus sapien. Dolor ipsum pharetra sollicitudin urna gravida est venenatis. Vitae facilisi nunc nisl nec. Porttitor pellentesque neque amet molestie lacus est bibendum.
+            Real estate offers stable, long-term growth, passive income through rentals, and protection against inflation.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-question">
+            What types of properties do you offer for investment.
+            <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">
+            We provide residential, commercial, and rental properties in high-demand locations to suit various investor needs.
         </div>
     </div>
     <div class="faq-item">
         <div class="faq-question">
-            Lorem ipsum dolor sit amet is dummy text for type testing.
+            How do I get started.
             <span class="faq-icon">+</span>
         </div>
         <div class="faq-answer">
-            Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum.
+            Simply reach out to our investment advisors, and we will guide you through the process, from property selection to closing the deal.
         </div>
     </div>
     <div class="faq-item">
         <div class="faq-question">
-            Lorem ipsum dolor sit amet is dummy text for type testing.
+            What is the minimum investment required.
             <span class="faq-icon">+</span>
         </div>
         <div class="faq-answer">
-            Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum.
-        </div>
-    </div>
-    <div class="faq-item">
-        <div class="faq-question">
-            Lorem ipsum dolor sit amet is dummy text for type testing.
-            <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-            Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate tristique tortor interdum.
+            The investment amount depends on the property type and location. We offer flexible options, from affordable apartments to high-value luxury estates, to suit different budgets.
         </div>
     </div>
     <!-- Add more FAQ items as needed -->

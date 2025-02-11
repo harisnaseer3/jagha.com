@@ -102,10 +102,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12 mb-2">
-                                        <span class="pull-right py-2"><a class="btn btn-sm theme-blue text-white ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Post Advertisement</a></span>
-                                        <span class="pull-right py-2"><a class="btn btn-sm theme-blue text-white" href="{{route('agencies.create')}}"><i
+                                        <span class="pull-right py-2"><a class="btn btn-sm transition-background color-green nav-link dropdown-toggle text-center ml-2" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Post Advertisement</a></span>
+                                        <span class="pull-right py-2"><a class="btn btn-sm transition-background color-green" href="{{route('agencies.create')}}"><i
                                                     class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
-                                        <span class="pull-right py-2"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                        <span class="pull-right py-2"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
                                                     class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
 
                                     </div>

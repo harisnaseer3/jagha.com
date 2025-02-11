@@ -37,7 +37,7 @@
                                     @include('website.layouts.flash-message')
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
-                                               <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/"><i
+                                               <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
                                                            class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
                                         </div>
 

@@ -39,7 +39,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="float-right">
-                                                        <span class="pull-right"><a class="btn btn-sm theme-blue text-white mr-2" href="/">
+                                                        <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/">
                                                             <i class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
                                                     </div>
                                                     <div class="float-left">
@@ -51,7 +51,7 @@
                                                     <div class="my-4" style="background: white">
                                                         <div class="card my-4">
                                                             <div class="card-header theme-blue text-white">
-                                                                <div class="font-14 font-weight-bold text-white">Choose a Plan</div>
+                                                                <div class="font-14 font-weight-bold color-green">Choose a Plan</div>
                                                             </div>
                                                             <div class="card-body">
                                                                 <div class="pricing m-0">

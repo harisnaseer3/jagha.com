@@ -100,7 +100,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-agencies-create')}}">Add New Agency</a></span>
+                                                <span><a class="btn btn-sm transition-background color-green mr-3 pull-right" href="{{route('admin-agencies-create')}}">Add New Agency</a></span>
                                                 <div class="tab-pane fade {{\Illuminate\Support\Facades\Request::segments()[5] === 'all'? 'active show' : '' }}" id="listings-all" role="tabpanel"
                                                      aria-labelledby="listings-all-tab">
                                                     <h6 class="pull-left">All Listings</h6>

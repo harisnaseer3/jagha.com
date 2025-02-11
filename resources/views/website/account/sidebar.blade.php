@@ -8,8 +8,8 @@
     @endphp
 
     <ul class="list-group">
-        <li class="list-group-item {{ $current_route_name === 'users.edit' ? 'active' : '' }}"><a
-                href="{{ route('users.edit', ['user' => $user_id]) }}" class="{{ $current_route_name === 'users.edit' ? 'text-white' : '' }}">Current User Profile</a></li>
+        <li class="list-group-item transition-background {{ $current_route_name === 'users.edit' ? 'active' : '' }}"><a
+                href="{{ route('users.edit', ['user' => $user_id]) }}" class=" {{ $current_route_name === 'users.edit' ? 'color-green' : '' }}">Current User Profile</a></li>
 {{--        <li class="list-group-item {{ $current_route_name === 'account.wallet' ? 'active' : '' }}"><a--}}
 {{--                href="{{ route('account.wallet') }}" class="{{ $current_route_name === 'account.wallet' ? 'text-white' : '' }}">My Wallet</a></li>--}}
         <li class="list-group-item {{ $current_route_name === 'user_roles.edit' ? 'active' : '' }}"><a
