@@ -13,9 +13,9 @@
 @section('content')
     <div id="site" class="left relative">
         <div id="site-wrap" class="left relative">
-        @include('website.admin-pages.includes.admin-nav')
+            @include('website.admin-pages.includes.admin-nav')
 
-        <!-- Submit Property start -->
+            <!-- Submit Property start -->
             <div class="row admin-margin">
                 <div class="col-md-12">
                     <div class="tab-content" id="ListingsTabContent">
@@ -65,26 +65,35 @@
                                             </div>
                                             <div class="col-10 mt-2"><i class="fa fa-spinner fa-spin " style="font-size:20px;display:none"></i>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            @can('Manage Users')
-                                                @include('website.admin-pages.includes.admin-logs')
-                                            @endcan
-                                            @can('Manage Property')
-                                                @include('website.admin-pages.includes.property-logs')
-                                            @endcan
-                                            @can('Manage Agency')
-                                                    @include('website.admin-pages.includes.agency-logs')
-                                            @endcan
-                                            @can('Manage Users')
+
+                                            <div class="row">
                                                 <div class="col-12 mb-4">
-                                                    <canvas id="myChart" class="w-100" height="300px"></canvas>
+                                                    <button class="btn theme-blue color-white task-btn" id="property-count">Update Property Count</button>
+                                                    <i class="fa fa-spinner fa-spin" id="loading-spinner" style="font-size:20px; display:none; margin-left: 10px;"></i>
+                                                    <span id="status-message" style="margin-left: 10px;"></span>
                                                 </div>
+                                            </div>
+
+                                            <div class="row">
+                                                @can('Manage Users')
+                                                    @include('website.admin-pages.includes.admin-logs')
+                                                @endcan
+                                                @can('Manage Property')
+                                                    @include('website.admin-pages.includes.property-logs')
+                                                @endcan
+                                                @can('Manage Agency')
+                                                    @include('website.admin-pages.includes.agency-logs')
+                                                @endcan
+                                                @can('Manage Users')
+                                                    <div class="col-12 mb-4">
+                                                        <canvas id="myChart" class="w-100" height="300px"></canvas>
+                                                    </div>
                                                     @include('website.admin-pages.includes.visit-logs')
-                                            @endcan
+                                                @endcan
                                                 @can('Manage Packages')
                                                     @include('website.admin-pages.includes.package-logs')
                                                 @endcan
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -94,16 +103,15 @@
                 </div>
             </div>
         </div>
-    </div>
 
 
-@endsection
+        @endsection
 
-@section('script')
-    <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
-    <script type="text/javascript" charset="utf8" src="{{asset('website/js/chart.js')}}"></script>
-    <script type="text/javascript" charset="utf8" src="{{asset('website/js/admin-dashboard-page.js')}}"></script>
+        @section('script')
+            <script type="text/javascript" charset="utf8" src="{{asset('website/js/datatables.min.js')}}"></script>
+            <script type="text/javascript" charset="utf8" src="{{asset('website/js/chart.js')}}"></script>
+            <script type="text/javascript" charset="utf8" src="{{asset('website/js/admin-dashboard-page.js')}}"></script>
 
-@endsection
+        @endsection
 
 

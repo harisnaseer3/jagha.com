@@ -282,6 +282,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
             'page' => '\d+',
         ])->middleware(['permission:Manage Property']);
 
+    Route::post('/update-property-count', [\App\Http\Controllers\IndexController::class, 'updateCount'])->name('property.update.count');
     Route::get('/dashboard', 'Admin\AdminDashboardController@index')->name('admin.dashboard')->middleware(['permission:Manage Dashboard']);
     Route::get('/manage-admins', 'Admin\UserManagementController@index')->name('admin.manage-admins')->middleware(['permission:Manage Admins']);
     Route::get('/manage-users', 'Admin\UserManagementController@getUsers')->name('admin.manage-users')->middleware(['permission:Manage Users']);

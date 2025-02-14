@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HitRecord\HitController;
+use App\Models\Agency;
+use App\Models\Dashboard\City;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\Visit;
@@ -48,4 +50,40 @@ class IndexController extends Controller
 
         return view('website.index', $data);
     }
+
+    public function updateCount()
+    {
+        try {
+            $totalCount = Property::count();
+            $rentPropertyCount = Property::where('purpose', 'Rent')->count();
+            $salePropertyCount = Property::where('purpose', 'Sale')->count();
+            $agencyPropertyCount = Agency::where('is_active', '1')->count();
+            $cityCount = City::count();
+
+            DB::table('total_property_count')->update([
+                'property_count' => $totalCount,
+                'rent_property_count' => $rentPropertyCount,
+                'sale_property_count' => $salePropertyCount,
+                'agency_count' => $agencyPropertyCount,
+                'city_count' => $cityCount,
+            ]);
+
+            return response()->json([
+                'message' => 'Counts updated successfully',
+                'data' => [
+                    'property_count' => $totalCount,
+                    'rent_property_count' => $rentPropertyCount,
+                    'sale_property_count' => $salePropertyCount,
+                    'agency_count' => $agencyPropertyCount,
+                    'city_count' => $cityCount,
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update counts',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

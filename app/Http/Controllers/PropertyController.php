@@ -372,16 +372,13 @@ class PropertyController extends Controller
             ->pluck('count')
             ->toArray();
 
-// Check if the array is not empty
+        // Check if the array is empty
         if (empty($count)) {
-            // Handle the case where no result is found (e.g., set $count to 0 or handle it in another way)
-            $count = 0;
-        } else {
-            // Access the first element
-            $count = $count[0];
+            return 0;
         }
 
-        return $count;
+        // Directly return the first element as an integer
+        return (int) $count[0];
     }
 
     public function edit(Property $property)

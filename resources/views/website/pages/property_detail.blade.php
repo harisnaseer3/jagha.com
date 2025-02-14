@@ -352,8 +352,8 @@
                         <!-- Advanced search start -->
                         @if($property->status != 'active')
                             <div class="sidebar widget" style="text-align: center!important;">
-                                <div class="status p-3">
-                                    <span style="font-size: 18px;">This Property is Expired Now</span>
+                                <div class="status p-3" style="background-color: #b79c35 !important;">
+                                    <span style="font-size: 18px; color: white">This Property is Expired Now</span>
                                 </div>
                             </div>
 

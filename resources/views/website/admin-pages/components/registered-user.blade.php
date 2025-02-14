@@ -1,6 +1,6 @@
 @if(count($register_users) === 0)
     <tr>
-        <td colspan="6">No Users Found</td>
+        <td colspan="7">No Users Found</td>
     </tr>
 @else
     @foreach($register_users as $user)
@@ -28,6 +28,13 @@
                     </div>
                 @endif
                 {!! Form::close() !!}
+
+                <!-- Add Reset Password Button -->
+                    @if (Route::has('password.request'))
+                        <a class="btn btn-warning btn-sm reset-password transition-background mt-1" href="{{ route('password.request') }}">
+                            {{ __('Change Password?') }}
+                        </a>
+                    @endif
             </td>
         </tr>
     @endforeach

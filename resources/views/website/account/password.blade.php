@@ -35,7 +35,7 @@
                                     @include('website.layouts.flash-message')
                                     {{ Form::open(['route' => 'user.password.update', 'method' => 'put', 'class'=> 'data-insertion-form', 'role' => 'form']) }}
                                     <div class="card">
-                                        <div class="card-header theme-blue text-white text-capitalize">Change Current Password</div>
+                                        <div class="card-header theme-blue text-capitalize">Change Current Password</div>
 
                                         <div class="card-body">
                                             <div class="form-group row">
@@ -53,7 +53,7 @@
                                             {{ Form::bsPassword('confirm_new_password', ['required' => true]) }}
                                         </div>
                                         <div class="card-footer">
-                                            {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
+                                            {{ Form::submit('Submit', ['class' => 'transition-background btn btn-primary color-black btn-md search-submit-btn']) }}
                                         </div>
                                     </div>
                                     {{ Form::close() }}

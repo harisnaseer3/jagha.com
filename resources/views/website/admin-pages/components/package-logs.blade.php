@@ -16,7 +16,7 @@
             {{ (new \Illuminate\Support\Carbon($package['activation']))->isoFormat('DD-MM-YYYY, h:mm a') }}
         </td>
         <td>
-            <button class="btn btn-sm btn-primary mb-1 form-history-btn" data-attr="{{$package['id']}}">Show Details</button>
+            <button class="btn theme-blue color-white task-btn btn-sm mb-1 form-history-btn" data-attr="{{$package['id']}}">Show Details</button>
         </td>
     </tr>
 @endforeach

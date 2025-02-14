@@ -16,7 +16,7 @@
                 href="{{ route('user_roles.edit') }}" class="{{ $current_route_name === 'user_roles.edit' ? 'text-white' : '' }}">Current User Role</a></li>
         <li class="list-group-item {{ $current_route_name === 'settings.edit' ? 'active' : '' }}"><a
                 href="{{ route('settings.edit') }}" class="{{ $current_route_name === 'settings.edit' ? 'text-white' : '' }} text-capitalize">User & Communication Settings</a></li>
-        <li class="list-group-item {{ $current_route_name === 'password.edit' ? 'active' : '' }}"><a
-                href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-white' : '' }}">Change Current Password</a></li>
+        <li class="list-group-item transition-background {{ $current_route_name === 'password.edit' ? 'active' : '' }}"><a
+                href="{{ route('password.edit') }}" class="{{ $current_route_name === 'password.edit' ? 'text-black' : '' }}">Change Current Password</a></li>
     </ul>
 </div>

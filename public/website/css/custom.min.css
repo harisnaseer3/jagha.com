@@ -105,7 +105,8 @@ body {
 .reset-search {
     color: #fff;
     font-size: 12px;
-    font-weight: 600
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .reset-search-btn {

@@ -165,6 +165,35 @@
             });
         }
 
+        $('#property-count').click(function () {
+            let button = $(this);
+            let spinner = $('#loading-spinner');
+
+            button.prop('disabled', true);
+            spinner.show();
+
+            $.ajax({
+                url: "/admin/update-property-count", // Ensure correct route
+                method: "POST", // Explicitly specify POST
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token
+                },
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content') // CSRF protection
+                },
+                success: function (response) {
+                    spinner.hide();
+                    button.prop('disabled', false);
+                    alert(response.message);
+                },
+                error: function (xhr) {
+                    console.error("Error:", xhr.responseText);
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+
+
         $('#execute-tasks').on('click', function () {
             $('.fa-spinner').show();
             jQuery.ajaxSetup({
