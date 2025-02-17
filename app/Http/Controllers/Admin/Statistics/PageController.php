@@ -250,12 +250,12 @@ class PageController extends Controller
 
     public static function is_fb_login_page()
     {
-        return \request()->url() == 'https://property.aboutpakistan.com/redirect';
+        return \request()->url() == 'https://property..com/redirect';
     }
 
     public static function is_google_login_page()
     {
-        return \request()->url() == 'https://property.aboutpakistan.com/google/redirect';
+        return \request()->url() == 'https://property..com/google/redirect';
     }
 
     public static function is_cities_listing()

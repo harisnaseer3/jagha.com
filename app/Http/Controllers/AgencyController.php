@@ -290,24 +290,57 @@ class AgencyController extends Controller
 
     }
 
+//    public function create()
+//    {
+//        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
+//        $footer_content = (new FooterController)->footerContent();
+//
+//        if (Auth::guard('admin')->user()) {
+//            return view('website.admin-pages.agency_profile.agency_create',
+//                ['table_name' => 'users',
+//                    'counts' => $counts,
+//                    'recent_properties' => $footer_content[0], 'footer_agencies' => $footer_content[1]]);
+//        } else
+//
+//            return view('website.agency_profile.agency_create',
+//
+//                ['table_name' => 'users',
+//                    'counts' => $counts,
+//                    'recent_properties' => $footer_content[0], 'footer_agencies' => $footer_content[1]]);
+//    }
+
     public function create()
     {
-        $counts = $this->getAgencyListingCount(Auth::user()->getAuthIdentifier());
-        $footer_content = (new FooterController)->footerContent();
+        DB::beginTransaction();
+        try {
+            $userId = Auth::user()->getAuthIdentifier();
+            $counts = $this->getAgencyListingCount($userId);
+            $footer_content = (new FooterController)->footerContent();
 
-        if (Auth::guard('admin')->user()) {
-            return view('website.admin-pages.agency_profile.agency_create',
-                ['table_name' => 'users',
-                    'counts' => $counts,
-                    'recent_properties' => $footer_content[0], 'footer_agencies' => $footer_content[1]]);
-        } else
+            $viewData = [
+                'table_name' => 'users',
+                'counts' => $counts,
+                'recent_properties' => $footer_content[0],
+                'footer_agencies' => $footer_content[1]
+            ];
 
-            return view('website.agency_profile.agency_create',
+            DB::commit();
 
-                ['table_name' => 'users',
-                    'counts' => $counts,
-                    'recent_properties' => $footer_content[0], 'footer_agencies' => $footer_content[1]]);
+            if (Auth::guard('admin')->user()) {
+                return view('website.admin-pages.agency_profile.agency_create', $viewData);
+            } else {
+                return view('website.agency_profile.agency_create', $viewData);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error in agency create function: ' . $e->getMessage(), [
+                'exception' => $e
+            ]);
+
+            return back()->with('error', 'An error occurred while creating the agency profile. Please try again later.');
+        }
     }
+
 
     public function listingFeaturedPartners(Request $request)
     {

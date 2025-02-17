@@ -17,7 +17,7 @@
                         <figcaption class="project-description-overlay p-3 text-center">
                             <h3 class="m-2 mt-3 property-heading-tag">Property For {{ $feature_property->purpose }}</h3>
                             <p class="property-line-height mb-2">
-                                Contact us for more details. While calling please mention <a href="https://www.aboutpakistan.com" class="theme-blue">aboutpakistan.com</a>
+                                Contact us for more details. While calling please mention <a href="https://www.jagha.com" class="theme-blue">jagha.com</a>
                             </p>
                             <p>
                                 @if($feature_property->id < 104280)

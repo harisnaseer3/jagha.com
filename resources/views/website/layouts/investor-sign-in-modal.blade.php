@@ -46,7 +46,7 @@
                                 <div class="form-group clearfix mb-0">
                                     <button type="submit"
                                             class="menu btn btn-block sign-in sign-card color-green"
-                                            style="background-color: goldenrod; color: #187c3c" id="sign-in-btns"> <!-- id is not actual for now remove s from btn to make actual -->
+                                            style="background: linear-gradient(to right, #fcd454, #b79c35); color: #187c3c" id="sign-in-btns"> <!-- id is not actual for now remove s from btn to make actual -->
                                         {{ __('Login') }}
                                     </button>
                                 </div>
@@ -210,7 +210,7 @@
                                 </div>
 
                                 <div class="form-group text-center">
-                                    <button type="submit" class="btn btn-block" style="background-color: goldenrod; color: #187c3c;">Sign Up</button>
+                                    <button type="submit" class="btn btn-block" style="background: linear-gradient(to right, #fcd454, #b79c35); color: #187c3c;">Sign Up</button>
                                 </div>
                             </form>
                             <p class="text-center font-12">

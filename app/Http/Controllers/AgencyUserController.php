@@ -174,7 +174,7 @@ class AgencyUserController extends Controller
         }
         $current_user = User::getUserByEmail($request->email);
         if (isset($current_user->id) && $request->add === 'New User') {
-            return redirect()->back()->withInput()->with('error', 'Email is already registered with us. By choosing "Existing User" option, link already registered property.aboutpakistan.com user to your agency.');
+            return redirect()->back()->withInput()->with('error', 'Email is already registered with us. By choosing "Existing User" option, link already registered property..com user to your agency.');
         }
         if ($request->add === 'New User') {
             $validator = Validator::make($request->all(), [

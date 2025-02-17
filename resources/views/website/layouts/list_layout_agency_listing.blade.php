@@ -146,7 +146,7 @@
                     <div class="container" style="font-size: 12px; color: #555">
                         <div class="text-center mb-2">
                             <div class="mb-2 font-weight-bold title-font">{{ $agency->title }}</div>
-                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+                            <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.jagha.com/">https://www.jagha.com</a></div>
 
                         </div>
                         <table class="table table-borderless">

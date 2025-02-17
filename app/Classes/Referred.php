@@ -45,10 +45,10 @@ class Referred
 
         // If Referer is Empty then use same WebSite Url
         if (empty($referred)) {
-            $referred ='https://property.aboutpakistan.com/';
+            $referred ='https://property..com/';
         }
         if($referred == '')
-            $referred = 'https://property.aboutpakistan.com/';
+            $referred = 'https://property..com/';
 
         // Check Search Engine
 
@@ -243,7 +243,7 @@ class Referred
     {
         // Check Protocol Of domain
 //        $domain_name = rtrim(preg_replace('/^https?:\/\//', '', get_site_url()), " / ");
-        $domain_name = rtrim(preg_replace('/^https?:\/\//', '', 'https://property.aboutpakistan.com'), " / ");
+        $domain_name = rtrim(preg_replace('/^https?:\/\//', '', 'https://property..com'), " / ");
         foreach (array("http", "https", "ftp") as $protocol) {
             foreach (array('', 'www.') as $w3) {
                 $where = " AND `referred` NOT LIKE '{$protocol}://{$w3}{$domain_name}%' ";

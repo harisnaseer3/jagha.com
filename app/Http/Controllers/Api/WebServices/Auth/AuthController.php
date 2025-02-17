@@ -44,7 +44,7 @@ class AuthController extends Controller
 
 //        $user->assignRole('customer');
 
-        $token = $user->createToken('AboutPakistanProperties')->accessToken;
+        $token = $user->createToken('Properties')->accessToken;
 
         $data = (object)[
             'user' => new UserResource($user),
@@ -84,7 +84,7 @@ class AuthController extends Controller
 //                return (new \App\Http\JsonResponse)->forbidden();
 //            }
 
-            $token = Auth::user()->createToken('AboutPakistanProperties')->accessToken;
+            $token = Auth::user()->createToken('Properties')->accessToken;
 
             $data = (object)[
                 'user' => new UserResource(auth()->user()),

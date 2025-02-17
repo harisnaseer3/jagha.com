@@ -3,7 +3,7 @@
         Options -MultiViews -Indexes
     </IfModule>
 	 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin 'https://www.aboutpakistan.com'
+    Header set Access-Control-Allow-Origin 'https://www..com'
     </IfModule>
 
     RewriteEngine On

@@ -579,14 +579,15 @@ body {
     padding: 13px 20px 9px 20px;
     font-weight: 600;
     text-transform: uppercase;
-    background: #274abb;
-    color: #fff !important;
+    /*background: #274abb;*/
+    background: linear-gradient(to right, #fcd454, #b79c35);
+    color: #187c3c !important;
     cursor: pointer;
     border-radius: 3px
 }
 
 .login-btn:hover {
-    background: #274abb !important
+    background: linear-gradient(to right, #fcd454, #b79c35) !important;
 }
 
 .property-box-2 .facilities-list-custom li {
@@ -796,7 +797,8 @@ footer {
 
 .banner .banner-slider-inner .btn {
     margin-top: 0;
-    background-color: #274abb
+    background-color: #b79c35;
+    /*background: linear-gradient(to right, #fcd454, #b79c35);*/
 }
 
 .navbar {

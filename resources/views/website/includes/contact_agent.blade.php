@@ -19,7 +19,7 @@
         <div class="editable form-control form-control-sm  editable-div" contenteditable="true">
             I would like to inquire about your property <a href="{{$property->property_detail_path()}}" style="text-decoration:underline; color:#187c3c">{{$property->title}} </a> Property
             ID <span class="color-green" style="text-decoration:underline"> {{$property->id}}</span>
-            displayed at <a href="https://www.aboutpakistan.com" style="text-decoration:underline; color:#187c3c">https://www.aboutpakistan.com </a> <br><br> Please contact me at your earliest.
+            displayed at <a href="https://www.jagha.com" style="text-decoration:underline; color:#187c3c">https://www.jagha.com </a> <br><br> Please contact me at your earliest.
         </div>
         {!! Form::hidden('message', null, array_merge(['class' => 'form-control form-control-sm' , 'aria-describedby' => 'message' . '-error', 'aria-invalid' => 'false', 'rows' => 3, 'cols' => 10, 'style' => 'resize:none'])) !!}
         <div class="mt-3">
@@ -87,7 +87,7 @@
                         <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency->title: '' }} </div>
                         <div class="mb-2">Please use property ID</div>
                         <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>
-                        <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+                        <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.jagha.com/">https://www.jagha.com</a></div>
 
                     </div>
 

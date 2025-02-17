@@ -203,7 +203,7 @@
                                             </div>
                                         @endif
                                         <div class="col-md-4 col-sm-6 mb-3 fs-14">
-                                            <strong>Added: </strong>{{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans() }}
+                                            <strong>Added: </strong>{{ (new \Illuminate\Support\Carbon($property->created_at))->diffForHumans(['parts' => 2]) }}
                                         </div>
 
 
@@ -260,7 +260,7 @@
                                         <p class="description" aria-label="property description">
                                             {{str_replace('While Calling','',str_replace('For More Information Please Contact','',str_replace('Please Mention Zameen. com','', str_replace('Zameen','AboutPakistan',str_replace('zameen','AboutPakistan',$property->description)))))}}</p>
                                     @endif
-                                    <p>Contact us for more details. While calling please mention <a class="color-green" href="https://www.aboutpakistan.com">aboutpakistan.com</a></p>
+                                    <p>Contact us for more details. While calling please mention <a class="color-green" href="https://www.jagha.com">jagha.com</a></p>
                                     @if($property->user_id != 1)
                                         <button role="button" class="btn-outline-primary color-green button" style="border: none">Read More</button>@endif
                                 </div>

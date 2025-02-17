@@ -48,7 +48,7 @@ Route::post('/contactAgent', 'ContactAgentController@store')->name('contact');
 Route::get('/load-more-data', 'BlogController@more_data');
 Route::get('/search', 'PropertySearchController@searchWithID')->name('property.search.id');
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
-Route::get('/get-about-pakistan-properties', 'Api\IndexPageController@getAboutPakistanProperties');
+Route::get('/get-about-pakistan-properties', 'Api\IndexPageController@getProperties');
 Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
 Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');
 Route::post('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
@@ -196,7 +196,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/message-center/notifications', 'MessageCenter\MessageCenterController@index')->name('message-center.notifications');
     Route::get('/message-center/inbox', 'MessageCenter\MessageCenterController@inbox')->name('message-center.inbox');
     Route::get('/message-center/sent', 'MessageCenter\MessageCenterController@sent')->name('message-center.sent');
-    Route::get('/support', 'Support\SupportController@index')->name('aboutpakistan.support');
+    Route::get('/support', 'Support\SupportController@index')->name('.support');
     Route::get('/agencies/agency-staff', 'AgencyUserController@index')->name('agencies.staff');
     Route::get('/agencies/add-staff', 'AgencyUserController@addStaff')->name('agencies.add-staff');
     Route::post('/agencies/store-staff', 'AgencyUserController@storeStaff')->name('agencies.store-staff');

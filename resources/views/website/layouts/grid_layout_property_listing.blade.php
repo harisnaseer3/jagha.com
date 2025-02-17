@@ -290,7 +290,7 @@
                                 <div class="mb-2 font-weight-bold"> {{ $property->agency !== null ? $property->agency: '' }} </div>
                                 <div class="mb-2">Please use property ID</div>
                                 <div class="mb-2" style="font-weight: bold"> {{ $property->id }} </div>
-                                <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.aboutpakistan.com/">https://www.aboutpakistan.com</a></div>
+                                <div class="mb-2">While calling please mention <a class="hover-color link-font" href="https://www.jagha.com/">https://www.jagha.com</a></div>
                             </div>
 
                             <table class="table table-borderless">

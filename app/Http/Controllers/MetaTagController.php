@@ -88,7 +88,7 @@ class MetaTagController extends Controller
             ->description('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.')
             ->url(URL::current())
             ->telephone('+92 51 4862317')
-            ->email('info@aboutpakistan.com')
+            ->email('info@.com')
             ->image(Schema::imageObject()->url(asset('img/logo/logo-with-text-200x200.png')))
             ->logo(Schema::imageObject()->url(asset('img/logo/logo-with-text-200x200.png')))
             ->address(Schema::postalAddress()->streetAddress('I-8')->addressLocality('Islamabad')->addressRegion('punjab')->postalCode('44000')->addressCountry(Schema::country()->name('Pakistan')));
@@ -123,7 +123,7 @@ class MetaTagController extends Controller
         $blogOrganization = Schema::organization()
             ->name('About Pakistan Properties')
             ->url(URL::current())
-            ->email('info@aboutpakistan.com')
+            ->email('info@.com')
             ->logo(Schema::imageObject()->url(asset('img/logo/logo-with-text-200x200.png')));
         return $blogOrganization;
 
@@ -176,7 +176,7 @@ class MetaTagController extends Controller
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', ['en-us']);
 
-        TwitterCard::setTitle('AboutPakistan Property Partners - Real Estate Property Agencies in Pakistan');
+        TwitterCard::setTitle(' Property Partners - Real Estate Property Agencies in Pakistan');
         TwitterCard::setSite('@aboutpk_');
         TwitterCard::setDescription('About Pakistan Properties, A property portal based in Pakistan - offering service to property buyers, sellers, landlords and to real estate agents in Karachi Lahore Islamabad and all over Pakistan.');
         TwitterCard::addImage(asset('img/logo/logo-with-text-200x200.png'));

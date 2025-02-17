@@ -58,12 +58,12 @@ input[type=checkbox]:checked + label:before {
 }
 
 .btn-theme{
-    background: #b79c35;
+    /*background: #b79c35;*/
     border: solid 1px #b79c35;
 }
 
 .btn-theme:hover{
-    background: #2238d8;
+    /*background: #2238d8;*/
     border: solid 1px #2238d8;
 }
 

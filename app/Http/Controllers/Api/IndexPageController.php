@@ -58,7 +58,7 @@ class IndexPageController extends Controller
         return $data;
     }
 
-    function getAboutPakistanProperties()
+    function getProperties()
     {
         $featured_properties = (new PropertySearchController)->listingfrontend()
             ->where('properties.platinum_listing', '=', 1)
