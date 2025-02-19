@@ -4,13 +4,13 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
-    <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
+        <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom.min.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/intl-tel-input/css/intlTelInput.min.css')}}" async defer>
     <style>
-    .call-model-btn{
+            .call-model-btn{
         background-color: white;
-    }
-    </style>
+        }
+        </style>
 
 @endsection
 
@@ -141,18 +141,18 @@
                         </div>
                     @endif
 
-{{--                    {{dd( number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2))}}--}}
-{{--                    {{dd( $properties)}}--}}
-                <!-- Search Result Count -->
-{{--                    @if(count($properties) == 0)--}}
-                        @if($properties->isEmpty())
+                    {{--                    {{dd( number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2))}}--}}
+                    {{--                    {{dd( $properties)}}--}}
+                    <!-- Search Result Count -->
+                    {{--                    @if(count($properties) == 0)--}}
+                    @if($properties->isEmpty())
                         <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
                             <span aria-label="Summary text" class="ml-2 color-white">0 results found</span>
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @else
                         <div class="alert alert-info font-weight-bold"><i class="fas fa-search"></i>
-                            <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->total() }} results found</span>
+                            <span aria-label="Summary text" class="ml-2 color-white">{{ $properties->count() }} results found</span>
                             <span class="color-white">({{ number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) }} seconds)</span>
                         </div>
                     @endif
@@ -161,8 +161,8 @@
                         @include('website.includes.agency_detail_card')
                     @endif
 
-                        <div class="ajax-loader"></div>
-                        <!-- Listing -->
+                    <div class="ajax-loader"></div>
+                    <!-- Listing -->
                     <div id="listings-div">
                         <div class="page-list-layout">
                             @include('website.layouts.list_layout_property_listing')
@@ -170,8 +170,8 @@
                         <div class="page-grid-layout" style="display: none;">
                             @include('website.layouts.grid_layout_property_listing')
                         </div>
-                    @if($properties->count())
-                        <!-- Pagination -->
+                        @if($properties->count())
+                            <!-- Pagination -->
                             <div class="pagination-box hidden-mb-45 text-center" role="navigation">
                                 {{ $properties->render('vendor.pagination.bootstrap-4') }}
                             </div>
@@ -184,7 +184,7 @@
                 </div>
                 <div class="col-lg-3 col-md-12">
                     <div class="sidebar-right">
-                     @include('website.includes.subscribe-content')
+                        @include('website.includes.subscribe-content')
                     </div>
                 </div>
             </div>
@@ -292,7 +292,5 @@
     <script src="{{asset('plugins/intl-tel-input/js/intlTelInput.js')}}" defer></script>
     <script src="{{asset('website/js/script-custom.min.js')}}"></script>
     <script src="{{asset('website/js/listing-page.js')}}"></script>
-
-
 
 @endsection

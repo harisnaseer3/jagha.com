@@ -133,8 +133,10 @@
                             </a>
                         </div>
                         <div class="investor-foot-info-text left relative text-white">
-                            <p class="text-white">Pakistan history, culture, civilization, architecture, politics,
-                                constitution, election, music, drama, film, theatre, food, natural resources and more.</p>
+                            <p class="text-white"><a href="https://www.jagha.com" class="text-white">Jagha.com </a> is Pakistan’s trusted property portal, connecting buyers, sellers, and renters with the best real estate opportunities.
+                                Whether you’re looking for a home, commercial space, or investment property, we make the search simple and efficient.
+                                With our user-friendly platform and verified listings, finding your perfect Jagha has never been easier.</p>
+                            <p  class="text-white mt-2">Har Jagha, <a href="https://www.jagha.com" class="text-white">Jagha.com </a> ke sath!</p>
                         </div>
                         <div>
                             <button class="btn btn-search footer-btn transition-background green-color">Learn More <span>&rarr;</span></button>

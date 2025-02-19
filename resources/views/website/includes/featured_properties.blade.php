@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Main title -->
         <div class="main-title">
-            <h2><a class="hover-color" href="{{route('featured',['sort'=>'newest', 'limit'=>15])}}" title="Check out famous of all properties">Popular Properties</a></h2>
+            <h2><a href="{{route('featured',['sort'=>'newest', 'limit'=>15])}}" title="Check out famous of all properties">Popular Properties</a></h2>
         </div>
         <div id="ajax-loader-properties" class="ajax-loader"></div>
         <div class="slick-slider-area" aria-label="popular properties">

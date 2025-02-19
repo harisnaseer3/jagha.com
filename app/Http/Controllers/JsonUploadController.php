@@ -117,6 +117,9 @@ class JsonUploadController extends Controller
                     'cell' => $data['phoneNumber']['whatsapp'] ?? null,
                     'status' => 'active',
                     'is_active' => $data['isVerified'] ? 1 : 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'activated_at' => now(),
                 ];
                 try {
                     DB::table('properties')->insertGetId($propertyData);

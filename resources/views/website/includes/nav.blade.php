@@ -274,21 +274,21 @@
                                                                 Partners</a>
                                                         </li>
 
-                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2519">
-                                                            <a href="https://www.aboutpakistan.com/blog/"
-                                                               aria-current="page">Blog</a>
-                                                            {{--                                                            <ul class="sub-menu">--}}
-                                                            {{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">--}}
-                                                            {{--                                                                    <a href="https://www.jagha.com/">Blog-1</a>--}}
-                                                            {{--                                                                </li>--}}
-                                                            {{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">--}}
-                                                            {{--                                                                    <a href="https://www.jagha.com/">Blog-2</a>--}}
-                                                            {{--                                                                </li>--}}
-                                                            {{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">--}}
-                                                            {{--                                                                    <a href="https://www.jagha.com/">Blog-3</a>--}}
-                                                            {{--                                                                </li>--}}
-                                                            {{--                                                            </ul>--}}
-                                                        </li>
+                                                        {{--                                                        <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2519">--}}
+                                                        {{--                                                            <a href="https://www.aboutpakistan.com/blog/"--}}
+                                                        {{--                                                               aria-current="page">Blog</a>--}}
+                                                        {{--                                                            <ul class="sub-menu">--}}
+                                                        {{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2518">--}}
+                                                        {{--                                                                    <a href="https://www.jagha.com/">Blog-1</a>--}}
+                                                        {{--                                                                </li>--}}
+                                                        {{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2517">--}}
+                                                        {{--                                                                    <a href="https://www.jagha.com/">Blog-2</a>--}}
+                                                        {{--                                                                </li>--}}
+                                                        {{--                                                                <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2516">--}}
+                                                        {{--                                                                    <a href="https://www.jagha.com/">Blog-3</a>--}}
+                                                        {{--                                                                </li>--}}
+                                                        {{--                                                            </ul>--}}
+                                                        {{--                                                        </li>--}}
 
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                                             <a href="https://www.jagha.com/">About Us</a>
@@ -383,7 +383,7 @@
                     <ul class="top-social-media navbar-nav ml-auto">
                         <li class="nav-item">
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
-                            <input class="px-3 property-id text-transform" type="text" placeholder="Property Search" name="term" id="ref-id" autocomplete="false"
+                            <input class="px-3 property-id text-transform" type="text" placeholder="Search By Id" name="term" id="ref-id" autocomplete="false"
                                    value="{{isset($params['search_term']) ? $params['search_term']:'' }}">
                             <small id="property_id-error" class="help-block text-red"></small>
                             <button class="btn btn-sm btn-reference-style" id="property-reference" type="submit">

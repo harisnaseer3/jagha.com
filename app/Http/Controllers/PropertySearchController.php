@@ -520,7 +520,8 @@ class PropertySearchController extends Controller
                 }
             }
         } else {
-            $properties = (new Property)->newCollection();
+//            $properties = (new Property)->all();
+            $properties = Property::latest()->paginate(50);
 
             $property_types = (new PropertyType)->all();
             (new MetaTagController())->addMetaTags();
