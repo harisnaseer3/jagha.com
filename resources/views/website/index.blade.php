@@ -16,6 +16,28 @@
 @section('content')
 
     @include('website.includes.nav')
+
+    <!-- Video Popup Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Added 'modal-dialog-centered' -->
+            <div class="modal-content">
+                <div class="modal-body text-center"> <!-- Center content -->
+                    <!-- Close Button -->
+{{--                    <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>--}}
+
+                    <!-- Embedded Video -->
+                    <iframe id="video" class="embed-responsive-item" width="100%" height="400"
+                            src="https://www.youtube.com/embed/EImSiv5PTwc?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            loading="lazy"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Banner start -->
     <div class="container-fluid">
     @include('website.includes.index-page-banner')
@@ -66,5 +88,19 @@
     {{--            });--}}
     {{--        }--}}
     {{--    </script>--}}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Show the modal on page load
+        $(document).ready(function(){
+            $("#videoModal").modal('show');
+
+            // Stop video when modal is closed
+            $("#videoModal").on('hidden.bs.modal', function () {
+                $("#video").attr("src", $("#video").attr("src"));
+            });
+        });
+    </script>
 
 @endsection

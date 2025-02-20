@@ -47,7 +47,9 @@ class IndexPageController extends Controller
     function getFeaturedProperties()
     {
         $featured_properties = (new PropertySearchController)->listingfrontend()
-            ->where('properties.platinum_listing', '=', 1)
+//            ->where('properties.platinum_listing', '=', 1)
+                ->where('properties.city_id', 4)
+//            ->whereIn('properties.id', [283694, 283695, 283696, 283697, 283698, 283699, 283616, 283617, 283628, 283620, 283621, 283622])
             ->orderBy('properties.platinum_listing', 'DESC')
             ->orderBy('properties.activated_at', 'DESC')
             ->get();

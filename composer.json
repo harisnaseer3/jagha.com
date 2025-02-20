@@ -12,6 +12,7 @@
         "ext-json": "*",
         "artesaos/seotools": "^0.18.0",
         "barryvdh/laravel-debugbar": "^3.5",
+        "barryvdh/laravel-dompdf": "^2.2",
         "facebook/graph-sdk": "^5.7",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
@@ -27,11 +28,11 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1",
+        "lcobucci/jwt": "^3.3.3",
         "spatie/laravel-permission": "^3.17",
         "spatie/schema-org": "^2.14",
         "stevebauman/location": "^6.0",
-        "webpatser/laravel-uuid": "^3.0",
-		"lcobucci/jwt": "^3.3.3"
+        "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

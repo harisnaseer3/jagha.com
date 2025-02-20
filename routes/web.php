@@ -2,12 +2,17 @@
 
 use App\Http\Controllers\Auth\InvestorAuthController;
 use App\Http\Controllers\JsonUploadController;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('cv', function () {
     return view('cv');
 });
+Route::get('download-cv', function () {
+    $pdf = PDF::loadView('cv'); // Assuming 'cv' is your Blade file name
+    return $pdf->download('Haris_Naseer_Satti_CV.pdf');
+})->name('download-cv');
 
 Route::get('/', 'IndexController@index')->name('home');
 Route::get('/privacy-policy', 'PolicyController@privacyPolicy')->name('privacy-policy');

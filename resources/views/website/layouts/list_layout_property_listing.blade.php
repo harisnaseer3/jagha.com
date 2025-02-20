@@ -259,16 +259,16 @@
                                 {{\Illuminate\Support\Str::limit(strtolower($property->description), 100, $end='...more')}}
                         </a>
                     </div> -->
-                        <div class="col-sm-6 p-1">
+                        <div class="col-sm-6 p-1 mt-35" style="margin-top: 35px">
                             <button class="btn btn-block mb-1 btn-call call-model-btn" data-toggle="modal" data-target="{{'#CallModelCenter'.$property->reference}}" aria-label="Call">Call</button>
                         </div>
 
                         @if($property->email != null)
-                            <div class="col-sm-6 p-1">
-                                <button class="btn btn-block  mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</button>
+                            <div class="col-sm-6 p-1" style="margin-top: 35px">
+                                <button class="btn btn-block mt-35 mb-1 btn-email" data-toggle="modal" data-target="#EmailModelCenter" aria-label="Email">Email</button>
                             </div>
                         @else
-                            <div class="col-sm-6 p-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
+                            <div class="col-sm-6 p-1" data-toggle="tooltip" style="margin-top: 35px" data-placement="top" data-html="true" title="<div>Currently not available</div>"><a
                                     class="btn btn-block  mb-1 btn-email disabled" aria-label="Email">Email</a></div>
                         @endif
                     </div>
