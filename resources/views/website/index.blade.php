@@ -19,11 +19,9 @@
 
     <!-- Video Popup Modal -->
     <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Added 'modal-dialog-centered' -->
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Centering -->
             <div class="modal-content">
                 <div class="modal-body text-center"> <!-- Center content -->
-                    <!-- Close Button -->
-{{--                    <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">&times;</button>--}}
 
                     <!-- Embedded Video -->
                     <iframe id="video" class="embed-responsive-item" width="100%" height="400"
@@ -33,6 +31,16 @@
                             loading="lazy"
                             allowfullscreen>
                     </iframe>
+
+                    <!-- Don't show again checkbox -->
+                    <div class="mt-3">
+                        <input type="checkbox" id="dontShowAgain">
+                        <label for="dontShowAgain">Don't show me again</label>
+                    </div>
+
+                    <!-- Close Button -->
+                    <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal" aria-label="Close">Close</button>
+
                 </div>
             </div>
         </div>
@@ -75,32 +83,34 @@
     <script src="{{asset('website/js/popper.min.js')}}" defer></script>
     <script src="{{asset('website/js/index-page.js')}}" defer></script>
     <script src="{{asset('website/js/script-custom.js')}}" defer></script>
-    {{--    script to show images on internet explorer--}}
-    {{--    <script defer>--}}
-    {{--        let isIE = /*@cc_on!@*/false || !!document.documentMode;--}}
-    {{--        if (isIE) {--}}
-
-    {{--            $.getScript("{{asset('website/js/iejs/polyfills.js')}}").done(function (script, textStatus) {--}}
-    {{--                $.getScript("{{asset('website/js/iejs/webp.bundle.js')}}").done(function (script, textStatus) {--}}
-    {{--                    var webpMachine = new webpHero.WebpMachine();--}}
-    {{--                    webpMachine.polyfillDocument();--}}
-    {{--                });--}}
-    {{--            });--}}
-    {{--        }--}}
-    {{--    </script>--}}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Show the modal on page load
-        $(document).ready(function(){
-            $("#videoModal").modal('show');
+        document.addEventListener("DOMContentLoaded", function () {
+            let videoModal = new bootstrap.Modal(document.getElementById("videoModal"));
+            let videoFrame = document.getElementById("video");
 
-            // Stop video when modal is closed
-            $("#videoModal").on('hidden.bs.modal', function () {
-                $("#video").attr("src", $("#video").attr("src"));
+            // Show modal if user has not opted out
+            if (!localStorage.getItem("hideVideoModal")) {
+                videoModal.show();
+            }
+
+            // "Don't Show Again" checkbox
+            document.getElementById("dontShowAgain").addEventListener("change", function () {
+                if (this.checked) {
+                    localStorage.setItem("hideVideoModal", "true");
+                } else {
+                    localStorage.removeItem("hideVideoModal");
+                }
+            });
+
+            // Manually close modal if needed
+            document.querySelector(".btn-danger").addEventListener("click", function () {
+                videoModal.hide();
             });
         });
+
     </script>
 
 @endsection

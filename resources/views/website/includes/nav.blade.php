@@ -291,7 +291,7 @@
                                                         {{--                                                        </li>--}}
 
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
-                                                            <a href="https://www.jagha.com/">About Us</a>
+                                                            <a href="{{route('about-us')}}">About Us</a>
                                                         </li>
                                                         <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517" style="margin-left: 150px">
                                                             <a href="https://www.jagha.com/" style="color: #187c3c">Beta Version</a>

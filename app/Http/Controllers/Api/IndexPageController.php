@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountTableController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\PropertySearchController;
+use App\Models\Agency;
 
 
 class IndexPageController extends Controller
@@ -89,4 +90,22 @@ class IndexPageController extends Controller
             ['featured_agencies' => $featured_agencies])->render();
         return $data;
     }
+
+    public function aboutUs()
+    {
+        $testimonials = $this->showTestimonials();
+        return view('website.pages.about_us', compact('testimonials'));
+    }
+
+    public function showTestimonials()
+    {
+        return Agency::where('featured_listing', 1)
+            ->whereNotNull('ceo_message')
+            ->where('is_active', 1)
+            ->select('ceo_message as review', 'ceo_name as name', 'title as company')
+            ->latest('created_at')
+            ->take(5)
+            ->get();
+    }
+
 }

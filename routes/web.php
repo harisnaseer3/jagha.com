@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\IndexPageController;
 use App\Http\Controllers\Auth\InvestorAuthController;
 use App\Http\Controllers\JsonUploadController;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -29,6 +30,10 @@ Route::get('/investor-login-form', [InvestorAuthController::class, 'loginPage'])
 Route::post('/investor-login', [InvestorAuthController::class, 'investorLogin'])->name('investor-login');
 Route::get('/investor', [InvestorAuthController::class, 'index'])->name('investor');
 Route::get('/get-cities', [InvestorAuthController::class, 'getCities'])->name('get-cities');
+Route::get('/about-us', [IndexPageController::class, 'aboutUs'])->name('about-us');
+Route::get('/get-featured-partners', [IndexPageController::class, 'getFeaturedAgencies']);
+Route::get('/testimonials', [IndexPageController::class, 'showTestimonials']);
+
 
 
 //Route::get('testapisearch', 'Test\TrackUrlController@search');
@@ -54,7 +59,7 @@ Route::get('/load-more-data', 'BlogController@more_data');
 Route::get('/search', 'PropertySearchController@searchWithID')->name('property.search.id');
 Route::get('/get-featured-properties', 'Api\IndexPageController@getFeaturedProperties');
 Route::get('/get-about-pakistan-properties', 'Api\IndexPageController@getProperties');
-Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
+//Route::get('/get-featured-partners', 'Api\IndexPageController@getFeaturedAgencies');
 Route::get('/get-popular-places', 'Api\IndexPageController@getPopularPlaces')->name('property.popular-places');
 Route::post('/get-main-page-blogs', 'BlogController@recentBlogsOnMainPage')->name('property.main-page-blogs');
 Route::get('/get-similar-properties', 'Api\DetailPageController@getSimilarProperties');
