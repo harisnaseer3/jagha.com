@@ -209,7 +209,7 @@
                                         style="width: 100%;border:0;" tabindex="-1" aria-hidden="true" aria-describedby="unit-error" aria-invalid="false"
                                         name="agency_id" id="agency-id">
                                     <option disabled selected>Select Agency</option>
-                                    @if(count($agencies) > 0)
+                                    @if(is_countable($agencies) && count($agencies) > 0)
                                         @foreach($agencies as $key => $value)
                                             @php $agency = \App\Models\Agency::getAgencyById($value)   @endphp
                                             <option value="{{$value}}" {{ (old('agency_id') == $value) ? ' selected' : '' }}>{{$value}} - {{$agency->title}}</option>
@@ -240,22 +240,22 @@
                             </div>
 
                             <div class="form-group text-center">
-                                <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
+                                <button id="sendMessageButton" class="transition-background color-green btn btn-xl text-uppercase" type="submit">Send Message</button>
                             </div>
                         </form>
                     </div>
                     <div class="col-md-6  padding-left padding-right padding-top">
                         <p class="contact-info mb-4 pr-15"><i class="fa fa-phone mr-2 color-white"></i>+92 51 4862317</p>
                         <p class="contact-info mb-4 pr-15"><i class="fa fa-mobile mr-2" style="font-size:24px;"></i>+92 315 5141959</p>
-                        <p class="contact-info mb-4 pr-15"><i class="fa fa-envelope mr-2"></i>info@aboutpakistan.com</p>
+                        <p class="contact-info mb-4 pr-15"><i class="fa fa-envelope mr-2"></i>info@jagha.com</p>
                         <div class="divider"></div>
                         <div class="div-center color-white mt-2"> Join us on Social</div>
                         <div class="div-center color-white mt-2">
-                            <a class="media-hover mr-2" href="https://www.facebook.com/aboutpkofficial" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>
-                            <a class="media-hover mr-2" href="https://twitter.com/aboutpkofficial" target="_blank"><i class="fab fa-twitter fa-2x"></i> </a>
-                            <a class="media-hover mr-2" href="https://www.linkedin.com/company/aboutpkofficial" target="_blank"><i class="fab fa-linkedin in fa-2x"></i> </a>
-                            <a class="media-hover mr-2" href="https://www.instagram.com/aboutpakofficial/" target="_blank"><i class="fab fa-instagram fa-2x"></i> </a>
-                            <a class="media-hover mr-2" href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank"><i class="fab fa-youtube fa-2x"></i> </a>
+                            <a class="media-hover mr-2" href="https://www.facebook.com/people/Jaghacom/61570901009233/" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>
+{{--                            <a class="media-hover mr-2" href="https://twitter.com/aboutpkofficial" target="_blank"><i class="fab fa-twitter fa-2x"></i> </a>--}}
+                            <a class="media-hover mr-2" href="https://www.linkedin.com/company/jaghapk" target="_blank"><i class="fab fa-linkedin in fa-2x"></i> </a>
+                            <a class="media-hover mr-2" href="https://www.instagram.com/jaghapk/" target="_blank"><i class="fab fa-instagram fa-2x"></i> </a>
+{{--                            <a class="media-hover mr-2" href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank"><i class="fab fa-youtube fa-2x"></i> </a>--}}
                         </div>
 
                     </div>

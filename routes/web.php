@@ -206,7 +206,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/message-center/notifications', 'MessageCenter\MessageCenterController@index')->name('message-center.notifications');
     Route::get('/message-center/inbox', 'MessageCenter\MessageCenterController@inbox')->name('message-center.inbox');
     Route::get('/message-center/sent', 'MessageCenter\MessageCenterController@sent')->name('message-center.sent');
-    Route::get('/support', 'Support\SupportController@index')->name('.support');
+    Route::get('/support', 'Support\SupportController@index')->name('aboutpakistan.support');
     Route::get('/agencies/agency-staff', 'AgencyUserController@index')->name('agencies.staff');
     Route::get('/agencies/add-staff', 'AgencyUserController@addStaff')->name('agencies.add-staff');
     Route::post('/agencies/store-staff', 'AgencyUserController@storeStaff')->name('agencies.store-staff');
@@ -373,7 +373,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/facebook-post/store', 'Admin\AdminFacebookController@store')->name('admin.facebook.store');
 
     Route::get('/statistic/overview', 'Admin\StatisticController@index')->name('admin.statistic.index');
-    Route::post('/statistic/history', 'Admin\StatisticController@showHistory')->name('admin.statistic.history');
+    Route::post('/statistic/history', 'Admin\StatisitcController@showHistory')->name('admin.statistic.history');
 
 
     Route::post('/package/history', 'Package\AdminPackageController@showPackageHistory')->name('admin.package.history');

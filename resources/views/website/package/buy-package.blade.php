@@ -193,7 +193,7 @@
 
                                                         <div class="card my-4">
                                                             <div class="card-header theme-blue text-white">
-                                                                <div class="font-14 font-weight-bold text-white"> Buy Packages</div>
+                                                                <div class="font-14 font-weight-bold color-green"> Buy Packages</div>
                                                             </div>
                                                             <div class="card-body">
                                                                 {{ Form::open(['route' => ['package.store'], 'method' => 'post', 'class'=> 'package-form']) }}

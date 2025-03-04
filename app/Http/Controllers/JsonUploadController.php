@@ -234,6 +234,7 @@ class JsonUploadController extends Controller
                     'created_at' => date('Y-m-d H:i:s', $data['createdAt']),
                     'updated_at' => date('Y-m-d H:i:s', $data['updatedAt']),
                     'activated_at' => date('Y-m-d H:i:s', $data['updatedAt']),
+                    'expired_at' => date('Y-m-d H:i:s', strtotime('+2 months', $data['createdAt'])), // Calculate expired_at
                 ];
 
                 // Insert Property

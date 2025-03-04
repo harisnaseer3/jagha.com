@@ -3,7 +3,7 @@
 /storage
 /storage/*.key
 /vendor
-/thumbnails
+/public/thumbnails
 /property_media
 .htaccess
 .env

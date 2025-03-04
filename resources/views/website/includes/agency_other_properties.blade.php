@@ -1,5 +1,5 @@
 
-<div class="agency-properties detail-page-agency-properties" style="margin-top: 100px " data-val="{{$property->agency->id}}">
+<div class="agency-properties detail-page-agency-properties" style="margin-top: 100px; margin-right: -5px;margin-left: -5px; width: 153%; max-width: 153%;" data-val="{{$property->agency->id}}">
     <!-- Main title -->
 
     <div class="row agency-properties" style="margin-right: -5px;margin-left: -5px;">
