@@ -1,4 +1,5 @@
 <section class="wow fadeIn animated counters" style="visibility: visible; animation-name: fadeIn;">
+    <a href="{{ route('properties.create') }}" class="floating-btn">Post Ads</a>
     <div class="containers">
         <div class="row justify-content-center align-items-center">
             <!-- Existing Counter 1: Properties For Sale -->

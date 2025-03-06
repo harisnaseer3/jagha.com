@@ -153,52 +153,52 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4" style="color: blue">Slider under construction</h2>
-    <h2 class="text-center mb-4" style="color: black">What investors say about us?</h2>
-    <div
-        id="testimonialCarousel"
-        class="carousel slide"
-        data-bs-ride="carousel"
-    >
-        <div class="carousel-inner">
-            <!-- First Testimonial -->
-            <div class="carousel-item active">
-                <div class="testimonial-card mx-auto">
-                    <div class="testimonial-quote">“</div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate
-                        tristique tortor interdum. Vitae facilisi nunc nisl nec. Porttitor
-                        pellentesque neque amet molestie lacus est bibendum.
-                    </p>
-                    <p class="testimonial-name">John Doe</p>
-                    <p class="testimonial-company">Dream Properties Lahore</p>
-                </div>
-            </div>
-            <!-- Second Testimonial -->
-            <div class="carousel-item">
-                <div class="testimonial-card mx-auto">
-                    <div class="testimonial-quote">“</div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur. Augue proin nibh risus
-                        sapien. Porttitor pellentesque neque amet molestie lacus est
-                        bibendum.
-                    </p>
-                    <p class="testimonial-name">Jane Smith</p>
-                    <p class="testimonial-company">Prime Real Estate</p>
-                </div>
-            </div>
-            <!-- Add more testimonials as needed -->
-        </div>
-        <div class="slick-btn">
-            <div class="slick-prev slick-arrow-buton">
-                <i class="fa fa-angle-left"></i>
-            </div>
-            <div class="slick-next slick-arrow-buton">
-                <i class="fa fa-angle-right"></i>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="container mt-5">--}}
+{{--    <h2 class="text-center mb-4" style="color: blue">Slider under construction</h2>--}}
+{{--    <h2 class="text-center mb-4" style="color: black">What investors say about us?</h2>--}}
+{{--    <div--}}
+{{--        id="testimonialCarousel"--}}
+{{--        class="carousel slide"--}}
+{{--        data-bs-ride="carousel"--}}
+{{--    >--}}
+{{--        <div class="carousel-inner">--}}
+{{--            <!-- First Testimonial -->--}}
+{{--            <div class="carousel-item active">--}}
+{{--                <div class="testimonial-card mx-auto">--}}
+{{--                    <div class="testimonial-quote">“</div>--}}
+{{--                    <p>--}}
+{{--                        Lorem ipsum dolor sit amet consectetur. Eu a aenean vulputate--}}
+{{--                        tristique tortor interdum. Vitae facilisi nunc nisl nec. Porttitor--}}
+{{--                        pellentesque neque amet molestie lacus est bibendum.--}}
+{{--                    </p>--}}
+{{--                    <p class="testimonial-name">John Doe</p>--}}
+{{--                    <p class="testimonial-company">Dream Properties Lahore</p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <!-- Second Testimonial -->--}}
+{{--            <div class="carousel-item">--}}
+{{--                <div class="testimonial-card mx-auto">--}}
+{{--                    <div class="testimonial-quote">“</div>--}}
+{{--                    <p>--}}
+{{--                        Lorem ipsum dolor sit amet consectetur. Augue proin nibh risus--}}
+{{--                        sapien. Porttitor pellentesque neque amet molestie lacus est--}}
+{{--                        bibendum.--}}
+{{--                    </p>--}}
+{{--                    <p class="testimonial-name">Jane Smith</p>--}}
+{{--                    <p class="testimonial-company">Prime Real Estate</p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--            <!-- Add more testimonials as needed -->--}}
+{{--        </div>--}}
+{{--        <div class="slick-btn">--}}
+{{--            <div class="slick-prev slick-arrow-buton">--}}
+{{--                <i class="fa fa-angle-left"></i>--}}
+{{--            </div>--}}
+{{--            <div class="slick-next slick-arrow-buton">--}}
+{{--                <i class="fa fa-angle-right"></i>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 </body>

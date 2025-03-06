@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="form-group clearfix mb-0">
-                                <button type="submit" class="btn-md btn-theme float-left">
+                                <button type="submit" class="transition-background btn-md btn-theme float-left">
                                     {{ __('Login') }}
                                 </button>
 

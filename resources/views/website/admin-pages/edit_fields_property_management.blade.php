@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header theme-blue text-white">Property Type and Location</div>
+    <div class="card-header transition-background text-white">Property Type and Location</div>
     <div class="card-body">
 
         @if(isset($property->id))
@@ -57,7 +57,7 @@
         @endif
     </div>
 
-    <div class="card-header theme-blue text-white">Property Details</div>
+    <div class="card-header transition-background text-white">Property Details</div>
     <div class="card-body">
         @if(isset($property))
             {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['readonly' => 'readonly']) }}
@@ -135,7 +135,7 @@
         {{Form::hidden('features-error')}}
     </div>
     @if($property->purpose != 'Wanted')
-        <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
+        <div class="card-header transition-background text-white property-media-block" style="display: block">Property Images and Videos</div>
         <div class="card-body property-media-block" style="display: block">
             @if(isset($property) and !$property->images->isEmpty())
                 <div class="row border-bottom my-2">
@@ -215,7 +215,7 @@
             @endif
         </div>
     @endif
-    <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+    <div class="card-header transition-background text-white">Property Advertisement Type</div>
     <div class="card-body">
         @if(isset($property->agency))
             {{ Form::bsRadio('advertisement', 'Agency', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
@@ -226,7 +226,7 @@
     </div>
 
     <div class="agency_category">
-        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-header transition-background text-white">Agency Details</div>
         <div class="card-body">
             {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
                 ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
@@ -275,7 +275,7 @@
         </div>
     </div>
     <div id="agency-user-block">
-        <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
+        <div class="card-header transition-background text-white text-capitalize">Contact Details</div>
         <div class="card-body">
             <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
             {{--            @if(count($users) > 0)--}}

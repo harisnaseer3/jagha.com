@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header theme-blue text-white">Property Type and Location</div>
+    <div class="card-header transition-background text-white">Property Type and Location</div>
     <div class="card-body">
 
         @if(isset($property))
@@ -48,7 +48,7 @@
 
     </div>
 
-    <div class="card-header theme-blue text-white">Property Details</div>
+    <div class="card-header transition-background text-white">Property Details</div>
     <div class="card-body">
         @if(isset($property))
             {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['readonly' => 'readonly']) }}
@@ -129,7 +129,7 @@
 
 
     </div>
-    <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
+    <div class="card-header transition-background text-white property-media-block" style="display: block">Property Images and Videos</div>
     <div class="card-body property-media-block" style="display: block">
         @if(isset($property) and !$property->images->isEmpty())
             <div class="row border-bottom my-2">
@@ -211,12 +211,12 @@
 
 
     @if(!isset($property->agency))
-        <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+        <div class="card-header transition-background text-white">Property Advertisement Type</div>
         <div class="card-body">
             {{ Form::bsRadio('advertisement', old('advertisement')=='Agency'?'Agency':'Individual', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
         </div>
         <div id="user-agency-block" style="display: none">
-            <div class="card-header theme-blue text-white">Agency Details</div>
+            <div class="card-header transition-background text-white">Agency Details</div>
             <div class="card-body">
                 {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency->id : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
                 <div class="agency-block" style="display:none"></div>
@@ -224,11 +224,11 @@
         </div>
     @endif
     @if(isset($property->agency))
-        <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+        <div class="card-header transition-background text-white">Property Advertisement Type</div>
         <div class="card-body">
             {{ Form::bsRadio('advertisement','Agency', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
         </div>
-        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-header transition-background text-white">Agency Details</div>
         <div class="card-body">
             {{--            {{ Form::bsText('agency', isset($property->agency)? $property->agency->title : null, ['required' => true]) }}--}}
             {{ Form::bsSelect2('agency', $agencies, isset($property->agency)? $property->agency->id : null,[ 'data-default' => 'Select agency of the property','id'=>'agency']) }}
@@ -266,7 +266,7 @@
 
 
     <div id="agency-user-block">
-        <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
+        <div class="card-header transition-background text-white text-capitalize">Contact Details</div>
         <div class="card-body">
             <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
             <div class="agency-user-block" style="display: none">
@@ -297,7 +297,7 @@
 
     <div class="card-footer">
         {{form::bsHidden('data-index',isset($property->id)? $property->id : null)}}
-        {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-md search-submit-btn']) }}
+        {{ Form::submit('Submit', ['class' => 'btn transition-background btn-md search-submit-btn']) }}
     </div>
 </div>
 

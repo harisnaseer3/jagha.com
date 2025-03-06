@@ -177,7 +177,6 @@
                 </div>
             </div>
         </div>
-
         <div class="key-partners">
             <h2>Key Partners</h2>
             <p>
@@ -185,7 +184,23 @@
                 provide its users with a comprehensive range of verified property listings. The platform also collaborates with legal and
                 financial advisors to ensure that all transactions are secure and comply with Pakistans real estate regulations.
             </p>
-            {{--            @include('website.includes.partner')--}}
+            <div class="partners">
+                    <div class="slick-slider-area" id="agency-slider">
+                        <div class="row slick-carousel" id="featured-agencies-section" data-cycle-fx="carousel" data-cycle-timeout="0" data-cycle-next="slick-next" data-cycle-prev="slick-prev"
+                             data-cycle-carousel-horizontal="true"
+                             data-slick='{"slidesToShow": 5, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 5}}, {"breakpoint": 768,"settings":{"slidesToShow": 3}}]}'>
+                            @include('website.components.featured_agencies')
+                        </div>
+                        <div class="controls">
+                            <div class="slick-prev slick-arrow-buton" id="agency-prev" style="left: -60px;">
+                                <i class="fas fa-angle-left"></i>
+                            </div>
+                            <div class="slick-next slick-arrow-buton" id="agency-next" style="right: -60px;">
+                                <i class="fas fa-angle-right"></i>
+                            </div>
+                        </div>
+                    </div>
+            </div>
             <div class="view-all">
                 <a href="{{route('featured-partners',['sort'=>'newest'])}}" class="btn transition-background color-green">View All →</a>
             </div>
@@ -194,7 +209,7 @@
         <div class="testimonials">
             <h2>What investors say about us?</h2>
             <div class="testimonial-container">
-{{--                <button id="prevBtn" class="arrow left">❮</button>--}}
+                {{--                <button id="prevBtn" class="arrow left">❮</button>--}}
                 <div class="testimonial-slider">
                     @foreach($testimonials as $testimonial)
                         <div class="testimonial" onclick="expandCard(this)">
@@ -246,6 +261,24 @@
                 card.classList.add("expanded");
             }
         }
+
+        $(document).ready(function () {
+            $('#agency-slider').slick({
+                slidesToShow: 5,
+                slidesToScroll: 1,
+                infinite: true,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                prevArrow: $('#prevBtn'),
+                nextArrow: $('#nextBtn'),
+                responsive: [
+                    {breakpoint: 1024, settings: {slidesToShow: 3}},
+                    {breakpoint: 768, settings: {slidesToShow: 2}},
+                    {breakpoint: 480, settings: {slidesToShow: 1}}
+                ]
+            });
+        });
+
 
     </script>
 
@@ -489,7 +522,7 @@
         }
 
         .usp-number {
-            font-size: 50px;
+            font-size: 100px;
             font-weight: bold;
             color: #fbc02d; /* Yellow color for numbers */
         }
@@ -497,7 +530,7 @@
         .usp-item h3 {
             font-size: 20px;
             font-weight: bold;
-            margin-top: -35px;
+            margin-top: -60px;
             color: #fff;
         }
 
@@ -592,7 +625,7 @@
 
         .key-partners {
             text-align: center;
-            padding: 50px 10%;
+            padding: 8px 5%;
         }
 
         .key-partners h2 {

@@ -1646,6 +1646,33 @@ input[type="checkbox"]:checked {
     background: linear-gradient(to right, #fcd454, #b79c35);
 }
 
+.text-white {
+    color: #fff !important;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 100px;
+    left: 100px;
+    background-color: #187c3c;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, box-shadow 0.3s;
+    z-index: 9999;
+}
+
+.floating-btn:hover {
+    background-color: #146833;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+}
+
 .overview-box a.btn {
     -ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);

@@ -84,7 +84,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span><a class="btn btn-sm theme-blue text-white mr-3 pull-right" href="{{route('admin-properties-create')}}">Add New Advertisement</a></span>
+                                                <span><a class="btn btn-sm transition-background text-white mr-3 pull-right" href="{{route('admin-properties-create')}}">Add New Advertisement</a></span>
 
                                                 @foreach(['all', 'sale', 'rent','wanted'] as $option)
                                                     <div class="tab-pane fade show {{\Illuminate\Support\Facades\Request::segments()[5] === $option? 'active' : '' }}" id="listings-{{$option}}"

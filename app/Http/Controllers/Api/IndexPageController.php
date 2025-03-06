@@ -94,7 +94,8 @@ class IndexPageController extends Controller
     public function aboutUs()
     {
         $testimonials = $this->showTestimonials();
-        return view('website.pages.about_us', compact('testimonials'));
+        $featured_agencies = (new AgencyController())->FeaturedAgencies();
+        return view('website.pages.about_us', compact('testimonials', 'featured_agencies'));
     }
 
     public function showTestimonials()

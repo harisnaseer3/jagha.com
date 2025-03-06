@@ -1,11 +1,11 @@
 <div class="card">
 
-    <div class="card-header theme-blue text-white">User Detail</div>
+    <div class="card-header transition-background text-white">User Detail</div>
     <div class="card-body">
         {{ Form::bsEmail('user_email',null, ['required' => true]) }}
 
     </div>
-    <div class="card-header theme-blue text-white">Property Type and Location</div>
+    <div class="card-header transition-background text-white">Property Type and Location</div>
     <div class="card-body">
         {{ Form::bsRadio('purpose', isset($property->purpose)? $property->purpose : 'Sale', ['required' => true, 'list' => ['Sale', 'Rent', 'Wanted']]) }}
         {{Form::hidden('purpose-error')}}
@@ -38,7 +38,7 @@
         {{Form::hidden('location-error')}}
     </div>
 
-    <div class="card-header theme-blue text-white">Property Details</div>
+    <div class="card-header transition-background text-white">Property Details</div>
     <div class="card-body">
         {{ Form::bsText('property_title', isset($property->title) ? $property->title : null, ['required' => true]) }}
         {{ Form::bsTextArea('description', isset($property->description) ? $property->description : null, ['required' => true,'data-default' => 'Minimum of 50 characters required' ,'minlength' => '50']) }}
@@ -100,7 +100,7 @@
         @endif
         {{Form::hidden('features-error')}}
     </div>
-    <div class="card-header theme-blue text-white property-media-block" style="display: block">Property Images and Videos</div>
+    <div class="card-header transition-background text-white property-media-block" style="display: block">Property Images and Videos</div>
     <div class="card-body property-media-block" style="display: block">
 
         <div class="text-center"><span><i class="fa fa-spinner fa-spin" id="show_image_spinner" style="font-size:20px; display:none"></i></span></div>
@@ -125,7 +125,7 @@
         {{ Form::bsSelect2('video_host', ['Youtube' => 'Youtube', 'Vimeo' => 'Vimeo', 'Dailymotion' => 'Dailymotion'], null ,['required' => false,'placeholder' => 'Select video host']) }}
         {{ Form::bsText('video_link', null, ['required' => false]) }}
     </div>
-    <div class="card-header theme-blue text-white">Property Advertisement Type</div>
+    <div class="card-header transition-background text-white">Property Advertisement Type</div>
     <div class="card-body">
         @if(isset($property->agency))
             {{ Form::bsRadio('advertisement', 'Agency', ['list' => ['Individual', 'Agency'],'id'=>'ad_type']) }}
@@ -136,7 +136,7 @@
     </div>
 
     <div class="agency_category">
-        <div class="card-header theme-blue text-white">Agency Details</div>
+        <div class="card-header transition-background text-white">Agency Details</div>
         <div class="card-body">
             {{ Form::bsText('property_agency', isset($property->agency)? $property->agency->id .'-' .$property->agency->title : null,
                 ['required' => true,'data-id'=>isset($property->agency)?$property->agency->id:null]) }}
@@ -187,7 +187,7 @@
         </div>
     </div>
     <div id="agency-user-block">
-        <div class="card-header theme-blue text-white text-capitalize">Contact Details</div>
+        <div class="card-header transition-background text-white text-capitalize">Contact Details</div>
         <div class="card-body">
             <div class="text-center"><span><i class="fa fa-spinner fa-spin contact_person_spinner" style="font-size:20px; display:none"></i></span></div>
             <div class="agency-user-block" style="display: none">
