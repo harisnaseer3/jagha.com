@@ -381,7 +381,14 @@
 
                     </ul>
                     <ul class="top-social-media navbar-nav ml-auto">
-                        <li><a class="btn btn-sm color-green text-white nav-link text-center" style="background-color: #187c3c" href="{{route('properties.create')}}"><i class="fa fa-plus-circle mr-1"></i>Sell your Property</a></li>
+                        <li class="text-white">
+                            <a class="btn btn-sm color-green text-white nav-link text-center"
+                               style="background-color: #187c3c; color: #fff !important;"
+                               href="{{route('properties.create')}}">
+                                <i class="fa fa-plus-circle mr-1 text-white"></i> Sell your Property
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             {{ Form::open(['route' => ['property.search.id'], 'method' => 'get', 'role' => 'form','class'=>'px-3 nav-link color-555', 'style' => 'max-width:300px;' ,'id'=>'search-property-ref']) }}
                             <input class="px-3 property-id text-transform" type="text" placeholder="Search By Id" name="term" id="ref-id" autocomplete="false"
