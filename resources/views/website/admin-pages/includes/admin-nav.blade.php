@@ -4,27 +4,27 @@
         <div class="fly-side-wrap">
             <ul class="fly-bottom-soc left relative">
                 <li class="fb-soc">
-                    <a href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook">
+                    <a href="https://www.facebook.com/people/Jaghacom/61570901009233/" target="_blank" title="Visit jagha Facebook">
                         <i class="fab fa-facebook-square icon-padding"></i>
                     </a>
                 </li>
                 <li class="twit-soc">
-                    <a href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Twitter">
+                    <a href="https://twitter.com/aboutpkofficial" target="_blank" title="Visit jagha Twitter">
                         <i class="fab fa-twitter icon-padding"></i>
                     </a>
                 </li>
                 <li class="link-soc">
-                    <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit About Pakistan Linkedin">
+                    <a href="https://www.linkedin.com/company/aboutpkofficial" target="_blank" title="Visit jagha Linkedin">
                         <i class="fab fa-linkedin in icon-padding"></i>
                     </a>
                 </li>
                 <li class="insta-soc">
-                    <a href="https://www.instagram.com/aboutpakofficial/" target="_blank" title="Visit About Pakistan Instagram">
+                    <a href="https://www.instagram.com/jaghpk/" target="_blank" title="Visit jagha Instagram">
                         <i class="fab fa-instagram  icon-padding"></i>
                     </a>
                 </li>
                 <li class="youtube-soc">
-                    <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit About Pakistan Youtube">
+                    <a href="https://www.youtube.com/channel/UCfarVSSCib1eZ6sjFR3-gnA" target="_blank" title="Visit jagha Youtube">
                         <i class="fab fa-youtube icon-padding"></i>
                     </a>
                 </li>

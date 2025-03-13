@@ -31,7 +31,7 @@
                         <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
 
                          <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                            <a href="{{asset('https://www.jagha.com/')}}" title="jagha" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Home</span></a>
                             <meta itemprop="position" content="1">
                         </span>
@@ -82,7 +82,7 @@
                     @else
                         <div itemscope="" itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb" class="breadcrumbs m-2">
                         <span itemscope="" itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-                            <a href="{{asset('https://www.aboutpakistan.com/')}}" title="AboutPakistan" itemprop="item">
+                            <a href="{{asset('https://www.jagha.com/')}}" title="jagha" itemprop="item">
                             <span class="breadcrumb-link" itemprop="name">Home</span></a>
                             <meta itemprop="position" content="1">
                         </span>
@@ -260,7 +260,7 @@
                         <div class="text-center">
                             <i class="fas fa-check-circle fa-3x" style="color: #28a745"></i>
                             <div class="m-3" style="font-size: 14px">Message sent successfully</div>
-                            <div class="mb-2 line-height">Add <span class="theme-dark-blue">info@aboutpakistan.com </span> to your white list to get email from us.</div>
+                            <div class="mb-2 line-height">Add <span class="theme-dark-blue">info@jagha.com </span> to your white list to get email from us.</div>
                             <button class="btn btn-email" data-dismiss="modal">Dismiss</button>
                         </div>
                     </div>

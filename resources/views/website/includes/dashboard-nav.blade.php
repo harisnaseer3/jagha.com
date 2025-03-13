@@ -5,7 +5,7 @@
                 <div class="fly-side-wrap">
                     <ul class="fly-bottom-soc left relative">
                         <li class="fb-soc">
-                            <a href="https://www.facebook.com/aboutpkofficial" target="_blank" title="Visit About Pakistan Facebook">
+                            <a href="https://www.facebook.com//people/Jaghacom/61570901009233/" target="_blank" title="Visit About Pakistan Facebook">
                                 <i class="fab fa-facebook-square icon-padding"></i>
                             </a>
                         </li>

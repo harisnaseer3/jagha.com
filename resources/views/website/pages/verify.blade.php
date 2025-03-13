@@ -63,7 +63,7 @@
                             </a>
                         </div>
                         <div class="social-list">
-                            <a href="https://www.facebook.com/aboutpkofficial" class="facebook-bg" target="_blank">
+                            <a href="https://www.facebook.com//people/Jaghacom/61570901009233/" class="facebook-bg" target="_blank">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
                             <a href="https://twitter.com/aboutpkofficial" class="twitter-bg" target="_blank">
