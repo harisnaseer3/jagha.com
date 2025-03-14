@@ -42,7 +42,8 @@ class PropertySearchController extends Controller
         )
             ->where('properties.status', 'active')
             ->whereNull('properties.deleted_at')
-            ->where('properties.created_at', '>=', '2024-01-01 00:00:00') // ✅ Show only 2024+ properties
+//            ->where('properties.created_at', '>=', '2024-01-01 00:00:00') // ✅ Show only 2024+ properties
+            ->whereDate('properties.created_at', '>=', '2024-01-01')
             ->leftJoin('images as p', function ($q) {
                 $q->on('p.property_id', '=', 'properties.id')
                     ->whereRaw("p.name = (SELECT name FROM images WHERE images.property_id = properties.id AND images.deleted_at IS NULL ORDER BY images.order LIMIT 1)");
