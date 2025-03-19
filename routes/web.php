@@ -6,6 +6,7 @@ use App\Http\Controllers\JsonUploadController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DBBackupController;
 
 Route::get('cv', function () {
     return view('cv');
@@ -386,6 +387,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
 
 
 });
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+    Route::get('/backups', [DBBackupController::class, 'index'])->name('backups.index');
+    Route::post('/backups/create', [DBBackupController::class, 'create'])->name('backups.create');
+    Route::post('/backups/restore/{filename}', [DBBackupController::class, 'restore'])->name('backups.restore');
+    Route::delete('/backups/{filename}', [DBBackupController::class, 'delete'])->name('backups.delete');
+});
+
 
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');

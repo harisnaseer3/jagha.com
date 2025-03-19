@@ -29,10 +29,10 @@
     <footer class="main-footer text-sm">
         <!-- To the right -->
         <div class="float-right d-none d-sm-inline">
-            Sure, you can do this
+{{--            Sure, you can do this--}}
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2019-{{date("Y")}} <a href="{{route('home')}}">Property Management</a></strong>
+{{--        <strong>Copyright &copy; 2019-{{date("Y")}} <a href="{{route('home')}}">Property Management</a></strong>--}}
     </footer>
 </div>
 <!-- ./wrapper -->

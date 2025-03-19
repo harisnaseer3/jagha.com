@@ -29,6 +29,7 @@
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.1",
         "lcobucci/jwt": "^3.3.3",
+        "spatie/laravel-backup": "^6.16",
         "spatie/laravel-permission": "^3.17",
         "spatie/schema-org": "^2.14",
         "stevebauman/location": "^6.0",

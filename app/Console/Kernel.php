@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('status:update')->dailyAt('23:00');
         $schedule->command('hourly:update')->hourly();
 //         $schedule->command('status:update')->everyMinute();
+        $schedule->command('database:backup')->everySixHours();
+        $schedule->command('database:cleanup')->daily();
     }
 
     /**
