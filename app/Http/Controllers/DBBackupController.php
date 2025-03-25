@@ -54,5 +54,16 @@ class DBBackupController extends Controller
 
         return back()->with('success', 'Database restored successfully!');
     }
+
+    public function download($filename)
+    {
+        $filePath = base_path('property_media/public/backups/' . $filename);
+
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+
+        return response()->download($filePath);
+    }
 }
 

@@ -393,6 +393,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::post('/backups/create', [DBBackupController::class, 'create'])->name('backups.create');
     Route::post('/backups/restore/{filename}', [DBBackupController::class, 'restore'])->name('backups.restore');
     Route::delete('/backups/{filename}', [DBBackupController::class, 'delete'])->name('backups.delete');
+    Route::get('/backups/download/{filename}', [DBBackupController::class, 'download'])->name('backups.download');
 });
 
 

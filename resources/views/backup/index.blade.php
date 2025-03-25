@@ -80,6 +80,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button> <!--❌ -->
                         </form>
+                        <a href="{{ route('backups.download', $backup['filename']) }}" class="btn btn-primary">Download</a> <!-- ⬇ -->
                     </td>
                 </tr>
             @endforeach
