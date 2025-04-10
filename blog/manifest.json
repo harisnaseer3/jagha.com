@@ -1,0 +1,41 @@
+{
+  "short_name": "AboutPakistan",
+  "name": "About Pakistan",
+  "icons": [
+    {
+      "src": "https://www.aboutpakistan.com/blog/wp-content/uploads/2020/01/logo-48x48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "https://www.aboutpakistan.com/blog/wp-content/uploads/2020/01/logo-72x72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "https://www.aboutpakistan.com/blog/wp-content/uploads/2020/01/logo-96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "https://www.aboutpakistan.com/blog/wp-content/uploads/2020/01/logo-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "https://www.aboutpakistan.com/blog/wp-content/uploads/2020/01/logo-180x180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "https://www.aboutpakistan.com/blog/wp-content/uploads/2020/01/logo-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#004600",
+  "theme_color": "#004600",
+  "display": "standalone",
+  "orientation": "landscape"
+}

@@ -61,7 +61,7 @@
 
                                         <div class="row">
                                             <div class="col-2 mb-4">
-                                                <button class="btn theme-blue color-white task-btn" id="execute-tasks">Execute Tasks</button>
+                                                <button class="btn theme-blue color-white task-btn" id="execute-tasks" disabled>Execute Tasks</button>
                                             </div>
                                             <div class="col-10 mt-2"><i class="fa fa-spinner fa-spin " style="font-size:20px;display:none"></i>
                                             </div>

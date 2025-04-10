@@ -1,0 +1,8 @@
+.bliss-media-section{position: relative;}
+.bliss-media-section .image-preview-wrapper {float: left; }
+.bliss-media-section .image-preview-wrapper.bl-img-show{width: 150px}
+.bliss-media-section .bl-img-show img{height: auto; max-width: 100%; }
+.bliss-media-section .bliss-img-icon {display: none; position: absolute; left: 2px; top: 2px; width: auto; }
+.bliss-media-section .bliss-img-icon span {color: #eee; font-size: 20px; cursor: pointer; display: inline-block; background: #23282D; width: 25px; height: 25px; border-radius: 50%; line-height: 25px; vertical-align: middle; text-align: center; margin: 0px 2px 0px 2px; }
+.bliss-media-section .bl-img-show:hover .bliss-img-icon{display: block;}
+.bliss-media-section .bl-img-show .bl_image_button{display: none;}

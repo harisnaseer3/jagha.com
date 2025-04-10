@@ -1,0 +1,1324 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Flex Mag 3.2.0\n"
+"POT-Creation-Date: 2020-02-14 19:25-0500\n"
+"PO-Revision-Date: 2020-02-14 19:25-0500\n"
+"Last-Translator: \n"
+"Language-Team: mvpthemes@gmail.com\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;_e;_n;__;esc_html_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: 404.php:7
+msgid "Error"
+msgstr ""
+
+#: 404.php:8
+msgid "The page you requested does not exist or has moved."
+msgstr ""
+
+#: admin/theme-settings.php:72
+msgid "General"
+msgstr ""
+
+#: admin/theme-settings.php:76
+msgid "Theme Skin"
+msgstr ""
+
+#: admin/theme-settings.php:77
+msgid ""
+"Select your theme skin. If you want to change the colors and fonts manually, "
+"please select Custom."
+msgstr ""
+
+#: admin/theme-settings.php:85
+msgid "Fly-Out Menu Skin"
+msgstr ""
+
+#: admin/theme-settings.php:86
+msgid "Choose between a light and dark skin for the Fly-Out menu."
+msgstr ""
+
+#: admin/theme-settings.php:94
+msgid "Logo Location"
+msgstr ""
+
+#: admin/theme-settings.php:95
+msgid "Set the location of your logo."
+msgstr ""
+
+#: admin/theme-settings.php:102
+msgid "Logo"
+msgstr ""
+
+#: admin/theme-settings.php:103
+msgid ""
+"Select a file to appear as your logo that will appear in the floating "
+"navigation bar and will replace the default \"Flex Mag\" logo."
+msgstr ""
+
+#: admin/theme-settings.php:108
+msgid "Logo in Navigation"
+msgstr ""
+
+#: admin/theme-settings.php:109
+msgid ""
+"If you are displaying your logo above the navigation, you can upload a "
+"separate logo that will appear in the floating navigation bar as you scroll "
+"down the page on desktop computers. It will also appear on mobile and tablet "
+"devices."
+msgstr ""
+
+#: admin/theme-settings.php:126
+msgid "Custom Favicon"
+msgstr ""
+
+#: admin/theme-settings.php:127
+msgid ""
+"Upload a 16x16px PNG/GIF image that will represent your website's favicon."
+msgstr ""
+
+#: admin/theme-settings.php:132
+msgid "Custom CSS"
+msgstr ""
+
+#: admin/theme-settings.php:138
+msgid "Toggle Responsiveness"
+msgstr ""
+
+#: admin/theme-settings.php:144
+msgid "Toggle Infinite Scroll"
+msgstr ""
+
+#: admin/theme-settings.php:158
+msgid "Colors"
+msgstr ""
+
+#: admin/theme-settings.php:161
+msgid "Primary Theme Color"
+msgstr ""
+
+#: admin/theme-settings.php:162
+msgid "Primary color for the site."
+msgstr ""
+
+#: admin/theme-settings.php:167
+msgid "Top Navigation Background Color"
+msgstr ""
+
+#: admin/theme-settings.php:168
+msgid "The background color of the top navigation."
+msgstr ""
+
+#: admin/theme-settings.php:173
+msgid "Top Navigation Text Color"
+msgstr ""
+
+#: admin/theme-settings.php:174
+msgid "The text color of the top navigation."
+msgstr ""
+
+#: admin/theme-settings.php:179
+msgid "Top Navigation Text Hover Color"
+msgstr ""
+
+#: admin/theme-settings.php:180
+msgid "The text color when you mouse over the top navigation."
+msgstr ""
+
+#: admin/theme-settings.php:185
+msgid "Fly-Out Button Background Color"
+msgstr ""
+
+#: admin/theme-settings.php:186
+msgid "The background color of the Fly-Out Menu Button."
+msgstr ""
+
+#: admin/theme-settings.php:191
+msgid "Fly-Out Button Lines Color"
+msgstr ""
+
+#: admin/theme-settings.php:192
+msgid "The background color of the Fly-Out Menu Button Lines."
+msgstr ""
+
+#: admin/theme-settings.php:197
+msgid "Main Headlines Link Color"
+msgstr ""
+
+#: admin/theme-settings.php:198
+msgid "The text color of the headline links."
+msgstr ""
+
+#: admin/theme-settings.php:203
+msgid "Main Headlines Link Hover Color"
+msgstr ""
+
+#: admin/theme-settings.php:204
+msgid "The text color when you mouse over the headline links."
+msgstr ""
+
+#: admin/theme-settings.php:209
+msgid "Primary Link Color"
+msgstr ""
+
+#: admin/theme-settings.php:210
+msgid "Primary link color for the site."
+msgstr ""
+
+#: admin/theme-settings.php:215
+msgid "Link Hover Color"
+msgstr ""
+
+#: admin/theme-settings.php:216
+msgid "Link hover color for the site."
+msgstr ""
+
+#: admin/theme-settings.php:222
+msgid "Fonts"
+msgstr ""
+
+#: admin/theme-settings.php:225
+msgid "General Content Font"
+msgstr ""
+
+#: admin/theme-settings.php:226
+msgid "Enter the font name for the general font for the content on all pages."
+msgstr ""
+
+#: admin/theme-settings.php:231
+msgid "Fly-Out Menu/Top Navigation Font"
+msgstr ""
+
+#: admin/theme-settings.php:237
+msgid "Featured Posts/Article Headline Font"
+msgstr ""
+
+#: admin/theme-settings.php:243
+msgid "General Headline Font"
+msgstr ""
+
+#: admin/theme-settings.php:249
+msgid "General Heading Font"
+msgstr ""
+
+#: admin/theme-settings.php:257
+msgid "Homepage Settings"
+msgstr ""
+
+#: admin/theme-settings.php:260 admin/theme-settings.php:507
+#: admin/theme-settings.php:775
+msgid "Attention"
+msgstr ""
+
+#: admin/theme-settings.php:267 admin/theme-settings.php:520
+msgid "Featured Posts Layout"
+msgstr ""
+
+#: admin/theme-settings.php:268
+msgid "Select the layout of your Featured Posts section on the homepage."
+msgstr ""
+
+#: admin/theme-settings.php:275
+msgid "Show Featured Posts?"
+msgstr ""
+
+#: admin/theme-settings.php:281
+msgid "Featured Posts Tag Slug"
+msgstr ""
+
+#: admin/theme-settings.php:282
+msgid ""
+"Enter the Tag Slug of the Tag you want associated with the Featured Posts "
+"section. Posts with this Tag will be displayed in the Featured Slider at the "
+"top of the homepage."
+msgstr ""
+
+#: admin/theme-settings.php:287
+msgid "Featured Heading"
+msgstr ""
+
+#: admin/theme-settings.php:294
+msgid "Homepage Body Layout"
+msgstr ""
+
+#: admin/theme-settings.php:295
+msgid ""
+"Select your layout for the body of the homepage that will appear in the "
+"middle column of the homepage."
+msgstr ""
+
+#: admin/theme-settings.php:302
+msgid "Show Homepage Left Sidebar?"
+msgstr ""
+
+#: admin/theme-settings.php:309
+msgid "Homepage Left Sidebar Layout"
+msgstr ""
+
+#: admin/theme-settings.php:310
+msgid "Select your layout for the left sidebar on the homepage."
+msgstr ""
+
+#: admin/theme-settings.php:318
+msgid "Homepage Right Sidebar Layout"
+msgstr ""
+
+#: admin/theme-settings.php:319
+msgid "Select your layout for the right sidebar on the homepage."
+msgstr ""
+
+#: admin/theme-settings.php:326
+msgid "Number of posts per page"
+msgstr ""
+
+#: admin/theme-settings.php:332
+msgid "Show Page Views?"
+msgstr ""
+
+#: admin/theme-settings.php:340
+msgid "Latest News Settings"
+msgstr ""
+
+#: admin/theme-settings.php:343
+msgid "Latest News Heading"
+msgstr ""
+
+#: admin/theme-settings.php:349
+msgid "Maximum Number of Latest News Stories"
+msgstr ""
+
+#: admin/theme-settings.php:356
+msgid "Latest News Position"
+msgstr ""
+
+#: admin/theme-settings.php:357
+msgid ""
+"Select whether to display the Latest News sidebar on the left or the right "
+"of the main section of the homepage."
+msgstr ""
+
+#: admin/theme-settings.php:365
+msgid "More Latest News Page"
+msgstr ""
+
+#: admin/theme-settings.php:366
+msgid ""
+"Select the page for your Latest News Template. Refer to the documentation "
+"for more information on how to set up custom Page templates."
+msgstr ""
+
+#: admin/theme-settings.php:373
+msgid "Latest News Ad Code"
+msgstr ""
+
+#: admin/theme-settings.php:381
+msgid "Popular Posts Settings"
+msgstr ""
+
+#: admin/theme-settings.php:384
+msgid "Popular Posts Heading"
+msgstr ""
+
+#: admin/theme-settings.php:390
+msgid "Number of Popular Posts"
+msgstr ""
+
+#: admin/theme-settings.php:396
+msgid "Popular Posts Days"
+msgstr ""
+
+#: admin/theme-settings.php:402
+msgid "Popular Posts Ad Code"
+msgstr ""
+
+#: admin/theme-settings.php:410
+msgid "Article Settings"
+msgstr ""
+
+#: admin/theme-settings.php:414
+msgid "Default Post Template"
+msgstr ""
+
+#: admin/theme-settings.php:415
+msgid "Select the default Post Template layout for your articles."
+msgstr ""
+
+#: admin/theme-settings.php:422
+msgid "Show Featured Image In Posts?"
+msgstr ""
+
+#: admin/theme-settings.php:423
+msgid ""
+"Uncheck this box if you would like to remove the featured image thumbnail "
+"from all posts."
+msgstr ""
+
+#: admin/theme-settings.php:428
+msgid "Show Social Sharing Buttons?"
+msgstr ""
+
+#: admin/theme-settings.php:434
+msgid "Show Author Info?"
+msgstr ""
+
+#: admin/theme-settings.php:440
+msgid "Show Author Email?"
+msgstr ""
+
+#: admin/theme-settings.php:446
+msgid "Show Related Posts?"
+msgstr ""
+
+#: admin/theme-settings.php:452
+msgid "Auto Load Previous Post?"
+msgstr ""
+
+#: admin/theme-settings.php:458
+msgid "Show Previous/Next Post Links?"
+msgstr ""
+
+#: admin/theme-settings.php:465
+msgid "Article Sidebar Layout"
+msgstr ""
+
+#: admin/theme-settings.php:466
+msgid "Select your layout for the sidebar on article pages."
+msgstr ""
+
+#: admin/theme-settings.php:473
+msgid "Disqus Forum Shortname"
+msgstr ""
+
+#: admin/theme-settings.php:479
+msgid "Article Ad Code"
+msgstr ""
+
+#: admin/theme-settings.php:504
+msgid "Category Pages"
+msgstr ""
+
+#: admin/theme-settings.php:513
+msgid "Show Featured Posts"
+msgstr ""
+
+#: admin/theme-settings.php:521
+msgid "Select the layout of your Featured Posts section on the category pages."
+msgstr ""
+
+#: admin/theme-settings.php:529
+msgid "Category/Archive Body Layout"
+msgstr ""
+
+#: admin/theme-settings.php:530
+msgid "Select your layout for the body of your category and archive pages."
+msgstr ""
+
+#: admin/theme-settings.php:541
+msgid "Scoreboard Settings"
+msgstr ""
+
+#: admin/theme-settings.php:544
+msgid "Show Scoreboard?"
+msgstr ""
+
+#: admin/theme-settings.php:545
+msgid "Uncheck this box if you would like to remove the scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:551
+msgid "Scoreboard Skin"
+msgstr ""
+
+#: admin/theme-settings.php:552
+msgid "Choose between a light and dark skin for the scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:559
+msgid "Name of Category 1"
+msgstr ""
+
+#: admin/theme-settings.php:566
+msgid "Select Category 1"
+msgstr ""
+
+#: admin/theme-settings.php:567
+msgid "Select the 1st category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:574
+msgid "Name of Category 2"
+msgstr ""
+
+#: admin/theme-settings.php:581
+msgid "Select Category 2"
+msgstr ""
+
+#: admin/theme-settings.php:582
+msgid "Select the 2nd category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:589
+msgid "Name of Category 3"
+msgstr ""
+
+#: admin/theme-settings.php:596
+msgid "Select Category 3"
+msgstr ""
+
+#: admin/theme-settings.php:597
+msgid "Select the 3rd category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:604
+msgid "Name of Category 4"
+msgstr ""
+
+#: admin/theme-settings.php:611
+msgid "Select Category 4"
+msgstr ""
+
+#: admin/theme-settings.php:612
+msgid "Select the 4th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:619
+msgid "Name of Category 5"
+msgstr ""
+
+#: admin/theme-settings.php:626
+msgid "Select Category 5"
+msgstr ""
+
+#: admin/theme-settings.php:627
+msgid "Select the 5th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:634
+msgid "Name of Category 6"
+msgstr ""
+
+#: admin/theme-settings.php:641
+msgid "Select Category 6"
+msgstr ""
+
+#: admin/theme-settings.php:642
+msgid "Select the 6th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:649
+msgid "Name of Category 7"
+msgstr ""
+
+#: admin/theme-settings.php:656
+msgid "Select Category 7"
+msgstr ""
+
+#: admin/theme-settings.php:657
+msgid "Select the 7th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:664
+msgid "Name of Category 8"
+msgstr ""
+
+#: admin/theme-settings.php:671
+msgid "Select Category 8"
+msgstr ""
+
+#: admin/theme-settings.php:672
+msgid "Select the 8th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:679
+msgid "Name of Category 9"
+msgstr ""
+
+#: admin/theme-settings.php:686
+msgid "Select Category 9"
+msgstr ""
+
+#: admin/theme-settings.php:687
+msgid "Select the 9th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:694
+msgid "Name of Category 10"
+msgstr ""
+
+#: admin/theme-settings.php:701
+msgid "Select Category 10"
+msgstr ""
+
+#: admin/theme-settings.php:702
+msgid "Select the 10th category for your scoreboard."
+msgstr ""
+
+#: admin/theme-settings.php:713
+msgid "Social Media"
+msgstr ""
+
+#: admin/theme-settings.php:716
+msgid "Facebook"
+msgstr ""
+
+#: admin/theme-settings.php:722
+msgid "Twitter"
+msgstr ""
+
+#: admin/theme-settings.php:728
+msgid "Pinterest"
+msgstr ""
+
+#: admin/theme-settings.php:734
+msgid "Instagram"
+msgstr ""
+
+#: admin/theme-settings.php:740
+msgid "Google Plus"
+msgstr ""
+
+#: admin/theme-settings.php:746
+msgid "Youtube"
+msgstr ""
+
+#: admin/theme-settings.php:752
+msgid "Linkedin"
+msgstr ""
+
+#: admin/theme-settings.php:758
+msgid "Tumblr"
+msgstr ""
+
+#: admin/theme-settings.php:764
+msgid "Custom RSS Link"
+msgstr ""
+
+#: admin/theme-settings.php:772
+msgid "Ad Management"
+msgstr ""
+
+#: admin/theme-settings.php:782
+msgid "Leaderboard Location"
+msgstr ""
+
+#: admin/theme-settings.php:783
+msgid "Set the location of your leaderboard."
+msgstr ""
+
+#: admin/theme-settings.php:790
+msgid "Header Leaderboard Ad Code"
+msgstr ""
+
+#: admin/theme-settings.php:796
+msgid "Responsive Ad Area Below Article"
+msgstr ""
+
+#: admin/theme-settings.php:802
+msgid "Footer Leaderboard Ad Code"
+msgstr ""
+
+#: admin/theme-settings.php:808
+msgid "Wallpaper Ad Image URL"
+msgstr ""
+
+#: admin/theme-settings.php:814
+msgid "Wallpaper Ad Click-Through URL"
+msgstr ""
+
+#: admin/theme-settings.php:822
+msgid "Footer Info"
+msgstr ""
+
+#: admin/theme-settings.php:825
+msgid "Show Footer Info Box?"
+msgstr ""
+
+#: admin/theme-settings.php:831
+msgid "Footer Logo"
+msgstr ""
+
+#: admin/theme-settings.php:832
+msgid "Select a file to appear as the logo in the Footer Info Box."
+msgstr ""
+
+#: admin/theme-settings.php:837
+msgid "Footer Info Text"
+msgstr ""
+
+#: admin/theme-settings.php:843
+msgid "Copyright Text"
+msgstr ""
+
+#: amp-single.php:103 content-partial.php:19 content-partial.php:75
+#: single.php:24 single.php:100 single.php:168
+msgid "By"
+msgstr ""
+
+#: amp-single.php:106 content-partial.php:22 content-partial.php:78
+#: single.php:27 single.php:103 single.php:171
+msgid "Posted on"
+msgstr ""
+
+#: amp-single.php:169
+msgid "Related Topics:"
+msgstr ""
+
+#: amp-single.php:190 content-partial.php:169 single.php:194 single.php:267
+msgid "Comments"
+msgstr ""
+
+#: amp-single.php:196 content-partial.php:175 page-fullwidth.php:28
+#: page-fullwidth.php:34 page.php:27 page.php:33 single.php:273
+msgid "Click to comment"
+msgstr ""
+
+#: archive.php:9
+msgid "All posts tagged"
+msgstr ""
+
+#: archive.php:63 author.php:118 category.php:334 index.php:62
+#: page-home.php:359 page-latest.php:68 page-videos.php:90 search.php:68
+#: template-entertainment.php:137 template-fashion.php:134
+#: template-feat1.php:142 template-feat2.php:144 template-feat3.php:103
+#: template-feat4.php:169 template-feat5.php:103 template-feat6.php:139
+#: template-feat7.php:103 template-feat8.php:132 template-feat9.php:103
+#: template-logo1.php:359 template-logo2.php:359 template-logo3.php:359
+#: template-sports.php:142 template-tech.php:103 template-wall.php:137
+msgid "More Posts"
+msgstr ""
+
+#: attachment.php:16 attachment.php:18 content-partial.php:114
+#: content-partial.php:116 content-partial.php:117 content-partial.php:155
+#: content-partial.php:157 content-partial.php:158 page-videos.php:26
+#: page-videos.php:28 single.php:183 single.php:185 single.php:186
+#: single.php:248 single.php:250 single.php:251
+msgid "Share"
+msgstr ""
+
+#: attachment.php:17 content-partial.php:115 content-partial.php:156
+#: page-videos.php:27 single.php:184 single.php:249
+msgid "Tweet"
+msgstr ""
+
+#: author.php:63
+msgid "Posts By"
+msgstr ""
+
+#: comments-popup.php:40 comments.php:19 content-partial.php:175
+#: page-fullwidth.php:34 page.php:33 single.php:273
+msgid "1 Comment"
+msgstr ""
+
+#: comments-popup.php:60
+#, php-format
+msgid "%1$s &#8212; %2$s"
+msgstr ""
+
+#: comments-popup.php:69
+msgid "No comments yet."
+msgstr ""
+
+#: comments-popup.php:74
+msgid "Leave a comment"
+msgstr ""
+
+#: comments-popup.php:78
+#, php-format
+msgid ""
+"Logged in as <a href=\"%1$s\">%2$s</a>. <a href=\"%3$s\" title=\"Log out of "
+"this account\">Log out &raquo;</a>"
+msgstr ""
+
+#: comments-popup.php:82
+msgid "Name"
+msgstr ""
+
+#: comments-popup.php:87
+msgid "E-mail"
+msgstr ""
+
+#: comments-popup.php:92
+msgid "<abbr title=\"Universal Resource Locator\">URL</abbr>"
+msgstr ""
+
+#: comments-popup.php:97
+msgid "Your Comment"
+msgstr ""
+
+#: comments-popup.php:105
+msgid "Post Comment"
+msgstr ""
+
+#: comments-popup.php:114
+msgid "Sorry, the comment form is closed at this time."
+msgstr ""
+
+#: comments-popup.php:121
+msgid "Close this window."
+msgstr ""
+
+#: comments-popup.php:127
+msgid "Sorry, no posts matched your criteria."
+msgstr ""
+
+#: comments.php:4
+msgid ""
+"This post is password protected. Enter the password to view any comments."
+msgstr ""
+
+#: comments.php:25 comments.php:36
+msgid "&larr; Older Comments"
+msgstr ""
+
+#: comments.php:26 comments.php:37
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#: comments.php:51
+msgid "You must be logged in to post a comment"
+msgstr ""
+
+#: comments.php:53
+msgid "Login"
+msgstr ""
+
+#: comments.php:62 comments.php:63
+msgid "Leave a Reply"
+msgstr ""
+
+#: content-partial.php:114 content-partial.php:155 single.php:183
+#: single.php:248
+msgid "Share on Facebook"
+msgstr ""
+
+#: content-partial.php:115 content-partial.php:156 single.php:184
+#: single.php:249
+msgid "Tweet This Post"
+msgstr ""
+
+#: content-partial.php:117 content-partial.php:158 single.php:186
+#: single.php:251
+msgid "Pin This Post"
+msgstr ""
+
+#: content-partial.php:118 content-partial.php:159 page-videos.php:29
+#: single.php:187 single.php:252
+msgid ""
+"I found this article interesting and thought of sharing it with you. Check "
+"it out:"
+msgstr ""
+
+#: content-partial.php:118 content-partial.php:159 page-videos.php:29
+#: single.php:187 single.php:252
+msgid "Email"
+msgstr ""
+
+#: content-partial.php:150 single.php:243
+msgid "Related Items:"
+msgstr ""
+
+#: content-partial.php:175 page-fullwidth.php:34 page.php:33 single.php:273
+msgid "% Comments"
+msgstr ""
+
+#: footer.php:108
+msgid "To Top"
+msgstr ""
+
+#: functions.php:440
+msgid "Main Menu"
+msgstr ""
+
+#: functions.php:441
+msgid "Fly-Out Menu"
+msgstr ""
+
+#: functions.php:442
+msgid "Footer Menu"
+msgstr ""
+
+#: functions.php:618
+msgid ""
+"Add a custom featured headline that will be displayed in the featured slider."
+msgstr ""
+
+#: functions.php:633
+msgid "Enter your video or audio embed code."
+msgstr ""
+
+#: functions.php:648
+msgid "Add a caption and/or photo credit information for the featured image."
+msgstr ""
+
+#: functions.php:663
+msgid "Select a template for your post."
+msgstr ""
+
+#: functions.php:719
+msgid ""
+"Select to show or hide the featured image from automatically displaying in "
+"this post."
+msgstr ""
+
+#: functions.php:932
+#, php-format
+msgid "%s "
+msgstr ""
+
+#: functions.php:935
+msgid "at"
+msgstr ""
+
+#: functions.php:936 functions.php:957
+msgid "Edit"
+msgstr ""
+
+#: functions.php:941
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: functions.php:957
+msgid "Pingback:"
+msgstr ""
+
+#: functions.php:1013
+msgid "Recommended for you"
+msgstr ""
+
+#: functions.php:1113
+msgid "Page"
+msgstr ""
+
+#: functions.php:1113
+msgid "of"
+msgstr ""
+
+#: functions.php:1114
+msgid "First"
+msgstr ""
+
+#: functions.php:1115
+msgid "Previous"
+msgstr ""
+
+#: functions.php:1125
+msgid "Next"
+msgstr ""
+
+#: functions.php:1126
+msgid "Last"
+msgstr ""
+
+#: functions.php:1279
+msgid "Loading more posts..."
+msgstr ""
+
+#: functions.php:1280
+msgid "Sorry, no more posts"
+msgstr ""
+
+#: header-entertainment.php:293 header-fashion.php:121 header-feat1.php:184
+#: header-feat2.php:184 header-feat3.php:184 header-feat4.php:184
+#: header-feat5.php:184 header-feat6.php:184 header-feat7.php:184
+#: header-feat8.php:184 header-feat9.php:184 header-logo1.php:164
+#: header-logo2.php:155 header-logo3.php:132 header-sports.php:280
+#: header-tech.php:312 header-wall.php:173 header.php:186
+msgid "Featured"
+msgstr ""
+
+#: header-entertainment.php:296 header-fashion.php:124 header-feat1.php:187
+#: header-feat2.php:187 header-feat3.php:187 header-feat4.php:187
+#: header-feat5.php:187 header-feat6.php:187 header-feat7.php:187
+#: header-feat8.php:187 header-feat9.php:187 header-logo1.php:167
+#: header-logo2.php:158 header-logo3.php:135 header-sports.php:283
+#: header-tech.php:315 header-wall.php:176 header.php:189
+msgid "Latest"
+msgstr ""
+
+#: header-entertainment.php:299 header-fashion.php:127 header-feat1.php:190
+#: header-feat2.php:190 header-feat3.php:190 header-feat4.php:190
+#: header-feat5.php:190 header-feat6.php:190 header-feat7.php:190
+#: header-feat8.php:190 header-feat9.php:190 header-logo1.php:170
+#: header-logo2.php:161 header-logo3.php:138 header-sports.php:286
+#: header-tech.php:318 header-wall.php:179 header.php:192
+msgid "Popular"
+msgstr ""
+
+#: latest.php:99
+msgid "More"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:334
+msgid "Install Required Plugins"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:335
+msgid "Install Plugins"
+msgstr ""
+
+#. translators: %s: plugin name.
+#: plugins/class-tgm-plugin-activation.php:337
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#. translators: %s: plugin name.
+#: plugins/class-tgm-plugin-activation.php:339
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:340
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:392
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:393
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:394
+#: plugins/class-tgm-plugin-activation.php:3244
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:395
+#: plugins/class-tgm-plugin-activation.php:3037
+msgid "The following plugin was activated successfully:"
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:397
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:399
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+
+#. translators: 1: dashboard link.
+#: plugins/class-tgm-plugin-activation.php:401
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:402
+msgid "Dismiss this notice"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:403
+msgid ""
+"There are one or more required or recommended plugins to install, update or "
+"activate."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:404
+msgid "Please contact the administrator of this site for help."
+msgstr ""
+
+#. translators: %s: version number
+#: plugins/class-tgm-plugin-activation.php:2067
+#, php-format
+msgid "TGMPA v%s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2358
+msgid "Required"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2361
+msgid "Recommended"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2377
+msgid "WordPress Repository"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2380
+msgid "External Source"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2383
+msgid "Pre-Packaged"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2400
+msgid "Not Installed"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2404
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2406
+msgid "Active"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2412
+msgid "Required Update not Available"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2415
+msgid "Requires Update"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2418
+msgid "Update recommended"
+msgstr ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2477
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgstr ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2481
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgstr ""
+
+#. translators: 1: number of plugins.
+#: plugins/class-tgm-plugin-activation.php:2485
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2575
+msgid "Installed version:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2583
+msgid "Minimum required version:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2595
+msgid "Available version:"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2632
+msgid "Plugin"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2633
+msgid "Source"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2634
+msgid "Type"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2638
+msgid "Version"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2639
+msgid "Status"
+msgstr ""
+
+#. translators: %2$s: plugin name in screen reader markup
+#: plugins/class-tgm-plugin-activation.php:2688
+#, php-format
+msgid "Install %2$s"
+msgstr ""
+
+#. translators: %2$s: plugin name in screen reader markup
+#: plugins/class-tgm-plugin-activation.php:2693
+#, php-format
+msgid "Update %2$s"
+msgstr ""
+
+#. translators: %2$s: plugin name in screen reader markup
+#: plugins/class-tgm-plugin-activation.php:2699
+#, php-format
+msgid "Activate %2$s"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2802
+msgid "Install"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2808
+msgid "Update"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2811
+msgid "Activate"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2842
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2844
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2885
+msgid "No plugins are available to be installed at this time."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:2887
+msgid "No plugins are available to be updated at this time."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3243
+msgid "Plugin activation failed."
+msgstr ""
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: plugins/class-tgm-plugin-activation.php:3583
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#. translators: 1: plugin name, 2: error message.
+#: plugins/class-tgm-plugin-activation.php:3586
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3588
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3592
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#. translators: 1: plugin name.
+#: plugins/class-tgm-plugin-activation.php:3594
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3595
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: plugins/class-tgm-plugin-activation.php:3597
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3600
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: plugins/class-tgm-plugin-activation.php:3603
+msgid "All installations have been completed."
+msgstr ""
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: plugins/class-tgm-plugin-activation.php:3605
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: search.php:9
+msgid "Search results for"
+msgstr ""
+
+#: search.php:63
+msgid "Sorry, your search did not match any entries."
+msgstr ""
+
+#: searchform.php:2
+msgid "Type search term and press enter"
+msgstr ""
+
+#: widgets/widget-ad.php:19
+msgid "A widget that displays an ad of any size."
+msgstr ""
+
+#: widgets/widget-ad.php:25
+msgid "Flex Mag: Ad Widget"
+msgstr ""
+
+#: widgets/widget-catlist.php:19 widgets/widget-catrow.php:19
+msgid "A widget that displays a list of posts from a category of your choice."
+msgstr ""
+
+#: widgets/widget-catlist.php:25
+msgid "Flex Mag: Category List Widget"
+msgstr ""
+
+#: widgets/widget-catrow.php:25
+msgid "Flex Mag: Category Row Widget"
+msgstr ""
+
+#: widgets/widget-facebook.php:19
+msgid "A widget that displays a Facebook Like Box."
+msgstr ""
+
+#: widgets/widget-facebook.php:25
+msgid "Flex Mag: Facebook Widget"
+msgstr ""
+
+#: widgets/widget-gallery.php:19
+msgid ""
+"A widget that displays a scrolling gallery of images from posts of your "
+"choice."
+msgstr ""
+
+#: widgets/widget-gallery.php:25
+msgid "Flex Mag: Gallery Widget"
+msgstr ""
+
+#: widgets/widget-pop.php:19
+msgid ""
+"A widget that displays a list of popular posts within a time period of your "
+"choice."
+msgstr ""
+
+#: widgets/widget-pop.php:25
+msgid "Flex Mag: Popular Posts Widget"
+msgstr ""
+
+#: widgets/widget-tagfeat.php:19 widgets/widget-taglist.php:19
+#: widgets/widget-tagrow.php:19
+msgid "A widget that displays a list of posts from a tag of your choice."
+msgstr ""
+
+#: widgets/widget-tagfeat.php:25
+msgid "Flex Mag: Tag Featured Widget"
+msgstr ""
+
+#: widgets/widget-taglist.php:25
+msgid "Flex Mag: Tag List Widget"
+msgstr ""
+
+#: widgets/widget-tagrow.php:25
+msgid "Flex Mag: Tag Row Widget"
+msgstr ""
+
+#: widgets/widget-tags.php:19
+msgid "A custom Tag Cloud widget."
+msgstr ""
+
+#: widgets/widget-tags.php:25
+msgid "Flex Mag: Tag Cloud Widget"
+msgstr ""

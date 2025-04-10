@@ -3,10 +3,10 @@
     <div class="blog-container left relative feat-top-wrap">
         <div class="feat-top2-left-wrap left relative">
             <div class="feat-top2-left left relative">
-                <a href="{{'https://www.aboutpakistan.com/blog/'.$blogs[0]['post_name']}}" rel="bookmark">
-                    <div class="feat-top2-left-img left relative">
-                        <img width="900" height="500" src="{{'https://www.aboutpakistan.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" data-src="{{'https://www.aboutpakistan.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" class="unlazy reg-img wp-post-image" alt="{{$blogs[0]['post_title']}}" sizes="(max-width: 900px) 100vw, 900px">
-                        <img width="450" height="270" src="{{'https://www.aboutpakistan.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" data-src="{{'https://www.aboutpakistan.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" class="unlazy mob-img wp-post-image" alt="{{$blogs[0]['post_title']}}">
+                <a href="{{'https://www.jagha.com/blog/'.$blogs[0]['post_name']}}" rel="bookmark">
+                <div class="feat-top2-left-img left relative">
+                        <img width="900" height="500" src="{{'https://www.jagha.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" data-src="{{'https://www.jagha.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" class="unlazy reg-img wp-post-image" alt="{{$blogs[0]['post_title']}}" sizes="(max-width: 900px) 100vw, 900px">
+                        <img width="450" height="270" src="{{'https://www.jagha.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" data-src="{{'https://www.jagha.com/blog/wp-content/uploads/'.$blogs[0]['image']}}" class="unlazy mob-img wp-post-image" alt="{{$blogs[0]['post_title']}}">
                     </div>
                     <div class="feat-top2-left-text">
                         <span class="feat-cat">{{$blogs[0]['category']}}</span><h2 class="stand-title">{{$blogs[0]['post_title'] }}</h2></div>
