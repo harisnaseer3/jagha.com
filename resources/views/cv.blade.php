@@ -95,12 +95,15 @@
     <div class="section">
         <h2>Technical Skills</h2>
         <ul>
-            <li>Laravel, PHP, CodeIgniter</li>
+            <li>Laravel, CodeIgniter, PHP</li>
             <li>Database Management: MySQL, PostgreSQL</li>
             <li>Frontend Technologies: JavaScript, Vue.js, React.js</li>
             <li>Version Control: Git, GitHub, GitLab</li>
             {{--            <li>Cloud & Deployment: AWS, Docker, CI/CD Pipelines</li>--}}
             <li>Security Best Practices & API Development</li>
+            <li>Payment Integration: Stripe, PayPal SDKs</li>
+            <li>Third-party APIs: Firebase, Google Maps API, Twilio</li>
+            <li>Agile Methodologies & Jira/ClickUp</li>
         </ul>
     </div>
 
@@ -138,7 +141,7 @@
             </li>
         </ul>
 
-        <p><strong>Cloud Tenet</strong> - Full Stack Developer (09-2021 To 30-2023)</p>
+        <p><strong>Cloud Tenet</strong> - Full Stack Developer (09-2021 To 03-2023)</p>
         <ul>
             <li>Designed and developed interactive and responsive user interfaces using front-end
                 frameworks (Vue.js) with enhancing user engagement and satisfaction.

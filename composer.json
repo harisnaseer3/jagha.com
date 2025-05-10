@@ -24,6 +24,7 @@
         "jorenvanhocht/laravel-share": "^4.0",
         "laravel/framework": "^7.0",
         "laravel/passport": "^8.4",
+        "laravel/sanctum": "^2.15",
         "laravel/socialite": "^4.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",

@@ -43,6 +43,11 @@ class UserController extends Controller
         return view('user.index', ['table_name' => 'users', 'table_data_values' => User::all()]);
     }
 
+    public function getAllUsers() {
+        $users = User::paginate(10); // paginate(10) means 10 users per page
+        return response()->json($users);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

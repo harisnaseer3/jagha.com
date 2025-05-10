@@ -1,7 +1,7 @@
 @extends('website.layouts.app')
 @php $current_route_name = \Illuminate\Support\Facades\Route::currentRouteName(); @endphp
 @section('title')
-    <title>About Pakistan Properties by https://www.aboutpakistan.com</title>
+    <title>Jagha - Buy Sell Rent Homes & Properties In Pakistan by https://www.jagha.com</title>
 @endsection
 @section('css_library')
     <link rel="stylesheet" type="text/css" href="{{asset('website/css/custom-dashboard-style.css')}}" async derfer>

@@ -1,6 +1,6 @@
 @extends('website.layouts.app')
 @section('title')
-    <title>About Pakistan Properties by https://www.aboutpakistan.com</title>
+    <title>Jagha - Buy Sell Rent Homes & Properties In Pakistan by https://www.jagha.com</title>
 @endsection
 
 @section('css')

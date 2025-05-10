@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+//use App\Http\Controllers\Api\New\AuthController;
 
 Route::post('/dashboard/paymentStatus', 'Package\PackageController@paymentStatus')->name('PaymentStatus');
 
@@ -68,4 +69,37 @@ Route::group(['namespace' => 'WebServices'], function () {
 
     Route::get('cities', 'DataController@cities');
     Route::get('city-locations/{city}', 'DataController@locations');
+    Route::get('all-users', [\App\Http\Controllers\Dashboard\UserController::class, 'getAllUsers']);
 });
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+Route::get('/users', function () {
+    return response()->json([
+        ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com'],
+        ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com'],
+    ]);
+});
+Route::post('/users', function (Request $request) {
+    // Normally you would save to database, but we'll just return back
+    return response()->json([
+        'message' => 'User created successfully!',
+        'user' => $request->only(['name', 'email']),
+    ]);
+});
+Route::put('/users/{id}', function (Request $request, $id) {
+    return response()->json([
+//        'message' => "User $id updated successfully!",
+        'user' => ['id' => $id, 'name' => $request->name, 'email' => $request->email],
+    ]);
+});
+Route::delete('/users/{id}', function ($id) {
+    return response()->json([
+//        'message' => "User $id deleted successfully!",
+    ]);
+});
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
