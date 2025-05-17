@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\Api\New\AuthController;
+use App\Http\Controllers\Api\WebServices\Auth\AuthController;
 
 Route::post('/dashboard/paymentStatus', 'Package\PackageController@paymentStatus')->name('PaymentStatus');
 
@@ -100,6 +101,3 @@ Route::delete('/users/{id}', function ($id) {
     ]);
 });
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
