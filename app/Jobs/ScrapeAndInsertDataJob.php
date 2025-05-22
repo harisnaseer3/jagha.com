@@ -47,13 +47,21 @@ class ScrapeAndInsertDataJob implements ShouldQueue
             'sessionId' => 'a8c687ea-e178-4b4d-b54c-14a70f1e586a',
         ];
 
-        $cities  = [
-            "islamabad" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FIslamabad-3%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=10000&page=0&query=new",
-            "lahore" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FLahore-1%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=10000&page=0&query=new",
-            "karachi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FKarachi-2%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=10000&page=0&query=new",
-            "rawalpindi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FRawalpindi-41%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=99000&page=0&query=new",
-
+        $last24Hours = time() - (24 * 60 * 60); // UNIX timestamp 24 hours ago
+//        $cities  = [
+//            "islamabad" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FIslamabad-3%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=10000&page=0&query=new",
+//            "lahore" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FLahore-1%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=10000&page=0&query=new",
+//            "karachi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FKarachi-2%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=10000&page=0&query=new",
+//            "rawalpindi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FRawalpindi-41%20AND%20category.slug%3A%22Houses_Property%22&hitsPerPage=99000&page=0&query=new",
+//
+//        ];
+        $cities = [
+            "islamabad" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FIslamabad-3%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "lahore" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FLahore-1%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "karachi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FKarachi-2%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "rawalpindi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FRawalpindi-41%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
         ];
+
 
         foreach ($cities as $city => $query) {
             $body = ['params' => $query];
@@ -183,12 +191,11 @@ class ScrapeAndInsertDataJob implements ShouldQueue
                 ];
 
                 DB::table('properties')->insert($propertyData);
-                \Log::info('data inserted');
+                // ✅ Delete the file after successful commit
+//                unlink($fullPath);
             }
 
             DB::commit();
-            // ✅ Delete the file after successful commit
-//            unlink($fullPath);
             \Log::info("Inserted " . count($jsonData['hits']) . " properties from {$filename}");
             return true;
         } catch (\Exception $e) {

@@ -67,6 +67,7 @@ class CreatePropertiesTable extends Migration
             $table->string('rejection_reason', 255)->nullable();
             $table->boolean('is_active')->default(true);
             $table->dateTime('expired_at');
+            $table->dateTime('activated_at');
             $table->softDeletes();
             $table->timestamps();
         });
