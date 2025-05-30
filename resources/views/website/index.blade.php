@@ -48,23 +48,25 @@
 
     <!-- Banner start -->
     <div class="container-fluid">
-    @include('website.includes.index-page-banner')
-    <!-- Search Section start -->
-    @include('website.includes.index-search')
+        @include('website.includes.index-page-banner')
+        <!-- Search Section start -->
+        @include('website.includes.index-search')
 
         <!-- Featured properties start -->
-    @include('website.includes.property_counter')
-    <!-- Featured properties start -->
-    @include('website.includes.featured_properties')
-    <!-- featured agencies -->
-    @include('website.includes.partner')
-    <!-- Key agencies -->
-    @include('website.includes.featured_agencies')
-    <!-- Most popular places start -->
+        @include('website.includes.property_counter')
+        <!-- Featured properties start -->
+        @include('website.includes.featured_properties')
+        <!-- featured agencies -->
+        @include('website.includes.partner')
+        <!-- Key agencies -->
+        @include('website.includes.featured_agencies')
+        <!-- Most popular places start -->
         @include('website.includes.popular_places_listing')
         <div class="clearfix"></div>
         <!-- Blog start -->
         @include('website.includes.recent_blogs')
+        <!-- chatbot -->
+{{--        @include('website.components.chatbot')--}}
     </div>
     <!-- Footer start -->
     @include('website.includes.footer')

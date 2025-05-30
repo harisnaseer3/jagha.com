@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\IndexPageController;
 use App\Http\Controllers\Auth\InvestorAuthController;
+use App\Http\Controllers\HitRecord\ChatBotController;
 use App\Http\Controllers\JsonUploadController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -396,6 +397,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/backups/download/{filename}', [DBBackupController::class, 'download'])->name('backups.download');
 });
 
+Route::match(['get', 'post'], '/botman', [ChatBotController::class, 'handle']);
 
 //Facebook Login
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');

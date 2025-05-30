@@ -362,10 +362,10 @@
                                                         Partners</a>
                                                 </li>
 
-                                                <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2519">
-                                                    <a href="https://www.aboutpakistan.com/blog/"
-                                                       aria-current="page">Blog</a>
-                                                    </li>
+{{--                                                <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2519">--}}
+{{--                                                    <a href="https://www.aboutpakistan.com/blog/"--}}
+{{--                                                       aria-current="page">Blog</a>--}}
+{{--                                                    </li>--}}
 
                                                 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2517">
                                                     <a href="https://www.jagha.com/">About Us</a>

@@ -60,6 +60,27 @@ class ScrapeAndInsertDataJob implements ShouldQueue
             "lahore" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FLahore-1%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
             "karachi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FKarachi-2%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
             "rawalpindi" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FRawalpindi-41%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "attock" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FAttock-1233%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "multan" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FMultan-15%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "gujranwala" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FGujranwala-327%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "faisalabad" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FFaisalabad-16%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "dera_ghazi_khan" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FDera_Ghazi_Khan-26%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "abbottabad" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FAbbottabad-385%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "bahawalpur" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FBahawalpur-23%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "hyderabad" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FHyderabad-30%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "quetta" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FQuetta-18%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "rahim_yar_khan" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FRahim_Yar_Khan-40%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "okara" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FOkara-470%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "lalamusa" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FLalamusa-9837%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "mianwali" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FMianwali-8310%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "mandi_bahauddin" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FMandi_Bahauddin-1496%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "taxila" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FTaxila-464%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "peshawar" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FPeshawar-17%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "mardan" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FMardan-440%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "murree" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FMurree-36%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "sialkot" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FSialkot-480%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+            "sargodha" => "filters=purpose%3A%22for-sale%22%20AND%20location.slug%3A%2FSargodha-778%20AND%20category.slug%3A%22Houses_Property%22%20AND%20createdAt%20%3E%20{$last24Hours}&hitsPerPage=10000&page=0&query=new",
+
         ];
 
 
