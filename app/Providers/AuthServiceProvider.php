@@ -6,7 +6,6 @@ use App\Notifications\VerifyApiEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Passport\Passport;
 use App\Models\Dashboard\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -44,7 +43,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('delete-users', function ($user) {
             return $user->hasRole('super_admin');
         });
-        Passport::routes();
 
         VerifyEmail::toMailUsing(function (User $user, string $verificationUrl) {
             return (new MailMessage)

@@ -177,7 +177,7 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class,
         App\Providers\FormGroupServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
+//        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -187,7 +187,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+//        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
 
     ],
 
@@ -242,7 +242,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Image' => Intervention\Image\Facades\Image::class,
+//        'Image' => Intervention\Image\Facades\Image::class,
         'Helper' => App\Helpers\Helper::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Crawler' => Jaybizzle\LaravelCrawlerDetect\Facades\LaravelCrawlerDetect::class,

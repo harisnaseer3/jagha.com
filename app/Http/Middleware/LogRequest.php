@@ -59,7 +59,17 @@ class LogRequest
                 event(new LogErrorEvent($e->getMessage(), 'Error in logRequest middleware handle method'));
             }
         }
+//dd($next, $request);
+//        return $next($request);
 
-        return $next($request);
+        try {
+            return $next($request);
+        } catch (\Throwable $e) {
+            logger()->error("Middleware error: " . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e; // Optional: rethrow if you want it to continue failing visibly
+        }
+
     }
 }

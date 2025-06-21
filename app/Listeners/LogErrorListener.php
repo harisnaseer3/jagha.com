@@ -24,13 +24,18 @@ class LogErrorListener implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param object $event
      * @return void
      */
     public function handle($event)
     {
-        $user = 'rida@cordstones.com';
-        $admins = Admin::getAdminByEmail($user);
-        Notification::send($admins, new logErrorNotification($event->error,$event->custom_msg));
+        $userEmail = 'rida@cordstones.com';
+//        $user = 'hari7e96@gmail.com';
+        $admin = Admin::getAdminByEmail($userEmail);
+        if ($admin) {
+            Notification::send($admin, new logErrorNotification($event->error, $event->custom_msg));
+        } else {
+            \Log::warning("Admin not found for email: $userEmail");
+        }
     }
 }
