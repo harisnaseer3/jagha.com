@@ -4,6 +4,8 @@ namespace App\Models\Dashboard;
 
 use App\Models\Admin;
 use App\Models\Agency;
+use App\Models\Favorite;
+use App\Models\Property;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,6 +80,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function roles()
     {
         return $this->belongsToMany('App\Models\Dashboard\PropertyRole');
+    }
+
+    public function property() // newly created for api
+    {
+        return $this->hasMany(Property::class);
     }
 
     public function properties()

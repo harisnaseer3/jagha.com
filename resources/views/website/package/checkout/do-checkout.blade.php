@@ -45,7 +45,7 @@
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/">
-                                                       <i class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                                       <i class="fa fa-globe mr-1"></i>Go to jagha.com</a></span>
                                         </div>
 
                                         <div class="tab-pane fade active show" id="listings-all" role="tabpanel" aria-labelledby="listings-all-tab">

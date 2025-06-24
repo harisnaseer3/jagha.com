@@ -38,7 +38,7 @@
                                     <div class="tab-content" id="listings-tabContent">
                                         <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
-                                                           class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                                           class="fa fa-globe mr-1"></i>Go to jagha.com</a></span>
                                             @php $agencies = Auth::guard('web')->user()->agencies->where('status','verified') @endphp
                                             @if(count($agencies) > 0)
                                                 <a class="btn btn-sm transition-background color-green mr-2" href="{{ route('agencies.add-staff') }}"><i class="fa fa-plus-circle mr-1"></i>Add Agency Staff</a>

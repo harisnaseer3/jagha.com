@@ -106,7 +106,7 @@
                                         <span class="pull-right py-2"><a class="btn btn-sm transition-background color-green" href="{{route('agencies.create')}}"><i
                                                     class="fa fa-plus-circle mr-1"></i>Add New Agency</a></span>
                                         <span class="pull-right py-2"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
-                                                    class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                                    class="fa fa-globe mr-1"></i>Go to jagha.com</a></span>
 
                                     </div>
                                 </div>

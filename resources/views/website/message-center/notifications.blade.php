@@ -31,7 +31,7 @@
                                 <div class="col-12 mb-2">
                                     <div class="float-right">
                                                <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
-                                                           class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                                           class="fa fa-globe mr-1"></i>Go to jagha.com</a></span>
                                     </div>
 
                                 </div>

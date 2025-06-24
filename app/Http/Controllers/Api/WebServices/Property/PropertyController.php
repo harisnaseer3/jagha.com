@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\WebServices\Property;
 use App\Events\NotifyAdminOfEditedProperty;
 use App\Events\NotifyAdminOfNewProperty;
 use App\Events\UserErrorEvent;
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountTableController;
 use App\Http\Controllers\Dashboard\LocationController;
@@ -29,70 +30,118 @@ use App\Http\Controllers\PropertyController as SitePropertyController;
 use Exception;
 
 
-class PropertyController extends Controller
+class PropertyController extends BaseController
 {
+
+    public function getProperties(Request $request)
+    {
+        try {
+            $perPage = $request->input('per_page', 10);
+
+            $homes = Property::where('status', 'active')
+                ->where('type', 'Home')
+                ->with(['images', 'videos', 'floor_plans', 'agency', 'user'])
+                ->paginate($perPage, ['*'], 'homes_page');
+
+            $plots = Property::where('status', 'active')
+                ->where('type', 'Plot')
+                ->with(['images', 'videos', 'floor_plans', 'agency', 'user'])
+                ->paginate($perPage, ['*'], 'plots_page');
+
+            $commercials = Property::where('status', 'active')
+                ->where('type', 'Commercial')
+                ->with(['images', 'videos', 'floor_plans', 'agency', 'user'])
+                ->paginate($perPage, ['*'], 'commercials_page');
+
+            return $this->sendResponse([
+                'homes' => $homes,
+                'plots' => $plots,
+                'commercials' => $commercials,
+            ], 'Properties displayed successfully');
+
+        } catch (\Exception $e) {
+            return $this->sendError('Something went wrong while fetching properties.', $e->getMessage(), 500);
+        }
+    }
+
+    public function propertyCountByCities()
+    {
+        try {
+            $count = DB::table('property_count_by_cities')->all();
+
+            return $this->sendResponse($count, 'Property count by cities fetched successfully.');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to fetch property count by cities.', $e->getMessage(), 500);
+        }
+    }
 
     // Display detailed page of property
     public function show(Request $request)
     {
+        try {
+            $property = Property::where('id', $request->property)
+                ->where('status', 'active')
+                ->with(['images', 'videos', 'floor_plans', 'agency', 'user'])
+                ->first();
 
-        $property = Property::where('id', $request->property)->where('status', 'active')->first();
-        if ($property) {
-
-//            $views = $property->views;
-//            $property->views = $views + 1;
-//            $property->save();
+            if (!$property) {
+                return $this->sendError('Property not found or inactive.', [], 404);
+            }
 
             $is_favorite = false;
 
-            if (auth::guard('api')->check()) {
+            if (Auth::guard('api')->check()) {
                 $user_id = Auth::guard('api')->user()->getAuthIdentifier();
-                //add in user recently viewed property
+
+                // Add to recently viewed
                 (new RecentlyViewedController)->store($user_id, $property->id);
-                $is_favorite = DB::table('favorites')->select('id')
-                    ->where([
-                        ['user_id', '=', $user_id],
-                        ['property_id', '=', $property->id],
-                    ])->exists();
+
+                // Check if property is in favorites
+                $is_favorite = DB::table('favorites')->where([
+                    ['user_id', '=', $user_id],
+                    ['property_id', '=', $property->id],
+                ])->exists();
             }
 
-
+            // Attach custom attributes
             $property->is_favorite = $is_favorite;
-            $property->city = $property->city->name;
-            $property->location = $property->location->name;
+            $property->city = optional($property->city)->name;
+            $property->location = optional($property->location)->name;
 
-            $similar_properties = (new PropertySearchController())->listingFrontend()
-                ->where([
-                    ['properties.id', '<>', $property->id],
-                    ['properties.city_id', $property->city_id],
-                    ['properties.type', $property->type],
-                    ['properties.sub_type', $property->sub_type],
-                    ['properties.purpose', $property->purpose],
-                ]);
+            // Fetch similar properties
+            $similar_properties_query = (new PropertySearchController())->listingFrontend()
+                ->where('properties.id', '<>', $property->id)
+                ->where('properties.city_id', $property->city_id)
+                ->where('properties.type', $property->type)
+                ->where('properties.sub_type', $property->sub_type)
+                ->where('properties.purpose', $property->purpose);
 
             $sort_area = 'higher_area';
             $sort = 'newest';
 
-            $similar_properties = (new PropertySearchController())->sortPropertyListing($sort, $sort_area, $similar_properties);
-
-            $similar_properties = $similar_properties->limit(10)->get();
+            $similar_properties = (new PropertySearchController())->sortPropertyListing(
+                $sort,
+                $sort_area,
+                $similar_properties_query
+            )->limit(10)->get();
 
             if ($similar_properties->count() > 0) {
                 $similar_properties = (new PropertyListingResource)->myToArray($similar_properties);
-            } else
+            } else {
                 $similar_properties = [];
-
+            }
 
             $data = (object)[
                 'property' => new PropertyResource($property),
-                'similar_properties' => $similar_properties
+                'similar_properties' => $similar_properties,
             ];
 
-            return (new \App\Http\JsonResponse)->success("Property Details", $data);
-        } else
-            return (new \App\Http\JsonResponse)->resourceNotFound();
-
+            return $this->sendResponse($data, 'Property Details');
+        } catch (\Exception $e) {
+            return $this->sendError('Failed to fetch property details.', $e->getMessage(), 500);
+        }
     }
+
 
     public function getUserAreaUnit($id)
     {

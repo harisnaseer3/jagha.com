@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\DetailPageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-//use App\Http\Controllers\Api\New\AuthController;
+use App\Http\Controllers\Api\WebServices\Property\PropertyController;
 use App\Http\Controllers\Api\WebServices\Auth\AuthController;
+use App\Http\Controllers\Api\IndexPageController;
 
 Route::post('/dashboard/paymentStatus', 'Package\PackageController@paymentStatus')->name('PaymentStatus');
 
 //auth
-
 
 Route::group(['namespace' => 'WebServices'], function () {
     Route::group(['namespace' => 'Auth'], function () {
@@ -16,14 +17,18 @@ Route::group(['namespace' => 'WebServices'], function () {
         Route::post('login', 'AuthController@login');
         Route::post('social-login', 'AuthController@socialLogin');
         Route::post('forgot-password', 'AuthController@forgotPassword');
-
-
+        Route::get('get-all-cities', 'AuthController@getAllCities');
+        Route::post('wipe-database', [IndexPageController::class, 'existingsProperty']);
     });
 
     Route::group(['middleware' => 'auth:api', 'namespace' => 'Auth'], function () {
         Route::post('change-password', 'AuthController@changePassword');
         Route::post('logout', 'AuthController@logout');
         Route::get('/email/resend', 'VerificationController@resend')->name('api.verification.resend');
+        Route::delete('/user/delete/{user}', 'AuthController@deleteAccount');
+        Route::patch('/user/toggle-status/{id}', 'AuthController@activateOrDeactivateAccount');
+        Route::get('/user/profile', 'AuthController@showProfile');
+
 
     });
     Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('api.verification.verify');
@@ -52,6 +57,11 @@ Route::group(['namespace' => 'WebServices'], function () {
 
     Route::group(['namespace' => 'Property'], function () {
         Route::get('properties/{property}', 'PropertyController@show');
+        Route::get('all-properties', [PropertyController::class, 'getProperties']);
+        Route::get('property-count-by-city', [PropertyController::class, 'propertyCountByCities']);
+        Route::get('popular-properties', [IndexPageController::class, 'getPopularProperties']);
+        Route::get('featured-properties', [IndexPageController::class, 'getFeaturedPropertiesDetails']);
+        Route::get('city-properties', [DetailPageController::class, 'cityProperties']);
 
         //search
         Route::get('search', 'PropertySearchController@search');
@@ -62,42 +72,17 @@ Route::group(['namespace' => 'WebServices'], function () {
             Route::get('recently-viewed', 'RecentlyViewedController@show');
             Route::post('del-property-image', 'PropertyController@deleteImage');
 //            Route::post('draft-property', 'PropertyController@saveDraft');
-
         });
+    });
 
-
+    Route::group(['namespace' => 'Agency'], function () {
+        Route::get('key-agencies', [IndexPageController::class, 'keyAgencies']);
+        Route::get('featured-agencies', [IndexPageController::class, 'featuredAgencies']);
+        Route::get('agency-properties', [DetailPageController::class, 'agencyProperties']);
     });
 
     Route::get('cities', 'DataController@cities');
     Route::get('city-locations/{city}', 'DataController@locations');
-    Route::get('all-users', [\App\Http\Controllers\Dashboard\UserController::class, 'getAllUsers']);
-});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::delete('/properties/delete-old', [IndexPageController::class, 'deleteOldProperties']);
 });
-Route::get('/users', function () {
-    return response()->json([
-        ['id' => 1, 'name' => 'John Doe', 'email' => 'john@example.com'],
-        ['id' => 2, 'name' => 'Jane Smith', 'email' => 'jane@example.com'],
-    ]);
-});
-Route::post('/users', function (Request $request) {
-    // Normally you would save to database, but we'll just return back
-    return response()->json([
-        'message' => 'User created successfully!',
-        'user' => $request->only(['name', 'email']),
-    ]);
-});
-Route::put('/users/{id}', function (Request $request, $id) {
-    return response()->json([
-//        'message' => "User $id updated successfully!",
-        'user' => ['id' => $id, 'name' => $request->name, 'email' => $request->email],
-    ]);
-});
-Route::delete('/users/{id}', function ($id) {
-    return response()->json([
-//        'message' => "User $id deleted successfully!",
-    ]);
-});
-

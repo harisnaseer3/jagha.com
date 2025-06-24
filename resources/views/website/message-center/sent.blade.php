@@ -45,7 +45,7 @@
                                     <div class="float-right">
 
                                                <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="/"><i
-                                                           class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                                           class="fa fa-globe mr-1"></i>Go to jagha.com</a></span>
                                         <span class="pull-right"><a class="btn btn-sm transition-background color-green mr-2" href="{{route('aboutpakistan.support')}}"><i
                                                     class="fa fa-plus-circle mr-1"></i>Send New Message</a></span>
                                     </div>

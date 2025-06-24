@@ -40,7 +40,7 @@
                                     <div class="row m-0">
                                         <div class="col-12 my-2">
                                             <span class="pull-right"><a class="btn btn-sm transition-background color-green ml-2" href="/"><i
-                                                        class="fa fa-globe mr-1"></i>Go to property.aboutpakistan.com</a></span>
+                                                        class="fa fa-globe mr-1"></i>Go to jagha.com</a></span>
                                             <span class="pull-right"><a class="btn btn-sm transition-background color-green" href="{{route('properties.create')}}">Post Advertisement</a></span>
                                         </div>
                                     </div>
