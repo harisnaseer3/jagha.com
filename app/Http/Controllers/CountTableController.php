@@ -53,20 +53,29 @@ class CountTableController extends Controller
             ->groupBy('city_id', 'city_name', 'property_purpose', 'property_type', 'property_sub_type')
             ->limit(6)->get();
 
-        $lahore_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
-                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    FROM `property_count_by_property_purposes`
-                    INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
-                    WHERE `city_popular_locations`.`property_type` = \'homes\'
-                    AND `property_count_by_property_purposes`.`property_type` = \'homes\'
-                    AND  `property_count_by_property_purposes`.`city_id` = 3
-                    AND  `property_count_by_property_purposes`.`property_purpose` = \'sale\'
-                    AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
-                    GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
-                    `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+        $lahore_homes = DB::select('SELECT
+    SUM(`property_count`) AS `property_count`,
+    `city_popular_locations`.`location_name`,
+    `property_count_by_property_purposes`.`city_name`,
+    `property_count_by_property_purposes`.`property_purpose`,
+    `property_count_by_property_purposes`.`property_type`
+FROM `property_count_by_property_purposes`
+INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
+WHERE `city_popular_locations`.`property_type` = "homes"
+  AND `property_count_by_property_purposes`.`property_type` = "homes"
+  AND `property_count_by_property_purposes`.`city_id` = 3
+  AND `property_count_by_property_purposes`.`property_purpose` = "sale"
+  AND `property_count_by_property_purposes`.`location_name` REGEXP `city_popular_locations`.`location_name`
+GROUP BY
+    `city_popular_locations`.`location_name`,
+    `property_count_by_property_purposes`.`city_name`,
+    `property_count_by_property_purposes`.`property_purpose`,
+    `property_count_by_property_purposes`.`property_type`
+ORDER BY `property_count` DESC
+LIMIT 6');
 
-        $lahore_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+
+        $lahore_plots = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -77,9 +86,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $lahore_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $lahore_commercial = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -90,9 +99,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $karachi_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $karachi_homes = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -103,9 +112,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $karachi_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $karachi_plots = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -116,9 +125,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $karachi_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $karachi_commercial = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -129,9 +138,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $peshawar_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $peshawar_plots = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -142,10 +151,10 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
 
-        $peshawar_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $peshawar_homes = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -156,9 +165,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $peshawar_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $peshawar_commercial = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -169,9 +178,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 6'));
+                    ORDER BY property_count DESC LIMIT 6');
 
-        $isb_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $isb_homes = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -182,9 +191,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 3'));
+                    ORDER BY property_count DESC LIMIT 3');
 
-        $pwd_homes = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $pwd_homes = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -195,13 +204,13 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 3'));
+                    ORDER BY property_count DESC LIMIT 3');
         foreach ($pwd_homes as $data) {
             array_push($isb_homes, $data);
         }
 
 
-        $isb_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $isb_plots = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -212,9 +221,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 3'));
+                    ORDER BY property_count DESC LIMIT 3');
 
-        $pwd_plots = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $pwd_plots = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -225,13 +234,13 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 3'));
+                    ORDER BY property_count DESC LIMIT 3');
 
         foreach ($pwd_plots as $data) {
             array_push($isb_plots, $data);
         }
 
-        $isb_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $isb_commercial = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -242,9 +251,9 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 3'));
+                    ORDER BY property_count DESC LIMIT 3');
 
-        $pwd_commercial = DB::select(DB::raw('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
+        $pwd_commercial = DB::select('SELECT SUM(`property_count`) AS \'property_count\' ,  `city_popular_locations`.`location_name`,  `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
                     FROM `property_count_by_property_purposes`
                     INNER JOIN `city_popular_locations` ON `property_count_by_property_purposes`.`city_id` = `city_popular_locations`.`city_id`
@@ -255,7 +264,7 @@ class CountTableController extends Controller
                     AND `property_count_by_property_purposes`. `location_name` REGEXP `city_popular_locations`.`location_name`
                     GROUP BY  `city_popular_locations`.`location_name`, `property_count_by_property_purposes`.`city_name`,
                     `property_count_by_property_purposes`.`property_purpose`,`property_count_by_property_purposes`.`property_type`
-                    ORDER BY property_count DESC LIMIT 3'));
+                    ORDER BY property_count DESC LIMIT 3');
 
         foreach ($pwd_commercial as $data) {
             array_push($isb_commercial, $data);
