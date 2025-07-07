@@ -233,14 +233,15 @@ class IndexPageController extends BaseController
     {
         try {
             DB::beginTransaction();
-            // $properties = Property::whereYear('created_at', "2020-01-01 00:00:00")
-            //     ->orWhereYear('created_at', 2021)
-            //     ->get();
+//             $properties = Property::whereYear('created_at', "2020-01-01 00:00:00")
+//                 ->orWhereYear('created_at', 2021)
+//                 ->get();
 
-            $properties = Property::withTrashed()->whereBetween('created_at', ['2021-01-01', '2023-12-31'])->get();
+            $properties = Property::withTrashed()->whereBetween('created_at', ['2020-10-01', '2023-12-31'])
+                ->limit(9000)
+                ->get();
             $deletedCount = 0;
-
-            dd($properties->count());
+//dd($properties->count());
             foreach ($properties as $property) {
                 $property->forceDelete(); // Assumes cascading is handled via model relationships or DB constraints
                 $deletedCount++;
